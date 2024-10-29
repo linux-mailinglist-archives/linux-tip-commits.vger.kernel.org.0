@@ -1,71 +1,74 @@
-Return-Path: <linux-tip-commits+bounces-2635-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2636-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C13C9B47CA
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 12:06:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2B29B47CB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 12:06:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AEE81C23E59
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 11:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1AFC42848F1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Oct 2024 11:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F415205E1B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D785205E24;
 	Tue, 29 Oct 2024 11:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LFb+3fa0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Afv/nyOk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O0mbOpre";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lEdMhMtK"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D702038A0;
-	Tue, 29 Oct 2024 11:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51769204920;
+	Tue, 29 Oct 2024 11:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730199657; cv=none; b=F0DKdU1vb/MVlsoQl57BVzpXG2GvVZAabCHNirL4Y2SiPasnQwhR7ZzdpVSaKuAcEUqlkT9d7vhiCSheh/E/UlYg15bScd5BqKESIXpMLjt/l9L0C7TaW1USCZm7i6C0mDRGuS288bhHRuJ4pqtHMpf7uCoa406mIFytY/Anap8=
+	t=1730199657; cv=none; b=i43XnkaYLlWESR0FEAb1nWbnP3m2zPqWvK2k8NJBpt/HnZGwwl1krnr4Dkw5bhaVSLBR9wzKDWHcMLP9eo/BPhAPzm1ksfyo6w4rxUCd60HbIM6pT8lZxRtqZMQwazvtT/X3SCytCgVJHFPar9i4yjP04k9taGXbf7Nl9SRKPi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730199657; c=relaxed/simple;
-	bh=yiXVkzgGvHpZcbfuXO0B50vt3UCEcEU9DV35tCB4iXw=;
+	bh=d0Z4ObN46Fk8U2e4ZoISVPyhtpk5snmnYYWX1Qwtyyg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZIVvMRv7THg07rEJOw3UBue5hmrmNcNhU/JmMIaCV5r18LTcA52j2BN29FG8wtXEMvCBkw7GBU0tSY94cG94pyg3B9kfB5rVpcbd8Q7D1yvfZzzYPD//uEKYovnuuI8vNvl3yYSR3Bf9KCGcIYkZRi4rzJpN/2lrN2oazISeW98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LFb+3fa0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Afv/nyOk; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=UmNZ3z/3sh9alVheQYTl1iA203FNDGQApPqtzxwcdcd+3g8j2vAOrChqd4m4QXHCkln3PkFL3YRcyFtiyHniO76Ukp/gfvJanZJHKZnjHYbahgxvooivhzlaC7FQ0JuucbF7P8kZkxZkMxmaHwkjJJch23TX3E9epXtWckYheXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O0mbOpre; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lEdMhMtK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 29 Oct 2024 11:00:51 -0000
+Date: Tue, 29 Oct 2024 11:00:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730199652;
+	s=2020; t=1730199653;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VIP79YsvOmZCrt8TcljKaNjOBkknFdB5zqH1jpCwC48=;
-	b=LFb+3fa06XSY5hVqs0tyKFEl5eOynk4DU2Xa24hEIzhz6GsaF/vAWyUeyQSbHlUoGAogqk
-	leCwV8CckasOrOYQH1TUcglElFZxqbtVFayifCiXEICs4zJcT9ofhjtctAse60cweDm8ZI
-	erZUH1yuKYeecBOVAk88d5v14iTZ8PTYabtnVYhz4WIM75akhxLTteug9CA7rO0rxYGDhn
-	y4VsYSRdCedTtH5dHyPAarbiiKVYwH5DaeqIq4FhCYOtHfKJVjMLB/hsjgX04QU4n4OEg0
-	Z0b5rGTMdDkREHF13ODkQejjTxuwnhlA4sn4VlXj4tbwHlBbJXmbpZPRg1kW5w==
+	bh=mId0OUh17dofr+uBJPBqWZKxuWE5fkaKVwATqueCyz4=;
+	b=O0mbOpretIv8aOn0DE/a5ym040aABkcOySUoji+Q5Zs8RspMPL9PG0FyeADa4i/IvbxVB2
+	5jv/Tn/+XfdPYBAYNv+K+j0N1uhInANAJEcPQlWwj2FTnJD1cJTkctjEOBzJ7RSkZaLKBp
+	g2ufvHTMebJiYBNvekft3Uo58m3O7PbVme5IXGpwYw3jE0AC6fezIPw9e+zWwedO6hH2h6
+	pFm9KRuC6bxoVbAt0x19GiDxBtgEVDit46TLPWjawGt78MYW5OSUhAdr4ACc5pfOrllM2c
+	QnnzmyW3e3d5OGmohH0JSl1XqzTrBLp+nD6we9EIIwi7fMIzEFUi1d2wBlqRXA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730199652;
+	s=2020e; t=1730199653;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VIP79YsvOmZCrt8TcljKaNjOBkknFdB5zqH1jpCwC48=;
-	b=Afv/nyOk+9dYk2oCxeOdu+LNJGoYpm9QjvZRTUrwOid7Wpjcb6NqoJy/lzOaaPCBUuMmu2
-	F41tgTBeehFu+YDg==
+	bh=mId0OUh17dofr+uBJPBqWZKxuWE5fkaKVwATqueCyz4=;
+	b=lEdMhMtKoZLBFiQ4HIm/iTfsLs188pUP6TdLl81EDAmEv4pHiQF70xuZc41CA8jjcJzwUB
+	eeCdbq3jDARii1Bw==
 From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/mm: Refactor __set_clr_pte_enc()
+Subject: [tip: x86/sev] x86/boot: Skip video memory access in the decompressor
+ for SEV-ES/SNP
 Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
- Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Thomas Lendacky <thomas.lendacky@amd.com>,
+ Ashish Kalra <ashish.kalra@amd.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C5df4aa450447f28294d1c5a890e27b63ed4ded36=2E17225?=
+In-Reply-To: =?utf-8?q?=3C8a55ea86524c686e575d273311acbe57ce8cee23=2E17225?=
  =?utf-8?q?20012=2Egit=2Eashish=2Ekalra=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3C5df4aa450447f28294d1c5a890e27b63ed4ded36=2E172252?=
+References: =?utf-8?q?=3C8a55ea86524c686e575d273311acbe57ce8cee23=2E172252?=
  =?utf-8?q?0012=2Egit=2Eashish=2Ekalra=40amd=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -73,7 +76,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173019965105.1442.3190406723686336711.tip-bot2@tip-bot2>
+Message-ID: <173019965256.1442.17892938606871476783.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,186 +86,74 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     2a783066b6f5f5250b838d2acfc716561d2a66e0
-Gitweb:        https://git.kernel.org/tip/2a783066b6f5f5250b838d2acfc716561d2a66e0
+Commit-ID:     f30470c190c2f4776e0baeba1f53fd8dd3820394
+Gitweb:        https://git.kernel.org/tip/f30470c190c2f4776e0baeba1f53fd8dd3820394
 Author:        Ashish Kalra <ashish.kalra@amd.com>
-AuthorDate:    Thu, 01 Aug 2024 19:14:34 
+AuthorDate:    Thu, 01 Aug 2024 19:14:17 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 28 Oct 2024 17:55:43 +01:00
+CommitterDate: Mon, 28 Oct 2024 16:54:16 +01:00
 
-x86/mm: Refactor __set_clr_pte_enc()
+x86/boot: Skip video memory access in the decompressor for SEV-ES/SNP
 
-Refactor __set_clr_pte_enc() and add two new helper functions to
-set/clear PTE C-bit from early SEV/SNP initialization code and later
-during shutdown/kexec especially when all CPUs are stopped and
-interrupts are disabled and set_memory_xx() interfaces can't be used.
+Accessing guest video memory/RAM in the decompressor causes guest
+termination as the boot stage2 #VC handler for SEV-ES/SNP systems does
+not support MMIO handling.
 
-Co-developed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+This issue is observed during a SEV-ES/SNP guest kexec as kexec -c adds
+screen_info to the boot parameters passed to the second kernel, which
+causes console output to be dumped to both video and serial.
+
+As the decompressor output gets cleared really fast, it is preferable to
+get the console output only on serial, hence, skip accessing the video
+RAM during decompressor stage to prevent guest termination.
+
+Serial console output during decompressor stage works as boot stage2 #VC
+handler already supports handling port I/O.
+
+  [ bp: Massage. ]
+
+Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/5df4aa450447f28294d1c5a890e27b63ed4ded36.1722520012.git.ashish.kalra@amd.com
+Link: https://lore.kernel.org/r/8a55ea86524c686e575d273311acbe57ce8cee23.1722520012.git.ashish.kalra@amd.com
 ---
- arch/x86/include/asm/sev.h    | 20 +++++++++-
- arch/x86/mm/mem_encrypt_amd.c | 75 ++++++++++++++++++++++------------
- 2 files changed, 69 insertions(+), 26 deletions(-)
+ arch/x86/boot/compressed/misc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 2e49c4a..5f59893 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -322,6 +322,22 @@ struct svsm_attest_call {
- 	u8 rsvd[4];
- };
+diff --git a/arch/x86/boot/compressed/misc.c b/arch/x86/boot/compressed/misc.c
+index 04a35b2..0d37420 100644
+--- a/arch/x86/boot/compressed/misc.c
++++ b/arch/x86/boot/compressed/misc.c
+@@ -385,6 +385,19 @@ static void parse_mem_encrypt(struct setup_header *hdr)
+ 		hdr->xloadflags |= XLF_MEM_ENCRYPTION;
+ }
  
-+/* PTE descriptor used for the prepare_pte_enc() operations. */
-+struct pte_enc_desc {
-+	pte_t *kpte;
-+	int pte_level;
-+	bool encrypt;
-+	/* pfn of the kpte above */
-+	unsigned long pfn;
-+	/* physical address of @pfn */
-+	unsigned long pa;
-+	/* virtual address of @pfn */
-+	void *va;
-+	/* memory covered by the pte */
-+	unsigned long size;
-+	pgprot_t new_pgprot;
-+};
++static void early_sev_detect(void)
++{
++	/*
++	 * Accessing video memory causes guest termination because
++	 * the boot stage2 #VC handler of SEV-ES/SNP guests does not
++	 * support MMIO handling and kexec -c adds screen_info to the
++	 * boot parameters passed to the kexec kernel, which causes
++	 * console output to be dumped to both video and serial.
++	 */
++	if (sev_status & MSR_AMD64_SEV_ES_ENABLED)
++		lines = cols = 0;
++}
 +
  /*
-  * SVSM protocol structure
-  */
-@@ -437,6 +453,8 @@ u64 snp_get_unsupported_features(u64 status);
- u64 sev_get_status(void);
- void sev_show_status(void);
- void snp_update_svsm_ca(void);
-+int prepare_pte_enc(struct pte_enc_desc *d);
-+void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot);
+  * The compressed kernel image (ZO), has been moved so that its position
+  * is against the end of the buffer used to hold the uncompressed kernel
+@@ -440,6 +453,8 @@ asmlinkage __visible void *extract_kernel(void *rmode, unsigned char *output)
+ 	 */
+ 	early_tdx_detect();
  
- #else	/* !CONFIG_AMD_MEM_ENCRYPT */
- 
-@@ -474,6 +492,8 @@ static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
- static inline u64 sev_get_status(void) { return 0; }
- static inline void sev_show_status(void) { }
- static inline void snp_update_svsm_ca(void) { }
-+static inline int prepare_pte_enc(struct pte_enc_desc *d) { return 0; }
-+static inline void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot) { }
- 
- #endif	/* CONFIG_AMD_MEM_ENCRYPT */
- 
-diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-index 86a476a..f4be81d 100644
---- a/arch/x86/mm/mem_encrypt_amd.c
-+++ b/arch/x86/mm/mem_encrypt_amd.c
-@@ -311,59 +311,82 @@ static int amd_enc_status_change_finish(unsigned long vaddr, int npages, bool en
- 	return 0;
- }
- 
--static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
-+int prepare_pte_enc(struct pte_enc_desc *d)
- {
--	pgprot_t old_prot, new_prot;
--	unsigned long pfn, pa, size;
--	pte_t new_pte;
-+	pgprot_t old_prot;
- 
--	pfn = pg_level_to_pfn(level, kpte, &old_prot);
--	if (!pfn)
--		return;
-+	d->pfn = pg_level_to_pfn(d->pte_level, d->kpte, &old_prot);
-+	if (!d->pfn)
-+		return 1;
- 
--	new_prot = old_prot;
--	if (enc)
--		pgprot_val(new_prot) |= _PAGE_ENC;
-+	d->new_pgprot = old_prot;
-+	if (d->encrypt)
-+		pgprot_val(d->new_pgprot) |= _PAGE_ENC;
- 	else
--		pgprot_val(new_prot) &= ~_PAGE_ENC;
-+		pgprot_val(d->new_pgprot) &= ~_PAGE_ENC;
- 
- 	/* If prot is same then do nothing. */
--	if (pgprot_val(old_prot) == pgprot_val(new_prot))
--		return;
-+	if (pgprot_val(old_prot) == pgprot_val(d->new_pgprot))
-+		return 1;
- 
--	pa = pfn << PAGE_SHIFT;
--	size = page_level_size(level);
-+	d->pa = d->pfn << PAGE_SHIFT;
-+	d->size = page_level_size(d->pte_level);
++	early_sev_detect();
++
+ 	console_init();
  
  	/*
--	 * We are going to perform in-place en-/decryption and change the
--	 * physical page attribute from C=1 to C=0 or vice versa. Flush the
--	 * caches to ensure that data gets accessed with the correct C-bit.
-+	 * In-place en-/decryption and physical page attribute change
-+	 * from C=1 to C=0 or vice versa will be performed. Flush the
-+	 * caches to ensure that data gets accessed with the correct
-+	 * C-bit.
- 	 */
--	clflush_cache_range(__va(pa), size);
-+	if (d->va)
-+		clflush_cache_range(d->va, d->size);
-+	else
-+		clflush_cache_range(__va(d->pa), d->size);
-+
-+	return 0;
-+}
-+
-+void set_pte_enc_mask(pte_t *kpte, unsigned long pfn, pgprot_t new_prot)
-+{
-+	pte_t new_pte;
-+
-+	/* Change the page encryption mask. */
-+	new_pte = pfn_pte(pfn, new_prot);
-+	set_pte_atomic(kpte, new_pte);
-+}
-+
-+static void __init __set_clr_pte_enc(pte_t *kpte, int level, bool enc)
-+{
-+	struct pte_enc_desc d = {
-+		.kpte	     = kpte,
-+		.pte_level   = level,
-+		.encrypt     = enc
-+	};
-+
-+	if (prepare_pte_enc(&d))
-+		return;
- 
- 	/* Encrypt/decrypt the contents in-place */
- 	if (enc) {
--		sme_early_encrypt(pa, size);
-+		sme_early_encrypt(d.pa, d.size);
- 	} else {
--		sme_early_decrypt(pa, size);
-+		sme_early_decrypt(d.pa, d.size);
- 
- 		/*
- 		 * ON SNP, the page state in the RMP table must happen
- 		 * before the page table updates.
- 		 */
--		early_snp_set_memory_shared((unsigned long)__va(pa), pa, 1);
-+		early_snp_set_memory_shared((unsigned long)__va(d.pa), d.pa, 1);
- 	}
- 
--	/* Change the page encryption mask. */
--	new_pte = pfn_pte(pfn, new_prot);
--	set_pte_atomic(kpte, new_pte);
-+	set_pte_enc_mask(kpte, d.pfn, d.new_pgprot);
- 
- 	/*
- 	 * If page is set encrypted in the page table, then update the RMP table to
- 	 * add this page as private.
- 	 */
- 	if (enc)
--		early_snp_set_memory_private((unsigned long)__va(pa), pa, 1);
-+		early_snp_set_memory_private((unsigned long)__va(d.pa), d.pa, 1);
- }
- 
- static int __init early_set_memory_enc_dec(unsigned long vaddr,
 
