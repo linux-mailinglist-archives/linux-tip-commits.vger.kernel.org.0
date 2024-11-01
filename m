@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-2685-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2686-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C715F9B9068
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Nov 2024 12:41:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538919B906A
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Nov 2024 12:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34742282A54
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Nov 2024 11:41:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857A21C21682
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Nov 2024 11:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4926219CC02;
-	Fri,  1 Nov 2024 11:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCB019CC29;
+	Fri,  1 Nov 2024 11:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KJbU8TD1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BzQYZvmw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VXMbWSjG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="j6T9kXdk"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B819C54A;
-	Fri,  1 Nov 2024 11:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C0715820C;
+	Fri,  1 Nov 2024 11:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730461270; cv=none; b=CU5GUPBCzmFEbs6M9tp3gWOrt4YTv0/lSH1rx3Di0a32XzcbAJBMx9pqW6XCeS2DF3l5Ht46Yv3B5MR5KsX8g/ZSQigq+EIwCM0Q2VvV7xXhcmYH1tm+M0gxT65VjdFrDpsQuodG0+bHaxJtvlg/joND98PTF7TsS1jb1RrFzfY=
+	t=1730461271; cv=none; b=Mhgh1520ZeS3ZtpbFj92Zo0WU57tYAmEIw+Kr+WJ9W8bjNsvUu6Sf9mVXs7cFLsSmy6Uj8/unBpyiqZPtV6COp067k3dHhP7QYWEn0wXD4Aa90OHvV8tnGO4OVB3y5WYDxenHU7GjJPXegXDGt+JF2tOM3tPcUhqV762A7DLvw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730461270; c=relaxed/simple;
-	bh=vkxm2fBl1GHog62Wlvuz3+R/hWIIq9jksqRXHGli5VQ=;
+	s=arc-20240116; t=1730461271; c=relaxed/simple;
+	bh=UdIAGckTW8RjUs2ghmb8at5uhhcaAQ3GiPCh2f5lALY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=vEEUXZgDfWOWyIHyE/+Dj4q0TAbAnuN/rYNIfJQohyFbJ1oUBjZu8bY41O+cY+k5YmCnLTXcRu7zfTEZ1Fpl3BXj+X8RtEesik2rznP43FHIcOGiUROmJNfw7hC8aEoPhViChIvrFLhQplMPclfEu8srH0a6d6he1+3rItUlfAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KJbU8TD1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BzQYZvmw; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=RSKZkwKrSG6HAOjt5TCcCPX1mTIHmp15DF7FMc99Eu8vS9P0KOxfy8wiPIWndpiFl7gRDDl5FiS6w0Cd4WQqYNFQsuK5RKe5dSFPzQK3A6di6MsXIp9HPLjTcWIBXivMG0QUAMfgMzNgyJPpordPgIWZXTXBcanNuw8XRWFNWhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VXMbWSjG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=j6T9kXdk; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 01 Nov 2024 11:41:04 -0000
+Date: Fri, 01 Nov 2024 11:41:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1730461266;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uAOKirwBqoz9E2HkaBDpMJLL6m6g1bc26MqyXE+S4VU=;
-	b=KJbU8TD1pvc/DiisZ0wYgCVrgKfCi/Ew/CgQ8iKO8z2eQzqCQwxetC4Hocz4//H75TdXnY
-	H6Gp7r696AUX7hZ+tLiwJ+HJa1XeJ/V6QTWUVKNvlIcxMP7I6qZUHSUdRkvBOET923qRzC
-	g+5qUdZuyMqawkzUozjohygzbohgdZjT7e4U82bBi3UBK/SwrKwmqepoUrRRWRfPGCVYw3
-	pyksgmuC7YvMrTRoTQifd2mwXVcmlGJjGt1JYIjtQhgdNn5sq8o5EKFVX0XASbHEa3rVW5
-	rqZO7BFMam1w/l2hyibUvXZlxzD795AtKlOsUXNoNY4icKk1LWzvY4RyUytRmw==
+	bh=rf3pBeD8ZvjmViADPpDEx8qFMGx0bSQAAMGVXzrPn6A=;
+	b=VXMbWSjGqn9ZAsh41T1jjgxP0/DxD+ITVGWxNhfriMIcJJzjTzj2KjJeku2p14UZVXIcx4
+	3xVwmk04Twu6RT0oJXGW9+hjuZkCM0GCTsF2zdQrHzXy2DAxgXdeXs8tJpNg2+RNEI0g4X
+	trjw7LEzrgbiMFL2H23Z21UgrcNTmCpA5Opyt/X120ByJDekZD2kA9dGVAr1egRso3xp6H
+	EF/eGgrAbnu3qHQZtWLW6dwx1a7KtzWnFYymRAy6dGt9Kb3ZLjeIcfs0p1VyoXy5q2QAyb
+	4ap2DJa7t8oAyIUfzQGMybX3N6Aasnf7QGt3oKRccUue0OJCDgh9edCpy//8tw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1730461266;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uAOKirwBqoz9E2HkaBDpMJLL6m6g1bc26MqyXE+S4VU=;
-	b=BzQYZvmwYwX7JC2iqDKMEhNDbsTi0are61UNU3kuOqOZDAOQ7HS2rBXI6zhqWDOb6zlIxc
-	8LRhTQ/TXB40YvAA==
-From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+	bh=rf3pBeD8ZvjmViADPpDEx8qFMGx0bSQAAMGVXzrPn6A=;
+	b=j6T9kXdkXdN5MtZ18GL5tP0Rlrqyb6VtEJbs9RGD9712Ntcf7NMBlL00Zmnm3qicEDAnXj
+	N9lCmuW7mZiJ9rAw==
+From: "tip-bot2 for Steven Rostedt" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/apei: Handle variable SMCA BERT record size
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>, Avadhut Naik <avadhut.naik@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241022194158.110073-5-avadhut.naik@amd.com>
-References: <20241022194158.110073-5-avadhut.naik@amd.com>
+Subject: [tip: ras/core] tracing: Add __print_dynamic_array() helper
+Cc: "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+ Avadhut Naik <avadhut.naik@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Qiuxu Zhuo <qiuxu.zhuo@intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241022194158.110073-3-avadhut.naik@amd.com>
+References: <20241022194158.110073-3-avadhut.naik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173046126431.3137.970292408629374702.tip-bot2@tip-bot2>
+Message-ID: <173046126587.3137.17478186661563402818.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,153 +82,93 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     e9876dafa28ebbeead11b6376b1402832d895c85
-Gitweb:        https://git.kernel.org/tip/e9876dafa28ebbeead11b6376b1402832d895c85
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 22 Oct 2024 19:36:30 
+Commit-ID:     e52750fb1458ae9ea5860a08ed7a149185bc5b97
+Gitweb:        https://git.kernel.org/tip/e52750fb1458ae9ea5860a08ed7a149185bc5b97
+Author:        Steven Rostedt <rostedt@goodmis.org>
+AuthorDate:    Tue, 22 Oct 2024 19:36:28 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 31 Oct 2024 10:45:59 +01:00
+CommitterDate: Wed, 30 Oct 2024 17:24:32 +01:00
 
-x86/mce/apei: Handle variable SMCA BERT record size
+tracing: Add __print_dynamic_array() helper
 
-The ACPI Boot Error Record Table (BERT) is being used by the kernel to report
-errors that occurred in a previous boot. On some modern AMD systems, these
-very errors within the BERT are reported through the x86 Common Platform Error
-Record (CPER) format which consists of one or more Processor Context
-Information Structures.
+When printing a dynamic array in a trace event, the method is rather ugly.
+It has the format of:
 
-These context structures provide a starting address and represent an x86 MSR
-range in which the data constitutes a contiguous set of MSRs starting from,
-and including the starting address.
+  __print_array(__get_dynamic_array(array),
+            __get_dynmaic_array_len(array) / el_size, el_size)
 
-It's common, for AMD systems that implement this behavior, that the MSR range
-represents the MCAX register space used for the Scalable MCA feature. The
-apei_smca_report_x86_error() function decodes and passes this information
-through the MCE notifier chain. However, this function assumes a fixed
-register size based on the original HW/FW implementation.
+Since dynamic arrays are known to the tracing infrastructure, create a
+helper macro that does the above for you.
 
-This assumption breaks with the addition of two new MCAX registers viz.
-MCA_SYND1 and MCA_SYND2. These registers are added at the end of the MCAX
-register space, so they won't be included when decoding the CPER data.
+  __print_dynamic_array(array, el_size)
 
-Rework apei_smca_report_x86_error() to support a variable register array size.
-This covers any case where the MSR context information starts at the MCAX
-address for MCA_STATUS and ends at any other register within the MCAX register
-space.
+Which would expand to the same output.
 
-  [ Yazen: Add Avadhut as co-developer for wrapper changes.]
-  [ bp: Massage. ]
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Co-developed-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/r/20241022194158.110073-5-avadhut.naik@amd.com
+Link: https://lore.kernel.org/r/20241022194158.110073-3-avadhut.naik@amd.com
 ---
- arch/x86/kernel/cpu/mce/apei.c | 72 ++++++++++++++++++++++++++-------
- 1 file changed, 58 insertions(+), 14 deletions(-)
+ include/trace/stages/stage3_trace_output.h | 8 ++++++++
+ include/trace/stages/stage7_class_define.h | 1 +
+ samples/trace_events/trace-events-sample.h | 7 ++++++-
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/apei.c b/arch/x86/kernel/cpu/mce/apei.c
-index 7f582b4..0a89947 100644
---- a/arch/x86/kernel/cpu/mce/apei.c
-+++ b/arch/x86/kernel/cpu/mce/apei.c
-@@ -68,9 +68,9 @@ EXPORT_SYMBOL_GPL(apei_mce_report_mem_error);
- int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
- {
- 	const u64 *i_mce = ((const u64 *) (ctx_info + 1));
-+	unsigned int cpu, num_regs;
- 	bool apicid_found = false;
- 	struct mce_hw_err err;
--	unsigned int cpu;
- 	struct mce *m;
+diff --git a/include/trace/stages/stage3_trace_output.h b/include/trace/stages/stage3_trace_output.h
+index c1fb135..1e7b0be 100644
+--- a/include/trace/stages/stage3_trace_output.h
++++ b/include/trace/stages/stage3_trace_output.h
+@@ -119,6 +119,14 @@
+ 		trace_print_array_seq(p, array, count, el_size);	\
+ 	})
  
- 	if (!boot_cpu_has(X86_FEATURE_SMCA))
-@@ -89,16 +89,12 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
- 		return -EINVAL;
- 
- 	/*
--	 * The register array size must be large enough to include all the
--	 * SMCA registers which need to be extracted.
--	 *
- 	 * The number of registers in the register array is determined by
- 	 * Register Array Size/8 as defined in UEFI spec v2.8, sec N.2.4.2.2.
--	 * The register layout is fixed and currently the raw data in the
--	 * register array includes 6 SMCA registers which the kernel can
--	 * extract.
-+	 * Sanity-check registers array size.
- 	 */
--	if (ctx_info->reg_arr_size < 48)
-+	num_regs = ctx_info->reg_arr_size >> 3;
-+	if (!num_regs)
- 		return -EINVAL;
- 
- 	for_each_possible_cpu(cpu) {
-@@ -117,12 +113,60 @@ int apei_smca_report_x86_error(struct cper_ia_proc_ctx *ctx_info, u64 lapic_id)
- 	mce_prep_record_per_cpu(cpu, m);
- 
- 	m->bank = (ctx_info->msr_addr >> 4) & 0xFF;
--	m->status = *i_mce;
--	m->addr = *(i_mce + 1);
--	m->misc = *(i_mce + 2);
--	/* Skipping MCA_CONFIG */
--	m->ipid = *(i_mce + 4);
--	m->synd = *(i_mce + 5);
++#undef __print_dynamic_array
++#define __print_dynamic_array(array, el_size)				\
++	({								\
++		__print_array(__get_dynamic_array(array),		\
++			      __get_dynamic_array_len(array) / (el_size), \
++			      (el_size));				\
++	})
 +
-+	/*
-+	 * The SMCA register layout is fixed and includes 16 registers.
-+	 * The end of the array may be variable, but the beginning is known.
-+	 * Cap the number of registers to expected max (15).
-+	 */
-+	if (num_regs > 15)
-+		num_regs = 15;
+ #undef __print_hex_dump
+ #define __print_hex_dump(prefix_str, prefix_type,			\
+ 			 rowsize, groupsize, buf, len, ascii)		\
+diff --git a/include/trace/stages/stage7_class_define.h b/include/trace/stages/stage7_class_define.h
+index bcb960d..fcd564a 100644
+--- a/include/trace/stages/stage7_class_define.h
++++ b/include/trace/stages/stage7_class_define.h
+@@ -22,6 +22,7 @@
+ #undef __get_rel_cpumask
+ #undef __get_rel_sockaddr
+ #undef __print_array
++#undef __print_dynamic_array
+ #undef __print_hex_dump
+ #undef __get_buf
+ 
+diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
+index 55f9a3d..999f78d 100644
+--- a/samples/trace_events/trace-events-sample.h
++++ b/samples/trace_events/trace-events-sample.h
+@@ -319,7 +319,7 @@ TRACE_EVENT(foo_bar,
+ 		__assign_cpumask(cpum, cpumask_bits(mask));
+ 	),
+ 
+-	TP_printk("foo %s %d %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
++	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
+ 
+ /*
+  * Notice here the use of some helper functions. This includes:
+@@ -363,6 +363,11 @@ TRACE_EVENT(foo_bar,
+ 		  __print_array(__get_dynamic_array(list),
+ 				__get_dynamic_array_len(list) / sizeof(int),
+ 				sizeof(int)),
 +
-+	switch (num_regs) {
-+	/* MCA_SYND2 */
-+	case 15:
-+		err.vendor.amd.synd2 = *(i_mce + 14);
-+		fallthrough;
-+	/* MCA_SYND1 */
-+	case 14:
-+		err.vendor.amd.synd1 = *(i_mce + 13);
-+		fallthrough;
-+	/* MCA_MISC4 */
-+	case 13:
-+	/* MCA_MISC3 */
-+	case 12:
-+	/* MCA_MISC2 */
-+	case 11:
-+	/* MCA_MISC1 */
-+	case 10:
-+	/* MCA_DEADDR */
-+	case 9:
-+	/* MCA_DESTAT */
-+	case 8:
-+	/* reserved */
-+	case 7:
-+	/* MCA_SYND */
-+	case 6:
-+		m->synd = *(i_mce + 5);
-+		fallthrough;
-+	/* MCA_IPID */
-+	case 5:
-+		m->ipid = *(i_mce + 4);
-+		fallthrough;
-+	/* MCA_CONFIG */
-+	case 4:
-+	/* MCA_MISC0 */
-+	case 3:
-+		m->misc = *(i_mce + 2);
-+		fallthrough;
-+	/* MCA_ADDR */
-+	case 2:
-+		m->addr = *(i_mce + 1);
-+		fallthrough;
-+	/* MCA_STATUS */
-+	case 1:
-+		m->status = *i_mce;
-+	}
- 
- 	mce_log(&err);
- 
++/*     A shortcut is to use __print_dynamic_array for dynamic arrays */
++
++		  __print_dynamic_array(list, sizeof(int)),
++
+ 		  __get_str(str), __get_str(lstr),
+ 		  __get_bitmask(cpus), __get_cpumask(cpum),
+ 		  __get_str(vstr))
 
