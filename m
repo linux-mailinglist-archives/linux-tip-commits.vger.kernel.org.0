@@ -1,303 +1,306 @@
-Return-Path: <linux-tip-commits+bounces-2694-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2697-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9159B9E8B
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:10:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709B39B9E91
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A466B1C20B77
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:10:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA3251F222C7
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC15616F8E9;
-	Sat,  2 Nov 2024 10:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCDC17166E;
+	Sat,  2 Nov 2024 10:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aetCnBGU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tIFRkwko"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WXsfVjqf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="32IKwbZv"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAF23EA98;
-	Sat,  2 Nov 2024 10:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D57155741;
+	Sat,  2 Nov 2024 10:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730542212; cv=none; b=W4Dp2f//nSzzEXohq3EalmsI/023f74hcV+2f3ya3Cchm8sbrlp0By/taIj4frlIW6MS87PrDRXHHFcOzVttpVScCbtBjewciIvuSnyd730Bv0CYVZ7Fto729FonaiW8TZp7mcDFHiTYpQuMKg6anEU8OSJONLBUdtxlFtKWDW4=
+	t=1730542214; cv=none; b=QzQ9aDWdc3IlPM/5NVs9AXBpyHr9GK1NVXuYpBpGpedY45F+r/gmkNcFnBV+KdMKeSkWafZ9/1O4rZxBfDZAM3G7Bfc95zyie0Ap3bpeEijs5at7zx2MWKWEjQSf8a9/BYT4lEvdhiMkK+TwWvzl9TPV3HxHmsMwDNe5P91cMq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730542212; c=relaxed/simple;
-	bh=h+oLhylA1wQocLgErjWwIh3jcje/y3CI1D+otl1JZqg=;
+	s=arc-20240116; t=1730542214; c=relaxed/simple;
+	bh=ORwsT7HQ8G5ybh207fhpbFOEfNixb2W8K0jtaMIJLag=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Ov0V8cuFHJeqNq6NSaXcv5cyA9XjHoYKZ1hpQgoofEYsq3pCB2x7GuhhVGUoFzPQHpcXFJaEN8MkHv6WInYdZFA3Q+OAwOITzv2y3C8YHvEZVJCG+fBqC1MLhT699MG80NY5txGqnFy0NsE2IvVvaHUJ3c/WZO39kn6gTmhCDRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aetCnBGU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tIFRkwko; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Anl93cSr4NRs/NF8QH0P0bqlYa+KSrGEZt6F+fzX7PqdSallo0JwuOzAJ4hBqazR10HBFgZ8c5ZC7h/DkhQOdDJloeLFyulY2AIvGzzQ6G23mDtnDw0McriI+M4b1S6PgZoYYByouTqnBlZ9skGV808jFfmfWnQsK/u3CWM4DcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WXsfVjqf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=32IKwbZv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 02 Nov 2024 10:10:01 -0000
+Date: Sat, 02 Nov 2024 10:10:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730542202;
+	s=2020; t=1730542203;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qiH5zC7VRz+ra+OAgwlQT6/sMmfY6QSKKXe4ym4JzJQ=;
-	b=aetCnBGU3F9RO+b8j0gGqhTuCNWeX/d4yR67XjbLu+H42HyOzWWhlvldR9Wm978Y/UGgRs
-	SqSZz8IjKf6EBocm4bSxeKKtZRdai4tiU8u7pfJk0lyh6jFAaPs7h4SR9BCL0QGFjwo7bw
-	nzH4isEvMNb7ShI9ZdfbUTv+7YCrqA+kmqFo1hHKjfNwUiJ3KgOzmGSV0sujbJ16QJ+QhX
-	pmuVtroGj6KqvqzMCs5/YqJUO8Nm9x3VRDLu1TMVy4yEg4gfZMvOhtyj37kVtIJJg8g4io
-	dVgXIbc4OUPdAsnZqans0Vt/JHWTJEz4xvAhOh3KdZ5eCY8ZHTwz5ysN45ARIg==
+	bh=3e1FBbmKKYRSvbqKvoXgQ0IBuQTLn8LAmwxnuWkbboQ=;
+	b=WXsfVjqfciVKa9AB06oLa6YWQVR4bka+kZc+ka8nm6JbdHWe2EkkhSqarMlcuy3ivbqe9n
+	qd0ujVPutUYvzx2WZILaUma2TwEZm0UdvHxJJgtu28zezIHSFS9IB9/hE9yLHpvnsENIuL
+	SYp3uknatXfWyR6LDzUsqs5mJ1ZBjczH96KF10DAoRXvTY2AFNEp7jYizTND/2ktgiTOAz
+	uv2k7hsrD0g9y++crL7OSNQdhwttI1k0q4ZEzKqjxPvYRO9jJps/sG2GlyxlOtbSTVR6JF
+	bC9P3ravIG74mvRXCtSrxoIJmc3Ym6r749hn/JcWDi7te0jG0TwMv/+cdiJI0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730542202;
+	s=2020e; t=1730542203;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qiH5zC7VRz+ra+OAgwlQT6/sMmfY6QSKKXe4ym4JzJQ=;
-	b=tIFRkwkoD52qkXN5gCAw5iO2nH0i9rrQO2o/YK2V0Ub0x+UzgUHkz7K/CstWAQqJpGbJ3p
-	5E8OoIXiWl+69ZDA==
-From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
+	bh=3e1FBbmKKYRSvbqKvoXgQ0IBuQTLn8LAmwxnuWkbboQ=;
+	b=32IKwbZv6EvTnqbtJnLXjVO9c0mMOHctSK28AL9hiVQ0Oq67+0ato5FCt7CaBaNDBdTCe6
+	qACyvE2oh3hiqHCg==
+From:
+ tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: timers/vdso] vdso: Rename struct arch_vdso_data to arch_vdso_time_data
-Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
- Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de>
-References: <20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de>
+ [tip: timers/vdso] powerpc: Split systemcfg struct definitions out from vdso
+Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241010-vdso-generic-base-v1-27-b64f0842d512@linutronix.de>
+References: <20241010-vdso-generic-base-v1-27-b64f0842d512@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173054220135.3137.10781057478330597889.tip-bot2@tip-bot2>
+Message-ID: <173054220253.3137.261477231044072974.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     3bf96deae5ad9664bdf2db95599e52221f9ddc33
-Gitweb:        https://git.kernel.org/tip/3bf96deae5ad9664bdf2db95599e52221f9ddc33
-Author:        Nam Cao <namcao@linutronix.de>
-AuthorDate:    Thu, 10 Oct 2024 09:01:30 +02:00
+Commit-ID:     9d5f97ea44e5665494c1a9e287e9511ed741edf6
+Gitweb:        https://git.kernel.org/tip/9d5f97ea44e5665494c1a9e287e9511ed74=
+1edf6
+Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+AuthorDate:    Thu, 10 Oct 2024 09:01:29 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 02 Nov 2024 11:05:16 +01:00
 
-vdso: Rename struct arch_vdso_data to arch_vdso_time_data
+powerpc: Split systemcfg struct definitions out from vdso
 
-The struct arch_vdso_data is only about vdso time data. So rename it to
-arch_vdso_time_data to make it obvious.
-Non time-related data will be migrated out of these structs soon.
+The systemcfg data has nothing to do anymore with the vdso.
+Split it into a dedicated header file.
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
-Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de
+Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-27-b64f0842d5=
+12@linutronix.de
 
 ---
- arch/Kconfig                            |  2 +-
- arch/riscv/Kconfig                      |  2 +-
- arch/riscv/include/asm/vdso/data.h      | 17 -----------------
- arch/riscv/include/asm/vdso/time_data.h | 17 +++++++++++++++++
- arch/riscv/kernel/sys_hwprobe.c         |  2 +-
- arch/riscv/kernel/vdso/hwprobe.c        |  4 ++--
- arch/s390/Kconfig                       |  2 +-
- arch/s390/include/asm/vdso/data.h       | 12 ------------
- arch/s390/include/asm/vdso/time_data.h  | 12 ++++++++++++
- include/vdso/datapage.h                 |  8 ++++----
- 10 files changed, 39 insertions(+), 39 deletions(-)
- delete mode 100644 arch/riscv/include/asm/vdso/data.h
- create mode 100644 arch/riscv/include/asm/vdso/time_data.h
- delete mode 100644 arch/s390/include/asm/vdso/data.h
- create mode 100644 arch/s390/include/asm/vdso/time_data.h
+ arch/powerpc/include/asm/systemcfg.h         | 52 +++++++++++++++++++-
+ arch/powerpc/include/asm/vdso_datapage.h     | 37 +--------------
+ arch/powerpc/kernel/proc_powerpc.c           |  1 +-
+ arch/powerpc/kernel/setup-common.c           |  1 +-
+ arch/powerpc/kernel/smp.c                    |  1 +-
+ arch/powerpc/kernel/time.c                   |  1 +-
+ arch/powerpc/platforms/powernv/smp.c         |  1 +-
+ arch/powerpc/platforms/pseries/hotplug-cpu.c |  1 +-
+ 8 files changed, 58 insertions(+), 37 deletions(-)
+ create mode 100644 arch/powerpc/include/asm/systemcfg.h
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 8af374e..7f1ec32 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1530,7 +1530,7 @@ config HAVE_SPARSE_SYSCALL_NR
- 	  entries at 4000, 5000 and 6000 locations. This option turns on syscall
- 	  related optimizations for a given architecture.
- 
--config ARCH_HAS_VDSO_DATA
-+config ARCH_HAS_VDSO_TIME_DATA
- 	bool
- 
- config HAVE_STATIC_CALL
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 6254594..c278280 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -50,7 +50,7 @@ config RISCV
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
- 	select ARCH_HAS_UBSAN
--	select ARCH_HAS_VDSO_DATA
-+	select ARCH_HAS_VDSO_TIME_DATA
- 	select ARCH_KEEP_MEMBLOCK if ACPI
- 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if 64BIT && MMU
- 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
-diff --git a/arch/riscv/include/asm/vdso/data.h b/arch/riscv/include/asm/vdso/data.h
-deleted file mode 100644
-index dc2f76f..0000000
---- a/arch/riscv/include/asm/vdso/data.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __RISCV_ASM_VDSO_DATA_H
--#define __RISCV_ASM_VDSO_DATA_H
--
--#include <linux/types.h>
--#include <vdso/datapage.h>
--#include <asm/hwprobe.h>
--
--struct arch_vdso_data {
--	/* Stash static answers to the hwprobe queries when all CPUs are selected. */
--	__u64 all_cpu_hwprobe_values[RISCV_HWPROBE_MAX_KEY + 1];
--
--	/* Boolean indicating all CPUs have the same static hwprobe values. */
--	__u8 homogeneous_cpus;
--};
--
--#endif /* __RISCV_ASM_VDSO_DATA_H */
-diff --git a/arch/riscv/include/asm/vdso/time_data.h b/arch/riscv/include/asm/vdso/time_data.h
+diff --git a/arch/powerpc/include/asm/systemcfg.h b/arch/powerpc/include/asm/=
+systemcfg.h
 new file mode 100644
-index 0000000..dfa6522
+index 0000000..2f9b1d6
 --- /dev/null
-+++ b/arch/riscv/include/asm/vdso/time_data.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __RISCV_ASM_VDSO_TIME_DATA_H
-+#define __RISCV_ASM_VDSO_TIME_DATA_H
++++ b/arch/powerpc/include/asm/systemcfg.h
+@@ -0,0 +1,52 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#ifndef _SYSTEMCFG_H
++#define _SYSTEMCFG_H
 +
-+#include <linux/types.h>
-+#include <vdso/datapage.h>
-+#include <asm/hwprobe.h>
++/*
++ * Copyright (C) 2002 Peter Bergner <bergner@vnet.ibm.com>, IBM
++ * Copyright (C) 2005 Benjamin Herrenschmidy <benh@kernel.crashing.org>,
++ * 		      IBM Corp.
++ */
 +
-+struct arch_vdso_time_data {
-+	/* Stash static answers to the hwprobe queries when all CPUs are selected. */
-+	__u64 all_cpu_hwprobe_values[RISCV_HWPROBE_MAX_KEY + 1];
++#ifdef CONFIG_PPC64
 +
-+	/* Boolean indicating all CPUs have the same static hwprobe values. */
-+	__u8 homogeneous_cpus;
-+};
-+
-+#endif /* __RISCV_ASM_VDSO_TIME_DATA_H */
-diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
-index cea0ca2..711a31f 100644
---- a/arch/riscv/kernel/sys_hwprobe.c
-+++ b/arch/riscv/kernel/sys_hwprobe.c
-@@ -402,7 +402,7 @@ static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
- static int __init init_hwprobe_vdso_data(void)
- {
- 	struct vdso_data *vd = __arch_get_k_vdso_data();
--	struct arch_vdso_data *avd = &vd->arch_data;
-+	struct arch_vdso_time_data *avd = &vd->arch_data;
- 	u64 id_bitsmash = 0;
- 	struct riscv_hwprobe pair;
- 	int key;
-diff --git a/arch/riscv/kernel/vdso/hwprobe.c b/arch/riscv/kernel/vdso/hwprobe.c
-index 1e926e4..a158c02 100644
---- a/arch/riscv/kernel/vdso/hwprobe.c
-+++ b/arch/riscv/kernel/vdso/hwprobe.c
-@@ -17,7 +17,7 @@ static int riscv_vdso_get_values(struct riscv_hwprobe *pairs, size_t pair_count,
- 				 unsigned int flags)
- {
- 	const struct vdso_data *vd = __arch_get_vdso_data();
--	const struct arch_vdso_data *avd = &vd->arch_data;
-+	const struct arch_vdso_time_data *avd = &vd->arch_data;
- 	bool all_cpus = !cpusetsize && !cpus;
- 	struct riscv_hwprobe *p = pairs;
- 	struct riscv_hwprobe *end = pairs + pair_count;
-@@ -52,7 +52,7 @@ static int riscv_vdso_get_cpus(struct riscv_hwprobe *pairs, size_t pair_count,
- 			       unsigned int flags)
- {
- 	const struct vdso_data *vd = __arch_get_vdso_data();
--	const struct arch_vdso_data *avd = &vd->arch_data;
-+	const struct arch_vdso_time_data *avd = &vd->arch_data;
- 	struct riscv_hwprobe *p = pairs;
- 	struct riscv_hwprobe *end = pairs + pair_count;
- 	unsigned char *c = (unsigned char *)cpus;
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index d339fe4..8cdd835 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -88,7 +88,7 @@ config S390
- 	select ARCH_HAS_STRICT_MODULE_RWX
- 	select ARCH_HAS_SYSCALL_WRAPPER
- 	select ARCH_HAS_UBSAN
--	select ARCH_HAS_VDSO_DATA
-+	select ARCH_HAS_VDSO_TIME_DATA
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select ARCH_INLINE_READ_LOCK
- 	select ARCH_INLINE_READ_LOCK_BH
-diff --git a/arch/s390/include/asm/vdso/data.h b/arch/s390/include/asm/vdso/data.h
-deleted file mode 100644
-index 0e2b40e..0000000
---- a/arch/s390/include/asm/vdso/data.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--#ifndef __S390_ASM_VDSO_DATA_H
--#define __S390_ASM_VDSO_DATA_H
--
--#include <linux/types.h>
--
--struct arch_vdso_data {
--	__s64 tod_steering_delta;
--	__u64 tod_steering_end;
--};
--
--#endif /* __S390_ASM_VDSO_DATA_H */
-diff --git a/arch/s390/include/asm/vdso/time_data.h b/arch/s390/include/asm/vdso/time_data.h
-new file mode 100644
-index 0000000..8a08752
---- /dev/null
-+++ b/arch/s390/include/asm/vdso/time_data.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __S390_ASM_VDSO_TIME_DATA_H
-+#define __S390_ASM_VDSO_TIME_DATA_H
++/*
++ * If the major version changes we are incompatible.
++ * Minor version changes are a hint.
++ */
++#define SYSTEMCFG_MAJOR 1
++#define SYSTEMCFG_MINOR 1
 +
 +#include <linux/types.h>
 +
-+struct arch_vdso_time_data {
-+	__s64 tod_steering_delta;
-+	__u64 tod_steering_end;
++struct systemcfg {
++	__u8  eye_catcher[16];		/* Eyecatcher: SYSTEMCFG:PPC64	0x00 */
++	struct {			/* Systemcfg version numbers	     */
++		__u32 major;		/* Major number			0x10 */
++		__u32 minor;		/* Minor number			0x14 */
++	} version;
++
++	/* Note about the platform flags: it now only contains the lpar
++	 * bit. The actual platform number is dead and buried
++	 */
++	__u32 platform;			/* Platform flags		0x18 */
++	__u32 processor;		/* Processor type		0x1C */
++	__u64 processorCount;		/* # of physical processors	0x20 */
++	__u64 physicalMemorySize;	/* Size of real memory(B)	0x28 */
++	__u64 tb_orig_stamp;		/* (NU) Timebase at boot	0x30 */
++	__u64 tb_ticks_per_sec;		/* Timebase tics / sec		0x38 */
++	__u64 tb_to_xs;			/* (NU) Inverse of TB to 2^20	0x40 */
++	__u64 stamp_xsec;		/* (NU)				0x48 */
++	__u64 tb_update_count;		/* (NU) Timebase atomicity ctr	0x50 */
++	__u32 tz_minuteswest;		/* (NU) Min. west of Greenwich	0x58 */
++	__u32 tz_dsttime;		/* (NU) Type of dst correction	0x5C */
++	__u32 dcache_size;		/* L1 d-cache size		0x60 */
++	__u32 dcache_line_size;		/* L1 d-cache line size		0x64 */
++	__u32 icache_size;		/* L1 i-cache size		0x68 */
++	__u32 icache_line_size;		/* L1 i-cache line size		0x6C */
 +};
 +
-+#endif /* __S390_ASM_VDSO_TIME_DATA_H */
-diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
-index b85f24c..d967baa 100644
---- a/include/vdso/datapage.h
-+++ b/include/vdso/datapage.h
-@@ -19,10 +19,10 @@
- #include <vdso/time32.h>
- #include <vdso/time64.h>
- 
--#ifdef CONFIG_ARCH_HAS_VDSO_DATA
--#include <asm/vdso/data.h>
-+#ifdef CONFIG_ARCH_HAS_VDSO_TIME_DATA
-+#include <asm/vdso/time_data.h>
- #else
--struct arch_vdso_data {};
-+struct arch_vdso_time_data {};
- #endif
- 
- #define VDSO_BASES	(CLOCK_TAI + 1)
-@@ -114,7 +114,7 @@ struct vdso_data {
- 	u32			hrtimer_res;
- 	u32			__unused;
- 
--	struct arch_vdso_data	arch_data;
-+	struct arch_vdso_time_data arch_data;
- };
- 
- /**
++extern struct systemcfg *systemcfg;
++
++#endif /* CONFIG_PPC64 */
++#endif /* _SYSTEMCFG_H */
+diff --git a/arch/powerpc/include/asm/vdso_datapage.h b/arch/powerpc/include/=
+asm/vdso_datapage.h
+index 8b91b1d..a968631 100644
+--- a/arch/powerpc/include/asm/vdso_datapage.h
++++ b/arch/powerpc/include/asm/vdso_datapage.h
+@@ -9,14 +9,6 @@
+  * 		      IBM Corp.
+  */
+=20
+-
+-/*
+- * If the major version changes we are incompatible.
+- * Minor version changes are a hint.
+- */
+-#define SYSTEMCFG_MAJOR 1
+-#define SYSTEMCFG_MINOR 1
+-
+ #ifndef __ASSEMBLY__
+=20
+ #include <linux/unistd.h>
+@@ -27,35 +19,6 @@
+=20
+ #ifdef CONFIG_PPC64
+=20
+-struct systemcfg {
+-	__u8  eye_catcher[16];		/* Eyecatcher: SYSTEMCFG:PPC64	0x00 */
+-	struct {			/* Systemcfg version numbers	     */
+-		__u32 major;		/* Major number			0x10 */
+-		__u32 minor;		/* Minor number			0x14 */
+-	} version;
+-
+-	/* Note about the platform flags: it now only contains the lpar
+-	 * bit. The actual platform number is dead and buried
+-	 */
+-	__u32 platform;			/* Platform flags		0x18 */
+-	__u32 processor;		/* Processor type		0x1C */
+-	__u64 processorCount;		/* # of physical processors	0x20 */
+-	__u64 physicalMemorySize;	/* Size of real memory(B)	0x28 */
+-	__u64 tb_orig_stamp;		/* (NU) Timebase at boot	0x30 */
+-	__u64 tb_ticks_per_sec;		/* Timebase tics / sec		0x38 */
+-	__u64 tb_to_xs;			/* (NU) Inverse of TB to 2^20	0x40 */
+-	__u64 stamp_xsec;		/* (NU)				0x48 */
+-	__u64 tb_update_count;		/* (NU) Timebase atomicity ctr	0x50 */
+-	__u32 tz_minuteswest;		/* (NU) Min. west of Greenwich	0x58 */
+-	__u32 tz_dsttime;		/* (NU) Type of dst correction	0x5C */
+-	__u32 dcache_size;		/* L1 d-cache size		0x60 */
+-	__u32 dcache_line_size;		/* L1 d-cache line size		0x64 */
+-	__u32 icache_size;		/* L1 i-cache size		0x68 */
+-	__u32 icache_line_size;		/* L1 i-cache line size		0x6C */
+-};
+-
+-extern struct systemcfg *systemcfg;
+-
+ struct vdso_arch_data {
+ 	__u64 tb_ticks_per_sec;			/* Timebase tics / sec */
+ 	__u32 dcache_block_size;		/* L1 d-cache block size     */
+diff --git a/arch/powerpc/kernel/proc_powerpc.c b/arch/powerpc/kernel/proc_po=
+werpc.c
+index e8083e0..3816a2b 100644
+--- a/arch/powerpc/kernel/proc_powerpc.c
++++ b/arch/powerpc/kernel/proc_powerpc.c
+@@ -13,6 +13,7 @@
+ #include <asm/machdep.h>
+ #include <asm/vdso_datapage.h>
+ #include <asm/rtas.h>
++#include <asm/systemcfg.h>
+ #include <linux/uaccess.h>
+=20
+ #ifdef CONFIG_PPC64_PROC_SYSTEMCFG
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-c=
+ommon.c
+index d0b32ff..0b732d3 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -67,6 +67,7 @@
+ #include <asm/cpu_has_feature.h>
+ #include <asm/kasan.h>
+ #include <asm/mce.h>
++#include <asm/systemcfg.h>
+=20
+ #include "setup.h"
+=20
+diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
+index 87ae45b..5ac7084 100644
+--- a/arch/powerpc/kernel/smp.c
++++ b/arch/powerpc/kernel/smp.c
+@@ -61,6 +61,7 @@
+ #include <asm/ftrace.h>
+ #include <asm/kup.h>
+ #include <asm/fadump.h>
++#include <asm/systemcfg.h>
+=20
+ #include <trace/events/ipi.h>
+=20
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 7d18eb8..0727332 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -71,6 +71,7 @@
+ #include <asm/vdso_datapage.h>
+ #include <asm/firmware.h>
+ #include <asm/mce.h>
++#include <asm/systemcfg.h>
+=20
+ /* powerpc clocksource/clockevent code */
+=20
+diff --git a/arch/powerpc/platforms/powernv/smp.c b/arch/powerpc/platforms/po=
+wernv/smp.c
+index 6722094..2e9da58 100644
+--- a/arch/powerpc/platforms/powernv/smp.c
++++ b/arch/powerpc/platforms/powernv/smp.c
+@@ -36,6 +36,7 @@
+ #include <asm/kexec.h>
+ #include <asm/reg.h>
+ #include <asm/powernv.h>
++#include <asm/systemcfg.h>
+=20
+ #include "powernv.h"
+=20
+diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/plat=
+forms/pseries/hotplug-cpu.c
+index 7b80d35..bc6926d 100644
+--- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
++++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
+@@ -33,6 +33,7 @@
+ #include <asm/xive.h>
+ #include <asm/plpar_wrappers.h>
+ #include <asm/topology.h>
++#include <asm/systemcfg.h>
+=20
+ #include "pseries.h"
+=20
 
