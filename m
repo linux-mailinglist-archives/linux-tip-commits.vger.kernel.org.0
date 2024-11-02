@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2698-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2700-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B3539B9E92
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:10:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CA69B9E97
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AF81F218AF
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:10:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00DFFB222AD
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58671741D9;
-	Sat,  2 Nov 2024 10:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02977179972;
+	Sat,  2 Nov 2024 10:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVvz+gL4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JI2lbIr9"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IcFLAloi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7NVh/tM3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4893170A19;
-	Sat,  2 Nov 2024 10:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44720172BA8;
+	Sat,  2 Nov 2024 10:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730542215; cv=none; b=K3QITp85BR4Em2T0LixgiIixgy7NG8EBHvjzwGsDSWGcxbdRL1mRd5NCfs7OBaZXMU2ND+LdHgkDyf5toeOSrlsMEZW0Gfv7mgSpwbxTKPZWlYrAPvSmp3VZuA1J26zkBjaSTkiuKEUcJrHUTMWfOgeh7yosrYBkPaGELJoeBB4=
+	t=1730542216; cv=none; b=CQHsE+smGrjbynScIeChX+9DEzo454V5Gfs44D+jJASC0G6fVzs/gRblukVgVZn1GK+Il3RiRZEB2bNPKGqoOCyPV4JlHnUiyDRl2DYoYSJ1TP5dZTA189dGdcPNeqauCEvYlfwQ8XjDRLikN515SFDcP0p0/IpB8uf1H0CFNlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730542215; c=relaxed/simple;
-	bh=YdNLJ9xm/hbPqoNQt/22NId6TO2CVu+XfgXKNNmtoTs=;
+	s=arc-20240116; t=1730542216; c=relaxed/simple;
+	bh=ZC/AS9kF5DjKEfA/t7ZHTVc/Qoa2sKVYQ/KMtORNtDE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tKUzu9oEul4mrRa0U/vosD+5DRKFuYaNK+u6lSsbu8nNoMRdmhw6h10ltTCtRVvdz+wYKEk0ZRhepPaLk8oHw0JvmaUtNjBvj10mFdS+rww+sYUX6DK6+rtqFzALgOdOt5JVGas5DjL2j2cekNu+L4QJhmR5EjvoZzZgSnHewsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVvz+gL4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JI2lbIr9; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=rY6r1duiqwo+L6aDJHaANYEWxggr0jgNF7BwVALc+tB4V2/3u4YVFHPaYzJf3m4Guw4E6RDfqozBMSPMABmRcwbxDuwyvqCz9QEhSNuthYMme6RZaS9tEgKuX/j5Qd5HDQBignkYlpRz7pmfwULaaC44geFFmRrVlgRggKNdrfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IcFLAloi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7NVh/tM3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Sat, 02 Nov 2024 10:10:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730542205;
+	s=2020; t=1730542206;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FsS0EWcvt4+vT49KmvsNnxLiSBHB12O9/8utWjGv7ag=;
-	b=PVvz+gL4xuDd4Ozj+CB2qTM7hdU1UjMFui/dosZYHAF3zmCihpdv7F6wvzfubf30XhtHfn
-	czBqAq1+qJ8cT3ATtEUgpAj/4XlfSImvTgar9CNpm+Xa2GKn8XxeHAw44/O/PDmWraXY6T
-	xlzoTHQawXWMmt2CtjQj2DNpwKx8RUa1kqrjdConuSujYlGVmPW/RWc9Gvfk9hlz6YUytr
-	Oo7vPAanS0Mu51nsehsfbFjoHAgb1gkq05myflivip4LoMqV49lMCskQbvSGm8e40ZoRRe
-	WGcJSKrGENiXHoDJd3E2u51g+sZ+BXT2oKktP2tPUi0rpjdmt2qpTEa+PBbosQ==
+	bh=NGLjGSf/tTT1pCJsPUiSHWTtPXXJ6Q30w3Lot+JgsV4=;
+	b=IcFLAloiehBovNizVnRcK1Z8OXyXAmhoG+kHUhemD9Qjq7my4glp4X+yfFmIgV2SmaDsqW
+	0P7qt3baJIGJu/LGVZjmeKTG37b2Rk8+77r8xyIE4JTRnUa+HBNx4qklyUruRuXoXQGfPc
+	EydUq6xSP1SlQeMr7jaN05jHAswXTb3iP7YKKutBsZoDXOINqEdm2G03hixaP9fM6JUY2j
+	IGpzz2mxv0cZS1CKeZAr9JhikMgqGdMqXPALwsvXEZaBZ2V6pKLVLfV4vRBVQzzer3+IY5
+	MeloCz9v9nZkG8l+bvDPPOO7DFCF5fJhkfnlhTALF1qdlkAaCL5JspYFXNTPUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730542205;
+	s=2020e; t=1730542206;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FsS0EWcvt4+vT49KmvsNnxLiSBHB12O9/8utWjGv7ag=;
-	b=JI2lbIr9q93A3N9PChFPuQPt4xh71Ai7S3fT42XqvyyKwRinv4HgxyGHZGf+6w8MMv97Ru
-	BkuyEAmZEQmIkOCA==
+	bh=NGLjGSf/tTT1pCJsPUiSHWTtPXXJ6Q30w3Lot+JgsV4=;
+	b=7NVh/tM3Jyz4k5qjCa74DPYTqVYzCeuvE4LliOBvV7a+m2EAK+0C3LikLHUphrZbYHXiF0
+	Q2yM5iPlVI6/NxDA==
 From:
  tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/vdso] powerpc/pseries/lparcfg: Use num_possible_cpus()
- for potential processors
+Subject: [tip: timers/vdso] powerpc/pseries/lparcfg: Fix printing of
+ system_active_processors
 Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241010-vdso-generic-base-v1-24-b64f0842d512@linutronix.de>
-References: <20241010-vdso-generic-base-v1-24-b64f0842d512@linutronix.de>
+In-Reply-To: <20241010-vdso-generic-base-v1-23-b64f0842d512@linutronix.de>
+References: <20241010-vdso-generic-base-v1-23-b64f0842d512@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173054220502.3137.14229989700739302201.tip-bot2@tip-bot2>
+Message-ID: <173054220567.3137.299739927491770942.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,52 +82,44 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     fbedb416fcd6942354008ecbe9ad3a68be888839
-Gitweb:        https://git.kernel.org/tip/fbedb416fcd6942354008ecbe9ad3a68be8=
-88839
+Commit-ID:     f78d2227833f2a430cd806877c47e125ba2ae8db
+Gitweb:        https://git.kernel.org/tip/f78d2227833f2a430cd806877c47e125ba2=
+ae8db
 Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Thu, 10 Oct 2024 09:01:26 +02:00
+AuthorDate:    Thu, 10 Oct 2024 09:01:25 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 02 Nov 2024 11:05:15 +01:00
 
-powerpc/pseries/lparcfg: Use num_possible_cpus() for potential processors
+powerpc/pseries/lparcfg: Fix printing of system_active_processors
 
-The systemcfg processorCount variable tracks currently online variables,
-not possible ones, so the stored value is wrong.
-The code preferably tries to use the ibm,lrdr-capacity field 4 which
-"represents the maximum number of processors that the guest can have."
-Switch from processorCount to the better matching num_possible_cpus().
+When printing the information "system_active_processors", the variable
+partition_potential_processors is used instead of
+partition_active_processors. The wrong value is displayed.
+
+Use partition_active_processors instead.
 
 Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-24-b64f0842d5=
+Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-23-b64f0842d5=
 12@linutronix.de
 
 ---
- arch/powerpc/platforms/pseries/lparcfg.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/platforms/pseries/lparcfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platform=
 s/pseries/lparcfg.c
-index acc640f..cc22924 100644
+index 62da20f..acc640f 100644
 --- a/arch/powerpc/platforms/pseries/lparcfg.c
 +++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -29,7 +29,6 @@
- #include <asm/firmware.h>
- #include <asm/rtas.h>
- #include <asm/time.h>
--#include <asm/vdso_datapage.h>
- #include <asm/vio.h>
- #include <asm/mmu.h>
- #include <asm/machdep.h>
-@@ -530,7 +529,7 @@ static int pseries_lparcfg_data(struct seq_file *m, void =
+@@ -553,7 +553,7 @@ static int pseries_lparcfg_data(struct seq_file *m, void =
 *v)
- 		lrdrp =3D of_get_property(rtas_node, "ibm,lrdr-capacity", NULL);
+ 	} else {		/* non SPLPAR case */
 =20
- 	if (lrdrp =3D=3D NULL) {
--		partition_potential_processors =3D vdso_data->processorCount;
-+		partition_potential_processors =3D num_possible_cpus();
- 	} else {
- 		partition_potential_processors =3D be32_to_cpup(lrdrp + 4);
- 	}
+ 		seq_printf(m, "system_active_processors=3D%d\n",
+-			   partition_potential_processors);
++			   partition_active_processors);
+=20
+ 		seq_printf(m, "system_potential_processors=3D%d\n",
+ 			   partition_potential_processors);
 
