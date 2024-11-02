@@ -1,76 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2693-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2694-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074CC9B9E26
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:24:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9159B9E8B
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9891C218F7
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 09:24:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A466B1C20B77
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA881607AA;
-	Sat,  2 Nov 2024 09:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC15616F8E9;
+	Sat,  2 Nov 2024 10:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bU0EYvV4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NUlGdjq+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aetCnBGU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tIFRkwko"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE4015A856;
-	Sat,  2 Nov 2024 09:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAF23EA98;
+	Sat,  2 Nov 2024 10:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730539479; cv=none; b=oAbSwn2REm7xmbjeNlAjsu/49z+/54il+AuZ9glaI7hfkLOucV7hr1PUpCQNM7uNaGBCM735ozr4bEAIaeVaQU0TfFbzb2TrVPPFQYx/BLEaUIhzOFX0JhcmH85kbZXzoAQt1JwNFZgEgrJYQJRrpaiPclrykUbmsGvY0ezSEmk=
+	t=1730542212; cv=none; b=W4Dp2f//nSzzEXohq3EalmsI/023f74hcV+2f3ya3Cchm8sbrlp0By/taIj4frlIW6MS87PrDRXHHFcOzVttpVScCbtBjewciIvuSnyd730Bv0CYVZ7Fto729FonaiW8TZp7mcDFHiTYpQuMKg6anEU8OSJONLBUdtxlFtKWDW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730539479; c=relaxed/simple;
-	bh=8bHD8LkF6irBIGrh+Gy/ufOIziS7pNVpR3UgcfDsnnk=;
+	s=arc-20240116; t=1730542212; c=relaxed/simple;
+	bh=h+oLhylA1wQocLgErjWwIh3jcje/y3CI1D+otl1JZqg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=H3pihBwRTl/So4YyoYXFOTvnh3bfEKO7RRcrR24Amin4fZ729NJttzoHBivfA3ohDK4/G9pRcy2cp/TcvNRTCJWNwLCjWqtBeXFsUAUASL8W74okkCvyjmUlqNM0ZQeXO57DN/sghgFXgYbxezTxEIj9847IIp17FrWFhZZI0kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bU0EYvV4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NUlGdjq+; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Ov0V8cuFHJeqNq6NSaXcv5cyA9XjHoYKZ1hpQgoofEYsq3pCB2x7GuhhVGUoFzPQHpcXFJaEN8MkHv6WInYdZFA3Q+OAwOITzv2y3C8YHvEZVJCG+fBqC1MLhT699MG80NY5txGqnFy0NsE2IvVvaHUJ3c/WZO39kn6gTmhCDRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aetCnBGU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tIFRkwko; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 02 Nov 2024 09:24:35 -0000
+Date: Sat, 02 Nov 2024 10:10:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730539476;
+	s=2020; t=1730542202;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4rhq/1wUN75zQ4J6tZsX6bfty+RwxtFtyRfVtUtdASA=;
-	b=bU0EYvV4msSfPXPIP660hYqPY5sXip36PSf2UXUX4eQ7aedDZGY2gmY/Y1a7tgYXvaBXRd
-	1Jn2wVWyvnI2hEE+mRjAJ7KF/3utZBIQsb+qnKhVqPN2DC+fuHiGEHITGhETi3H5da0hJL
-	ea+sRVMxukVWo9mma/Cn37ShmWBvV/jW5iF1yXN6J/jpl8Xo7JDEtLbJOw/Z54SVUmqZSa
-	I+9ZZ+yEZT9P72Y4KLtjzLHwJSGblY+tVTrwkRBYelkEJnhhkQOhzYX0l8PXO5C+jMFAW7
-	oTb6E+Jz7eDh40seQl/aj6epbuOX8HFVBY5ldQCRZvx+sSPFItEeD5tPBTEmXQ==
+	bh=qiH5zC7VRz+ra+OAgwlQT6/sMmfY6QSKKXe4ym4JzJQ=;
+	b=aetCnBGU3F9RO+b8j0gGqhTuCNWeX/d4yR67XjbLu+H42HyOzWWhlvldR9Wm978Y/UGgRs
+	SqSZz8IjKf6EBocm4bSxeKKtZRdai4tiU8u7pfJk0lyh6jFAaPs7h4SR9BCL0QGFjwo7bw
+	nzH4isEvMNb7ShI9ZdfbUTv+7YCrqA+kmqFo1hHKjfNwUiJ3KgOzmGSV0sujbJ16QJ+QhX
+	pmuVtroGj6KqvqzMCs5/YqJUO8Nm9x3VRDLu1TMVy4yEg4gfZMvOhtyj37kVtIJJg8g4io
+	dVgXIbc4OUPdAsnZqans0Vt/JHWTJEz4xvAhOh3KdZ5eCY8ZHTwz5ysN45ARIg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730539476;
+	s=2020e; t=1730542202;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4rhq/1wUN75zQ4J6tZsX6bfty+RwxtFtyRfVtUtdASA=;
-	b=NUlGdjq+aOAuFxMoZ8/MMpG8shh2p/xJgjbn2pcFRKB0LlAJMX/xlLom13hG3fl0eqyYHS
-	OuLWQIBdpLqPe/Cw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=qiH5zC7VRz+ra+OAgwlQT6/sMmfY6QSKKXe4ym4JzJQ=;
+	b=tIFRkwkoD52qkXN5gCAw5iO2nH0i9rrQO2o/YK2V0Ub0x+UzgUHkz7K/CstWAQqJpGbJ3p
+	5E8OoIXiWl+69ZDA==
+From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] timekeeping: Remove CONFIG_DEBUG_TIMEKEEPING
-Cc: Thomas Gleixner <tglx@linutronix.de>, John Stultz <jstultz@google.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241031120328.536010148@linutronix.de>
-References: <20241031120328.536010148@linutronix.de>
+Subject:
+ [tip: timers/vdso] vdso: Rename struct arch_vdso_data to arch_vdso_time_data
+Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
+ Heiko Carstens <hca@linux.ibm.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de>
+References: <20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173053947519.3137.18070271560339427815.tip-bot2@tip-bot2>
+Message-ID: <173054220135.3137.10781057478330597889.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,270 +80,224 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     d44d26987bb3df6d76556827097fc9ce17565cb8
-Gitweb:        https://git.kernel.org/tip/d44d26987bb3df6d76556827097fc9ce17565cb8
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Thu, 31 Oct 2024 13:04:07 +01:00
+Commit-ID:     3bf96deae5ad9664bdf2db95599e52221f9ddc33
+Gitweb:        https://git.kernel.org/tip/3bf96deae5ad9664bdf2db95599e52221f9ddc33
+Author:        Nam Cao <namcao@linutronix.de>
+AuthorDate:    Thu, 10 Oct 2024 09:01:30 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 02 Nov 2024 10:14:31 +01:00
+CommitterDate: Sat, 02 Nov 2024 11:05:16 +01:00
 
-timekeeping: Remove CONFIG_DEBUG_TIMEKEEPING
+vdso: Rename struct arch_vdso_data to arch_vdso_time_data
 
-Since 135225a363ae timekeeping_cycles_to_ns() handles large offsets which
-would lead to 64bit multiplication overflows correctly. It's also protected
-against negative motion of the clocksource unconditionally, which was
-exclusive to x86 before.
+The struct arch_vdso_data is only about vdso time data. So rename it to
+arch_vdso_time_data to make it obvious.
+Non time-related data will be migrated out of these structs soon.
 
-timekeeping_advance() handles large offsets already correctly.
-
-That means the value of CONFIG_DEBUG_TIMEKEEPING which analyzed these cases
-is very close to zero. Remove all of it.
-
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/all/20241031120328.536010148@linutronix.de
+Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
+Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-28-b64f0842d512@linutronix.de
 
 ---
- arch/riscv/configs/defconfig                        |   1 +-
- include/linux/timekeeper_internal.h                 |  16 +--
- kernel/time/timekeeping.c                           | 108 +-----------
- lib/Kconfig.debug                                   |  13 +-
- tools/testing/selftests/wireguard/qemu/debug.config |   1 +-
- 5 files changed, 3 insertions(+), 136 deletions(-)
+ arch/Kconfig                            |  2 +-
+ arch/riscv/Kconfig                      |  2 +-
+ arch/riscv/include/asm/vdso/data.h      | 17 -----------------
+ arch/riscv/include/asm/vdso/time_data.h | 17 +++++++++++++++++
+ arch/riscv/kernel/sys_hwprobe.c         |  2 +-
+ arch/riscv/kernel/vdso/hwprobe.c        |  4 ++--
+ arch/s390/Kconfig                       |  2 +-
+ arch/s390/include/asm/vdso/data.h       | 12 ------------
+ arch/s390/include/asm/vdso/time_data.h  | 12 ++++++++++++
+ include/vdso/datapage.h                 |  8 ++++----
+ 10 files changed, 39 insertions(+), 39 deletions(-)
+ delete mode 100644 arch/riscv/include/asm/vdso/data.h
+ create mode 100644 arch/riscv/include/asm/vdso/time_data.h
+ delete mode 100644 arch/s390/include/asm/vdso/data.h
+ create mode 100644 arch/s390/include/asm/vdso/time_data.h
 
-diff --git a/arch/riscv/configs/defconfig b/arch/riscv/configs/defconfig
-index 2341393..26c01b9 100644
---- a/arch/riscv/configs/defconfig
-+++ b/arch/riscv/configs/defconfig
-@@ -301,7 +301,6 @@ CONFIG_DEBUG_MEMORY_INIT=y
- CONFIG_DEBUG_PER_CPU_MAPS=y
- CONFIG_SOFTLOCKUP_DETECTOR=y
- CONFIG_WQ_WATCHDOG=y
--CONFIG_DEBUG_TIMEKEEPING=y
- CONFIG_DEBUG_RT_MUTEXES=y
- CONFIG_DEBUG_SPINLOCK=y
- CONFIG_DEBUG_MUTEXES=y
-diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper_internal.h
-index a3b6380..e39d4d5 100644
---- a/include/linux/timekeeper_internal.h
-+++ b/include/linux/timekeeper_internal.h
-@@ -76,9 +76,6 @@ struct tk_read_base {
-  *				ntp shifted nano seconds.
-  * @ntp_err_mult:		Multiplication factor for scaled math conversion
-  * @skip_second_overflow:	Flag used to avoid updating NTP twice with same second
-- * @last_warning:		Warning ratelimiter (DEBUG_TIMEKEEPING)
-- * @underflow_seen:		Underflow warning flag (DEBUG_TIMEKEEPING)
-- * @overflow_seen:		Overflow warning flag (DEBUG_TIMEKEEPING)
-  *
-  * Note: For timespec(64) based interfaces wall_to_monotonic is what
-  * we need to add to xtime (or xtime corrected for sub jiffy times)
-@@ -147,19 +144,6 @@ struct timekeeper {
- 	u32			ntp_error_shift;
- 	u32			ntp_err_mult;
- 	u32			skip_second_overflow;
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 8af374e..7f1ec32 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1530,7 +1530,7 @@ config HAVE_SPARSE_SYSCALL_NR
+ 	  entries at 4000, 5000 and 6000 locations. This option turns on syscall
+ 	  related optimizations for a given architecture.
+ 
+-config ARCH_HAS_VDSO_DATA
++config ARCH_HAS_VDSO_TIME_DATA
+ 	bool
+ 
+ config HAVE_STATIC_CALL
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 6254594..c278280 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -50,7 +50,7 @@ config RISCV
+ 	select ARCH_HAS_SYSCALL_WRAPPER
+ 	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
+ 	select ARCH_HAS_UBSAN
+-	select ARCH_HAS_VDSO_DATA
++	select ARCH_HAS_VDSO_TIME_DATA
+ 	select ARCH_KEEP_MEMBLOCK if ACPI
+ 	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if 64BIT && MMU
+ 	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+diff --git a/arch/riscv/include/asm/vdso/data.h b/arch/riscv/include/asm/vdso/data.h
+deleted file mode 100644
+index dc2f76f..0000000
+--- a/arch/riscv/include/asm/vdso/data.h
++++ /dev/null
+@@ -1,17 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __RISCV_ASM_VDSO_DATA_H
+-#define __RISCV_ASM_VDSO_DATA_H
 -
--#ifdef CONFIG_DEBUG_TIMEKEEPING
--	long			last_warning;
--	/*
--	 * These simple flag variables are managed
--	 * without locks, which is racy, but they are
--	 * ok since we don't really care about being
--	 * super precise about how many events were
--	 * seen, just that a problem was observed.
--	 */
--	int			underflow_seen;
--	int			overflow_seen;
--#endif
+-#include <linux/types.h>
+-#include <vdso/datapage.h>
+-#include <asm/hwprobe.h>
+-
+-struct arch_vdso_data {
+-	/* Stash static answers to the hwprobe queries when all CPUs are selected. */
+-	__u64 all_cpu_hwprobe_values[RISCV_HWPROBE_MAX_KEY + 1];
+-
+-	/* Boolean indicating all CPUs have the same static hwprobe values. */
+-	__u8 homogeneous_cpus;
+-};
+-
+-#endif /* __RISCV_ASM_VDSO_DATA_H */
+diff --git a/arch/riscv/include/asm/vdso/time_data.h b/arch/riscv/include/asm/vdso/time_data.h
+new file mode 100644
+index 0000000..dfa6522
+--- /dev/null
++++ b/arch/riscv/include/asm/vdso/time_data.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __RISCV_ASM_VDSO_TIME_DATA_H
++#define __RISCV_ASM_VDSO_TIME_DATA_H
++
++#include <linux/types.h>
++#include <vdso/datapage.h>
++#include <asm/hwprobe.h>
++
++struct arch_vdso_time_data {
++	/* Stash static answers to the hwprobe queries when all CPUs are selected. */
++	__u64 all_cpu_hwprobe_values[RISCV_HWPROBE_MAX_KEY + 1];
++
++	/* Boolean indicating all CPUs have the same static hwprobe values. */
++	__u8 homogeneous_cpus;
++};
++
++#endif /* __RISCV_ASM_VDSO_TIME_DATA_H */
+diff --git a/arch/riscv/kernel/sys_hwprobe.c b/arch/riscv/kernel/sys_hwprobe.c
+index cea0ca2..711a31f 100644
+--- a/arch/riscv/kernel/sys_hwprobe.c
++++ b/arch/riscv/kernel/sys_hwprobe.c
+@@ -402,7 +402,7 @@ static int do_riscv_hwprobe(struct riscv_hwprobe __user *pairs,
+ static int __init init_hwprobe_vdso_data(void)
+ {
+ 	struct vdso_data *vd = __arch_get_k_vdso_data();
+-	struct arch_vdso_data *avd = &vd->arch_data;
++	struct arch_vdso_time_data *avd = &vd->arch_data;
+ 	u64 id_bitsmash = 0;
+ 	struct riscv_hwprobe pair;
+ 	int key;
+diff --git a/arch/riscv/kernel/vdso/hwprobe.c b/arch/riscv/kernel/vdso/hwprobe.c
+index 1e926e4..a158c02 100644
+--- a/arch/riscv/kernel/vdso/hwprobe.c
++++ b/arch/riscv/kernel/vdso/hwprobe.c
+@@ -17,7 +17,7 @@ static int riscv_vdso_get_values(struct riscv_hwprobe *pairs, size_t pair_count,
+ 				 unsigned int flags)
+ {
+ 	const struct vdso_data *vd = __arch_get_vdso_data();
+-	const struct arch_vdso_data *avd = &vd->arch_data;
++	const struct arch_vdso_time_data *avd = &vd->arch_data;
+ 	bool all_cpus = !cpusetsize && !cpus;
+ 	struct riscv_hwprobe *p = pairs;
+ 	struct riscv_hwprobe *end = pairs + pair_count;
+@@ -52,7 +52,7 @@ static int riscv_vdso_get_cpus(struct riscv_hwprobe *pairs, size_t pair_count,
+ 			       unsigned int flags)
+ {
+ 	const struct vdso_data *vd = __arch_get_vdso_data();
+-	const struct arch_vdso_data *avd = &vd->arch_data;
++	const struct arch_vdso_time_data *avd = &vd->arch_data;
+ 	struct riscv_hwprobe *p = pairs;
+ 	struct riscv_hwprobe *end = pairs + pair_count;
+ 	unsigned char *c = (unsigned char *)cpus;
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index d339fe4..8cdd835 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -88,7 +88,7 @@ config S390
+ 	select ARCH_HAS_STRICT_MODULE_RWX
+ 	select ARCH_HAS_SYSCALL_WRAPPER
+ 	select ARCH_HAS_UBSAN
+-	select ARCH_HAS_VDSO_DATA
++	select ARCH_HAS_VDSO_TIME_DATA
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select ARCH_INLINE_READ_LOCK
+ 	select ARCH_INLINE_READ_LOCK_BH
+diff --git a/arch/s390/include/asm/vdso/data.h b/arch/s390/include/asm/vdso/data.h
+deleted file mode 100644
+index 0e2b40e..0000000
+--- a/arch/s390/include/asm/vdso/data.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef __S390_ASM_VDSO_DATA_H
+-#define __S390_ASM_VDSO_DATA_H
+-
+-#include <linux/types.h>
+-
+-struct arch_vdso_data {
+-	__s64 tod_steering_delta;
+-	__u64 tod_steering_end;
+-};
+-
+-#endif /* __S390_ASM_VDSO_DATA_H */
+diff --git a/arch/s390/include/asm/vdso/time_data.h b/arch/s390/include/asm/vdso/time_data.h
+new file mode 100644
+index 0000000..8a08752
+--- /dev/null
++++ b/arch/s390/include/asm/vdso/time_data.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __S390_ASM_VDSO_TIME_DATA_H
++#define __S390_ASM_VDSO_TIME_DATA_H
++
++#include <linux/types.h>
++
++struct arch_vdso_time_data {
++	__s64 tod_steering_delta;
++	__u64 tod_steering_end;
++};
++
++#endif /* __S390_ASM_VDSO_TIME_DATA_H */
+diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
+index b85f24c..d967baa 100644
+--- a/include/vdso/datapage.h
++++ b/include/vdso/datapage.h
+@@ -19,10 +19,10 @@
+ #include <vdso/time32.h>
+ #include <vdso/time64.h>
+ 
+-#ifdef CONFIG_ARCH_HAS_VDSO_DATA
+-#include <asm/vdso/data.h>
++#ifdef CONFIG_ARCH_HAS_VDSO_TIME_DATA
++#include <asm/vdso/time_data.h>
+ #else
+-struct arch_vdso_data {};
++struct arch_vdso_time_data {};
+ #endif
+ 
+ #define VDSO_BASES	(CLOCK_TAI + 1)
+@@ -114,7 +114,7 @@ struct vdso_data {
+ 	u32			hrtimer_res;
+ 	u32			__unused;
+ 
+-	struct arch_vdso_data	arch_data;
++	struct arch_vdso_time_data arch_data;
  };
  
- #ifdef CONFIG_GENERIC_TIME_VSYSCALL
-diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
-index 17cae88..d115ade 100644
---- a/kernel/time/timekeeping.c
-+++ b/kernel/time/timekeeping.c
-@@ -226,97 +226,6 @@ static inline u64 tk_clock_read(const struct tk_read_base *tkr)
- 	return clock->read(clock);
- }
- 
--#ifdef CONFIG_DEBUG_TIMEKEEPING
--#define WARNING_FREQ (HZ*300) /* 5 minute rate-limiting */
--
--static void timekeeping_check_update(struct timekeeper *tk, u64 offset)
--{
--
--	u64 max_cycles = tk->tkr_mono.clock->max_cycles;
--	const char *name = tk->tkr_mono.clock->name;
--
--	if (offset > max_cycles) {
--		printk_deferred("WARNING: timekeeping: Cycle offset (%lld) is larger than allowed by the '%s' clock's max_cycles value (%lld): time overflow danger\n",
--				offset, name, max_cycles);
--		printk_deferred("         timekeeping: Your kernel is sick, but tries to cope by capping time updates\n");
--	} else {
--		if (offset > (max_cycles >> 1)) {
--			printk_deferred("INFO: timekeeping: Cycle offset (%lld) is larger than the '%s' clock's 50%% safety margin (%lld)\n",
--					offset, name, max_cycles >> 1);
--			printk_deferred("      timekeeping: Your kernel is still fine, but is feeling a bit nervous\n");
--		}
--	}
--
--	if (tk->underflow_seen) {
--		if (jiffies - tk->last_warning > WARNING_FREQ) {
--			printk_deferred("WARNING: Underflow in clocksource '%s' observed, time update ignored.\n", name);
--			printk_deferred("         Please report this, consider using a different clocksource, if possible.\n");
--			printk_deferred("         Your kernel is probably still fine.\n");
--			tk->last_warning = jiffies;
--		}
--		tk->underflow_seen = 0;
--	}
--
--	if (tk->overflow_seen) {
--		if (jiffies - tk->last_warning > WARNING_FREQ) {
--			printk_deferred("WARNING: Overflow in clocksource '%s' observed, time update capped.\n", name);
--			printk_deferred("         Please report this, consider using a different clocksource, if possible.\n");
--			printk_deferred("         Your kernel is probably still fine.\n");
--			tk->last_warning = jiffies;
--		}
--		tk->overflow_seen = 0;
--	}
--}
--
--static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 cycles);
--
--static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *tkr)
--{
--	struct timekeeper *tk = &tk_core.timekeeper;
--	u64 now, last, mask, max, delta;
--	unsigned int seq;
--
--	/*
--	 * Since we're called holding a seqcount, the data may shift
--	 * under us while we're doing the calculation. This can cause
--	 * false positives, since we'd note a problem but throw the
--	 * results away. So nest another seqcount here to atomically
--	 * grab the points we are checking with.
--	 */
--	do {
--		seq = read_seqcount_begin(&tk_core.seq);
--		now = tk_clock_read(tkr);
--		last = tkr->cycle_last;
--		mask = tkr->mask;
--		max = tkr->clock->max_cycles;
--	} while (read_seqcount_retry(&tk_core.seq, seq));
--
--	delta = clocksource_delta(now, last, mask);
--
--	/*
--	 * Try to catch underflows by checking if we are seeing small
--	 * mask-relative negative values.
--	 */
--	if (unlikely((~delta & mask) < (mask >> 3)))
--		tk->underflow_seen = 1;
--
--	/* Check for multiplication overflows */
--	if (unlikely(delta > max))
--		tk->overflow_seen = 1;
--
--	/* timekeeping_cycles_to_ns() handles both under and overflow */
--	return timekeeping_cycles_to_ns(tkr, now);
--}
--#else
--static inline void timekeeping_check_update(struct timekeeper *tk, u64 offset)
--{
--}
--static inline u64 timekeeping_debug_get_ns(const struct tk_read_base *tkr)
--{
--	BUG();
--}
--#endif
--
  /**
-  * tk_setup_internals - Set up internals to use clocksource clock.
-  *
-@@ -421,19 +330,11 @@ static inline u64 timekeeping_cycles_to_ns(const struct tk_read_base *tkr, u64 c
- 	return ((delta * tkr->mult) + tkr->xtime_nsec) >> tkr->shift;
- }
- 
--static __always_inline u64 __timekeeping_get_ns(const struct tk_read_base *tkr)
-+static __always_inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
- {
- 	return timekeeping_cycles_to_ns(tkr, tk_clock_read(tkr));
- }
- 
--static inline u64 timekeeping_get_ns(const struct tk_read_base *tkr)
--{
--	if (IS_ENABLED(CONFIG_DEBUG_TIMEKEEPING))
--		return timekeeping_debug_get_ns(tkr);
--
--	return __timekeeping_get_ns(tkr);
--}
--
- /**
-  * update_fast_timekeeper - Update the fast and NMI safe monotonic timekeeper.
-  * @tkr: Timekeeping readout base from which we take the update
-@@ -477,7 +378,7 @@ static __always_inline u64 __ktime_get_fast_ns(struct tk_fast *tkf)
- 		seq = raw_read_seqcount_latch(&tkf->seq);
- 		tkr = tkf->base + (seq & 0x01);
- 		now = ktime_to_ns(tkr->base);
--		now += __timekeeping_get_ns(tkr);
-+		now += timekeeping_get_ns(tkr);
- 	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
- 
- 	return now;
-@@ -593,7 +494,7 @@ static __always_inline u64 __ktime_get_real_fast(struct tk_fast *tkf, u64 *mono)
- 		tkr = tkf->base + (seq & 0x01);
- 		basem = ktime_to_ns(tkr->base);
- 		baser = ktime_to_ns(tkr->base_real);
--		delta = __timekeeping_get_ns(tkr);
-+		delta = timekeeping_get_ns(tkr);
- 	} while (raw_read_seqcount_latch_retry(&tkf->seq, seq));
- 
- 	if (mono)
-@@ -2333,9 +2234,6 @@ static bool timekeeping_advance(enum timekeeping_adv_mode mode)
- 	if (offset < real_tk->cycle_interval && mode == TK_ADV_TICK)
- 		return false;
- 
--	/* Do some additional sanity checking */
--	timekeeping_check_update(tk, offset);
--
- 	/*
- 	 * With NO_HZ we may have to accumulate many cycle_intervals
- 	 * (think "ticks") worth of time at once. To do this efficiently,
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 7315f64..14977b9 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1328,19 +1328,6 @@ config SCHEDSTATS
- 
- endmenu
- 
--config DEBUG_TIMEKEEPING
--	bool "Enable extra timekeeping sanity checking"
--	help
--	  This option will enable additional timekeeping sanity checks
--	  which may be helpful when diagnosing issues where timekeeping
--	  problems are suspected.
--
--	  This may include checks in the timekeeping hotpaths, so this
--	  option may have a (very small) performance impact to some
--	  workloads.
--
--	  If unsure, say N.
--
- config DEBUG_PREEMPT
- 	bool "Debug preemptible kernel"
- 	depends on DEBUG_KERNEL && PREEMPTION && TRACE_IRQFLAGS_SUPPORT
-diff --git a/tools/testing/selftests/wireguard/qemu/debug.config b/tools/testing/selftests/wireguard/qemu/debug.config
-index 9d17221..139fd9a 100644
---- a/tools/testing/selftests/wireguard/qemu/debug.config
-+++ b/tools/testing/selftests/wireguard/qemu/debug.config
-@@ -31,7 +31,6 @@ CONFIG_SCHED_DEBUG=y
- CONFIG_SCHED_INFO=y
- CONFIG_SCHEDSTATS=y
- CONFIG_SCHED_STACK_END_CHECK=y
--CONFIG_DEBUG_TIMEKEEPING=y
- CONFIG_DEBUG_PREEMPT=y
- CONFIG_DEBUG_RT_MUTEXES=y
- CONFIG_DEBUG_SPINLOCK=y
 
