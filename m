@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2720-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2721-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C109B9EBC
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:14:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876489B9EC1
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 11:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0243F1C20A70
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:14:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AF211F258A3
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  2 Nov 2024 10:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C101ABEA7;
-	Sat,  2 Nov 2024 10:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CA91AF0A3;
+	Sat,  2 Nov 2024 10:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uFd7Vh8U";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/OiYrjBR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XRavWwYw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zV3OVlHY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDA51A265B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C181AA7A9;
 	Sat,  2 Nov 2024 10:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730542224; cv=none; b=uRrXZpDr1Xb7HX+bg5hlWiLe/p5BTMeluqdFDs6V2/nP1/eY+gJugqY5vODrC0BqcqRlMIyfry/G3+djK01umulVe6Sv9zxLgSgwAVQdkysG9G3qD8/zQVh1ZtmmE58BbNQ59S5NNphQZ1acvIC4r1HCVxCXeiEQGt3q5G0qVhE=
+	t=1730542225; cv=none; b=CjNBvMAg3P/Fn/s5sjPEml5oPTTBiqs04zQWQ0a1Bj0M/VheIQScJ/rKXIIrYwohycZWjTMoGwim3cp30RNxiOhJPY/Qn3h3Xtsz5Wn9fed4IqCwhYEWtLS07IqIbKFJ4zv5U+ga7TA2M+cMOhtQn8Z0+Ye7m8+aEl2TQbtLbO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730542224; c=relaxed/simple;
-	bh=06Fkn/6p0K/ZwNCWu+ZzwXucPIhmwspEmTEFaKKn2zI=;
+	s=arc-20240116; t=1730542225; c=relaxed/simple;
+	bh=DepEIA9vwVXIA+ef2btY9tEgrlOdo7pmXGcWzkTRrdU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JiHgG+iNWYtx0EwJWmw6Rfb/7Twdj+qTLCoINpL7JHeeqy8H6wm5DwlP9Lrj4XyWl0esXmNborsUd6SYbdRuUt9zTwKEr4eJflnWr5+JZ6EfJ76lR9/O5Ru8R1PyAmSDc6sGmQ+tdRtM1ZpuGUQfh1BArl1Pv22bXuN2iwVp6H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uFd7Vh8U; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/OiYrjBR; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=R+7V2UPivHhPFDJUNHN3sskUqBJO8dwoBqPRvoo7MU224+PZoPYSn5hQDDXNK/ClHw3seS45sZq7iBkGt0CWqkQHihcMXZFSIVfdeQs7jcn83XBYrQRLtC1A2b/hVV4ndkHhimsIqopnexTjvl/I2mfp0kmnEdeK9WnOhbL5+Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XRavWwYw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zV3OVlHY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 02 Nov 2024 10:10:19 -0000
+Date: Sat, 02 Nov 2024 10:10:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730542220;
+	s=2020; t=1730542221;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+gLdR1yGeHhBfdf2vEgIiHvUJIx2kdRAGMubf5GznxE=;
-	b=uFd7Vh8U5sdW2kfPleupkNoESR7XKg1oEHalK1YK3spiJy8xMQh8a+LBEXohEAvQlAtsVi
-	QgnZW4y+dLfrCYp7gHg0Y9o3gpCV0Cmv2nCB1wZhSIPuRiDHxJMisZInq3RqWsXiMWzRNN
-	LJQVAwklhJZJjB/dORetZRBgF8U+pONA0e4dmorl8G+RyVkp9QBKUfedRBUzQYRu2ujk0n
-	4pllki46q61/aWMUCMpxtwNSyP6jqG+DjydNspgqSaWGeMXqeb9Sky6SJGR4auDrWdzaXY
-	7hy7zO/LrcLaxCePDwUX9149JuV61bhrfNWf0aP6Wjdv7/hzZsy9mtnVWYFgxg==
+	bh=pfrZuxVIQnPr5Im1jEixCxMdS+jwyJvUvZnF60c8gcg=;
+	b=XRavWwYwF+xQ6CMG9g9Jc+o6ctHhd8MUQzw0q4adeAoCjgl/qZHYD0friY35DRH0WDW2pw
+	1vg8xVG/i0ensQlBaM+tvx0sVQEyBd/YFWBfEUCeJxNT+jInv6HAQmmCEQuvp0IOm8yHLo
+	ssb0qCKRttILmx5FIq4Icir2NkEMAJKyIkUyQzaATwe0brIlpCtBg6cHcbgtCqnppkBrvw
+	nLce0UwzjzPzxsZdLja1t1I9i9JuPiFPA6H1xEpJLFp24odLH45E32JP43aHH/FMeugfmL
+	BDUwGc4TeijkXZcBPMDEbYfThYpotsvQRyehXF4VN/0nr2wmobWBy5Sr8kirpA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730542220;
+	s=2020e; t=1730542221;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+gLdR1yGeHhBfdf2vEgIiHvUJIx2kdRAGMubf5GznxE=;
-	b=/OiYrjBRUr6Uya1fPkUyj+h1zzj00ed+d2ZO35se3GMXJPn1/1tyEn6QhtGVD/zsKJBceY
-	kaVEt5TeyTPWp1DQ==
+	bh=pfrZuxVIQnPr5Im1jEixCxMdS+jwyJvUvZnF60c8gcg=;
+	b=zV3OVlHY5f5yohfDHbY/PKAx+3Mtr1CHWyps+pP06Zlaq4EWrWUIr6vaa7Sk4qc59CQGWV
+	Ykhy+2qJWo9uitAA==
 From:
  tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/vdso] csky/vdso: Remove arch_vma_name()
+Subject:
+ [tip: timers/vdso] csky/vdso: Remove gettimeofday() and friends from VDSO
 Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241010-vdso-generic-base-v1-2-b64f0842d512@linutronix.de>
-References: <20241010-vdso-generic-base-v1-2-b64f0842d512@linutronix.de>
+In-Reply-To: <20241010-vdso-generic-base-v1-1-b64f0842d512@linutronix.de>
+References: <20241010-vdso-generic-base-v1-1-b64f0842d512@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173054221995.3137.11661848792611949837.tip-bot2@tip-bot2>
+Message-ID: <173054222061.3137.10448872126786383453.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,43 +82,394 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     387cfb75eb3f0612aadf896450b0f5dabb9ca70f
-Gitweb:        https://git.kernel.org/tip/387cfb75eb3f0612aadf896450b0f5dabb9=
-ca70f
+Commit-ID:     4758d330f648ad5f972bfdc559e10481628cf644
+Gitweb:        https://git.kernel.org/tip/4758d330f648ad5f972bfdc559e10481628=
+cf644
 Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Thu, 10 Oct 2024 09:01:04 +02:00
+AuthorDate:    Thu, 10 Oct 2024 09:01:03 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 02 Nov 2024 11:05:12 +01:00
 
-csky/vdso: Remove arch_vma_name()
+csky/vdso: Remove gettimeofday() and friends from VDSO
 
-All callers of arch_vma_name() also get the name via vm_ops, which for
-these VMAs will use the name from 'struct vma_special_mapping'.
-Therefore the custom implementation is unnecessary and can be removed in
-favor of the default implementation from kernel/signal.c.
+The time-related VDSO functionality was introduced in 2021 in
+commit 87f3248cdb9a ("csky: Reconstruct VDSO framework") and
+commit 0d3b051adbb7 ("csky: Add VDSO with GENERIC_GETTIMEOFDAY, GENERIC_TIME_=
+VSYSCALL, HAVE_GENERIC_VDSO").
+
+However the corresponding aux-vector entry AT_SYSINFO_EHDR was never
+wired up, making these functions impossible to test or use.
+
+The VDSO itself is kept as it also provides rt_sigreturn which is
+exposed differently to userspace.
 
 Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-2-b64f0842d51=
+Link: https://lore.kernel.org/all/20241010-vdso-generic-base-v1-1-b64f0842d51=
 2@linutronix.de
 
 ---
- arch/csky/kernel/vdso.c | 7 -------
- 1 file changed, 7 deletions(-)
+ arch/csky/Kconfig                         |   4 +-
+ arch/csky/include/asm/vdso/clocksource.h  |   9 +--
+ arch/csky/include/asm/vdso/gettimeofday.h | 114 +---------------------
+ arch/csky/include/asm/vdso/processor.h    |  12 +--
+ arch/csky/include/asm/vdso/vsyscall.h     |  22 +----
+ arch/csky/kernel/vdso.c                   |  24 +----
+ arch/csky/kernel/vdso/Makefile            |   1 +-
+ arch/csky/kernel/vdso/vdso.lds.S          |   4 +-
+ arch/csky/kernel/vdso/vgettimeofday.c     |  30 +------
+ 9 files changed, 2 insertions(+), 218 deletions(-)
+ delete mode 100644 arch/csky/include/asm/vdso/clocksource.h
+ delete mode 100644 arch/csky/include/asm/vdso/gettimeofday.h
+ delete mode 100644 arch/csky/include/asm/vdso/processor.h
+ delete mode 100644 arch/csky/include/asm/vdso/vsyscall.h
+ delete mode 100644 arch/csky/kernel/vdso/vgettimeofday.c
 
+diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+index 5479707..acc431c 100644
+--- a/arch/csky/Kconfig
++++ b/arch/csky/Kconfig
+@@ -64,9 +64,6 @@ config CSKY
+ 	select GENERIC_IRQ_MULTI_HANDLER
+ 	select GENERIC_SCHED_CLOCK
+ 	select GENERIC_SMP_IDLE_THREAD
+-	select GENERIC_TIME_VSYSCALL
+-	select GENERIC_VDSO_32
+-	select GENERIC_GETTIMEOFDAY
+ 	select GX6605S_TIMER if CPU_CK610
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_ARCH_AUDITSYSCALL
+@@ -80,7 +77,6 @@ config CSKY
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DYNAMIC_FTRACE
+ 	select HAVE_DYNAMIC_FTRACE_WITH_REGS
+-	select HAVE_GENERIC_VDSO
+ 	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUNCTION_GRAPH_TRACER
+ 	select HAVE_FUNCTION_ERROR_INJECTION
+diff --git a/arch/csky/include/asm/vdso/clocksource.h b/arch/csky/include/asm=
+/vdso/clocksource.h
+deleted file mode 100644
+index dfca7b4..0000000
+--- a/arch/csky/include/asm/vdso/clocksource.h
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-
+-#ifndef __ASM_VDSO_CSKY_CLOCKSOURCE_H
+-#define __ASM_VDSO_CSKY_CLOCKSOURCE_H
+-
+-#define VDSO_ARCH_CLOCKMODES	\
+-	VDSO_CLOCKMODE_ARCHTIMER
+-
+-#endif /* __ASM_VDSO_CSKY_CLOCKSOURCE_H */
+diff --git a/arch/csky/include/asm/vdso/gettimeofday.h b/arch/csky/include/as=
+m/vdso/gettimeofday.h
+deleted file mode 100644
+index 6c4f144..0000000
+--- a/arch/csky/include/asm/vdso/gettimeofday.h
++++ /dev/null
+@@ -1,114 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-
+-#ifndef __ASM_VDSO_CSKY_GETTIMEOFDAY_H
+-#define __ASM_VDSO_CSKY_GETTIMEOFDAY_H
+-
+-#ifndef __ASSEMBLY__
+-
+-#include <asm/barrier.h>
+-#include <asm/unistd.h>
+-#include <abi/regdef.h>
+-#include <uapi/linux/time.h>
+-
+-#define VDSO_HAS_CLOCK_GETRES	1
+-
+-static __always_inline
+-int gettimeofday_fallback(struct __kernel_old_timeval *_tv,
+-			  struct timezone *_tz)
+-{
+-	register struct __kernel_old_timeval *tv asm("a0") =3D _tv;
+-	register struct timezone *tz asm("a1") =3D _tz;
+-	register long ret asm("a0");
+-	register long nr asm(syscallid) =3D __NR_gettimeofday;
+-
+-	asm volatile ("trap 0\n"
+-		      : "=3Dr" (ret)
+-		      : "r"(tv), "r"(tz), "r"(nr)
+-		      : "memory");
+-
+-	return ret;
+-}
+-
+-static __always_inline
+-long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+-{
+-	register clockid_t clkid asm("a0") =3D _clkid;
+-	register struct __kernel_timespec *ts asm("a1") =3D _ts;
+-	register long ret asm("a0");
+-	register long nr asm(syscallid) =3D __NR_clock_gettime64;
+-
+-	asm volatile ("trap 0\n"
+-		      : "=3Dr" (ret)
+-		      : "r"(clkid), "r"(ts), "r"(nr)
+-		      : "memory");
+-
+-	return ret;
+-}
+-
+-static __always_inline
+-long clock_gettime32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+-{
+-	register clockid_t clkid asm("a0") =3D _clkid;
+-	register struct old_timespec32 *ts asm("a1") =3D _ts;
+-	register long ret asm("a0");
+-	register long nr asm(syscallid) =3D __NR_clock_gettime;
+-
+-	asm volatile ("trap 0\n"
+-		      : "=3Dr" (ret)
+-		      : "r"(clkid), "r"(ts), "r"(nr)
+-		      : "memory");
+-
+-	return ret;
+-}
+-
+-static __always_inline
+-int clock_getres_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+-{
+-	register clockid_t clkid asm("a0") =3D _clkid;
+-	register struct __kernel_timespec *ts asm("a1") =3D _ts;
+-	register long ret asm("a0");
+-	register long nr asm(syscallid) =3D __NR_clock_getres_time64;
+-
+-	asm volatile ("trap 0\n"
+-		      : "=3Dr" (ret)
+-		      : "r"(clkid), "r"(ts), "r"(nr)
+-		      : "memory");
+-
+-	return ret;
+-}
+-
+-static __always_inline
+-int clock_getres32_fallback(clockid_t _clkid, struct old_timespec32 *_ts)
+-{
+-	register clockid_t clkid asm("a0") =3D _clkid;
+-	register struct old_timespec32 *ts asm("a1") =3D _ts;
+-	register long ret asm("a0");
+-	register long nr asm(syscallid) =3D __NR_clock_getres;
+-
+-	asm volatile ("trap 0\n"
+-		      : "=3Dr" (ret)
+-		      : "r"(clkid), "r"(ts), "r"(nr)
+-		      : "memory");
+-
+-	return ret;
+-}
+-
+-uint64_t csky_pmu_read_cc(void);
+-static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
+-						 const struct vdso_data *vd)
+-{
+-#ifdef CONFIG_CSKY_PMU_V1
+-	return csky_pmu_read_cc();
+-#else
+-	return 0;
+-#endif
+-}
+-
+-static __always_inline const struct vdso_data *__arch_get_vdso_data(void)
+-{
+-	return _vdso_data;
+-}
+-
+-#endif /* !__ASSEMBLY__ */
+-
+-#endif /* __ASM_VDSO_CSKY_GETTIMEOFDAY_H */
+diff --git a/arch/csky/include/asm/vdso/processor.h b/arch/csky/include/asm/v=
+dso/processor.h
+deleted file mode 100644
+index 39a6b56..0000000
+--- a/arch/csky/include/asm/vdso/processor.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-#ifndef __ASM_VDSO_CSKY_PROCESSOR_H
+-#define __ASM_VDSO_CSKY_PROCESSOR_H
+-
+-#ifndef __ASSEMBLY__
+-
+-#define cpu_relax()	barrier()
+-
+-#endif /* __ASSEMBLY__ */
+-
+-#endif /* __ASM_VDSO_CSKY_PROCESSOR_H */
+diff --git a/arch/csky/include/asm/vdso/vsyscall.h b/arch/csky/include/asm/vd=
+so/vsyscall.h
+deleted file mode 100644
+index c276211..0000000
+--- a/arch/csky/include/asm/vdso/vsyscall.h
++++ /dev/null
+@@ -1,22 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-
+-#ifndef __ASM_VDSO_CSKY_VSYSCALL_H
+-#define __ASM_VDSO_CSKY_VSYSCALL_H
+-
+-#ifndef __ASSEMBLY__
+-
+-#include <vdso/datapage.h>
+-
+-extern struct vdso_data *vdso_data;
+-
+-static __always_inline struct vdso_data *__csky_get_k_vdso_data(void)
+-{
+-	return vdso_data;
+-}
+-#define __arch_get_k_vdso_data __csky_get_k_vdso_data
+-
+-#include <asm-generic/vdso/vsyscall.h>
+-
+-#endif /* !__ASSEMBLY__ */
+-
+-#endif /* __ASM_VDSO_CSKY_VSYSCALL_H */
 diff --git a/arch/csky/kernel/vdso.c b/arch/csky/kernel/vdso.c
-index 92ab8ac..c54d019 100644
+index 5c9ef63..92ab8ac 100644
 --- a/arch/csky/kernel/vdso.c
 +++ b/arch/csky/kernel/vdso.c
-@@ -82,10 +82,3 @@ end:
- 	mmap_write_unlock(mm);
- 	return ret;
- }
+@@ -8,23 +8,19 @@
+ #include <linux/slab.h>
+=20
+ #include <asm/page.h>
+-#include <vdso/datapage.h>
+=20
+ extern char vdso_start[], vdso_end[];
+=20
+ static unsigned int vdso_pages;
+ static struct page **vdso_pagelist;
+=20
+-static union vdso_data_store vdso_data_store __page_aligned_data;
+-struct vdso_data *vdso_data =3D vdso_data_store.data;
 -
--const char *arch_vma_name(struct vm_area_struct *vma)
+ static int __init vdso_init(void)
+ {
+ 	unsigned int i;
+=20
+ 	vdso_pages =3D (vdso_end - vdso_start) >> PAGE_SHIFT;
+ 	vdso_pagelist =3D
+-		kcalloc(vdso_pages + 1, sizeof(struct page *), GFP_KERNEL);
++		kcalloc(vdso_pages, sizeof(struct page *), GFP_KERNEL);
+ 	if (unlikely(vdso_pagelist =3D=3D NULL)) {
+ 		pr_err("vdso: pagelist allocation failed\n");
+ 		return -ENOMEM;
+@@ -36,7 +32,6 @@ static int __init vdso_init(void)
+ 		pg =3D virt_to_page(vdso_start + (i << PAGE_SHIFT));
+ 		vdso_pagelist[i] =3D pg;
+ 	}
+-	vdso_pagelist[i] =3D virt_to_page(vdso_data);
+=20
+ 	return 0;
+ }
+@@ -52,11 +47,8 @@ int arch_setup_additional_pages(struct linux_binprm *bprm,
+ 	static struct vm_special_mapping vdso_mapping =3D {
+ 		.name =3D "[vdso]",
+ 	};
+-	static struct vm_special_mapping vvar_mapping =3D {
+-		.name =3D "[vvar]",
+-	};
+=20
+-	vdso_len =3D (vdso_pages + 1) << PAGE_SHIFT;
++	vdso_len =3D vdso_pages << PAGE_SHIFT;
+=20
+ 	mmap_write_lock(mm);
+ 	vdso_base =3D get_unmapped_area(NULL, 0, vdso_len, 0, 0);
+@@ -85,15 +77,6 @@ int arch_setup_additional_pages(struct linux_binprm *bprm,
+ 	}
+=20
+ 	vdso_base +=3D (vdso_pages << PAGE_SHIFT);
+-	vvar_mapping.pages =3D &vdso_pagelist[vdso_pages];
+-	vma =3D _install_special_mapping(mm, vdso_base, PAGE_SIZE,
+-		(VM_READ | VM_MAYREAD), &vvar_mapping);
+-
+-	if (IS_ERR(vma)) {
+-		ret =3D PTR_ERR(vma);
+-		mm->context.vdso =3D NULL;
+-		goto end;
+-	}
+ 	ret =3D 0;
+ end:
+ 	mmap_write_unlock(mm);
+@@ -104,8 +87,5 @@ const char *arch_vma_name(struct vm_area_struct *vma)
+ {
+ 	if (vma->vm_mm && (vma->vm_start =3D=3D (long)vma->vm_mm->context.vdso))
+ 		return "[vdso]";
+-	if (vma->vm_mm && (vma->vm_start =3D=3D
+-			   (long)vma->vm_mm->context.vdso + PAGE_SIZE))
+-		return "[vdso_data]";
+ 	return NULL;
+ }
+diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
+index bc2261f..069ef0b 100644
+--- a/arch/csky/kernel/vdso/Makefile
++++ b/arch/csky/kernel/vdso/Makefile
+@@ -5,7 +5,6 @@ include $(srctree)/lib/vdso/Makefile
+=20
+ # Symbols present in the vdso
+ vdso-syms  +=3D rt_sigreturn
+-vdso-syms  +=3D vgettimeofday
+=20
+ # Files to link into the vdso
+ obj-vdso =3D $(patsubst %, %.o, $(vdso-syms)) note.o
+diff --git a/arch/csky/kernel/vdso/vdso.lds.S b/arch/csky/kernel/vdso/vdso.ld=
+s.S
+index 590a6c7..8d22625 100644
+--- a/arch/csky/kernel/vdso/vdso.lds.S
++++ b/arch/csky/kernel/vdso/vdso.lds.S
+@@ -49,10 +49,6 @@ VERSION
+ 	LINUX_5.10 {
+ 	global:
+ 		__vdso_rt_sigreturn;
+-		__vdso_clock_gettime;
+-		__vdso_clock_gettime64;
+-		__vdso_gettimeofday;
+-		__vdso_clock_getres;
+ 	local: *;
+ 	};
+ }
+diff --git a/arch/csky/kernel/vdso/vgettimeofday.c b/arch/csky/kernel/vdso/vg=
+ettimeofday.c
+deleted file mode 100644
+index 55af30e..0000000
+--- a/arch/csky/kernel/vdso/vgettimeofday.c
++++ /dev/null
+@@ -1,30 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-
+-#include <linux/time.h>
+-#include <linux/types.h>
+-#include <vdso/gettime.h>
+-
+-extern
+-int __vdso_clock_gettime(clockid_t clock,
+-			 struct old_timespec32 *ts)
 -{
--	if (vma->vm_mm && (vma->vm_start =3D=3D (long)vma->vm_mm->context.vdso))
--		return "[vdso]";
--	return NULL;
+-	return __cvdso_clock_gettime32(clock, ts);
+-}
+-
+-int __vdso_clock_gettime64(clockid_t clock,
+-			   struct __kernel_timespec *ts)
+-{
+-	return __cvdso_clock_gettime(clock, ts);
+-}
+-
+-int __vdso_gettimeofday(struct __kernel_old_timeval *tv,
+-			struct timezone *tz)
+-{
+-	return __cvdso_gettimeofday(tv, tz);
+-}
+-
+-int __vdso_clock_getres(clockid_t clock_id,
+-			struct old_timespec32 *res)
+-{
+-	return __cvdso_clock_getres_time32(clock_id, res);
 -}
 
