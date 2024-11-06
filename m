@@ -1,79 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-2767-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2768-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 832B09BE4BE
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2024 11:50:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44519BE4BF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2024 11:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E7FF1F26A02
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2024 10:50:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2CC728626B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  6 Nov 2024 10:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686D81DEFC8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013621DEFF3;
 	Wed,  6 Nov 2024 10:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="II2jd6Tc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aq7H1/0w"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mxjkqVF0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="W1Fmt03f"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCC51DED5F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1D41DED79;
 	Wed,  6 Nov 2024 10:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730890129; cv=none; b=klVqEc+WwD652JXcVKsiKg+9XEAeFZMbRMbOobjnr1pMW18wcEQ8pIwaCAA75PlqEl+5OAomgw00eZ6C44xCppbKZDcdIDRX6ycD2RI6BlWK7P7L399nBhqgE5DlzcOpvsu+ZVMrlowuDNPaP4Mvb6IDzaTgvnfo0d+QcIBLnq4=
+	t=1730890129; cv=none; b=p69DDSDZl6Ms5oHSKe/TDVW0t73F3NrO1u822opgHf1KYeztEMBvXWzWFnADml8gmChtgw3cvrKzNcoLUxFV2HCFprc7eTpFyL99z7VZxWl/DLZoKZUO5rnqzK5ZfklaUkogi3uKlx9YE82Ux/NOIs95ZVmjfOSKcuNvAptd48c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730890129; c=relaxed/simple;
-	bh=MVXnPdPQJllIdrLzL2iIVpbQM93WFHdnmlXbcpravcw=;
+	bh=veKXJTm3OTmjBHHxYlEgCfxfT9lPSpdQ1HhJV4V0zAg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=m1G6iVgMbNWR+C89axagxj5rZlgPJZ2p4YYfmmKa6Hln6D5q17Xx6+mK5/4haXRxwyrOGsszo3fa86GwbiqOgy24CRbT6QgUgCkAHpPtHgj5tsJVZ4kYLJ1/naW6Uwts9FOESYdQoQDvBoKFc6ryQF390OpPYAB8E6K1Etts7QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=II2jd6Tc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aq7H1/0w; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bZU+wFdxIeJayMBoVuKcYQN8J1cCic/YDgZ7kDR3HMrR3vU5spMPRTcrGb+ifTsed51APKIrddsyLJsrIMKy4YALZNnFNpdg4HJ2A8eu2UuI5Xuzpx5QWeaNfs+3CSiLepDg0hNtZ3t4AKqpaE3S/h4pu1yajWH2kyIvsrnTF/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mxjkqVF0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=W1Fmt03f; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 06 Nov 2024 10:48:44 -0000
+Date: Wed, 06 Nov 2024 10:48:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730890125;
+	s=2020; t=1730890126;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=udvKtdWiQsM/QrzAFdMhl6gO2jLVv405s3eHgdleCN8=;
-	b=II2jd6TcKju6GJo0fFMhLqtm94W9Ii8nQjvIzs51xivbUDuQ7YZrFpI9W6qKXZizBLevsr
-	kKYBLdrL8dmMYnaKjVgaOBowhjmq5XQKx2xHcUsuOOFwA0aL8FuKd44W5uNHMi3WGPhK5p
-	bn9kaGx4bSi0U13VyD2qTRY6Lb/D0K3POQf6Qzg6xOime13NnZysbiaQTvj9gCMotwnQIX
-	4BYq6jMMeVY4ye/nVoDZ7AvB8GrYpY+E4xn4JFd2Wgg8AGVk3eCaDTIp6mkbN/XTqgerQY
-	teEYiiW6wnSp0+6iRFTPYlmzwBwD6bFNe62XJbf7Ik+qdoaIYAnJTndyN1nLMw==
+	bh=aP+s5xatzZAH0zpujeg1ARo/THzUeCeZN+BqBi9B0eI=;
+	b=mxjkqVF0PrcXhrnR3qIB3b9Q/3dqez+QoL0Kgl3WXONIfl8OjLS2lNdEe1yK/nyYp7VzTm
+	CAXKSwIYj1Dneb4b/sBNqHpnrsedVq9Ykue56OFWP68yb4bh597+AHUhMBjKd+zeU/YcMx
+	+ZRqTnOM7DGl9IqUNgms0oCtR8h3yTHxyVlqH7ZztpqMx+lIGtZvNe6wds9ErRXZldmB4T
+	hVwJsPX444rpX/cx6BtML3fM9E1Q3uWuVA8SlmlYviWXPtoLbhYrWAexMim0hNIamEjJ4o
+	NSieasLzdWTSl6qjQHV6iCyd8ZGoC0aFJnekZdEW2RsAVELPWosssal+yPBGdQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730890125;
+	s=2020e; t=1730890126;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=udvKtdWiQsM/QrzAFdMhl6gO2jLVv405s3eHgdleCN8=;
-	b=aq7H1/0w1gBnXTCGi6CYGhE3d0slYuwvxWlINHfFwgYIy0Os28dn2UfhRpEI1CGe3SR6qV
-	M7F3//0SV9qXlLCw==
-From: "tip-bot2 for Jisheng Zhang" <tip-bot2@linutronix.de>
+	bh=aP+s5xatzZAH0zpujeg1ARo/THzUeCeZN+BqBi9B0eI=;
+	b=W1Fmt03fgtyjCBvC7xcKUfL3oGpEE6jv++uiNdpuvw3OlIVKseHbZ+fwfOyPPDiUdYqMsz
+	HkY9ga3pDVjVogBA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] riscv: add PREEMPT_LAZY support
-Cc: Jisheng Zhang <jszhang@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Palmer Dabbelt <palmer@rivosinc.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched, x86: Enable Lazy preemption
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241021151257.102296-4-bigeasy@linutronix.de>
-References: <20241021151257.102296-4-bigeasy@linutronix.de>
+In-Reply-To: <20241007075055.555778919@infradead.org>
+References: <20241007075055.555778919@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173089012493.32228.9669370223751726698.tip-bot2@tip-bot2>
+Message-ID: <173089012568.32228.5430722974826547973.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,71 +81,59 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     22aaec357c1ff85b72c105c90503e3b4187384b8
-Gitweb:        https://git.kernel.org/tip/22aaec357c1ff85b72c105c90503e3b4187384b8
-Author:        Jisheng Zhang <jszhang@kernel.org>
-AuthorDate:    Mon, 21 Oct 2024 17:08:42 +02:00
+Commit-ID:     476e8583ca16eecec0a3a28b6ee7130f4e369389
+Gitweb:        https://git.kernel.org/tip/476e8583ca16eecec0a3a28b6ee7130f4e369389
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 04 Oct 2024 14:46:54 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 05 Nov 2024 12:55:39 +01:00
+CommitterDate: Tue, 05 Nov 2024 12:55:38 +01:00
 
-riscv: add PREEMPT_LAZY support
+sched, x86: Enable Lazy preemption
 
-riscv has switched to GENERIC_ENTRY, so adding PREEMPT_LAZY is as simple
-as adding TIF_NEED_RESCHED_LAZY related definitions and enabling
-ARCH_HAS_PREEMPT_LAZY.
+Add the TIF bit and select the Kconfig symbol to make it go.
 
-[bigeasy: Replace old PREEMPT_AUTO bits with new PREEMPT_LAZY ]
-
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lkml.kernel.org/r/20241021151257.102296-4-bigeasy@linutronix.de
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lkml.kernel.org/r/20241007075055.555778919@infradead.org
 ---
- arch/riscv/Kconfig                   |  1 +
- arch/riscv/include/asm/thread_info.h | 10 ++++++----
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ arch/x86/Kconfig                   | 1 +
+ arch/x86/include/asm/thread_info.h | 6 ++++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 6254594..3516c58 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -39,6 +39,7 @@ config RISCV
- 	select ARCH_HAS_MMIOWB
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 2852fcd..b76aa7f 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -93,6 +93,7 @@ config X86
+ 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
  	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PMEM_API
+ 	select ARCH_HAS_PMEM_API		if X86_64
 +	select ARCH_HAS_PREEMPT_LAZY
- 	select ARCH_HAS_PREPARE_SYNC_CORE_CMD
- 	select ARCH_HAS_PTE_DEVMAP if 64BIT && MMU
+ 	select ARCH_HAS_PTE_DEVMAP		if X86_64
  	select ARCH_HAS_PTE_SPECIAL
-diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
-index 9c10fb1..f5916a7 100644
---- a/arch/riscv/include/asm/thread_info.h
-+++ b/arch/riscv/include/asm/thread_info.h
-@@ -107,9 +107,10 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
-  * - pending work-to-be-done flags are in lowest half-word
-  * - other flags in upper half-word(s)
-  */
--#define TIF_NOTIFY_RESUME	1	/* callback before returning to user */
--#define TIF_SIGPENDING		2	/* signal pending */
--#define TIF_NEED_RESCHED	3	/* rescheduling necessary */
-+#define TIF_NEED_RESCHED	0	/* rescheduling necessary */
-+#define TIF_NEED_RESCHED_LAZY	1       /* Lazy rescheduling needed */
-+#define TIF_NOTIFY_RESUME	2	/* callback before returning to user */
-+#define TIF_SIGPENDING		3	/* signal pending */
- #define TIF_RESTORE_SIGMASK	4	/* restore signal mask in do_signal() */
- #define TIF_MEMDIE		5	/* is terminating due to OOM killer */
- #define TIF_NOTIFY_SIGNAL	9	/* signal notifications exist */
-@@ -117,9 +118,10 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src);
- #define TIF_32BIT		11	/* compat-mode 32bit process */
- #define TIF_RISCV_V_DEFER_RESTORE	12 /* restore Vector before returing to user */
- 
-+#define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
-+#define _TIF_NEED_RESCHED_LAZY	(1 << TIF_NEED_RESCHED_LAZY)
+ 	select ARCH_HAS_HW_PTE_YOUNG
+diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+index 12da7df..75bb390 100644
+--- a/arch/x86/include/asm/thread_info.h
++++ b/arch/x86/include/asm/thread_info.h
+@@ -87,8 +87,9 @@ struct thread_info {
+ #define TIF_NOTIFY_RESUME	1	/* callback before returning to user */
+ #define TIF_SIGPENDING		2	/* signal pending */
+ #define TIF_NEED_RESCHED	3	/* rescheduling necessary */
+-#define TIF_SINGLESTEP		4	/* reenable singlestep on user return*/
+-#define TIF_SSBD		5	/* Speculative store bypass disable */
++#define TIF_NEED_RESCHED_LAZY	4	/* rescheduling necessary */
++#define TIF_SINGLESTEP		5	/* reenable singlestep on user return*/
++#define TIF_SSBD		6	/* Speculative store bypass disable */
+ #define TIF_SPEC_IB		9	/* Indirect branch speculation mitigation */
+ #define TIF_SPEC_L1D_FLUSH	10	/* Flush L1D on mm switches (processes) */
+ #define TIF_USER_RETURN_NOTIFY	11	/* notify kernel of userspace return */
+@@ -110,6 +111,7 @@ struct thread_info {
  #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
  #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
--#define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
- #define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
- #define _TIF_UPROBE		(1 << TIF_UPROBE)
- #define _TIF_RISCV_V_DEFER_RESTORE	(1 << TIF_RISCV_V_DEFER_RESTORE)
+ #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
++#define _TIF_NEED_RESCHED_LAZY	(1 << TIF_NEED_RESCHED_LAZY)
+ #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
+ #define _TIF_SSBD		(1 << TIF_SSBD)
+ #define _TIF_SPEC_IB		(1 << TIF_SPEC_IB)
 
