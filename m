@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2785-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2787-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09BF9BFB83
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 02:32:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1549A9BFB87
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 02:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1CD61C212D2
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 01:32:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A45F328362E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 01:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930D739AEB;
-	Thu,  7 Nov 2024 01:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1284F12C470;
+	Thu,  7 Nov 2024 01:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2pL1ksFa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QyOYlD+L"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Kkylpegv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vQrawC3s"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB279179BF;
-	Thu,  7 Nov 2024 01:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230112E3EB;
+	Thu,  7 Nov 2024 01:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730943097; cv=none; b=dl0im/GYrqWcHaOdl9QgtLpJ3TLA6Zm2W1be1VfbohuCKH+gCNl02QiIFMUZABHxUGxi5BDfoEne/PVX9obhFliXKdLv7pBvbni+r3XkQ1mQBmyCyN0Kbcbz9TkyCYGjAePpKZyG73xzAtG2RPttw5wwifAeCDbV+mWRmd9qDJo=
+	t=1730943099; cv=none; b=awcpBgwrUtLi3avSply5ggAi+ooOAcnnbEieK3O/IowVYCwhIFl6AyPSXK4oHmtha38Tb/DqF+1IFnm8DpBHd3X28cM1GNA9Oo0eUcvjpyx2wTHhEiEQQl2jK7c2ia/slZzpTm3yvBvsS/EoeGZ+ichyC/H+1S0LMUsI96hFUMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730943097; c=relaxed/simple;
-	bh=zxdIx3uGOQd70wNHo4gXsaqcIcwJx/x1tmFOg4Fh9wc=;
+	s=arc-20240116; t=1730943099; c=relaxed/simple;
+	bh=FmXMcfFTaaoynGahHZStfi5HHzeBMR4qSVgjAit0wv4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lBfcdH5l9Y0fLWK5Gzdnnd7QO0eLY7Z7sG8oOXpLzE92amfpHHjOPHujQ47dCcwSTXUpHuLtha60b0igqnJvyLYA3pDqDGgFdZ8eJsWw0PBIxGRdQRfhCNFl8mCg7/KR+bARdoJpzGVcdXHgUyMZ0IECPdGKbMs4ucchVlLsY+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2pL1ksFa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QyOYlD+L; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=M0kpqOZl5+7Ut89NfgkgOuUGi4TRbvwf7ma3YzpERe0ubpKTbtSf0yHgMOJ5QwlVL5hQuPgc0rholFomWdy4mrnb1Cb1/GExWMFFA/0wmJym/RfE39N8ovcl+0kNTquGgUF3xtlPu+Ry9pFdRiPYcuZD1iqys8S5YSKh759xg5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Kkylpegv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vQrawC3s; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 07 Nov 2024 01:31:33 -0000
+Date: Thu, 07 Nov 2024 01:31:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730943094;
+	s=2020; t=1730943095;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UFn7dvDKQr+z9vzYz/pa4RfwVrypMkf6aN6JMEoawVQ=;
-	b=2pL1ksFaOT3rKilonbWTJwRR9v6FdUS5RREGizPVqxG8X/5oMhDRrJ8pEg6FU6CCi5mund
-	RvVwilzY06yLPPq+u4Ss5uvc3O3/Al24Vxla9tGA/EAbVq3pjuyriExFcvvGiyAWsVzk4c
-	aZfqlwdRO13fXxfd7K44VNbpv4B5TshKKs3rRgGz0RFkUK7qbSnrKtYPoztiMU/db8oNBc
-	jqdu8lYsTdZrmZvFCHW/Yle9Sk6ASCeE6KxHvn5QiuOdpNwv+/sIrQBwjK4fNxZNr17U9R
-	XnE7gw7qLBn0T+8BF2N2MvPOzViKuObqfyeGny7iWssxcHfhvhFL+7yupOMOIg==
+	bh=C8ILZ24GT2ZdoUyvmDMfpOXtJPLEqTg1di3yIrupOjU=;
+	b=KkylpegvaSkjA7ObtsJzZDAVccXz99r964KR+N5wVgz/XzROx/WW5gxFDzn6EqrKp+zJhj
+	1lOcjtMQCOVLQhufWVqZ+fir8sZ9cRsXqxjzEQX2lh+KBON8CAo6hEDjtOYcmPME3KC6Cq
+	24OAvGLDfe6sMW+2vzaxOiHh0gXWbnYrLxPRrBeiZDUyJH0RPafQN9pFz/Z4gc22gxr4JQ
+	fkeSJ/qpW2MCam1J3oBS9bV0UbHyWAp40UCgLzyRaC6U1LMA/pARaL9bzcTAy+jFcODQqK
+	IfV0yl0nIU7RFc0p7KP6UCsGSlQ6be2KggGUOp/8BM25ByxjK1q4zK2udkZNig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730943094;
+	s=2020e; t=1730943095;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UFn7dvDKQr+z9vzYz/pa4RfwVrypMkf6aN6JMEoawVQ=;
-	b=QyOYlD+Lcumjzbss45b0RcGU/U+Mw9rEroatE8d1xj8oR6fNPa3bVjQeHxy4ARe+W1Xhyv
-	6GH7AUBrSEHEv9Dw==
+	bh=C8ILZ24GT2ZdoUyvmDMfpOXtJPLEqTg1di3yIrupOjU=;
+	b=vQrawC3s5VfJ1M4zHY3FJdesBK8GW+mgKRgJZdJZ99QdJ0TvQFP6Jb4POZWrFIJ3/MzOb+
+	WH4AJ9qxJsYxo0BA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] signal: Provide ignored_posix_timers list
+Subject: [tip: timers/core] signal: Cleanup unused posix-timer leftovers
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  Frederic Weisbecker <frederic@kernel.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241105064213.920101900@linutronix.de>
-References: <20241105064213.920101900@linutronix.de>
+In-Reply-To: <20241105064213.786506636@linutronix.de>
+References: <20241105064213.786506636@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173094309361.32228.16885228457351234466.tip-bot2@tip-bot2>
+Message-ID: <173094309498.32228.5755883017910521840.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,71 +82,109 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     69f032c92cf883ea74a4b69ba3d91317aa6f174e
-Gitweb:        https://git.kernel.org/tip/69f032c92cf883ea74a4b69ba3d91317aa6f174e
+Commit-ID:     c2a4796a154bb952be1106911841aab2c8c17c4d
+Gitweb:        https://git.kernel.org/tip/c2a4796a154bb952be1106911841aab2c8c17c4d
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 05 Nov 2024 09:14:49 +01:00
+AuthorDate:    Tue, 05 Nov 2024 09:14:46 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 07 Nov 2024 02:14:45 +01:00
+CommitterDate: Thu, 07 Nov 2024 02:14:44 +01:00
 
-signal: Provide ignored_posix_timers list
+signal: Cleanup unused posix-timer leftovers
 
-To prepare for handling posix timer signals on sigaction(SIG_IGN) properly,
-add a list to task::signal.
-
-This list will be used to queue posix timers so their signal can be
-requeued when SIG_IGN is lifted later.
+Remove the leftovers of sigqueue preallocation as it's not longer used.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20241105064213.920101900@linutronix.de
-
+Link: https://lore.kernel.org/all/20241105064213.786506636@linutronix.de
 
 ---
- include/linux/sched/signal.h | 1 +
- init/init_task.c             | 5 +++--
- kernel/fork.c                | 1 +
- 3 files changed, 5 insertions(+), 2 deletions(-)
+ include/linux/sched/signal.h |  2 +--
+ kernel/signal.c              | 39 +++--------------------------------
+ 2 files changed, 4 insertions(+), 37 deletions(-)
 
 diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 02972fd..d5d03d9 100644
+index 36283c1..02972fd 100644
 --- a/include/linux/sched/signal.h
 +++ b/include/linux/sched/signal.h
-@@ -138,6 +138,7 @@ struct signal_struct {
- 	/* POSIX.1b Interval Timers */
- 	unsigned int		next_posix_timer_id;
- 	struct hlist_head	posix_timers;
-+	struct hlist_head	ignored_posix_timers;
+@@ -338,8 +338,6 @@ extern void force_fatal_sig(int);
+ extern void force_exit_sig(int);
+ extern int send_sig(int, struct task_struct *, int);
+ extern int zap_other_threads(struct task_struct *p);
+-extern struct sigqueue *sigqueue_alloc(void);
+-extern void sigqueue_free(struct sigqueue *);
+ extern int do_sigaction(int, struct k_sigaction *, struct k_sigaction *);
  
- 	/* ITIMER_REAL timer for the process */
- 	struct hrtimer real_timer;
-diff --git a/init/init_task.c b/init/init_task.c
-index 136a823..e557f62 100644
---- a/init/init_task.c
-+++ b/init/init_task.c
-@@ -30,8 +30,9 @@ static struct signal_struct init_signals = {
- 	.cred_guard_mutex = __MUTEX_INITIALIZER(init_signals.cred_guard_mutex),
- 	.exec_update_lock = __RWSEM_INITIALIZER(init_signals.exec_update_lock),
- #ifdef CONFIG_POSIX_TIMERS
--	.posix_timers	= HLIST_HEAD_INIT,
--	.cputimer	= {
-+	.posix_timers		= HLIST_HEAD_INIT,
-+	.ignored_posix_timers	= HLIST_HEAD_INIT,
-+	.cputimer		= {
- 		.cputime_atomic	= INIT_CPUTIME_ATOMIC,
- 	},
- #endif
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 60c0b48..c2bd836 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1864,6 +1864,7 @@ static int copy_signal(unsigned long clone_flags, struct task_struct *tsk)
+ static inline void clear_notify_signal(void)
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 2d74cd5..d267a2c 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -439,8 +439,8 @@ static void __sigqueue_init(struct sigqueue *q, struct ucounts *ucounts,
+  * - this may be called without locks if and only if t == current, otherwise an
+  *   appropriate lock must be held to stop the target task from exiting
+  */
+-static struct sigqueue *__sigqueue_alloc(int sig, struct task_struct *t, gfp_t gfp_flags,
+-					 int override_rlimit, const unsigned int sigqueue_flags)
++static struct sigqueue *sigqueue_alloc(int sig, struct task_struct *t, gfp_t gfp_flags,
++				       int override_rlimit)
+ {
+ 	struct ucounts *ucounts = sig_get_ucounts(t, sig, override_rlimit);
+ 	struct sigqueue *q;
+@@ -454,7 +454,7 @@ static struct sigqueue *__sigqueue_alloc(int sig, struct task_struct *t, gfp_t g
+ 		return NULL;
+ 	}
  
- #ifdef CONFIG_POSIX_TIMERS
- 	INIT_HLIST_HEAD(&sig->posix_timers);
-+	INIT_HLIST_HEAD(&sig->ignored_posix_timers);
- 	hrtimer_init(&sig->real_timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	sig->real_timer.function = it_real_fn;
- #endif
+-	__sigqueue_init(q, ucounts, sigqueue_flags);
++	__sigqueue_init(q, ucounts, 0);
+ 	return q;
+ }
+ 
+@@ -1070,7 +1070,7 @@ static int __send_signal_locked(int sig, struct kernel_siginfo *info,
+ 	else
+ 		override_rlimit = 0;
+ 
+-	q = __sigqueue_alloc(sig, t, GFP_ATOMIC, override_rlimit, 0);
++	q = sigqueue_alloc(sig, t, GFP_ATOMIC, override_rlimit);
+ 
+ 	if (q) {
+ 		list_add_tail(&q->list, &pending->list);
+@@ -1926,37 +1926,6 @@ bool posixtimer_init_sigqueue(struct sigqueue *q)
+ 	return true;
+ }
+ 
+-struct sigqueue *sigqueue_alloc(void)
+-{
+-	return __sigqueue_alloc(-1, current, GFP_KERNEL, 0, SIGQUEUE_PREALLOC);
+-}
+-
+-void sigqueue_free(struct sigqueue *q)
+-{
+-	spinlock_t *lock = &current->sighand->siglock;
+-	unsigned long flags;
+-
+-	if (WARN_ON_ONCE(!(q->flags & SIGQUEUE_PREALLOC)))
+-		return;
+-	/*
+-	 * We must hold ->siglock while testing q->list
+-	 * to serialize with collect_signal() or with
+-	 * __exit_signal()->flush_sigqueue().
+-	 */
+-	spin_lock_irqsave(lock, flags);
+-	q->flags &= ~SIGQUEUE_PREALLOC;
+-	/*
+-	 * If it is queued it will be freed when dequeued,
+-	 * like the "regular" sigqueue.
+-	 */
+-	if (!list_empty(&q->list))
+-		q = NULL;
+-	spin_unlock_irqrestore(lock, flags);
+-
+-	if (q)
+-		__sigqueue_free(q);
+-}
+-
+ static void posixtimer_queue_sigqueue(struct sigqueue *q, struct task_struct *t, enum pid_type type)
+ {
+ 	struct sigpending *pending;
 
