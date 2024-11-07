@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2797-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2798-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7829BFB9C
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 02:34:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65719BFBA1
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 02:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26224B22214
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 01:34:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB24283499
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  7 Nov 2024 01:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C7119580F;
-	Thu,  7 Nov 2024 01:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4835F1991CD;
+	Thu,  7 Nov 2024 01:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gCIKb+FV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SePHXzR4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2cn2tu0E";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SsMrj076"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728A719342B;
-	Thu,  7 Nov 2024 01:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B33195FD1;
+	Thu,  7 Nov 2024 01:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730943106; cv=none; b=t+F8kXN6r+54KBfu9h4ar7AF7MVrQo+KEbRGImYBsKW4qRRAFyJRChsRsiaNhcu1O+LudtkA1vUXFnNCAT4bnrBJwyZo9EAkhsnh3V4Eph6lAyewiObUl6uMTeWZUFQXGAMlz4tzPOAor1d2SYXuNWWwvQz30Ym/JbYqo77XA2M=
+	t=1730943108; cv=none; b=BqPMgz6uFKOJPPbKyZRt5mU346sEJFKy6hyHNl+h1QVBXAr49ZNpJKFWYB8L+ZbcStZF7RrKJO24H/g/WvEarpRe75Vc1AF2pGd3hEkQQL7i7o3zswrlZpD+OhEWPxrga+Pkg8q5r6YCnJ+3PqLAIIdCmVhhZMGeKc5M38m6Qbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730943106; c=relaxed/simple;
-	bh=7Up0vWmqbQHqPdyN6gxAEjMERzglp4DhI3RrWp9WUSs=;
+	s=arc-20240116; t=1730943108; c=relaxed/simple;
+	bh=7PiFOuwQqalbriufdErP3RIJB9kULQFsqKErv5VwIts=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YE2jBCZ8/UguJcgGyZGPj+QvfRg375cLdJ8CF+Y9e1Lmm3MecNPRAB6mm5r61+m2TEzgL9Xe8yTPX9DIpdpeFXys/cVc4B00awedsyPhQ7DeeZijArC3uFJG/ZoWVzViwFHt8bT7Pd6WblBbRDIRJ7qBRT7xQHAj42M6f3EHPMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gCIKb+FV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SePHXzR4; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=J30+JFL1YNvS0qovAPx12trfuSOZd2qpqhHNDixCycG3XCfHnZLJ8YXAkP8OhOSt/RUAqr1SCY/06G4psR0hzwiZJ9yR26RPX6BNDyiZtxgYvo8at64QtcqSGRWFs1FMtSI/1YhzsA6gvw1tVID4lmUHiVMMr4A/BG2clke1sM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2cn2tu0E; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SsMrj076; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 07 Nov 2024 01:31:42 -0000
+Date: Thu, 07 Nov 2024 01:31:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730943103;
+	s=2020; t=1730943104;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x399kV5boEDJEwb3wmxD7ytLScLkIxXgDyuGRKNkDjY=;
-	b=gCIKb+FVhExjFWvrWvpPHsA+XbgnR9nNp2fJzJHFggLQM4E7Ph0KMA2hunob1HujmETvhh
-	d3byO+Kk6sa/3UruzVSiBQbzR7Asgp1Rm8tNo3DBUPa91EVW2hqQw9Hes2Soi/wBeMmKVf
-	ZajfTvvvx9siUHbvJ1bjRpcmMR4NUKP7pb93Xl6zKt2Lqpi1RETOQorz3BlkCzkoYmnTr+
-	jmmpAEIGakhCThp2pqnsNbjl9D8XG8ZV8kOKQzFhj0hDt0e32MyZaHPpbgr20HboCMD9BR
-	jXK9e1RWXF3OYGBlxzI24EPza+wNuZAW6A6f0PFRXktzxORIqSFrPFPWojcDRQ==
+	bh=gL65KiPGHmFdxlUqqKIGhLHaGu8WxzRqgeOXpAnTT7A=;
+	b=2cn2tu0E4rl1qzi3GsSzTLfqNxrcjTF2F3KLsu5n5GgSn08NddfxxvTUs/SJ2nSOBTRkma
+	fn8R9tPd6zN96nPrvxHwGKwk9SIHA9MFlSLfA42WsoHDod5HJdphOh9KOME8+ETSGgtg9K
+	wama1dgW7iGIXwOoLQIdHk6YYve2HKdOzo1hD7UNJYfGxTPKYaIVU1bTrCoa0SK1CuENk9
+	lo//y7RzTuKcCNbNJyGpOvuJNmeFjJuHii0UPGo+v4IIBSCI7df9r9TL5KHFrtIeeSfVJ0
+	aIak5tqjqyAKbruqRshUZp34iNkYR4pCKpM+smfYY6CR9XTZp6RJutc3MtAtCQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730943103;
+	s=2020e; t=1730943104;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x399kV5boEDJEwb3wmxD7ytLScLkIxXgDyuGRKNkDjY=;
-	b=SePHXzR48T8a4YYbakeq1AOEQZlfRkqUsbVBdVJQvIxDJHmmG3io5jAjHHc4aWPq48jpbU
-	3ftLrjYHREQk/aBg==
+	bh=gL65KiPGHmFdxlUqqKIGhLHaGu8WxzRqgeOXpAnTT7A=;
+	b=SsMrj076lCjqkyzZNyo0YebjwL9dBg0DIfnG8NJ0rv15trGDynQId0GaPZ2aOTHetVdFKc
+	drQGHlLz8gtdmqCA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: timers/core] posix-timers: Make signal overrun accounting sensible
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: timers/core] posix-cpu-timers: Correctly update timer status in
+ posix_cpu_timer_del()
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241105064213.106738193@linutronix.de>
-References: <20241105064213.106738193@linutronix.de>
+In-Reply-To: <20241105064212.974053438@linutronix.de>
+References: <20241105064212.974053438@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173094310240.32228.8339353456155004952.tip-bot2@tip-bot2>
+Message-ID: <173094310370.32228.9829878952290850699.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,90 +82,61 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     b06b0345fff3678517acd0f1837d52477ba30944
-Gitweb:        https://git.kernel.org/tip/b06b0345fff3678517acd0f1837d52477ba30944
+Commit-ID:     15cbfb92efee5c7f09e531a331e19759dbe0ac3c
+Gitweb:        https://git.kernel.org/tip/15cbfb92efee5c7f09e531a331e19759dbe0ac3c
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 05 Nov 2024 09:14:32 +01:00
+AuthorDate:    Tue, 05 Nov 2024 09:14:29 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 07 Nov 2024 02:14:43 +01:00
 
-posix-timers: Make signal overrun accounting sensible
+posix-cpu-timers: Correctly update timer status in posix_cpu_timer_del()
 
-The handling of the timer overrun in the signal code is inconsistent as it
-takes previous overruns into account. This is just wrong as after the
-reprogramming of a timer the overrun count starts over from a clean state,
-i.e. 0.
+If posix_cpu_timer_del() exits early due to task not found or sighand
+invalid, it fails to clear the state of the timer. That's harmless but
+inconsistent.
 
-Don't touch info::si_overrun in send_sigqueue() and only store the overrun
-value at signal delivery time, which is computed from the timer itself
-relative to the expiry time.
+These early exits are accounted as successful delete. Move the update of
+the timer state into the success return path, so all "successful" deletions
+are handled.
 
+Reported-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20241105064213.106738193@linutronix.de
+Link: https://lore.kernel.org/all/20241105064212.974053438@linutronix.de
 
 ---
- kernel/signal.c            |  6 ------
- kernel/time/posix-timers.c | 11 ++++++-----
- 2 files changed, 6 insertions(+), 11 deletions(-)
+ kernel/time/posix-cpu-timers.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/signal.c b/kernel/signal.c
-index 68e6bc7..ba7159b 100644
---- a/kernel/signal.c
-+++ b/kernel/signal.c
-@@ -1968,15 +1968,9 @@ int send_sigqueue(struct sigqueue *q, struct pid *pid, enum pid_type type, int s
- 
- 	ret = 0;
- 	if (unlikely(!list_empty(&q->list))) {
--		/*
--		 * If an SI_TIMER entry is already queue just increment
--		 * the overrun count.
--		 */
--		q->info.si_overrun++;
- 		result = TRACE_SIGNAL_ALREADY_PENDING;
- 		goto out;
+diff --git a/kernel/time/posix-cpu-timers.c b/kernel/time/posix-cpu-timers.c
+index 12f828d..5f444e3 100644
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -493,20 +493,20 @@ static int posix_cpu_timer_del(struct k_itimer *timer)
+ 		 */
+ 		WARN_ON_ONCE(ctmr->head || timerqueue_node_queued(&ctmr->node));
+ 	} else {
+-		if (timer->it.cpu.firing) {
++		if (timer->it.cpu.firing)
+ 			ret = TIMER_RETRY;
+-		} else {
++		else
+ 			disarm_timer(timer, p);
+-			timer->it_status = POSIX_TIMER_DISARMED;
+-		}
+ 		unlock_task_sighand(p, &flags);
  	}
--	q->info.si_overrun = 0;
  
- 	signalfd_notify(t, sig);
- 	pending = (type != PIDTYPE_PID) ? &t->signal->shared_pending : &t->pending;
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index b380e25..66ed49e 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -233,11 +233,12 @@ __initcall(init_posix_timers);
-  * The siginfo si_overrun field and the return value of timer_getoverrun(2)
-  * are of type int. Clamp the overrun value to INT_MAX
-  */
--static inline int timer_overrun_to_int(struct k_itimer *timr, int baseval)
-+static inline int timer_overrun_to_int(struct k_itimer *timr)
- {
--	s64 sum = timr->it_overrun_last + (s64)baseval;
-+	if (timr->it_overrun_last > (s64)INT_MAX)
-+		return INT_MAX;
+ out:
+ 	rcu_read_unlock();
+-	if (!ret)
+-		put_pid(ctmr->pid);
  
--	return sum > (s64)INT_MAX ? INT_MAX : (int)sum;
-+	return (int)timr->it_overrun_last;
++	if (!ret) {
++		put_pid(ctmr->pid);
++		timer->it_status = POSIX_TIMER_DISARMED;
++	}
+ 	return ret;
  }
  
- static void common_hrtimer_rearm(struct k_itimer *timr)
-@@ -280,7 +281,7 @@ bool posixtimer_deliver_signal(struct kernel_siginfo *info)
- 		timr->it_overrun = -1LL;
- 		++timr->it_signal_seq;
- 
--		info->si_overrun = timer_overrun_to_int(timr, info->si_overrun);
-+		info->si_overrun = timer_overrun_to_int(timr);
- 	}
- 	ret = true;
- 
-@@ -774,7 +775,7 @@ SYSCALL_DEFINE1(timer_getoverrun, timer_t, timer_id)
- 	if (!timr)
- 		return -EINVAL;
- 
--	overrun = timer_overrun_to_int(timr, 0);
-+	overrun = timer_overrun_to_int(timr);
- 	unlock_timer(timr, flags);
- 
- 	return overrun;
 
