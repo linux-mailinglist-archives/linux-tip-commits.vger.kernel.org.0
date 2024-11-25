@@ -1,95 +1,131 @@
-Return-Path: <linux-tip-commits+bounces-2875-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2876-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF669D264C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2024 14:02:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB82E9D823F
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2024 10:30:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85682B2FD20
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 19 Nov 2024 12:56:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BEC9B293D0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 25 Nov 2024 09:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E091CC179;
-	Tue, 19 Nov 2024 12:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0633F190055;
+	Mon, 25 Nov 2024 09:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NXCAbvdv"
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1UFGlZjT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3NHGPIjB"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BC41CCB4D;
-	Tue, 19 Nov 2024 12:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7A918FDDF;
+	Mon, 25 Nov 2024 09:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732020880; cv=none; b=VLUv3BoQLhiZR91MFb30V31hBCUGzX/XubmoC7ho+HH9Q2Tb7C5K5Ltik5ee0p2GEU8MMMET5VcarhFg/Fa2dSONyV3GrqsXOkf1jFRhoDi0sQJIUrzgHPEOrCGgs0II1HIoPSHetSBQ219aWFW8mGbY2bRwXI9ZPEuuC5GFIMs=
+	t=1732526821; cv=none; b=u7LRTGVfCkHPVhvPhkzEqlXY0k9O2YUKjcAH9+syOmEitprg3v5WMXWTl+u7/MeZkZOWjQ5ccSDqYa/ymxOJwuHAOvJeC25EwhPHbfqSUVpPl1TrYEQJh90c6IOdCxdh6PYF6i1vBCLSXd+mImLnZPspg9H4+UTi/+Szd2cKeNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732020880; c=relaxed/simple;
-	bh=PeZmomn7GKlCTisY4AlendLscdky4s/5oljArNTFvgQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EH3R/6wXrWxuELNwtCUD6iT84gVo6gcmZiENw30EJZECbLXxMNkOLP1Y6ojvi10hjazCXp2PHgnt38zqCi7GKOz7mDAvT2eJm5yiO3LnwF/PEL5d2szVLuUpMNEaW/W6UMDqK2v/DwIJNrrolrQvhuO/LuEEsxd5usScuNsZPg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NXCAbvdv; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tAha+/Bcbs2mitGR4LOAeKfmhmbAlpxVnBjj1GeqvOs=; b=NXCAbvdve1L8j3pglFQ/c9n7Aa
-	C61BbL/NfFGceDuC7D6hmQ9cc83aGt7gFRol25KyIgXYLSEyeVmL6CwY6PXAxErvifhakZidkWS1S
-	u7+PX6TGHligbI59m7aYGl7i5pVNe/34dRLniaUgjLSc3Z+VWqyIC97eSqELWkOznr8hkix5d16ej
-	kfW1+BFnDItI7vgRI91Z6Y4OXqGhi7YlGOsVf8HEv5kVzk1RQz6kLPYkAPSOjh7ArsEJxavovsaUH
-	v1MlfAiIzDjm6RjQ+BkIPhYCoV7Q+twpJxx24fy04V1eirEFCIMk06NoeH/HhRoh4ARbVA3xH5LCg
-	9/V5u1sg==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tDNkW-000000045GX-0G8Q;
-	Tue, 19 Nov 2024 12:54:33 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 7D3D23006AB; Tue, 19 Nov 2024 13:54:32 +0100 (CET)
-Date: Tue, 19 Nov 2024 13:54:32 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Rik van Riel <riel@surriel.com>,
-	Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Mel Gorman <mgorman@suse.de>, x86@kernel.org
-Subject: Re: [tip: x86/mm] x86/mm/tlb: Update mm_cpumask lazily
-Message-ID: <20241119125432.GF2328@noisy.programming.kicks-ass.net>
-References: <20241114152723.1294686-2-riel@surriel.com>
- <173201565541.412.15037901822386376271.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1732526821; c=relaxed/simple;
+	bh=ZOvArFyPV+QITwaKJRBEskoL/eFx4L+3CD98m9bbb08=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=d56bElBgCXy7A9EwuP1Y5GyijIgclFJCCvvFDcMhk3eFm8NOakXbNcRsMewqnQ5N/Tg1mx+QaeubkgFzZv2FyaTUpnT9d3KYPu1YUWn2fQ6o8uPzUlit4WzO7+LArFZZx7nNcPz+JbxzR2vaIkM+rGk6PpWNqzO9rg9qBwiR6l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1UFGlZjT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3NHGPIjB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 25 Nov 2024 09:26:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1732526818;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YYZusqvymI8BXMcEKbOA8u/Ian2JBuiU4YTg5whKRvk=;
+	b=1UFGlZjTd90xmWb83fkQJ6AGBwlRx/NQIW+k4R6mz9uw+XGCoTfc2fEXUKnezdAxnE5E1a
+	p6AGJoc47I1FJc/wx7ydorOyTzVmeMNlq7HSXbg8UvuTH9gcQwR1jPnUQBsw/7P6m+UoM/
+	bkHxjzhSnAVr1R7sH9EnxUhY9OzhNTxSgZAvabz0OQ9OYgI/R//Gdqv7sdAwiwkpgjCYpR
+	k3Ti0YKX/+Tc9YCYPBn74PHFf9oGYGaBHgl4JGGFSr3mrKW0HRti/OKGiB9dctQTz0UseM
+	t/FfR7jPVeNVi9Krjx4sOX/8aJKWI0kFqNt9UFWKnyxWG8hs3Tao0genFyd+Ew==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1732526818;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YYZusqvymI8BXMcEKbOA8u/Ian2JBuiU4YTg5whKRvk=;
+	b=3NHGPIjBQBGzs3mS98Ha3nAsjhCxS9wvcJOAAfxqySkBBqfY3NeUll+cyxyi0RoQknm/rC
+	eK975JcLED7hQkAQ==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu: Fix PPIN initialization
+Cc: Adeel Ashad <adeel.arshad@intel.com>, Tony Luck <tony.luck@intel.com>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241122234212.27451-1-tony.luck@intel.com>
+References: <20241122234212.27451-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <173201565541.412.15037901822386376271.tip-bot2@tip-bot2>
+Message-ID: <173252681739.412.4757446080039715116.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 19, 2024 at 11:27:35AM -0000, tip-bot2 for Rik van Riel wrote:
-> diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> index d17518c..8b66a55 100644
-> --- a/arch/x86/kernel/alternative.c
-> +++ b/arch/x86/kernel/alternative.c
-> @@ -1825,11 +1825,18 @@ static inline temp_mm_state_t use_temporary_mm(struct mm_struct *mm)
->  	return temp_state;
->  }
->  
-> +__ro_after_init struct mm_struct *poking_mm;
-> +__ro_after_init unsigned long poking_addr;
-> +
->  static inline void unuse_temporary_mm(temp_mm_state_t prev_state)
->  {
->  	lockdep_assert_irqs_disabled();
-> +
->  	switch_mm_irqs_off(NULL, prev_state.mm, current);
->  
-> +	/* Clear the cpumask, to indicate no TLB flushing is needed anywhere */
-> +	cpumask_clear_cpu(raw_smp_processor_id(), mm_cpumask(poking_mm));
+The following commit has been merged into the x86/urgent branch of tip:
 
-Oh bugger, this is really unfortunate.
+Commit-ID:     d9bb40544653cf039fe79225ec1d742183e2339a
+Gitweb:        https://git.kernel.org/tip/d9bb40544653cf039fe79225ec1d742183e2339a
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Fri, 22 Nov 2024 15:42:12 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 25 Nov 2024 10:11:33 +01:00
 
-Let me try and fix this.
+x86/cpu: Fix PPIN initialization
 
+On systems that enumerate PPIN (protected processor inventory
+number) using CPUID, but where the BIOS locked the MSR to
+prevent access /proc/cpuinfo reports "intel_ppin" feature as
+present on all logical CPUs except for CPU 0.
+
+This happens because ppin_init() uses x86_match_cpu() to
+determine whether PPIN is supported. When called on CPU 0
+the test for locked PPIN MSR results in:
+
+	clear_cpu_cap(c, info->feature);
+
+This clears the X86 FEATURE bit in boot_cpu_data. When other
+CPUs are brought online the x86_match_cpu() fails, and the
+PPIN FEATURE bit remains set for those other CPUs.
+
+Fix by using setup_clear_cpu_cap() instead of clear_cpu_cap()
+which force clears the FEATURE bit for all CPUS.
+
+Reported-by: Adeel Ashad <adeel.arshad@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20241122234212.27451-1-tony.luck@intel.com
+---
+ arch/x86/kernel/cpu/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 06a516f..d9d2d19 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -169,7 +169,7 @@ static void ppin_init(struct cpuinfo_x86 *c)
+ 	}
+ 
+ clear_ppin:
+-	clear_cpu_cap(c, info->feature);
++	setup_clear_cpu_cap(info->feature);
+ }
+ 
+ static void default_init(struct cpuinfo_x86 *c)
 
