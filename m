@@ -1,189 +1,134 @@
-Return-Path: <linux-tip-commits+bounces-2883-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2884-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6DF09D9A3B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2024 16:12:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7723C9D9DD7
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2024 20:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8E0CB218FC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2024 15:12:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FF8EB2496D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2024 19:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00031D5CDD;
-	Tue, 26 Nov 2024 15:12:23 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448711B85E4;
-	Tue, 26 Nov 2024 15:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25ECB1D45E2;
+	Tue, 26 Nov 2024 19:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2KbM9rxf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YYMZ6pqS"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63206183CCA;
+	Tue, 26 Nov 2024 19:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732633943; cv=none; b=ujxegoQi0HSpGIcf4wLvEzDlMAbZd7Jvw64UcBY4xDnZAKv1yNAjK97cF50ntnC6jWOqKjp523+uUConYdtQw8emBAjaBPNSrCD3J6Qp79dNcgWnqJtDiquEZwLyrZ4U+HbMnwZQpg3ppSJgDntATLAkKcR/yt/pCWrSJCa79Rc=
+	t=1732647679; cv=none; b=TpI8bywm88aYNay2V8F7/NVyRBRHs0ZxpOXxJVtfhpjpgzJAyghHfVOycuuXauslc4PnWCR5p9klP2dS4Fi+M7jpboJjqx9zpHnAGObwv7S4cN8GrIsIGBNX6Q9dksyiHTFR6wrIRgQvZhgGM8Fkf5A+JjBhcqXL6fN3iA/d+xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732633943; c=relaxed/simple;
-	bh=6yIrsDo7uuH/Wh2L9KpZduZHTrnXxRZBbM8iSiV9dB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r6qmfiY4XGt1uoskzRMB1yK8ZZRPoU/WxdowQJMPPaux9H4NOLM/WDYzt2TthMZqG4JauKO36TsTE1Cs7khE7rSl9Oisz9rdIYQ8Kp/T3DOb0eNuYGc2O7l2HGz/qyrbcUzSMEvKiVvoFRJkTmKZN5bU74t3yw/0+WPQ9awd1sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A0591150C;
-	Tue, 26 Nov 2024 07:12:49 -0800 (PST)
-Received: from [192.168.178.6] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4EE053F5A1;
-	Tue, 26 Nov 2024 07:12:17 -0800 (PST)
-Message-ID: <9aa93862-932c-4a17-a3ba-f6335649e555@arm.com>
-Date: Tue, 26 Nov 2024 16:12:04 +0100
+	s=arc-20240116; t=1732647679; c=relaxed/simple;
+	bh=P8M1UPsrLzB3p2nJRXqoXqJWjwr0xU5AQFz5jVN9jco=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=p3UxyUZ1FGUrig9hmMvTEGBV4W/W9SMiItFzQwe//kgkyKEyXP7eKrlYjcC38FAQOdMdKuEkT5N4Rz4ScwuzqnPtXKiZ+9DGFsYyYm7W8IaBoZOPFI4fgOjPEPlGGwYJMJ+PTY3Q8pppKO/52pTHEwQnXbSH7AMr2y8JTIrIus8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2KbM9rxf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YYMZ6pqS; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 26 Nov 2024 19:01:14 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1732647675;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=d4SOQFtTEkYY3L8+IOQayZlPryk9ozcbJ2aGM6OAA8U=;
+	b=2KbM9rxf270+yTBtSWBV6eghZkOHojiEmd8zNkYQbD9pyg3AlDefVBH+yZTNLkI8ToytmH
+	888My3AwvOp41iddKbeYtsZMEuElg2e5lcg+h4Jb8yYJeIIHgBFBXdSKVrUT35uPIH/eIn
+	diuvvXaWIzCJDWfPrgnIuR77aauG3la5L5vfhUZf/nsDvxafb+qLHnUvvvMyCcNC53772c
+	W7rnw17kKTMglefbiAAao26vA0ghZ0zDfci7fqEgzrSAAiOEua3BeKNg4emDlFHF0ZSTHH
+	GfHPy7SgoLd1hzu6f2ux5LE/hDQMYOmn3oYwPcOMcTD4/Y23CKe3sb+22PX+KA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1732647675;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=d4SOQFtTEkYY3L8+IOQayZlPryk9ozcbJ2aGM6OAA8U=;
+	b=YYMZ6pqS6+tLn4nS7GtNQT6K0/tQSanTmCuHKOoPIit/NSd99o1/b88gapj0MoJALS9T+3
+	Hu9g1oRD2I0iU9Dw==
+From: "tip-bot2 for Russell King (Oracle)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/irq-mvebu-sei: Move misplaced select()
+ callback to SEI CP domain
+Cc: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] [tip: sched/core] sched: Disable PLACE_LAG and
- RUN_TO_PARITY and move them to sysctl
-To: Cristian Prundeanu <cpru@amazon.com>
-Cc: kprateek.nayak@amd.com, abuehaze@amazon.com, alisaidi@amazon.com,
- benh@kernel.crashing.org, blakgeof@amazon.com, csabac@amazon.com,
- doebel@amazon.com, gautham.shenoy@amd.com, joseph.salisbury@oracle.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-tip-commits@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
- x86@kernel.org
-References: <20241017052000.99200-1-cpru@amazon.com>
- <20241125113535.88583-1-cpru@amazon.com>
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Content-Language: en-US
-In-Reply-To: <20241125113535.88583-1-cpru@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <173264767413.412.14263736309702033127.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On 25/11/2024 12:35, Cristian Prundeanu wrote:
-> Here are more results with recent 6.12 code, and also using SCHED_BATCH.
-> The control tests were run anew on Ubuntu 22.04 with the current pre-built
-> kernels 6.5 (baseline) and 6.8 (regression out of the box).
-> 
-> When updating mysql from 8.0.30 to 8.4.2, the regression grew even larger.
-> Disabling PLACE_LAG and RUN _TO_PARITY improved the results more than
-> using SCHED_BATCH.
-> 
-> Kernel   | default  | NO_PLACE_LAG and | SCHED_BATCH | mysql
->          | config   | NO_RUN_TO_PARITY |             | version
-> ---------+----------+------------------+-------------+---------
-> 6.8      | -15.3%   |                  |             | 8.0.30
-> 6.12-rc7 | -11.4%   | -9.2%            | -11.6%      | 8.0.30
->          |          |                  |             |
-> 6.8      | -18.1%   |                  |             | 8.4.2
-> 6.12-rc7 | -14.0%   | -10.2%           | -12.7%      | 8.4.2
-> ---------+----------+------------------+-------------+---------
-> 
-> Confidence intervals for all tests are smaller than +/- 0.5%.
-> 
-> I expect to have the repro package ready by the end of the week. Thank you
-> for your collective patience and efforts to confirm these results.
+The following commit has been merged into the irq/urgent branch of tip:
 
-The results I got look different:
+Commit-ID:     81b9e4c6910fd779b679d7674ec7d3730c7f0e2c
+Gitweb:        https://git.kernel.org/tip/81b9e4c6910fd779b679d7674ec7d3730c7f0e2c
+Author:        Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+AuthorDate:    Thu, 21 Nov 2024 12:48:25 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 26 Nov 2024 19:50:42 +01:00
 
-SUT kernel arm64 (mysql-8.4.0)
+irqchip/irq-mvebu-sei: Move misplaced select() callback to SEI CP domain
 
-(1) 6.5.13					    baseline	
+Commit fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
+introduced in v6.11-rc1 broke Mavell Armada platforms (and possibly others)
+by incorrectly switching irq-mvebu-sei to MSI parent.
 
-(2) 6.12.0-rc4 					    -12.9%
-	
-(3) 6.12.0-rc4 NO_PLACE_LAG			     +6.4%		
+In the above commit, msi_parent_ops is set for the sei->cp_domain, but
+rather than adding a .select method to mvebu_sei_cp_domain_ops (which is
+associated with sei->cp_domain), it was added to mvebu_sei_domain_ops which
+is associated with sei->sei_domain, which doesn't have any
+msi_parent_ops. This makes the call to msi_lib_irq_domain_select() always
+fail.
 
-(4) v6.12-rc4 SCHED_BATCH			    +10.8%
+This bug manifests itself with the following kernel messages on Armada 8040
+based systems:
 
-5 test runs each: confidence level (95%) <= ±0.56%
+ platform f21e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
+ platform f41e0000.interrupt-controller:interrupt-controller@50: deferred probe pending: (reason unknown)
 
-(2) is still in sync but (3)/(4) looks way better for me.
+Move the select callback to mvebu_sei_cp_domain_ops to cure it.
 
-Maybe a difference in our test setup can explain the different test results:
+Fixes: fbdf14e90ce4 ("irqchip/irq-mvebu-sei: Switch to MSI parent")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+---
+ drivers/irqchip/irq-mvebu-sei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I use:
-
-HammerDB Load Generator <-> MySQL SUT
-192 VCPUs               <-> 16 VCPUs
-
-Virtual users: 256
-Warehouse count: 64
-3 min rampup
-10 min test run time
-performance data: NOPM (New Operations Per Minute)
-
-So I have 256 'connection' tasks running on the 16 SUT VCPUS.
-
-> On 2024-11-01, Peter Zijlstra wrote:
-> 
->>> (At the risk of stating the obvious, using SCHED_BATCH only to get back to 
->>> the default CFS performance is still only a workaround,
->>
->> It is not really -- it is impossible to schedule all the various
->> workloads without them telling us what they really like. The quest is to
->> find interfaces that make sense and are implementable. But fundamentally
->> tasks will have to start telling us what they need. We've long since ran
->> out of crystal balls.
-> 
-> Completely agree that the best performance is obtained when the tasks are
-> individually tuned to the scheduler and explicitly set running parameters.
-> This isn't different from before.
-> 
-> But shouldn't our gold standard for default performance be CFS? There is a
-> significant regression out of the box when using EEVDF; how is seeking
-> additional tuning just to recover the lost performance not a workaround?
-> 
-> (Not to mention that this additional tuning means shifting the burden on
-> many users who may not be familiar enough with scheduler functionality.
-> We're essentially asking everyone to spend considerable effort to maintain
-> status quo from kernel 6.5.)
-> 
-> 
-> On 2024-11-14, Joseph Salisbury wrote:
-> 
->> This is a confirmation that we are also seeing a 9% performance
->> regression with the TPCC benchmark after v6.6-rc1.  We narrowed down the
->> regression was caused due to commit:
->> 86bfbb7ce4f6 ("sched/fair: Add lag based placement")
->>
->> This regression was reported via this thread:
->> https://lore.kernel.org/lkml/1c447727-92ed-416c-bca1-a7ca0974f0df@oracle.com/
->>
->> Phil Auld suggested to try turning off the PLACE_LAG sched feature. We
->> tested with NO_PLACE_LAG and can confirm it brought back 5% of the
->> performance loss.  We do not yet know what effect NO_PLACE_LAG will have
->> on other benchmarks, but it indeed helps TPCC.
-> 
-> Thank you for confirming the regression. I've been monitoring performance
-> on the v6.12-rcX tags since this thread started, and the results have been
-> largely constant.
-> 
-> I've also tested other benchmarks to verify whether (1) the regression
-> exists and (2) the patch proposed in this thread negatively affects them.
-> On postgresql and wordpress/nginx there is a regression which is improved
-> when applying the patch; on mongo and mariadb no regression manifested, and
-> the patch did not make their performance worse.
-> 
-> 
-> On 2024-11-19, Dietmar Eggemann wrote:
-> 
->> #cat /etc/systemd/system/mysql.service
->>
->> [Service]
->> CPUSchedulingPolicy=batch
->> ExecStart=/usr/local/mysql/bin/mysqld_safe
-> 
-> This is the approach I used as well to get the results above.
-
-OK.
-
->> My hunch is that this is due to the 'connection' threads (1 per virtual
->> user) running in SCHED_BATCH. I yet have to confirm this by only
->> changing the 'connection' tasks to SCHED_BATCH.
-> 
-> Did you have a chance to run with this scenario?
-
-Yeah, I did. The results where worse than running all mysqld threads in
-SCHED_BATCH but still better than the baseline.
-
-(5) v6.12-rc4 'connection' tasks in SCHED_BATCH		+6.8%
+diff --git a/drivers/irqchip/irq-mvebu-sei.c b/drivers/irqchip/irq-mvebu-sei.c
+index f8c70f2..065166a 100644
+--- a/drivers/irqchip/irq-mvebu-sei.c
++++ b/drivers/irqchip/irq-mvebu-sei.c
+@@ -192,7 +192,6 @@ static void mvebu_sei_domain_free(struct irq_domain *domain, unsigned int virq,
+ }
+ 
+ static const struct irq_domain_ops mvebu_sei_domain_ops = {
+-	.select	= msi_lib_irq_domain_select,
+ 	.alloc	= mvebu_sei_domain_alloc,
+ 	.free	= mvebu_sei_domain_free,
+ };
+@@ -306,6 +305,7 @@ static void mvebu_sei_cp_domain_free(struct irq_domain *domain,
+ }
+ 
+ static const struct irq_domain_ops mvebu_sei_cp_domain_ops = {
++	.select	= msi_lib_irq_domain_select,
+ 	.alloc	= mvebu_sei_cp_domain_alloc,
+ 	.free	= mvebu_sei_cp_domain_free,
+ };
 
