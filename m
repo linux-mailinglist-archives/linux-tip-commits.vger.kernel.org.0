@@ -1,286 +1,215 @@
-Return-Path: <linux-tip-commits+bounces-2887-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2888-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAA39D9DF0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2024 20:19:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40DE09DA169
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2024 05:18:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EB39B21BDF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Nov 2024 19:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00B13283F18
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Nov 2024 04:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3ECC1DE2AA;
-	Tue, 26 Nov 2024 19:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFAC518E0E;
+	Wed, 27 Nov 2024 04:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y2mXsQ6h";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ANhDph5O"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HwnFokOC"
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205AE18858E;
-	Tue, 26 Nov 2024 19:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732648790; cv=none; b=dJgvVrIDaar0O1+kWYJ0CXCE76F5AEz4cjXap3U7Ze2AFBtGmcrH4brk1unbv71IH+xvEuHg6pW5OVMCp5dPptDdCmSHVvlsxNuZZx/oy+wecFC4mOVzXSi8OsiZnDUQAKFNkT0XfjO9txdv+ZC4XqFZ984GBWcY6bk127fpxK0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732648790; c=relaxed/simple;
-	bh=Bi199jctiM2exmO/SsyMikZ+Iwzu20xhIHBWn5X9604=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=X5zq4dDwOl/CzDE7M/C4qrtZ1DJnJUlanFVzB+milq0Tu/gHWw1sgmYrQy3eBj42tKiXqQedZbvVY2Lzwk4oYIVgQhdUNuuQkz1TAmsOSyIc3etpLDOwf3oEs/neO6E/EixLFO6FlIUuuIZl9a8+xc4kjxCI2ttVga4ZB51JHAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y2mXsQ6h; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ANhDph5O; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 26 Nov 2024 19:19:46 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1732648787;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qiiVOw6VUTuBXa3p1meDtG4n71kgXSDbg0KApYqx8oI=;
-	b=Y2mXsQ6hyCLgXfad+xZVNx5tP0j0B/pU4uSBJxKZSeGr2j/vLRFDfkrJaZvJN+1GPGyDQW
-	avGE/UkdkTpF2EUJR3ftQhnxkFTYBYA8anqjf7yyWFndJu0+hb5rg1isXzsa+nVZp7bAIc
-	HQtYfBRr1NLsQo4FCZ8+VeoIjH0T8yA9LpqMpjcbDbdWo0me7GUNz4x4H+BLh0TX5SDcAj
-	NAoegUP8vMl8U+xqr4Ev4cwBhSS2KYf33vS+UYdRQoVWlgeUQZjcIORBiwozp1+S67onFz
-	G7b77wInNkKAAEexcUwGV9wCBUrymvV8CA1grxDxugvbDhqzlTK/9IfNzX1lAA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1732648787;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qiiVOw6VUTuBXa3p1meDtG4n71kgXSDbg0KApYqx8oI=;
-	b=ANhDph5OPDXuPDdtRFSzxYS+7O1jOfFq48hmDGSroNEUzSToJOKhj+29lcPqlXKarVo7hD
-	EU1SK+QMteL54uAw==
-From:
- tip-bot2 for Uwe =?utf-8?q?Kleine-K=C3=B6nig?= <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] irqchip: Switch back to struct platform_driver::remove()
-Cc: u.kleine-koenig@baylibre.com, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20241109173828.291172-2-u.kleine-koenig@baylibre.com>
-References: <20241109173828.291172-2-u.kleine-koenig@baylibre.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C51335C7;
+	Wed, 27 Nov 2024 04:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732681097; cv=fail; b=KC7tuwTZt9DR2Z/nhZt5yd8BCTRoKdIhv9oxF8LJRiTsN7MBlcVnDsQmtlCD7L34hXHqSIIo93iX02URm/NQUXvz+im+I/Xyqx+fKOBe7Zp5j1xAl+AmO5cMLkvSy3Gjef1w4SmwTcZ3tdUxlA37RYl6yKJianaCqJ4G1Ml3MgE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732681097; c=relaxed/simple;
+	bh=itCxEcPe/CZpdPF59n3SrlZm5QOOderS+SaGx1nOQmA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pnt8BhqZH10Qalf8W/SHb2LwzXegyKsT43vvI0VSPxGAHSH1AqDgP2ZlN90bbjMS/I9e9Uitrj8RP50LDgcBZyM/JcIbvj+7S52dxZP30aBbFa1L8rXOohMQxngL+3dXkSs5o0CxptzmfXlTKOi4L4x9elBaTne4ehVWNEbMRE4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=HwnFokOC; arc=fail smtp.client-ip=40.107.94.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sj8CWp2cHM/EMVhrW5oQ0jeVYMpnXOOi9VX+FokNef3+Hj+sKJuxIozpXcvsEsl1qb5S2q6FaHRGCpltGjGMdXVRoAymqBoO9CTYfvKcZG5tjzmp6MwfmN+smKT0FlFz+ofu/q+U5F9PI9ZaPy6epkTEoPnHSfu2vfZkx/sGhhcRndcxMoM272S1QXGLWd4HTOFS543LDq1ObH8tSVOvaNRvBZh1yy+D0hWcF1ZBdcEwDW+mysl8IL4pQfn/MXqcfZDSi1Ww/NTGvwuVGWzWcvRZ+kZ5QrRpxgcZdJbaLXl7tD/czlM27BTtsuAbIrGN0T078bjyOG7MYvLgX5f9Rw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vLFte9NJHWGKFwgw7WyKBSLb9MQICnc6QTE3GZUo5E8=;
+ b=V0v0X2VcATjxOAkrPqvDB+U73/VkGdxeZXuX0vRoOT0zD832czS7gZ3XkG9+Ys4wggxuLEa2R+u+9C9cHVlfHW0ut7ccrl3TZgyIEpphlw6yjteSkEji5Qq5rVjSus86KBJYU+S4yb3Y2Me1l5DS6HDdlfJ4EFLeB0RcqWKAljRxbMnD3xdWQ9XWNr+u4WlpRi5D6ChikY4OM/2uhfRC/DWLqZ7K194hvjmnL2gKlbakxd1Z+ceaixRCCw/YveWU6hL3+zLoAGkr/2q3gt7GIezW5Ma6HhkQJ+Ew+iO8vb3lSqN4NlttrEaO96AynPRWw/NvOKRtov3eH9B91w98lg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=infradead.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vLFte9NJHWGKFwgw7WyKBSLb9MQICnc6QTE3GZUo5E8=;
+ b=HwnFokOCtCgjcRt9HXAzRnlTjr66Fl++KjG+6Nq9lSF3huCsnsa+lpUlFh6yra550qAizQKgSyxt1qTfdd5yO5Hkw/jRhqtx5SuRlCpotHSDhy1QbW3PeuUAY2KXl4YnKS9eHidrRyQw7tC08wpJz1226rpyAfbqP5VIDGxC04c=
+Received: from MW4PR03CA0032.namprd03.prod.outlook.com (2603:10b6:303:8e::7)
+ by MN0PR12MB6271.namprd12.prod.outlook.com (2603:10b6:208:3c1::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.20; Wed, 27 Nov
+ 2024 04:18:11 +0000
+Received: from SJ5PEPF000001F3.namprd05.prod.outlook.com
+ (2603:10b6:303:8e:cafe::69) by MW4PR03CA0032.outlook.office365.com
+ (2603:10b6:303:8e::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8182.22 via Frontend Transport; Wed,
+ 27 Nov 2024 04:18:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ5PEPF000001F3.mail.protection.outlook.com (10.167.242.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8207.12 via Frontend Transport; Wed, 27 Nov 2024 04:18:10 +0000
+Received: from [10.136.45.86] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 26 Nov
+ 2024 22:18:08 -0600
+Message-ID: <ee2feb3b-0a1f-4276-b6fd-f36014654cbf@amd.com>
+Date: Wed, 27 Nov 2024 09:47:54 +0530
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173264878636.412.16179759316815548729.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: sched/core] sched/eevdf: More PELT vs DELAYED_DEQUEUE
+To: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+CC: Dietmar Eggemann <dietmar.eggemann@arm.com>, Vincent Guittot
+	<vincent.guittot@linaro.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-tip-commits@vger.kernel.org>
+References: <20240906104525.GG4928@noisy.programming.kicks-ass.net>
+ <172595576232.2215.18027704125134691219.tip-bot2@tip-bot2>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <172595576232.2215.18027704125134691219.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F3:EE_|MN0PR12MB6271:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ee1b81c-fb21-4f54-c205-08dd0e9a80dc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|376014|82310400026|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NlMwMDB6bXNvNXExV0w4Mm5kZm9oTmViY2JOdmlHVjVjNVdWTEsxRFBsRTZN?=
+ =?utf-8?B?cTdtY05TRXFPUXR6NHZDYzRwbVRFUW5SU1J6YUFzMnJyaFgzVkFJdDNTNkxN?=
+ =?utf-8?B?Rk4rZjc2SzR0WjFrUk1jaVBJMUtiUjZ0NWlCY2FXL1JVdUF0elEwa3NJVHFj?=
+ =?utf-8?B?YnNDSk90bmQzbTBFVjk0blVrakkyU2ZSeERRME1aN3hhc0d5TVdUZzVlV1lS?=
+ =?utf-8?B?ZnlmM0cyVWJoQzQvZW00Q2RTNERUVmNWR0duN2Q4OHBSZ0N5QlVyblRYeS91?=
+ =?utf-8?B?cGkxbldyYVEvRjZHRHRmWCtsUXFvZ3RYYkhCOEtPbVpvNEJUbEVrRjlocVZD?=
+ =?utf-8?B?bHZmNHVDQUYrTWNPWklqL1IzWE1jNWJ1MVV1OHVoQlpJeXBLdmZqTVlFUnNq?=
+ =?utf-8?B?NXAwOW9tcUFsd3ZyZjAyMnBIN2VBNFFiNWVxNWZjNE9jN3ZkTzIzZHhnRDBl?=
+ =?utf-8?B?aUZxc04xcXM2dU53enVpWVVaTTBYZmhuTVVuQ3ZVTjJJcDZGMFRidUVxVlpB?=
+ =?utf-8?B?QmpzNFdmYS9ndjkyeGYveTRHNFhCVWtUNDJ5eUFOV3VDNS82Q0RESE9IdXV3?=
+ =?utf-8?B?Zm9Remt6U2kyRzJ3NGtnaTVNdEFPUVY2dk83SGlWNWhETy96UVVxcXlqbDcz?=
+ =?utf-8?B?dEwyMVNvNVZmYW9HdGcxSDVrNGh2b1hwSFJMN0cramh1Q2xURWwyMC9tazFQ?=
+ =?utf-8?B?dHllTUN5cnQyY2JqWktkWDF0clF6T1lYNVBtays1RW16dE5YTkduZW9LbmdB?=
+ =?utf-8?B?WFFlU0c5Vnlmd3JSWDJZaFg0VmI5ZnhDUXo5UFlpa3oya0ltM1Z0bUxiNTBp?=
+ =?utf-8?B?ODFDcHRpdFNrNFhQZHdMQm9ZNDRtaTF4U3ZVSmpCcXByc2VGbzVZb3J6REtG?=
+ =?utf-8?B?b1JFQnVkR3psejEzaXVyTFRvbk5DWGlkeTRqOHpYQnhwZUNtU2MwdWVieE1p?=
+ =?utf-8?B?UGtpdklJWXdKRmYyb1Qzdmd1Q3ZkdkZYVEZZUTA2UnRnejNKaTF2Yy90WWIz?=
+ =?utf-8?B?MktBOVpyOTM0ZUZQK0RUKzBmZlNXd2l3dno2Y3BsZDh3K21tSVJ6cW1NbUQz?=
+ =?utf-8?B?RmE0MXdNWlpiRmdFbFhVTGx1V280enRVcmtwaFBzTFRpRFN5MVc1ZFVNRFZu?=
+ =?utf-8?B?ZDd6MUtlNVhLUVZoRDdqT0RsZC9mNlRONkNucjdnakRrQzhRdUw3ZWdBQ0Ro?=
+ =?utf-8?B?WVpjaXVLT1ZZemNnWXZPd0xMRDl4Z1NmRkVhRlgwQVRZSGtRVGVTTHI4OTNk?=
+ =?utf-8?B?SGdOdDVMbEZVWnRoMWxPTVltR2F5ejlrcVdKaFRLR1BLeFlNR0E4Z1B4dzBk?=
+ =?utf-8?B?M29oZWxVeGdUUjFUYWRKdXk5TlNudnk0NzR4MnN0dS9JL2sxSDJVbjA0OVd1?=
+ =?utf-8?B?VU04MytCYjNCS2ZsOGVlNzZrQ3JQZXQ4ZlVtd2tMK2I3UWY5QjlrSjZwb09s?=
+ =?utf-8?B?SmJyWFRyWDFVTkowdnlNYndNUEc2Sm1zQnozaytWNmJLTGFsbU1TUU5ESitY?=
+ =?utf-8?B?ajMxbzU5ZTNNMThobzl6dmpnMHVpU1RrSURUSDVMRjlyVzV5MmxoN09TN0N3?=
+ =?utf-8?B?TWdWeDFuZEpxc2xpRWhBU050Q3ZXQ0l4OU10aFJkV0hBNkx4M3N6aStoMW5X?=
+ =?utf-8?B?UzBWODJoczM2VExOaW5zUnBVU2x6Q1hwajlEODl1dkEvQnZxakVvbDdLV21V?=
+ =?utf-8?B?NGlRQTU5bksvTWtIRWQ2Unk4Z1JlRGZCcEg0WTlQdzFSdFRxU2trL2RDWFAv?=
+ =?utf-8?B?T004ajYyNzBpWTFZVmZQKzF5VnRtdUFwZFhqOENMRGlvM2pGdU1wTlFUMGRM?=
+ =?utf-8?B?UHgyNVF5NG4vSHMrSlRNbkJZZmFvM1pYeHVqTTZleXAyQmcxUlgvbUJnVUsv?=
+ =?utf-8?B?TjhLSnhPaGVNZWpqNkZ3TmhYR3UrbDE1bndjN1pOcW9pQ3c9PQ==?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2024 04:18:10.4463
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ee1b81c-fb21-4f54-c205-08dd0e9a80dc
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001F3.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6271
 
-The following commit has been merged into the irq/urgent branch of tip:
+Hello Peter,
 
-Commit-ID:     cc47268cb4841c84d54f0ac73858986bcd515eb4
-Gitweb:        https://git.kernel.org/tip/cc47268cb4841c84d54f0ac73858986bcd5=
-15eb4
-Author:        Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-AuthorDate:    Sat, 09 Nov 2024 18:38:27 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 26 Nov 2024 20:09:06 +01:00
+On 9/10/2024 1:39 PM, tip-bot2 for Peter Zijlstra wrote:
+> The following commit has been merged into the sched/core branch of tip:
+> 
+> Commit-ID:     2e05f6c71d36f8ae1410a1cf3f12848cc17916e9
+> Gitweb:        https://git.kernel.org/tip/2e05f6c71d36f8ae1410a1cf3f12848cc17916e9
+> Author:        Peter Zijlstra <peterz@infradead.org>
+> AuthorDate:    Fri, 06 Sep 2024 12:45:25 +02:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Tue, 10 Sep 2024 09:51:15 +02:00
+> 
+> sched/eevdf: More PELT vs DELAYED_DEQUEUE
+> 
+> Vincent and Dietmar noted that while commit fc1892becd56 fixes the
+> entity runnable stats, it does not adjust the cfs_rq runnable stats,
+> which are based off of h_nr_running.
+> 
+> Track h_nr_delayed such that we can discount those and adjust the
+> signal.
+> 
+> Fixes: fc1892becd56 ("sched/eevdf: Fixup PELT vs DELAYED_DEQUEUE")
+> Reported-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+> Reported-by: Vincent Guittot <vincent.guittot@linaro.org>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Link: https://lkml.kernel.org/r/20240906104525.GG4928@noisy.programming.kicks-ass.net
 
-irqchip: Switch back to struct platform_driver::remove()
+I've been testing this fix for a while now to see if it helps the
+regressions reported around EEVDF complete. The issue with negative
+"h_nr_delayed" reported by Luis previously seem to have been fixed as a
+result of commit 75b6499024a6 ("sched/fair: Properly deactivate
+sched_delayed task upon class change")
 
-After commit 0edb555a65d1 ("platform: Make platform_driver::remove() return
-void") .remove() is (again) the right callback to implement for platform
-drivers.
+I've been running stress-ng for a while and haven't seen any cases of
+negative "h_nr_delayed". I'd also added the following WARN_ON() to see
+if there are any delayed tasks on the cfs_rq before switching to idle in
+some of my previous experiments and I did not see any splat during my
+benchmark runs.
 
-Convert all platform drivers below drivers/irqchip/ to use .remove(), with
-the eventual goal to drop struct platform_driver::remove_new(). As
-.remove() and .remove_new() have the same prototypes, conversion is done by
-just changing the structure member name in the driver initializer.
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 621696269584..c19a31fa46c9 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -457,6 +457,9 @@ static void put_prev_task_idle(struct rq *rq, struct task_struct *prev, struct t
+  
+  static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool first)
+  {
++	/* All delayed tasks must be picked off before switching to idle */
++	SCHED_WARN_ON(rq->cfs.h_nr_delayed);
++
+  	update_idle_core(rq);
+  	scx_update_idle(rq, true);
+  	schedstat_inc(rq->sched_goidle);
+--
 
-Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241109173828.291172-2-u.kleine-koenig@bay=
-libre.com
----
- drivers/irqchip/irq-imgpdc.c              | 2 +-
- drivers/irqchip/irq-imx-intmux.c          | 2 +-
- drivers/irqchip/irq-imx-irqsteer.c        | 2 +-
- drivers/irqchip/irq-keystone.c            | 2 +-
- drivers/irqchip/irq-ls-scfg-msi.c         | 2 +-
- drivers/irqchip/irq-madera.c              | 2 +-
- drivers/irqchip/irq-mvebu-pic.c           | 2 +-
- drivers/irqchip/irq-pruss-intc.c          | 2 +-
- drivers/irqchip/irq-renesas-intc-irqpin.c | 2 +-
- drivers/irqchip/irq-renesas-irqc.c        | 2 +-
- drivers/irqchip/irq-renesas-rza1.c        | 2 +-
- drivers/irqchip/irq-ts4800.c              | 2 +-
- 12 files changed, 12 insertions(+), 12 deletions(-)
+If you are including this back, feel free to add:
 
-diff --git a/drivers/irqchip/irq-imgpdc.c b/drivers/irqchip/irq-imgpdc.c
-index b42ed68..85f80ba 100644
---- a/drivers/irqchip/irq-imgpdc.c
-+++ b/drivers/irqchip/irq-imgpdc.c
-@@ -479,7 +479,7 @@ static struct platform_driver pdc_intc_driver =3D {
- 		.of_match_table	=3D pdc_intc_match,
- 	},
- 	.probe		=3D pdc_intc_probe,
--	.remove_new	=3D pdc_intc_remove,
-+	.remove		=3D pdc_intc_remove,
- };
-=20
- static int __init pdc_intc_init(void)
-diff --git a/drivers/irqchip/irq-imx-intmux.c b/drivers/irqchip/irq-imx-intmu=
-x.c
-index 511adfa..787543d 100644
---- a/drivers/irqchip/irq-imx-intmux.c
-+++ b/drivers/irqchip/irq-imx-intmux.c
-@@ -361,6 +361,6 @@ static struct platform_driver imx_intmux_driver =3D {
- 		.pm		=3D &imx_intmux_pm_ops,
- 	},
- 	.probe		=3D imx_intmux_probe,
--	.remove_new	=3D imx_intmux_remove,
-+	.remove		=3D imx_intmux_remove,
- };
- builtin_platform_driver(imx_intmux_driver);
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irq=
-steer.c
-index 75a0e98..b0e9788 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -328,6 +328,6 @@ static struct platform_driver imx_irqsteer_driver =3D {
- 		.pm		=3D &imx_irqsteer_pm_ops,
- 	},
- 	.probe		=3D imx_irqsteer_probe,
--	.remove_new	=3D imx_irqsteer_remove,
-+	.remove		=3D imx_irqsteer_remove,
- };
- builtin_platform_driver(imx_irqsteer_driver);
-diff --git a/drivers/irqchip/irq-keystone.c b/drivers/irqchip/irq-keystone.c
-index 30f1979..808c781 100644
---- a/drivers/irqchip/irq-keystone.c
-+++ b/drivers/irqchip/irq-keystone.c
-@@ -211,7 +211,7 @@ MODULE_DEVICE_TABLE(of, keystone_irq_dt_ids);
-=20
- static struct platform_driver keystone_irq_device_driver =3D {
- 	.probe		=3D keystone_irq_probe,
--	.remove_new	=3D keystone_irq_remove,
-+	.remove		=3D keystone_irq_remove,
- 	.driver		=3D {
- 		.name	=3D "keystone_irq",
- 		.of_match_table	=3D of_match_ptr(keystone_irq_dt_ids),
-diff --git a/drivers/irqchip/irq-ls-scfg-msi.c b/drivers/irqchip/irq-ls-scfg-=
-msi.c
-index 1aef5c4..c0e1aaf 100644
---- a/drivers/irqchip/irq-ls-scfg-msi.c
-+++ b/drivers/irqchip/irq-ls-scfg-msi.c
-@@ -418,7 +418,7 @@ static struct platform_driver ls_scfg_msi_driver =3D {
- 		.of_match_table	=3D ls_scfg_msi_id,
- 	},
- 	.probe		=3D ls_scfg_msi_probe,
--	.remove_new	=3D ls_scfg_msi_remove,
-+	.remove		=3D ls_scfg_msi_remove,
- };
-=20
- module_platform_driver(ls_scfg_msi_driver);
-diff --git a/drivers/irqchip/irq-madera.c b/drivers/irqchip/irq-madera.c
-index acceb6e..b32982c 100644
---- a/drivers/irqchip/irq-madera.c
-+++ b/drivers/irqchip/irq-madera.c
-@@ -236,7 +236,7 @@ static void madera_irq_remove(struct platform_device *pde=
-v)
-=20
- static struct platform_driver madera_irq_driver =3D {
- 	.probe		=3D madera_irq_probe,
--	.remove_new	=3D madera_irq_remove,
-+	.remove		=3D madera_irq_remove,
- 	.driver =3D {
- 		.name	=3D "madera-irq",
- 		.pm	=3D &madera_irq_pm_ops,
-diff --git a/drivers/irqchip/irq-mvebu-pic.c b/drivers/irqchip/irq-mvebu-pic.c
-index 08b0cc8..bd1e06e 100644
---- a/drivers/irqchip/irq-mvebu-pic.c
-+++ b/drivers/irqchip/irq-mvebu-pic.c
-@@ -183,7 +183,7 @@ MODULE_DEVICE_TABLE(of, mvebu_pic_of_match);
-=20
- static struct platform_driver mvebu_pic_driver =3D {
- 	.probe		=3D mvebu_pic_probe,
--	.remove_new	=3D mvebu_pic_remove,
-+	.remove		=3D mvebu_pic_remove,
- 	.driver =3D {
- 		.name		=3D "mvebu-pic",
- 		.of_match_table	=3D mvebu_pic_of_match,
-diff --git a/drivers/irqchip/irq-pruss-intc.c b/drivers/irqchip/irq-pruss-int=
-c.c
-index 060eb00..bee0198 100644
---- a/drivers/irqchip/irq-pruss-intc.c
-+++ b/drivers/irqchip/irq-pruss-intc.c
-@@ -648,7 +648,7 @@ static struct platform_driver pruss_intc_driver =3D {
- 		.suppress_bind_attrs	=3D true,
- 	},
- 	.probe		=3D pruss_intc_probe,
--	.remove_new	=3D pruss_intc_remove,
-+	.remove		=3D pruss_intc_remove,
- };
- module_platform_driver(pruss_intc_driver);
-=20
-diff --git a/drivers/irqchip/irq-renesas-intc-irqpin.c b/drivers/irqchip/irq-=
-renesas-intc-irqpin.c
-index 9ad3723..954419f 100644
---- a/drivers/irqchip/irq-renesas-intc-irqpin.c
-+++ b/drivers/irqchip/irq-renesas-intc-irqpin.c
-@@ -584,7 +584,7 @@ static SIMPLE_DEV_PM_OPS(intc_irqpin_pm_ops, intc_irqpin_=
-suspend, NULL);
-=20
- static struct platform_driver intc_irqpin_device_driver =3D {
- 	.probe		=3D intc_irqpin_probe,
--	.remove_new	=3D intc_irqpin_remove,
-+	.remove		=3D intc_irqpin_remove,
- 	.driver		=3D {
- 		.name		=3D "renesas_intc_irqpin",
- 		.of_match_table	=3D intc_irqpin_dt_ids,
-diff --git a/drivers/irqchip/irq-renesas-irqc.c b/drivers/irqchip/irq-renesas=
--irqc.c
-index 76026e0..cbce8ff 100644
---- a/drivers/irqchip/irq-renesas-irqc.c
-+++ b/drivers/irqchip/irq-renesas-irqc.c
-@@ -247,7 +247,7 @@ MODULE_DEVICE_TABLE(of, irqc_dt_ids);
-=20
- static struct platform_driver irqc_device_driver =3D {
- 	.probe		=3D irqc_probe,
--	.remove_new	=3D irqc_remove,
-+	.remove		=3D irqc_remove,
- 	.driver		=3D {
- 		.name		=3D "renesas_irqc",
- 		.of_match_table	=3D irqc_dt_ids,
-diff --git a/drivers/irqchip/irq-renesas-rza1.c b/drivers/irqchip/irq-renesas=
--rza1.c
-index f05afe8..d4e6a68 100644
---- a/drivers/irqchip/irq-renesas-rza1.c
-+++ b/drivers/irqchip/irq-renesas-rza1.c
-@@ -259,7 +259,7 @@ MODULE_DEVICE_TABLE(of, rza1_irqc_dt_ids);
-=20
- static struct platform_driver rza1_irqc_device_driver =3D {
- 	.probe		=3D rza1_irqc_probe,
--	.remove_new	=3D rza1_irqc_remove,
-+	.remove		=3D rza1_irqc_remove,
- 	.driver		=3D {
- 		.name		=3D "renesas_rza1_irqc",
- 		.of_match_table	=3D rza1_irqc_dt_ids,
-diff --git a/drivers/irqchip/irq-ts4800.c b/drivers/irqchip/irq-ts4800.c
-index b5dddb3..cc219f2 100644
---- a/drivers/irqchip/irq-ts4800.c
-+++ b/drivers/irqchip/irq-ts4800.c
-@@ -154,7 +154,7 @@ MODULE_DEVICE_TABLE(of, ts4800_ic_of_match);
-=20
- static struct platform_driver ts4800_ic_driver =3D {
- 	.probe		=3D ts4800_ic_probe,
--	.remove_new	=3D ts4800_ic_remove,
-+	.remove		=3D ts4800_ic_remove,
- 	.driver =3D {
- 		.name		=3D "ts4800-irqc",
- 		.of_match_table	=3D ts4800_ic_of_match,
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+
+> [..snip..]
+
+-- 
+Thanks and Regards,
+Prateek
+
 
