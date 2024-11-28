@@ -1,137 +1,134 @@
-Return-Path: <linux-tip-commits+bounces-2892-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2893-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410709DB5C5
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2024 11:33:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2B19DB63F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2024 12:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA32516211B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2024 10:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE3C16460F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2024 11:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CF1155A25;
-	Thu, 28 Nov 2024 10:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D8B15E5CA;
+	Thu, 28 Nov 2024 11:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="jyOkTTNj"
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cbEy/XSI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="do+HA9pX"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43DA15383C;
-	Thu, 28 Nov 2024 10:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D869C192D82;
+	Thu, 28 Nov 2024 11:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732790027; cv=none; b=kA/AfNGzr7LE0uDFl2rhEp3uyKwtNnXvXCMw1n0wUsOaMsC2mI9FYrkVZKuilEzT3itri2qq/WogV91D/C7+vcsXL95012Z1NI7dZTCjQsvI2LUGvxNP7Xj5mPWjpSoW4arYBFanX0BfJg8GplQF/hLVcOSEpD/jKLqo8QWkumQ=
+	t=1732792082; cv=none; b=nCFhK1Y2c9xwZTf2clwr4ogDkI4x6cmzkFkVBNb+Jl61a9p3bo7jVYe8E/QFGmitwrLAL+/oz89NAsEP3+FaR26jlglPf6GXKEPxZtcDm1a7M6GXEmVSKIKxopF9AiNpGfozBjgKbpDarQOX2aVRB1hPK61+NO5VTEkLDn3hwBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732790027; c=relaxed/simple;
-	bh=zgdyVn/+nOYYJ+Vdw99bJ+5oJo7PPJaiH2UCJzw970g=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QympH1fCVhG71iXjDM89yvF1f+ssG9fF3Giha747vB9A/WzUK4nloiXcljAoCBxOI38d0oxsfaOgp5R1VJFQul+ViEZUVyVykXwnfAoo9hMwYxW3VXz+2F8ihHDB31449RB0agg0I8OVPdm172dRtzS8hB58TrffaYbGTGj9a+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=jyOkTTNj; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1732790026; x=1764326026;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3cjb0+0e787fmSia9xKiS5vCKypEydvQhshZnRtBb4s=;
-  b=jyOkTTNj3GfsTpTM/RQYPXNJqKzydkmLFuiuTKiVLjs9O4qZbWL+pxzC
-   TZoV+ARMYTaqboURwzfyGb+8gNBhVtMho4J1aGPBz6tv15xMnBPvr5UHq
-   RFCs8W3djEvvAVCc358h9g20DTcm+zai7Pg2l9MuZmLMh4pq3tSmdCQKX
-   k=;
-X-IronPort-AV: E=Sophos;i="6.12,192,1728950400"; 
-   d="scan'208";a="473917503"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2024 10:33:45 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:49797]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.41:2525] with esmtp (Farcaster)
- id 252a3a4d-81ab-4111-b181-493c14bd6249; Thu, 28 Nov 2024 10:33:44 +0000 (UTC)
-X-Farcaster-Flow-ID: 252a3a4d-81ab-4111-b181-493c14bd6249
-Received: from EX19D016UWA004.ant.amazon.com (10.13.139.119) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 28 Nov 2024 10:33:44 +0000
-Received: from 88665a51a6b2.amazon.com (10.106.178.48) by
- EX19D016UWA004.ant.amazon.com (10.13.139.119) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Thu, 28 Nov 2024 10:33:41 +0000
-From: Cristian Prundeanu <cpru@amazon.com>
-To: <cpru@amazon.com>
-CC: <abuehaze@amazon.com>, <alisaidi@amazon.com>, <benh@kernel.crashing.org>,
-	<blakgeof@amazon.com>, <csabac@amazon.com>, <dietmar.eggemann@arm.com>,
-	<doebel@amazon.com>, <gautham.shenoy@amd.com>, <joseph.salisbury@oracle.com>,
-	<kprateek.nayak@amd.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <linux-tip-commits@vger.kernel.org>,
-	<mingo@redhat.com>, <peterz@infradead.org>, <x86@kernel.org>
-Subject: Re: [PATCH 0/2] [tip: sched/core] sched: Disable PLACE_LAG and RUN_TO_PARITY and move them to sysctl
-Date: Thu, 28 Nov 2024 04:32:36 -0600
-Message-ID: <20241128103236.22777-1-cpru@amazon.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241125113535.88583-1-cpru@amazon.com>
-References: <20241125113535.88583-1-cpru@amazon.com>
+	s=arc-20240116; t=1732792082; c=relaxed/simple;
+	bh=8OV/+RhPfyvUachcUbgg6ACmykl00zvXmFN+CISQq8A=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=OzrAMhcFtZ+WzVD+l0RNVS0y0KpKs8AQ6B5jpUIwT016T0+bdcWcHHBjcL+ZCrh4l6j3ZvQZoZuvaaQz9hD5MBC/rHdFRaXir/SP9MHddrpEDjhj7EIwOGCdagZhnZeyQH0QDb8bI7QtJZGlqQQP+jUuVQbFp7bVQlsMlMZT60s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cbEy/XSI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=do+HA9pX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 28 Nov 2024 11:07:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1732792078;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bO/GNKFrr2wZhrmREpgjYFqHi+It2Yxj+rYr6/1hJmk=;
+	b=cbEy/XSIEJ3Wnqt1fqo19fyj1GDWSVt3fpacEnCx9PXZepynOd/BRIIi1jLrFujYuHmWiw
+	FG4+v8KlW0yGuNQ4un0hlraWqv3ISsuFxAlzm+m1Oj91jTCg5TrhINW+PJ7/844w11CKqC
+	NsjxNP5/Gfiwn551JlVUe6JbtRx6kRGrLHJqnNFG3PlqTiIIqnaTHqCp6VsD84QsoArC5L
+	pgzxkFyCAl256zJZq3cbuKUbZm7pMDJO/9vG1maBCd0Qi8B+5BoAD32ykRIEOUU5kIfP9R
+	0aq5Fqqkk8fQ6+kAeIpE5Sl7EBZZDPskQji9R+SXkNEk6KI/UcHtuc/0tRoo1A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1732792078;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bO/GNKFrr2wZhrmREpgjYFqHi+It2Yxj+rYr6/1hJmk=;
+	b=do+HA9pX4V8tsNfrecu2ibQnwvOw6ci29RtZfhx/NRBhm3xlapZ7JgcOjaHF8G9Sz5MCeN
+	Rf8t3wY8cFJlptAA==
+From: "tip-bot2 for Marcelo Dalmas" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] ntp: Remove invalid cast in time offset math
+Cc: Marcelo Dalmas <marcelo.dalmas@ge.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3CSJ0P101MB03687BF7D5A10FD3C49C51E5F42E2=40SJ0P101MB?=
+ =?utf-8?q?0368=2ENAMP101=2EPROD=2EOUTLOOK=2ECOM=3E?=
+References: =?utf-8?q?=3CSJ0P101MB03687BF7D5A10FD3C49C51E5F42E2=40SJ0P101M?=
+ =?utf-8?q?B0368=2ENAMP101=2EPROD=2EOUTLOOK=2ECOM=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D038UWB001.ant.amazon.com (10.13.139.148) To
- EX19D016UWA004.ant.amazon.com (10.13.139.119)
+Message-ID: <173279207753.412.15377961196958450230.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On 2024-11-26, K Prateek Nayak wrote:
+The following commit has been merged into the timers/urgent branch of tip:
 
-> Would it be possible to use the perf-tool built there to collect
-> the scheduling stats for MySQL benchmark runs on both v6.5 and v6.8 and
-> share the output of "perf sched stats diff" and the two perf.data files
-> recorded?
+Commit-ID:     f5807b0606da7ac7c1b74a386b22134ec7702d05
+Gitweb:        https://git.kernel.org/tip/f5807b0606da7ac7c1b74a386b22134ec7702d05
+Author:        Marcelo Dalmas <marcelo.dalmas@ge.com>
+AuthorDate:    Mon, 25 Nov 2024 12:16:09 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 28 Nov 2024 12:02:38 +01:00
 
-I'll add this to the list of my next tests. Thank you for mentioning it!
+ntp: Remove invalid cast in time offset math
 
+Due to an unsigned cast, adjtimex() returns the wrong offest when using
+ADJ_MICRO and the offset is negative. In this case a small negative offset
+returns approximately 4.29 seconds (~ 2^32/1000 milliseconds) due to the
+unsigned cast of the negative offset.
 
-On 2024-11-26, Dietmar Eggemann wrote:
+This cast was added when the kernel internal struct timex was changed to
+use type long long for the time offset value to address the problem of a
+64bit/32bit division on 32bit systems.
 
-> SUT kernel arm64 (mysql-8.4.0)
-> (2) 6.12.0-rc4                -12.9%
-> (3) 6.12.0-rc4 NO_PLACE_LAG   +6.4%		
-> (4) v6.12-rc4  SCHED_BATCH    +10.8%
+The correct cast would have been (s32), which is correct as time_offset can
+only be in the range of [INT_MIN..INT_MAX] because the shift constant used
+for calculating it is 32. But that's non-obvious.
 
-This is very interesting; our setups are close, yet I have not seen any 
-feature or policy combination that performs above the 6.5 CFS baseline.
-I look forward to seeing your results with the repro when it's ready.
+Remove the cast and use div_s64() to cure the issue.
 
-Did you only use NO_PLACE_LAG or was it together with NO_RUN_TO_PARITY?
+[ tglx: Fix white space damage, use div_s64() and amend the change log ]
 
-Was SCHED_BATCH used with the default feature set (all enabled)?
+Fixes: ead25417f82e ("timex: use __kernel_timex internally")
+Signed-off-by: Marcelo Dalmas <marcelo.dalmas@ge.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/SJ0P101MB03687BF7D5A10FD3C49C51E5F42E2@SJ0P101MB0368.NAMP101.PROD.OUTLOOK.COM
+---
+ kernel/time/ntp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Which distro/version did you use for the SUT?
-
-> Maybe a difference in our test setup can explain the different test results:
->
-> I use:
->
-> HammerDB Load Generator <-> MySQL SUT
-> 192 VCPUs               <-> 16 VCPUs
-> 
-> Virtual users: 256
-> Warehouse count: 64
-> 3 min rampup
-> 10 min test run time
-> performance data: NOPM (New Operations Per Minute)
->
-> So I have 256 'connection' tasks running on the 16 SUT VCPUS.
-
-My setup:
-
-SUT     - 16 vCPUs, 32 GB RAM
-Loadgen - 64 vCPU, 128 GB RAM (anything large enough to not be a 
- bottleneck should work)
-
-Virtual users:  4 x vCPUs = 64
-Warehouses:     24
-Rampup:         5 min
-Test runtime:   20 min x 10 times, each on 4 different SUT/Loadgen pairs
-Value recorded: geometric_mean(NOPM)
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index b550ebe..163e7a2 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -798,7 +798,7 @@ int __do_adjtimex(struct __kernel_timex *txc, const struct timespec64 *ts,
+ 
+ 		txc->offset = shift_right(ntpdata->time_offset * NTP_INTERVAL_FREQ, NTP_SCALE_SHIFT);
+ 		if (!(ntpdata->time_status & STA_NANO))
+-			txc->offset = (u32)txc->offset / NSEC_PER_USEC;
++			txc->offset = div_s64(txc->offset, NSEC_PER_USEC);
+ 	}
+ 
+ 	result = ntpdata->time_state;
 
