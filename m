@@ -1,117 +1,134 @@
-Return-Path: <linux-tip-commits+bounces-2894-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2895-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384D79DC1FE
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2024 11:12:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526B59DC260
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2024 11:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF4222816B7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2024 10:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1933028204D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2024 10:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32BD167DAC;
-	Fri, 29 Nov 2024 10:12:30 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03E914C5B0;
-	Fri, 29 Nov 2024 10:12:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C3C15AD9C;
+	Fri, 29 Nov 2024 10:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vMGLzqBN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/a5s3z9g"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A702C9463;
+	Fri, 29 Nov 2024 10:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732875150; cv=none; b=ZpFOMpixHlPGkXRzqu1XWotaaq6ALnUMci5GxfrY2hv3qJuWufZdQpmbGWRYVWUJ4d527blwhSDhvL9rYUzESU9Itq89gQH7gtlHwZ64ZHk9794s87Nm+/Sp10V7t5uBPOAtM+coyDD6dGLQ3m5A1vogvOvEd1CQ1WmvjgxK7VU=
+	t=1732877307; cv=none; b=bbbaIWWL4B7qyTmCySZ5Qth7Wc/Nw4YlkpGWtpY+emgUds6bDKPxvs+8J4Ez1zfLh5AKs1rgvHSyLJO9QmTt3LEy6YFwFShR0h1czf1C+yrQr1egFRSCTXy+AKoTpC/2G2qYEN/3n9i/de6TLykwacJ3/bxRyi+n6XXx6SPE16g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732875150; c=relaxed/simple;
-	bh=BbfwKC/iNlnC1+UA4VuHhTiKxEtxCvZTmSnAv525mqU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CXJvQ/S/Nmw4owrVwMyH8RahOu+X/jOtOTt76rziQa4fwe+xELRaJZ9YECSg/g4AbAt0tJ6rX9s3t3Sy1dH1Y5Kz+84TrT+HIqYXdt/Vc0z/Y+hjZxYqSORmdTyWZOSHwhAh4S7iJWqBKm1g6XCuS0Otp01492nyx+PSgmWjatU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EE1A12FC;
-	Fri, 29 Nov 2024 02:12:56 -0800 (PST)
-Received: from [192.168.2.88] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 674683F5A1;
-	Fri, 29 Nov 2024 02:12:24 -0800 (PST)
-Message-ID: <f7046fcc-91e3-434e-930c-10259b36a90b@arm.com>
-Date: Fri, 29 Nov 2024 11:12:15 +0100
+	s=arc-20240116; t=1732877307; c=relaxed/simple;
+	bh=cMa1ktPMFbcpbBLWZPa3kNgET8tp5x46wkDZzO/Y0JQ=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=OLtKsQiSGZxUPYnIe0NSy2s8xlmlmFxrvKoDP6DyNlqfBApKRQ1uhwmjREmk+KyEXE8TDrHoYLN0BPJWGhEht0mMDj9+k35gxZdjY1sSESN5LKdggdLHDd1vfyLB5USyz8ltQXNoV1I9i8z2RtcAy5OKXml/8SkoFUzK5w2Vsyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vMGLzqBN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/a5s3z9g; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 29 Nov 2024 10:48:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1732877303;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jZFTFhtm2UUBOxmPi2MDH/89rY4j+aU7c3Yb1Ug7+d4=;
+	b=vMGLzqBNWSJSy7DsWLHk13PDlhbvQTDWY4EUmE5tqRSPimEFiPLO3JeHra1/L01U8y0Q6D
+	ncYRTkdZ7HQAFOhyWN/pdS9Xaa4TWFxylczmeGt+RdwlEUae/9XyKP8siNskOYpg7hXvIP
+	RIz4hqoxfEDrPYyws2qfWMt0O4gzlacWmjDLG9Qdfw4Wix2jr8meqqFyh7xVE29O66/MMN
+	Cn9+uFAcnnhAcgnkSIBOnrmk+fOIe2GQ5NDhhYGcBCz+tnCIhdjgPbaXlq2Q16gOmDTAgt
+	hoFh8CiLDocdn++Jtgb7MSHyNhpoNszJGbyF11ATI0j4M2M8wAyeN4dwXBxFPQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1732877303;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jZFTFhtm2UUBOxmPi2MDH/89rY4j+aU7c3Yb1Ug7+d4=;
+	b=/a5s3z9gFwTgWXS0bWAQp/baN1RoZG8annajkAC9YGeTOgFHDMfQVZZEx60MYBtwaLJlyy
+	vEMdxdkjyqmRt/Ag==
+From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: timers/urgent] delay: Fix ndelay() spuriously treated as udelay()
+Cc: "Chen-Yu Tsai" <wenst@chromium.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241121152931.51884-1-frederic@kernel.org>
+References: <20241121152931.51884-1-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] [tip: sched/core] sched: Disable PLACE_LAG and
- RUN_TO_PARITY and move them to sysctl
-To: Cristian Prundeanu <cpru@amazon.com>
-Cc: abuehaze@amazon.com, alisaidi@amazon.com, benh@kernel.crashing.org,
- blakgeof@amazon.com, csabac@amazon.com, doebel@amazon.com,
- gautham.shenoy@amd.com, joseph.salisbury@oracle.com, kprateek.nayak@amd.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-tip-commits@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
- x86@kernel.org
-References: <20241125113535.88583-1-cpru@amazon.com>
- <20241128103236.22777-1-cpru@amazon.com>
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Content-Language: en-US
-In-Reply-To: <20241128103236.22777-1-cpru@amazon.com>
-Content-Type: text/plain; charset=UTF-8
+Message-ID: <173287730233.412.16769417461165655460.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-On 28/11/2024 11:32, Cristian Prundeanu wrote:
+The following commit has been merged into the timers/urgent branch of tip:
 
-[...]
+Commit-ID:     4d17c25eaf5d8b95d70726e6946e8eb94619e139
+Gitweb:        https://git.kernel.org/tip/4d17c25eaf5d8b95d70726e6946e8eb94619e139
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Thu, 21 Nov 2024 16:29:31 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 29 Nov 2024 11:40:22 +01:00
 
-> On 2024-11-26, Dietmar Eggemann wrote:
-> 
->> SUT kernel arm64 (mysql-8.4.0)
->> (2) 6.12.0-rc4                -12.9%
->> (3) 6.12.0-rc4 NO_PLACE_LAG   +6.4%		
->> (4) v6.12-rc4  SCHED_BATCH    +10.8%
-> 
-> This is very interesting; our setups are close, yet I have not seen any 
-> feature or policy combination that performs above the 6.5 CFS baseline.
-> I look forward to seeing your results with the repro when it's ready.
-> 
-> Did you only use NO_PLACE_LAG or was it together with NO_RUN_TO_PARITY?
+delay: Fix ndelay() spuriously treated as udelay()
 
-Only NO_PLACE_LAG.
+A recent rework on delay functions wrongly ended up calling __udelay()
+instead of __ndelay() for nanosecond delays, increasing those by 1000.
 
-> Was SCHED_BATCH used with the default feature set (all enabled)?
+As a result hangs have been observed on boot
 
-Yes.
+Restore the right function calls.
 
-> Which distro/version did you use for the SUT?
+Fixes: 19e2d91d8cb1 ("delay: Rework udelay and ndelay")
+Reported-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/all/20241121152931.51884-1-frederic@kernel.org
 
-The default, Ubuntu 24.04 Arm64 server.
+---
+ include/asm-generic/delay.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->> Maybe a difference in our test setup can explain the different test results:
->>
->> I use:
->>
->> HammerDB Load Generator <-> MySQL SUT
->> 192 VCPUs               <-> 16 VCPUs
->>
->> Virtual users: 256
->> Warehouse count: 64
->> 3 min rampup
->> 10 min test run time
->> performance data: NOPM (New Operations Per Minute)
->>
->> So I have 256 'connection' tasks running on the 16 SUT VCPUS.
-> 
-> My setup:
-> 
-> SUT     - 16 vCPUs, 32 GB RAM
-> Loadgen - 64 vCPU, 128 GB RAM (anything large enough to not be a 
->  bottleneck should work)
-> 
-> Virtual users:  4 x vCPUs = 64
-> Warehouses:     24
-> Rampup:         5 min
-> Test runtime:   20 min x 10 times, each on 4 different SUT/Loadgen pairs
-> Value recorded: geometric_mean(NOPM)
-
-Looks like you have 4 times less 'connection' tasks on your 16 VCPUs. So
-much less concurrency/preemption ...
+diff --git a/include/asm-generic/delay.h b/include/asm-generic/delay.h
+index 76cf237..03b0ec7 100644
+--- a/include/asm-generic/delay.h
++++ b/include/asm-generic/delay.h
+@@ -75,11 +75,11 @@ static __always_inline void ndelay(unsigned long nsec)
+ {
+ 	if (__builtin_constant_p(nsec)) {
+ 		if (nsec >= DELAY_CONST_MAX)
+-			__bad_udelay();
++			__bad_ndelay();
+ 		else
+ 			__const_udelay(nsec * NDELAY_CONST_MULT);
+ 	} else {
+-		__udelay(nsec);
++		__ndelay(nsec);
+ 	}
+ }
+ #define ndelay(x) ndelay(x)
 
