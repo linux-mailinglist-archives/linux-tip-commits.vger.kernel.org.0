@@ -1,134 +1,117 @@
-Return-Path: <linux-tip-commits+bounces-2893-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2894-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2B19DB63F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2024 12:08:04 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE3C16460F
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 28 Nov 2024 11:08:00 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D8B15E5CA;
-	Thu, 28 Nov 2024 11:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cbEy/XSI";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="do+HA9pX"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384D79DC1FE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2024 11:12:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D869C192D82;
-	Thu, 28 Nov 2024 11:08:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF4222816B7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 29 Nov 2024 10:12:31 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32BD167DAC;
+	Fri, 29 Nov 2024 10:12:30 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03E914C5B0;
+	Fri, 29 Nov 2024 10:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732792082; cv=none; b=nCFhK1Y2c9xwZTf2clwr4ogDkI4x6cmzkFkVBNb+Jl61a9p3bo7jVYe8E/QFGmitwrLAL+/oz89NAsEP3+FaR26jlglPf6GXKEPxZtcDm1a7M6GXEmVSKIKxopF9AiNpGfozBjgKbpDarQOX2aVRB1hPK61+NO5VTEkLDn3hwBU=
+	t=1732875150; cv=none; b=ZpFOMpixHlPGkXRzqu1XWotaaq6ALnUMci5GxfrY2hv3qJuWufZdQpmbGWRYVWUJ4d527blwhSDhvL9rYUzESU9Itq89gQH7gtlHwZ64ZHk9794s87Nm+/Sp10V7t5uBPOAtM+coyDD6dGLQ3m5A1vogvOvEd1CQ1WmvjgxK7VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732792082; c=relaxed/simple;
-	bh=8OV/+RhPfyvUachcUbgg6ACmykl00zvXmFN+CISQq8A=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=OzrAMhcFtZ+WzVD+l0RNVS0y0KpKs8AQ6B5jpUIwT016T0+bdcWcHHBjcL+ZCrh4l6j3ZvQZoZuvaaQz9hD5MBC/rHdFRaXir/SP9MHddrpEDjhj7EIwOGCdagZhnZeyQH0QDb8bI7QtJZGlqQQP+jUuVQbFp7bVQlsMlMZT60s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cbEy/XSI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=do+HA9pX; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 28 Nov 2024 11:07:57 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1732792078;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bO/GNKFrr2wZhrmREpgjYFqHi+It2Yxj+rYr6/1hJmk=;
-	b=cbEy/XSIEJ3Wnqt1fqo19fyj1GDWSVt3fpacEnCx9PXZepynOd/BRIIi1jLrFujYuHmWiw
-	FG4+v8KlW0yGuNQ4un0hlraWqv3ISsuFxAlzm+m1Oj91jTCg5TrhINW+PJ7/844w11CKqC
-	NsjxNP5/Gfiwn551JlVUe6JbtRx6kRGrLHJqnNFG3PlqTiIIqnaTHqCp6VsD84QsoArC5L
-	pgzxkFyCAl256zJZq3cbuKUbZm7pMDJO/9vG1maBCd0Qi8B+5BoAD32ykRIEOUU5kIfP9R
-	0aq5Fqqkk8fQ6+kAeIpE5Sl7EBZZDPskQji9R+SXkNEk6KI/UcHtuc/0tRoo1A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1732792078;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bO/GNKFrr2wZhrmREpgjYFqHi+It2Yxj+rYr6/1hJmk=;
-	b=do+HA9pX4V8tsNfrecu2ibQnwvOw6ci29RtZfhx/NRBhm3xlapZ7JgcOjaHF8G9Sz5MCeN
-	Rf8t3wY8cFJlptAA==
-From: "tip-bot2 for Marcelo Dalmas" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] ntp: Remove invalid cast in time offset math
-Cc: Marcelo Dalmas <marcelo.dalmas@ge.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3CSJ0P101MB03687BF7D5A10FD3C49C51E5F42E2=40SJ0P101MB?=
- =?utf-8?q?0368=2ENAMP101=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CSJ0P101MB03687BF7D5A10FD3C49C51E5F42E2=40SJ0P101M?=
- =?utf-8?q?B0368=2ENAMP101=2EPROD=2EOUTLOOK=2ECOM=3E?=
+	s=arc-20240116; t=1732875150; c=relaxed/simple;
+	bh=BbfwKC/iNlnC1+UA4VuHhTiKxEtxCvZTmSnAv525mqU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CXJvQ/S/Nmw4owrVwMyH8RahOu+X/jOtOTt76rziQa4fwe+xELRaJZ9YECSg/g4AbAt0tJ6rX9s3t3Sy1dH1Y5Kz+84TrT+HIqYXdt/Vc0z/Y+hjZxYqSORmdTyWZOSHwhAh4S7iJWqBKm1g6XCuS0Otp01492nyx+PSgmWjatU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6EE1A12FC;
+	Fri, 29 Nov 2024 02:12:56 -0800 (PST)
+Received: from [192.168.2.88] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 674683F5A1;
+	Fri, 29 Nov 2024 02:12:24 -0800 (PST)
+Message-ID: <f7046fcc-91e3-434e-930c-10259b36a90b@arm.com>
+Date: Fri, 29 Nov 2024 11:12:15 +0100
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173279207753.412.15377961196958450230.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] [tip: sched/core] sched: Disable PLACE_LAG and
+ RUN_TO_PARITY and move them to sysctl
+To: Cristian Prundeanu <cpru@amazon.com>
+Cc: abuehaze@amazon.com, alisaidi@amazon.com, benh@kernel.crashing.org,
+ blakgeof@amazon.com, csabac@amazon.com, doebel@amazon.com,
+ gautham.shenoy@amd.com, joseph.salisbury@oracle.com, kprateek.nayak@amd.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-tip-commits@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+ x86@kernel.org
+References: <20241125113535.88583-1-cpru@amazon.com>
+ <20241128103236.22777-1-cpru@amazon.com>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Content-Language: en-US
+In-Reply-To: <20241128103236.22777-1-cpru@amazon.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+On 28/11/2024 11:32, Cristian Prundeanu wrote:
 
-Commit-ID:     f5807b0606da7ac7c1b74a386b22134ec7702d05
-Gitweb:        https://git.kernel.org/tip/f5807b0606da7ac7c1b74a386b22134ec7702d05
-Author:        Marcelo Dalmas <marcelo.dalmas@ge.com>
-AuthorDate:    Mon, 25 Nov 2024 12:16:09 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 28 Nov 2024 12:02:38 +01:00
+[...]
 
-ntp: Remove invalid cast in time offset math
+> On 2024-11-26, Dietmar Eggemann wrote:
+> 
+>> SUT kernel arm64 (mysql-8.4.0)
+>> (2) 6.12.0-rc4                -12.9%
+>> (3) 6.12.0-rc4 NO_PLACE_LAG   +6.4%		
+>> (4) v6.12-rc4  SCHED_BATCH    +10.8%
+> 
+> This is very interesting; our setups are close, yet I have not seen any 
+> feature or policy combination that performs above the 6.5 CFS baseline.
+> I look forward to seeing your results with the repro when it's ready.
+> 
+> Did you only use NO_PLACE_LAG or was it together with NO_RUN_TO_PARITY?
 
-Due to an unsigned cast, adjtimex() returns the wrong offest when using
-ADJ_MICRO and the offset is negative. In this case a small negative offset
-returns approximately 4.29 seconds (~ 2^32/1000 milliseconds) due to the
-unsigned cast of the negative offset.
+Only NO_PLACE_LAG.
 
-This cast was added when the kernel internal struct timex was changed to
-use type long long for the time offset value to address the problem of a
-64bit/32bit division on 32bit systems.
+> Was SCHED_BATCH used with the default feature set (all enabled)?
 
-The correct cast would have been (s32), which is correct as time_offset can
-only be in the range of [INT_MIN..INT_MAX] because the shift constant used
-for calculating it is 32. But that's non-obvious.
+Yes.
 
-Remove the cast and use div_s64() to cure the issue.
+> Which distro/version did you use for the SUT?
 
-[ tglx: Fix white space damage, use div_s64() and amend the change log ]
+The default, Ubuntu 24.04 Arm64 server.
 
-Fixes: ead25417f82e ("timex: use __kernel_timex internally")
-Signed-off-by: Marcelo Dalmas <marcelo.dalmas@ge.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/SJ0P101MB03687BF7D5A10FD3C49C51E5F42E2@SJ0P101MB0368.NAMP101.PROD.OUTLOOK.COM
----
- kernel/time/ntp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> Maybe a difference in our test setup can explain the different test results:
+>>
+>> I use:
+>>
+>> HammerDB Load Generator <-> MySQL SUT
+>> 192 VCPUs               <-> 16 VCPUs
+>>
+>> Virtual users: 256
+>> Warehouse count: 64
+>> 3 min rampup
+>> 10 min test run time
+>> performance data: NOPM (New Operations Per Minute)
+>>
+>> So I have 256 'connection' tasks running on the 16 SUT VCPUS.
+> 
+> My setup:
+> 
+> SUT     - 16 vCPUs, 32 GB RAM
+> Loadgen - 64 vCPU, 128 GB RAM (anything large enough to not be a 
+>  bottleneck should work)
+> 
+> Virtual users:  4 x vCPUs = 64
+> Warehouses:     24
+> Rampup:         5 min
+> Test runtime:   20 min x 10 times, each on 4 different SUT/Loadgen pairs
+> Value recorded: geometric_mean(NOPM)
 
-diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
-index b550ebe..163e7a2 100644
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -798,7 +798,7 @@ int __do_adjtimex(struct __kernel_timex *txc, const struct timespec64 *ts,
- 
- 		txc->offset = shift_right(ntpdata->time_offset * NTP_INTERVAL_FREQ, NTP_SCALE_SHIFT);
- 		if (!(ntpdata->time_status & STA_NANO))
--			txc->offset = (u32)txc->offset / NSEC_PER_USEC;
-+			txc->offset = div_s64(txc->offset, NSEC_PER_USEC);
- 	}
- 
- 	result = ntpdata->time_state;
+Looks like you have 4 times less 'connection' tasks on your 16 VCPUs. So
+much less concurrency/preemption ...
 
