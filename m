@@ -1,153 +1,126 @@
-Return-Path: <linux-tip-commits+bounces-2951-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2950-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EE29E00A1
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 12:34:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 539AE9E0099
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 12:33:56 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAE99161909
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 11:33:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A0B6286BE6
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 11:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1365820B1E1;
-	Mon,  2 Dec 2024 11:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F257E20ADF6;
+	Mon,  2 Dec 2024 11:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4iExyxh0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w23TyQHJ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RGf59SWm";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LFKN+2Nx"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6004120ADF2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFE720ADD2;
 	Mon,  2 Dec 2024 11:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733138625; cv=none; b=SGCP5M0S20TuRMhGxjtGhqCPoFr1LLVTHC7/o30HW1iSlMAEovHLFQJuzxjq9U2HfI3KUQ6UL5oAjtwWvdb4B3JqIcAytihHwn5zeoIyxyp24yfX9c1i19XmrxdwqxzFJ+gV1sYX8FgC4gET1tveVdXl5nMitSOvVG17GXKud0M=
+	t=1733138623; cv=none; b=BL8Qe30FqF4Tg6wmibItbXUddBjUAEPrK9+WonzG/nJy/DfLnNEE9ZAc7sD2wf8fGZb8Mex/8VYuNPhO+dGfYxc3txIg4+51FDbOJwQBMktVPioUVmu/M9G3Ht+Wx6EbeVAN8Igw69HWd7xDdpv1ift5vvuGfNZs8biv3h8oGGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733138625; c=relaxed/simple;
-	bh=63+NVuHGkVLcec2mX72HVy4f7mpGKqTxshLoFGwA+6E=;
+	s=arc-20240116; t=1733138623; c=relaxed/simple;
+	bh=RhEWroN15efPRkhwf6k19OTy265Ehw+OEHGDDSy5jOA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LKkwWUsyOHLxwjwOzjObVH7UHcxNWf0rLsHtWqcV8yRyb0za94RELrhu/n4ZkhUOQq2agurUAmSpA5LxfLl6aRessPDoqwbRGL9uVzDlmPhOhHy8ypJ+17wFEAA2lSpIVdl/yt3UivYFfgtzGvLdyjOtq1JaF5xopeZN5qvnpf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4iExyxh0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w23TyQHJ; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=OQeT9AazuRlXqmXAWm1FELqi3TPXlq2vdOJi7FBdcj8Qvl4F5o5sgKwb6G8V5r0LrgMQNMuiy4DNDzrHIPuHiwphmp8Nz1Wdu7Q9SbRwln58TjIIzb1tmaFPn11LrrgiR7nzTadl3rcpT+uJqPEZmoEj8EUTJWdRWhIpaReMER0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RGf59SWm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LFKN+2Nx; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Mon, 02 Dec 2024 11:23:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733138615;
+	s=2020; t=1733138614;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z8JcobNS49EEuO2Os0w/FT2BW2a3AYOl6CHXXUh8xg8=;
-	b=4iExyxh0+cIoBw/aMflbt9iSunLCTBABDIur5x1HwUqP1wyuEB2FQTF59/NytMmmmmmhIV
-	ChyIHb1oRLxQU1oP3J0FniinBRoUYUxtvikoGtFUzwzI8Tjf4+sQSO0dk3tcXY5NzjUCpI
-	Ot6/XErvYlQDu4xAyqlBK5tRSa1ZbGELWPFTWwjEQQpCWxz9zoCpUcy9boepjfUyFkYDoW
-	XFKq6zolMKQQb/G5J/Jv+msEITdiX2d54gAcNwj0aAgbXxi6wKxv8g/EQswk3if/gu2PW2
-	OpMibRDR4oFZ0iL5vdhbzxm0Qy0hP6zFbUcPbT9oMukQDmIT4DtAXwRrhWIrqA==
+	bh=fP3f98ARfzf022tqcgTyQ6nE0SvBrAZnzI/mJ53nejw=;
+	b=RGf59SWm/QRSyNlU/wISv9e+zHrCKlgK0hgf6eBOQQ50TmgxCRFJI1f7YyJaSfVg3a0OG7
+	hGDrIEE7zQzw+V54iSWKj+W4K1lr2KDH1N7+WThpXxlh3Yi6BdrK00B1BhSc1NMefB5kyF
+	TO/H0YNWl5S/CNZZBJHxZ0ARDcaXZR+6zCpAuK7XfQ66paDBeMVhytWb0fTSOQeuJQtPPN
+	zBJ1dmwrckEQfscBbWY4F5CY2mtNJFAdtHycZmLq6uZJdm78aBz8JtklkQRZuXKCF6AWjx
+	biw3Sj0YAG6ARzBxxdt7ou+HXHeoZcXslRnWqdSl6rMB9UUsZIaYaE73TqWBig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733138615;
+	s=2020e; t=1733138614;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z8JcobNS49EEuO2Os0w/FT2BW2a3AYOl6CHXXUh8xg8=;
-	b=w23TyQHJuEl3xhqgeMqxDW5uhOVpiIaK++t4ZC9uzhxgiFmBn0Ig1KYZcfXjCqEMbezAfG
-	9r6m0ZjuNqXTQ/Cw==
-From:
- tip-bot2 for Thomas =?utf-8?q?Hellstr=C3=B6m?= <tip-bot2@linutronix.de>
+	bh=fP3f98ARfzf022tqcgTyQ6nE0SvBrAZnzI/mJ53nejw=;
+	b=LFKN+2NxTeFEc/msmuD4sa1/0lh6/3+VFuJ7qB2E8GQsl7ZGxxNDOdG7O3WYXprFQNFePg
+	VYvqfhYID7wrVBAw==
+From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/ww_mutex: Fix ww_mutex dummy lockdep map
- selftest warnings
-Cc: Boqun Feng <boqun.feng@gmail.com>, thomas.hellstrom@linux.intel.com,
+Subject: [tip: locking/core] locking/lockdep: Enforce PROVE_RAW_LOCK_NESTING
+ only if ARCH_SUPPORTS_RT
+Cc: Guenter Roeck <linux@roeck-us.net>, Waiman Long <longman@redhat.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241127085430.3045-1-thomas.hellstrom@linux.intel.com>
-References: <20241127085430.3045-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20241128020009.83347-1-longman@redhat.com>
+References: <20241128020009.83347-1-longman@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173313861474.412.152962477443860855.tip-bot2@tip-bot2>
+Message-ID: <173313861411.412.6467281091993873078.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     0302d2fd6efb0c386e521df0134eb2679a9a138f
-Gitweb:        https://git.kernel.org/tip/0302d2fd6efb0c386e521df0134eb2679a9=
-a138f
-Author:        Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
-AuthorDate:    Wed, 27 Nov 2024 09:54:30 +01:00
+Commit-ID:     d387ceb17149fed4d85a1ec01b3d65ae0204060d
+Gitweb:        https://git.kernel.org/tip/d387ceb17149fed4d85a1ec01b3d65ae0204060d
+Author:        Waiman Long <longman@redhat.com>
+AuthorDate:    Wed, 27 Nov 2024 21:00:09 -05:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 02 Dec 2024 12:16:57 +01:00
+CommitterDate: Mon, 02 Dec 2024 12:16:58 +01:00
 
-locking/ww_mutex: Fix ww_mutex dummy lockdep map selftest warnings
+locking/lockdep: Enforce PROVE_RAW_LOCK_NESTING only if ARCH_SUPPORTS_RT
 
-The below commit introduces a dummy lockdep map, but didn't get
-the initialization quite right (it should mimic the initialization
-of the real ww_mutex lockdep maps). It also introduced a separate
-locking api selftest failure. Fix these.
+Relax the rule to set PROVE_RAW_LOCK_NESTING by default only for arches
+that supports PREEMPT_RT.  For arches that do not support PREEMPT_RT,
+they will not be forced to address unimportant raw lock nesting issues
+when they want to enable PROVE_LOCKING.  They do have the option
+to enable it to look for these raw locking nesting problems if they
+choose to.
 
-Closes: https://lore.kernel.org/lkml/Zw19sMtnKdyOVQoh@boqun-archlinux/
-Fixes: 823a566221a5 ("locking/ww_mutex: Adjust to lockdep nest_lock requireme=
-nts")
-Reported-by: Boqun Feng <boqun.feng@gmail.com>
-Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20241127085430.3045-1-thomas.hellstrom@linux.=
-intel.com
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20241128020009.83347-1-longman@redhat.com
 ---
- include/linux/ww_mutex.h | 4 ++--
- lib/locking-selftest.c   | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ lib/Kconfig.debug | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/ww_mutex.h b/include/linux/ww_mutex.h
-index a401a2f..45ff6f7 100644
---- a/include/linux/ww_mutex.h
-+++ b/include/linux/ww_mutex.h
-@@ -156,8 +156,8 @@ static inline void ww_acquire_init(struct ww_acquire_ctx =
-*ctx,
- 	debug_check_no_locks_freed((void *)ctx, sizeof(*ctx));
- 	lockdep_init_map(&ctx->dep_map, ww_class->acquire_name,
- 			 &ww_class->acquire_key, 0);
--	lockdep_init_map(&ctx->first_lock_dep_map, ww_class->mutex_name,
--			 &ww_class->mutex_key, 0);
-+	lockdep_init_map_wait(&ctx->first_lock_dep_map, ww_class->mutex_name,
-+			      &ww_class->mutex_key, 0, LD_WAIT_SLEEP);
- 	mutex_acquire(&ctx->dep_map, 0, 0, _RET_IP_);
- 	mutex_acquire_nest(&ctx->first_lock_dep_map, 0, 0, &ctx->dep_map, _RET_IP_);
- #endif
-diff --git a/lib/locking-selftest.c b/lib/locking-selftest.c
-index 6e0c019..ed99344 100644
---- a/lib/locking-selftest.c
-+++ b/lib/locking-selftest.c
-@@ -1720,8 +1720,6 @@ static void ww_test_normal(void)
- {
- 	int ret;
-=20
--	WWAI(&t);
--
- 	/*
- 	 * None of the ww_mutex codepaths should be taken in the 'normal'
- 	 * mutex calls. The easiest way to verify this is by using the
-@@ -1770,6 +1768,8 @@ static void ww_test_normal(void)
- 	ww_mutex_base_unlock(&o.base);
- 	WARN_ON(o.ctx !=3D (void *)~0UL);
-=20
-+	WWAI(&t);
-+
- 	/* nest_lock */
- 	o.ctx =3D (void *)~0UL;
- 	ww_mutex_base_lock_nest_lock(&o.base, &t);
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index f3d7237..49a3819 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1397,9 +1397,9 @@ config PROVE_LOCKING
+ 	 For more details, see Documentation/locking/lockdep-design.rst.
+ 
+ config PROVE_RAW_LOCK_NESTING
+-	bool
++	bool "Enable raw_spinlock - spinlock nesting checks" if !ARCH_SUPPORTS_RT
+ 	depends on PROVE_LOCKING
+-	default y
++	default y if ARCH_SUPPORTS_RT
+ 	help
+ 	 Enable the raw_spinlock vs. spinlock nesting checks which ensure
+ 	 that the lock nesting rules for PREEMPT_RT enabled kernels are
 
