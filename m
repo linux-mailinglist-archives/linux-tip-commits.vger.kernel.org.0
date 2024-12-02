@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-2947-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2948-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F2489E003F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 12:24:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57A59E0046
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 12:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 503AC280AAA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 11:24:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D05281F99
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Dec 2024 11:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BE020C463;
-	Mon,  2 Dec 2024 11:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C01320C494;
+	Mon,  2 Dec 2024 11:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z5WGHMbN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tL2ATSwj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rdq7rSCG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HPxsCFRN"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE7720B219;
-	Mon,  2 Dec 2024 11:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E2A20C01C;
+	Mon,  2 Dec 2024 11:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733138131; cv=none; b=ueMnOLcliteRd4M674PBHSxbTDx4q0I0HHCjZzulKB3JlISqWj2lOHVSwz9bWu76KOkZyiMKLwqHDv2NRbMFKR8h3TOS8BYm0/3TSlHK1DxuLrLbnJov67uXVkFEIojKh4L0mGidao0jn03Ovyis8l6zIk3oUkvNj5X5e3ZtgDE=
+	t=1733138133; cv=none; b=Aa8dTgd65aJUr/EFUyKEFVnFCyM5yBjknHafif/6DEeqzl8r7KZvchxd63RbaEgoNE00oQod7rhh4W2xqt19FuIz0RnpYjX+pzy3xWWGVtznuABvJnkmSSbMTbKLwr6uH22OmplZ/hhJXdgavEASvAGQ3SF7bviwPlam+hsZ5xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733138131; c=relaxed/simple;
-	bh=MIt9TOqpj5DjVrJ6BRqmwoAgMaspf+VahKFMjhnvrrQ=;
+	s=arc-20240116; t=1733138133; c=relaxed/simple;
+	bh=JjJTb/K3FUYBJA4HjpYJdwb/SoDKSVa0tHF04CZVJtI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qSb4qfjFZnAWW4E0wQWG0EjjaKPbEKj3N7QObvj9K/G71hu1aQvn+/HDH4RvfYTMHveKy9svC7AtwD85Dl4Xd9X9DnS4RBzcem0NEfmn4A5H6U5tyRlgZcUe+HjUSByAAXH9ZWR5goKYO165FWzoTq8Hsk6C+MJpISfE1fgXyEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z5WGHMbN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tL2ATSwj; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=mLgdeIl9TZicFwThbD2FbGpG4o6RHaKci637yzCxECiH+xcLmOvYf84759zWdxL6Q28d0tKt3FYTdpHVvfu1sLHA6tmCPCY+YmPHFKKEx7S50IkZrzJbexnK82KbG9gxEV3B8WdXkqzu1/QPPoaSrv9HzDv/1JKtv+Am2im+esY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rdq7rSCG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HPxsCFRN; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 02 Dec 2024 11:15:27 -0000
+Date: Mon, 02 Dec 2024 11:15:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733138128;
+	s=2020; t=1733138129;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VbcY+mf8rjqhklNBPdNT4oXBL1Olr8Fi69LCYAAEB7Q=;
-	b=Z5WGHMbNpRNubR+tLR3ZsSnS8dcxQEaaPkt8HcL49mmuNaSsV5+I7+jXyRyr9viC/oKlBT
-	krCFbYPPAK0m/Nt8eC1x0AelCzmphKwY6KjPx1Kc9ATC+tFuIB3cLk2Bp++EMN96b+N7ci
-	EzCbqD7bmE0D0Y84mRF5Sxkd/kmafVlcBBglAiu/F+Nk+WgmvreIYPLn8z1Z/fr9fFn/F9
-	TAMcD1ggJCfRTzFVo6CmUU195T9PYzdcRNFGgq8NzK1PwP/fuG9Q1Nl/aT0ALxjY5RgxLw
-	G7zA+u2MV3xODLY3uivgPJeRRto5S5XUFbRhl02xcN5aMBdoRIoHUywXvr64bA==
+	bh=dp7yLcgvHicRLKHlQTK8frZUclc2Ejnk1Q+pECFOcJM=;
+	b=rdq7rSCGZAt68k2WLpY+aGmkVYdJPFqrrkj1fac4R+bxhZKwoLh03u32aYCQ2vEA+vC934
+	sJ+rHYTZATfcLV4tpj2MmypRcKHclAxtyx3boidAQoalc9/W6Z7NukCv9xB/Bh3OAISw2f
+	4eNq8iOd2ODZ92VTMQSKh8ZQtRfK5e9FoqOT7vepOy0D+qiOmAfE6AsplINrcDBYpQOt0p
+	aW9WJV/kH/kqR8FcjgpQgxGbUApA0ZZlUL9i17MaZlowHcdiSkVBTTxyZUtmxpreV+lHxr
+	8CO2mBzKdFNdM5ogk2FEM3HvvgaXneDZcQ1BGNLXjgTZnTFMkl/kQokvXiMyqw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733138128;
+	s=2020e; t=1733138129;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VbcY+mf8rjqhklNBPdNT4oXBL1Olr8Fi69LCYAAEB7Q=;
-	b=tL2ATSwjFlqUvDwxWijZaLVlgNpUjomk0ZsVbfC8mVHVo8/zTIJSnczuJyMzZwEew/5P3N
-	xBSIWWdvIuazlFAA==
+	bh=dp7yLcgvHicRLKHlQTK8frZUclc2Ejnk1Q+pECFOcJM=;
+	b=HPxsCFRNaEJ8sVjgP/l7bQ3RrmC6y+C77Q0+/IpFghtaUhYUcus/0BKnq0eU+cU2BTxa/X
+	IUherv45T7DIvXBg==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: objtool/core] objtool: Convert ANNOTATE_RETPOLINE_SAFE to ANNOTATE
+Subject: [tip: objtool/core] objtool: Convert ANNOTATE_NOENDBR to ANNOTATE
 Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241128094311.145275669@infradead.org>
-References: <20241128094311.145275669@infradead.org>
+In-Reply-To: <20241128094311.042140333@infradead.org>
+References: <20241128094311.042140333@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173313812773.412.11234992239446433826.tip-bot2@tip-bot2>
+Message-ID: <173313812836.412.6151735662262429791.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,172 +81,154 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     bf5febebd99fddfc6226a94e937d38a8d470b24e
-Gitweb:        https://git.kernel.org/tip/bf5febebd99fddfc6226a94e937d38a8d470b24e
+Commit-ID:     22c3d58079688b697f36d670616e463cbb14d058
+Gitweb:        https://git.kernel.org/tip/22c3d58079688b697f36d670616e463cbb14d058
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 28 Nov 2024 10:38:54 +01:00
+AuthorDate:    Thu, 28 Nov 2024 10:38:53 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 02 Dec 2024 12:01:41 +01:00
 
-objtool: Convert ANNOTATE_RETPOLINE_SAFE to ANNOTATE
+objtool: Convert ANNOTATE_NOENDBR to ANNOTATE
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20241128094311.145275669@infradead.org
+Link: https://lore.kernel.org/r/20241128094311.042140333@infradead.org
 ---
- arch/x86/include/asm/nospec-branch.h | 13 +------
- include/linux/objtool_types.h        |  1 +-
- tools/include/linux/objtool_types.h  |  1 +-
- tools/objtool/check.c                | 52 +++++++++------------------
- 4 files changed, 22 insertions(+), 45 deletions(-)
+ include/linux/objtool.h             | 17 +++------------
+ include/linux/objtool_types.h       |  5 ++++-
+ tools/include/linux/objtool_types.h |  5 ++++-
+ tools/objtool/check.c               | 32 ++++------------------------
+ 4 files changed, 19 insertions(+), 40 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 96b410b..50340a1 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -184,12 +184,7 @@
-  * objtool the subsequent indirect jump/call is vouched safe for retpoline
-  * builds.
-  */
--.macro ANNOTATE_RETPOLINE_SAFE
--.Lhere_\@:
--	.pushsection .discard.retpoline_safe
--	.long .Lhere_\@
--	.popsection
--.endm
-+#define ANNOTATE_RETPOLINE_SAFE	ANNOTATE type=ANNOTYPE_RETPOLINE_SAFE
+diff --git a/include/linux/objtool.h b/include/linux/objtool.h
+index d98531e..b5e9c0a 100644
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -45,12 +45,6 @@
+ #define STACK_FRAME_NON_STANDARD_FP(func)
+ #endif
  
- /*
-  * (ab)use RETPOLINE_SAFE on RET to annotate away 'bare' RET instructions
-@@ -350,11 +345,7 @@
+-#define ANNOTATE_NOENDBR					\
+-	"986: \n\t"						\
+-	".pushsection .discard.noendbr\n\t"			\
+-	".long 986b\n\t"					\
+-	".popsection\n\t"
+-
+ #define ASM_REACHABLE							\
+ 	"998:\n\t"							\
+ 	".pushsection .discard.reachable\n\t"				\
+@@ -64,6 +58,8 @@
+ 	".long " __stringify(type) "\n\t"				\
+ 	".popsection\n\t"
  
++#define ANNOTATE_NOENDBR	ASM_ANNOTATE(ANNOTYPE_NOENDBR)
++
  #else /* __ASSEMBLY__ */
  
--#define ANNOTATE_RETPOLINE_SAFE					\
--	"999:\n\t"						\
--	".pushsection .discard.retpoline_safe\n\t"		\
--	".long 999b\n\t"					\
--	".popsection\n\t"
-+#define ANNOTATE_RETPOLINE_SAFE ASM_ANNOTATE(ANNOTYPE_RETPOLINE_SAFE)
+ /*
+@@ -122,13 +118,6 @@
+ #endif
+ .endm
  
- typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
- extern retpoline_thunk_t __x86_indirect_thunk_array[];
+-.macro ANNOTATE_NOENDBR
+-.Lhere_\@:
+-	.pushsection .discard.noendbr
+-	.long	.Lhere_\@
+-	.popsection
+-.endm
+-
+ /*
+  * Use objtool to validate the entry requirement that all code paths do
+  * VALIDATE_UNRET_END before RET.
+@@ -161,6 +150,8 @@
+ 	.popsection
+ .endm
+ 
++#define ANNOTATE_NOENDBR	ANNOTATE type=ANNOTYPE_NOENDBR
++
+ #endif /* __ASSEMBLY__ */
+ 
+ #else /* !CONFIG_OBJTOOL */
 diff --git a/include/linux/objtool_types.h b/include/linux/objtool_types.h
-index 4884f8c..1b34836 100644
+index 453a4f4..4884f8c 100644
 --- a/include/linux/objtool_types.h
 +++ b/include/linux/objtool_types.h
-@@ -58,5 +58,6 @@ struct unwind_hint {
-  * Annotate types
-  */
- #define ANNOTYPE_NOENDBR		1
-+#define ANNOTYPE_RETPOLINE_SAFE		2
+@@ -54,4 +54,9 @@ struct unwind_hint {
+ #define UNWIND_HINT_TYPE_SAVE		6
+ #define UNWIND_HINT_TYPE_RESTORE	7
  
++/*
++ * Annotate types
++ */
++#define ANNOTYPE_NOENDBR		1
++
  #endif /* _LINUX_OBJTOOL_TYPES_H */
 diff --git a/tools/include/linux/objtool_types.h b/tools/include/linux/objtool_types.h
-index 4884f8c..1b34836 100644
+index 453a4f4..4884f8c 100644
 --- a/tools/include/linux/objtool_types.h
 +++ b/tools/include/linux/objtool_types.h
-@@ -58,5 +58,6 @@ struct unwind_hint {
-  * Annotate types
-  */
- #define ANNOTYPE_NOENDBR		1
-+#define ANNOTYPE_RETPOLINE_SAFE		2
+@@ -54,4 +54,9 @@ struct unwind_hint {
+ #define UNWIND_HINT_TYPE_SAVE		6
+ #define UNWIND_HINT_TYPE_RESTORE	7
  
++/*
++ * Annotate types
++ */
++#define ANNOTYPE_NOENDBR		1
++
  #endif /* _LINUX_OBJTOOL_TYPES_H */
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a74ff26..c5b5230 100644
+index b0efc8e..a74ff26 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -2373,12 +2373,12 @@ static int read_unwind_hints(struct objtool_file *file)
+@@ -2412,32 +2412,12 @@ static int read_annotate(struct objtool_file *file, void (*func)(int type, struc
  	return 0;
  }
  
--static int read_annotate(struct objtool_file *file, void (*func)(int type, struct instruction *insn))
-+static int read_annotate(struct objtool_file *file, int (*func)(int type, struct instruction *insn))
+-static void __annotate_nop(int type, struct instruction *insn)
++static void __annotate_noendbr(int type, struct instruction *insn)
  {
- 	struct section *sec;
- 	struct instruction *insn;
- 	struct reloc *reloc;
--	int type;
-+	int type, ret;
- 
- 	sec = find_section_by_name(file->elf, ".discard.annotate_insn");
- 	if (!sec)
-@@ -2406,53 +2406,37 @@ static int read_annotate(struct objtool_file *file, void (*func)(int type, struc
- 			return -1;
- 		}
- 
--		func(type, insn);
-+		ret = func(type, insn);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	return 0;
- }
- 
--static void __annotate_noendbr(int type, struct instruction *insn)
-+static int __annotate_noendbr(int type, struct instruction *insn)
- {
- 	if (type != ANNOTYPE_NOENDBR)
--		return;
-+		return 0;
- 
- 	insn->noendbr = 1;
-+	return 0;
- }
- 
--static int read_retpoline_hints(struct objtool_file *file)
-+static int __annotate_retpoline_safe(int type, struct instruction *insn)
- {
--	struct section *rsec;
+-}
+-
+-static int read_noendbr_hints(struct objtool_file *file)
+-{
 -	struct instruction *insn;
+-	struct section *rsec;
 -	struct reloc *reloc;
 -
--	rsec = find_section_by_name(file->elf, ".rela.discard.retpoline_safe");
+-	rsec = find_section_by_name(file->elf, ".rela.discard.noendbr");
 -	if (!rsec)
-+	if (type != ANNOTYPE_RETPOLINE_SAFE)
- 		return 0;
- 
+-		return 0;
+-
 -	for_each_reloc(rsec, reloc) {
--		if (reloc->sym->type != STT_SECTION) {
--			WARN("unexpected relocation symbol type in %s", rsec->name);
--			return -1;
--		}
--
--		insn = find_insn(file, reloc->sym->sec, reloc_addend(reloc));
+-		insn = find_insn(file, reloc->sym->sec,
+-				 reloc->sym->offset + reloc_addend(reloc));
 -		if (!insn) {
--			WARN("bad .discard.retpoline_safe entry");
+-			WARN("bad .discard.noendbr entry");
 -			return -1;
 -		}
 -
--		if (insn->type != INSN_JUMP_DYNAMIC &&
--		    insn->type != INSN_CALL_DYNAMIC &&
--		    insn->type != INSN_RETURN &&
--		    insn->type != INSN_NOP) {
--			WARN_INSN(insn, "retpoline_safe hint not an indirect jump/call/ret/nop");
--			return -1;
--		}
--
--		insn->retpoline_safe = true;
-+	if (insn->type != INSN_JUMP_DYNAMIC &&
-+	    insn->type != INSN_CALL_DYNAMIC &&
-+	    insn->type != INSN_RETURN &&
-+	    insn->type != INSN_NOP) {
-+		WARN_INSN(insn, "retpoline_safe hint not an indirect jump/call/ret/nop");
-+		return -1;
- 	}
+-		insn->noendbr = 1;
+-	}
++	if (type != ANNOTYPE_NOENDBR)
++		return;
  
-+	insn->retpoline_safe = true;
- 	return 0;
+-	return 0;
++	insn->noendbr = 1;
  }
  
-@@ -2742,7 +2726,7 @@ static int decode_sections(struct objtool_file *file)
+ static int read_retpoline_hints(struct objtool_file *file)
+@@ -2713,12 +2693,10 @@ static int decode_sections(struct objtool_file *file)
  	if (ret)
  		return ret;
  
--	ret = read_retpoline_hints(file);
-+	ret = read_annotate(file, __annotate_retpoline_safe);
+-	read_annotate(file, __annotate_nop);
+-
+ 	/*
+ 	 * Must be before read_unwind_hints() since that needs insn->noendbr.
+ 	 */
+-	ret = read_noendbr_hints(file);
++	ret = read_annotate(file, __annotate_noendbr);
  	if (ret)
  		return ret;
  
