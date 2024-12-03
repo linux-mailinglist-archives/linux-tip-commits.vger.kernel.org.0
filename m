@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-2964-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2965-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A809E1ABD
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Dec 2024 12:20:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A28C99E1ABE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Dec 2024 12:20:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0CF8161E59
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Dec 2024 11:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77161165915
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  3 Dec 2024 11:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4E41E2854;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6F11E3777;
 	Tue,  3 Dec 2024 11:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GXXDAkNX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="38XtkRoD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uvi4ul4x";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4SHuJ8xp"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7A51E0E12;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7412E3EE;
 	Tue,  3 Dec 2024 11:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733224835; cv=none; b=cKIjrqWNX1SRL3mRSdvqGU1m+/vERfml8oTOt8uBuuTTILntfhBUNyoOaiS6IKDd0Nn3r51rvsluRgb+ouk+Z61+scbBXlZP83HBn56tgYTkdizA9LfpkmRUp8EjmELNRCGeqq26/vrvU3vNzJzh9RdHkmn7AkEaLr7osMCGHRw=
+	t=1733224835; cv=none; b=gGIr0SakG0nbsjfA+eYJ4N3pGWWzBq6beGT4B/7HEaJVYa7um5xU0VByWmKJOs9MGSLWttCXe3zcgEyiGhVQ9DksWYK8qbLZ473z8ZYA6OyPM34GYixp3UZdQzakYgFelmwojfHnBXS/qb02rmxoCM8JR+fvJJcWj6QNNGKhZEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733224835; c=relaxed/simple;
-	bh=j4bKtx7hzCLylzhawaimKevDbk5AAVA2ASEi0UQi2tM=;
+	bh=IrOds1AfF3qfQU/V1TrBrirtQwmj6Y4gQ3/oooCF2UM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mPuD70BbLNivb8Cz+TDa8n72zB3vuScNX8t78D13tSzuYHFmX2J7zbZcv/oYmcIpbFbN+/roNWZfZrNWDzQv2POQ47Ki/+fMDOH/HnufZPEKP3x8gq93LivvOKl8nICWs/b6jtG0CqCvY/lR9xDoYqsb7sL7EKTfUloGSc72peU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GXXDAkNX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=38XtkRoD; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=dbWEjSBDL+R4Nz4iv+ZoOZn50NHsZJ1B/w671/XgtmpcSHRQcJoyduwYDFH7R9ESr6O8ZF/u2fc3nhJua1RMgktZ2KSHwXFAsjAOxmmdWXUbhDJjZLw+Lrm4IKa5Wa/l5GptoNRCOpnj47CACMQMeIHZ3hj14xiJEL6ywEx43h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uvi4ul4x; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4SHuJ8xp; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 03 Dec 2024 11:20:29 -0000
+Date: Tue, 03 Dec 2024 11:20:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733224830;
+	s=2020; t=1733224831;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WcywyoQ3lz2rMkuzxcfI6HPMyMvSngMAeHCWGrcoWgU=;
-	b=GXXDAkNXuZ/fg/Cs7JH9bp4aAzi1rrGwMl5qzvThwS6gln3AKO/aDKM+8VsY7eWKjEmVkF
-	JOgqVfIrQwvek33oRQhtxJ1Fq4FxjcsKMsuacRg7nUBZfK5vHViqVvFwcAvOi7OdTCk9Gc
-	at5wUX1Hn1/Fh4B/HH0OO4wqWCQB5TSkprZS2f5tA3HCCL5x8ef9X41xJqdO3YhB4ah0xX
-	n4V/8fuaQcHP37UGhYmKBRrnInxwG++S940L0AHhgCA3s4HOVB/mFQ8k7MpeGsWP49JaxN
-	gXKTA2zdn/xu1PPQoJevdglZ3KQSzi8Dyb4MVQJZ7YkDB2ROx0tNsPXdygH2EA==
+	bh=TKSlW9JgnklFs5c0a0ULJV2gr076i67p9722g9MJu6M=;
+	b=uvi4ul4xYZSSs2BJ8EFthjntc54kCQUUq96g55lUI0RPq0GTRbnjS5wI08D5DladLxAp2P
+	QVuaNEWwpTpogxCMUWIfMbHkZKjd15G8DjqQl8vzeZOWztiMRkWpIe5k25poiEvbhXZVPF
+	E59v2DIsc9+zVNGEAQt3212Tj0deLu5hEUY16sB6O2bUQxon3dUQn7YIF4J7jSpLTihdfj
+	2y8Pck9qS4NQ9AcE4XzWSlsiwPSSwsFVs5upH6M4hah80NMXwkUq4XNRXDuL3OtmGXvsJt
+	tIOu9uf5Jq5dVYOc2aLYLpUTpdzg7BflfgF3bF3BdKqIvi0Yk2MwvJKk+iOBUQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733224830;
+	s=2020e; t=1733224831;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WcywyoQ3lz2rMkuzxcfI6HPMyMvSngMAeHCWGrcoWgU=;
-	b=38XtkRoDwgL9Bs0Lt/YPpanAX2V4/mVp+X+4wa40CIobOifSTAwegTC9hDQl9oOsI0OK9+
-	mHkwiRLftc2v+DBA==
-From: "tip-bot2 for Stefan Wahren" <tip-bot2@linutronix.de>
+	bh=TKSlW9JgnklFs5c0a0ULJV2gr076i67p9722g9MJu6M=;
+	b=4SHuJ8xpRWu74Q0AYO2diwIN3UsAXmg+oEIV8BTBhZjBTb7Zv8dODdC9/76EIxNsRT6Ioy
+	bqyrGiNBhQEXOWCw==
+From: "tip-bot2 for Lorenzo Pieralisi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] irqchip/bcm2836: Enable SKIP_SET_WAKE and MASK_ON_SUSPEND
-Cc: Stefan Wahren <wahrenst@gmx.net>, Thomas Gleixner <tglx@linutronix.de>,
- Florian Fainelli <florian.fainelli@broadcom.com>, x86@kernel.org,
+Subject: [tip: irq/urgent] irqchip/gic-v3: Fix irq_complete_ack() comment
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20241202115437.33552-1-wahrenst@gmx.net>
-References: <20241202115437.33552-1-wahrenst@gmx.net>
+In-Reply-To: <20241202112518.51178-1-lpieralisi@kernel.org>
+References: <20241202112518.51178-1-lpieralisi@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173322482945.412.10685677629877028916.tip-bot2@tip-bot2>
+Message-ID: <173322483031.412.486815577722753671.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,58 +81,38 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     ee3878b84cc27ee62cdf78d2842830f4dcdab117
-Gitweb:        https://git.kernel.org/tip/ee3878b84cc27ee62cdf78d2842830f4dcdab117
-Author:        Stefan Wahren <wahrenst@gmx.net>
-AuthorDate:    Mon, 02 Dec 2024 12:54:37 +01:00
+Commit-ID:     f58326c70df0dc413bb58848b188523b3662cf0f
+Gitweb:        https://git.kernel.org/tip/f58326c70df0dc413bb58848b188523b3662cf0f
+Author:        Lorenzo Pieralisi <lpieralisi@kernel.org>
+AuthorDate:    Mon, 02 Dec 2024 12:25:18 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 03 Dec 2024 12:15:42 +01:00
 
-irqchip/bcm2836: Enable SKIP_SET_WAKE and MASK_ON_SUSPEND
+irqchip/gic-v3: Fix irq_complete_ack() comment
 
-The BCM2836 interrupt controller doesn't provide any facility to configure
-the wakeup sources. That's the reason why the driver lacks the
-irq_set_wake() callback for the interrupt chip.
+When the GIC is in EOImode == 1 in irq_complete_ack() it executes a
+priority drop not a deactivation.
 
-Enable the flags IRQCHIP_SKIP_SET_WAKE and IRQCHIP_MASK_ON_SUSPEND so the
-interrupt suspend logic can handle the chip correctly equivalently to the
-corresponding bcm2835 change (9a58480e5e53 ("irqchip/bcm2835: Enable
-SKIP_SET_WAKE and MASK_ON_SUSPEND").
+Fix the function comment to clarify the behaviour.
 
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/all/20241202115437.33552-1-wahrenst@gmx.net
+Link: https://lore.kernel.org/all/20241202112518.51178-1-lpieralisi@kernel.org
 ---
- drivers/irqchip/irq-bcm2836.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-gic-v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-bcm2836.c b/drivers/irqchip/irq-bcm2836.c
-index e5f1059..e366257 100644
---- a/drivers/irqchip/irq-bcm2836.c
-+++ b/drivers/irqchip/irq-bcm2836.c
-@@ -58,6 +58,7 @@ static struct irq_chip bcm2836_arm_irqchip_timer = {
- 	.name		= "bcm2836-timer",
- 	.irq_mask	= bcm2836_arm_irqchip_mask_timer_irq,
- 	.irq_unmask	= bcm2836_arm_irqchip_unmask_timer_irq,
-+	.flags		= IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_SKIP_SET_WAKE,
- };
- 
- static void bcm2836_arm_irqchip_mask_pmu_irq(struct irq_data *d)
-@@ -74,6 +75,7 @@ static struct irq_chip bcm2836_arm_irqchip_pmu = {
- 	.name		= "bcm2836-pmu",
- 	.irq_mask	= bcm2836_arm_irqchip_mask_pmu_irq,
- 	.irq_unmask	= bcm2836_arm_irqchip_unmask_pmu_irq,
-+	.flags		= IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_SKIP_SET_WAKE,
- };
- 
- static void bcm2836_arm_irqchip_mask_gpu_irq(struct irq_data *d)
-@@ -88,6 +90,7 @@ static struct irq_chip bcm2836_arm_irqchip_gpu = {
- 	.name		= "bcm2836-gpu",
- 	.irq_mask	= bcm2836_arm_irqchip_mask_gpu_irq,
- 	.irq_unmask	= bcm2836_arm_irqchip_unmask_gpu_irq,
-+	.flags		= IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_SKIP_SET_WAKE,
- };
- 
- static void bcm2836_arm_irqchip_dummy_op(struct irq_data *d)
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 8b6159f..34db379 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -817,7 +817,7 @@ static void gic_deactivate_unhandled(u32 irqnr)
+  *     register state is not stale, as these may have been indirectly written
+  *     *after* exception entry.
+  *
+- * (2) Deactivate the interrupt when EOI mode 1 is in use.
++ * (2) Execute an interrupt priority drop when EOI mode 1 is in use.
+  */
+ static inline void gic_complete_ack(u32 irqnr)
+ {
 
