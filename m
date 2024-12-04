@@ -1,64 +1,63 @@
-Return-Path: <linux-tip-commits+bounces-2970-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2973-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6389E4706
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2024 22:40:20 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB099E4765
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2024 23:03:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2522FB2BDBC
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2024 19:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650C3161ABD
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Dec 2024 22:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD711A8F9A;
-	Wed,  4 Dec 2024 19:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CECC9191F7E;
+	Wed,  4 Dec 2024 22:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uKq1CUVv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p/m9NCOC"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y5EOM7gs";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2Jvt093w"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2273E1C3BE2;
-	Wed,  4 Dec 2024 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0D518FC75;
+	Wed,  4 Dec 2024 22:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733338806; cv=none; b=NaFUd7puGfSjoIFgwuYLAo2I5aN8C7rFEXoO3IVyCIht3Y+G/BQXNbFHW/oqtfuv1+/3ULtWdgDJ3aTdasuDCBvKB+Xl1rOK8suJ0zThagC9N7V+7O8saCNGdghfVYOSgMxApoS3XqW6mSiJZlXKSKGbzCcGMq9QAUroy48YJgk=
+	t=1733349807; cv=none; b=Ojp+Qhc3sDx3cnNbxdaTabXwkMtnIFYtjPU9kcn0GqXiuF5ep0HlblnJRp91uOapsYCY2H4wW20+xOd+/wYuCBblM/doGKmEloHT8qGUXWd2S9HsmMF6WRoNvpGZbPT8V+XVcJ393kB5MNqSuSOVyLwgb4jMHXlux4eE9KUMz2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733338806; c=relaxed/simple;
-	bh=+7APIjw98mEOigcPwjrOzA0AYJLQWpVk11qnxfXuHfw=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=C2L38FkSIBvUi4reO6KOUxKv8Um2ZNLTN/oXLm2+033zWMWwqQPtaFN1Oz5RWX67gk5oXb2UuSH31UGfQnmvRX9eaPhafzK8g854AIVaWFeiibKZHW/ZVv3EjBUiSZf81ADZYe4tssaax6+xOxlHuwgpafzTs/87dSjkqNjUEvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uKq1CUVv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p/m9NCOC; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1733349807; c=relaxed/simple;
+	bh=QmsayPZ2pmhUJ7IBM2zdZ+JK5vqhgcnkxwz1pTSYmc8=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=icSk3bDXykIHst2wJRZyJgikUfEoD/T++IlAlnGd/fg62RvNCrfrzOAZCdXL6bNey5xcuMo5kPhlgnisaD8JyK815G+Alvcu87hmKUyL4H9CF7HYIyq3PLR49hyTlXEQ2gfzDkzyVeixI6FPOlkNdSSIBcvADVDU+jldxmXEKlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y5EOM7gs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2Jvt093w; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 04 Dec 2024 19:00:02 -0000
+Date: Wed, 04 Dec 2024 22:03:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733338803;
+	s=2020; t=1733349803;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=3pIGPQKLHkLvhD6Iq13KbVseNIPIHGZ/NtfeEfaEMME=;
-	b=uKq1CUVv8lGlfgcut2fRCn3zvNKO50Z0zWkPRb4fJGn3u8UlTr2C9wX/c/arx75vb/VaV/
-	3C+shKKrXKdb//0V8t7Kt6wXi4K/hXSgaIn+VPxmJDU2ExZN/Ck9RSYAxU6EUhVKYB/qnZ
-	J5RcRhs/jplotvOaOVqrfjDm6QOXRGEPauwlwG2uJOGu8sGMUngkCmuWBDMbvIbaBHOFjJ
-	WdI2IOmIvK5wlLjL0pGgPI7LTRw9fMzzVgxBjzfHKizyyoHJAC4UYIG+Y/Z1uW6As0Z+8g
-	xvQuZIvrPeZuySlfyfiuzrjTUPJIRMNQGl6oGy/GeSqIZTPXb2H1aqdtXO5HKQ==
+	bh=rPyp5JrYqO9t5oFuyaFVzhwZe5R5UG1Hicd8jEcIqek=;
+	b=Y5EOM7gsFpDDMrZ7aCibCgl+ciU7fZjg2z0+YuhPsqqO5/i9CrtIjdWZmf1TtxVNPdJ1GY
+	p/gvltPW8GMQjB74BjUszPlLdkJdXlVq+tldqdNISBrdKUoHoUkkLgYK/fLi3VJPCMBtnU
+	6pXQB1TseigoVoUn1QE5bl9RTkyHOSPChHVMepEIWXroyD28u9S1GxEnXbYfQodxk/gAOg
+	3Gw7GO1b1zfLce2Hirm79QCHIXRrUb/pkC1SppKR/Y5JuJUDhWArlo+6MlQkJXVngOLSdt
+	lBaOK0tAyTzsh2oK57PbRD9amNWKquUxrk9WYVm0Rnc+n8ZOrmc51u2PlnyeFQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733338803;
+	s=2020e; t=1733349803;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=3pIGPQKLHkLvhD6Iq13KbVseNIPIHGZ/NtfeEfaEMME=;
-	b=p/m9NCOCkOcWwmFR0iypwY+JFZJHGYwI7juC3LkDvipSN3HTrlLR1MxL/xUisZDcKSSoG+
-	LnNae/VCJO6o1rCQ==
+	bh=rPyp5JrYqO9t5oFuyaFVzhwZe5R5UG1Hicd8jEcIqek=;
+	b=2Jvt093wzvlig/j0Z9wTRnQxKSN2pR87s6ubPmBQi7hsovJ5gHq6uiIJUIuZC8KXxL3Iot
+	fqOYUL56WNfeZaAg==
 From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/mtrr: Rename mtrr_overwrite_state() to
- guest_force_mtrr_state()
-Cc: Dave Hansen <dave.hansen@intel.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+Subject: [tip: x86/tdx] x86/tdx: Disable unnecessary virtualization exceptions
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -66,152 +65,120 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173333880207.412.8515220180299226143.tip-bot2@tip-bot2>
+Message-ID: <173334980263.412.7159418692292221116.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/misc branch of tip:
+The following commit has been merged into the x86/tdx branch of tip:
 
-Commit-ID:     6a5abeea9c72e1d2c538622b4cf66c80cc816fd3
-Gitweb:        https://git.kernel.org/tip/6a5abeea9c72e1d2c538622b4cf66c80cc816fd3
+Commit-ID:     cd9ce8217345bd13035a0d3edaaecec4244d0ddd
+Gitweb:        https://git.kernel.org/tip/cd9ce8217345bd13035a0d3edaaecec4244=
+d0ddd
 Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Mon, 02 Dec 2024 09:31:39 +02:00
+AuthorDate:    Mon, 02 Dec 2024 09:24:31 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 04 Dec 2024 10:46:19 -08:00
+CommitterDate: Wed, 04 Dec 2024 13:55:15 -08:00
 
-x86/mtrr: Rename mtrr_overwrite_state() to guest_force_mtrr_state()
+x86/tdx: Disable unnecessary virtualization exceptions
 
-Rename the helper to better reflect its function.
+Originally, #VE was defined as the TDX behavior in order to support
+paravirtualization of x86 features that can=E2=80=99t be virtualized by the T=
+DX
+module. The intention is that if guest software wishes to use such a
+feature, it implements some logic to support this. This logic resides in
+the #VE exception handler it may work in cooperation with the host VMM.
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Theoretically, the guest TD=E2=80=99s #VE handler was supposed to act as a "T=
+DX
+enlightenment agent" inside the TD. However, in practice, the #VE
+handler is simplistic:
+
+  - #VE on CPUID is handled by returning all-0 to the code which
+    executed CPUID. In many cases, an all-0 value is not the correct
+    value, and may cause improper operation.
+
+  - #VE on RDMSR is handled by requesting the MSR value from the host
+    VMM. This is prone to security issues since the host VMM is
+    untrusted. It may also be functionally incorrect in case the
+    expected operation is to paravirtualize some CPU functionality.
+
+Newer TDX modules provide a "REDUCE_VE" feature. When enabled, it
+drastically cuts cases when guests receive #VE on MSR and CPUID
+accesses. Basically, instead of punting the problem to the VMM, the
+TDX module fills in good data. What the TDX module provides is
+obviously highly specific to the MSR or CPUID. This is all spelled
+out in excruciating detail in the TDX specs.
+
+Enable REDUCE_VE. Make TDX guest behaviour less odd, and closer to
+how a normal CPU behaves.
+
+Note that enabling of the feature doesn't eliminate need in #VE handler
+for CPUID and MSR accesses. Some MSRs still generate #VE (notably
+APIC-related) and kernel needs CPUID #VE handler to ask VMM for leafs in
+hypervisor range.
+
+[ dhansen: changelog tweaks, rename/rework VE reduction function ]
+
 Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Link: https://lore.kernel.org/all/20241202073139.448208-1-kirill.shutemov%40linux.intel.com
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/all/20241202072431.447380-1-kirill.shutemov%40l=
+inux.intel.com
 ---
- arch/x86/hyperv/ivm.c              |  2 +-
- arch/x86/include/asm/mtrr.h        | 10 +++++-----
- arch/x86/kernel/cpu/mtrr/generic.c |  6 +++---
- arch/x86/kernel/cpu/mtrr/mtrr.c    |  2 +-
- arch/x86/kernel/kvm.c              |  2 +-
- arch/x86/xen/enlighten_pv.c        |  4 ++--
- 6 files changed, 13 insertions(+), 13 deletions(-)
+ arch/x86/coco/tdx/tdx.c           | 17 ++++++++++++++++-
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 60fc3ed..90aabe1 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -664,7 +664,7 @@ void __init hv_vtom_init(void)
- 	x86_platform.guest.enc_status_change_finish = hv_vtom_set_host_visibility;
- 
- 	/* Set WB as the default cache mode. */
--	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
-+	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 0d9b090..c0ebe8c 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -274,6 +274,20 @@ static void enable_cpu_topology_enumeration(void)
+ 	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_ENUM_TOPOLOGY, TD_CTLS_ENUM_TOPOLOGY);
  }
- 
- #endif /* defined(CONFIG_AMD_MEM_ENCRYPT) || defined(CONFIG_INTEL_TDX_GUEST) */
-diff --git a/arch/x86/include/asm/mtrr.h b/arch/x86/include/asm/mtrr.h
-index 4218248..c69e269 100644
---- a/arch/x86/include/asm/mtrr.h
-+++ b/arch/x86/include/asm/mtrr.h
-@@ -58,8 +58,8 @@ struct mtrr_state_type {
-  */
- # ifdef CONFIG_MTRR
- void mtrr_bp_init(void);
--void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
--			  mtrr_type def_type);
-+void guest_force_mtrr_state(struct mtrr_var_range *var, unsigned int num_var,
-+			    mtrr_type def_type);
- extern u8 mtrr_type_lookup(u64 addr, u64 end, u8 *uniform);
- extern void mtrr_save_fixed_ranges(void *);
- extern void mtrr_save_state(void);
-@@ -75,9 +75,9 @@ void mtrr_disable(void);
- void mtrr_enable(void);
- void mtrr_generic_set_state(void);
- #  else
--static inline void mtrr_overwrite_state(struct mtrr_var_range *var,
--					unsigned int num_var,
--					mtrr_type def_type)
-+static inline void guest_force_mtrr_state(struct mtrr_var_range *var,
-+					  unsigned int num_var,
-+					  mtrr_type def_type)
+=20
++static void reduce_unnecessary_ve(void)
++{
++	u64 err =3D tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_REDUCE_VE, TD_CTLS_REDUCE_VE);
++
++	if (err =3D=3D TDX_SUCCESS)
++		return;
++
++	/*
++	 * Enabling REDUCE_VE includes ENUM_TOPOLOGY. Only try to
++	 * enable ENUM_TOPOLOGY if REDUCE_VE was not successful.
++	 */
++	enable_cpu_topology_enumeration();
++}
++
+ static void tdx_setup(u64 *cc_mask)
  {
+ 	struct tdx_module_args args =3D {};
+@@ -305,7 +319,8 @@ static void tdx_setup(u64 *cc_mask)
+ 	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+=20
+ 	disable_sept_ve(td_attr);
+-	enable_cpu_topology_enumeration();
++
++	reduce_unnecessary_ve();
  }
- 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index 7b29ebd..2fdfda2 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -423,7 +423,7 @@ void __init mtrr_copy_map(void)
- }
- 
- /**
-- * mtrr_overwrite_state - set static MTRR state
-+ * guest_force_mtrr_state - set static MTRR state for a guest
-  *
-  * Used to set MTRR state via different means (e.g. with data obtained from
-  * a hypervisor).
-@@ -436,8 +436,8 @@ void __init mtrr_copy_map(void)
-  * @num_var: length of the @var array
-  * @def_type: default caching type
-  */
--void mtrr_overwrite_state(struct mtrr_var_range *var, unsigned int num_var,
--			  mtrr_type def_type)
-+void guest_force_mtrr_state(struct mtrr_var_range *var, unsigned int num_var,
-+			    mtrr_type def_type)
- {
- 	unsigned int i;
- 
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.c b/arch/x86/kernel/cpu/mtrr/mtrr.c
-index 989d368..ecbda03 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -625,7 +625,7 @@ void mtrr_save_state(void)
- static int __init mtrr_init_finalize(void)
- {
- 	/*
--	 * Map might exist if mtrr_overwrite_state() has been called or if
-+	 * Map might exist if guest_force_mtrr_state() has been called or if
- 	 * mtrr_enabled() returns true.
- 	 */
- 	mtrr_copy_map();
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 21e9e48..7a422a6 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -983,7 +983,7 @@ static void __init kvm_init_platform(void)
- 	x86_platform.apic_post_init = kvm_apic_init;
- 
- 	/* Set WB as the default cache mode for SEV-SNP and TDX */
--	mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
-+	guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
- }
- 
- #if defined(CONFIG_AMD_MEM_ENCRYPT)
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index d6818c6..633469f 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -171,7 +171,7 @@ static void __init xen_set_mtrr_data(void)
- 
- 	/* Only overwrite MTRR state if any MTRR could be got from Xen. */
- 	if (reg)
--		mtrr_overwrite_state(var, reg, MTRR_TYPE_UNCACHABLE);
-+		guest_force_mtrr_state(var, reg, MTRR_TYPE_UNCACHABLE);
- #endif
- }
- 
-@@ -195,7 +195,7 @@ static void __init xen_pv_init_platform(void)
- 	if (xen_initial_domain())
- 		xen_set_mtrr_data();
- 	else
--		mtrr_overwrite_state(NULL, 0, MTRR_TYPE_WRBACK);
-+		guest_force_mtrr_state(NULL, 0, MTRR_TYPE_WRBACK);
- 
- 	/* Adjust nr_cpu_ids before "enumeration" happens */
- 	xen_smp_count_cpus();
+=20
+ /*
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/=
+tdx.h
+index 89f7fca..a878c7e 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -31,6 +31,7 @@
+ /* TDCS_TD_CTLS bits */
+ #define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
+ #define TD_CTLS_ENUM_TOPOLOGY		BIT_ULL(1)
++#define TD_CTLS_REDUCE_VE		BIT_ULL(3)
+=20
+ /* TDX hypercall Leaf IDs */
+ #define TDVMCALL_MAP_GPA		0x10001
 
