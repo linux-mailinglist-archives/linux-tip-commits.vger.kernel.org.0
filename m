@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-2976-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2974-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D06F9E556F
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Dec 2024 13:28:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997809E556C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Dec 2024 13:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8148F18831E5
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Dec 2024 12:28:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86131166741
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Dec 2024 12:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3203921882D;
-	Thu,  5 Dec 2024 12:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1024F2185A1;
+	Thu,  5 Dec 2024 12:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gv7jtrTJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ethZW9zV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ec5dqXBi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jZcbGKuV"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB5D218597;
-	Thu,  5 Dec 2024 12:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6838B21859F;
+	Thu,  5 Dec 2024 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733401694; cv=none; b=I2It9UlXe39zybShKnV4KLthank4IhqpqT4ulzrIyeZU6+BEqiuFFeUEw5fv6LryXBXswJh/PMGZ9ISjLyNpc3dytZINpTJ/wNewRcRs8pJF35llliCp6PToGdeSaN+aQ1pqw1ADMdFd85gtj4hvJBqsP55OVlwa1FluQO3IaoQ=
+	t=1733401693; cv=none; b=YtjnSW/Q957NnqOOm+seqvwx5O2SnGBu9KrBK+xXWKRJrIrH5JG4BMYv7CfvFUNFaRXPMbuRhpVt9xkYmsaggHFgKhLwbZOqFbmjkGqNQkxWLtwDIT/xNZYZJPCIaChZ6Iq/HGsTbWx6DvbqoGl5GI24Y+qXRJW3bsaJyzCK2tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733401694; c=relaxed/simple;
-	bh=sLzru2pVdodM4w+/LxLNs710/62IGVRqbwWzukP9XwQ=;
+	s=arc-20240116; t=1733401693; c=relaxed/simple;
+	bh=mt+Vx5Rdss5xqWWdUogebcuDKvMZH0sGo2y7pFge/ZY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=B6uDmXkloBhIB6DDCWjuRFiSGW3ILrsjxR+H8MWwQu3edwAZHO/VfGxmH0CcI3b2epK5TnA/qB7mN16oRe9Ejcb3wDHNiz1YOsaK1kJbIaiW6gpk7bByuBwjE87zFxhOSnt6D3v6lSXm+ik6C2Lq/XLeHb0xITUiVjkXe1i34I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gv7jtrTJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ethZW9zV; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=B01CcVStBKWv2Ce1/VaLdKh60NjU+DKtk4MJ2gzUCnSu1uHm2I+++ghfoB9TWBNZSWm/EmS9jdxTR+MQ86AJaU39qIQrr45MgCyf7lTtY11EBSzG8g1tea7z+i7BuOEBAjTyVIu0XjfivGrdjJeKMgby76c/iMq9ziPmmvs0dzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ec5dqXBi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jZcbGKuV; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 05 Dec 2024 12:28:05 -0000
+Date: Thu, 05 Dec 2024 12:28:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733401686;
+	s=2020; t=1733401689;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HvFVvWEeh7YxSzayaR+TuV2qDpZt0upSCecdM3J72lY=;
-	b=Gv7jtrTJM2LAT025Bdrj0TVXBys6p8Y9b4l2sJUYsb9Q3Niy6jUxNtQRPEwWXtoBgIl6gd
-	lr6a1nQl0vU9a8EH4NqpXvns7DX01++DYJrjIQuA+1a78z9Qxdp8T2Yf12Dz11yHNFITF2
-	mLOXz2lA8JL2rVQjlfzUCDh+w8G0zCcRGCviagMIwdFusM3SFpdlINPlyFzfuOCDwNBcm5
-	tOMpYhRJNB58vXOZMpjbTWkbtD8nBYd53WOoSdLThTohf4jQ8SP69tcdocqXdTXpuPa+Ry
-	nFx5EoUhjkaGIKoYTCKBCUAfnLj+a0S/G3YR3XjZiD4pYzK6aGM4ZXRh6+eVhA==
+	bh=dY1HLL9+pe1ZOkuiiqONakKXgE2qMc+dvCFonqK8WVg=;
+	b=ec5dqXBi702seg+FcdrNG8nQwyU/xjzbgF8RJ1M1MOSkxTfYUxDzduRaTx37zI7ueyglom
+	2AOQMmeNr5OdXYDYgjj4Ke+9/Tt18Rf31JDQylNTCQBRrMC46rI13YhHA3f6x2AVxX8m2i
+	+ApLe3NAWzqtmmpqnxqqdQ1E4us3EMrXqDk3qCJlOCoTlGKXV9cKxwXQjmc0BUk0N8kNC8
+	g5qk52go5/hItT9OcKOo7vOopwm0FNSMOycFDa3zfmz+7kd/EI2Bk3pU/4Z+/okTV8OXVm
+	kYi7GvkvZl22oXgkBCL4WyKMtwfFHM9ctprcya85ZhASUpfElZAFmyG9opHFDQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733401686;
+	s=2020e; t=1733401689;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HvFVvWEeh7YxSzayaR+TuV2qDpZt0upSCecdM3J72lY=;
-	b=ethZW9zVei8b0WD/NZ21ef05ORvqj7A+COfeuyyxTMuTkOIkpQoxwVeE5kK63uW61T5rt6
-	srlB7JUVwmENflDw==
-From: "tip-bot2 for David Woodhouse" <tip-bot2@linutronix.de>
+	bh=dY1HLL9+pe1ZOkuiiqONakKXgE2qMc+dvCFonqK8WVg=;
+	b=jZcbGKuV9BmvGMZDLO7joZO1D3Oz2ybPdPseQ3elwygcNa8dP/iPVVVV+QZ2kJJ8Q/ll4s
+	1hlbbsFZQroc2DDA==
+From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating
- userspace page tables
-Cc: Dave Hansen <dave.hansen@intel.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Ingo Molnar <mingo@kernel.org>, stable@kernel.org,
+Subject: [tip: x86/boot] x86/boot: Reject absolute references in .head.text
+Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Rik van Riel <riel@surriel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel@infradead.org>
-References: <412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel@infradead.org>
+ "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241205112804.3416920-16-ardb+git@google.com>
+References: <20241205112804.3416920-16-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173340168546.412.3607698464296519657.tip-bot2@tip-bot2>
+Message-ID: <173340168872.412.736819374842826448.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,125 +80,78 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     d0ceea662d459726487030237689835fcc0483e5
-Gitweb:        https://git.kernel.org/tip/d0ceea662d459726487030237689835fcc0483e5
-Author:        David Woodhouse <dwmw@amazon.co.uk>
-AuthorDate:    Wed, 04 Dec 2024 11:27:14 
+Commit-ID:     faf0ed487415f76fe4acf7980ce360901f5e1698
+Gitweb:        https://git.kernel.org/tip/faf0ed487415f76fe4acf7980ce360901f5e1698
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Thu, 05 Dec 2024 12:28:12 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 05 Dec 2024 13:04:00 +01:00
+CommitterDate: Thu, 05 Dec 2024 13:18:55 +01:00
 
-x86/mm: Add _PAGE_NOPTISHADOW bit to avoid updating userspace page tables
+x86/boot: Reject absolute references in .head.text
 
-The set_p4d() and set_pgd() functions (in 4-level or 5-level page table setups
-respectively) assume that the root page table is actually a 8KiB allocation,
-with the userspace root immediately after the kernel root page table (so that
-the former can enforce NX on on all the subordinate page tables, which are
-actually shared).
+The .head.text section used to contain asm code that bootstrapped the
+page tables and switched to the kernel virtual address space before
+executing C code. The asm code carefully avoided dereferencing absolute
+symbol references, as those will fault before the page tables are
+installed.
 
-However, users of the kernel_ident_mapping_init() code do not give it an 8KiB
-allocation for its PGD. Both swsusp_arch_resume() and acpi_mp_setup_reset()
-allocate only a single 4KiB page. The kexec code on x86_64 currently gets
-away with it purely by chance, because it allocates 8KiB for its "control
-code page" and then actually uses the first half for the PGD, then copies the
-actual trampoline code into the second half only after the identmap code has
-finished scribbling over it.
+Today, the .head.text section contains lots of C code too, and getting
+the compiler to reason about absolute addresses taken from, e.g.,
+section markers such as _text[] or _end[] but never use such absolute
+references to access global variables [*] is intractible.
 
-Fix this by defining a _PAGE_NOPTISHADOW bit (which can use the same bit as
-_PAGE_SAVED_DIRTY since one is only for the PGD/P4D root and the other is
-exclusively for leaf PTEs.). This instructs __pti_set_user_pgtbl() not to
-write to the userspace 'shadow' PGD.
+So instead, forbid the use of absolute references in .head.text
+entirely, and rely on explicit arithmetic involving VA-to-PA offsets
+generated by the asm startup code to construct virtual addresses where
+needed (e.g., to construct the page tables).
 
-Strictly, the _PAGE_NOPTISHADOW bit doesn't need to be written out to the
-actual page tables; since __pti_set_user_pgtbl() returns the value to be
-written to the kernel page table, it could be filtered out. But there seems
-to be no benefit to actually doing so.
+Note that the 'relocs' tool is only used on the core kernel image when
+building a relocatable image, but this is the default, and so adding the
+check there is sufficient to catch new occurrences of code that use
+absolute references before the kernel mapping is up.
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+[*] it is feasible when using PIC codegen but there is strong pushback
+    to using this for all of the core kernel, and using it only for
+    .head.text is not straight-forward.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/412c90a4df7aef077141d9f68d19cbe5602d6c6d.camel@infradead.org
-Cc: stable@kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20241205112804.3416920-16-ardb+git@google.com
 ---
- arch/x86/include/asm/pgtable_types.h | 8 ++++++--
- arch/x86/mm/ident_map.c              | 6 +++---
- arch/x86/mm/pti.c                    | 2 +-
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ arch/x86/tools/relocs.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index 6f82e75..4b80453 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -36,10 +36,12 @@
- #define _PAGE_BIT_DEVMAP	_PAGE_BIT_SOFTW4
+diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
+index 27441e5..e937be9 100644
+--- a/arch/x86/tools/relocs.c
++++ b/arch/x86/tools/relocs.c
+@@ -841,10 +841,10 @@ static int is_percpu_sym(ElfW(Sym) *sym, const char *symname)
+ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+ 		      const char *symname)
+ {
++	int headtext = !strcmp(sec_name(sec->shdr.sh_info), ".head.text");
+ 	unsigned r_type = ELF64_R_TYPE(rel->r_info);
+ 	ElfW(Addr) offset = rel->r_offset;
+ 	int shn_abs = (sym->st_shndx == SHN_ABS) && !is_reloc(S_REL, symname);
+-
+ 	if (sym->st_shndx == SHN_UNDEF)
+ 		return 0;
  
- #ifdef CONFIG_X86_64
--#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit */
-+#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit (leaf) */
-+#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW5 /* No PTI shadow (root PGD) */
- #else
- /* Shared with _PAGE_BIT_UFFD_WP which is not supported on 32 bit */
--#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit */
-+#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit (leaf) */
-+#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW2 /* No PTI shadow (root PGD) */
- #endif
- 
- /* If _PAGE_BIT_PRESENT is clear, we use these: */
-@@ -139,6 +141,8 @@
- 
- #define _PAGE_PROTNONE	(_AT(pteval_t, 1) << _PAGE_BIT_PROTNONE)
- 
-+#define _PAGE_NOPTISHADOW (_AT(pteval_t, 1) << _PAGE_BIT_NOPTISHADOW)
-+
- /*
-  * Set of bits not changed in pte_modify.  The pte's
-  * protection key is treated like _PAGE_RW, for
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 437e96f..5ab7bd2 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -174,7 +174,7 @@ static int ident_p4d_init(struct x86_mapping_info *info, p4d_t *p4d_page,
- 		if (result)
- 			return result;
- 
--		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag));
-+		set_p4d(p4d, __p4d(__pa(pud) | info->kernpg_flag | _PAGE_NOPTISHADOW));
- 	}
- 
- 	return 0;
-@@ -218,14 +218,14 @@ int kernel_ident_mapping_init(struct x86_mapping_info *info, pgd_t *pgd_page,
- 		if (result)
- 			return result;
- 		if (pgtable_l5_enabled()) {
--			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag));
-+			set_pgd(pgd, __pgd(__pa(p4d) | info->kernpg_flag | _PAGE_NOPTISHADOW));
- 		} else {
- 			/*
- 			 * With p4d folded, pgd is equal to p4d.
- 			 * The pgd entry has to point to the pud page table in this case.
- 			 */
- 			pud_t *pud = pud_offset(p4d, 0);
--			set_pgd(pgd, __pgd(__pa(pud) | info->kernpg_flag));
-+			set_pgd(pgd, __pgd(__pa(pud) | info->kernpg_flag | _PAGE_NOPTISHADOW));
+@@ -900,6 +900,12 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+ 			break;
  		}
- 	}
  
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 851ec8f..5f0d579 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -132,7 +132,7 @@ pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
- 	 * Top-level entries added to init_mm's usermode pgd after boot
- 	 * will not be automatically propagated to other mms.
- 	 */
--	if (!pgdp_maps_userspace(pgdp))
-+	if (!pgdp_maps_userspace(pgdp) || (pgd.pgd & _PAGE_NOPTISHADOW))
- 		return pgd;
- 
- 	/*
++		if (headtext) {
++			die("Absolute reference to symbol '%s' not permitted in .head.text\n",
++			    symname);
++			break;
++		}
++
+ 		/*
+ 		 * Relocation offsets for 64 bit kernels are output
+ 		 * as 32 bits and sign extended back to 64 bits when
 
