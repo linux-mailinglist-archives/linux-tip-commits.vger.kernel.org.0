@@ -1,340 +1,411 @@
-Return-Path: <linux-tip-commits+bounces-2985-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2987-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F3409E5E4D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Dec 2024 19:33:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B426E9E6A80
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 10:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B861884F2C
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Dec 2024 18:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F601886853
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 09:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36689229B00;
-	Thu,  5 Dec 2024 18:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDD81F8EFB;
+	Fri,  6 Dec 2024 09:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kXAytrDZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U+yU59uw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AtSjd3fG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pF4gZ/Ny"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E99225797;
-	Thu,  5 Dec 2024 18:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7481F8AE3;
+	Fri,  6 Dec 2024 09:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733423629; cv=none; b=iEdfso+ILL6uo//ImfKqEjk22RrrBgmJAahu4p9occQRBO2b5DrBDxbHxRiq6kH+GpUW0Z0t3V3j5yv69rOjtklSuk8SFtdWqZZq3AyM/qppsrkwdwkLjsbQXLgR0uYjHNyaIUNO4IJUiMtgkkJn2SCJPdyb5iD5itxW32a5N0o=
+	t=1733477916; cv=none; b=QA4n1Eh6oquVJVboFa1gXHQBS60N8k3meD6EExpKm+84Z3sJUSht2sb2PKf3TsWJp3ltISbbrqZmeKnRgYdxsye2aaqPRBgbNqLrvKPzOZSz8PdFPc9/sCrPxw7GZ9IAY5a05wwFvE4OfJYR9B8p6TcZdeCYa2zB8mGMgbNa+rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733423629; c=relaxed/simple;
-	bh=YcsvTbP2x23VUS82pULw8FIiJug9dDZWkcJLs4kmgpA=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=FrCLNe4BiZ+ULXEIyXaqQ8TKrubm3jNtJQebdHHSQOuqexCfPCivNH8zrqXK0gsCixWxKocezSIutbar7Q1927Q/TwKzf3ojkLfjaiZV4VTOd0EgBqRbec8BZ4IVL+QdhrZd3jaS/gCMDfR0V8GEik6hBUfT1hflY3EBxwRwXbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kXAytrDZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U+yU59uw; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1733477916; c=relaxed/simple;
+	bh=FNZmFTcmddAPU8gsPHM2v25hOV11+dLQ+nGFKEZlJag=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=HB6VwNI5kHekam3uzkSLJPU939KQ9BNK9AiEyUmS2jSHcDUPFK0p9TUxumoWH1NrCT8zXlWxozDbKEqWbInsCKteNAsqPh2OWaMMhZh+AtUNjr7ntT2IV0lQNJhF4UUrytqk07qDckT1wMCfbfSEZjb5c1a6FhDZa/7WlVCwcl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AtSjd3fG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pF4gZ/Ny; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 05 Dec 2024 18:33:43 -0000
+Date: Fri, 06 Dec 2024 09:38:31 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733423624;
+	s=2020; t=1733477912;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=R4Jd9Gf1+gUxflwcEsKODst6ggyxsSyk4Dc1p3b8T1g=;
-	b=kXAytrDZsMp7J/L6nDXc/udKPRbgnq+eKEs2HtiNclY0VhZwGFhK6YuwqssQ/QF7yt1OP4
-	8b+eZZ4ly1t7cquYhHMPDxR1EbN1xUyqQcz48r56feWefJoOpt0YIziins1tyz8F41jbgQ
-	/6m8xUA8yWTz2vSdwYvwdVu2orhjPsO9s5/hxucq2kjlnKcF67lfXNjQj+K1UVuAhndh7B
-	KCiaj+4NaGe48bO6nt/JQGUIge5gUVWBuJ7+TjRTgwemvA7Iespzrtyn3Vi6GMB13Z+wPq
-	+GA/sxnz6nJ2RkLPFxGWIL90YiCvDM+AouRC90vmSa3To9WnkEjBwbVsp0fGEA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3C35kz0/iqfBN4DKbJFpYyv9tbCSz48vgc4MOVZbXBg=;
+	b=AtSjd3fGzy0Gj+nO9Cvz0PIlu0WwtE6kcNpSZs4jFbZLvPsZGiLwy8td9ctZjJ74A3wN7i
+	FCLckGO1TZw9wyeqYQI1z9WnFOqqOUK3PYFMqlGxmeXoYEIaiF3KtFM0lQM/igBjMN9CRP
+	rF9PHMpP4xZeUPCN5PlQMqDYflvW0vPJErthSV/E3oBYHbf+19y0+2fuO1J4eC78ptnHGf
+	FfR0d0C1ZqV79XkZgReI6XUJkLwwZ1GfkhsOZPyS3C9Uo2Kbb3HtH1XbkLvzaMWwkprsAv
+	AWEatCyNjudrleSwm4jw/1+qENIdjsV5WO7KQwWFNccVN2r3apfZ3CaFor+v4Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733423624;
+	s=2020e; t=1733477912;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=R4Jd9Gf1+gUxflwcEsKODst6ggyxsSyk4Dc1p3b8T1g=;
-	b=U+yU59uwn7s5x559VRG4ayBNuAWGI+XN3rhibzKTuajZO593vfhQuMDp14MPf3a95rLbVN
-	J7ccxxXGb/aNBfBw==
-From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3C35kz0/iqfBN4DKbJFpYyv9tbCSz48vgc4MOVZbXBg=;
+	b=pF4gZ/NyKucC1gPPDFD1BIjNdmfQa404clGbHN4arDxTehNbS5SN5NqqHRWiHcF9Ze6bHm
+	Acd2zRp2ER2GR6AQ==
+From: "tip-bot2 for Andrii Nakryiko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/tdx: Dump attributes and TD_CTLS on boot
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject: [tip: perf/core] uprobes: Reuse return_instances between multiple
+ uretprobes within task
+Cc: Andrii Nakryiko <andrii@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Oleg Nesterov <oleg@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241206002417.3295533-5-andrii@kernel.org>
+References: <20241206002417.3295533-5-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173342362358.412.13668414237432627916.tip-bot2@tip-bot2>
+Message-ID: <173347791130.412.18279060471011612144.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     564ea84c8c14b007d7838bfb1327295b873573be
-Gitweb:        https://git.kernel.org/tip/564ea84c8c14b007d7838bfb1327295b873573be
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Mon, 02 Dec 2024 09:24:58 +02:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 05 Dec 2024 10:27:07 -08:00
+Commit-ID:     c65b7bf8027bb0c769f4636e81e846493b0f53e2
+Gitweb:        https://git.kernel.org/tip/c65b7bf8027bb0c769f4636e81e846493b0=
+f53e2
+Author:        Andrii Nakryiko <andrii@kernel.org>
+AuthorDate:    Thu, 05 Dec 2024 16:24:17 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 06 Dec 2024 09:52:01 +01:00
 
-x86/tdx: Dump attributes and TD_CTLS on boot
+uprobes: Reuse return_instances between multiple uretprobes within task
 
-Dump TD configuration on boot. Attributes and TD_CTLS define TD
-behavior. This information is useful for tracking down bugs.
+Instead of constantly allocating and freeing very short-lived
+struct return_instance, reuse it as much as possible within current
+task. For that, store a linked list of reusable return_instances within
+current->utask.
 
-The output ends up looking like this in practice:
+The only complication is that ri_timer() might be still processing such
+return_instance. And so while the main uretprobe processing logic might
+be already done with return_instance and would be OK to immediately
+reuse it for the next uretprobe instance, it's not correct to
+unconditionally reuse it just like that.
 
-[    0.000000] tdx: Guest detected
-[    0.000000] tdx: Attributes: SEPT_VE_DISABLE
-[    0.000000] tdx: TD_CTLS: PENDING_VE_DISABLE ENUM_TOPOLOGY VIRT_CPUID2 REDUCE_VE
+Instead we make sure that ri_timer() can't possibly be processing it by
+using seqcount_t, with ri_timer() being "a writer", while
+free_ret_instance() being "a reader". If, after we unlink return
+instance from utask->return_instances list, we know that ri_timer()
+hasn't gotten to processing utask->return_instances yet, then we can be
+sure that immediate return_instance reuse is OK, and so we put it
+onto utask->ri_pool for future (potentially, almost immediate) reuse.
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/all/20241202072458.447455-1-kirill.shutemov%40linux.intel.com
+This change shows improvements both in single CPU performance (by
+avoiding relatively expensive kmalloc/free combon) and in terms of
+multi-CPU scalability, where you can see that per-CPU throughput doesn't
+decline as steeply with increased number of CPUs (which were previously
+attributed to kmalloc()/free() through profiling):
+
+	BASELINE (latest perf/core)
+	=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+	uretprobe-nop         ( 1 cpus):    1.898 =C2=B1 0.002M/s  (  1.898M/s/cpu)
+	uretprobe-nop         ( 2 cpus):    3.574 =C2=B1 0.011M/s  (  1.787M/s/cpu)
+	uretprobe-nop         ( 3 cpus):    5.279 =C2=B1 0.066M/s  (  1.760M/s/cpu)
+	uretprobe-nop         ( 4 cpus):    6.824 =C2=B1 0.047M/s  (  1.706M/s/cpu)
+	uretprobe-nop         ( 5 cpus):    8.339 =C2=B1 0.060M/s  (  1.668M/s/cpu)
+	uretprobe-nop         ( 6 cpus):    9.812 =C2=B1 0.047M/s  (  1.635M/s/cpu)
+	uretprobe-nop         ( 7 cpus):   11.030 =C2=B1 0.048M/s  (  1.576M/s/cpu)
+	uretprobe-nop         ( 8 cpus):   12.453 =C2=B1 0.126M/s  (  1.557M/s/cpu)
+	uretprobe-nop         (10 cpus):   14.838 =C2=B1 0.044M/s  (  1.484M/s/cpu)
+	uretprobe-nop         (12 cpus):   17.092 =C2=B1 0.115M/s  (  1.424M/s/cpu)
+	uretprobe-nop         (14 cpus):   19.576 =C2=B1 0.022M/s  (  1.398M/s/cpu)
+	uretprobe-nop         (16 cpus):   22.264 =C2=B1 0.015M/s  (  1.391M/s/cpu)
+	uretprobe-nop         (24 cpus):   33.534 =C2=B1 0.078M/s  (  1.397M/s/cpu)
+	uretprobe-nop         (32 cpus):   43.262 =C2=B1 0.127M/s  (  1.352M/s/cpu)
+	uretprobe-nop         (40 cpus):   53.252 =C2=B1 0.080M/s  (  1.331M/s/cpu)
+	uretprobe-nop         (48 cpus):   55.778 =C2=B1 0.045M/s  (  1.162M/s/cpu)
+	uretprobe-nop         (56 cpus):   56.850 =C2=B1 0.227M/s  (  1.015M/s/cpu)
+	uretprobe-nop         (64 cpus):   62.005 =C2=B1 0.077M/s  (  0.969M/s/cpu)
+	uretprobe-nop         (72 cpus):   66.445 =C2=B1 0.236M/s  (  0.923M/s/cpu)
+	uretprobe-nop         (80 cpus):   68.353 =C2=B1 0.180M/s  (  0.854M/s/cpu)
+
+	THIS PATCHSET (on top of latest perf/core)
+	=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+	uretprobe-nop         ( 1 cpus):    2.253 =C2=B1 0.004M/s  (  2.253M/s/cpu)
+	uretprobe-nop         ( 2 cpus):    4.281 =C2=B1 0.003M/s  (  2.140M/s/cpu)
+	uretprobe-nop         ( 3 cpus):    6.389 =C2=B1 0.027M/s  (  2.130M/s/cpu)
+	uretprobe-nop         ( 4 cpus):    8.328 =C2=B1 0.005M/s  (  2.082M/s/cpu)
+	uretprobe-nop         ( 5 cpus):   10.353 =C2=B1 0.001M/s  (  2.071M/s/cpu)
+	uretprobe-nop         ( 6 cpus):   12.513 =C2=B1 0.010M/s  (  2.086M/s/cpu)
+	uretprobe-nop         ( 7 cpus):   14.525 =C2=B1 0.017M/s  (  2.075M/s/cpu)
+	uretprobe-nop         ( 8 cpus):   15.633 =C2=B1 0.013M/s  (  1.954M/s/cpu)
+	uretprobe-nop         (10 cpus):   19.532 =C2=B1 0.011M/s  (  1.953M/s/cpu)
+	uretprobe-nop         (12 cpus):   21.405 =C2=B1 0.009M/s  (  1.784M/s/cpu)
+	uretprobe-nop         (14 cpus):   24.857 =C2=B1 0.020M/s  (  1.776M/s/cpu)
+	uretprobe-nop         (16 cpus):   26.466 =C2=B1 0.018M/s  (  1.654M/s/cpu)
+	uretprobe-nop         (24 cpus):   40.513 =C2=B1 0.222M/s  (  1.688M/s/cpu)
+	uretprobe-nop         (32 cpus):   54.180 =C2=B1 0.074M/s  (  1.693M/s/cpu)
+	uretprobe-nop         (40 cpus):   66.100 =C2=B1 0.082M/s  (  1.652M/s/cpu)
+	uretprobe-nop         (48 cpus):   70.544 =C2=B1 0.068M/s  (  1.470M/s/cpu)
+	uretprobe-nop         (56 cpus):   74.494 =C2=B1 0.055M/s  (  1.330M/s/cpu)
+	uretprobe-nop         (64 cpus):   79.317 =C2=B1 0.029M/s  (  1.239M/s/cpu)
+	uretprobe-nop         (72 cpus):   84.875 =C2=B1 0.020M/s  (  1.179M/s/cpu)
+	uretprobe-nop         (80 cpus):   92.318 =C2=B1 0.224M/s  (  1.154M/s/cpu)
+
+For reference, with uprobe-nop we hit the following throughput:
+
+	uprobe-nop            (80 cpus):  143.485 =C2=B1 0.035M/s  (  1.794M/s/cpu)
+
+So now uretprobe stays a bit closer to that performance.
+
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20241206002417.3295533-5-andrii@kernel.org
 ---
- arch/x86/coco/tdx/Makefile        |  2 +-
- arch/x86/coco/tdx/debug.c         | 69 ++++++++++++++++++++++++++++++-
- arch/x86/coco/tdx/tdx.c           | 27 ++++++++----
- arch/x86/include/asm/shared/tdx.h | 39 +++++++++++++++--
- arch/x86/include/asm/tdx.h        |  3 +-
- 5 files changed, 128 insertions(+), 12 deletions(-)
- create mode 100644 arch/x86/coco/tdx/debug.c
+ include/linux/uprobes.h |  6 ++-
+ kernel/events/uprobes.c | 83 +++++++++++++++++++++++++++++++++-------
+ 2 files changed, 75 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/coco/tdx/Makefile b/arch/x86/coco/tdx/Makefile
-index 2c7dcbf..b3c47d3 100644
---- a/arch/x86/coco/tdx/Makefile
-+++ b/arch/x86/coco/tdx/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y += tdx.o tdx-shared.o tdcall.o
-+obj-y += debug.o tdcall.o tdx.o tdx-shared.o
-diff --git a/arch/x86/coco/tdx/debug.c b/arch/x86/coco/tdx/debug.c
-new file mode 100644
-index 0000000..cef847c
---- /dev/null
-+++ b/arch/x86/coco/tdx/debug.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index 1d44997..b1df7d7 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -16,6 +16,7 @@
+ #include <linux/types.h>
+ #include <linux/wait.h>
+ #include <linux/timer.h>
++#include <linux/seqlock.h>
+=20
+ struct uprobe;
+ struct vm_area_struct;
+@@ -124,6 +125,10 @@ struct uprobe_task {
+ 	unsigned int			depth;
+ 	struct return_instance		*return_instances;
+=20
++	struct return_instance		*ri_pool;
++	struct timer_list		ri_timer;
++	seqcount_t			ri_seqcount;
 +
-+#undef pr_fmt
-+#define pr_fmt(fmt)     "tdx: " fmt
-+
-+#include <linux/array_size.h>
-+#include <linux/printk.h>
-+#include <asm/tdx.h>
-+
-+#define DEF_TDX_ATTR_NAME(_name) [TDX_ATTR_##_name##_BIT] = __stringify(_name)
-+
-+static __initdata const char *tdx_attributes[] = {
-+	DEF_TDX_ATTR_NAME(DEBUG),
-+	DEF_TDX_ATTR_NAME(HGS_PLUS_PROF),
-+	DEF_TDX_ATTR_NAME(PERF_PROF),
-+	DEF_TDX_ATTR_NAME(PMT_PROF),
-+	DEF_TDX_ATTR_NAME(ICSSD),
-+	DEF_TDX_ATTR_NAME(LASS),
-+	DEF_TDX_ATTR_NAME(SEPT_VE_DISABLE),
-+	DEF_TDX_ATTR_NAME(MIGRTABLE),
-+	DEF_TDX_ATTR_NAME(PKS),
-+	DEF_TDX_ATTR_NAME(KL),
-+	DEF_TDX_ATTR_NAME(TPA),
-+	DEF_TDX_ATTR_NAME(PERFMON),
-+};
-+
-+#define DEF_TD_CTLS_NAME(_name) [TD_CTLS_##_name##_BIT] = __stringify(_name)
-+
-+static __initdata const char *tdcs_td_ctls[] = {
-+	DEF_TD_CTLS_NAME(PENDING_VE_DISABLE),
-+	DEF_TD_CTLS_NAME(ENUM_TOPOLOGY),
-+	DEF_TD_CTLS_NAME(VIRT_CPUID2),
-+	DEF_TD_CTLS_NAME(REDUCE_VE),
-+	DEF_TD_CTLS_NAME(LOCK),
-+};
-+
-+void __init tdx_dump_attributes(u64 td_attr)
-+{
-+	pr_info("Attributes:");
-+
-+	for (int i = 0; i < ARRAY_SIZE(tdx_attributes); i++) {
-+		if (!tdx_attributes[i])
-+			continue;
-+		if (td_attr & BIT(i))
-+			pr_cont(" %s", tdx_attributes[i]);
-+		td_attr &= ~BIT(i);
-+	}
-+
-+	if (td_attr)
-+		pr_cont(" unknown:%#llx", td_attr);
-+	pr_cont("\n");
-+
-+}
-+
-+void __init tdx_dump_td_ctls(u64 td_ctls)
-+{
-+	pr_info("TD_CTLS:");
-+
-+	for (int i = 0; i < ARRAY_SIZE(tdcs_td_ctls); i++) {
-+		if (!tdcs_td_ctls[i])
-+			continue;
-+		if (td_ctls & BIT(i))
-+			pr_cont(" %s", tdcs_td_ctls[i]);
-+		td_ctls &= ~BIT(i);
-+	}
-+	if (td_ctls)
-+		pr_cont(" unknown:%#llx", td_ctls);
-+	pr_cont("\n");
-+}
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c0ebe8c..32809a0 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -32,9 +32,6 @@
- #define VE_GET_PORT_NUM(e)	((e) >> 16)
- #define VE_IS_IO_STRING(e)	((e) & BIT(4))
- 
--#define ATTR_DEBUG		BIT(0)
--#define ATTR_SEPT_VE_DISABLE	BIT(28)
--
- /* TDX Module call error codes */
- #define TDCALL_RETURN_CODE(a)	((a) >> 32)
- #define TDCALL_INVALID_OPERAND	0xc0000100
-@@ -200,14 +197,14 @@ static void __noreturn tdx_panic(const char *msg)
-  *
-  * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
-  * controls if the guest will receive such #VE with TD attribute
-- * ATTR_SEPT_VE_DISABLE.
-+ * TDX_ATTR_SEPT_VE_DISABLE.
-  *
-  * Newer TDX modules allow the guest to control if it wants to receive SEPT
-  * violation #VEs.
-  *
-  * Check if the feature is available and disable SEPT #VE if possible.
-  *
-- * If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-+ * If the TD is allowed to disable/enable SEPT #VEs, the TDX_ATTR_SEPT_VE_DISABLE
-  * attribute is no longer reliable. It reflects the initial state of the
-  * control for the TD, but it will not be updated if someone (e.g. bootloader)
-  * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-@@ -216,14 +213,14 @@ static void __noreturn tdx_panic(const char *msg)
- static void disable_sept_ve(u64 td_attr)
+ 	union {
+ 		struct {
+ 			struct arch_uprobe_task	autask;
+@@ -137,7 +142,6 @@ struct uprobe_task {
+ 	};
+=20
+ 	struct uprobe			*active_uprobe;
+-	struct timer_list		ri_timer;
+ 	unsigned long			xol_vaddr;
+=20
+ 	struct arch_uprobe              *auprobe;
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 2345aeb..1af9502 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1888,8 +1888,34 @@ unsigned long uprobe_get_trap_addr(struct pt_regs *reg=
+s)
+ 	return instruction_pointer(regs);
+ }
+=20
+-static void free_ret_instance(struct return_instance *ri, bool cleanup_hprob=
+e)
++static void ri_pool_push(struct uprobe_task *utask, struct return_instance *=
+ri)
  {
- 	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
--	bool debug = td_attr & ATTR_DEBUG;
-+	bool debug = td_attr & TDX_ATTR_DEBUG;
- 	u64 config, controls;
- 
- 	/* Is this TD allowed to disable SEPT #VE */
- 	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
- 	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
- 		/* No SEPT #VE controls for the guest: check the attribute */
--		if (td_attr & ATTR_SEPT_VE_DISABLE)
-+		if (td_attr & TDX_ATTR_SEPT_VE_DISABLE)
- 			return;
- 
- 		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
-@@ -1040,6 +1037,20 @@ static void tdx_kexec_finish(void)
++	ri->cons_cnt =3D 0;
++	ri->next =3D utask->ri_pool;
++	utask->ri_pool =3D ri;
++}
++
++static struct return_instance *ri_pool_pop(struct uprobe_task *utask)
++{
++	struct return_instance *ri =3D utask->ri_pool;
++
++	if (likely(ri))
++		utask->ri_pool =3D ri->next;
++
++	return ri;
++}
++
++static void ri_free(struct return_instance *ri)
++{
++	kfree(ri->extra_consumers);
++	kfree_rcu(ri, rcu);
++}
++
++static void free_ret_instance(struct uprobe_task *utask,
++			      struct return_instance *ri, bool cleanup_hprobe)
++{
++	unsigned seq;
++
+ 	if (cleanup_hprobe) {
+ 		enum hprobe_state hstate;
+=20
+@@ -1897,8 +1923,22 @@ static void free_ret_instance(struct return_instance *=
+ri, bool cleanup_hprobe)
+ 		hprobe_finalize(&ri->hprobe, hstate);
+ 	}
+=20
+-	kfree(ri->extra_consumers);
+-	kfree_rcu(ri, rcu);
++	/*
++	 * At this point return_instance is unlinked from utask's
++	 * return_instances list and this has become visible to ri_timer().
++	 * If seqcount now indicates that ri_timer's return instance
++	 * processing loop isn't active, we can return ri into the pool of
++	 * to-be-reused return instances for future uretprobes. If ri_timer()
++	 * happens to be running right now, though, we fallback to safety and
++	 * just perform RCU-delated freeing of ri.
++	 */
++	if (raw_seqcount_try_begin(&utask->ri_seqcount, seq)) {
++		/* immediate reuse of ri without RCU GP is OK */
++		ri_pool_push(utask, ri);
++	} else {
++		/* we might be racing with ri_timer(), so play it safe */
++		ri_free(ri);
++	}
+ }
+=20
+ /*
+@@ -1920,7 +1960,15 @@ void uprobe_free_utask(struct task_struct *t)
+ 	ri =3D utask->return_instances;
+ 	while (ri) {
+ 		ri_next =3D ri->next;
+-		free_ret_instance(ri, true /* cleanup_hprobe */);
++		free_ret_instance(utask, ri, true /* cleanup_hprobe */);
++		ri =3D ri_next;
++	}
++
++	/* free_ret_instance() above might add to ri_pool, so this loop should come=
+ last */
++	ri =3D utask->ri_pool;
++	while (ri) {
++		ri_next =3D ri->next;
++		ri_free(ri);
+ 		ri =3D ri_next;
+ 	}
+=20
+@@ -1943,8 +1991,12 @@ static void ri_timer(struct timer_list *timer)
+ 	/* RCU protects return_instance from freeing. */
+ 	guard(rcu)();
+=20
++	write_seqcount_begin(&utask->ri_seqcount);
++
+ 	for_each_ret_instance_rcu(ri, utask->return_instances)
+ 		hprobe_expire(&ri->hprobe, false);
++
++	write_seqcount_end(&utask->ri_seqcount);
+ }
+=20
+ static struct uprobe_task *alloc_utask(void)
+@@ -1956,6 +2008,7 @@ static struct uprobe_task *alloc_utask(void)
+ 		return NULL;
+=20
+ 	timer_setup(&utask->ri_timer, ri_timer, 0);
++	seqcount_init(&utask->ri_seqcount);
+=20
+ 	return utask;
+ }
+@@ -1975,10 +2028,14 @@ static struct uprobe_task *get_utask(void)
+ 	return current->utask;
+ }
+=20
+-static struct return_instance *alloc_return_instance(void)
++static struct return_instance *alloc_return_instance(struct uprobe_task *uta=
+sk)
+ {
+ 	struct return_instance *ri;
+=20
++	ri =3D ri_pool_pop(utask);
++	if (ri)
++		return ri;
++
+ 	ri =3D kzalloc(sizeof(*ri), GFP_KERNEL);
+ 	if (!ri)
+ 		return ZERO_SIZE_PTR;
+@@ -2119,7 +2176,7 @@ static void cleanup_return_instances(struct uprobe_task=
+ *utask, bool chained,
+ 		rcu_assign_pointer(utask->return_instances, ri_next);
+ 		utask->depth--;
+=20
+-		free_ret_instance(ri, true /* cleanup_hprobe */);
++		free_ret_instance(utask, ri, true /* cleanup_hprobe */);
+ 		ri =3D ri_next;
  	}
  }
- 
-+static __init void tdx_announce(void)
-+{
-+	struct tdx_module_args args = {};
-+	u64 controls;
-+
-+	pr_info("Guest detected\n");
-+
-+	tdcall(TDG_VP_INFO, &args);
-+	tdx_dump_attributes(args.rdx);
-+
-+	tdg_vm_rd(TDCS_TD_CTLS, &controls);
-+	tdx_dump_td_ctls(controls);
-+}
-+
- void __init tdx_early_init(void)
- {
- 	u64 cc_mask;
-@@ -1109,5 +1120,5 @@ void __init tdx_early_init(void)
- 	 */
- 	x86_cpuinit.parallel_bringup = false;
- 
--	pr_info("Guest detected\n");
-+	tdx_announce();
+@@ -2186,7 +2243,7 @@ static void prepare_uretprobe(struct uprobe *uprobe, st=
+ruct pt_regs *regs,
+=20
+ 	return;
+ free:
+-	kfree(ri);
++	ri_free(ri);
  }
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index a878c7e..fcbbef4 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -19,6 +19,32 @@
- #define TDG_VM_RD			7
- #define TDG_VM_WR			8
- 
-+/* TDX attributes */
-+#define TDX_ATTR_DEBUG_BIT		0
-+#define TDX_ATTR_DEBUG			BIT_ULL(TDX_ATTR_DEBUG_BIT)
-+#define TDX_ATTR_HGS_PLUS_PROF_BIT	4
-+#define TDX_ATTR_HGS_PLUS_PROF		BIT_ULL(TDX_ATTR_HGS_PLUS_PROF_BIT)
-+#define TDX_ATTR_PERF_PROF_BIT		5
-+#define TDX_ATTR_PERF_PROF		BIT_ULL(TDX_ATTR_PERF_PROF_BIT)
-+#define TDX_ATTR_PMT_PROF_BIT		6
-+#define TDX_ATTR_PMT_PROF		BIT_ULL(TDX_ATTR_PMT_PROF_BIT)
-+#define TDX_ATTR_ICSSD_BIT		16
-+#define TDX_ATTR_ICSSD			BIT_ULL(TDX_ATTR_ICSSD_BIT)
-+#define TDX_ATTR_LASS_BIT		27
-+#define TDX_ATTR_LASS			BIT_ULL(TDX_ATTR_LASS_BIT)
-+#define TDX_ATTR_SEPT_VE_DISABLE_BIT	28
-+#define TDX_ATTR_SEPT_VE_DISABLE	BIT_ULL(TDX_ATTR_SEPT_VE_DISABLE_BIT)
-+#define TDX_ATTR_MIGRTABLE_BIT		29
-+#define TDX_ATTR_MIGRTABLE		BIT_ULL(TDX_ATTR_MIGRTABLE_BIT)
-+#define TDX_ATTR_PKS_BIT		30
-+#define TDX_ATTR_PKS			BIT_ULL(TDX_ATTR_PKS_BIT)
-+#define TDX_ATTR_KL_BIT			31
-+#define TDX_ATTR_KL			BIT_ULL(TDX_ATTR_KL_BIT)
-+#define TDX_ATTR_TPA_BIT		62
-+#define TDX_ATTR_TPA			BIT_ULL(TDX_ATTR_TPA_BIT)
-+#define TDX_ATTR_PERFMON_BIT		63
-+#define TDX_ATTR_PERFMON		BIT_ULL(TDX_ATTR_PERFMON_BIT)
-+
- /* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
- #define TDCS_CONFIG_FLAGS		0x1110000300000016
- #define TDCS_TD_CTLS			0x1110000300000017
-@@ -29,9 +55,16 @@
- #define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
- 
- /* TDCS_TD_CTLS bits */
--#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
--#define TD_CTLS_ENUM_TOPOLOGY		BIT_ULL(1)
--#define TD_CTLS_REDUCE_VE		BIT_ULL(3)
-+#define TD_CTLS_PENDING_VE_DISABLE_BIT	0
-+#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(TD_CTLS_PENDING_VE_DISABLE_BIT)
-+#define TD_CTLS_ENUM_TOPOLOGY_BIT	1
-+#define TD_CTLS_ENUM_TOPOLOGY		BIT_ULL(TD_CTLS_ENUM_TOPOLOGY_BIT)
-+#define TD_CTLS_VIRT_CPUID2_BIT		2
-+#define TD_CTLS_VIRT_CPUID2		BIT_ULL(TD_CTLS_VIRT_CPUID2_BIT)
-+#define TD_CTLS_REDUCE_VE_BIT		3
-+#define TD_CTLS_REDUCE_VE		BIT_ULL(TD_CTLS_REDUCE_VE_BIT)
-+#define TD_CTLS_LOCK_BIT		63
-+#define TD_CTLS_LOCK			BIT_ULL(TD_CTLS_LOCK_BIT)
- 
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index eba1789..b4b16da 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -66,6 +66,9 @@ int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
- 
- u64 tdx_hcall_get_quote(u8 *buf, size_t size);
- 
-+void __init tdx_dump_attributes(u64 td_attr);
-+void __init tdx_dump_td_ctls(u64 td_ctls);
-+
- #else
- 
- static inline void tdx_early_init(void) { };
+=20
+ /* Prepare to single-step probed instruction out of line. */
+@@ -2385,8 +2442,7 @@ static struct return_instance *push_consumer(struct ret=
+urn_instance *ri, __u64 i
+ 	if (unlikely(ri->cons_cnt > 0)) {
+ 		ric =3D krealloc(ri->extra_consumers, sizeof(*ric) * ri->cons_cnt, GFP_KER=
+NEL);
+ 		if (!ric) {
+-			kfree(ri->extra_consumers);
+-			kfree_rcu(ri, rcu);
++			ri_free(ri);
+ 			return ZERO_SIZE_PTR;
+ 		}
+ 		ri->extra_consumers =3D ric;
+@@ -2428,8 +2484,9 @@ static void handler_chain(struct uprobe *uprobe, struct=
+ pt_regs *regs)
+ 	struct uprobe_consumer *uc;
+ 	bool has_consumers =3D false, remove =3D true;
+ 	struct return_instance *ri =3D NULL;
++	struct uprobe_task *utask =3D current->utask;
+=20
+-	current->utask->auprobe =3D &uprobe->arch;
++	utask->auprobe =3D &uprobe->arch;
+=20
+ 	list_for_each_entry_rcu(uc, &uprobe->consumers, cons_node, rcu_read_lock_tr=
+ace_held()) {
+ 		bool session =3D uc->handler && uc->ret_handler;
+@@ -2449,12 +2506,12 @@ static void handler_chain(struct uprobe *uprobe, stru=
+ct pt_regs *regs)
+ 			continue;
+=20
+ 		if (!ri)
+-			ri =3D alloc_return_instance();
++			ri =3D alloc_return_instance(utask);
+=20
+ 		if (session)
+ 			ri =3D push_consumer(ri, uc->id, cookie);
+ 	}
+-	current->utask->auprobe =3D NULL;
++	utask->auprobe =3D NULL;
+=20
+ 	if (!ZERO_OR_NULL_PTR(ri))
+ 		prepare_uretprobe(uprobe, regs, ri);
+@@ -2554,7 +2611,7 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+ 			hprobe_finalize(&ri->hprobe, hstate);
+=20
+ 			/* We already took care of hprobe, no need to waste more time on that. */
+-			free_ret_instance(ri, false /* !cleanup_hprobe */);
++			free_ret_instance(utask, ri, false /* !cleanup_hprobe */);
+ 			ri =3D ri_next;
+ 		} while (ri !=3D next_chain);
+ 	} while (!valid);
 
