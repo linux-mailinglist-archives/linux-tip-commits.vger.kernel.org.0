@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-2989-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-2988-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B185C9E6A84
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 10:39:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4892A9E6A82
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 10:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD35C16BDAF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 09:39:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BFD71886B43
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 09:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9891F9F42;
-	Fri,  6 Dec 2024 09:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F4E1F9AB6;
+	Fri,  6 Dec 2024 09:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ADsiP3Wh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yBluxMQ5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ncx6ol9y";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SbtD60A0"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0711F8EFF;
-	Fri,  6 Dec 2024 09:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C431DF980;
+	Fri,  6 Dec 2024 09:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733477918; cv=none; b=YVdF6Tn0UM8/OOTSGh3RXeXVkDDPUtEpoQzPgqA1Din+lGkMnlnzwDC+/lxYmmXRCGLtvgIv56pfFNmOenfozglJb7cbwCdRFUKYQgmyKSCieEGDX3yaS78fzvpfpRLj+PU5A2ffuGVtq7ZuVFZUYS7Y1IQmP7fgAyCLEYOugUw=
+	t=1733477918; cv=none; b=ZbpclUNnWrNnZh0cgb1a33SdkCXkh+ZMuL+/gZ2r3JXdE14aEb2Vz74eCL75w/c56lY5jm3enSltwCkJybzEZWsPtKg8ROPpcV2xKv2N7e/bfeO1YEjiG4np3apEsIx6KLVZcY4eMAilvcDoXshYXKD8r1WGlA9phFx/jP/UvZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733477918; c=relaxed/simple;
-	bh=Glijn0j3etU1fuJ3exWhsOjB8Asm5nSxTybzv+tIUW8=;
+	bh=Xn0Cxv2yj2h+iexFetvih0MGVcFn3Cl0EaLuWNz1t18=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IcuD3OEsht5Mt/U33slH/mCXF+0efLGtepDie8WnLD5tlPLlEmYsJ9f92Kqfc8g2UrSx3ejmeS9G5ZYRlOsOiISZhp4lIygqqtDCGxX4f+NZAlmkFCahzCazgXMBXZqvEkOsJ23KMWbieOG6KzPSwlXayqI/ieqhVS4eFBDBBWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ADsiP3Wh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yBluxMQ5; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=UquLCxNgYQnnKpMYFBgZxlSUKmMYZUgmowACXawW3JKRo7XzkWoo/jgt/U1+f88lbo7myfPUwr4Lct66W9MMOT5Uq7JrEjPRFKQwRXuqNcD4yv2EAfLwmYjSNp5oDTiTZf1o2u1QFtTd+z0E4+yaroXtTwFf+C9tXUm8BoR/2Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ncx6ol9y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SbtD60A0; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Fri, 06 Dec 2024 09:38:33 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GB+iRl3Ef9SuS4YxioWNb1bW0a8WZrO+b32cLBvI0o8=;
-	b=ADsiP3Wh/jgmp4UxeJ76I4Syp6c5iXoZlKYR7VzVikZtMEBw1ru2RxVsYOQIBx5T0yYCmp
-	dfoFUnn3/cX33yYaVmwje85O6SdvFpAShOQFeZiwZ6CanpHk6jKR948OcFu4SMQRRj4ZX2
-	q5Jrn45AwDnmT3KsaPmTxB3AmKWr43LRyaG9ZabzAdC/UYHeYSwtV4t/jX4oQzWTET3wVa
-	WQjPmhkV9yWJaIrixmRMJLeynx3zCcl12bbrCuqtAOr/+DNRFKFN0bi+u22IRZKkUUC3+L
-	IxiJCBb7h6/F8BpJUzFGQkwV8Sur3DPqug14I8rNoWjnIqXa6nMKV4twXaZg5w==
+	bh=QdzC+tIBd9Y8fjjoEuOHmFl588EUxvZ96XFPl8Sv77U=;
+	b=ncx6ol9yJ8+3etaeFHsU+7G03LyvO36oGtbVeoqeWGlVr/85huyWTG6xCXlkoBnrupT1pv
+	rKmy17+9A55RJukRdlc30sLTrK02oqknJXzcPqFi1VS6Ap2+GF2HOVkmmb/DWiwhJtgmYC
+	TkJIGgITaHafokf1xK7z9wr3HHaNNu2eW6vzL8ljBlr+kzrwuNV5c50UAdB4s4d3dqTM88
+	vq15uOtvHbFqbzZZWYUen6YI5tY8MQYcKqPDMKjmmSqZJ7fHxPslbeOzssyus1frirX4M0
+	iUGnABoHgTFjj+jON6cd1T3ALZFIFvGz9ckARu++6g8EGfOM34qFRcsGrk4zAg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1733477914;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GB+iRl3Ef9SuS4YxioWNb1bW0a8WZrO+b32cLBvI0o8=;
-	b=yBluxMQ5SIs+80WRJDnGHXm1hCQMulwGv0Lj20EzrfFhvuSY2bI4AlaIEaIiUX0is4Wi2Y
-	x/lENXZziuld0xAg==
+	bh=QdzC+tIBd9Y8fjjoEuOHmFl588EUxvZ96XFPl8Sv77U=;
+	b=SbtD60A0eo8dGRFxjMKVSekTd/m4A5jtFygbO5wpVwB1WyxhPgO0YcNnOH807FDzOt0MI4
+	k9GXHdMdlUvGZ0Bw==
 From: "tip-bot2 for Andrii Nakryiko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] uprobes: Simplify session consumer tracking
+Subject:
+ [tip: perf/core] uprobes: Decouple return_instance list traversal and freeing
 Cc: Andrii Nakryiko <andrii@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Oleg Nesterov <oleg@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241206002417.3295533-2-andrii@kernel.org>
-References: <20241206002417.3295533-2-andrii@kernel.org>
+In-Reply-To: <20241206002417.3295533-3-andrii@kernel.org>
+References: <20241206002417.3295533-3-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173347791397.412.11164164930098434905.tip-bot2@tip-bot2>
+Message-ID: <173347791315.412.1668780366015175567.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,227 +82,145 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     e62f2d4927288db7fb1c22914f6aa33a94df0b01
-Gitweb:        https://git.kernel.org/tip/e62f2d4927288db7fb1c22914f6aa33a94df0b01
+Commit-ID:     fa288f5cfc18bbbe3232d9bacde92acbdb72334f
+Gitweb:        https://git.kernel.org/tip/fa288f5cfc18bbbe3232d9bacde92acbdb72334f
 Author:        Andrii Nakryiko <andrii@kernel.org>
-AuthorDate:    Thu, 05 Dec 2024 16:24:14 -08:00
+AuthorDate:    Thu, 05 Dec 2024 16:24:15 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Fri, 06 Dec 2024 09:52:01 +01:00
 
-uprobes: Simplify session consumer tracking
+uprobes: Decouple return_instance list traversal and freeing
 
-In practice, each return_instance will typically contain either zero or
-one return_consumer, depending on whether it has any uprobe session
-consumer attached or not. It's highly unlikely that more than one uprobe
-session consumers will be attached to any given uprobe, so there is no
-need to optimize for that case. But the way we currently do memory
-allocation and accounting is by pre-allocating the space for 4 session
-consumers in contiguous block of memory next to struct return_instance
-fixed part. This is unnecessarily wasteful.
+free_ret_instance() has two unrelated responsibilities: actually
+cleaning up return_instance's resources and freeing memory, and also
+helping with utask->return_instances list traversal by returning the
+next alive pointer.
 
-This patch changes this to keep struct return_instance fixed-sized with one
-pre-allocated return_consumer, while (in a highly unlikely scenario)
-allowing for more session consumers in a separate dynamically
-allocated and reallocated array.
+There is no reason why these two aspects have to be mixed together, so
+turn free_ret_instance() into void-returning function and make callers
+do list traversal on their own.
 
-We also simplify accounting a bit by not maintaining a separate
-temporary capacity for consumers array, and, instead, relying on
-krealloc() to be a no-op if underlying memory can accommodate a slightly
-bigger allocation (but again, it's very uncommon scenario to even have
-to do this reallocation).
-
-All this gets rid of ri_size(), simplifies push_consumer() and removes
-confusing ri->consumers_cnt re-assignment, while containing this
-singular preallocated consumer logic contained within a few simple
-preexisting helpers.
-
-Having fixed-sized struct return_instance simplifies and speeds up
-return_instance reuse that we ultimately add later in this patch set,
-see follow up patches.
+We'll use this simplification in the next patch that will guarantee that
+to-be-freed return_instance isn't reachable from utask->return_instances
+list.
 
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20241206002417.3295533-2-andrii@kernel.org
+Link: https://lore.kernel.org/r/20241206002417.3295533-3-andrii@kernel.org
 ---
- include/linux/uprobes.h | 10 ++++--
- kernel/events/uprobes.c | 72 ++++++++++++++++++++--------------------
- 2 files changed, 45 insertions(+), 37 deletions(-)
+ kernel/events/uprobes.c | 37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index e0a4c20..1d44997 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -154,12 +154,18 @@ struct return_instance {
- 	unsigned long		stack;		/* stack pointer */
- 	unsigned long		orig_ret_vaddr; /* original return address */
- 	bool			chained;	/* true, if instance is nested */
--	int			consumers_cnt;
-+	int			cons_cnt;	/* total number of session consumers */
- 
- 	struct return_instance	*next;		/* keep as stack */
- 	struct rcu_head		rcu;
- 
--	struct return_consumer	consumers[] __counted_by(consumers_cnt);
-+	/* singular pre-allocated return_consumer instance for common case */
-+	struct return_consumer	consumer;
-+	/*
-+	 * extra return_consumer instances for rare cases of multiple session consumers,
-+	 * contains (cons_cnt - 1) elements
-+	 */
-+	struct return_consumer	*extra_consumers;
- } ____cacheline_aligned;
- 
- enum rp_check {
 diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index daf4314..6beac52 100644
+index 6beac52..cca1fe4 100644
 --- a/kernel/events/uprobes.c
 +++ b/kernel/events/uprobes.c
-@@ -1899,6 +1899,7 @@ static struct return_instance *free_ret_instance(struct return_instance *ri, boo
- 		hprobe_finalize(&ri->hprobe, hstate);
- 	}
+@@ -1888,10 +1888,8 @@ unsigned long uprobe_get_trap_addr(struct pt_regs *regs)
+ 	return instruction_pointer(regs);
+ }
  
-+	kfree(ri->extra_consumers);
+-static struct return_instance *free_ret_instance(struct return_instance *ri, bool cleanup_hprobe)
++static void free_ret_instance(struct return_instance *ri, bool cleanup_hprobe)
+ {
+-	struct return_instance *next = ri->next;
+-
+ 	if (cleanup_hprobe) {
+ 		enum hprobe_state hstate;
+ 
+@@ -1901,7 +1899,6 @@ static struct return_instance *free_ret_instance(struct return_instance *ri, boo
+ 
+ 	kfree(ri->extra_consumers);
  	kfree_rcu(ri, rcu);
- 	return next;
- }
-@@ -1974,32 +1975,34 @@ static struct uprobe_task *get_utask(void)
- 	return current->utask;
+-	return next;
  }
  
--static size_t ri_size(int consumers_cnt)
--{
+ /*
+@@ -1911,7 +1908,7 @@ static struct return_instance *free_ret_instance(struct return_instance *ri, boo
+ void uprobe_free_utask(struct task_struct *t)
+ {
+ 	struct uprobe_task *utask = t->utask;
 -	struct return_instance *ri;
--
--	return sizeof(*ri) + sizeof(ri->consumers[0]) * consumers_cnt;
--}
--
--#define DEF_CNT 4
--
- static struct return_instance *alloc_return_instance(void)
- {
- 	struct return_instance *ri;
++	struct return_instance *ri, *ri_next;
  
--	ri = kzalloc(ri_size(DEF_CNT), GFP_KERNEL);
-+	ri = kzalloc(sizeof(*ri), GFP_KERNEL);
- 	if (!ri)
- 		return ZERO_SIZE_PTR;
+ 	if (!utask)
+ 		return;
+@@ -1921,8 +1918,11 @@ void uprobe_free_utask(struct task_struct *t)
+ 	timer_delete_sync(&utask->ri_timer);
  
--	ri->consumers_cnt = DEF_CNT;
- 	return ri;
- }
- 
- static struct return_instance *dup_return_instance(struct return_instance *old)
- {
--	size_t size = ri_size(old->consumers_cnt);
-+	struct return_instance *ri;
-+
-+	ri = kmemdup(old, sizeof(*ri), GFP_KERNEL);
-+
-+	if (unlikely(old->cons_cnt > 1)) {
-+		ri->extra_consumers = kmemdup(old->extra_consumers,
-+					      sizeof(ri->extra_consumers[0]) * (old->cons_cnt - 1),
-+					      GFP_KERNEL);
-+		if (!ri->extra_consumers) {
-+			kfree(ri);
-+			return NULL;
-+		}
+ 	ri = utask->return_instances;
+-	while (ri)
+-		ri = free_ret_instance(ri, true /* cleanup_hprobe */);
++	while (ri) {
++		ri_next = ri->next;
++		free_ret_instance(ri, true /* cleanup_hprobe */);
++		ri = ri_next;
 +	}
  
--	return kmemdup(old, size, GFP_KERNEL);
-+	return ri;
- }
- 
- static int dup_utask(struct task_struct *t, struct uprobe_task *o_utask)
-@@ -2369,25 +2372,28 @@ static struct uprobe *find_active_uprobe_rcu(unsigned long bp_vaddr, int *is_swb
- 	return uprobe;
- }
- 
--static struct return_instance*
--push_consumer(struct return_instance *ri, int idx, __u64 id, __u64 cookie)
-+static struct return_instance *push_consumer(struct return_instance *ri, __u64 id, __u64 cookie)
+ 	kfree(utask);
+ 	t->utask = NULL;
+@@ -2111,12 +2111,15 @@ unsigned long uprobe_get_trampoline_vaddr(void)
+ static void cleanup_return_instances(struct uprobe_task *utask, bool chained,
+ 					struct pt_regs *regs)
  {
-+	struct return_consumer *ric;
-+
- 	if (unlikely(ri == ZERO_SIZE_PTR))
- 		return ri;
+-	struct return_instance *ri = utask->return_instances;
++	struct return_instance *ri = utask->return_instances, *ri_next;
+ 	enum rp_check ctx = chained ? RP_CHECK_CHAIN_CALL : RP_CHECK_CALL;
  
--	if (unlikely(idx >= ri->consumers_cnt)) {
--		struct return_instance *old_ri = ri;
--
--		ri->consumers_cnt += DEF_CNT;
--		ri = krealloc(old_ri, ri_size(old_ri->consumers_cnt), GFP_KERNEL);
--		if (!ri) {
--			kfree(old_ri);
-+	if (unlikely(ri->cons_cnt > 0)) {
-+		ric = krealloc(ri->extra_consumers, sizeof(*ric) * ri->cons_cnt, GFP_KERNEL);
-+		if (!ric) {
-+			kfree(ri->extra_consumers);
-+			kfree_rcu(ri, rcu);
- 			return ZERO_SIZE_PTR;
- 		}
-+		ri->extra_consumers = ric;
+ 	while (ri && !arch_uretprobe_is_alive(ri, ctx, regs)) {
+-		ri = free_ret_instance(ri, true /* cleanup_hprobe */);
++		ri_next = ri->next;
+ 		utask->depth--;
++
++		free_ret_instance(ri, true /* cleanup_hprobe */);
++		ri = ri_next;
  	}
- 
--	ri->consumers[idx].id = id;
--	ri->consumers[idx].cookie = cookie;
-+	ric = likely(ri->cons_cnt == 0) ? &ri->consumer : &ri->extra_consumers[ri->cons_cnt - 1];
-+	ric->id = id;
-+	ric->cookie = cookie;
-+
-+	ri->cons_cnt++;
- 	return ri;
+ 	rcu_assign_pointer(utask->return_instances, ri);
  }
- 
-@@ -2395,14 +2401,17 @@ static struct return_consumer *
- return_consumer_find(struct return_instance *ri, int *iter, int id)
+@@ -2508,7 +2511,7 @@ static struct return_instance *find_next_ret_chain(struct return_instance *ri)
+ void uprobe_handle_trampoline(struct pt_regs *regs)
  {
- 	struct return_consumer *ric;
--	int idx = *iter;
-+	int idx;
+ 	struct uprobe_task *utask;
+-	struct return_instance *ri, *next;
++	struct return_instance *ri, *ri_next, *next_chain;
+ 	struct uprobe *uprobe;
+ 	enum hprobe_state hstate;
+ 	bool valid;
+@@ -2528,8 +2531,8 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+ 		 * or NULL; the latter case means that nobody but ri->func
+ 		 * could hit this trampoline on return. TODO: sigaltstack().
+ 		 */
+-		next = find_next_ret_chain(ri);
+-		valid = !next || arch_uretprobe_is_alive(next, RP_CHECK_RET, regs);
++		next_chain = find_next_ret_chain(ri);
++		valid = !next_chain || arch_uretprobe_is_alive(next_chain, RP_CHECK_RET, regs);
  
--	for (ric = &ri->consumers[idx]; idx < ri->consumers_cnt; idx++, ric++) {
-+	for (idx = *iter; idx < ri->cons_cnt; idx++)
-+	{
-+		ric = likely(idx == 0) ? &ri->consumer : &ri->extra_consumers[idx - 1];
- 		if (ric->id == id) {
- 			*iter = idx + 1;
- 			return ric;
- 		}
- 	}
-+
- 	return NULL;
- }
+ 		instruction_pointer_set(regs, ri->orig_ret_vaddr);
+ 		do {
+@@ -2541,7 +2544,9 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+ 			 * trampoline addresses on the stack are replaced with correct
+ 			 * original return addresses
+ 			 */
+-			rcu_assign_pointer(utask->return_instances, ri->next);
++			ri_next = ri->next;
++			rcu_assign_pointer(utask->return_instances, ri_next);
++			utask->depth--;
  
-@@ -2416,7 +2425,6 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
- 	struct uprobe_consumer *uc;
- 	bool has_consumers = false, remove = true;
- 	struct return_instance *ri = NULL;
--	int push_idx = 0;
+ 			uprobe = hprobe_consume(&ri->hprobe, &hstate);
+ 			if (valid)
+@@ -2549,9 +2554,9 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+ 			hprobe_finalize(&ri->hprobe, hstate);
  
- 	current->utask->auprobe = &uprobe->arch;
+ 			/* We already took care of hprobe, no need to waste more time on that. */
+-			ri = free_ret_instance(ri, false /* !cleanup_hprobe */);
+-			utask->depth--;
+-		} while (ri != next);
++			free_ret_instance(ri, false /* !cleanup_hprobe */);
++			ri = ri_next;
++		} while (ri != next_chain);
+ 	} while (!valid);
  
-@@ -2441,18 +2449,12 @@ static void handler_chain(struct uprobe *uprobe, struct pt_regs *regs)
- 			ri = alloc_return_instance();
- 
- 		if (session)
--			ri = push_consumer(ri, push_idx++, uc->id, cookie);
-+			ri = push_consumer(ri, uc->id, cookie);
- 	}
- 	current->utask->auprobe = NULL;
- 
--	if (!ZERO_OR_NULL_PTR(ri)) {
--		/*
--		 * The push_idx value has the final number of return consumers,
--		 * and ri->consumers_cnt has number of allocated consumers.
--		 */
--		ri->consumers_cnt = push_idx;
-+	if (!ZERO_OR_NULL_PTR(ri))
- 		prepare_uretprobe(uprobe, regs, ri);
--	}
- 
- 	if (remove && has_consumers) {
- 		down_read(&uprobe->register_rwsem);
+ 	return;
 
