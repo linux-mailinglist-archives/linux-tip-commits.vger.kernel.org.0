@@ -1,79 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-3000-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3001-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443E89E6BC7
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 11:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F2A9E6BCD
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 11:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0069D28860A
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 10:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F7D288B5F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Dec 2024 10:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68692200BBA;
-	Fri,  6 Dec 2024 10:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6963201111;
+	Fri,  6 Dec 2024 10:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EPgTGnm2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T5IPFbqM"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0BmwZdP5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cruCxBYU"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262F020011C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 321AD200B84;
 	Fri,  6 Dec 2024 10:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733480210; cv=none; b=JaSo1n8vzMMLR9vCiw/bWfi1sq8zblAkPGAovWeRYT3VM4GwQS8sZlG1CfB1b6Y0i3ZIOwNeUi098xAJt68p/gNst6oXBJdi/jgVvi8ppT1OJoi0jV04qor+/XNfyPoxmJwD88QY7mBkIjgCMokQAubzDfJ66wpXPQdBnhgZSxE=
+	t=1733480212; cv=none; b=b+uvV5yXDkNz7Kj+2owpMOOIC0ZtlMkSSoP0elF87RJHWz9mKCbMEGfk4MmdRrLK/w1POkF7i1LBYVz/g3VuwU92Pyi/otx1FP5C4ugP+/r5lboIE/KGsuejL0vxMDxu1qgxTrvidOCDMyGp9URDLQ2ijoTxL7EIlMjgOkt6oW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733480210; c=relaxed/simple;
-	bh=YeUN+bp5dSOi7qFd3nkXIi3WOvuHZPKhk7MTa213+f8=;
+	s=arc-20240116; t=1733480212; c=relaxed/simple;
+	bh=09Tc8HFR7sVWKNtBgoQzw5iJaZrLRLGqToA0zacDph4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VKiVtr1TLE4/s8KFTaYp4giBifEMPhqPoSls5NEAyydsBmlFgSjQk2gSxg4MH54cotOvC1HpKgnJvsUyCoMgXHzBs+93MdMUQkrKqFRH3OwPdJuGkzKaoPwi2KphRiDbWvVrR9QoSFN/la95mrUlbIcNhQLWpcTDwn0Xy+AkQ/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EPgTGnm2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T5IPFbqM; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=tvCOTBP9lsl0vN1QqVeGLijOh/1/c7lRTLkRt54BuTO/8SZQDMbOQXK1+eINZH5GQf6Z5tN3P9pk9TPnRwCw0qOyn5mdoyubcnQpD56GKMD9LwjpESrxR8erhZhHTP/oVSZ7AkXFdDUrpF3HGhGFx5pjOUE+EC/JSJMB+p0l9xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0BmwZdP5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cruCxBYU; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 06 Dec 2024 10:16:45 -0000
+Date: Fri, 06 Dec 2024 10:16:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733480206;
+	s=2020; t=1733480207;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IOE3AIeQcoJokJred8aHnllM/GYWtgnYHJ7HHOI7guM=;
-	b=EPgTGnm2L4hojnhIm730GCLpm7/Vlw1m+35qzDi9IvRBkowZyToWs7zlj6raLlBBYKRmsx
-	Y9+nM9WHTDhoHVNXa8JYz0gHXbE37CUbIDsIQHcKgLvl5D6kKwDaUlDOQzPgDdes0LJQqZ
-	HmiHsrMZO9XU/ViXBnWrF+UACzFGCdzilctp24GNfG3VLhjojUS8S1QI0OBI6D5LLScD4x
-	/+EAbteKVbs1YG5wGzw2Exs50uNXfInKMKwfLcCWKqgHPOeqkElj/g1EbSKlPZkuPEkqV/
-	KYoKSrHyiEpZMmi3qlvxDH94YZGEEIlOJMNJnOFa6Nu8jMR8KIwnPgXVn7QboQ==
+	bh=zah0M/xYPqngKbwywTAqMBsjpQHS5kRy1YlwYT4oa6Q=;
+	b=0BmwZdP5egY2Sb+cHOSMi6qbv0LSfLlHrp3KlgX5edCXcn1gXlNQW97s2JhStsUBH+FcZc
+	jlDYeI/ATm1N3Z4BLKoVf85TVgmBujbEVPyRZ+YIW+Y3Wx/y8lIqb4fkRyDzDT+Q/j7tbd
+	HnmSbCKXNEw+4hykgGX5xe7Qv4V7XE0TX2OQwOtzGyV4VlRUP036e58e/3OhYKB2UrwqvC
+	EkX/xCnyiVxcwJrhvQkyVvguD3tyNA0LtoiF6MdF3bhrupCT7SVybIvj0HuGU/LEXl9Hp5
+	JyTTrjlOdI0Ez0jWxIIQp+RnAqY6sZI8ssO7mIpKPgpyHW68kOMZv/S37ksOmA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733480206;
+	s=2020e; t=1733480207;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IOE3AIeQcoJokJred8aHnllM/GYWtgnYHJ7HHOI7guM=;
-	b=T5IPFbqMOgrMJ0/Il++gcm8bwxEOEAHkspLOFhu8f/WU0rlypqV00EbX6TZec40UjgdJ56
-	c6ddwL/XeSuxBMBQ==
+	bh=zah0M/xYPqngKbwywTAqMBsjpQHS5kRy1YlwYT4oa6Q=;
+	b=cruCxBYUyp3hCjYVmj9jHq7Gu9l+4jxAyhQ500y9F7RHTBiMTaohxBRPyngMteMzsxo/KD
+	CSNVYjOEDPtmCjDA==
 From: "tip-bot2 for David Woodhouse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/kexec: Add data section to relocate_kernel
+Subject:
+ [tip: x86/boot] x86/kexec: Move relocate_kernel to kernel .data section
 Cc: David Woodhouse <dwmw@amazon.co.uk>, Ingo Molnar <mingo@kernel.org>,
  Baoquan He <bhe@redhat.com>, Vivek Goyal <vgoyal@redhat.com>,
  Dave Young <dyoung@redhat.com>, Eric Biederman <ebiederm@xmission.com>,
  Ard Biesheuvel <ardb@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241205153343.3275139-10-dwmw2@infradead.org>
-References: <20241205153343.3275139-10-dwmw2@infradead.org>
+In-Reply-To: <20241205153343.3275139-9-dwmw2@infradead.org>
+References: <20241205153343.3275139-9-dwmw2@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173348020586.412.12139347841219719618.tip-bot2@tip-bot2>
+Message-ID: <173348020665.412.8869298191554042252.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,18 +84,19 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     8dbec5c77bc32f04583d3973c8178a74e72fdf18
-Gitweb:        https://git.kernel.org/tip/8dbec5c77bc32f04583d3973c8178a74e72fdf18
+Commit-ID:     cb33ff9e063c1230d557d97ff6e87d097821d517
+Gitweb:        https://git.kernel.org/tip/cb33ff9e063c1230d557d97ff6e87d097821d517
 Author:        David Woodhouse <dwmw@amazon.co.uk>
-AuthorDate:    Thu, 05 Dec 2024 15:05:15 
+AuthorDate:    Thu, 05 Dec 2024 15:05:14 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 06 Dec 2024 10:42:00 +01:00
+CommitterDate: Fri, 06 Dec 2024 10:41:59 +01:00
 
-x86/kexec: Add data section to relocate_kernel
+x86/kexec: Move relocate_kernel to kernel .data section
 
-Now that the relocate_kernel page is handled sanely by a linker script
-we can have actual data, and just use %rip-relative addressing to access
-it.
+Now that the copy is executed instead of the original, the relocate_kernel
+page can live in the kernel's .text section. This will allow subsequent
+commits to actually add real data to it and clean up the code somewhat as
+well as making the control page ROX.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
@@ -104,170 +106,130 @@ Cc: Dave Young <dyoung@redhat.com>
 Cc: Eric Biederman <ebiederm@xmission.com>
 Cc: Ard Biesheuvel <ardb@kernel.org>
 Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20241205153343.3275139-10-dwmw2@infradead.org
+Link: https://lore.kernel.org/r/20241205153343.3275139-9-dwmw2@infradead.org
 ---
- arch/x86/kernel/machine_kexec_64.c   |  8 ++-
- arch/x86/kernel/relocate_kernel_64.S | 62 +++++++++++++--------------
- arch/x86/kernel/vmlinux.lds.S        |  1 +-
- 3 files changed, 38 insertions(+), 33 deletions(-)
+ arch/x86/include/asm/sections.h      |  1 +
+ arch/x86/kernel/callthunks.c         |  6 ++++++
+ arch/x86/kernel/machine_kexec_64.c   |  4 +++-
+ arch/x86/kernel/relocate_kernel_64.S |  7 +------
+ arch/x86/kernel/vmlinux.lds.S        | 15 ++++++++++++++-
+ 5 files changed, 25 insertions(+), 8 deletions(-)
 
+diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
+index 3fa87e5..30e8ee7 100644
+--- a/arch/x86/include/asm/sections.h
++++ b/arch/x86/include/asm/sections.h
+@@ -5,6 +5,7 @@
+ #include <asm-generic/sections.h>
+ #include <asm/extable.h>
+ 
++extern char __relocate_kernel_start[], __relocate_kernel_end[];
+ extern char __brk_base[], __brk_limit[];
+ extern char __end_rodata_aligned[];
+ 
+diff --git a/arch/x86/kernel/callthunks.c b/arch/x86/kernel/callthunks.c
+index 4656474..51c3e00 100644
+--- a/arch/x86/kernel/callthunks.c
++++ b/arch/x86/kernel/callthunks.c
+@@ -139,9 +139,15 @@ static bool skip_addr(void *dest)
+ 		return true;
+ #endif
+ #ifdef CONFIG_KEXEC_CORE
++# ifdef CONFIG_X86_64
++	if (dest >= (void *)__relocate_kernel_start &&
++	    dest < (void *)__relocate_kernel_end)
++		return true;
++# else
+ 	if (dest >= (void *)relocate_kernel &&
+ 	    dest < (void*)relocate_kernel + KEXEC_CONTROL_CODE_MAX_SIZE)
+ 		return true;
++# endif
+ #endif
+ #ifdef CONFIG_XEN
+ 	if (dest >= (void *)hypercall_page &&
 diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kexec_64.c
-index 23dffdc..63dca5c 100644
+index 9567347..23dffdc 100644
 --- a/arch/x86/kernel/machine_kexec_64.c
 +++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -343,6 +343,7 @@ void machine_kexec(struct kimage *image)
- 					     unsigned long start_address,
- 					     unsigned int preserve_context,
- 					     unsigned int host_mem_enc_active);
+@@ -307,6 +307,8 @@ static void load_segments(void)
+ int machine_kexec_prepare(struct kimage *image)
+ {
+ 	void *control_page = page_address(image->control_code_page);
 +	unsigned long reloc_start = (unsigned long)__relocate_kernel_start;
- 	unsigned long page_list[PAGES_NR];
- 	unsigned int host_mem_enc_active;
- 	int save_ftrace_enabled;
-@@ -389,7 +390,12 @@ void machine_kexec(struct kimage *image)
- 		page_list[PA_SWAP_PAGE] = (page_to_pfn(image->swap_page)
- 						<< PAGE_SHIFT);
++	unsigned long reloc_end = (unsigned long)__relocate_kernel_end;
+ 	int result;
  
--	relocate_kernel_ptr = control_page;
-+	/*
-+	 * Allow for the possibility that relocate_kernel might not be at
-+	 * the very start of the page.
-+	 */
-+	relocate_kernel_ptr = control_page + (unsigned long)relocate_kernel -
-+		reloc_start;
+ 	/* Setup the identity mapped 64bit page table */
+@@ -314,7 +316,7 @@ int machine_kexec_prepare(struct kimage *image)
+ 	if (result)
+ 		return result;
  
- 	/*
- 	 * The segment registers are funny things, they have both a
+-	__memcpy(control_page, relocate_kernel, KEXEC_CONTROL_CODE_MAX_SIZE);
++	__memcpy(control_page, __relocate_kernel_start, reloc_end - reloc_start);
+ 
+ 	set_memory_x((unsigned long)control_page, 1);
+ 
 diff --git a/arch/x86/kernel/relocate_kernel_64.S b/arch/x86/kernel/relocate_kernel_64.S
-index 2670044..f13866a 100644
+index d0a87b3..2670044 100644
 --- a/arch/x86/kernel/relocate_kernel_64.S
 +++ b/arch/x86/kernel/relocate_kernel_64.S
-@@ -23,23 +23,21 @@
- #define PAGE_ATTR (_PAGE_PRESENT | _PAGE_RW | _PAGE_ACCESSED | _PAGE_DIRTY)
+@@ -41,10 +41,8 @@
+ #define CP_PA_BACKUP_PAGES_MAP	DATA(0x30)
+ #define CP_VA_CONTROL_PAGE	DATA(0x38)
  
- /*
-- * control_page + KEXEC_CONTROL_CODE_MAX_SIZE
-- * ~ control_page + PAGE_SIZE are used as data storage and stack for
-- * jumping back
-+ * The .text.relocate_kernel and .data.relocate_kernel sections are copied
-+ * into the control page, and the remainder of the page is used as the stack.
-  */
--#define DATA(offset)		(KEXEC_CONTROL_CODE_MAX_SIZE+(offset))
- 
-+	.section .data.relocate_kernel,"a";
- /* Minimal CPU state */
--#define RSP			DATA(0x0)
--#define CR0			DATA(0x8)
--#define CR3			DATA(0x10)
--#define CR4			DATA(0x18)
--
--/* other data */
--#define CP_PA_TABLE_PAGE	DATA(0x20)
--#define CP_PA_SWAP_PAGE		DATA(0x28)
--#define CP_PA_BACKUP_PAGES_MAP	DATA(0x30)
--#define CP_VA_CONTROL_PAGE	DATA(0x38)
-+SYM_DATA_LOCAL(saved_rsp, .quad 0)
-+SYM_DATA_LOCAL(saved_cr0, .quad 0)
-+SYM_DATA_LOCAL(saved_cr3, .quad 0)
-+SYM_DATA_LOCAL(saved_cr4, .quad 0)
-+	/* other data */
-+SYM_DATA_LOCAL(va_control_page, .quad 0)
-+SYM_DATA_LOCAL(pa_table_page, .quad 0)
-+SYM_DATA_LOCAL(pa_swap_page, .quad 0)
-+SYM_DATA_LOCAL(pa_backup_pages_map, .quad 0)
- 
- 	.section .text.relocate_kernel,"ax";
+-	.text
+-	.align PAGE_SIZE
++	.section .text.relocate_kernel,"ax";
  	.code64
-@@ -63,14 +61,13 @@ SYM_CODE_START_NOALIGN(relocate_kernel)
- 	pushq %r15
- 	pushf
- 
--	movq	PTR(VA_CONTROL_PAGE)(%rsi), %r11
--	movq	%rsp, RSP(%r11)
-+	movq	%rsp, saved_rsp(%rip)
- 	movq	%cr0, %rax
--	movq	%rax, CR0(%r11)
-+	movq	%rax, saved_cr0(%rip)
- 	movq	%cr3, %rax
--	movq	%rax, CR3(%r11)
-+	movq	%rax, saved_cr3(%rip)
- 	movq	%cr4, %rax
--	movq	%rax, CR4(%r11)
-+	movq	%rax, saved_cr4(%rip)
- 
- 	/* Save CR4. Required to enable the right paging mode later. */
- 	movq	%rax, %r13
-@@ -83,10 +80,11 @@ SYM_CODE_START_NOALIGN(relocate_kernel)
- 	movq	%r8, %r12
- 
- 	/*
--	 * get physical address of control page now
-+	 * get physical and virtual address of control page now
- 	 * this is impossible after page table switch
- 	 */
- 	movq	PTR(PA_CONTROL_PAGE)(%rsi), %r8
-+	movq	PTR(VA_CONTROL_PAGE)(%rsi), %r11
- 
- 	/* get physical address of page table now too */
- 	movq	PTR(PA_TABLE_PAGE)(%rsi), %r9
-@@ -95,10 +93,10 @@ SYM_CODE_START_NOALIGN(relocate_kernel)
- 	movq	PTR(PA_SWAP_PAGE)(%rsi), %r10
- 
- 	/* save some information for jumping back */
--	movq	%r9, CP_PA_TABLE_PAGE(%r11)
--	movq	%r10, CP_PA_SWAP_PAGE(%r11)
--	movq	%rdi, CP_PA_BACKUP_PAGES_MAP(%r11)
--	movq	%r11, CP_VA_CONTROL_PAGE(%r11)
-+	movq	%r9, pa_table_page(%rip)
-+	movq	%r10, pa_swap_page(%rip)
-+	movq	%rdi, pa_backup_pages_map(%rip)
-+	movq	%r11, va_control_page(%rip)
- 
- 	/* Save the preserve_context to %r11 as swap_pages clobbers %rcx. */
- 	movq	%rcx, %r11
-@@ -229,13 +227,13 @@ SYM_CODE_START_LOCAL_NOALIGN(identity_mapped)
- 	/* get the re-entry point of the peer system */
- 	movq	0(%rsp), %rbp
- 	leaq	relocate_kernel(%rip), %r8
--	movq	CP_PA_SWAP_PAGE(%r8), %r10
--	movq	CP_PA_BACKUP_PAGES_MAP(%r8), %rdi
--	movq	CP_PA_TABLE_PAGE(%r8), %rax
-+	movq	pa_swap_page(%rip), %r10
-+	movq	pa_backup_pages_map(%rip), %rdi
-+	movq	pa_table_page(%rip), %rax
- 	movq	%rax, %cr3
- 	lea	PAGE_SIZE(%r8), %rsp
- 	call	swap_pages
--	movq	CP_VA_CONTROL_PAGE(%r8), %rax
-+	movq	va_control_page(%rip), %rax
- 	addq	$(virtual_mapped - relocate_kernel), %rax
- 	pushq	%rax
- 	ANNOTATE_UNRET_SAFE
-@@ -246,11 +244,11 @@ SYM_CODE_END(identity_mapped)
- SYM_CODE_START_LOCAL_NOALIGN(virtual_mapped)
+-SYM_CODE_START_NOALIGN(relocate_range)
+ SYM_CODE_START_NOALIGN(relocate_kernel)
  	UNWIND_HINT_END_OF_STACK
- 	ANNOTATE_NOENDBR // RET target, above
--	movq	RSP(%r8), %rsp
--	movq	CR4(%r8), %rax
-+	movq	saved_rsp(%rip), %rsp
-+	movq	saved_cr4(%rip), %rax
- 	movq	%rax, %cr4
--	movq	CR3(%r8), %rax
--	movq	CR0(%r8), %r8
-+	movq	saved_cr3(%rip), %rax
-+	movq	saved_cr0(%rip), %r8
- 	movq	%rax, %cr3
- 	movq	%r8, %cr0
- 
+ 	ANNOTATE_NOENDBR
+@@ -341,6 +339,3 @@ SYM_CODE_START_LOCAL_NOALIGN(swap_pages)
+ 	ret
+ 	int3
+ SYM_CODE_END(swap_pages)
+-
+-	.skip KEXEC_CONTROL_CODE_MAX_SIZE - (. - relocate_kernel), 0xcc
+-SYM_CODE_END(relocate_range);
 diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
-index 78ce1a0..0c89399 100644
+index 56cdf13..78ce1a0 100644
 --- a/arch/x86/kernel/vmlinux.lds.S
 +++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -101,6 +101,7 @@ const_pcpu_hot = pcpu_hot;
- 	. = ALIGN(0x100);					\
- 	__relocate_kernel_start = .;				\
- 	*(.text.relocate_kernel);				\
-+	*(.data.relocate_kernel);				\
- 	__relocate_kernel_end = .;
+@@ -28,6 +28,7 @@
+ #include <asm/orc_lookup.h>
+ #include <asm/cache.h>
+ #include <asm/boot.h>
++#include <asm/kexec.h>
  
- ASSERT(__relocate_kernel_end - __relocate_kernel_start <= KEXEC_CONTROL_CODE_MAX_SIZE,
+ #undef i386     /* in case the preprocessor is a 32bit one */
+ 
+@@ -95,7 +96,18 @@ const_pcpu_hot = pcpu_hot;
+ #define BSS_DECRYPTED
+ 
+ #endif
+-
++#if defined(CONFIG_X86_64) && defined(CONFIG_KEXEC_CORE)
++#define KEXEC_RELOCATE_KERNEL					\
++	. = ALIGN(0x100);					\
++	__relocate_kernel_start = .;				\
++	*(.text.relocate_kernel);				\
++	__relocate_kernel_end = .;
++
++ASSERT(__relocate_kernel_end - __relocate_kernel_start <= KEXEC_CONTROL_CODE_MAX_SIZE,
++	"relocate_kernel code too large!")
++#else
++#define KEXEC_RELOCATE_KERNEL
++#endif
+ PHDRS {
+ 	text PT_LOAD FLAGS(5);          /* R_E */
+ 	data PT_LOAD FLAGS(6);          /* RW_ */
+@@ -184,6 +196,7 @@ SECTIONS
+ 
+ 		DATA_DATA
+ 		CONSTRUCTORS
++		KEXEC_RELOCATE_KERNEL
+ 
+ 		/* rarely changed data like cpu maps */
+ 		READ_MOSTLY_DATA(INTERNODE_CACHE_BYTES)
 
