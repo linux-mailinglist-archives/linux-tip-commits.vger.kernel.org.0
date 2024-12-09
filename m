@@ -1,411 +1,226 @@
-Return-Path: <linux-tip-commits+bounces-3022-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3025-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCA59E9037
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 11:33:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B13F9E903C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 11:33:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E468E28226D
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 10:33:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 560871886296
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 10:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDED3217F29;
-	Mon,  9 Dec 2024 10:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D38C217F3E;
+	Mon,  9 Dec 2024 10:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AomJ2cI6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BGmsrym9"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SXY+MM5x";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Bpt7y3ZR"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E40321766C;
-	Mon,  9 Dec 2024 10:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1E1217724;
+	Mon,  9 Dec 2024 10:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733740341; cv=none; b=EhXu3k/bADmFhZtAMHm8Ths6P3QnFMz1qMqxYGLs+HbQiJzFQ5N4ew++oFz64HjqUjB0KuIUzffa2/b7KSvl6bMgLZAomghhmOlASxSgWna1zmOSWSAYVRIv2c5qS7X4W7nWLcx6330/4IIYJPNWBH98USm7XiLRKDOFsBQxSXo=
+	t=1733740343; cv=none; b=PGxkmPQYYvtl8yeLKgN2zixdhjr9fCT7hggvoeO+bg3u26i13lJvObc7fWh9ZbHZSGPZ05eg72kjRcqvfQxt9N07kHUjEuC+zCauBiiHk/dNHt2IwBxWb9vNnEDC50NZXopm4XyAMwEtorB63wIp6bHlAvEZ5Tc6RAFOUoIZeTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733740341; c=relaxed/simple;
-	bh=Ri7+5ECWUkDT7wfNuFvBDw1ldR8RNPyZ47DvZHljBXQ=;
+	s=arc-20240116; t=1733740343; c=relaxed/simple;
+	bh=lYjq1xXlFnplgi3E8vxjvBArd6RkcQSOSW6QZ23l3eI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=NGpD9kfKDR0ddQDVGbajphxaSoZkSFKQ3J8m+vz38NyL35PwCqPFbq5tTem1pm24+mtn3WS6E3el8hVvnom3eRFyw+r0G7rQzGpQsZ6O/0JwUD8smXM1QYYzii+4DHcgQddeI2kMWPPCOt8isVCPH6t3EjkvH9W7Ti6H66+1ZNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AomJ2cI6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BGmsrym9; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=VxW+d2Fuc+78TvQNHuX2EnH0molaG/PK9KUvLYLUbtQDnGEf7oQ3TkQ01ID6xMNOaPwOznk6V2u+zhxXJXlIQt1+hscG1TU+OAPGoCF/s2m8VZJKQkt+ZV8f7yb60Vw/bRqulRXdAkfU1/VtYd9x/DXi5BOJkLvEtjTQqU6F1fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SXY+MM5x; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Bpt7y3ZR; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 09 Dec 2024 10:32:10 -0000
+Date: Mon, 09 Dec 2024 10:32:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733740331;
+	s=2020; t=1733740332;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rf7jV2Qw68niC3Wvg6lQzGDxbIIbTx+FAX8t0a09lWg=;
-	b=AomJ2cI6sBooV7OLNoxAWX9maUiCWRYbTfWm0Ge2h400esdf2xx4VOhNAoU//A0H8gmvMQ
-	LPAPnBdVdQrDD3F/DuOfHGmd/egMd6Od7raT50VP0Se3eKPWkAzgRQKKpMxc0V0aMLlZHm
-	AM9tRftPdnI+I5rl9dhFGIsCld5WOLECAe62c1m86+DQ+PxPjthyJNT3voEB1MQroeXteC
-	mE/Fw2CD6gd5ofhJ1hNtEUKfQ08+lzo8TP5lsdo5b/xpdUwD+RWd+RHjaBXvcA1TafNqhx
-	UIgfuiHosBo2MqF4N8e8qsKU2UiLOXBYbL7YV3Jz9EfDPOLMRdtCMgDyg81eOg==
+	bh=7Gam+JCVmt5AR17pHybQzFYpCfBMd7NtbL5PF/QYBwc=;
+	b=SXY+MM5xe2gHATDQsesSijw8CT0Cxz+ElD6w+MaxkTn65o78SdHX/hISUAPkpOhnG2KTE1
+	af2p5yqeiOLkN2DvgoVKsoPofG1JzPtxuu8OxzIfMB7ykv0Iip5OVLNKso8Ie8qqNWBniw
+	rDw+MjvnhLQ8G0iU0Dfgf/T6c6VK6AOOo0MQ7nrcWczna1z47MYHdfDpc953yoZeYiVSiK
+	JWTvjl71PNMUZ+epxsfGEummWNfaqL/AOoU6Rx3VHCpKy5sL7L28DvQso0BXLeD9Jfihz/
+	ettkEumawr7RhRA/qzQ8Ac5ElezT6vGCnPF/IrcOlq5AK/ge/XZ/x69eYWbZ9g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733740331;
+	s=2020e; t=1733740332;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rf7jV2Qw68niC3Wvg6lQzGDxbIIbTx+FAX8t0a09lWg=;
-	b=BGmsrym9L7mOspqFLWERzi9uQYAqXh0Z76mvQRjuxhUWww0kE3gTb4oSDdAQq1EVyN09Og
-	5xf+0q2bbUdStDCA==
+	bh=7Gam+JCVmt5AR17pHybQzFYpCfBMd7NtbL5PF/QYBwc=;
+	b=Bpt7y3ZRcBUp9pAdVSLRwvZokUZNMTQcKPJZlPEz9HAb2gEZJ2aTKVlRFjFjJ+67B5FVen
+	oHcY/DG446wUAvCA==
 From: "tip-bot2 for Andrii Nakryiko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] uprobes: Reuse return_instances between multiple
- uretprobes within task
+Subject:
+ [tip: perf/core] uprobes: Decouple return_instance list traversal and freeing
 Cc: Andrii Nakryiko <andrii@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
  Oleg Nesterov <oleg@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241206002417.3295533-5-andrii@kernel.org>
-References: <20241206002417.3295533-5-andrii@kernel.org>
+In-Reply-To: <20241206002417.3295533-3-andrii@kernel.org>
+References: <20241206002417.3295533-3-andrii@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173374033033.412.12792032138289416955.tip-bot2@tip-bot2>
+Message-ID: <173374033172.412.16339164244387538339.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     a8ffda401a3e622a3ee542740b76ff6f1c138a82
-Gitweb:        https://git.kernel.org/tip/a8ffda401a3e622a3ee542740b76ff6f1c1=
-38a82
+Commit-ID:     cefcf34b4a4036dcd056984c85e1f426fe2ccf38
+Gitweb:        https://git.kernel.org/tip/cefcf34b4a4036dcd056984c85e1f426fe2ccf38
 Author:        Andrii Nakryiko <andrii@kernel.org>
-AuthorDate:    Thu, 05 Dec 2024 16:24:17 -08:00
+AuthorDate:    Thu, 05 Dec 2024 16:24:15 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 09 Dec 2024 11:18:08 +01:00
 
-uprobes: Reuse return_instances between multiple uretprobes within task
+uprobes: Decouple return_instance list traversal and freeing
 
-Instead of constantly allocating and freeing very short-lived
-struct return_instance, reuse it as much as possible within current
-task. For that, store a linked list of reusable return_instances within
-current->utask.
+free_ret_instance() has two unrelated responsibilities: actually
+cleaning up return_instance's resources and freeing memory, and also
+helping with utask->return_instances list traversal by returning the
+next alive pointer.
 
-The only complication is that ri_timer() might be still processing such
-return_instance. And so while the main uretprobe processing logic might
-be already done with return_instance and would be OK to immediately
-reuse it for the next uretprobe instance, it's not correct to
-unconditionally reuse it just like that.
+There is no reason why these two aspects have to be mixed together, so
+turn free_ret_instance() into void-returning function and make callers
+do list traversal on their own.
 
-Instead we make sure that ri_timer() can't possibly be processing it by
-using seqcount_t, with ri_timer() being "a writer", while
-free_ret_instance() being "a reader". If, after we unlink return
-instance from utask->return_instances list, we know that ri_timer()
-hasn't gotten to processing utask->return_instances yet, then we can be
-sure that immediate return_instance reuse is OK, and so we put it
-onto utask->ri_pool for future (potentially, almost immediate) reuse.
-
-This change shows improvements both in single CPU performance (by
-avoiding relatively expensive kmalloc/free combon) and in terms of
-multi-CPU scalability, where you can see that per-CPU throughput doesn't
-decline as steeply with increased number of CPUs (which were previously
-attributed to kmalloc()/free() through profiling):
-
-	BASELINE (latest perf/core)
-	=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-	uretprobe-nop         ( 1 cpus):    1.898 =C2=B1 0.002M/s  (  1.898M/s/cpu)
-	uretprobe-nop         ( 2 cpus):    3.574 =C2=B1 0.011M/s  (  1.787M/s/cpu)
-	uretprobe-nop         ( 3 cpus):    5.279 =C2=B1 0.066M/s  (  1.760M/s/cpu)
-	uretprobe-nop         ( 4 cpus):    6.824 =C2=B1 0.047M/s  (  1.706M/s/cpu)
-	uretprobe-nop         ( 5 cpus):    8.339 =C2=B1 0.060M/s  (  1.668M/s/cpu)
-	uretprobe-nop         ( 6 cpus):    9.812 =C2=B1 0.047M/s  (  1.635M/s/cpu)
-	uretprobe-nop         ( 7 cpus):   11.030 =C2=B1 0.048M/s  (  1.576M/s/cpu)
-	uretprobe-nop         ( 8 cpus):   12.453 =C2=B1 0.126M/s  (  1.557M/s/cpu)
-	uretprobe-nop         (10 cpus):   14.838 =C2=B1 0.044M/s  (  1.484M/s/cpu)
-	uretprobe-nop         (12 cpus):   17.092 =C2=B1 0.115M/s  (  1.424M/s/cpu)
-	uretprobe-nop         (14 cpus):   19.576 =C2=B1 0.022M/s  (  1.398M/s/cpu)
-	uretprobe-nop         (16 cpus):   22.264 =C2=B1 0.015M/s  (  1.391M/s/cpu)
-	uretprobe-nop         (24 cpus):   33.534 =C2=B1 0.078M/s  (  1.397M/s/cpu)
-	uretprobe-nop         (32 cpus):   43.262 =C2=B1 0.127M/s  (  1.352M/s/cpu)
-	uretprobe-nop         (40 cpus):   53.252 =C2=B1 0.080M/s  (  1.331M/s/cpu)
-	uretprobe-nop         (48 cpus):   55.778 =C2=B1 0.045M/s  (  1.162M/s/cpu)
-	uretprobe-nop         (56 cpus):   56.850 =C2=B1 0.227M/s  (  1.015M/s/cpu)
-	uretprobe-nop         (64 cpus):   62.005 =C2=B1 0.077M/s  (  0.969M/s/cpu)
-	uretprobe-nop         (72 cpus):   66.445 =C2=B1 0.236M/s  (  0.923M/s/cpu)
-	uretprobe-nop         (80 cpus):   68.353 =C2=B1 0.180M/s  (  0.854M/s/cpu)
-
-	THIS PATCHSET (on top of latest perf/core)
-	=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-	uretprobe-nop         ( 1 cpus):    2.253 =C2=B1 0.004M/s  (  2.253M/s/cpu)
-	uretprobe-nop         ( 2 cpus):    4.281 =C2=B1 0.003M/s  (  2.140M/s/cpu)
-	uretprobe-nop         ( 3 cpus):    6.389 =C2=B1 0.027M/s  (  2.130M/s/cpu)
-	uretprobe-nop         ( 4 cpus):    8.328 =C2=B1 0.005M/s  (  2.082M/s/cpu)
-	uretprobe-nop         ( 5 cpus):   10.353 =C2=B1 0.001M/s  (  2.071M/s/cpu)
-	uretprobe-nop         ( 6 cpus):   12.513 =C2=B1 0.010M/s  (  2.086M/s/cpu)
-	uretprobe-nop         ( 7 cpus):   14.525 =C2=B1 0.017M/s  (  2.075M/s/cpu)
-	uretprobe-nop         ( 8 cpus):   15.633 =C2=B1 0.013M/s  (  1.954M/s/cpu)
-	uretprobe-nop         (10 cpus):   19.532 =C2=B1 0.011M/s  (  1.953M/s/cpu)
-	uretprobe-nop         (12 cpus):   21.405 =C2=B1 0.009M/s  (  1.784M/s/cpu)
-	uretprobe-nop         (14 cpus):   24.857 =C2=B1 0.020M/s  (  1.776M/s/cpu)
-	uretprobe-nop         (16 cpus):   26.466 =C2=B1 0.018M/s  (  1.654M/s/cpu)
-	uretprobe-nop         (24 cpus):   40.513 =C2=B1 0.222M/s  (  1.688M/s/cpu)
-	uretprobe-nop         (32 cpus):   54.180 =C2=B1 0.074M/s  (  1.693M/s/cpu)
-	uretprobe-nop         (40 cpus):   66.100 =C2=B1 0.082M/s  (  1.652M/s/cpu)
-	uretprobe-nop         (48 cpus):   70.544 =C2=B1 0.068M/s  (  1.470M/s/cpu)
-	uretprobe-nop         (56 cpus):   74.494 =C2=B1 0.055M/s  (  1.330M/s/cpu)
-	uretprobe-nop         (64 cpus):   79.317 =C2=B1 0.029M/s  (  1.239M/s/cpu)
-	uretprobe-nop         (72 cpus):   84.875 =C2=B1 0.020M/s  (  1.179M/s/cpu)
-	uretprobe-nop         (80 cpus):   92.318 =C2=B1 0.224M/s  (  1.154M/s/cpu)
-
-For reference, with uprobe-nop we hit the following throughput:
-
-	uprobe-nop            (80 cpus):  143.485 =C2=B1 0.035M/s  (  1.794M/s/cpu)
-
-So now uretprobe stays a bit closer to that performance.
+We'll use this simplification in the next patch that will guarantee that
+to-be-freed return_instance isn't reachable from utask->return_instances
+list.
 
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20241206002417.3295533-5-andrii@kernel.org
+Link: https://lore.kernel.org/r/20241206002417.3295533-3-andrii@kernel.org
 ---
- include/linux/uprobes.h |  6 ++-
- kernel/events/uprobes.c | 83 +++++++++++++++++++++++++++++++++-------
- 2 files changed, 75 insertions(+), 14 deletions(-)
+ kernel/events/uprobes.c | 37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index 1d44997..b1df7d7 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -16,6 +16,7 @@
- #include <linux/types.h>
- #include <linux/wait.h>
- #include <linux/timer.h>
-+#include <linux/seqlock.h>
-=20
- struct uprobe;
- struct vm_area_struct;
-@@ -124,6 +125,10 @@ struct uprobe_task {
- 	unsigned int			depth;
- 	struct return_instance		*return_instances;
-=20
-+	struct return_instance		*ri_pool;
-+	struct timer_list		ri_timer;
-+	seqcount_t			ri_seqcount;
-+
- 	union {
- 		struct {
- 			struct arch_uprobe_task	autask;
-@@ -137,7 +142,6 @@ struct uprobe_task {
- 	};
-=20
- 	struct uprobe			*active_uprobe;
--	struct timer_list		ri_timer;
- 	unsigned long			xol_vaddr;
-=20
- 	struct arch_uprobe              *auprobe;
 diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 2345aeb..1af9502 100644
+index 6beac52..cca1fe4 100644
 --- a/kernel/events/uprobes.c
 +++ b/kernel/events/uprobes.c
-@@ -1888,8 +1888,34 @@ unsigned long uprobe_get_trap_addr(struct pt_regs *reg=
-s)
+@@ -1888,10 +1888,8 @@ unsigned long uprobe_get_trap_addr(struct pt_regs *regs)
  	return instruction_pointer(regs);
  }
-=20
--static void free_ret_instance(struct return_instance *ri, bool cleanup_hprob=
-e)
-+static void ri_pool_push(struct uprobe_task *utask, struct return_instance *=
-ri)
+ 
+-static struct return_instance *free_ret_instance(struct return_instance *ri, bool cleanup_hprobe)
++static void free_ret_instance(struct return_instance *ri, bool cleanup_hprobe)
  {
-+	ri->cons_cnt =3D 0;
-+	ri->next =3D utask->ri_pool;
-+	utask->ri_pool =3D ri;
-+}
-+
-+static struct return_instance *ri_pool_pop(struct uprobe_task *utask)
-+{
-+	struct return_instance *ri =3D utask->ri_pool;
-+
-+	if (likely(ri))
-+		utask->ri_pool =3D ri->next;
-+
-+	return ri;
-+}
-+
-+static void ri_free(struct return_instance *ri)
-+{
-+	kfree(ri->extra_consumers);
-+	kfree_rcu(ri, rcu);
-+}
-+
-+static void free_ret_instance(struct uprobe_task *utask,
-+			      struct return_instance *ri, bool cleanup_hprobe)
-+{
-+	unsigned seq;
-+
+-	struct return_instance *next = ri->next;
+-
  	if (cleanup_hprobe) {
  		enum hprobe_state hstate;
-=20
-@@ -1897,8 +1923,22 @@ static void free_ret_instance(struct return_instance *=
-ri, bool cleanup_hprobe)
- 		hprobe_finalize(&ri->hprobe, hstate);
- 	}
-=20
--	kfree(ri->extra_consumers);
--	kfree_rcu(ri, rcu);
-+	/*
-+	 * At this point return_instance is unlinked from utask's
-+	 * return_instances list and this has become visible to ri_timer().
-+	 * If seqcount now indicates that ri_timer's return instance
-+	 * processing loop isn't active, we can return ri into the pool of
-+	 * to-be-reused return instances for future uretprobes. If ri_timer()
-+	 * happens to be running right now, though, we fallback to safety and
-+	 * just perform RCU-delated freeing of ri.
-+	 */
-+	if (raw_seqcount_try_begin(&utask->ri_seqcount, seq)) {
-+		/* immediate reuse of ri without RCU GP is OK */
-+		ri_pool_push(utask, ri);
-+	} else {
-+		/* we might be racing with ri_timer(), so play it safe */
-+		ri_free(ri);
-+	}
+ 
+@@ -1901,7 +1899,6 @@ static struct return_instance *free_ret_instance(struct return_instance *ri, boo
+ 
+ 	kfree(ri->extra_consumers);
+ 	kfree_rcu(ri, rcu);
+-	return next;
  }
-=20
+ 
  /*
-@@ -1920,7 +1960,15 @@ void uprobe_free_utask(struct task_struct *t)
- 	ri =3D utask->return_instances;
- 	while (ri) {
- 		ri_next =3D ri->next;
--		free_ret_instance(ri, true /* cleanup_hprobe */);
-+		free_ret_instance(utask, ri, true /* cleanup_hprobe */);
-+		ri =3D ri_next;
-+	}
-+
-+	/* free_ret_instance() above might add to ri_pool, so this loop should come=
- last */
-+	ri =3D utask->ri_pool;
-+	while (ri) {
-+		ri_next =3D ri->next;
-+		ri_free(ri);
- 		ri =3D ri_next;
- 	}
-=20
-@@ -1943,8 +1991,12 @@ static void ri_timer(struct timer_list *timer)
- 	/* RCU protects return_instance from freeing. */
- 	guard(rcu)();
-=20
-+	write_seqcount_begin(&utask->ri_seqcount);
-+
- 	for_each_ret_instance_rcu(ri, utask->return_instances)
- 		hprobe_expire(&ri->hprobe, false);
-+
-+	write_seqcount_end(&utask->ri_seqcount);
- }
-=20
- static struct uprobe_task *alloc_utask(void)
-@@ -1956,6 +2008,7 @@ static struct uprobe_task *alloc_utask(void)
- 		return NULL;
-=20
- 	timer_setup(&utask->ri_timer, ri_timer, 0);
-+	seqcount_init(&utask->ri_seqcount);
-=20
- 	return utask;
- }
-@@ -1975,10 +2028,14 @@ static struct uprobe_task *get_utask(void)
- 	return current->utask;
- }
-=20
--static struct return_instance *alloc_return_instance(void)
-+static struct return_instance *alloc_return_instance(struct uprobe_task *uta=
-sk)
+@@ -1911,7 +1908,7 @@ static struct return_instance *free_ret_instance(struct return_instance *ri, boo
+ void uprobe_free_utask(struct task_struct *t)
  {
- 	struct return_instance *ri;
-=20
-+	ri =3D ri_pool_pop(utask);
-+	if (ri)
-+		return ri;
-+
- 	ri =3D kzalloc(sizeof(*ri), GFP_KERNEL);
- 	if (!ri)
- 		return ZERO_SIZE_PTR;
-@@ -2119,7 +2176,7 @@ static void cleanup_return_instances(struct uprobe_task=
- *utask, bool chained,
- 		rcu_assign_pointer(utask->return_instances, ri_next);
+ 	struct uprobe_task *utask = t->utask;
+-	struct return_instance *ri;
++	struct return_instance *ri, *ri_next;
+ 
+ 	if (!utask)
+ 		return;
+@@ -1921,8 +1918,11 @@ void uprobe_free_utask(struct task_struct *t)
+ 	timer_delete_sync(&utask->ri_timer);
+ 
+ 	ri = utask->return_instances;
+-	while (ri)
+-		ri = free_ret_instance(ri, true /* cleanup_hprobe */);
++	while (ri) {
++		ri_next = ri->next;
++		free_ret_instance(ri, true /* cleanup_hprobe */);
++		ri = ri_next;
++	}
+ 
+ 	kfree(utask);
+ 	t->utask = NULL;
+@@ -2111,12 +2111,15 @@ unsigned long uprobe_get_trampoline_vaddr(void)
+ static void cleanup_return_instances(struct uprobe_task *utask, bool chained,
+ 					struct pt_regs *regs)
+ {
+-	struct return_instance *ri = utask->return_instances;
++	struct return_instance *ri = utask->return_instances, *ri_next;
+ 	enum rp_check ctx = chained ? RP_CHECK_CHAIN_CALL : RP_CHECK_CALL;
+ 
+ 	while (ri && !arch_uretprobe_is_alive(ri, ctx, regs)) {
+-		ri = free_ret_instance(ri, true /* cleanup_hprobe */);
++		ri_next = ri->next;
  		utask->depth--;
-=20
--		free_ret_instance(ri, true /* cleanup_hprobe */);
-+		free_ret_instance(utask, ri, true /* cleanup_hprobe */);
- 		ri =3D ri_next;
++
++		free_ret_instance(ri, true /* cleanup_hprobe */);
++		ri = ri_next;
  	}
+ 	rcu_assign_pointer(utask->return_instances, ri);
  }
-@@ -2186,7 +2243,7 @@ static void prepare_uretprobe(struct uprobe *uprobe, st=
-ruct pt_regs *regs,
-=20
- 	return;
- free:
--	kfree(ri);
-+	ri_free(ri);
- }
-=20
- /* Prepare to single-step probed instruction out of line. */
-@@ -2385,8 +2442,7 @@ static struct return_instance *push_consumer(struct ret=
-urn_instance *ri, __u64 i
- 	if (unlikely(ri->cons_cnt > 0)) {
- 		ric =3D krealloc(ri->extra_consumers, sizeof(*ric) * ri->cons_cnt, GFP_KER=
-NEL);
- 		if (!ric) {
--			kfree(ri->extra_consumers);
--			kfree_rcu(ri, rcu);
-+			ri_free(ri);
- 			return ZERO_SIZE_PTR;
- 		}
- 		ri->extra_consumers =3D ric;
-@@ -2428,8 +2484,9 @@ static void handler_chain(struct uprobe *uprobe, struct=
- pt_regs *regs)
- 	struct uprobe_consumer *uc;
- 	bool has_consumers =3D false, remove =3D true;
- 	struct return_instance *ri =3D NULL;
-+	struct uprobe_task *utask =3D current->utask;
-=20
--	current->utask->auprobe =3D &uprobe->arch;
-+	utask->auprobe =3D &uprobe->arch;
-=20
- 	list_for_each_entry_rcu(uc, &uprobe->consumers, cons_node, rcu_read_lock_tr=
-ace_held()) {
- 		bool session =3D uc->handler && uc->ret_handler;
-@@ -2449,12 +2506,12 @@ static void handler_chain(struct uprobe *uprobe, stru=
-ct pt_regs *regs)
- 			continue;
-=20
- 		if (!ri)
--			ri =3D alloc_return_instance();
-+			ri =3D alloc_return_instance(utask);
-=20
- 		if (session)
- 			ri =3D push_consumer(ri, uc->id, cookie);
- 	}
--	current->utask->auprobe =3D NULL;
-+	utask->auprobe =3D NULL;
-=20
- 	if (!ZERO_OR_NULL_PTR(ri))
- 		prepare_uretprobe(uprobe, regs, ri);
-@@ -2554,7 +2611,7 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+@@ -2508,7 +2511,7 @@ static struct return_instance *find_next_ret_chain(struct return_instance *ri)
+ void uprobe_handle_trampoline(struct pt_regs *regs)
+ {
+ 	struct uprobe_task *utask;
+-	struct return_instance *ri, *next;
++	struct return_instance *ri, *ri_next, *next_chain;
+ 	struct uprobe *uprobe;
+ 	enum hprobe_state hstate;
+ 	bool valid;
+@@ -2528,8 +2531,8 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+ 		 * or NULL; the latter case means that nobody but ri->func
+ 		 * could hit this trampoline on return. TODO: sigaltstack().
+ 		 */
+-		next = find_next_ret_chain(ri);
+-		valid = !next || arch_uretprobe_is_alive(next, RP_CHECK_RET, regs);
++		next_chain = find_next_ret_chain(ri);
++		valid = !next_chain || arch_uretprobe_is_alive(next_chain, RP_CHECK_RET, regs);
+ 
+ 		instruction_pointer_set(regs, ri->orig_ret_vaddr);
+ 		do {
+@@ -2541,7 +2544,9 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
+ 			 * trampoline addresses on the stack are replaced with correct
+ 			 * original return addresses
+ 			 */
+-			rcu_assign_pointer(utask->return_instances, ri->next);
++			ri_next = ri->next;
++			rcu_assign_pointer(utask->return_instances, ri_next);
++			utask->depth--;
+ 
+ 			uprobe = hprobe_consume(&ri->hprobe, &hstate);
+ 			if (valid)
+@@ -2549,9 +2554,9 @@ void uprobe_handle_trampoline(struct pt_regs *regs)
  			hprobe_finalize(&ri->hprobe, hstate);
-=20
+ 
  			/* We already took care of hprobe, no need to waste more time on that. */
--			free_ret_instance(ri, false /* !cleanup_hprobe */);
-+			free_ret_instance(utask, ri, false /* !cleanup_hprobe */);
- 			ri =3D ri_next;
- 		} while (ri !=3D next_chain);
+-			ri = free_ret_instance(ri, false /* !cleanup_hprobe */);
+-			utask->depth--;
+-		} while (ri != next);
++			free_ret_instance(ri, false /* !cleanup_hprobe */);
++			ri = ri_next;
++		} while (ri != next_chain);
  	} while (!valid);
+ 
+ 	return;
 
