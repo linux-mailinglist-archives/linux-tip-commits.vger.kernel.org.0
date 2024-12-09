@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-3019-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3021-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0DD9E9031
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 11:32:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82039E9033
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 11:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86AEC1886406
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 10:32:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C57D3162C94
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 10:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B76C21766A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9E1217676;
 	Mon,  9 Dec 2024 10:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kcsByA/l";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TVUTZ7jk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ox8oduT1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ftR3hack"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897DC217650;
-	Mon,  9 Dec 2024 10:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8972D216E18;
+	Mon,  9 Dec 2024 10:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733740339; cv=none; b=fojozbEXcTXSc/nyJg1C9G1cYwHifTlArqzT8t0enBb2yLU5r1E3ZgIFRlTj0ve7AO2DMiq5zDyC1w2NWrwTai+D84pmh16uB5U+uYgW51Vud8B/7aXxQnk6CGo8D6bPJqNI0LRi1+4RJb8ajdFA9XdvvxwMJIcQH8pe7tfXVlc=
+	t=1733740339; cv=none; b=BLQR/pkY2ArbZeHRWa53k3Q8Xmo8PiBbpjZBEAIJWf+nRV0iNp2NOzpTubyiflqFVvJ0MkpijKtCeVrWsZ5TEpmfBrS3vZGer4AddKTkQL4utvVB6BIeJgBY7zz37XjiPKjccFA3VFb1KKKnavrob70ODTHddDkaJvmOZyIPDc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1733740339; c=relaxed/simple;
-	bh=dxiDYnAMOaTf1FUU7FEOOBbXR3KC5aKOLxecsh44Ss8=;
+	bh=ksSf6eopBwU/+ny85yQ7AXzGIhdKzlP0lspwdoUTKco=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=b2aMF0qxY4PY8RotO0WUVVyd/je13A48cXXvtR3F4ThFuI+NOIsvOILa3FN3WLfhExiTytFnMn0qOoq8yaI14Kugp8fLstpXOtbjAvf1vEy9u7G+nwqXmcCzqJIsX75wwdgcKO877c1P2zmjOb8uE1nDfFSBRx2R+MB4Ggi35v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kcsByA/l; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TVUTZ7jk; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nuOeEJwI1qTZBLgXu32ZAINPq18pbQpPAddLPscsiFECpXO++TvFNpzHYr31SQ4t2mA8uxXoE2BHsnHS8QTsyIH/LSwkj+XA4oNafmTj85ixRWZal+ns/dBUtqeY6PdzbpNK5IA9cq6PNmaCCdVYWiOcqHEgmhXDaTQY5PKZ3ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ox8oduT1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ftR3hack; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 09 Dec 2024 10:32:07 -0000
+Date: Mon, 09 Dec 2024 10:32:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1733740329;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5LweK9EDRmGIucmjIbLKijimSrAF6fUtdTRfJ5rVXJ4=;
-	b=kcsByA/lQCfo2ELSbeKcSlr3ehwxWEaqfG4EeSp+TjqzABbZCLw58uEBK25VW0BmYvaEZW
-	S4yw1IWU5qYWOoin7+N/eVfcC5imefzMbileDPEaAkcdoH+pcQZ/AnXqCqJva999VABkcC
-	74SaaxW7aLtd2esHjXqe2EQ832OD7htEL1py9wPXYQr+T7uWI+6mUM9Nzdl+udKmA/Rt4d
-	vYPlRuSJC1cvKB7PPBIrPvK0tHzyfYUjYWa0ladvEdPfexIlPTdDTncaOXUCZfkWEL0Cth
-	AzZ78HdGKLt1HgU/HBvJ5FEmq8JosUSeUinRuDawnPJKEufJKrfBcMNQNwRLQg==
+	bh=4FaYsg/uxL5LpQZW0j9ZhvKvmps8wNK6Ml9hmhMbiUk=;
+	b=ox8oduT196cwRH9xG5TEebGDY3DWaLuwo3FeOB6h5LkEUM9lFjol5D+eef4wEgflZHrhuj
+	l7U0c0JX4AWG9wwSiI2KQ5V2+wJss6789Lt2HTuoAD4B8SbQidCuK62jcMoN9jpDQXneWl
+	GIfqpBcFrsIBQKmrz3NHhz9zorzyok4C6B2BncBpXH8B9FB7Euybt09VPkH1W61oJ0Bakm
+	p3kIsA01npX6BdpYOSdX+j+glKC7fvzi1BTkIUSPJCt67KRjoN44mkiiPaO27KxofFicvz
+	63iQuDRJyymfeXX7i4C/h/Wpi7ijmwBtP9WK1x/4eJlkvNszgj0JcY0t+6xhqA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1733740329;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5LweK9EDRmGIucmjIbLKijimSrAF6fUtdTRfJ5rVXJ4=;
-	b=TVUTZ7jkSXqo9R6VTcepSogZa88fR2mJvw24/f/k81DDoKshXVLcADM1k38u8s0y4utGAW
-	fmyWHIa8inLD1bCQ==
-From: "tip-bot2 for Andrii Nakryiko" <tip-bot2@linutronix.de>
+	bh=4FaYsg/uxL5LpQZW0j9ZhvKvmps8wNK6Ml9hmhMbiUk=;
+	b=ftR3hackYyVhcun10Wpndz1b3wVtIkJXLpaEWe4vsfWBOcHIl2GCkDmpEyeUjh5b40FNj9
+	CGvtNOG7QYl+GACg==
+From: "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] uprobes: Guard against kmemdup() failing in
- dup_return_instance()
-Cc: Andrii Nakryiko <andrii@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241206183436.968068-1-andrii@kernel.org>
-References: <20241206183436.968068-1-andrii@kernel.org>
+Subject:
+ [tip: perf/core] perf/x86: Relax privilege filter restriction on AMD IBS
+Cc: Namhyung Kim <namhyung@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Ravi Bangoria <ravi.bangoria@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241203180441.1634709-3-namhyung@kernel.org>
+References: <20241203180441.1634709-3-namhyung@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173374032793.412.1283775556101446957.tip-bot2@tip-bot2>
+Message-ID: <173374032883.412.14886464084392492650.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,37 +82,208 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     638331f34c3f19f5bf14611ec6092ca1ba0ceb51
-Gitweb:        https://git.kernel.org/tip/638331f34c3f19f5bf14611ec6092ca1ba0ceb51
-Author:        Andrii Nakryiko <andrii@kernel.org>
-AuthorDate:    Fri, 06 Dec 2024 10:34:36 -08:00
+Commit-ID:     9290c1b27402e7eee1692c1bb010ca7055dff116
+Gitweb:        https://git.kernel.org/tip/9290c1b27402e7eee1692c1bb010ca7055dff116
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Tue, 03 Dec 2024 10:04:41 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 09 Dec 2024 11:18:08 +01:00
 
-uprobes: Guard against kmemdup() failing in dup_return_instance()
+perf/x86: Relax privilege filter restriction on AMD IBS
 
-If kmemdup() failed to alloc memory, don't proceed with extra_consumers
-copy.
+While IBS is available for per-thread profiling, still regular users
+cannot open an event due to the default paranoid setting (2) which
+doesn't allow unprivileged users to get kernel samples.  That means
+it needs to set exclude_kernel bit in the attribute but IBS driver
+would reject it since it has PERF_PMU_CAP_NO_EXCLUDE.  This is not what
+we want and I've been getting requests to fix this issue.
 
-Fixes: e62f2d492728 ("uprobes: Simplify session consumer tracking")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+This should be done in the hardware, but until we get the HW fix we may
+allow exclude_{kernel,user,hv} in the attribute and silently drop the
+samples in the PMU IRQ handler.  It won't guarantee the sampling
+frequency or even it'd miss some with fixed period too.  Not ideal,
+but that'd still be helpful to regular users.
+
+To minimize the confusion, let's add 'swfilt' bit to attr.config2 which
+is exposed in the sysfs format directory so that users can figure out
+if the kernel support the privilege filters by software.
+
+  $ perf record -e ibs_op/swfilt=1/u true
+
+This uses perf_exclude_event() which checks regs->cs.  But it should be
+fine because set_linear_ip() also updates the CS according to the RIP
+provided by IBS.
+
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20241206183436.968068-1-andrii@kernel.org
+Tested-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20241203180441.1634709-3-namhyung@kernel.org
 ---
- kernel/events/uprobes.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/events/amd/ibs.c | 59 ++++++++++++++++++++++++++------------
+ 1 file changed, 41 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 1af9502..1f75a2f 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2048,6 +2048,8 @@ static struct return_instance *dup_return_instance(struct return_instance *old)
- 	struct return_instance *ri;
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index f029396..e7a8b87 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -31,6 +31,8 @@ static u32 ibs_caps;
+ #define IBS_FETCH_CONFIG_MASK	(IBS_FETCH_RAND_EN | IBS_FETCH_MAX_CNT)
+ #define IBS_OP_CONFIG_MASK	IBS_OP_MAX_CNT
  
- 	ri = kmemdup(old, sizeof(*ri), GFP_KERNEL);
-+	if (!ri)
-+		return NULL;
++/* attr.config2 */
++#define IBS_SW_FILTER_MASK	1
  
- 	if (unlikely(old->cons_cnt > 1)) {
- 		ri->extra_consumers = kmemdup(old->extra_consumers,
+ /*
+  * IBS states:
+@@ -290,6 +292,16 @@ static int perf_ibs_init(struct perf_event *event)
+ 	if (has_branch_stack(event))
+ 		return -EOPNOTSUPP;
+ 
++	/* handle exclude_{user,kernel} in the IRQ handler */
++	if (event->attr.exclude_host || event->attr.exclude_guest ||
++	    event->attr.exclude_idle)
++		return -EINVAL;
++
++	if (!(event->attr.config2 & IBS_SW_FILTER_MASK) &&
++	    (event->attr.exclude_kernel || event->attr.exclude_user ||
++	     event->attr.exclude_hv))
++		return -EINVAL;
++
+ 	ret = validate_group(event);
+ 	if (ret)
+ 		return ret;
+@@ -550,24 +562,14 @@ static struct attribute *attrs_empty[] = {
+ 	NULL,
+ };
+ 
+-static struct attribute_group empty_format_group = {
+-	.name = "format",
+-	.attrs = attrs_empty,
+-};
+-
+ static struct attribute_group empty_caps_group = {
+ 	.name = "caps",
+ 	.attrs = attrs_empty,
+ };
+ 
+-static const struct attribute_group *empty_attr_groups[] = {
+-	&empty_format_group,
+-	&empty_caps_group,
+-	NULL,
+-};
+-
+ PMU_FORMAT_ATTR(rand_en,	"config:57");
+ PMU_FORMAT_ATTR(cnt_ctl,	"config:19");
++PMU_FORMAT_ATTR(swfilt,		"config2:0");
+ PMU_EVENT_ATTR_STRING(l3missonly, fetch_l3missonly, "config:59");
+ PMU_EVENT_ATTR_STRING(l3missonly, op_l3missonly, "config:16");
+ PMU_EVENT_ATTR_STRING(zen4_ibs_extensions, zen4_ibs_extensions, "1");
+@@ -578,8 +580,9 @@ zen4_ibs_extensions_is_visible(struct kobject *kobj, struct attribute *attr, int
+ 	return ibs_caps & IBS_CAPS_ZEN4 ? attr->mode : 0;
+ }
+ 
+-static struct attribute *rand_en_attrs[] = {
++static struct attribute *fetch_attrs[] = {
+ 	&format_attr_rand_en.attr,
++	&format_attr_swfilt.attr,
+ 	NULL,
+ };
+ 
+@@ -593,9 +596,9 @@ static struct attribute *zen4_ibs_extensions_attrs[] = {
+ 	NULL,
+ };
+ 
+-static struct attribute_group group_rand_en = {
++static struct attribute_group group_fetch_formats = {
+ 	.name = "format",
+-	.attrs = rand_en_attrs,
++	.attrs = fetch_attrs,
+ };
+ 
+ static struct attribute_group group_fetch_l3missonly = {
+@@ -611,7 +614,7 @@ static struct attribute_group group_zen4_ibs_extensions = {
+ };
+ 
+ static const struct attribute_group *fetch_attr_groups[] = {
+-	&group_rand_en,
++	&group_fetch_formats,
+ 	&empty_caps_group,
+ 	NULL,
+ };
+@@ -628,6 +631,11 @@ cnt_ctl_is_visible(struct kobject *kobj, struct attribute *attr, int i)
+ 	return ibs_caps & IBS_CAPS_OPCNT ? attr->mode : 0;
+ }
+ 
++static struct attribute *op_attrs[] = {
++	&format_attr_swfilt.attr,
++	NULL,
++};
++
+ static struct attribute *cnt_ctl_attrs[] = {
+ 	&format_attr_cnt_ctl.attr,
+ 	NULL,
+@@ -638,6 +646,11 @@ static struct attribute *op_l3missonly_attrs[] = {
+ 	NULL,
+ };
+ 
++static struct attribute_group group_op_formats = {
++	.name = "format",
++	.attrs = op_attrs,
++};
++
+ static struct attribute_group group_cnt_ctl = {
+ 	.name = "format",
+ 	.attrs = cnt_ctl_attrs,
+@@ -650,6 +663,12 @@ static struct attribute_group group_op_l3missonly = {
+ 	.is_visible = zen4_ibs_extensions_is_visible,
+ };
+ 
++static const struct attribute_group *op_attr_groups[] = {
++	&group_op_formats,
++	&empty_caps_group,
++	NULL,
++};
++
+ static const struct attribute_group *op_attr_update[] = {
+ 	&group_cnt_ctl,
+ 	&group_op_l3missonly,
+@@ -667,7 +686,6 @@ static struct perf_ibs perf_ibs_fetch = {
+ 		.start		= perf_ibs_start,
+ 		.stop		= perf_ibs_stop,
+ 		.read		= perf_ibs_read,
+-		.capabilities	= PERF_PMU_CAP_NO_EXCLUDE,
+ 	},
+ 	.msr			= MSR_AMD64_IBSFETCHCTL,
+ 	.config_mask		= IBS_FETCH_CONFIG_MASK,
+@@ -691,7 +709,6 @@ static struct perf_ibs perf_ibs_op = {
+ 		.start		= perf_ibs_start,
+ 		.stop		= perf_ibs_stop,
+ 		.read		= perf_ibs_read,
+-		.capabilities	= PERF_PMU_CAP_NO_EXCLUDE,
+ 	},
+ 	.msr			= MSR_AMD64_IBSOPCTL,
+ 	.config_mask		= IBS_OP_CONFIG_MASK,
+@@ -1111,6 +1128,12 @@ fail:
+ 		regs.flags |= PERF_EFLAGS_EXACT;
+ 	}
+ 
++	if ((event->attr.config2 & IBS_SW_FILTER_MASK) &&
++	    perf_exclude_event(event, &regs)) {
++		throttle = perf_event_account_interrupt(event);
++		goto out;
++	}
++
+ 	if (event->attr.sample_type & PERF_SAMPLE_RAW) {
+ 		raw = (struct perf_raw_record){
+ 			.frag = {
+@@ -1227,7 +1250,7 @@ static __init int perf_ibs_op_init(void)
+ 	if (ibs_caps & IBS_CAPS_ZEN4)
+ 		perf_ibs_op.config_mask |= IBS_OP_L3MISSONLY;
+ 
+-	perf_ibs_op.pmu.attr_groups = empty_attr_groups;
++	perf_ibs_op.pmu.attr_groups = op_attr_groups;
+ 	perf_ibs_op.pmu.attr_update = op_attr_update;
+ 
+ 	return perf_ibs_pmu_init(&perf_ibs_op, "ibs_op");
 
