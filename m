@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3038-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3039-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F829E913B
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 12:02:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8749E913C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 12:02:43 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155521618CA
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 11:01:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A25D7280D0C
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Dec 2024 11:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51ECB21B194;
-	Mon,  9 Dec 2024 11:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BB321A442;
+	Mon,  9 Dec 2024 11:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EHtFIhzL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/afiT92Y"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XadVifA9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rc1W1039"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B07C21A939;
-	Mon,  9 Dec 2024 11:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E053E218E84;
+	Mon,  9 Dec 2024 11:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733742018; cv=none; b=KPxL0FUwcdR8ftCsw4a/l1zNkCj009N+1aGFBUAnHNmexQckTowbvLw62BxqL2H0cwMCiU82IFLI/nvrGyhkQ/3XTAlVjHuzBNLSDk0cVirb+rxTWrp6sb/fMAsfgBAZpt/RMSSE/LFthAsJeT2y1AypgPLY4uDE0hfMSGdE5TY=
+	t=1733742023; cv=none; b=HooRKPpk9XnXjgRzPgbMUqukvtDiWe5iapuDvnPG3yyamtHrs6FkzBmQ0jinLiJaoEWgoEQWTJxOS/FY+Vo0zdgpniauL/pAlKDQz9oI9sAse1QjDJOGv4ARxRvZE56E8m1SQc4lu8g07hwhqRAMWWswRxW3vhw1fFcIEADAzWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733742018; c=relaxed/simple;
-	bh=/z49iD+1mPMI+x6T+BGDngxircq949I/ee8dMxZ22pw=;
+	s=arc-20240116; t=1733742023; c=relaxed/simple;
+	bh=TCzRyXHXAmXS614Pfg79neAtbuS2QGsOQ4d/1vtXwTI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=i4a4vW3jsobmjhNfceXqwAoxQ7CmAQj9e11lEYiHaWi5VCgkac4LPnUJVXpzaMoSBkYkP5kSl7n6rzCMoMYisTMmFzb0i/pUyycig2nnk5dvbsgpNIS6nWKpSQCBam76fJEJpr+tcRG5WvmTW4bPvvQ5Sc80wqOXQ8ZwBp9kXuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EHtFIhzL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/afiT92Y; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=PQDh17qrQhDXkvwPbkdbfdBmFfPj1AMiax1xNlVXcLAfAzncNYCKWP5l8GwepSjGcrUXHFOjsGl9igd4ZH7cc20v8aCCH8MZjuVMRMZdroaJSdvM1RVivKfl3A+wDolMOYcvuaI4LsdQ0rbnY/3hZnE2RFDYn1QPBCK6vq3hNmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XadVifA9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rc1W1039; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 09 Dec 2024 11:00:13 -0000
+Date: Mon, 09 Dec 2024 11:00:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733742015;
+	s=2020; t=1733742016;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FcIrMknH5oN7IiJCsWHNBMp9lGwiqqlD37wjDr7+MdE=;
-	b=EHtFIhzLmVUfh2j4iQBDVR6hMDqVVkdLFQLZ3tXUmHypKaCDJdaGFYzfBs/TWqEzGq/rhu
-	uOsXcq/8zE5oWo3SsmxKSioEO6kzAg/gcSUd5ef3Kw5d4KIlqjWefnoy1O1IjyeoiIRPj2
-	/2jpKx754MxoQ4BG9gVIewM+zlQDx4FNPX67MAZa2ZHaa80tvfOnWiybQCBOCYO4pHULpc
-	j6H3cQbjMnH/ZKNOlUM7jc/LbWYU5H1OQvAliVuEBgQDsrmFdB0xDTEidzRL8glXRkSge3
-	tHoWSwICmHEEgZCh+JNw6F6D6RhkLUYbkVamFkZJH4ob91V3a6zrppPcYj4HSA==
+	bh=5wKD30L4FC75+0xUyiX8YaWQ4rMa11sP6QxvbpgskJs=;
+	b=XadVifA9YTRfRXggkeoaUXPjej1EIJBfGJXmBw/BrQTG9pp1EUKFzfrtzsqXw6A7MpEjWB
+	TlYpN/mDBkRyXoB4e9yyVyw1mZP7YoBBbdH35nG0SapatkNS5Kmd8TGRh/4zM84ycKqQSM
+	MGPf8mG7O4gKP+Vqu+89Xjj6clDmcGzu0IZ6jW1ANNAcLZXiHZeWwNC7vCUrubRTniEeC3
+	2qgAEq+Y8/XPe1cRgQUU1nZ/jG+BvMN09NnRbMyNwhKApT8Jf3XaabFrGxgpak4J2223ve
+	KQ4uAvlWSGM8+a4cAS8QTdaElyHPRIYufh8/28Hgt9DBFMgUwo1DXHZ0gFxaog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733742015;
+	s=2020e; t=1733742016;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FcIrMknH5oN7IiJCsWHNBMp9lGwiqqlD37wjDr7+MdE=;
-	b=/afiT92YODfB8Lm2GGAgv5G39TsV6T4QgU1dwvoVBtuZ4c+iBOiyYsWZBediACDGGuanh2
-	WJSYjzbZ7tuMD1Bg==
-From: "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
+	bh=5wKD30L4FC75+0xUyiX8YaWQ4rMa11sP6QxvbpgskJs=;
+	b=rc1W1039eR83DkU5a1PaS5UW5P+Rdi2QksgxXKJVNxqk9q+a12iLGYe+CfGfLuPBHDFSkL
+	/exsQuL//yf271BA==
+From: "tip-bot2 for K Prateek Nayak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/core] sched/fair: Fix sched_can_stop_tick() for fair tasks
-Cc: Vincent Guittot <vincent.guittot@linaro.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Fix NEXT_BUDDY
+Cc: Adam Li <adamli@os.amperecomputing.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241202174606.4074512-2-vincent.guittot@linaro.org>
-References: <20241202174606.4074512-2-vincent.guittot@linaro.org>
+In-Reply-To: <670a0d54-e398-4b1f-8a6e-90784e2fdf89@amd.com>
+References: <670a0d54-e398-4b1f-8a6e-90784e2fdf89@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173374201363.412.6879199999203287235.tip-bot2@tip-bot2>
+Message-ID: <173374201490.412.1341317032853639946.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,42 +82,69 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     c1f43c342e1f2e32f0620bf2e972e2a9ea0a1e60
-Gitweb:        https://git.kernel.org/tip/c1f43c342e1f2e32f0620bf2e972e2a9ea0a1e60
-Author:        Vincent Guittot <vincent.guittot@linaro.org>
-AuthorDate:    Mon, 02 Dec 2024 18:45:56 +01:00
+Commit-ID:     493afbd187c4c9cc1642792c0d9ba400c3d6d90d
+Gitweb:        https://git.kernel.org/tip/493afbd187c4c9cc1642792c0d9ba400c3d6d90d
+Author:        K Prateek Nayak <kprateek.nayak@amd.com>
+AuthorDate:    Thu, 28 Nov 2024 12:59:54 +05:30
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 09 Dec 2024 11:48:09 +01:00
 
-sched/fair: Fix sched_can_stop_tick() for fair tasks
+sched/fair: Fix NEXT_BUDDY
 
-We can't stop the tick of a rq if there are at least 2 tasks enqueued in
-the whole hierarchy and not only at the root cfs rq.
+Adam reports that enabling NEXT_BUDDY insta triggers a WARN in
+pick_next_entity().
 
-rq->cfs.nr_running tracks the number of sched_entity at one level
-whereas rq->cfs.h_nr_running tracks all queued tasks in the
-hierarchy.
+Moving clear_buddies() up before the delayed dequeue bits ensures
+no ->next buddy becomes delayed. Further ensure no new ->next buddy
+ever starts as delayed.
 
-Fixes: 11cc374f4643b ("sched_ext: Simplify scx_can_stop_tick() invocation in sched_can_stop_tick()")
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+Fixes: 152e11f6df29 ("sched/fair: Implement delayed dequeue")
+Reported-by: Adam Li <adamli@os.amperecomputing.com>
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Link: https://lore.kernel.org/r/20241202174606.4074512-2-vincent.guittot@linaro.org
+Tested-by: Adam Li <adamli@os.amperecomputing.com>
+Link: https://lkml.kernel.org/r/670a0d54-e398-4b1f-8a6e-90784e2fdf89@amd.com
 ---
- kernel/sched/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index c6d8232..3e5a6bf 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -1341,7 +1341,7 @@ bool sched_can_stop_tick(struct rq *rq)
- 	if (scx_enabled() && !scx_can_stop_tick(rq))
- 		return false;
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 05b8f1e..9d7a2dd 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -5478,6 +5478,7 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 	bool sleep = flags & DEQUEUE_SLEEP;
  
--	if (rq->cfs.nr_running > 1)
-+	if (rq->cfs.h_nr_running > 1)
- 		return false;
+ 	update_curr(cfs_rq);
++	clear_buddies(cfs_rq, se);
  
- 	/*
+ 	if (flags & DEQUEUE_DELAYED) {
+ 		SCHED_WARN_ON(!se->sched_delayed);
+@@ -5494,8 +5495,6 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 
+ 		if (sched_feat(DELAY_DEQUEUE) && delay &&
+ 		    !entity_eligible(cfs_rq, se)) {
+-			if (cfs_rq->next == se)
+-				cfs_rq->next = NULL;
+ 			update_load_avg(cfs_rq, se, 0);
+ 			se->sched_delayed = 1;
+ 			return false;
+@@ -5520,8 +5519,6 @@ dequeue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 
+ 	update_stats_dequeue_fair(cfs_rq, se, flags);
+ 
+-	clear_buddies(cfs_rq, se);
+-
+ 	update_entity_lag(cfs_rq, se);
+ 	if (sched_feat(PLACE_REL_DEADLINE) && !sleep) {
+ 		se->deadline -= se->vruntime;
+@@ -8774,7 +8771,7 @@ static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, int 
+ 	if (unlikely(throttled_hierarchy(cfs_rq_of(pse))))
+ 		return;
+ 
+-	if (sched_feat(NEXT_BUDDY) && !(wake_flags & WF_FORK)) {
++	if (sched_feat(NEXT_BUDDY) && !(wake_flags & WF_FORK) && !pse->sched_delayed) {
+ 		set_next_buddy(pse);
+ 	}
+ 
 
