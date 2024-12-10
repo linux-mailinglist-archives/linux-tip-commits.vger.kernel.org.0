@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-3047-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3048-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768D89EADF4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Dec 2024 11:27:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1EBF9EB70C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Dec 2024 17:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78A871888429
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Dec 2024 10:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21BB161F76
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Dec 2024 16:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB029199E9D;
-	Tue, 10 Dec 2024 10:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342E51FD7BB;
+	Tue, 10 Dec 2024 16:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Muime3ua";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JJNN0vSs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nh5qNTog";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cl8sSAvu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ABA878F40;
-	Tue, 10 Dec 2024 10:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845891A76AC;
+	Tue, 10 Dec 2024 16:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733826423; cv=none; b=BrXa51U7Y8gNXZzBwc6yT9TQanOmu+reLxrvE2A8PldcAXhnnkrR54sIrJE90PgqUyuRF7PnDsrdiVJSJDTVpyxh76lvfcK6wFWgDaV6Nq/gPmT2k1z8IgsII4BQ5z18BR1dUqeudW4k9ErtsH8+tj5eXgirI8tLSKwVThDeRjQ=
+	t=1733849476; cv=none; b=baOCJ3c+TPEQu7YD069ZZ45Tl8keKFUJ5UlVwJFuagbL22WLsffG9tCXAj1dzGhSth4yxaeIfEWkPGx9Xfmp36xUsQ7XJ3QaiLyUwBXsAtU/87nSJ/Bz8Jeom9XOh9kwKdhZC2nBn0brblCI2onmr4wx79KG66fOBSHNZXvc8wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733826423; c=relaxed/simple;
-	bh=4gosl74ULFrnsTEib88w88LiIg7QTsZ9yU2UBqHLx1o=;
+	s=arc-20240116; t=1733849476; c=relaxed/simple;
+	bh=XUSw5ErftGVnkYxycjYcl8gbHEMhDCXoMiFW5DrxtNA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=cmctX/9Vt/vQk1Faw17v1MiJITLAWQUYzk/Xzb01mSF27kheXBGmZ2K/XRdDlmyKuHLsfhGc0kdqVI945qoNcE1llGyYXaOf1V/YsyP0XEA0k6mNrmWewl2WyrAhj+vqPhWepfRf/eNANYi0XgjQWW08oJ0fb3YcITSba7MQI9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Muime3ua; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JJNN0vSs; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=KiXcmG/fZdOqITou/UIAm+ZGDvSPWHl3KrD1kPaJzSZLmsgEmgQM6uIQFE8U2EnznTDJGkqUD2+PfWnvUBnnyOSULq+1oYMGFbnZuIpO3m3oc1kEOBUGOtP0abhmQU4PGkjEx6MvIVyaBc2WoqYArbx4FObUaG5CePRECMGTpxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nh5qNTog; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cl8sSAvu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 10 Dec 2024 10:26:59 -0000
+Date: Tue, 10 Dec 2024 16:51:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1733826420;
+	s=2020; t=1733849472;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4X/LVJKLWfgMgbzVrpQU5XKZr9terWqBA5e+j/+HqxU=;
-	b=Muime3uaAM6MXutJdP9/jVk/rmFGVLMHMqNrVl0PXMnhKsdmdAueuxbXbX6itp6uAt4rA8
-	bRxcxIOtvMHo8KE0UQ5t5Emq0ZNjd6HO1/mUQLxoYgGO9XU1m06L2tqtIWo/i7oWVFexvn
-	MRp/mPI0U6UbQX0ti/8Lh6yrFoWZXApBdzEW3vGGw5Xk7JrzaABC8+4wcx12q+n8F65eTs
-	m7+PnlVZTS38xcSaM9mQbsoIyN7VnRWqMpnNcYohMoibM+bD1sJv4iU2reukHMl2MNdCPY
-	nTlCd1UjDd8JOBmVXvtEpTvApV5/w/1GafkV7JKL1BB/gR7272Hsi1lKOFsmEg==
+	bh=7vMnB3kb2JtQyNov51Zx8i+pPJXdZR0HwIYulwGwDCA=;
+	b=nh5qNTog2K/ZqHSmoq3vLssZql5NpKCAZUycCIHEMW6G6bRNnKWbcp/1GuK9kIZzKc6od5
+	nXvvA2vYaPzFSwoU1Gk0mHvSigN3weiOwXc7ayfziTkn7XRo8UD3BfuShb4uzUbq/9JKe0
+	qsx55b1reyRyIhnMOiYkJdcfqVsiL4IVbkC3SvmisspV6SIyf4KKyRiieTEdgvGPIxf7c+
+	FIzrjf6z8RUuB8Lj0Q4+/EJI2P4nkXAmV+zVe8/hGjzswyX95M9//M0P21jWXP3mNvtFaR
+	W+0N8b9Ol9m8a1vVIXzzwZpOryPvKbWoGC3yXyMdSmBAW2Qut2uSEBS6roc4SA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1733826420;
+	s=2020e; t=1733849472;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4X/LVJKLWfgMgbzVrpQU5XKZr9terWqBA5e+j/+HqxU=;
-	b=JJNN0vSsuHSRPhezyfNhCjkjk5Z0UcY0tGyuCzlnBnGR7u+axZy2osCpsWTg56mb+kJsku
-	WyeFx6qI96gpRGAg==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+	bh=7vMnB3kb2JtQyNov51Zx8i+pPJXdZR0HwIYulwGwDCA=;
+	b=cl8sSAvuTtfPJbw3uRXjPW+/s93PxS0z3ITi1wlZXKK5LSa2HgTjAs9z4ahTOstkdtXDMt
+	kVahzW8T5rXnRlDw==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/64: Fix spurious undefined reference when
- CONFIG_X86_5LEVEL=n, on GCC-12
-Cc: kernel test robot <lkp@intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241209094105.762857-2-ardb+git@google.com>
-References: <20241209094105.762857-2-ardb+git@google.com>
+Subject: [tip: x86/cpu] x86/cpufeature: Document cpu_feature_enabled() as the
+ default to use
+Cc: Sohil Mehta <sohil.mehta@intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241031103401.GBZyNdGQ-ZyXKyzC_z@fat_crate.local>
+References: <20241031103401.GBZyNdGQ-ZyXKyzC_z@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173382641945.412.11658975177011805962.tip-bot2@tip-bot2>
+Message-ID: <173384947108.412.1870477767534160333.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,52 +81,63 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     35aafa1d41cee0d3d50164561bca34befc1d9ce3
-Gitweb:        https://git.kernel.org/tip/35aafa1d41cee0d3d50164561bca34befc1d9ce3
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Mon, 09 Dec 2024 10:41:06 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 10 Dec 2024 11:16:32 +01:00
+Commit-ID:     4bf610499c429fa0bfb3fa94be450f01016224c5
+Gitweb:        https://git.kernel.org/tip/4bf610499c429fa0bfb3fa94be450f01016224c5
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Thu, 31 Oct 2024 11:34:01 +01:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 10 Dec 2024 17:34:51 +01:00
 
-x86/boot/64: Fix spurious undefined reference when CONFIG_X86_5LEVEL=n, on GCC-12
+x86/cpufeature: Document cpu_feature_enabled() as the default to use
 
-In __startup_64(), the bool 'la57' can only assume the 'true' value if
-CONFIG_X86_5LEVEL is enabled in the build, and generally, the compiler
-can make this inference at build time, and elide any references to the
-symbol 'level4_kernel_pgt', which may be undefined if 'la57' is false.
+cpu_feature_enabled() should be used in most cases when CPU feature
+support needs to be tested in code. Document that.
 
-As it turns out, GCC 12 gets this wrong sometimes, and gives up with a
-build error:
-
-   ld: arch/x86/kernel/head64.o: in function `__startup_64':
-   head64.c:(.head.text+0xbd): undefined reference to `level4_kernel_pgt'
-
-even though the reference is in unreachable code. Fix this by
-duplicating the IS_ENABLED(CONFIG_X86_5LEVEL) in the conditional that
-tests the value of 'la57'.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20241209094105.762857-2-ardb+git@google.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202412060403.efD8Kgb7-lkp@intel.com/
+Reported-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/20241031103401.GBZyNdGQ-ZyXKyzC_z@fat_crate.local
 ---
- arch/x86/kernel/head64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/cpufeature.h | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index 54f9a8f..22c9ba3 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -186,7 +186,7 @@ unsigned long __head __startup_64(unsigned long p2v_offset,
- 	pgd = &RIP_REL_REF(early_top_pgt)->pgd;
- 	pgd[pgd_index(__START_KERNEL_map)] += load_delta;
+diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
+index 0b9611d..de1ad09 100644
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -132,11 +132,12 @@ extern const char * const x86_bug_flags[NBUGINTS*32];
+ 	 x86_this_cpu_test_bit(bit, cpu_info.x86_capability))
  
--	if (la57) {
-+	if (IS_ENABLED(CONFIG_X86_5LEVEL) && la57) {
- 		p4d = (p4dval_t *)&RIP_REL_REF(level4_kernel_pgt);
- 		p4d[MAX_PTRS_PER_P4D - 1] += load_delta;
+ /*
+- * This macro is for detection of features which need kernel
+- * infrastructure to be used.  It may *not* directly test the CPU
+- * itself.  Use the cpu_has() family if you want true runtime
+- * testing of CPU features, like in hypervisor code where you are
+- * supporting a possible guest feature where host support for it
++ * This is the default CPU features testing macro to use in code.
++ *
++ * It is for detection of features which need kernel infrastructure to be
++ * used.  It may *not* directly test the CPU itself.  Use the cpu_has() family
++ * if you want true runtime testing of CPU features, like in hypervisor code
++ * where you are supporting a possible guest feature where host support for it
+  * is not relevant.
+  */
+ #define cpu_feature_enabled(bit)	\
+@@ -161,13 +162,6 @@ extern void clear_cpu_cap(struct cpuinfo_x86 *c, unsigned int bit);
+ #define setup_force_cpu_bug(bit) setup_force_cpu_cap(bit)
  
+ /*
+- * Static testing of CPU features. Used the same as boot_cpu_has(). It
+- * statically patches the target code for additional performance. Use
+- * static_cpu_has() only in fast paths, where every cycle counts. Which
+- * means that the boot_cpu_has() variant is already fast enough for the
+- * majority of cases and you should stick to using it as it is generally
+- * only two instructions: a RIP-relative MOV and a TEST.
+- *
+  * Do not use an "m" constraint for [cap_byte] here: gcc doesn't know
+  * that this is only used on a fallback path and will sometimes cause
+  * it to manifest the address of boot_cpu_data in a register, fouling
 
