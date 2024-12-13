@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3062-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3063-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E609F17BC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Dec 2024 22:03:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41AA89F17C0
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Dec 2024 22:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 034787A16E9
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Dec 2024 21:03:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 146FA18877C8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Dec 2024 21:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CF7198841;
-	Fri, 13 Dec 2024 21:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736C51A7060;
+	Fri, 13 Dec 2024 21:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bO9420M2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OqXK/YXo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wmacGDKx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qh00nCyK"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B800B194096;
-	Fri, 13 Dec 2024 21:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE4519A2A3;
+	Fri, 13 Dec 2024 21:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734123764; cv=none; b=CEKSHYpcaE0BKXJpUlcDMt5n+JfiADBFy9NkYOU8gOyllXvbO0gVjyH0HtjNLDChtTCA5Zs3jiq5wr179Dc9Y+r0C0YK6sfpqHwatMYRRl5bzB7S6w0dwH3VIOl3almhrhRpe9fSt/dPW7voptkVkpEzfqBlGCbGgAyNFsXCfQw=
+	t=1734123767; cv=none; b=ef1Kk5do6FhUoFRrMfOSvC051Takq/agkUmLdHdmxNlV7oF88ERW9zs4dDGR0rIaYGqNePp8YPilIaGaqySBgWXRGLTSl+o23IFkXepHr9jretcWEYRgOA/WcA7K12oEMwaX/shqhZrmc4M1CxsNqeBHhXXt2a8149AMSmipr5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734123764; c=relaxed/simple;
-	bh=OrDlxbqOyu6ZVyDrxExuBbeDpTCg1aLIjIadJYOmgo8=;
+	s=arc-20240116; t=1734123767; c=relaxed/simple;
+	bh=icV936Ft1wVLgYRvyGdsk57eskbGjS+DQYmc9KCxCSw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Qai4GKMkjkWeBhLO3bQzCC/k4sd73Is8QuLH3zs4T0IUYwmemSx8JELmSNYL3mUe86WCtqkUnOsblYS2uhT7RJUtF5Uc/zHwQ5t4bKYmSTJDN9gwoASHvG9pMpIpkaFamDGESCAp8BeEqSXWptwrHivSHSQ6X3PWdfG1BWcLZWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bO9420M2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OqXK/YXo; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Nv1RI1aTMIXGcNyO9skHYWqD7kaA3HuXOPK7RsJel4Ui052+Wkuv17cnK7SwC01FwaKOQCrErhnGSJdn1C/wZvW1CCswcooyGzNqb+SQS+DvbyPDPCvWZWjIROvpBj7UNwUJ4WNxCeZsCLd7tG2mPyMGeDVPvQLslNOBs6W+ueg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wmacGDKx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qh00nCyK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 13 Dec 2024 21:02:39 -0000
+Date: Fri, 13 Dec 2024 21:02:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1734123761;
+	s=2020; t=1734123763;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UGuIC7Mej5H+tRF//kRMZG1iKvvD+yQJ9cGdU2YmrAA=;
-	b=bO9420M2KwHJV43fwGX767pNhs5p1YVJsFKAxtyvshK2zurymHqzTfLfpeWNZ3o1HJ19j2
-	hYFoazjRY8VGkDRC14E86vS/NwVvKVcuykC6oGB5vm1uRzIvtdt0h+vSncl36TW20DA90n
-	/YBCeR4TPqYgInavQ/u3N//soi/9FhzFw3YO1g7a+s19jPAT12wmM0VV6l6CwTOqmoTaM7
-	UIwxmdqNVSs+wMb+H+Vvq3J7xHsrpSePKkegf53an7LZ+zOQZ8PVXTGhFQxuElbrhoT9r1
-	U3TrwEURYZV0MiuBPY6z3bJYd2Sq9M/Zhy/jekNZJP9eEI8QFHSq+4TLWchBoQ==
+	bh=Gg13wBGdR8y1Au0BtYqTMJL7SbqL2x7508pv+kDbugE=;
+	b=wmacGDKx5RkGzZsVWapbd8V5X7lVOn5ZHfDHxIEsYe3YGP7WIRJMtRk0373uOpQ8nZG/e3
+	IPPMECwbrsAdZP1p0wHMK7HmLbB5Cy/I+jw3QJ+nbsklwEkSgt1nUTZJFvVzG4DMvgoCyo
+	F8bLHgd7XcNGvl65ZizAdjclzhKDvo8C4IpxD/4eYbJziTqIul7cg0Guy+D4GVSTigyuJh
+	k+zKUMyM2h53KHoPT94N/Szc/72XavEZDwsLufQZ1L+47KOpspXgx9CY7rHcgnHlE3IOYe
+	h2dDldOMKfXBncKXRdVu4LdTRnlE3PY0MCVFZoMhrMDJfDq2W5ePIAQFK60PpA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1734123761;
+	s=2020e; t=1734123763;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UGuIC7Mej5H+tRF//kRMZG1iKvvD+yQJ9cGdU2YmrAA=;
-	b=OqXK/YXoii7lBDMdVzFT7H5U9XM/M4mATuD9tTde4RrEvt35FCFfxh0EUpXZxfkGy3T5Tq
-	yGUmeUaoE6x+brDg==
+	bh=Gg13wBGdR8y1Au0BtYqTMJL7SbqL2x7508pv+kDbugE=;
+	b=Qh00nCyKVC5oxsC9ULtKm6IPwR2Jchj09v2ZubD0EWzL1bJKsV/RmOdWtZ2yEVj2U3lLQy
+	evKrDmCF8ufEpABg==
 From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Compute memory bandwidth for all
- supported events
-Cc: Reinette Chatre <reinette.chatre@intel.com>,
- Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Babu Moger <babu.moger@amd.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241206163148.83828-5-tony.luck@intel.com>
-References: <20241206163148.83828-5-tony.luck@intel.com>
+Subject: [tip: x86/cache] x86/resctrl: Modify update_mba_bw() to use per
+ CTRL_MON group event
+Cc: Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Reinette Chatre <reinette.chatre@intel.com>, Babu Moger <babu.moger@amd.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241206163148.83828-4-tony.luck@intel.com>
+References: <20241206163148.83828-4-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173412375987.412.3633757337856888946.tip-bot2@tip-bot2>
+Message-ID: <173412376135.412.1247835243821152150.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,134 +82,73 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     2c272fadb58b590eb973c6c447b039f10631f5f7
-Gitweb:        https://git.kernel.org/tip/2c272fadb58b590eb973c6c447b039f10631f5f7
+Commit-ID:     481d363748b2df881df21569f3697b3c7fcf8fc1
+Gitweb:        https://git.kernel.org/tip/481d363748b2df881df21569f3697b3c7fcf8fc1
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Fri, 06 Dec 2024 08:31:44 -08:00
+AuthorDate:    Fri, 06 Dec 2024 08:31:43 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 10 Dec 2024 16:13:48 +01:00
+CommitterDate: Tue, 10 Dec 2024 11:15:19 +01:00
 
-x86/resctrl: Compute memory bandwidth for all supported events
+x86/resctrl: Modify update_mba_bw() to use per CTRL_MON group event
 
-Switching between local and total memory bandwidth events as the input
-to the mba_sc feedback loop would be cumbersome and take effect slowly
-in the current implementation as the bandwidth is only known after two
-consecutive readings of the same event.
+update_mba_bw() hard codes use of the memory bandwidth local event which
+prevents more flexible options from being deployed.
 
-Compute the bandwidth for all supported events. This doesn't add
-significant overhead and will make changing which event is used
-simple.
+Change this function to use the event specified in the rdtgroup that is
+being processed.
 
-Suggested-by: Reinette Chatre <reinette.chatre@intel.com>
+Mount time checks for the "mba_MBps" option ensure that local memory
+bandwidth is enabled. So drop the redundant is_mbm_local_enabled() check.
+
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
-Link: https://lore.kernel.org/r/20241206163148.83828-5-tony.luck@intel.com
+Link: https://lore.kernel.org/r/20241206163148.83828-4-tony.luck@intel.com
 ---
- arch/x86/kernel/cpu/resctrl/monitor.c | 72 +++++++++++---------------
- 1 file changed, 33 insertions(+), 39 deletions(-)
+ arch/x86/kernel/cpu/resctrl/monitor.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index adb18f0..94a1d97 100644
+index 69bdc11..adb18f0 100644
 --- a/arch/x86/kernel/cpu/resctrl/monitor.c
 +++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -663,9 +663,12 @@ static int __mon_event_count(u32 closid, u32 rmid, struct rmid_read *rr)
-  */
- static void mbm_bw_count(u32 closid, u32 rmid, struct rmid_read *rr)
- {
--	u32 idx = resctrl_arch_rmid_idx_encode(closid, rmid);
--	struct mbm_state *m = &rr->d->mbm_local[idx];
- 	u64 cur_bw, bytes, cur_bytes;
-+	struct mbm_state *m;
-+
-+	m = get_mbm_state(rr->d, closid, rmid, rr->evtid);
-+	if (WARN_ON_ONCE(!m))
+@@ -752,20 +752,20 @@ static void update_mba_bw(struct rdtgroup *rgrp, struct rdt_mon_domain *dom_mbm)
+ 	u32 closid, rmid, cur_msr_val, new_msr_val;
+ 	struct mbm_state *pmbm_data, *cmbm_data;
+ 	struct rdt_ctrl_domain *dom_mba;
++	enum resctrl_event_id evt_id;
+ 	struct rdt_resource *r_mba;
+-	u32 cur_bw, user_bw, idx;
+ 	struct list_head *head;
+ 	struct rdtgroup *entry;
+-
+-	if (!is_mbm_local_enabled())
+-		return;
++	u32 cur_bw, user_bw;
+ 
+ 	r_mba = &rdt_resources_all[RDT_RESOURCE_MBA].r_resctrl;
++	evt_id = rgrp->mba_mbps_event;
+ 
+ 	closid = rgrp->closid;
+ 	rmid = rgrp->mon.rmid;
+-	idx = resctrl_arch_rmid_idx_encode(closid, rmid);
+-	pmbm_data = &dom_mbm->mbm_local[idx];
++	pmbm_data = get_mbm_state(dom_mbm, closid, rmid, evt_id);
++	if (WARN_ON_ONCE(!pmbm_data))
 +		return;
  
- 	cur_bytes = rr->val;
- 	bytes = cur_bytes - m->prev_bw_bytes;
-@@ -815,54 +818,45 @@ static void update_mba_bw(struct rdtgroup *rgrp, struct rdt_mon_domain *dom_mbm)
- 	resctrl_arch_update_one(r_mba, dom_mba, closid, CDP_NONE, new_msr_val);
- }
- 
--static void mbm_update(struct rdt_resource *r, struct rdt_mon_domain *d,
--		       u32 closid, u32 rmid)
-+static void mbm_update_one_event(struct rdt_resource *r, struct rdt_mon_domain *d,
-+				 u32 closid, u32 rmid, enum resctrl_event_id evtid)
- {
- 	struct rmid_read rr = {0};
- 
- 	rr.r = r;
- 	rr.d = d;
-+	rr.evtid = evtid;
-+	rr.arch_mon_ctx = resctrl_arch_mon_ctx_alloc(rr.r, rr.evtid);
-+	if (IS_ERR(rr.arch_mon_ctx)) {
-+		pr_warn_ratelimited("Failed to allocate monitor context: %ld",
-+				    PTR_ERR(rr.arch_mon_ctx));
-+		return;
-+	}
-+
-+	__mon_event_count(closid, rmid, &rr);
- 
- 	/*
--	 * This is protected from concurrent reads from user
--	 * as both the user and we hold the global mutex.
-+	 * If the software controller is enabled, compute the
-+	 * bandwidth for this event id.
+ 	dom_mba = get_ctrl_domain_from_cpu(smp_processor_id(), r_mba);
+ 	if (!dom_mba) {
+@@ -784,7 +784,9 @@ static void update_mba_bw(struct rdtgroup *rgrp, struct rdt_mon_domain *dom_mbm)
  	 */
--	if (is_mbm_total_enabled()) {
--		rr.evtid = QOS_L3_MBM_TOTAL_EVENT_ID;
--		rr.val = 0;
--		rr.arch_mon_ctx = resctrl_arch_mon_ctx_alloc(rr.r, rr.evtid);
--		if (IS_ERR(rr.arch_mon_ctx)) {
--			pr_warn_ratelimited("Failed to allocate monitor context: %ld",
--					    PTR_ERR(rr.arch_mon_ctx));
--			return;
--		}
-+	if (is_mba_sc(NULL))
-+		mbm_bw_count(closid, rmid, &rr);
+ 	head = &rgrp->mon.crdtgrp_list;
+ 	list_for_each_entry(entry, head, mon.crdtgrp_list) {
+-		cmbm_data = &dom_mbm->mbm_local[entry->mon.rmid];
++		cmbm_data = get_mbm_state(dom_mbm, entry->closid, entry->mon.rmid, evt_id);
++		if (WARN_ON_ONCE(!cmbm_data))
++			return;
+ 		cur_bw += cmbm_data->prev_bw;
+ 	}
  
--		__mon_event_count(closid, rmid, &rr);
--
--		resctrl_arch_mon_ctx_free(rr.r, rr.evtid, rr.arch_mon_ctx);
--	}
--	if (is_mbm_local_enabled()) {
--		rr.evtid = QOS_L3_MBM_LOCAL_EVENT_ID;
--		rr.val = 0;
--		rr.arch_mon_ctx = resctrl_arch_mon_ctx_alloc(rr.r, rr.evtid);
--		if (IS_ERR(rr.arch_mon_ctx)) {
--			pr_warn_ratelimited("Failed to allocate monitor context: %ld",
--					    PTR_ERR(rr.arch_mon_ctx));
--			return;
--		}
--
--		__mon_event_count(closid, rmid, &rr);
-+	resctrl_arch_mon_ctx_free(rr.r, rr.evtid, rr.arch_mon_ctx);
-+}
- 
--		/*
--		 * Call the MBA software controller only for the
--		 * control groups and when user has enabled
--		 * the software controller explicitly.
--		 */
--		if (is_mba_sc(NULL))
--			mbm_bw_count(closid, rmid, &rr);
-+static void mbm_update(struct rdt_resource *r, struct rdt_mon_domain *d,
-+		       u32 closid, u32 rmid)
-+{
-+	/*
-+	 * This is protected from concurrent reads from user as both
-+	 * the user and overflow handler hold the global mutex.
-+	 */
-+	if (is_mbm_total_enabled())
-+		mbm_update_one_event(r, d, closid, rmid, QOS_L3_MBM_TOTAL_EVENT_ID);
- 
--		resctrl_arch_mon_ctx_free(rr.r, rr.evtid, rr.arch_mon_ctx);
--	}
-+	if (is_mbm_local_enabled())
-+		mbm_update_one_event(r, d, closid, rmid, QOS_L3_MBM_LOCAL_EVENT_ID);
- }
- 
- /*
 
