@@ -1,69 +1,69 @@
-Return-Path: <linux-tip-commits+bounces-3100-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3101-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C019F6837
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2024 15:23:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B033A9F683B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2024 15:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5276C1892785
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2024 14:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53DAD18937B3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 18 Dec 2024 14:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD9E1C548A;
-	Wed, 18 Dec 2024 14:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132321C5CDD;
+	Wed, 18 Dec 2024 14:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XmYzxzo0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Yw4AqVUZ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aT57gHDY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kNK8ZR5w"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96737224F6;
-	Wed, 18 Dec 2024 14:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB0D1B4234;
+	Wed, 18 Dec 2024 14:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734531758; cv=none; b=chx7fd8nuN7KwDoWorIbz80w+s9+62HfgYXEIuCy8KhpQXpRmRAodJp8zZF4hN0CTnM2TCD4+9WxJrLVJ/xXD7Y+OjqvYn9M6VmlNz12Bq19gIFIsVa0nUq0aqdOYVQXk3Uw2fpr5JmFtJQnDFnKqfYFfEmL8cl2gpdxnl8b9t4=
+	t=1734531759; cv=none; b=g4qzrOny16cuDa/Fw1Y29Dr2OWCQNeTaUJs82FA8i8inBqYXzG1SByP1LoRrfCTEZPc+C9uqKzzJNJmrmRv17HewknasFOboDhjbtbYS4hokb4b+D2gEA5xHX0YL75F3yurtkmLCpB7qDtjML6RNruS7vGVHryQaMZo/6Zkv9oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734531758; c=relaxed/simple;
-	bh=92nP0IqWurufE9d9hLUFl9XUiEUM8JjsRLwo3tja6D8=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=tCcc5+1nOmoQ6EPTrPrRS1CDoEVcHXnyNKsS64RgUy2Kl8lsLmh8x59I3Wnzvd3wsIqBxIY1uuYjTaIhPhOtMv1o0zSxr71DvqSEGYm5PSRSKaFb5ARLfMiwupisxTNQ/AlsPRusEo5pJr5+Cai/hT2qYqTOvvzbJ1FcXltLV0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XmYzxzo0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Yw4AqVUZ; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1734531759; c=relaxed/simple;
+	bh=JvXpbL2M0zEHdZf+MMdpRukldSJY/YicNTmiyxAk95U=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=tPlsBZIqJGGD75zeyYGVWj1llU4DDk8xPELOxsH0HVFuGAAvqppoBGXVbpSwFrbRQHJ15Gy4IiNPRdxXs7yZl6MIVqVBIUXrz/RGwKRrueCk4uieKtT7hnTXbizoBUjdJp098UPRhFYP8a1xBBTjEJG/J0RrOiBJyWZiSI3cpbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aT57gHDY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kNK8ZR5w; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 18 Dec 2024 14:22:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1734531754;
+	s=2020; t=1734531755;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=hGPSzY0M8B33AV1LSvpOaRr5XQGabMHuH7KBr1rAivk=;
-	b=XmYzxzo0W//9K7K6AjhP7DpLhi2W5cb4Q4YDVnRbVbWWPVSsQ1TLd7SsytpoDlMcjTZJQc
-	zZrSo/f6Zlq3yD+iRWmnYGfzouPREq0W1LocE0OFffmOd8UYZUlb7RU1jfYu2mERmGFooG
-	cPP3iwkYC99RIfN6yMvARtjlJYnAeX6S6vpokTDlkz8X9D1eij7E5gLIK24DI8v6Bh1Xju
-	rbvsyKkuInD8lMEv6LmWBggC/oq8R33WhKRTNbZjKf0fYQMTcVeDSZ+UwFzsBQQfW9jM2+
-	ZyL2Q0yse74RhcdYmIv4bvmC/NpQ/npWtjvkcWq1SraYlqnwgK/zybxXRb7ESw==
+	bh=+BjgjDEfF93eme1N2iJGixuQaqPafnPV2fd/34SQ5M0=;
+	b=aT57gHDYXynjuVfGd25LxBt+f2rFKvSZLTItrSnwZf40R8iQlUiOIBzS8LDvOgK2cTaCbV
+	ty0k46gm3tpa/C06iuvt32Fs0yww5ah0u8UR2/wsRVQAYsVF3eBPPN77MRYJtkysQRLNRn
+	CGECjmRkhFMoSgo7HgXcNMjPRhgyeK4PgkAXSJMXpj5DOqoS6vDAyX4eYHjiEziy0AnvJi
+	ysIlmQvctvrmTVefFfrZE11e2bxytJJ6oI1YSJ9ye6TRUFuKtCcv4KKrAjckkunJzOilc4
+	L/pAXMR/pyN94GMv55lVyuwFmw431cv9BBim/XBVuty2jJ1XOTremyLZ883EDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1734531754;
+	s=2020e; t=1734531755;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=hGPSzY0M8B33AV1LSvpOaRr5XQGabMHuH7KBr1rAivk=;
-	b=Yw4AqVUZlvYI8PERymxU8ve3oqD27+sdxz79Al6+zmBZouXHmWZVhbvqzDTmvHpy0fXcf5
-	e7K96hUc5tuitiBw==
+	bh=+BjgjDEfF93eme1N2iJGixuQaqPafnPV2fd/34SQ5M0=;
+	b=kNK8ZR5wBOF4Ewd1WiXGu/8AYxpO5c8P61DFiXhcGgTQgXpLx2bO8952von7XLckz2TnMi
+	LuFoSWvxCtY5dCDQ==
 From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/tsc: Remove CPUID "frequency" leaf magic numbers.
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: x86/cpu] x86/tsc: Move away from TSC leaf magic numbers
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173453175400.7135.9551373560447754310.tip-bot2@tip-bot2>
+Message-ID: <173453175490.7135.7624334772489922039.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,79 +73,110 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     e558eadf6bd6199a3f454299de3c6338931d4e46
-Gitweb:        https://git.kernel.org/tip/e558eadf6bd6199a3f454299de3c6338931d4e46
+Commit-ID:     030c15b5610cedf7eb428dab5382f73d492a7967
+Gitweb:        https://git.kernel.org/tip/030c15b5610cedf7eb428dab5382f73d492a7967
 Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Fri, 13 Dec 2024 12:50:36 -08:00
+AuthorDate:    Fri, 13 Dec 2024 12:50:34 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 18 Dec 2024 06:17:40 -08:00
+CommitterDate: Wed, 18 Dec 2024 06:17:38 -08:00
 
-x86/tsc: Remove CPUID "frequency" leaf magic numbers.
+x86/tsc: Move away from TSC leaf magic numbers
 
-All the code that reads the CPUID frequency information leaf hard-codes
-a magic number.  Give it a symbolic name and use it.
+The TSC code has a bunch of hard-coded references to leaf 0x15.  Change
+them over to the symbolic name.  Also zap the 'ART_CPUID_LEAF' definition.
+It was a duplicate of 'CPUID_TSC_LEAF'.
 
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Link: https://lore.kernel.org/all/20241213205036.4397658F%40davehans-spike.ostc.intel.com
+Link: https://lore.kernel.org/all/20241213205034.B79D6224%40davehans-spike.ostc.intel.com
 ---
- arch/x86/include/asm/cpuid.h |  1 +
- arch/x86/kernel/tsc.c        | 12 ++++++------
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/kernel/tsc.c                 | 11 +++++------
+ drivers/platform/x86/intel/pmc/core.c |  7 ++++---
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpuid.h b/arch/x86/include/asm/cpuid.h
-index 9b0d14b..e7803c2 100644
---- a/arch/x86/include/asm/cpuid.h
-+++ b/arch/x86/include/asm/cpuid.h
-@@ -24,6 +24,7 @@ enum cpuid_regs_idx {
- #define CPUID_MWAIT_LEAF	0x5
- #define CPUID_DCA_LEAF		0x9
- #define CPUID_TSC_LEAF		0x15
-+#define CPUID_FREQ_LEAF		0x16
- 
- #ifdef CONFIG_X86_32
- bool have_cpuid_p(void);
 diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 8091b0e..678c36f 100644
+index 67aeaba..8091b0e 100644
 --- a/arch/x86/kernel/tsc.c
 +++ b/arch/x86/kernel/tsc.c
-@@ -681,8 +681,8 @@ unsigned long native_calibrate_tsc(void)
+@@ -16,6 +16,7 @@
+ #include <linux/static_key.h>
+ #include <linux/static_call.h>
  
- 	/*
- 	 * Denverton SoCs don't report crystal clock, and also don't support
--	 * CPUID.0x16 for the calculation below, so hardcode the 25MHz crystal
--	 * clock.
-+	 * CPUID_FREQ_LEAF for the calculation below, so hardcode the 25MHz
-+	 * crystal clock.
- 	 */
- 	if (crystal_khz == 0 &&
- 			boot_cpu_data.x86_vfm == INTEL_ATOM_GOLDMONT_D)
-@@ -701,10 +701,10 @@ unsigned long native_calibrate_tsc(void)
- 	 * clock, but we can easily calculate it to a high degree of accuracy
- 	 * by considering the crystal ratio and the CPU speed.
- 	 */
--	if (crystal_khz == 0 && boot_cpu_data.cpuid_level >= 0x16) {
-+	if (crystal_khz == 0 && boot_cpu_data.cpuid_level >= CPUID_FREQ_LEAF) {
- 		unsigned int eax_base_mhz, ebx, ecx, edx;
- 
--		cpuid(0x16, &eax_base_mhz, &ebx, &ecx, &edx);
-+		cpuid(CPUID_FREQ_LEAF, &eax_base_mhz, &ebx, &ecx, &edx);
- 		crystal_khz = eax_base_mhz * 1000 *
- 			eax_denominator / ebx_numerator;
- 	}
-@@ -739,12 +739,12 @@ static unsigned long cpu_khz_from_cpuid(void)
++#include <asm/cpuid.h>
+ #include <asm/hpet.h>
+ #include <asm/timer.h>
+ #include <asm/vgtod.h>
+@@ -665,13 +666,13 @@ unsigned long native_calibrate_tsc(void)
  	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
  		return 0;
  
--	if (boot_cpu_data.cpuid_level < 0x16)
-+	if (boot_cpu_data.cpuid_level < CPUID_FREQ_LEAF)
+-	if (boot_cpu_data.cpuid_level < 0x15)
++	if (boot_cpu_data.cpuid_level < CPUID_TSC_LEAF)
  		return 0;
  
- 	eax_base_mhz = ebx_max_mhz = ecx_bus_mhz = edx = 0;
+ 	eax_denominator = ebx_numerator = ecx_hz = edx = 0;
  
--	cpuid(0x16, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
-+	cpuid(CPUID_FREQ_LEAF, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
+ 	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
+-	cpuid(0x15, &eax_denominator, &ebx_numerator, &ecx_hz, &edx);
++	cpuid(CPUID_TSC_LEAF, &eax_denominator, &ebx_numerator, &ecx_hz, &edx);
  
- 	return eax_base_mhz * 1000;
- }
+ 	if (ebx_numerator == 0 || eax_denominator == 0)
+ 		return 0;
+@@ -1067,10 +1068,8 @@ core_initcall(cpufreq_register_tsc_scaling);
+ 
+ #endif /* CONFIG_CPU_FREQ */
+ 
+-#define ART_CPUID_LEAF (0x15)
+ #define ART_MIN_DENOMINATOR (1)
+ 
+-
+ /*
+  * If ART is present detect the numerator:denominator to convert to TSC
+  */
+@@ -1078,7 +1077,7 @@ static void __init detect_art(void)
+ {
+ 	unsigned int unused;
+ 
+-	if (boot_cpu_data.cpuid_level < ART_CPUID_LEAF)
++	if (boot_cpu_data.cpuid_level < CPUID_TSC_LEAF)
+ 		return;
+ 
+ 	/*
+@@ -1091,7 +1090,7 @@ static void __init detect_art(void)
+ 	    tsc_async_resets)
+ 		return;
+ 
+-	cpuid(ART_CPUID_LEAF, &art_base_clk.denominator,
++	cpuid(CPUID_TSC_LEAF, &art_base_clk.denominator,
+ 	      &art_base_clk.numerator, &art_base_clk.freq_khz, &unused);
+ 
+ 	art_base_clk.freq_khz /= KHZ;
+diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
+index 3e7f99a..ac8231e 100644
+--- a/drivers/platform/x86/intel/pmc/core.c
++++ b/drivers/platform/x86/intel/pmc/core.c
+@@ -22,6 +22,7 @@
+ #include <linux/suspend.h>
+ #include <linux/units.h>
+ 
++#include <asm/cpuid.h>
+ #include <asm/cpu_device_id.h>
+ #include <asm/intel-family.h>
+ #include <asm/msr.h>
+@@ -935,13 +936,13 @@ static unsigned int pmc_core_get_crystal_freq(void)
+ {
+ 	unsigned int eax_denominator, ebx_numerator, ecx_hz, edx;
+ 
+-	if (boot_cpu_data.cpuid_level < 0x15)
++	if (boot_cpu_data.cpuid_level < CPUID_TSC_LEAF)
+ 		return 0;
+ 
+ 	eax_denominator = ebx_numerator = ecx_hz = edx = 0;
+ 
+-	/* CPUID 15H TSC/Crystal ratio, plus optionally Crystal Hz */
+-	cpuid(0x15, &eax_denominator, &ebx_numerator, &ecx_hz, &edx);
++	/* TSC/Crystal ratio, plus optionally Crystal Hz */
++	cpuid(CPUID_TSC_LEAF, &eax_denominator, &ebx_numerator, &ecx_hz, &edx);
+ 
+ 	if (ebx_numerator == 0 || eax_denominator == 0)
+ 		return 0;
 
