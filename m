@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-3140-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3142-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B29A9FC182
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 19:58:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4199FC185
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 19:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F1E7164F22
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 18:58:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4B931885474
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 18:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424F921325F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F150F2147E3;
 	Tue, 24 Dec 2024 18:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WXf5056V";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7VsUgrae"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tWdph4N/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AxjcYJBt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E61213244;
-	Tue, 24 Dec 2024 18:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F8021324D;
+	Tue, 24 Dec 2024 18:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735066484; cv=none; b=kBS1Xeo77I4LOMBI0hlyW13l/j4mhGabQ89njl2P2KUkaW5b8+mr/6IlT1XPcw3NkVeaXbYgj5KVLm6Ie58TWKeuWwJ7RNKCWMbGQKophMMbyxWyG9AQM/Goge/61o7jPzaXcM3J4k3XxbYceCVSw7MTTyKFgacwcnFcZt6wyLw=
+	t=1735066484; cv=none; b=HOjOOxl4p/8OAXWZHSDOano6qVdLcU5eN9/rRDihMhjMGeEnX7BToknM9KfLRX7j6+LI+e8MHJxByHVzl0Teac6/4uGxGenyARZLdwkulw9/Knp8ryt0Bt0AJ7tbddWi17lSAypuOdeiMrNzAtsSR2meCikFzD2RsHTWri3gUG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735066484; c=relaxed/simple;
-	bh=NzzGZ4UxZO1bOuTBAwadAibQ2gID+QL2r8QPSM3n1SQ=;
+	bh=EepGV6w7LjnQaUinC7Um6zBiIrxzMV1bn1/s/UNRXMA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=kjWy+s0rxnPNgcj/pzcx4cz2Je/oeys6H5IcPkQIwhc9r5ytEKK+A3dZt5W+h0AZJj91oSn97T7pGBq8dgKAh+Tnu8DBHrlNWn+MNZXzCkJTvUZs6mQrAbRCN2sQphnyQWQp+nUZOfl2Zv9griIyYXHRgs/b74IVOUNYBO3LMAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WXf5056V; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7VsUgrae; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=rObL/+9kuh5IEb1Dvw/gMRaLLWiArvZ5Mj0WgmTWdVyduwMrxDgRtWiidrPbcVaTMAI9uNFIKtbQbdaSeOllw/JQuS2MKXrSgZHn6OJkYDb1B8FOv8FEyV6W4sZdY1tMAPIbRsyKMDsJKpGZtcMef2UuljfrUEaGikxDjK0uPak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tWdph4N/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AxjcYJBt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 24 Dec 2024 18:54:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1735066481;
+	s=2020; t=1735066480;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yoXSJjTwCMrTl6S+VWaw/PmtE81VpVibSRZWGZUh2Qc=;
-	b=WXf5056Vx24BCaDRXV2vKkDrTSriktfLuizrsTg3n0gFusNCuBHZ5rkw9CmoQpsH4GF1o/
-	Qn7JsMlAL0Ei9vzzFcVHTGY0+aRvY5w7Zqqe2Okf8SOJAFv8S+fB9mxX6+cua1e9WgAlld
-	+/HTgHz5hJmjR5kaVciappdNR/iiHXCoIjPOaVpC4i0XTTlR9Ac4GfXoiJyzb4EyAc+aH6
-	N2pouvUUMahTL4rlzRsvAAgSnnOWQosKLFpiHnAHn9v79Y018Xo8MBMMeWThx88xpRCcV7
-	zkelD9rUTsFK3a1BU/p3w+kERRNfJ0xn3qxWfi9RsguhnAXMD3sQm1icAPJbNQ==
+	bh=2BUlk1VZSFn+0XQNHLS6iw+1DUMPi+k0xNjLnBHwC3o=;
+	b=tWdph4N/kQT4HDQnsy+BRfSbRVf9otb1V3ZqJhuX2h/l/62JJ/1Y7GM2cqXbGKgz0JpTAB
+	ZyzQq8to16AXcRS93GsQrUPl8E5jAqnx49ALw1dU84fOZuJZgNB2f4i03e41lDWeCDTk1z
+	Sy2RibrBApcYnnDB83ur+VQ/pbyXpkluP+w0rVLCndY9iqRmiV4ToOkRpTm6439VM7myuC
+	xgg1DvYBErWTiojmvcBoPuT2n7CDGy1pRQOberMex0++Bo7US/LzzfJKKmaKuGZRNRHzDL
+	vwu8QVgGtLlMoL8lohKSeenqk0OUM3Sk63eM+SoqjSaIlFXqKdOdgLZ/r/Bnwg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1735066481;
+	s=2020e; t=1735066480;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yoXSJjTwCMrTl6S+VWaw/PmtE81VpVibSRZWGZUh2Qc=;
-	b=7VsUgraeKfOP6O9rbQ/0pkJzSHZh9uPJ906cxlywvsdhHHTVNUVqddo5F1FEwrmwOo5jxm
-	gcoBx7Ph3Op+O/CA==
+	bh=2BUlk1VZSFn+0XQNHLS6iw+1DUMPi+k0xNjLnBHwC3o=;
+	b=AxjcYJBtq6ClNsUOaPmdRx5B8CDln3h0ackJB26Fy8Sv7/w+obSYMApkxGbISE60qd0gKY
+	d16FMh+YQ3XyNTCg==
 From: "tip-bot2 for Swapnil Sapkal" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Report the different kinds of imbalances in
- /proc/schedstat
-Cc: Swapnil Sapkal <swapnil.sapkal@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, x86@kernel.org,
+Subject:
+ [tip: sched/core] sched: Move sched domain name out of CONFIG_SCHED_DEBUG
+Cc: "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+ Swapnil Sapkal <swapnil.sapkal@amd.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20241220063224.17767-4-swapnil.sapkal@amd.com>
-References: <20241220063224.17767-4-swapnil.sapkal@amd.com>
+In-Reply-To: <20241220063224.17767-5-swapnil.sapkal@amd.com>
+References: <20241220063224.17767-5-swapnil.sapkal@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173506648048.399.1263453588174769917.tip-bot2@tip-bot2>
+Message-ID: <173506648005.399.6028009295642056920.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,118 +83,90 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3b2a793ea70fd14136b442df31e53935e8095034
-Gitweb:        https://git.kernel.org/tip/3b2a793ea70fd14136b442df31e53935e8095034
+Commit-ID:     1c055a0f5d3bafaca5d218bbb3e4e63d6307be45
+Gitweb:        https://git.kernel.org/tip/1c055a0f5d3bafaca5d218bbb3e4e63d6307be45
 Author:        Swapnil Sapkal <swapnil.sapkal@amd.com>
-AuthorDate:    Fri, 20 Dec 2024 06:32:21 
+AuthorDate:    Fri, 20 Dec 2024 06:32:22 
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 20 Dec 2024 15:31:17 +01:00
 
-sched: Report the different kinds of imbalances in /proc/schedstat
+sched: Move sched domain name out of CONFIG_SCHED_DEBUG
 
-In /proc/schedstat, lb_imbalance reports the sum of imbalances
-discovered in sched domains with each call to sched_balance_rq(), which is
-not very useful because lb_imbalance does not mention whether the imbalance
-is due to load, utilization, nr_tasks or misfit_tasks. Remove this field
-from /proc/schedstat.
+/proc/schedstat file shows cpu and sched domain level scheduler
+statistics. It does not show domain name instead shows domain level.
+It will be very useful for tools like `perf sched stats`[1] to
+aggragate domain level stats if domain names are shown in /proc/schedstat.
+But sched domain name is guarded by CONFIG_SCHED_DEBUG. As per the
+discussion[2], move sched domain name out of CONFIG_SCHED_DEBUG.
 
-Currently there is no field in /proc/schedstat to report different types
-of imbalances. Introduce new fields in /proc/schedstat to report the
-total imbalances in load, utilization, nr_tasks or misfit_tasks.
+[1] https://lore.kernel.org/lkml/20241122084452.1064968-1-swapnil.sapkal@amd.com/
+[2] https://lore.kernel.org/lkml/fcefeb4d-3acb-462d-9c9b-3df8d927e522@amd.com/
 
-Added fields to /proc/schedstat:
-        - lb_imbalance_load: Total imbalance due to load.
-        - lb_imbalance_util: Total imbalance due to utilization.
-        - lb_imbalance_task: Total imbalance due to number of tasks.
-        - lb_imbalance_misfit: Total imbalance due to misfit tasks.
-
+Suggested-by: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
 Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Link: https://lore.kernel.org/r/20241220063224.17767-4-swapnil.sapkal@amd.com
+Link: https://lore.kernel.org/r/20241220063224.17767-5-swapnil.sapkal@amd.com
 ---
- include/linux/sched/topology.h |  5 ++++-
- kernel/sched/fair.c            | 24 +++++++++++++++++++++++-
- kernel/sched/stats.c           |  7 +++++--
- 3 files changed, 32 insertions(+), 4 deletions(-)
+ include/linux/sched/topology.h | 8 --------
+ kernel/sched/topology.c        | 4 ----
+ 2 files changed, 12 deletions(-)
 
 diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 4237daa..76a662e 100644
+index 76a662e..7f3dbaf 100644
 --- a/include/linux/sched/topology.h
 +++ b/include/linux/sched/topology.h
-@@ -114,7 +114,10 @@ struct sched_domain {
- 	unsigned int lb_count[CPU_MAX_IDLE_TYPES];
- 	unsigned int lb_failed[CPU_MAX_IDLE_TYPES];
- 	unsigned int lb_balanced[CPU_MAX_IDLE_TYPES];
--	unsigned int lb_imbalance[CPU_MAX_IDLE_TYPES];
-+	unsigned int lb_imbalance_load[CPU_MAX_IDLE_TYPES];
-+	unsigned int lb_imbalance_util[CPU_MAX_IDLE_TYPES];
-+	unsigned int lb_imbalance_task[CPU_MAX_IDLE_TYPES];
-+	unsigned int lb_imbalance_misfit[CPU_MAX_IDLE_TYPES];
- 	unsigned int lb_gained[CPU_MAX_IDLE_TYPES];
- 	unsigned int lb_hot_gained[CPU_MAX_IDLE_TYPES];
- 	unsigned int lb_nobusyg[CPU_MAX_IDLE_TYPES];
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index e5c0c61..b3418b5 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11705,6 +11705,28 @@ static int should_we_balance(struct lb_env *env)
- 	return group_balance_cpu(sg) == env->dst_cpu;
- }
+@@ -143,9 +143,7 @@ struct sched_domain {
+ 	unsigned int ttwu_move_affine;
+ 	unsigned int ttwu_move_balance;
+ #endif
+-#ifdef CONFIG_SCHED_DEBUG
+ 	char *name;
+-#endif
+ 	union {
+ 		void *private;		/* used during construction */
+ 		struct rcu_head rcu;	/* used during destruction */
+@@ -201,18 +199,12 @@ struct sched_domain_topology_level {
+ 	int		    flags;
+ 	int		    numa_level;
+ 	struct sd_data      data;
+-#ifdef CONFIG_SCHED_DEBUG
+ 	char                *name;
+-#endif
+ };
  
-+static void update_lb_imbalance_stat(struct lb_env *env, struct sched_domain *sd,
-+				     enum cpu_idle_type idle)
-+{
-+	if (!schedstat_enabled())
-+		return;
-+
-+	switch (env->migration_type) {
-+	case migrate_load:
-+		__schedstat_add(sd->lb_imbalance_load[idle], env->imbalance);
-+		break;
-+	case migrate_util:
-+		__schedstat_add(sd->lb_imbalance_util[idle], env->imbalance);
-+		break;
-+	case migrate_task:
-+		__schedstat_add(sd->lb_imbalance_task[idle], env->imbalance);
-+		break;
-+	case migrate_misfit:
-+		__schedstat_add(sd->lb_imbalance_misfit[idle], env->imbalance);
-+		break;
-+	}
-+}
-+
- /*
-  * Check this_cpu to ensure it is balanced within domain. Attempt to move
-  * tasks if there is an imbalance.
-@@ -11755,7 +11777,7 @@ redo:
+ extern void __init set_sched_topology(struct sched_domain_topology_level *tl);
  
- 	WARN_ON_ONCE(busiest == env.dst_rq);
+-#ifdef CONFIG_SCHED_DEBUG
+ # define SD_INIT_NAME(type)		.name = #type
+-#else
+-# define SD_INIT_NAME(type)
+-#endif
  
--	schedstat_add(sd->lb_imbalance[idle], env.imbalance);
-+	update_lb_imbalance_stat(&env, sd, idle);
+ #else /* CONFIG_SMP */
  
- 	env.src_cpu = busiest->cpu;
- 	env.src_rq = busiest;
-diff --git a/kernel/sched/stats.c b/kernel/sched/stats.c
-index eb0cdcd..802bd93 100644
---- a/kernel/sched/stats.c
-+++ b/kernel/sched/stats.c
-@@ -141,11 +141,14 @@ static int show_schedstat(struct seq_file *seq, void *v)
- 			seq_printf(seq, "domain%d %*pb", dcount++,
- 				   cpumask_pr_args(sched_domain_span(sd)));
- 			for (itype = 0; itype < CPU_MAX_IDLE_TYPES; itype++) {
--				seq_printf(seq, " %u %u %u %u %u %u %u %u",
-+				seq_printf(seq, " %u %u %u %u %u %u %u %u %u %u %u",
- 				    sd->lb_count[itype],
- 				    sd->lb_balanced[itype],
- 				    sd->lb_failed[itype],
--				    sd->lb_imbalance[itype],
-+				    sd->lb_imbalance_load[itype],
-+				    sd->lb_imbalance_util[itype],
-+				    sd->lb_imbalance_task[itype],
-+				    sd->lb_imbalance_misfit[itype],
- 				    sd->lb_gained[itype],
- 				    sd->lb_hot_gained[itype],
- 				    sd->lb_nobusyq[itype],
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 9c405f0..da33ec9 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1635,9 +1635,7 @@ sd_init(struct sched_domain_topology_level *tl,
+ 		.max_newidle_lb_cost	= 0,
+ 		.last_decay_max_lb_cost	= jiffies,
+ 		.child			= child,
+-#ifdef CONFIG_SCHED_DEBUG
+ 		.name			= tl->name,
+-#endif
+ 	};
+ 
+ 	sd_span = sched_domain_span(sd);
+@@ -2338,10 +2336,8 @@ static struct sched_domain *build_sched_domain(struct sched_domain_topology_leve
+ 		if (!cpumask_subset(sched_domain_span(child),
+ 				    sched_domain_span(sd))) {
+ 			pr_err("BUG: arch topology borken\n");
+-#ifdef CONFIG_SCHED_DEBUG
+ 			pr_err("     the %s domain not a subset of the %s domain\n",
+ 					child->name, sd->name);
+-#endif
+ 			/* Fixup, ensure @sd has at least @child CPUs. */
+ 			cpumask_or(sched_domain_span(sd),
+ 				   sched_domain_span(sd),
 
