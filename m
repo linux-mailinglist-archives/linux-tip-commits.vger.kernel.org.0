@@ -1,72 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3129-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3132-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5832D9FC168
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 19:54:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92D39FC16B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 19:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802991884B4C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 18:54:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AA3E1659E8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 18:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B6B2135AC;
-	Tue, 24 Dec 2024 18:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277DB2135C4;
+	Tue, 24 Dec 2024 18:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0hqocyzz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n3oqadym"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MYh2DuHc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mAAHPNoW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C018B213223;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01E3213224;
 	Tue, 24 Dec 2024 18:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735066427; cv=none; b=IBvbzvOfIYl7QHtCWmu8AKwJFY9p+xLyvMEXYSWuMMzp1InFv+1HqNsCVVDTAMJUo/kQwDSApFk07ZymIM6c2Y5KuTnQjMSIPfv5ntqGzaW84EVpGIbAfj11XyL2QTNXhcnbew01zlh3OfDlLf9zFVcvZCOW0vqSQmHFElIw4Pg=
+	t=1735066428; cv=none; b=WtyIAZsOxAymlMotgybwFTyICJrgCcQTjRK54gHw91mjr9SXpL6G+sIivu6PtVVdNL6ujm0nZFP2ivRLcuOaV7wpgAqfjXN2ra4KHZPibT0oNmmc9uNLZ1NYLzg+NHcSnS+CjvQLuE5riascx+XGyg+tmqn8bKT4Rw7GOYNT0Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735066427; c=relaxed/simple;
-	bh=N/MdBT7U/sg16HHihJIAFyoR4vdcmcDmtbsSUwxOUNQ=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Binkx6SbwJlD2v382XF6Go5dlzd/btkXnISAHCXRrlmYAHSvRtRa/Th9gEeIqSgLpmrFxkjXko3V+DPc+PxXW2o6PjEJQwrHUflLRF3k/lust24jtWIIGk8ZhW9Im5NVBzmVSWBx67NMHFs3QmBvhs+1FpgK/jU7UKitmFDalfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0hqocyzz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n3oqadym; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1735066428; c=relaxed/simple;
+	bh=d9Jb6QFdfIPqES73Ppx6OW0vGfS7P46se6GNzBogIYo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=N03nkSoHhyO0CEQ9uaPhuxw6HHwU3nFAtnrEvah4MYJ8SiT2UWqrQbo/NhlwejEAWKphe4sQWVRV1tBXOQnt8iJ43Ulhj1xCgtaPic+RONoXTK1W5KoRNrk1EOknSql1QtN9V29yiQadg1FBDbEnQfFx5FwZBbBykMlrTkucaRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MYh2DuHc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mAAHPNoW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 24 Dec 2024 18:53:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1735066423;
+	s=2020; t=1735066422;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=7Fg+pO6K8ayA3TqjuPuyylipi8UZwB+wYjRtkHyYnsk=;
-	b=0hqocyzzPq3vFDmo57UgUio/y5wrYv6wFAW5BzCGACNakCiaaEJDnHpTocnJqmSh/nPXCC
-	4iBM0R7tMrcy91Vwaz6v3ws1J1B3Gr5qEnrQDtV6q14RPpnFSlp6ROYevfcp9zgAqzbXao
-	3OhBCOelHuN2O/jQ0YLGvCQAMKe6/95NmmB6XLUqvRwjmSeYx4SduJkBeRlcEQmLmmZ2Tw
-	aWFC5AX98OvBlcLeGfknda1O0kapCAFJnoksW07METDqngTimSaHIcOxeog5BAQuECN0Qg
-	FpPzUyJO36VAgJz7VUkIbchKRJWfEtnLrWbXomvFVgaF1GC/WF1+VF25touIeg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qgVUsKABdHpEYmqgmaSKFIIAINXEmlW/h14jHOrfKQ4=;
+	b=MYh2DuHcrqqD4uDC1pGMZsD/ZmSxuyE42cVDW7iUYbSOObPESLRyind+/CjczHVQnluMvn
+	U72VQetBLhkXgyJ6kqWLd57Re0a3Wg6aW2SM0ZF9Im1mUbwR/19oAFS4d7E3Bsc9jxshCU
+	sNYQlVKl3c4UPdtK4pASAbCRslySB1Wzk3pINcUyaj3X6hUonT634kee1bVyJUd73NatVc
+	NFOoXsoDJe/jrWPfJxlg1R7E5cPWqBjTVj50j2vpdauaAcFOz+NmKJ9XK1jkpnU+dbk2Mx
+	wN8gGXAErpvWz80gYkB8T3Y7QwF7el3trSgrHYOJeGu3MvxtzxlRQxqDaUKVIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1735066423;
+	s=2020e; t=1735066422;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=7Fg+pO6K8ayA3TqjuPuyylipi8UZwB+wYjRtkHyYnsk=;
-	b=n3oqadym+Egiz/XPIbbI18Fapj9fbW78evvHXPUbWVJxqaAwjfbwlFa/5raUdm4sxPYQAp
-	lzfGVy9t76RhcRAA==
-From: "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qgVUsKABdHpEYmqgmaSKFIIAINXEmlW/h14jHOrfKQ4=;
+	b=mAAHPNoWkEh6DonF3meFfTplVdyVGbEAA2b/fzAYLtU1inp9lxZXAqWPKat0NcEPR06Gq6
+	DDo9uUnKXpj1tmDw==
+From: "tip-bot2 for Lyude Paul" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking: MAINTAINERS: Start watching Rust locking
- primitives
-Cc: Miguel Ojeda <ojeda@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: locking/core] rust: sync: Add Lock::from_raw() for Lock<(), B>
+Cc: Lyude Paul <lyude@redhat.com>, Alice Ryhl <aliceryhl@google.com>,
+ Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241119231146.2298971-2-lyude@redhat.com>
+References: <20241119231146.2298971-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173506642258.399.16974577371429551132.tip-bot2@tip-bot2>
+Message-ID: <173506642207.399.10415197352412807962.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -76,57 +81,81 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     9793c9bb91f1b05473bb6d4a2323a259ef00ff2e
-Gitweb:        https://git.kernel.org/tip/9793c9bb91f1b05473bb6d4a2323a259ef00ff2e
-Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Wed, 27 Nov 2024 10:30:24 -08:00
+Commit-ID:     15abc88057eeec052aefde897df277eca2340ac6
+Gitweb:        https://git.kernel.org/tip/15abc88057eeec052aefde897df277eca2340ac6
+Author:        Lyude Paul <lyude@redhat.com>
+AuthorDate:    Tue, 19 Nov 2024 18:11:03 -05:00
 Committer:     Boqun Feng <boqun.feng@gmail.com>
 CommitterDate: Thu, 19 Dec 2024 14:04:42 -08:00
 
-locking: MAINTAINERS: Start watching Rust locking primitives
+rust: sync: Add Lock::from_raw() for Lock<(), B>
 
-It makes sense to add Rust locking primitives under the watch of general
-locking primitives maintainers. This will encourage more reviews and
-find potential issues earlier. Hence add related Rust files into the
-LOCKING PRIMITIVES entry in MAINTAINERS.
+The KMS bindings [1] have a few bindings that require manually acquiring
+specific locks before calling certain functions. At the moment though,
+the only way of acquiring these locks in bindings is to simply call the
+C locking functions directly - since said locks are not initialized on
+the Rust side of things.
 
-While we are at it, change the role of myself into the maintainer of
-LOCKDEP and RUST to reflect my responsibility for the corresponding
-code.
+However - if we add `#[repr(C)]` to `Lock<(), B>`, then given `()` is a
+ZST - `Lock<(), B>` becomes equivalent in data layout to its inner
+`B::State` type. Since locks in C don't have data explicitly associated
+with them anyway, we can take advantage of this to add a
+`Lock::from_raw()` function that can translate a raw pointer to
+`B::State` into its proper `Lock<(), B>` equivalent. This lets us simply
+acquire a reference to the lock in question and work with it like it was
+initialized on the Rust side of things, allowing us to use less unsafe
+code to implement bindings with lock requirements.
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Ingo Molnar <mingo@kernel.org>
+[Boqun: Use "Link:" instead of a URL and format the commit log]
+
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://patchwork.freedesktop.org/series/131522/ [1]
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-https://lore.kernel.org/lkml/20241128054022.19586-2-boqun.feng@gmail.com/
+Link: https://lore.kernel.org/r/20241119231146.2298971-2-lyude@redhat.com
 ---
- MAINTAINERS | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ rust/kernel/sync/lock.rs | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1e930c7..e049570 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13423,8 +13423,8 @@ LOCKING PRIMITIVES
- M:	Peter Zijlstra <peterz@infradead.org>
- M:	Ingo Molnar <mingo@redhat.com>
- M:	Will Deacon <will@kernel.org>
-+M:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP & RUST)
- R:	Waiman Long <longman@redhat.com>
--R:	Boqun Feng <boqun.feng@gmail.com> (LOCKDEP)
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
-@@ -13438,6 +13438,11 @@ F:	include/linux/seqlock.h
- F:	include/linux/spinlock*.h
- F:	kernel/locking/
- F:	lib/locking*.[ch]
-+F:	rust/helpers/mutex.c
-+F:	rust/helpers/spinlock.c
-+F:	rust/kernel/sync/lock.rs
-+F:	rust/kernel/sync/lock/
-+F:	rust/kernel/sync/locked_by.rs
- X:	kernel/locking/locktorture.c
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index 41dcdda..57dc2e9 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -96,6 +96,7 @@ pub unsafe trait Backend {
+ ///
+ /// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock
+ /// [`Backend`] specified as the generic parameter `B`.
++#[repr(C)]
+ #[pin_data]
+ pub struct Lock<T: ?Sized, B: Backend> {
+     /// The kernel lock object.
+@@ -134,6 +135,28 @@ impl<T, B: Backend> Lock<T, B> {
+     }
+ }
  
- LOGICAL DISK MANAGER SUPPORT (LDM, Windows 2000/XP/Vista Dynamic Disks)
++impl<B: Backend> Lock<(), B> {
++    /// Constructs a [`Lock`] from a raw pointer.
++    ///
++    /// This can be useful for interacting with a lock which was initialised outside of Rust.
++    ///
++    /// # Safety
++    ///
++    /// The caller promises that `ptr` points to a valid initialised instance of [`State`] during
++    /// the whole lifetime of `'a`.
++    ///
++    /// [`State`]: Backend::State
++    pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
++        // SAFETY:
++        // - By the safety contract `ptr` must point to a valid initialised instance of `B::State`
++        // - Since the lock data type is `()` which is a ZST, `state` is the only non-ZST member of
++        //   the struct
++        // - Combined with `#[repr(C)]`, this guarantees `Self` has an equivalent data layout to
++        //   `B::State`.
++        unsafe { &*ptr.cast() }
++    }
++}
++
+ impl<T: ?Sized, B: Backend> Lock<T, B> {
+     /// Acquires the lock and gives the caller access to the data protected by it.
+     pub fn lock(&self) -> Guard<'_, T, B> {
 
