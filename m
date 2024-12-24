@@ -1,72 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3121-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3123-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3549FBBA5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 10:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6EE9FC15C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 19:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACE6F1889366
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 09:52:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B184C1883B5B
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Dec 2024 18:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D697F1DACB8;
-	Tue, 24 Dec 2024 09:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3FE212D64;
+	Tue, 24 Dec 2024 18:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pl7AxqYa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aTyXxsSh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KUpui7T+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+dZ0j6ow"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09AE1D9587;
-	Tue, 24 Dec 2024 09:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E131465B4;
+	Tue, 24 Dec 2024 18:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735033712; cv=none; b=r1mFEE/yb9EwoXvzHOBtgp4imGrIctWgj/KIpBeLnU9gzg+rASHyPCzIjgP+cX5gZ8XzxQGnbsZKroVtuYumz7v05X9mWaXbUWqmuoafq3qsjpsY1V2XYgxiEY0AePazhH0JfdKutDc2+kxtZ88cq8NkLn7NBL8I74bKYhtlTPA=
+	t=1735066424; cv=none; b=hiZSyaaamZwE2LCGBYB1yO2EAYNV9Py4SEpsScFflWNAG9wOL7xVHUDMQTZ3j8869j7B4n51xfY99kOiHt1Vv4ZNrpzOeZssQsA4GwlzmSA9bknI1N/+hY4TjUQ5TZ/24+gOjzTrtBv1l9tWxSHKYEwlMcAoerDC9AMciPw0tcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735033712; c=relaxed/simple;
-	bh=44DPz2XHzSvYhepcA/mwVWhScUQXBHUoOAv0Uk2szVA=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=JnsQ2uJnn0SJmzU656DwsmYCtFqRtWSxBFJgNWQbfrcb9p/chTWgMAmKmsBv1voICNXHWKmTDPg/V18m3kGTPFR4/CQOrSp2p4k98YOJTGuC+Y9lYsTrEMdBO+Ko89LnXiv0LV5toq40itM8P6+NKXwrERu1f2WYAp6rMWxqLA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pl7AxqYa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aTyXxsSh; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1735066424; c=relaxed/simple;
+	bh=ou1l91o0U4Brr2CamL61MdJ+lbSINfBdCEzPbkOsGa0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ZOaJW0+QcyircYrPsqoTlLfAcfTWJA59Eo1ZYQxt92DHayjkeo4l6Clzs8BoPZ3nwqyfuvriimaRAcCRqJ0CwkoCp1fMjXn5+l5jxtUIs2+AB0imDflRBbL/k4ve5XAQUIfEX4t8bASUzcHKAXvEfDxQjMFA2txVT4ucPYefbUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KUpui7T+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+dZ0j6ow; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 24 Dec 2024 09:48:26 -0000
+Date: Tue, 24 Dec 2024 18:53:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1735033707;
+	s=2020; t=1735066419;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=GHDdo63kt/IilYM4pilKUge2HTifaE+9eF+JhXHgsJY=;
-	b=pl7AxqYaTZCH3vnF8zNx3r0ORP8hpp/cv37QTsJ/TLavt8x6R/9lYwm7intX2U81L3kg82
-	DSnuPt8v1gMClDovs8q4xLM79+dzmqiVp1yIBacy+S3Pt5fnbz1Noe0cMkN3bqiQU3FXqT
-	FWbW0/BkGBSc5gqbVgbhwc4qEwIWzJFWFmdjSpkodxr1N1jzI4dx2ntZQ4GC7+prkpRwsv
-	WPw9447kA9wyf99gcM09R4jHftvGZthRB11G+ZDU35TTTwG86Sp2AR6SIugYmIVctjYrxr
-	1/Wag5gPqWQ4zzWd+XBRQPSsivOozO7KVZe0JFr7ezPRDSFW+N8xdKWPZXuNyA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pzqhIW9ogf48ZjaQNToeFRAF37Ygnn/PCkEWl1NcUmw=;
+	b=KUpui7T+Gtn56qWxxWKqiipcIQ6u+o6BC1Cg4b/bicC6bLro4nlV7uDPbJXAJu3Pv9O5XR
+	dHYdNPZx43nnMagAD1tbFzrXRD23zuYXgeLTiRmNFLNe/LAZ/k+RTaB+TuLfv8hOv8iAQS
+	l4z7JmSdTpF0FLMXodgL3AcmZDNNqay3vnLVSPJ7XTCOT5ea3o5Kuir4JPStU0Z08DVYXM
+	v5Vv42GCeO3Rwbs0szt+Uwzu4I9F70gVh6wEC4y61GdJHoxHg9RXp9lWgxolqXqOcq0D2P
+	XvuIsbwRDG/CS2O80g+TN/Yuxylb9eisDXeoL6tHpKLN+KIUMUb3sc+XlFc2Qg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1735033707;
+	s=2020e; t=1735066419;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=GHDdo63kt/IilYM4pilKUge2HTifaE+9eF+JhXHgsJY=;
-	b=aTyXxsSh1QVXcl4L/ff8fjb/c2sjPiLa8eube3bgc1nUI7qMBQ/pfp6++qVYVyjaw//I8i
-	hinq489gdWGn0UAw==
-From: "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pzqhIW9ogf48ZjaQNToeFRAF37Ygnn/PCkEWl1NcUmw=;
+	b=+dZ0j6owKRhABXvQuHNENyErSHKem5RyWl2Et1ael9rtLo0iVAwYsi3GwAYuayCTEdN5n5
+	GsKRPT2e2xfffhAg==
+From: "tip-bot2 for John Stultz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/virt/tdx: Rename 'struct tdx_tdmr_sysinfo' to
- reflect the spec better
-Cc: Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Dan Williams <dan.j.williams@intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+Subject: [tip: locking/core] sched/wake_q: Add helper to call wake_up_q after
+ unlock with preemption disabled
+Cc: Peter Zijlstra <peterz@infradead.org>, John Stultz <jstultz@google.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241217040803.243420-1-jstultz@google.com>
+References: <20241217040803.243420-1-jstultz@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173503370684.399.6660572223024391287.tip-bot2@tip-bot2>
+Message-ID: <173506641702.399.12574915584410501304.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,197 +79,226 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/tdx branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     e8aa393b0ada3b5ce1b3e8475b02e90e5dce6841
-Gitweb:        https://git.kernel.org/tip/e8aa393b0ada3b5ce1b3e8475b02e90e5dce6841
-Author:        Kai Huang <kai.huang@intel.com>
-AuthorDate:    Sun, 15 Dec 2024 04:15:42 +13:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 18 Dec 2024 14:36:01 -08:00
+Commit-ID:     abfdccd6af2b071951633e57d6322c46a1ea791f
+Gitweb:        https://git.kernel.org/tip/abfdccd6af2b071951633e57d6322c46a1ea791f
+Author:        John Stultz <jstultz@google.com>
+AuthorDate:    Mon, 16 Dec 2024 20:07:35 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Fri, 20 Dec 2024 15:31:21 +01:00
 
-x86/virt/tdx: Rename 'struct tdx_tdmr_sysinfo' to reflect the spec better
+sched/wake_q: Add helper to call wake_up_q after unlock with preemption disabled
 
-The TDX module provides a set of "Global Metadata Fields".  They report
-things like TDX module version, supported features, and fields related
-to create/run TDX guests and so on.
+A common pattern seen when wake_qs are used to defer a wakeup
+until after a lock is released is something like:
+  preempt_disable();
+  raw_spin_unlock(lock);
+  wake_up_q(wake_q);
+  preempt_enable();
 
-TDX organizes those metadata fields by "Classes" based on the meaning of
-those fields.  E.g., for now the kernel only reads "TD Memory Region"
-(TDMR) related fields for module initialization.  Those fields are
-defined under class "TDMR Info".
+So create some raw_spin_unlock*_wake() helper functions to clean
+this up.
 
-Today the kernel reads some of the global metadata to initialize the TDX
-module.  KVM will need to read additional metadata fields to run TDX
-guests.  Move towards having the TDX host core-kernel provide a
-centralized, canonical, and immutable structure for the global metadata
-that comes out from the TDX module for all kernel components to use.
+Applies on top of the fix I submitted here:
+ https://lore.kernel.org/lkml/20241212222138.2400498-1-jstultz@google.com/
 
-More specifically, prepare the code to end up with an organization like:
+NOTE: I recognise the unlock()/unlock_irq()/unlock_irqrestore()
+variants creates its own duplication, which we could use a macro
+to generate the similar functions, but I often dislike how those
+generation macros making finding the actual implementation
+harder, so I left the three functions as is. If folks would
+prefer otherwise, let me know and I'll switch it.
 
-       struct tdx_sys_info {
-	       struct tdx_sys_info_classA a;
-	       struct tdx_sys_info_classB b;
-	       ...
-       };
-
-Currently the kernel organizes all fields under "TDMR Info" class in
-'struct tdx_tdmr_sysinfo'.  Prepare for the above by renaming the
-structure to 'struct tdx_sys_info_tdmr' to follow the class name better.
-
-No functional change intended.
-
-Signed-off-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/all/de165d09e0b571cfeb119a368f4be6e2888ebb93.1734188033.git.kai.huang%40intel.com
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20241217040803.243420-1-jstultz@google.com
 ---
- arch/x86/virt/vmx/tdx/tdx.c | 36 ++++++++++++++++++------------------
- arch/x86/virt/vmx/tdx/tdx.h |  2 +-
- 2 files changed, 19 insertions(+), 19 deletions(-)
+ include/linux/sched/wake_q.h | 34 ++++++++++++++++++++++++++++++++++
+ kernel/futex/pi.c            |  5 +----
+ kernel/locking/mutex.c       | 16 ++++------------
+ kernel/locking/rtmutex.c     | 32 +++++---------------------------
+ 4 files changed, 44 insertions(+), 43 deletions(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 4e2b2e2..e979bf4 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -272,7 +272,7 @@ static int read_sys_metadata_field(u64 field_id, u64 *data)
+diff --git a/include/linux/sched/wake_q.h b/include/linux/sched/wake_q.h
+index 06cd8fb..0f28b46 100644
+--- a/include/linux/sched/wake_q.h
++++ b/include/linux/sched/wake_q.h
+@@ -63,4 +63,38 @@ extern void wake_q_add(struct wake_q_head *head, struct task_struct *task);
+ extern void wake_q_add_safe(struct wake_q_head *head, struct task_struct *task);
+ extern void wake_up_q(struct wake_q_head *head);
  
- static int read_sys_metadata_field16(u64 field_id,
- 				     int offset,
--				     struct tdx_tdmr_sysinfo *ts)
-+				     struct tdx_sys_info_tdmr *ts)
- {
- 	u16 *ts_member = ((void *)ts) + offset;
- 	u64 tmp;
-@@ -298,9 +298,9 @@ struct field_mapping {
++/* Spin unlock helpers to unlock and call wake_up_q with preempt disabled */
++static inline
++void raw_spin_unlock_wake(raw_spinlock_t *lock, struct wake_q_head *wake_q)
++{
++	guard(preempt)();
++	raw_spin_unlock(lock);
++	if (wake_q) {
++		wake_up_q(wake_q);
++		wake_q_init(wake_q);
++	}
++}
++
++static inline
++void raw_spin_unlock_irq_wake(raw_spinlock_t *lock, struct wake_q_head *wake_q)
++{
++	guard(preempt)();
++	raw_spin_unlock_irq(lock);
++	if (wake_q) {
++		wake_up_q(wake_q);
++		wake_q_init(wake_q);
++	}
++}
++
++static inline
++void raw_spin_unlock_irqrestore_wake(raw_spinlock_t *lock, unsigned long flags,
++				     struct wake_q_head *wake_q)
++{
++	guard(preempt)();
++	raw_spin_unlock_irqrestore(lock, flags);
++	if (wake_q) {
++		wake_up_q(wake_q);
++		wake_q_init(wake_q);
++	}
++}
+ #endif /* _LINUX_SCHED_WAKE_Q_H */
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index d62cca5..daea650 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -1020,10 +1020,7 @@ retry_private:
+ 	 * it sees the futex_q::pi_state.
+ 	 */
+ 	ret = __rt_mutex_start_proxy_lock(&q.pi_state->pi_mutex, &rt_waiter, current, &wake_q);
+-	preempt_disable();
+-	raw_spin_unlock_irq(&q.pi_state->pi_mutex.wait_lock);
+-	wake_up_q(&wake_q);
+-	preempt_enable();
++	raw_spin_unlock_irq_wake(&q.pi_state->pi_mutex.wait_lock, &wake_q);
  
- #define TD_SYSINFO_MAP(_field_id, _offset) \
- 	{ .field_id = MD_FIELD_ID_##_field_id,	   \
--	  .offset   = offsetof(struct tdx_tdmr_sysinfo, _offset) }
-+	  .offset   = offsetof(struct tdx_sys_info_tdmr, _offset) }
+ 	if (ret) {
+ 		if (ret == 1)
+diff --git a/kernel/locking/mutex.c b/kernel/locking/mutex.c
+index 3302e52..b36f23d 100644
+--- a/kernel/locking/mutex.c
++++ b/kernel/locking/mutex.c
+@@ -657,10 +657,7 @@ __mutex_lock_common(struct mutex *lock, unsigned int state, unsigned int subclas
+ 				goto err;
+ 		}
  
--/* Map TD_SYSINFO fields into 'struct tdx_tdmr_sysinfo': */
-+/* Map TD_SYSINFO fields into 'struct tdx_sys_info_tdmr': */
- static const struct field_mapping fields[] = {
- 	TD_SYSINFO_MAP(MAX_TDMRS,	      max_tdmrs),
- 	TD_SYSINFO_MAP(MAX_RESERVED_PER_TDMR, max_reserved_per_tdmr),
-@@ -309,16 +309,16 @@ static const struct field_mapping fields[] = {
- 	TD_SYSINFO_MAP(PAMT_1G_ENTRY_SIZE,    pamt_entry_size[TDX_PS_1G]),
- };
+-		raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
+-		/* Make sure we do wakeups before calling schedule */
+-		wake_up_q(&wake_q);
+-		wake_q_init(&wake_q);
++		raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
  
--static int get_tdx_tdmr_sysinfo(struct tdx_tdmr_sysinfo *tdmr_sysinfo)
-+static int get_tdx_sys_info_tdmr(struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	int ret;
- 	int i;
+ 		schedule_preempt_disabled();
  
--	/* Populate 'tdmr_sysinfo' fields using the mapping structure above: */
-+	/* Populate 'sysinfo_tdmr' fields using the mapping structure above: */
- 	for (i = 0; i < ARRAY_SIZE(fields); i++) {
- 		ret = read_sys_metadata_field16(fields[i].field_id,
- 						fields[i].offset,
--						tdmr_sysinfo);
-+						sysinfo_tdmr);
- 		if (ret)
- 			return ret;
- 	}
-@@ -342,13 +342,13 @@ static int tdmr_size_single(u16 max_reserved_per_tdmr)
+@@ -710,8 +707,7 @@ skip_wait:
+ 	if (ww_ctx)
+ 		ww_mutex_lock_acquired(ww, ww_ctx);
+ 
+-	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
+-	wake_up_q(&wake_q);
++	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
+ 	preempt_enable();
+ 	return 0;
+ 
+@@ -720,10 +716,9 @@ err:
+ 	__mutex_remove_waiter(lock, &waiter);
+ err_early_kill:
+ 	trace_contention_end(lock, ret);
+-	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
++	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
+ 	debug_mutex_free_waiter(&waiter);
+ 	mutex_release(&lock->dep_map, ip);
+-	wake_up_q(&wake_q);
+ 	preempt_enable();
+ 	return ret;
+ }
+@@ -935,10 +930,7 @@ static noinline void __sched __mutex_unlock_slowpath(struct mutex *lock, unsigne
+ 	if (owner & MUTEX_FLAG_HANDOFF)
+ 		__mutex_handoff(lock, next);
+ 
+-	preempt_disable();
+-	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
+-	wake_up_q(&wake_q);
+-	preempt_enable();
++	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
  }
  
- static int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
--			   struct tdx_tdmr_sysinfo *tdmr_sysinfo)
-+			   struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	size_t tdmr_sz, tdmr_array_sz;
- 	void *tdmr_array;
- 
--	tdmr_sz = tdmr_size_single(tdmr_sysinfo->max_reserved_per_tdmr);
--	tdmr_array_sz = tdmr_sz * tdmr_sysinfo->max_tdmrs;
-+	tdmr_sz = tdmr_size_single(sysinfo_tdmr->max_reserved_per_tdmr);
-+	tdmr_array_sz = tdmr_sz * sysinfo_tdmr->max_tdmrs;
- 
- 	/*
- 	 * To keep things simple, allocate all TDMRs together.
-@@ -367,7 +367,7 @@ static int alloc_tdmr_list(struct tdmr_info_list *tdmr_list,
- 	 * at a given index in the TDMR list.
+ #ifndef CONFIG_DEBUG_LOCK_ALLOC
+diff --git a/kernel/locking/rtmutex.c b/kernel/locking/rtmutex.c
+index 697a56d..4a8df18 100644
+--- a/kernel/locking/rtmutex.c
++++ b/kernel/locking/rtmutex.c
+@@ -1292,13 +1292,7 @@ static int __sched task_blocks_on_rt_mutex(struct rt_mutex_base *lock,
  	 */
- 	tdmr_list->tdmr_sz = tdmr_sz;
--	tdmr_list->max_tdmrs = tdmr_sysinfo->max_tdmrs;
-+	tdmr_list->max_tdmrs = sysinfo_tdmr->max_tdmrs;
- 	tdmr_list->nr_consumed_tdmrs = 0;
+ 	get_task_struct(owner);
  
- 	return 0;
-@@ -921,11 +921,11 @@ static int tdmrs_populate_rsvd_areas_all(struct tdmr_info_list *tdmr_list,
- /*
-  * Construct a list of TDMRs on the preallocated space in @tdmr_list
-  * to cover all TDX memory regions in @tmb_list based on the TDX module
-- * TDMR global information in @tdmr_sysinfo.
-+ * TDMR global information in @sysinfo_tdmr.
-  */
- static int construct_tdmrs(struct list_head *tmb_list,
- 			   struct tdmr_info_list *tdmr_list,
--			   struct tdx_tdmr_sysinfo *tdmr_sysinfo)
-+			   struct tdx_sys_info_tdmr *sysinfo_tdmr)
- {
- 	int ret;
+-	preempt_disable();
+-	raw_spin_unlock_irq(&lock->wait_lock);
+-	/* wake up any tasks on the wake_q before calling rt_mutex_adjust_prio_chain */
+-	wake_up_q(wake_q);
+-	wake_q_init(wake_q);
+-	preempt_enable();
+-
++	raw_spin_unlock_irq_wake(&lock->wait_lock, wake_q);
  
-@@ -934,12 +934,12 @@ static int construct_tdmrs(struct list_head *tmb_list,
- 		return ret;
+ 	res = rt_mutex_adjust_prio_chain(owner, chwalk, lock,
+ 					 next_lock, waiter, task);
+@@ -1642,13 +1636,7 @@ static int __sched rt_mutex_slowlock_block(struct rt_mutex_base *lock,
+ 			owner = rt_mutex_owner(lock);
+ 		else
+ 			owner = NULL;
+-		preempt_disable();
+-		raw_spin_unlock_irq(&lock->wait_lock);
+-		if (wake_q) {
+-			wake_up_q(wake_q);
+-			wake_q_init(wake_q);
+-		}
+-		preempt_enable();
++		raw_spin_unlock_irq_wake(&lock->wait_lock, wake_q);
  
- 	ret = tdmrs_set_up_pamt_all(tdmr_list, tmb_list,
--			tdmr_sysinfo->pamt_entry_size);
-+			sysinfo_tdmr->pamt_entry_size);
- 	if (ret)
- 		return ret;
+ 		if (!owner || !rtmutex_spin_on_owner(lock, waiter, owner))
+ 			rt_mutex_schedule();
+@@ -1799,10 +1787,7 @@ static int __sched rt_mutex_slowlock(struct rt_mutex_base *lock,
+ 	 */
+ 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+ 	ret = __rt_mutex_slowlock_locked(lock, ww_ctx, state, &wake_q);
+-	preempt_disable();
+-	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
+-	wake_up_q(&wake_q);
+-	preempt_enable();
++	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
+ 	rt_mutex_post_schedule();
  
- 	ret = tdmrs_populate_rsvd_areas_all(tdmr_list, tmb_list,
--			tdmr_sysinfo->max_reserved_per_tdmr);
-+			sysinfo_tdmr->max_reserved_per_tdmr);
- 	if (ret)
- 		tdmrs_free_pamt_all(tdmr_list);
+ 	return ret;
+@@ -1860,11 +1845,7 @@ static void __sched rtlock_slowlock_locked(struct rt_mutex_base *lock,
+ 			owner = rt_mutex_owner(lock);
+ 		else
+ 			owner = NULL;
+-		preempt_disable();
+-		raw_spin_unlock_irq(&lock->wait_lock);
+-		wake_up_q(wake_q);
+-		wake_q_init(wake_q);
+-		preempt_enable();
++		raw_spin_unlock_irq_wake(&lock->wait_lock, wake_q);
  
-@@ -1098,7 +1098,7 @@ static int init_tdmrs(struct tdmr_info_list *tdmr_list)
+ 		if (!owner || !rtmutex_spin_on_owner(lock, &waiter, owner))
+ 			schedule_rtlock();
+@@ -1893,10 +1874,7 @@ static __always_inline void __sched rtlock_slowlock(struct rt_mutex_base *lock)
  
- static int init_tdx_module(void)
- {
--	struct tdx_tdmr_sysinfo tdmr_sysinfo;
-+	struct tdx_sys_info_tdmr sysinfo_tdmr;
- 	int ret;
+ 	raw_spin_lock_irqsave(&lock->wait_lock, flags);
+ 	rtlock_slowlock_locked(lock, &wake_q);
+-	preempt_disable();
+-	raw_spin_unlock_irqrestore(&lock->wait_lock, flags);
+-	wake_up_q(&wake_q);
+-	preempt_enable();
++	raw_spin_unlock_irqrestore_wake(&lock->wait_lock, flags, &wake_q);
+ }
  
- 	/*
-@@ -1117,17 +1117,17 @@ static int init_tdx_module(void)
- 	if (ret)
- 		goto out_put_tdxmem;
- 
--	ret = get_tdx_tdmr_sysinfo(&tdmr_sysinfo);
-+	ret = get_tdx_sys_info_tdmr(&sysinfo_tdmr);
- 	if (ret)
- 		goto err_free_tdxmem;
- 
- 	/* Allocate enough space for constructing TDMRs */
--	ret = alloc_tdmr_list(&tdx_tdmr_list, &tdmr_sysinfo);
-+	ret = alloc_tdmr_list(&tdx_tdmr_list, &sysinfo_tdmr);
- 	if (ret)
- 		goto err_free_tdxmem;
- 
- 	/* Cover all TDX-usable memory regions in TDMRs */
--	ret = construct_tdmrs(&tdx_memlist, &tdx_tdmr_list, &tdmr_sysinfo);
-+	ret = construct_tdmrs(&tdx_memlist, &tdx_tdmr_list, &sysinfo_tdmr);
- 	if (ret)
- 		goto err_free_tdmrs;
- 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index b701f69..148f9b4 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -100,7 +100,7 @@ struct tdx_memblock {
- };
- 
- /* "TDMR info" part of "Global Scope Metadata" for constructing TDMRs */
--struct tdx_tdmr_sysinfo {
-+struct tdx_sys_info_tdmr {
- 	u16 max_tdmrs;
- 	u16 max_reserved_per_tdmr;
- 	u16 pamt_entry_size[TDX_PS_NR];
+ #endif /* RT_MUTEX_BUILD_SPINLOCKS */
 
