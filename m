@@ -1,78 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-3190-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3192-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 288A9A071D4
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2025 10:44:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D09CA071D7
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2025 10:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B4F1883422
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2025 09:44:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF2503A4EF9
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  9 Jan 2025 09:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1522163AE;
-	Thu,  9 Jan 2025 09:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922E921661C;
+	Thu,  9 Jan 2025 09:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R6pV+6se";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fxb0BeuA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PWeQhnOi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BJesRmp6"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A82521519C;
-	Thu,  9 Jan 2025 09:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5152163B5;
+	Thu,  9 Jan 2025 09:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736415830; cv=none; b=fOjFYkWhjpXYdQdyOWq9EwZ0a10Q+AKcSTtZHDkR8FB1ZAECpy76WQFBD4LX+Oj3Jum6HFweanPIwa0x/EnGrGivEgErdEuXUvBEbU0EzQlEYnZ5IelNeroE7y4YxQpK4nVsJHyq/XQC71IWlgHE24yMkHi9f1oaThWWeeQAkTY=
+	t=1736415832; cv=none; b=HfW2lIUr9eAYIOaJ0qJywolxgqJv/3JLmZmJj4bmsNJYcs0D/q2sFng97Ylfwu+cAuaSiTB0fSAi0P4cn1IS6VKLnwwxidi34B0hp8PEeXDqkEeO8Q1gEvbkU1+kAOk3Vl7+WU3cXGhJJzaWTdyRl/CNBXm2YyvitfsC0+OD/fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736415830; c=relaxed/simple;
-	bh=vna/YPSDJbSnqTMjD3BMvXdSpI1KfAu63r4YXgW4XlU=;
+	s=arc-20240116; t=1736415832; c=relaxed/simple;
+	bh=XNxlmg7BQ8is/6gNWxXrm/0zoqYQfdPtPUzoO9OCs5Q=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=R9TWW7t1ZqgPUul4Z70I6g95Pd9lj7p6deoxztjfcOwZkuxm/dGingAl2HE4AY2k95fmDMX3rygxpnM3znMGgQZJO/AvOKd1UWgJOA1MGvNl9y94bOlNORWrh/m9HuAtbz6C3IMObr3HE7TafH6dQY+Tr3TdGUkFncHFWdeFggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R6pV+6se; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fxb0BeuA; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=H/2NTnd1Vzy3sNIZT2UswG3cAKAOsOaRxiwkeGIoafFSEuwRRAzRy5NYUZa2j9YQF54EUtWdNGIhwX/HB+YFIZ+tJRzeiJMkEZt9JATFuKVzp2G97R4DMH2jZCVAa/ULd6WxHE/NSPxeIzLDZ/hrtLZj7Bqvt+lBrS55iwF7fco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PWeQhnOi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BJesRmp6; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 09 Jan 2025 09:43:46 -0000
+Date: Thu, 09 Jan 2025 09:43:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736415827;
+	s=2020; t=1736415828;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TRmAUfChdyOykAXClU+kw70Oij30B4Fqgo0HIdrONFY=;
-	b=R6pV+6seB+DOj5wk6EjWrkpmwFe0c+Sf7rLpgktapCq1piJlKTsPxG35t1yayyLU5H0Erk
-	wV7IH8hxIxKvT+uoPk06fhmbk/jt4g5c/tPvPcFAHjXaUTPnHopU+BxtoY3ekA4/i9h5gf
-	6E0jg8lcA4IqUuyuvbaSSXkWzRTCAdccVTvQEET0GvM8H/CpP6p+wgC5oqtHN1E5dj5OCh
-	h21ULBP3gyLZLkqAcG7NAjme4dyynpLM4aZdaMizDrXVhLjs1ues1pyHUbaYDR3DUEo273
-	WiqV8NPAE22QBOes/wb/pZmKGVzly8C8FwSQD4vdFPdwnF6RR9Jr8sYAUxzOSA==
+	bh=EZfpMudtZxxqFglLHzVb++bKWvsxDBmCeYTcge+GxSk=;
+	b=PWeQhnOiKkyd1F9vwjxLGXVFWgAK+Eacvc4tUkuzQuUfeIcTxLIB1K1Ln91P2qHetyfGhT
+	ZRQ0Yed+oC/BofsoAXABrj5/ZtyyGVc+4PAX6xL5Jw2JBXYlrlZav6UlGRpbfhVQcIelsP
+	WdFq4FwX1ciKTaGG7QQXO8fHl+nXMs9Cwfxn5JUH0ZXXnfx1sTmXF0tqEG8pQ6OVlElx+p
+	D3KEAcWr2fhL2RNzzCqgl125sNP7dOH9cyDP9Yle/aUpqZ3gO/UdISmfMrg/MrjRwoqUfi
+	gPvCGKH9as1Zu/bsqsCjIpUUWux2QTtYJCiHSgELrJdlEH43mEqE0GkiXVZh8w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736415827;
+	s=2020e; t=1736415828;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TRmAUfChdyOykAXClU+kw70Oij30B4Fqgo0HIdrONFY=;
-	b=fxb0BeuAP/plpUyDl/jj1jHFVE7YW9JhhtnHNxw92e9QnrJLcY3jytz8uidDPK9rco/E/j
-	R0Z6zA+qks+KsBBw==
+	bh=EZfpMudtZxxqFglLHzVb++bKWvsxDBmCeYTcge+GxSk=;
+	b=BJesRmp6dEbDlh+t1vgh2fHUE683A7n8+/NRFtp3i4/s8qY4JHDQIsN+xXvYwAGxW3XiNG
+	+ThmcDiogpLIpuCg==
 From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Prevent GUEST_TSC_FREQ MSR interception for
- Secure TSC enabled guests
+Subject: [tip: x86/sev] x86/sev: Add Secure TSC support for SNP guests
 Cc: Nikunj A Dadhania <nikunj@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250106124633.1418972-8-nikunj@amd.com>
-References: <20250106124633.1418972-8-nikunj@amd.com>
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250106124633.1418972-6-nikunj@amd.com>
+References: <20250106124633.1418972-6-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173641582648.399.3076847631804482712.tip-bot2@tip-bot2>
+Message-ID: <173641582755.399.17736193882473055015.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,72 +80,311 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     38cc6495cdec18a448b9e1de45fedce4118833a2
-Gitweb:        https://git.kernel.org/tip/38cc6495cdec18a448b9e1de45fedce4118833a2
+Commit-ID:     85b60ca9ad2c94661acf86a0c11278246cc5ea86
+Gitweb:        https://git.kernel.org/tip/85b60ca9ad2c94661acf86a0c11278246cc5ea86
 Author:        Nikunj A Dadhania <nikunj@amd.com>
-AuthorDate:    Mon, 06 Jan 2025 18:16:27 +05:30
+AuthorDate:    Mon, 06 Jan 2025 18:16:25 +05:30
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 07 Jan 2025 21:26:19 +01:00
+CommitterDate: Tue, 07 Jan 2025 20:27:23 +01:00
 
-x86/sev: Prevent GUEST_TSC_FREQ MSR interception for Secure TSC enabled guests
+x86/sev: Add Secure TSC support for SNP guests
 
-The hypervisor should not be intercepting GUEST_TSC_FREQ MSR(0xcOO10134)
-when Secure TSC is enabled. A #VC exception will be generated otherwise. If
-this should occur and Secure TSC is enabled, terminate guest execution.
+Add support for Secure TSC in SNP-enabled guests. Secure TSC allows guests
+to securely use RDTSC/RDTSCP instructions, ensuring that the parameters used
+cannot be altered by the hypervisor once the guest is launched.
+
+Secure TSC-enabled guests need to query TSC information from the AMD Security
+Processor. This communication channel is encrypted between the AMD Security
+Processor and the guest, with the hypervisor acting merely as a conduit to
+deliver the guest messages to the AMD Security Processor. Each message is
+protected with AEAD (AES-256 GCM).
+
+  [ bp: Zap a stray newline over amd_cc_platform_has() while at it,
+    simplify CC_ATTR_GUEST_SNP_SECURE_TSC check ]
 
 Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20250106124633.1418972-8-nikunj@amd.com
+Link: https://lore.kernel.org/r/20250106124633.1418972-6-nikunj@amd.com
 ---
- arch/x86/coco/sev/core.c         | 10 +++++++++-
- arch/x86/include/asm/msr-index.h |  1 +
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/coco/core.c              |   4 +-
+ arch/x86/coco/sev/core.c          | 107 +++++++++++++++++++++++++++++-
+ arch/x86/include/asm/sev-common.h |   1 +-
+ arch/x86/include/asm/sev.h        |  21 ++++++-
+ arch/x86/include/asm/svm.h        |   6 +-
+ arch/x86/mm/mem_encrypt.c         |   2 +-
+ include/linux/cc_platform.h       |   8 ++-
+ 7 files changed, 146 insertions(+), 3 deletions(-)
 
+diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
+index 0f81f70..9a0ddda 100644
+--- a/arch/x86/coco/core.c
++++ b/arch/x86/coco/core.c
+@@ -65,7 +65,6 @@ static __maybe_unused __always_inline bool amd_cc_platform_vtom(enum cc_attr att
+  * up under SME the trampoline area cannot be encrypted, whereas under SEV
+  * the trampoline area must be encrypted.
+  */
+-
+ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
+ {
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+@@ -97,6 +96,9 @@ static bool noinstr amd_cc_platform_has(enum cc_attr attr)
+ 	case CC_ATTR_GUEST_SEV_SNP:
+ 		return sev_status & MSR_AMD64_SEV_SNP_ENABLED;
+ 
++	case CC_ATTR_GUEST_SNP_SECURE_TSC:
++		return sev_status & MSR_AMD64_SNP_SECURE_TSC;
++
+ 	case CC_ATTR_HOST_SEV_SNP:
+ 		return cc_flags.host_sev_snp;
+ 
 diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index cd5b9b7..106bded 100644
+index ad3a288..7458805 100644
 --- a/arch/x86/coco/sev/core.c
 +++ b/arch/x86/coco/sev/core.c
-@@ -1436,13 +1436,20 @@ static enum es_result __vc_handle_msr_caa(struct pt_regs *regs, bool write)
- /*
-  * TSC related accesses should not exit to the hypervisor when a guest is
-  * executing with Secure TSC enabled, so special handling is required for
-- * accesses of MSR_IA32_TSC.
-+ * accesses of MSR_IA32_TSC and MSR_AMD64_GUEST_TSC_FREQ.
-  */
- static enum es_result __vc_handle_secure_tsc_msrs(struct pt_regs *regs, bool write)
- {
- 	u64 tsc;
+@@ -96,6 +96,14 @@ static u64 sev_hv_features __ro_after_init;
+ /* Secrets page physical address from the CC blob */
+ static u64 secrets_pa __ro_after_init;
  
- 	/*
-+	 * GUEST_TSC_FREQ should not be intercepted when Secure TSC is enabled.
-+	 * Terminate the SNP guest when the interception is enabled.
-+	 */
-+	if (regs->cx == MSR_AMD64_GUEST_TSC_FREQ)
-+		return ES_VMM_ERROR;
++/*
++ * For Secure TSC guests, the BSP fetches TSC_INFO using SNP guest messaging and
++ * initializes snp_tsc_scale and snp_tsc_offset. These values are replicated
++ * across the APs VMSA fields (TSC_SCALE and TSC_OFFSET).
++ */
++static u64 snp_tsc_scale __ro_after_init;
++static u64 snp_tsc_offset __ro_after_init;
++
+ /* #VC handler runtime per-CPU data */
+ struct sev_es_runtime_data {
+ 	struct ghcb ghcb_page;
+@@ -1277,6 +1285,12 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+ 	vmsa->vmpl		= snp_vmpl;
+ 	vmsa->sev_features	= sev_status >> 2;
+ 
++	/* Populate AP's TSC scale/offset to get accurate TSC values. */
++	if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC)) {
++		vmsa->tsc_scale = snp_tsc_scale;
++		vmsa->tsc_offset = snp_tsc_offset;
++	}
++
+ 	/* Switch the page over to a VMSA page now that it is initialized */
+ 	ret = snp_set_vmsa(vmsa, caa, apic_id, true);
+ 	if (ret) {
+@@ -3126,3 +3140,96 @@ int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(snp_send_guest_request);
++
++static int __init snp_get_tsc_info(void)
++{
++	struct snp_guest_request_ioctl *rio;
++	struct snp_tsc_info_resp *tsc_resp;
++	struct snp_tsc_info_req *tsc_req;
++	struct snp_msg_desc *mdesc;
++	struct snp_guest_req *req;
++	int rc = -ENOMEM;
++
++	tsc_req = kzalloc(sizeof(*tsc_req), GFP_KERNEL);
++	if (!tsc_req)
++		return rc;
 +
 +	/*
- 	 * Writes: Writing to MSR_IA32_TSC can cause subsequent reads of the TSC
- 	 *         to return undefined values, so ignore all writes.
++	 * The intermediate response buffer is used while decrypting the
++	 * response payload. Make sure that it has enough space to cover
++	 * the authtag.
++	 */
++	tsc_resp = kzalloc(sizeof(*tsc_resp) + AUTHTAG_LEN, GFP_KERNEL);
++	if (!tsc_resp)
++		goto e_free_tsc_req;
++
++	req = kzalloc(sizeof(*req), GFP_KERNEL);
++	if (!req)
++		goto e_free_tsc_resp;
++
++	rio = kzalloc(sizeof(*rio), GFP_KERNEL);
++	if (!rio)
++		goto e_free_req;
++
++	mdesc = snp_msg_alloc();
++	if (IS_ERR_OR_NULL(mdesc))
++		goto e_free_rio;
++
++	rc = snp_msg_init(mdesc, snp_vmpl);
++	if (rc)
++		goto e_free_mdesc;
++
++	req->msg_version = MSG_HDR_VER;
++	req->msg_type = SNP_MSG_TSC_INFO_REQ;
++	req->vmpck_id = snp_vmpl;
++	req->req_buf = tsc_req;
++	req->req_sz = sizeof(*tsc_req);
++	req->resp_buf = (void *)tsc_resp;
++	req->resp_sz = sizeof(*tsc_resp) + AUTHTAG_LEN;
++	req->exit_code = SVM_VMGEXIT_GUEST_REQUEST;
++
++	rc = snp_send_guest_request(mdesc, req, rio);
++	if (rc)
++		goto e_request;
++
++	pr_debug("%s: response status 0x%x scale 0x%llx offset 0x%llx factor 0x%x\n",
++		 __func__, tsc_resp->status, tsc_resp->tsc_scale, tsc_resp->tsc_offset,
++		 tsc_resp->tsc_factor);
++
++	if (!tsc_resp->status) {
++		snp_tsc_scale = tsc_resp->tsc_scale;
++		snp_tsc_offset = tsc_resp->tsc_offset;
++	} else {
++		pr_err("Failed to get TSC info, response status 0x%x\n", tsc_resp->status);
++		rc = -EIO;
++	}
++
++e_request:
++	/* The response buffer contains sensitive data, explicitly clear it. */
++	memzero_explicit(tsc_resp, sizeof(*tsc_resp) + AUTHTAG_LEN);
++e_free_mdesc:
++	snp_msg_free(mdesc);
++e_free_rio:
++	kfree(rio);
++e_free_req:
++	kfree(req);
++ e_free_tsc_resp:
++	kfree(tsc_resp);
++e_free_tsc_req:
++	kfree(tsc_req);
++
++	return rc;
++}
++
++void __init snp_secure_tsc_prepare(void)
++{
++	if (!cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
++		return;
++
++	if (snp_get_tsc_info()) {
++		pr_alert("Unable to retrieve Secure TSC info from ASP\n");
++		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECURE_TSC);
++	}
++
++	pr_debug("SecureTSC enabled");
++}
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index 50f5666..6ef9243 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -206,6 +206,7 @@ struct snp_psc_desc {
+ #define GHCB_TERM_NO_SVSM		7	/* SVSM is not advertised in the secrets page */
+ #define GHCB_TERM_SVSM_VMPL0		8	/* SVSM is present but has set VMPL to 0 */
+ #define GHCB_TERM_SVSM_CAA		9	/* SVSM is present but CAA is not page aligned */
++#define GHCB_TERM_SECURE_TSC		10	/* Secure TSC initialization failed */
+ 
+ #define GHCB_RESP_CODE(v)		((v) & GHCB_MSR_INFO_MASK)
+ 
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 0937ac7..bdcdaac 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -146,6 +146,9 @@ enum msg_type {
+ 	SNP_MSG_VMRK_REQ,
+ 	SNP_MSG_VMRK_RSP,
+ 
++	SNP_MSG_TSC_INFO_REQ = 17,
++	SNP_MSG_TSC_INFO_RSP,
++
+ 	SNP_MSG_TYPE_MAX
+ };
+ 
+@@ -174,6 +177,21 @@ struct snp_guest_msg {
+ 	u8 payload[PAGE_SIZE - sizeof(struct snp_guest_msg_hdr)];
+ } __packed;
+ 
++#define SNP_TSC_INFO_REQ_SZ	128
++
++struct snp_tsc_info_req {
++	u8 rsvd[SNP_TSC_INFO_REQ_SZ];
++} __packed;
++
++struct snp_tsc_info_resp {
++	u32 status;
++	u32 rsvd1;
++	u64 tsc_scale;
++	u64 tsc_offset;
++	u32 tsc_factor;
++	u8 rsvd2[100];
++} __packed;
++
+ struct snp_guest_req {
+ 	void *req_buf;
+ 	size_t req_sz;
+@@ -463,6 +481,8 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
+ int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
+ 			   struct snp_guest_request_ioctl *rio);
+ 
++void __init snp_secure_tsc_prepare(void);
++
+ #else	/* !CONFIG_AMD_MEM_ENCRYPT */
+ 
+ #define snp_vmpl 0
+@@ -503,6 +523,7 @@ static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
+ static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
+ static inline int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
+ 					 struct snp_guest_request_ioctl *rio) { return -ENODEV; }
++static inline void __init snp_secure_tsc_prepare(void) { }
+ 
+ #endif	/* CONFIG_AMD_MEM_ENCRYPT */
+ 
+diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
+index 2b59b99..92e1879 100644
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -417,7 +417,9 @@ struct sev_es_save_area {
+ 	u8 reserved_0x298[80];
+ 	u32 pkru;
+ 	u32 tsc_aux;
+-	u8 reserved_0x2f0[24];
++	u64 tsc_scale;
++	u64 tsc_offset;
++	u8 reserved_0x300[8];
+ 	u64 rcx;
+ 	u64 rdx;
+ 	u64 rbx;
+@@ -564,7 +566,7 @@ static inline void __unused_size_checks(void)
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x1c0);
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x248);
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x298);
+-	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x2f0);
++	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x300);
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x320);
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x380);
+ 	BUILD_BUG_RESERVED_OFFSET(sev_es_save_area, 0x3f0);
+diff --git a/arch/x86/mm/mem_encrypt.c b/arch/x86/mm/mem_encrypt.c
+index 0a120d8..95bae74 100644
+--- a/arch/x86/mm/mem_encrypt.c
++++ b/arch/x86/mm/mem_encrypt.c
+@@ -94,6 +94,8 @@ void __init mem_encrypt_init(void)
+ 	/* Call into SWIOTLB to update the SWIOTLB DMA buffers */
+ 	swiotlb_update_mem_attributes();
+ 
++	snp_secure_tsc_prepare();
++
+ 	print_mem_encrypt_feature_info();
+ }
+ 
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index caa4b44..0bf7d33 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -82,6 +82,14 @@ enum cc_attr {
+ 	CC_ATTR_GUEST_SEV_SNP,
+ 
+ 	/**
++	 * @CC_ATTR_GUEST_SNP_SECURE_TSC: SNP Secure TSC is active.
++	 *
++	 * The platform/OS is running as a guest/virtual machine and actively
++	 * using AMD SEV-SNP Secure TSC feature.
++	 */
++	CC_ATTR_GUEST_SNP_SECURE_TSC,
++
++	/**
+ 	 * @CC_ATTR_HOST_SEV_SNP: AMD SNP enabled on the host.
  	 *
-@@ -1474,6 +1481,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
- 	case MSR_SVSM_CAA:
- 		return __vc_handle_msr_caa(regs, write);
- 	case MSR_IA32_TSC:
-+	case MSR_AMD64_GUEST_TSC_FREQ:
- 		if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
- 			return __vc_handle_secure_tsc_msrs(regs, write);
- 		else
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index 3f3e2bc..9a71880 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -608,6 +608,7 @@
- #define MSR_AMD_PERF_CTL		0xc0010062
- #define MSR_AMD_PERF_STATUS		0xc0010063
- #define MSR_AMD_PSTATE_DEF_BASE		0xc0010064
-+#define MSR_AMD64_GUEST_TSC_FREQ	0xc0010134
- #define MSR_AMD64_OSVW_ID_LENGTH	0xc0010140
- #define MSR_AMD64_OSVW_STATUS		0xc0010141
- #define MSR_AMD_PPIN_CTL		0xc00102f0
+ 	 * The host kernel is running with the necessary features
 
