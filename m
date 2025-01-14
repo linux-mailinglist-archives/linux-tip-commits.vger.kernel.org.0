@@ -1,188 +1,107 @@
-Return-Path: <linux-tip-commits+bounces-3207-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3208-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1C4A0C0A8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2025 19:49:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F0BA11310
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2025 22:30:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DD137A2656
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Jan 2025 18:49:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4AFC166457
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2025 21:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961551F8F0D;
-	Mon, 13 Jan 2025 18:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775F0212B24;
+	Tue, 14 Jan 2025 21:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="neUR/tsv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JLM9iGl8"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZRfDQpPK"
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25231CB9F0;
-	Mon, 13 Jan 2025 18:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2B0209F4C
+	for <linux-tip-commits@vger.kernel.org>; Tue, 14 Jan 2025 21:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736793725; cv=none; b=lu6rw7FdP5Hk22dF2TuWF+tRWOB9Hu+N8nUIXSEZeR/xFlw6haGgepM7b+flwyGqbwyTMbg+JQ2W83elVR3KQMMg/Sy1ZixIFMJnVIkjU6FN/DUBOpSI43nlo2p2r1T8xiDiTgq/PxD2CH7WLJlh/izuvkkFQ9bipiHQngj7Qss=
+	t=1736890221; cv=none; b=fDOA3VwVEgNenrp0EkVgrhQ0anDCYfzeKXZBOycf1BmQW1I1bQYREfkPcoo104AvHSEtxWE+HV60kB6tLyslRae4Pd+7DjNS+WY7FqzCxvLUjfStB6hAk1uB2R0dnrvYGS1E3T11dOCGKvFKEHy/Snw5ALDgckUA78aSuGEcOyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736793725; c=relaxed/simple;
-	bh=EOuiL0QikfTdWBcat1c1sejRHGNfuETY7FUdZbLCbZA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=dSZJiaGdqZiUB1+pYzS8nAiSVtQ7BQIgLZBPRRh4dVpIsitYrHVpDuJPJ1/V36xSt0IDPtgoiuLfi1bZwMNTedAM8nkJDP611/O1cEdh3OtQeN6Qm7j30L+/ylarWv2T7f3lHxP682Qu3R611q2RmX62ZNxCIF0TOEKJI+jmvrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=neUR/tsv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JLM9iGl8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 13 Jan 2025 18:42:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736793722;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1736890221; c=relaxed/simple;
+	bh=IBL2FME9/iU7DT+aVY0Csc+9Yj4izcswBxjx8kmmpjs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lIuX0Rp20saBH++d+2WSG72cSVJ0pEZ9opaQLscilRBv1QR50eNF2uTEFyyoL6+VW8B246c+1oOytmv5CBPfRtp02aup+IU7wluMs29ZuZwfvGdfGo/SrgZ0guyCv0wnq8XrzwXbgMlUEUqKoxPVSrPKuehfFHHx4ab5/nESQVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZRfDQpPK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736890218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n3VrjzKgEvJQLkCu9Mrne4JjBpOKpN06McNWW81axPs=;
-	b=neUR/tsvalbKcFI3DqzeLKa6el756x7q4smVkq/u9IF5uDNL/wBpeeo1Wcf2vEpkVynmKr
-	nzRhmxw/drW5AT5VqoAiDC0SSJtwbC7SuiMjvaNoIQijOystKbGke+aAzE2voVfmeJBbs6
-	dtodXd6h3n0iGXDqm6wr1AiQzD7bs5yyF7lLoDjMttLvzvuQ5tIA9cL00mG7cRjXEAyaau
-	T87n2UwjaM2VRncdcRuDYQTKVS6Hk0R2Sz++rkofoVw+FyPB69PU9vTB9OBClabpPI7RSh
-	FHYI6K7zNQz8eejBmEDy0i6Mxf5usBb0st2UjrbrbnyrjFEFveedSzG2EBkaGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736793722;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n3VrjzKgEvJQLkCu9Mrne4JjBpOKpN06McNWW81axPs=;
-	b=JLM9iGl8MlZcvi827gtq8xahQz616xaXAJaB2DQDBqQY76NwFXbM7XIX4mJ21GBCqWDLas
-	ywyTqxSm/Ng/xqCQ==
-From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] memremap: Pass down MEMREMAP_* flags to arch_memremap_wb()
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.11+@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250113131459.2008123-2-kirill.shutemov@linux.intel.com>
-References: <20250113131459.2008123-2-kirill.shutemov@linux.intel.com>
+	bh=7AVLJNeS0x1Rvdn41I2PgSlJlBnIKz4DVBkDUZI0/VE=;
+	b=ZRfDQpPKdQEterSNVo3hWnEhDVKJAJ13n1umX0LjcZPFA0B7XUtZys6cXey85EyGOdXLV+
+	TVVHFd4Ifq1av+g2efWvOdjwV/aV3gO8I6uDINKaP/srlRVOg+5nlRmrEmiCUPHvpCd4cC
+	EWAES8SrT+aDItflBG4B27JOUGNQQD8=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-_iOqXK5YMOiParZGKx6XLw-1; Tue,
+ 14 Jan 2025 16:30:14 -0500
+X-MC-Unique: _iOqXK5YMOiParZGKx6XLw-1
+X-Mimecast-MFC-AGG-ID: _iOqXK5YMOiParZGKx6XLw
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CA5619560B9;
+	Tue, 14 Jan 2025 21:30:13 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.226.88])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C65CF195608E;
+	Tue, 14 Jan 2025 21:30:10 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 14 Jan 2025 22:29:48 +0100 (CET)
+Date: Tue, 14 Jan 2025 22:29:44 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: tip-bot2 for Peter Zijlstra <tip-bot2@linutronix.de>
+Cc: linux-tip-commits@vger.kernel.org,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [tip: locking/core] cleanup, tags: Create tags for the cleanup
+ primitives
+Message-ID: <20250114212944.GB5051@redhat.com>
+References: <20250106102647.GB20870@noisy.programming.kicks-ass.net>
+ <173660167953.399.4769008465233152772.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173679372142.399.1486852534229781359.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <173660167953.399.4769008465233152772.tip-bot2@tip-bot2>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 01/11, tip-bot2 for Peter Zijlstra wrote:
+>
+> --- a/scripts/tags.sh
+> +++ b/scripts/tags.sh
+> @@ -212,6 +212,13 @@ regex_c=(
+>  	'/^SEQCOUNT_LOCKTYPE(\([^,]*\),[[:space:]]*\([^,]*\),[^)]*)/seqcount_\2_init/'
+>  	'/^\<DECLARE_IDTENTRY[[:alnum:]_]*([^,)]*,[[:space:]]*\([[:alnum:]_]\+\)/\1/'
+>  	'/^\<DEFINE_IDTENTRY[[:alnum:]_]*([[:space:]]*\([[:alnum:]_]\+\)/\1/'
+> +	'/^\<DEFINE_FREE(\([[:alnum:]_]\+\)/cleanup_\1/'
+> +	'/^\<DEFINE_CLASS(\([[:alnum:]_]\+\)/class_\1/'
+> +	'/^\<EXTEND_CLASS(\([[:alnum:]_]\+\),[[:space:]]*\([[:alnum:]_]\+\)/class_\1\2/'
+> +	'/^\<DEFINE_GUARD(\([[:alnum:]_]\+\)/class_\1/'
+> +	'/^\<DEFINE_GUARD_COND(\([[:alnum:]_]\+\),[[:space:]]*\([[:alnum:]_]\+\)/class_\1\2/'
+> +	'/^\<DEFINE_LOCK_GUARD_[[:digit:]](\([[:alnum:]_]\+\)/class_\1/'
+> +	'/^\<DEFINE_LOCK_GUARD_[[:digit:]]_COND(\([[:alnum:]_]\+\),[[:space:]]*\([[:alnum:]_]\+\)/class_\1\2/'
+>  )
 
-Commit-ID:     3663155bfb47855685ae5f0488117dcbe503eeac
-Gitweb:        https://git.kernel.org/tip/3663155bfb47855685ae5f0488117dcbe503eeac
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Mon, 13 Jan 2025 15:14:58 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 13 Jan 2025 15:15:13 +01:00
+Thanks ;)
 
-memremap: Pass down MEMREMAP_* flags to arch_memremap_wb()
+I don't use scripts/tags.sh, but I will add these changes to my personal
+scripts.
 
-The x86 version of arch_memremap_wb() needs the flags to decide if the mapping
-has be encrypted or decrypted.
+Oleg.
 
-Pass down the flag to arch_memremap_wb(). All current implementations
-ignore the argument.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org # 6.11+
-Link: https://lore.kernel.org/r/20250113131459.2008123-2-kirill.shutemov@linux.intel.com
----
- arch/arm/include/asm/io.h   | 2 +-
- arch/arm/mm/ioremap.c       | 2 +-
- arch/arm/mm/nommu.c         | 2 +-
- arch/riscv/include/asm/io.h | 2 +-
- kernel/iomem.c              | 5 +++--
- 5 files changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm/include/asm/io.h b/arch/arm/include/asm/io.h
-index 1815748..bae5edf 100644
---- a/arch/arm/include/asm/io.h
-+++ b/arch/arm/include/asm/io.h
-@@ -381,7 +381,7 @@ void __iomem *ioremap_wc(resource_size_t res_cookie, size_t size);
- void iounmap(volatile void __iomem *io_addr);
- #define iounmap iounmap
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size);
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags);
- #define arch_memremap_wb arch_memremap_wb
- 
- /*
-diff --git a/arch/arm/mm/ioremap.c b/arch/arm/mm/ioremap.c
-index 89f1c97..748698e 100644
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -436,7 +436,7 @@ void __arm_iomem_set_ro(void __iomem *ptr, size_t size)
- 	set_memory_ro((unsigned long)ptr, PAGE_ALIGN(size) / PAGE_SIZE);
- }
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
- {
- 	return (__force void *)arch_ioremap_caller(phys_addr, size,
- 						   MT_MEMORY_RW,
-diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
-index c415f38..279641f 100644
---- a/arch/arm/mm/nommu.c
-+++ b/arch/arm/mm/nommu.c
-@@ -251,7 +251,7 @@ void __iomem *pci_remap_cfgspace(resource_size_t res_cookie, size_t size)
- EXPORT_SYMBOL_GPL(pci_remap_cfgspace);
- #endif
- 
--void *arch_memremap_wb(phys_addr_t phys_addr, size_t size)
-+void *arch_memremap_wb(phys_addr_t phys_addr, size_t size, unsigned long flags)
- {
- 	return (void *)phys_addr;
- }
-diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-index 1c5c641..0257f4a 100644
---- a/arch/riscv/include/asm/io.h
-+++ b/arch/riscv/include/asm/io.h
-@@ -136,7 +136,7 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
- #include <asm-generic/io.h>
- 
- #ifdef CONFIG_MMU
--#define arch_memremap_wb(addr, size)	\
-+#define arch_memremap_wb(addr, size, flags)	\
- 	((__force void *)ioremap_prot((addr), (size), _PAGE_KERNEL))
- #endif
- 
-diff --git a/kernel/iomem.c b/kernel/iomem.c
-index dc21207..75e61c1 100644
---- a/kernel/iomem.c
-+++ b/kernel/iomem.c
-@@ -6,7 +6,8 @@
- #include <linux/ioremap.h>
- 
- #ifndef arch_memremap_wb
--static void *arch_memremap_wb(resource_size_t offset, unsigned long size)
-+static void *arch_memremap_wb(resource_size_t offset, unsigned long size,
-+			      unsigned long flags)
- {
- #ifdef ioremap_cache
- 	return (__force void *)ioremap_cache(offset, size);
-@@ -91,7 +92,7 @@ void *memremap(resource_size_t offset, size_t size, unsigned long flags)
- 		if (is_ram == REGION_INTERSECTS)
- 			addr = try_ram_remap(offset, size, flags);
- 		if (!addr)
--			addr = arch_memremap_wb(offset, size);
-+			addr = arch_memremap_wb(offset, size, flags);
- 	}
- 
- 	/*
 
