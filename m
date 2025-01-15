@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3262-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3263-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029E7A12CEC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 21:47:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8488A12CEF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 21:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 740183A6397
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 20:47:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EC097A319E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 20:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33AC1D9A54;
-	Wed, 15 Jan 2025 20:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5271DA628;
+	Wed, 15 Jan 2025 20:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C2sRhxyj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w1mUtAQC"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T3oMQQ+/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SeUml11S"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81771D63C7;
-	Wed, 15 Jan 2025 20:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836261D7E4B;
+	Wed, 15 Jan 2025 20:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736974041; cv=none; b=E6sYN8PSu0Gt3VQqAVl4INyNtLO0Hnc8mzezOzfqLYBnDs1pohJqB3U0Xbd1GaJxro/o0BAGB7Fyx/Qxf+JOj95bxpcVBJEKqpKczJrAb/Gl/PoMr6+RQIKeY3ycKF8nhNkyQbhGZ5SPCZVo6lEkgffHEmr92Tt022FJBehcz4E=
+	t=1736974042; cv=none; b=OgZPxQUFICny3lEf6QTxNAiI4SgRpRfCZ5jvpNO3prmrGnCcba4YojOTifrRuDbu/Am8mgtd4rMoHfYKeE5xj0P4j1zp7/7b+BymCszZrAWi86bnbLeLpxs/KYSTB5+mdEDlFqBKZmSqZvHfV4/FmFTFHDwSSMJonsZwqS0P0fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736974041; c=relaxed/simple;
-	bh=OYRfBZBakSj97u2oSwXjbjOzzvQPCaGAQY2kI2992zM=;
+	s=arc-20240116; t=1736974042; c=relaxed/simple;
+	bh=iAmkTB6Ll8+Fmjjg+dIbHnYqQHi4r/DpjDywWf+8gS4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=hAhwQoaLsFCVYodOGtgVIw1/2+MbN2C8fKzUqJlrEvsl127b/HLKr4hk6ZbYsqHwC+xujrIA7Am/i4KuaB6XxdrmsRUig2UoQnNw2KO+cgWvFKriE/EgnUkkd8UbDlaPCBLTm8t33NnUo4cr2xAa9oiFPTz8Gr750tdmieprkyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C2sRhxyj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w1mUtAQC; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=YOOIXjM+Dg2Kp/Y1dugCUOjKhUsdj98GU5HcZmqNkUgc3yVwzS65ArPsWrNWeuM2B7cH40eAfih8BKErT1k18sm0U3PvpxUcho+uK6WEDpPY0hPqU1d1hBUxkv1JD+a+0icJ44OzUpiAwX4Y823NRRe1sifyEeDJSzXfO+ERXgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T3oMQQ+/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SeUml11S; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 15 Jan 2025 20:47:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736974037;
+	s=2020; t=1736974038;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9LGbIQUCdO3C5QO8TCjmHk4E209xgIaGA9AtxvyJXrY=;
-	b=C2sRhxyj52GgqYTG245h8hzb7TiDM7xCa0WEgdf08KFVWMvDUgEdaecH61nE/AqGfQkn7t
-	h43c/7U9ldul6QwHqP4sVQR940E0rnBbLlY0hrGVixh0Ao8BeXCGi+eMKc6vHaSERl14Wh
-	t0MiKZ0xEqzDd4YyLx6e4niWQzHNY3Uh/A1QgVoqQ0Z+1TWFeBAkWgrEwvQq0iA56Za8z+
-	/80WHaLpURPH0CDavJAqgtMeiKN46jvf8B0UywF/ONX2qJfnxZJcX5LyVKEAVA9sQcQ4Z3
-	6xOLbMgyrIGReDab37deIOA6qCDknbgzFaMnRruRyJyIWZzTqbpnTcmvoXMaPw==
+	bh=kZnyvpnxHZXEkx80SeJ52pEFsBa79lt2e8byeOxDS7k=;
+	b=T3oMQQ+/TM9RHjlB3Ldl/UFBCqyVb9yu8RcU6Hnz51G+O0QQE2AfEIKR4hWCIb4eGw90CA
+	JdNSkSiUd9HOXUyONC2VJwk2NnF4r/YE6PnNXADShTAFllHueOI8zmrzJ5iDQJFz/23/Q1
+	RNVSg5GbGv4j9tnnTC6uYa2+DmeYf5Y99u4EVIiMOYmCnbsUVzgqpSYCP/p/Ndno7GgN9u
+	Ihf6qYQ0S5VXxM6UxJbdIc4mMlQif/ezgwYFVt/frX8H4LWhafFHLuNdFxgpDfgPe/n9Xw
+	8CYMaD7auR2+oBdtJZdfzgtfkh3TOUzDmvKoj6MTMTPrFZ+CaY3/sK0tTz+2Gw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736974037;
+	s=2020e; t=1736974038;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9LGbIQUCdO3C5QO8TCjmHk4E209xgIaGA9AtxvyJXrY=;
-	b=w1mUtAQCLGLw4y8FTGxX9uv6mIvFZ+xU1mD4NJzufWBDOKgTJcCS1lTQM7/8TXPXi9Yosj
-	BEjn2gvDL+L54zCA==
+	bh=kZnyvpnxHZXEkx80SeJ52pEFsBa79lt2e8byeOxDS7k=;
+	b=SeUml11SFMGBZR4Xvxpz/UParvGyQYlz6bc7+3GpO6sIY8Yf9gZU7w6Xhs3YBl4CE9ectO
+	KTSEg5k4LEUFvbAA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Remove IRQ_MOVE_PCNTXT and related code
-Cc: Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20241210103335.626707225@linutronix.de>
-References: <20241210103335.626707225@linutronix.de>
+Subject: [tip: irq/core] x86/apic: Convert to IRQCHIP_MOVE_DEFERRED
+Cc: Thomas Gleixner <tglx@linutronix.de>, Steve Wahl <steve.wahl@hpe.com>,
+ Wei Liu <wei.liu@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org,
+ maz@kernel.org
+In-Reply-To: <20241210103335.563277044@linutronix.de>
+References: <20241210103335.563277044@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173697403723.31546.14262799732132154010.tip-bot2@tip-bot2>
+Message-ID: <173697403799.31546.4147915302874979077.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,180 +81,223 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     f94a18249b7f9131f3ca8eacf07f21050747ebd7
-Gitweb:        https://git.kernel.org/tip/f94a18249b7f9131f3ca8eacf07f21050747ebd7
+Commit-ID:     7d04319a05ab17ca3da188d0799af93d3213cb06
+Gitweb:        https://git.kernel.org/tip/7d04319a05ab17ca3da188d0799af93d3213cb06
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 10 Dec 2024 11:34:17 +01:00
+AuthorDate:    Tue, 10 Dec 2024 11:34:15 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 15 Jan 2025 21:38:53 +01:00
 
-genirq: Remove IRQ_MOVE_PCNTXT and related code
+x86/apic: Convert to IRQCHIP_MOVE_DEFERRED
 
-Now that x86 is converted over to use the IRQCHIP_MOVE_DEFERRED flags,
-remove IRQ*_MOVE_PCNTXT and related code.
+Instead of marking individual interrupts as safe to be migrated in
+arbitrary contexts, mark the interrupt chips, which require the interrupt
+to be moved in actual interrupt context, with the new IRQCHIP_MOVE_DEFERRED
+flag. This makes more sense because this is a per interrupt chip property
+and not restricted to individual interrupts.
+
+That flips the logic from the historical opt-out to a opt-in model. This is
+simpler to handle for other architectures, which default to unrestricted
+affinity setting. It also allows to cleanup the redundant core logic
+significantly.
+
+All interrupt chips, which belong to a top-level domain sitting directly on
+top of the x86 vector domain are marked accordingly, unless the related
+setup code marks the interrupts with IRQ_MOVE_PCNTXT, i.e. XEN.
+
+No functional change intended.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241210103335.626707225@linutronix.de
+Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
+Acked-by: Wei Liu <wei.liu@kernel.org>
+Link: https://lore.kernel.org/all/20241210103335.563277044@linutronix.de
 
 
 ---
- arch/x86/Kconfig       |  1 -
- include/linux/irq.h    | 12 +-----------
- kernel/irq/chip.c      | 14 --------------
- kernel/irq/debugfs.c   |  1 -
- kernel/irq/internals.h |  2 +-
- kernel/irq/settings.h  |  6 ------
- 6 files changed, 2 insertions(+), 34 deletions(-)
+ arch/x86/Kconfig                    | 1 +
+ arch/x86/hyperv/irqdomain.c         | 2 +-
+ arch/x86/kernel/apic/io_apic.c      | 2 +-
+ arch/x86/kernel/apic/msi.c          | 3 ++-
+ arch/x86/kernel/hpet.c              | 8 --------
+ arch/x86/platform/uv/uv_irq.c       | 3 ---
+ drivers/iommu/amd/init.c            | 2 +-
+ drivers/iommu/amd/iommu.c           | 1 -
+ drivers/iommu/intel/irq_remapping.c | 1 -
+ drivers/pci/controller/pci-hyperv.c | 1 +
+ drivers/xen/events/events_base.c    | 6 ------
+ 11 files changed, 7 insertions(+), 23 deletions(-)
 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index df0fd72..9d7bd0a 100644
+index 9d7bd0a..df0fd72 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -173,7 +173,6 @@ config X86
+@@ -173,6 +173,7 @@ config X86
  	select GENERIC_IRQ_RESERVATION_MODE
  	select GENERIC_IRQ_SHOW
  	select GENERIC_PENDING_IRQ		if SMP
--	select GENERIC_PENDING_IRQ_CHIPFLAGS	if SMP
++	select GENERIC_PENDING_IRQ_CHIPFLAGS	if SMP
  	select GENERIC_PTDUMP
  	select GENERIC_SMP_IDLE_THREAD
  	select GENERIC_TIME_VSYSCALL
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index 6e02154..8daa17f 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -64,7 +64,6 @@ enum irqchip_irq_state;
-  * IRQ_NOAUTOEN			- Interrupt is not automatically enabled in
-  *				  request/setup_irq()
-  * IRQ_NO_BALANCING		- Interrupt cannot be balanced (affinity set)
-- * IRQ_MOVE_PCNTXT		- Interrupt can be migrated from process context
-  * IRQ_NESTED_THREAD		- Interrupt nests into another thread
-  * IRQ_PER_CPU_DEVID		- Dev_id is a per-cpu variable
-  * IRQ_IS_POLLED		- Always polled by another interrupt. Exclude
-@@ -93,7 +92,6 @@ enum {
- 	IRQ_NOREQUEST		= (1 << 11),
- 	IRQ_NOAUTOEN		= (1 << 12),
- 	IRQ_NO_BALANCING	= (1 << 13),
--	IRQ_MOVE_PCNTXT		= (1 << 14),
- 	IRQ_NESTED_THREAD	= (1 << 15),
- 	IRQ_NOTHREAD		= (1 << 16),
- 	IRQ_PER_CPU_DEVID	= (1 << 17),
-@@ -105,7 +103,7 @@ enum {
+diff --git a/arch/x86/hyperv/irqdomain.c b/arch/x86/hyperv/irqdomain.c
+index 3215a4a..64b9213 100644
+--- a/arch/x86/hyperv/irqdomain.c
++++ b/arch/x86/hyperv/irqdomain.c
+@@ -304,7 +304,7 @@ static struct irq_chip hv_pci_msi_controller = {
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_compose_msi_msg	= hv_irq_compose_msi_msg,
+ 	.irq_set_affinity	= msi_domain_set_affinity,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE,
++	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MOVE_DEFERRED,
+ };
  
- #define IRQF_MODIFY_MASK	\
- 	(IRQ_TYPE_SENSE_MASK | IRQ_NOPROBE | IRQ_NOREQUEST | \
--	 IRQ_NOAUTOEN | IRQ_MOVE_PCNTXT | IRQ_LEVEL | IRQ_NO_BALANCING | \
-+	 IRQ_NOAUTOEN | IRQ_LEVEL | IRQ_NO_BALANCING | \
- 	 IRQ_PER_CPU | IRQ_NESTED_THREAD | IRQ_NOTHREAD | IRQ_PER_CPU_DEVID | \
- 	 IRQ_IS_POLLED | IRQ_DISABLE_UNLAZY | IRQ_HIDDEN)
+ static struct msi_domain_ops pci_msi_domain_ops = {
+diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
+index 1029ea4..5d033d9 100644
+--- a/arch/x86/kernel/apic/io_apic.c
++++ b/arch/x86/kernel/apic/io_apic.c
+@@ -1861,7 +1861,7 @@ static struct irq_chip ioapic_chip __read_mostly = {
+ 	.irq_set_affinity	= ioapic_set_affinity,
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_get_irqchip_state	= ioapic_irq_get_chip_state,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE |
++	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MOVE_DEFERRED |
+ 				  IRQCHIP_AFFINITY_PRE_STARTUP,
+ };
  
-@@ -201,8 +199,6 @@ struct irq_data {
-  * IRQD_LEVEL			- Interrupt is level triggered
-  * IRQD_WAKEUP_STATE		- Interrupt is configured for wakeup
-  *				  from suspend
-- * IRQD_MOVE_PCNTXT		- Interrupt can be moved in process
-- *				  context
-  * IRQD_IRQ_DISABLED		- Disabled state of the interrupt
-  * IRQD_IRQ_MASKED		- Masked state of the interrupt
-  * IRQD_IRQ_INPROGRESS		- In progress state of the interrupt
-@@ -233,7 +229,6 @@ enum {
- 	IRQD_AFFINITY_SET		= BIT(12),
- 	IRQD_LEVEL			= BIT(13),
- 	IRQD_WAKEUP_STATE		= BIT(14),
--	IRQD_MOVE_PCNTXT		= BIT(15),
- 	IRQD_IRQ_DISABLED		= BIT(16),
- 	IRQD_IRQ_MASKED			= BIT(17),
- 	IRQD_IRQ_INPROGRESS		= BIT(18),
-@@ -338,11 +333,6 @@ static inline bool irqd_is_wakeup_set(struct irq_data *d)
- 	return __irqd_to_state(d) & IRQD_WAKEUP_STATE;
+diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
+index 3407692..66bc5d3 100644
+--- a/arch/x86/kernel/apic/msi.c
++++ b/arch/x86/kernel/apic/msi.c
+@@ -214,6 +214,7 @@ static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
+ 		if (WARN_ON_ONCE(domain != real_parent))
+ 			return false;
+ 		info->chip->irq_set_affinity = msi_set_affinity;
++		info->chip->flags |= IRQCHIP_MOVE_DEFERRED;
+ 		break;
+ 	case DOMAIN_BUS_DMAR:
+ 	case DOMAIN_BUS_AMDVI:
+@@ -315,7 +316,7 @@ static struct irq_chip dmar_msi_controller = {
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_compose_msi_msg	= dmar_msi_compose_msg,
+ 	.irq_write_msi_msg	= dmar_msi_write_msg,
+-	.flags			= IRQCHIP_SKIP_SET_WAKE |
++	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MOVE_DEFERRED |
+ 				  IRQCHIP_AFFINITY_PRE_STARTUP,
+ };
+ 
+diff --git a/arch/x86/kernel/hpet.c b/arch/x86/kernel/hpet.c
+index c96ae8f..87b5a50 100644
+--- a/arch/x86/kernel/hpet.c
++++ b/arch/x86/kernel/hpet.c
+@@ -516,22 +516,14 @@ static int hpet_msi_init(struct irq_domain *domain,
+ 			 struct msi_domain_info *info, unsigned int virq,
+ 			 irq_hw_number_t hwirq, msi_alloc_info_t *arg)
+ {
+-	irq_set_status_flags(virq, IRQ_MOVE_PCNTXT);
+ 	irq_domain_set_info(domain, virq, arg->hwirq, info->chip, NULL,
+ 			    handle_edge_irq, arg->data, "edge");
+ 
+ 	return 0;
  }
  
--static inline bool irqd_can_move_in_process_context(struct irq_data *d)
+-static void hpet_msi_free(struct irq_domain *domain,
+-			  struct msi_domain_info *info, unsigned int virq)
 -{
--	return __irqd_to_state(d) & IRQD_MOVE_PCNTXT;
+-	irq_clear_status_flags(virq, IRQ_MOVE_PCNTXT);
 -}
 -
- static inline bool irqd_irq_disabled(struct irq_data *d)
- {
- 	return __irqd_to_state(d) & IRQD_IRQ_DISABLED;
-diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index 7989da2..c901436 100644
---- a/kernel/irq/chip.c
-+++ b/kernel/irq/chip.c
-@@ -47,13 +47,6 @@ int irq_set_chip(unsigned int irq, const struct irq_chip *chip)
- 		return -EINVAL;
+ static struct msi_domain_ops hpet_msi_domain_ops = {
+ 	.msi_init	= hpet_msi_init,
+-	.msi_free	= hpet_msi_free,
+ };
  
- 	desc->irq_data.chip = (struct irq_chip *)(chip ?: &no_irq_chip);
--
--	if (IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS) && chip) {
--		if (chip->flags & IRQCHIP_MOVE_DEFERRED)
--			irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
+ static struct msi_domain_info hpet_msi_domain_info = {
+diff --git a/arch/x86/platform/uv/uv_irq.c b/arch/x86/platform/uv/uv_irq.c
+index a379501..4f200ac 100644
+--- a/arch/x86/platform/uv/uv_irq.c
++++ b/arch/x86/platform/uv/uv_irq.c
+@@ -92,8 +92,6 @@ static int uv_domain_alloc(struct irq_domain *domain, unsigned int virq,
+ 	if (ret >= 0) {
+ 		if (info->uv.limit == UV_AFFINITY_CPU)
+ 			irq_set_status_flags(virq, IRQ_NO_BALANCING);
 -		else
--			irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
--	}
- 	irq_put_desc_unlock(desc, flags);
- 	/*
- 	 * For !CONFIG_SPARSE_IRQ make the irq show up in
-@@ -1129,13 +1122,6 @@ void irq_modify_status(unsigned int irq, unsigned long clr, unsigned long set)
- 	if (irq_settings_is_level(desc))
- 		irqd_set(&desc->irq_data, IRQD_LEVEL);
+-			irq_set_status_flags(virq, IRQ_MOVE_PCNTXT);
  
--	/* Keep this around until x86 is converted over */
--	if (!IS_ENABLED(CONFIG_GENERIC_PENDING_IRQ_CHIPFLAGS)) {
--		irqd_clear(&desc->irq_data, IRQD_MOVE_PCNTXT);
--		if (irq_settings_can_move_pcntxt(desc))
--			irqd_set(&desc->irq_data, IRQD_MOVE_PCNTXT);
--	}
--
- 	tmp = irq_settings_get_trigger_mask(desc);
- 	if (tmp != IRQ_TYPE_NONE)
- 		trigger = tmp;
-diff --git a/kernel/irq/debugfs.c b/kernel/irq/debugfs.c
-index 975eb8d..ca142b9 100644
---- a/kernel/irq/debugfs.c
-+++ b/kernel/irq/debugfs.c
-@@ -109,7 +109,6 @@ static const struct irq_bit_descr irqdata_states[] = {
- 	BIT_MASK_DESCR(IRQD_NO_BALANCING),
+ 		chip_data->pnode = uv_blade_to_pnode(info->uv.blade);
+ 		chip_data->offset = info->uv.offset;
+@@ -113,7 +111,6 @@ static void uv_domain_free(struct irq_domain *domain, unsigned int virq,
  
- 	BIT_MASK_DESCR(IRQD_SINGLE_TARGET),
--	BIT_MASK_DESCR(IRQD_MOVE_PCNTXT),
- 	BIT_MASK_DESCR(IRQD_AFFINITY_SET),
- 	BIT_MASK_DESCR(IRQD_SETAFFINITY_PENDING),
- 	BIT_MASK_DESCR(IRQD_AFFINITY_MANAGED),
-diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
-index b61fc64..a979523 100644
---- a/kernel/irq/internals.h
-+++ b/kernel/irq/internals.h
-@@ -421,7 +421,7 @@ irq_init_generic_chip(struct irq_chip_generic *gc, const char *name,
- #ifdef CONFIG_GENERIC_PENDING_IRQ
- static inline bool irq_can_move_pcntxt(struct irq_data *data)
- {
--	return irqd_can_move_in_process_context(data);
-+	return !(data->chip->flags & IRQCHIP_MOVE_DEFERRED);
+ 	BUG_ON(nr_irqs != 1);
+ 	kfree(irq_data->chip_data);
+-	irq_clear_status_flags(virq, IRQ_MOVE_PCNTXT);
+ 	irq_clear_status_flags(virq, IRQ_NO_BALANCING);
+ 	irq_domain_free_irqs_top(domain, virq, nr_irqs);
  }
- static inline bool irq_move_pending(struct irq_data *data)
- {
-diff --git a/kernel/irq/settings.h b/kernel/irq/settings.h
-index 7b7efb1..00b3bd1 100644
---- a/kernel/irq/settings.h
-+++ b/kernel/irq/settings.h
-@@ -11,7 +11,6 @@ enum {
- 	_IRQ_NOREQUEST		= IRQ_NOREQUEST,
- 	_IRQ_NOTHREAD		= IRQ_NOTHREAD,
- 	_IRQ_NOAUTOEN		= IRQ_NOAUTOEN,
--	_IRQ_MOVE_PCNTXT	= IRQ_MOVE_PCNTXT,
- 	_IRQ_NO_BALANCING	= IRQ_NO_BALANCING,
- 	_IRQ_NESTED_THREAD	= IRQ_NESTED_THREAD,
- 	_IRQ_PER_CPU_DEVID	= IRQ_PER_CPU_DEVID,
-@@ -142,11 +141,6 @@ static inline void irq_settings_set_noprobe(struct irq_desc *desc)
- 	desc->status_use_accessors |= _IRQ_NOPROBE;
- }
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index 0e0a531..614f216 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -2332,7 +2332,7 @@ static struct irq_chip intcapxt_controller = {
+ 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
+ 	.irq_set_affinity       = intcapxt_set_affinity,
+ 	.irq_set_wake		= intcapxt_set_wake,
+-	.flags			= IRQCHIP_MASK_ON_SUSPEND,
++	.flags			= IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_MOVE_DEFERRED,
+ };
  
--static inline bool irq_settings_can_move_pcntxt(struct irq_desc *desc)
--{
--	return desc->status_use_accessors & _IRQ_MOVE_PCNTXT;
--}
+ static const struct irq_domain_ops intcapxt_domain_ops = {
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 3f691e1..b02e631 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3532,7 +3532,6 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
+ 		irq_data->chip_data = data;
+ 		irq_data->chip = &amd_ir_chip;
+ 		irq_remapping_prepare_irte(data, cfg, info, devid, index, i);
+-		irq_set_status_flags(virq + i, IRQ_MOVE_PCNTXT);
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
+index 466c141..f5402df 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1463,7 +1463,6 @@ static int intel_irq_remapping_alloc(struct irq_domain *domain,
+ 		else
+ 			irq_data->chip = &intel_ir_chip;
+ 		intel_irq_remapping_prepare_irte(ird, irq_cfg, info, index, i);
+-		irq_set_status_flags(virq + i, IRQ_MOVE_PCNTXT);
+ 	}
+ 	return 0;
+ 
+diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+index cdd5be1..6084b38 100644
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -2053,6 +2053,7 @@ static struct irq_chip hv_msi_irq_chip = {
+ 	.irq_set_affinity	= irq_chip_set_affinity_parent,
+ #ifdef CONFIG_X86
+ 	.irq_ack		= irq_chip_ack_parent,
++	.flags			= IRQCHIP_MOVE_DEFERRED,
+ #elif defined(CONFIG_ARM64)
+ 	.irq_eoi		= irq_chip_eoi_parent,
+ #endif
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 985e155..41309d3 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -722,12 +722,6 @@ static struct irq_info *xen_irq_init(unsigned int irq)
+ 		INIT_RCU_WORK(&info->rwork, delayed_free_irq);
+ 
+ 		set_info_for_irq(irq, info);
+-		/*
+-		 * Interrupt affinity setting can be immediate. No point
+-		 * in delaying it until an interrupt is handled.
+-		 */
+-		irq_set_status_flags(irq, IRQ_MOVE_PCNTXT);
 -
- static inline bool irq_settings_can_autoenable(struct irq_desc *desc)
- {
- 	return !(desc->status_use_accessors & _IRQ_NOAUTOEN);
+ 		INIT_LIST_HEAD(&info->eoi_list);
+ 		list_add_tail(&info->list, &xen_irq_list_head);
+ 	}
 
