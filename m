@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3214-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3216-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75D3A11D22
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 10:16:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C42A11D2C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 10:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9583C1694DD
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 09:16:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630503A7F66
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 09:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462D822F38F;
-	Wed, 15 Jan 2025 09:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A74236EDE;
+	Wed, 15 Jan 2025 09:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y2Bse96m";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4UFAbLsL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TIJFdT+o";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iDrBP+3H"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFB91EEA4B;
-	Wed, 15 Jan 2025 09:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8738C1FCCE0;
+	Wed, 15 Jan 2025 09:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736932587; cv=none; b=ROfMuB9or9A6wWfmB74Q38jyKhRU7Q42C6FpiunQdV+2GKaOgMvKmHrcuwStgYxYQuZkdVSWVP3DqDmp9UzNAvUzLVebFi6euKVYe8dGo24PNy/q+bsUkaAOT6wnU4nxsWuVnYj+3Ms4HVNhY0G5xqkI6dXCarcJvSAc1NW5Z6g=
+	t=1736932588; cv=none; b=PPRocsS9fZHIwuYSK5tY8bqr6I92lIOi7sy1S8CYAyAjzcLi+7H8EEAw2nFu3jQfBGdJCvXpfOIOXqi/aJfqjuOYiGo1jx1/blLlbJKPfBxCTBOxy8DrwduAHpfxIJveDNOuSk2bXqMIBpfMJVtZRLe6DXdC8h+EH4jKUDYVOOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736932587; c=relaxed/simple;
-	bh=GddAL766DLQhiodGCQ6V2hoJKzkNTfAVmlRf8iZboqA=;
+	s=arc-20240116; t=1736932588; c=relaxed/simple;
+	bh=cpb8Q+9FDuRfaYpNldYAJE2FTtQXtzZWYDH3a0t3EuE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VBW0ABkOHCYZ+IDUeLy2gN+st8DPPzecWg3PtNnq4A5r8meoscJBrb8osoP7hucfFTMUx3ZxqBSJnLS4gsk3y4aCND80a1YU2d34sS7wbqU8tRa1BMRkjPx1qiPS9pATTbAjGJRgH0aFbe37zn4IJV50qQ78hYffQtX9HtK0j9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y2Bse96m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4UFAbLsL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=U2edaLlok5AnSG8pkp1IS8qajizZztvUfNCfRFfrduyVtCy25Hfx5ftM5Brvo7KG7ykPOSI3iiWFQDAWEW6ch1TwG0VMIsIiscL8UPHmqot2oxRxgVZAVN+8uP5pvQuf593MTsM1pZvfYSou3k5CsOBRDAQL1AWdXdSDXdnu8BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TIJFdT+o; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iDrBP+3H; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 15 Jan 2025 09:16:17 -0000
+Date: Wed, 15 Jan 2025 09:16:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736932578;
+	s=2020; t=1736932579;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H9ezqglHHazpNwdlkteT9DVMVL1H9hDLvjDUeCQIiHk=;
-	b=y2Bse96mdqb34TzP8GIp/dB23d5+76EhT2E1GfvRULl9O3CnkmXn3/ffk0T885P4yBcOFa
-	kueHzDCedV2zHF68b3FzGnJ8kTDBEMFxRBdNvQr7dBUl2tr4ZoxVj/LVJ+Te6Aexmo3K4d
-	GIWRE6kfz9/VKZYYTYWEKcyzaVduvfDOC2OsvEhZ5zbQhKWuc8FXTaUHmyDfuf+jUmKiqa
-	cxf/rNGrPy14+hMOX4GXPOnwJdgs2Ru5RxwFClAa4E3AnrcJnYM/2YfnL+4cIjGUKKfsm+
-	+kUxhTo3dUriXFIdkgwh+uJ2yX9giV8Gh5GGK7StKrP+801htDpDZejcCnwoGQ==
+	bh=A5EG27BLphm/zoXKNMqCC00itB9qxkRKFZ4Q/COgmqg=;
+	b=TIJFdT+oEXyg5ILhRBThYaWxnB5ZJ9uEkZHgoudfFGg/O8vAF60Fq2nIOXpblj8B/MZyxr
+	ObnemLpz2B82zLtrOdD/DLGJeUAPMi3RW0ITWrPDnkGvLC0Muq1CXP5hMGfbLEULBuNlo7
+	CwLIX8Yt5U0i/+kkLjkbkXSTJCA8KTPbcyUmMbWFgInhHsMQm1fLPfWbERkAW7chH2mdz8
+	1LOsN4MIilbPHbUDNJTMLzX2RCtvr3b1p7kqBG9BpyRo+Mw+Ag18ObR5P92+tnfGqleOMj
+	6lpfC2MV+rvWgudRxCpXNNK3EvHiS7iHtapVSlEHbB69qDwHuZ4onNRIgn8tzg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736932578;
+	s=2020e; t=1736932579;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H9ezqglHHazpNwdlkteT9DVMVL1H9hDLvjDUeCQIiHk=;
-	b=4UFAbLsLOAKoNUrDcyhT4N0tNBxj7/ByiZP5YNu5ib6rkOLuPvmeUOlFtDz6hSZaXZjGrh
-	d4CrhPTmbHBFZeAg==
-From: "tip-bot2 for Philippe Simons" <tip-bot2@linutronix.de>
+	bh=A5EG27BLphm/zoXKNMqCC00itB9qxkRKFZ4Q/COgmqg=;
+	b=iDrBP+3HOImvgltoQjcGHWBCPBZIynNCPxOyNmSZLsWcKIryEOwoEP5Tay/fte8L2RZKkr
+	02cB99hH+drVfyDA==
+From: "tip-bot2 for Yogesh Lal" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
-Cc: Philippe Simons <simons.philippe@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20250112123402.388520-1-simons.philippe@gmail.com>
-References: <20250112123402.388520-1-simons.philippe@gmail.com>
+Subject:
+ [tip: irq/urgent] irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
+Cc: Yogesh Lal <quic_ylal@quicinc.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20241220093907.2747601-1-quic_ylal@quicinc.com>
+References: <20241220093907.2747601-1-quic_ylal@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173693257795.31546.843088760165157310.tip-bot2@tip-bot2>
+Message-ID: <173693257878.31546.14975360395151700075.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,45 +82,51 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     3a748d483d80f066ca4b26abe45cdc0c367d13e9
-Gitweb:        https://git.kernel.org/tip/3a748d483d80f066ca4b26abe45cdc0c367d13e9
-Author:        Philippe Simons <simons.philippe@gmail.com>
-AuthorDate:    Sun, 12 Jan 2025 13:34:02 +01:00
+Commit-ID:     0d62a49ab55c99e8deb4593b8d9f923de1ab5c18
+Gitweb:        https://git.kernel.org/tip/0d62a49ab55c99e8deb4593b8d9f923de1ab5c18
+Author:        Yogesh Lal <quic_ylal@quicinc.com>
+AuthorDate:    Fri, 20 Dec 2024 15:09:07 +05:30
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 15 Jan 2025 09:42:45 +01:00
+CommitterDate: Wed, 15 Jan 2025 09:42:44 +01:00
 
-irqchip/sunxi-nmi: Add missing SKIP_WAKE flag
+irqchip/gic-v3: Handle CPU_PM_ENTER_FAILED correctly
 
-Some boards with Allwinner SoCs connect the PMIC's IRQ pin to the SoC's NMI
-pin instead of a normal GPIO. Since the power key is connected to the PMIC,
-and people expect to wake up a suspended system via this key, the NMI IRQ
-controller must stay alive when the system goes into suspend.
+When a CPU attempts to enter low power mode, it disables the redistributor
+and Group 1 interrupts and reinitializes the system registers upon wakeup.
 
-Add the SKIP_WAKE flag to prevent the sunxi NMI controller from going to
-sleep, so that the power key can wake up those systems.
+If the transition into low power mode fails, then the CPU_PM framework
+invokes the PM notifier callback with CPU_PM_ENTER_FAILED to allow the
+drivers to undo the state changes.
 
-[ tglx: Fixed up coding style ]
+The GIC V3 driver ignores CPU_PM_ENTER_FAILED, which leaves the GIC in
+disabled state.
 
-Signed-off-by: Philippe Simons <simons.philippe@gmail.com>
+Handle CPU_PM_ENTER_FAILED in the same way as CPU_PM_EXIT to restore normal
+operation.
+
+[ tglx: Massage change log, add Fixes tag ]
+
+Fixes: 3708d52fc6bb ("irqchip: gic-v3: Implement CPU PM notifier")
+Signed-off-by: Yogesh Lal <quic_ylal@quicinc.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250112123402.388520-1-simons.philippe@gmail.com
-
+Acked-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241220093907.2747601-1-quic_ylal@quicinc.com
 ---
- drivers/irqchip/irq-sunxi-nmi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-sunxi-nmi.c b/drivers/irqchip/irq-sunxi-nmi.c
-index bb92fd8..0b43121 100644
---- a/drivers/irqchip/irq-sunxi-nmi.c
-+++ b/drivers/irqchip/irq-sunxi-nmi.c
-@@ -186,7 +186,8 @@ static int __init sunxi_sc_nmi_irq_init(struct device_node *node,
- 	gc->chip_types[0].chip.irq_unmask	= irq_gc_mask_set_bit;
- 	gc->chip_types[0].chip.irq_eoi		= irq_gc_ack_set_bit;
- 	gc->chip_types[0].chip.irq_set_type	= sunxi_sc_nmi_set_type;
--	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED;
-+	gc->chip_types[0].chip.flags		= IRQCHIP_EOI_THREADED | IRQCHIP_EOI_IF_HANDLED |
-+						  IRQCHIP_SKIP_SET_WAKE;
- 	gc->chip_types[0].regs.ack		= reg_offs->pend;
- 	gc->chip_types[0].regs.mask		= reg_offs->enable;
- 	gc->chip_types[0].regs.type		= reg_offs->ctrl;
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 79d8cc8..76dce0a 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -1522,7 +1522,7 @@ static int gic_retrigger(struct irq_data *data)
+ static int gic_cpu_pm_notifier(struct notifier_block *self,
+ 			       unsigned long cmd, void *v)
+ {
+-	if (cmd == CPU_PM_EXIT) {
++	if (cmd == CPU_PM_EXIT || cmd == CPU_PM_ENTER_FAILED) {
+ 		if (gic_dist_security_disabled())
+ 			gic_enable_redist(true);
+ 		gic_cpu_sys_reg_enable();
 
