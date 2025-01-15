@@ -1,107 +1,117 @@
-Return-Path: <linux-tip-commits+bounces-3208-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3209-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F0BA11310
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2025 22:30:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD42FA11D1A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 10:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4AFC166457
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Jan 2025 21:30:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30A6E188BAEE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 09:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775F0212B24;
-	Tue, 14 Jan 2025 21:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2A31EEA25;
+	Wed, 15 Jan 2025 09:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZRfDQpPK"
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AGx5E1Gb";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wm+qhrIk"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2B0209F4C
-	for <linux-tip-commits@vger.kernel.org>; Tue, 14 Jan 2025 21:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D46C1DB144;
+	Wed, 15 Jan 2025 09:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736890221; cv=none; b=fDOA3VwVEgNenrp0EkVgrhQ0anDCYfzeKXZBOycf1BmQW1I1bQYREfkPcoo104AvHSEtxWE+HV60kB6tLyslRae4Pd+7DjNS+WY7FqzCxvLUjfStB6hAk1uB2R0dnrvYGS1E3T11dOCGKvFKEHy/Snw5ALDgckUA78aSuGEcOyU=
+	t=1736932584; cv=none; b=S4XQNTOpsqOnCe5ZCUX2hSxQXkl0LUPtDZ3+B2L0S09uZGbtEB6ZFsRNy3BMIuB9AbJ/f1KZaHaVivm/0wPs/0v0P9d5qo6AI5/gylpvfJx+owdNUYfVK9Eeb6yTG3ZSIYxgYEbB1hPpPBmHnxChfPagnvcOirFTtSpA4DV5VJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736890221; c=relaxed/simple;
-	bh=IBL2FME9/iU7DT+aVY0Csc+9Yj4izcswBxjx8kmmpjs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lIuX0Rp20saBH++d+2WSG72cSVJ0pEZ9opaQLscilRBv1QR50eNF2uTEFyyoL6+VW8B246c+1oOytmv5CBPfRtp02aup+IU7wluMs29ZuZwfvGdfGo/SrgZ0guyCv0wnq8XrzwXbgMlUEUqKoxPVSrPKuehfFHHx4ab5/nESQVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZRfDQpPK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736890218;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1736932584; c=relaxed/simple;
+	bh=jcMRvTfYm51yY3q9BwmQHVcJ+ANhQ+BxzGpxlg9mLac=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ZwKStDGlUUY3p3vJFEv4WQq1my2P/3ruNSqZTiOaO6fH7Wvx/4ApOy0gOqyXSG0wfqfbaKi4ayYL0LXQaMt/T4GfhXOM11MQ8bNbX3OtqHDLs143y9i9+bGxLrrQrDLfY0Qxm1X/fot0Q/e5QVmfggt1iITSIvKEIOwo3yd3ek0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AGx5E1Gb; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wm+qhrIk; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 15 Jan 2025 09:16:11 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736932574;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7AVLJNeS0x1Rvdn41I2PgSlJlBnIKz4DVBkDUZI0/VE=;
-	b=ZRfDQpPKdQEterSNVo3hWnEhDVKJAJ13n1umX0LjcZPFA0B7XUtZys6cXey85EyGOdXLV+
-	TVVHFd4Ifq1av+g2efWvOdjwV/aV3gO8I6uDINKaP/srlRVOg+5nlRmrEmiCUPHvpCd4cC
-	EWAES8SrT+aDItflBG4B27JOUGNQQD8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-73-_iOqXK5YMOiParZGKx6XLw-1; Tue,
- 14 Jan 2025 16:30:14 -0500
-X-MC-Unique: _iOqXK5YMOiParZGKx6XLw-1
-X-Mimecast-MFC-AGG-ID: _iOqXK5YMOiParZGKx6XLw
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2CA5619560B9;
-	Tue, 14 Jan 2025 21:30:13 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.226.88])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C65CF195608E;
-	Tue, 14 Jan 2025 21:30:10 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue, 14 Jan 2025 22:29:48 +0100 (CET)
-Date: Tue, 14 Jan 2025 22:29:44 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: tip-bot2 for Peter Zijlstra <tip-bot2@linutronix.de>
-Cc: linux-tip-commits@vger.kernel.org,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [tip: locking/core] cleanup, tags: Create tags for the cleanup
- primitives
-Message-ID: <20250114212944.GB5051@redhat.com>
-References: <20250106102647.GB20870@noisy.programming.kicks-ass.net>
- <173660167953.399.4769008465233152772.tip-bot2@tip-bot2>
+	bh=DuGCoUFbLnyVZoafzOy8cUQRnlZJc2Bl77DJrSpEgL8=;
+	b=AGx5E1GbZqvMG6l39XmY6Psxsnu82HJQ3NMgAMQ+rdYu8JVf2FtQZvRDIh8GjRHdSxxWDj
+	mJwseSpYFVopm5H0DsGnaEGdR/9MG1JYhuQ4sZhqKd4qBU2p6rtLVUJnFM5KA95ZVadMnm
+	Vke4Sn4yLHVWjZIZm/kDapiw8tOlWhID4VpgYmueHDioImiX5QKGwyhuoVAyqV2Xlithdt
+	Hp6OJzhOOTaBxHLl1+scSsOc5WwenqFEjAI9yDnuVTxXXXtc/zmfXYnHJU6tisBAvpTMzy
+	8SZpWaaPOpM0a6rUMh5Ho7w7nsY1N+7V4tEWr+8yqfSBPzIXjw9/jhhTA5dSBA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736932574;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DuGCoUFbLnyVZoafzOy8cUQRnlZJc2Bl77DJrSpEgL8=;
+	b=wm+qhrIkppnrEn8d4LN5fVSyAqbQCb6Vxv+jagKhAp1z+pL+bGrJS5kPkHqQdORFWoJssI
+	i2CXf4o6HF7gzJBQ==
+From: "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] irqchip/ts4800: Replace seq_printf() by seq_puts()
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: =?utf-8?q?=3C1ba5692126804f9e1ff062ac24939b24030b4f72=2E17334?=
+ =?utf-8?q?03985=2Egit=2Egeert+renesas=40glider=2Ebe=3E?=
+References: =?utf-8?q?=3C1ba5692126804f9e1ff062ac24939b24030b4f72=2E173340?=
+ =?utf-8?q?3985=2Egit=2Egeert+renesas=40glider=2Ebe=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <173660167953.399.4769008465233152772.tip-bot2@tip-bot2>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Message-ID: <173693257191.31546.17424558594145453307.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On 01/11, tip-bot2 for Peter Zijlstra wrote:
->
-> --- a/scripts/tags.sh
-> +++ b/scripts/tags.sh
-> @@ -212,6 +212,13 @@ regex_c=(
->  	'/^SEQCOUNT_LOCKTYPE(\([^,]*\),[[:space:]]*\([^,]*\),[^)]*)/seqcount_\2_init/'
->  	'/^\<DECLARE_IDTENTRY[[:alnum:]_]*([^,)]*,[[:space:]]*\([[:alnum:]_]\+\)/\1/'
->  	'/^\<DEFINE_IDTENTRY[[:alnum:]_]*([[:space:]]*\([[:alnum:]_]\+\)/\1/'
-> +	'/^\<DEFINE_FREE(\([[:alnum:]_]\+\)/cleanup_\1/'
-> +	'/^\<DEFINE_CLASS(\([[:alnum:]_]\+\)/class_\1/'
-> +	'/^\<EXTEND_CLASS(\([[:alnum:]_]\+\),[[:space:]]*\([[:alnum:]_]\+\)/class_\1\2/'
-> +	'/^\<DEFINE_GUARD(\([[:alnum:]_]\+\)/class_\1/'
-> +	'/^\<DEFINE_GUARD_COND(\([[:alnum:]_]\+\),[[:space:]]*\([[:alnum:]_]\+\)/class_\1\2/'
-> +	'/^\<DEFINE_LOCK_GUARD_[[:digit:]](\([[:alnum:]_]\+\)/class_\1/'
-> +	'/^\<DEFINE_LOCK_GUARD_[[:digit:]]_COND(\([[:alnum:]_]\+\),[[:space:]]*\([[:alnum:]_]\+\)/class_\1\2/'
->  )
+The following commit has been merged into the irq/core branch of tip:
 
-Thanks ;)
+Commit-ID:     e3ab1fc9354fabd65ea10ce6ca4153ef07128ad0
+Gitweb:        https://git.kernel.org/tip/e3ab1fc9354fabd65ea10ce6ca4153ef07128ad0
+Author:        Geert Uytterhoeven <geert+renesas@glider.be>
+AuthorDate:    Thu, 05 Dec 2024 14:12:23 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 15 Jan 2025 09:59:42 +01:00
 
-I don't use scripts/tags.sh, but I will add these changes to my personal
-scripts.
+irqchip/ts4800: Replace seq_printf() by seq_puts()
 
-Oleg.
+Simplify "seq_printf(p, "%s", ...)" to "seq_puts(p, ...)".
 
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/1ba5692126804f9e1ff062ac24939b24030b4f72.1733403985.git.geert+renesas@glider.be
+---
+ drivers/irqchip/irq-ts4800.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-ts4800.c b/drivers/irqchip/irq-ts4800.c
+index cc219f2..960c343 100644
+--- a/drivers/irqchip/irq-ts4800.c
++++ b/drivers/irqchip/irq-ts4800.c
+@@ -52,7 +52,7 @@ static void ts4800_irq_print_chip(struct irq_data *d, struct seq_file *p)
+ {
+ 	struct ts4800_irq_data *data = irq_data_get_irq_chip_data(d);
+ 
+-	seq_printf(p, "%s", dev_name(&data->pdev->dev));
++	seq_puts(p, dev_name(&data->pdev->dev));
+ }
+ 
+ static const struct irq_chip ts4800_chip = {
 
