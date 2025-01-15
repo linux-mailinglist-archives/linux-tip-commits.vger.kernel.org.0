@@ -1,303 +1,182 @@
-Return-Path: <linux-tip-commits+bounces-3263-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3264-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8488A12CEF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 21:47:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4892FA12F0D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Jan 2025 00:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EC097A319E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 20:47:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E5C3161F09
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Jan 2025 23:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5271DA628;
-	Wed, 15 Jan 2025 20:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8951DD9A6;
+	Wed, 15 Jan 2025 23:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T3oMQQ+/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SeUml11S"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2wrgifJI"
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836261D7E4B;
-	Wed, 15 Jan 2025 20:47:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474781DD866
+	for <linux-tip-commits@vger.kernel.org>; Wed, 15 Jan 2025 23:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736974042; cv=none; b=OgZPxQUFICny3lEf6QTxNAiI4SgRpRfCZ5jvpNO3prmrGnCcba4YojOTifrRuDbu/Am8mgtd4rMoHfYKeE5xj0P4j1zp7/7b+BymCszZrAWi86bnbLeLpxs/KYSTB5+mdEDlFqBKZmSqZvHfV4/FmFTFHDwSSMJonsZwqS0P0fk=
+	t=1736983342; cv=none; b=nG/DVAdsD0OP495ssJ2XjAa4/OCQcUTq+Ivk7Xqqt+Nl48c/PFLAujsW1ShuZbaJWiVk1UUfTqquvIl0Sll+aa08AK6c/x+SlUrr1jpwyZOF5gcbcfeVA3l4/am5q7z5T0P9FzjLoK3LqM8f2fzsSr+HaHT0gRi8g92h2lnnwnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736974042; c=relaxed/simple;
-	bh=iAmkTB6Ll8+Fmjjg+dIbHnYqQHi4r/DpjDywWf+8gS4=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YOOIXjM+Dg2Kp/Y1dugCUOjKhUsdj98GU5HcZmqNkUgc3yVwzS65ArPsWrNWeuM2B7cH40eAfih8BKErT1k18sm0U3PvpxUcho+uK6WEDpPY0hPqU1d1hBUxkv1JD+a+0icJ44OzUpiAwX4Y823NRRe1sifyEeDJSzXfO+ERXgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T3oMQQ+/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SeUml11S; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 15 Jan 2025 20:47:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736974038;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kZnyvpnxHZXEkx80SeJ52pEFsBa79lt2e8byeOxDS7k=;
-	b=T3oMQQ+/TM9RHjlB3Ldl/UFBCqyVb9yu8RcU6Hnz51G+O0QQE2AfEIKR4hWCIb4eGw90CA
-	JdNSkSiUd9HOXUyONC2VJwk2NnF4r/YE6PnNXADShTAFllHueOI8zmrzJ5iDQJFz/23/Q1
-	RNVSg5GbGv4j9tnnTC6uYa2+DmeYf5Y99u4EVIiMOYmCnbsUVzgqpSYCP/p/Ndno7GgN9u
-	Ihf6qYQ0S5VXxM6UxJbdIc4mMlQif/ezgwYFVt/frX8H4LWhafFHLuNdFxgpDfgPe/n9Xw
-	8CYMaD7auR2+oBdtJZdfzgtfkh3TOUzDmvKoj6MTMTPrFZ+CaY3/sK0tTz+2Gw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736974038;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kZnyvpnxHZXEkx80SeJ52pEFsBa79lt2e8byeOxDS7k=;
-	b=SeUml11SFMGBZR4Xvxpz/UParvGyQYlz6bc7+3GpO6sIY8Yf9gZU7w6Xhs3YBl4CE9ectO
-	KTSEg5k4LEUFvbAA==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] x86/apic: Convert to IRQCHIP_MOVE_DEFERRED
-Cc: Thomas Gleixner <tglx@linutronix.de>, Steve Wahl <steve.wahl@hpe.com>,
- Wei Liu <wei.liu@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org,
- maz@kernel.org
-In-Reply-To: <20241210103335.563277044@linutronix.de>
-References: <20241210103335.563277044@linutronix.de>
+	s=arc-20240116; t=1736983342; c=relaxed/simple;
+	bh=KdlJluTkxOnfAYEFjgsHb4xMd6XZulqvgcRfp7khFXA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=otO+O4VktU83T69GMYFrxYZyRMV8C86MdWcurUn8+YvKIujcfIAStJ9r95CBhbPd5vbFYr0rr9c6ts+QiAF/bLXWZFPIAvSA/nIR3sRxkt8r8xZqaCIgsru3ghujiJQlyH3Mp4xdOIu62AieAPRjcMoQLE5UENEw2o528W/34kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2wrgifJI; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2efa74481fdso679153a91.1
+        for <linux-tip-commits@vger.kernel.org>; Wed, 15 Jan 2025 15:22:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736983340; x=1737588140; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JHIOCMGw41yGBGLuHWVhzyX82V4iAB9WkKnb5lhxgI=;
+        b=2wrgifJISFw+YC37b16X7klYyf9ng1mpSAAP2kupmAiKkGudFVY5rzMN0e1VkmefPe
+         21LwDvh09kv34tdbNod1v8WGJ+6h5KUtBDMVPAFYBWtz6F/SeaG1yM5nlIUFvclPqGZ5
+         JurxWWQGorhvQ+qSFlBJITE/ezQDHOdM39paiRms5bO/3kCIWO7tb6l0m2xcc7RLD7cr
+         nMBJibehc2QMarb5ycO26rAJTGSKACA8goC7gsuzSy+g2SiLaZgWF6AreWzfQ8rPs78O
+         89PupwCPojaSt13zEpBPAiUqOAaEtpDl9uOCgNIKkCfLYniwWtwZWXdMH+t1e4UJxxW3
+         ZIUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736983340; x=1737588140;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3JHIOCMGw41yGBGLuHWVhzyX82V4iAB9WkKnb5lhxgI=;
+        b=NuTmJ3ceX2zO/erhzxMKDdyTpHyYNt77GRr4H/buSKvpvkMIqT5ag1H2of58toqsXc
+         9CXxLjccygebYLAzPtO6DD4JS+QWZ/TVifaZfXgAaOX8WcHNDhus/VVUtQRsd+2cFQYX
+         r0JyXAH8nGe6KE+0jIFUwcM0hh/6S0zuEQfcqU4ayOVTVvKPiADEUmh6oiUtllmwcPD2
+         jypFbHHqnHxclrJS4lWFrqzyLXbVnnPd5sgc7w4LMDnjgaINaMHt9bUEf78dAiFtYARg
+         EMSdyso5v/XZ5qs1y8FTf7+RX86csmsdrYxOULAZP2WOIqRRHxXu5UD5KYv90kBwczkm
+         0SvQ==
+X-Gm-Message-State: AOJu0YyCZHQX5AQCeAUBrwUavnBO6YzqZ7KsuXHt7p7ppUdaICUGJ1Hh
+	hF4OwSwI1749dvCyIW/apf3T0Jnu+rP9TkYPZAQBxw8riO+f36DjU7Ph7nimw6Ykad7b3SMV/v7
+	spg==
+X-Google-Smtp-Source: AGHT+IFBqE3qrBf0HSYHhZWrcCHWk/sS7blXXVC78Ra3Mf5IcMOQB/FvY2GQjkfkps9VzEOlqOEVe0u7bYc=
+X-Received: from pjbpx16.prod.google.com ([2002:a17:90b:2710:b0:2ef:786a:1835])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:534b:b0:2ea:7329:43
+ with SMTP id 98e67ed59e1d1-2f548e9a5c2mr40238879a91.6.1736983340616; Wed, 15
+ Jan 2025 15:22:20 -0800 (PST)
+Date: Wed, 15 Jan 2025 15:22:19 -0800
+In-Reply-To: <167517494734.4906.17956886323824650289.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <173697403799.31546.4147915302874979077.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20230126151323.702003578@infradead.org> <167517494734.4906.17956886323824650289.tip-bot2@tip-bot2>
+Message-ID: <Z4hDK27OV7wK572A@google.com>
+Subject: Re: [tip: sched/core] sched/clock/x86: Mark sched_clock() noinstr
+From: Sean Christopherson <seanjc@google.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, 
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
+	kvm@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-The following commit has been merged into the irq/core branch of tip:
++KVM and Paolo
 
-Commit-ID:     7d04319a05ab17ca3da188d0799af93d3213cb06
-Gitweb:        https://git.kernel.org/tip/7d04319a05ab17ca3da188d0799af93d3213cb06
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 10 Dec 2024 11:34:15 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 15 Jan 2025 21:38:53 +01:00
+On Tue, Jan 31, 2023, tip-bot2 for Peter Zijlstra wrote:
+> The following commit has been merged into the sched/core branch of tip:
+> 
+> Commit-ID:     8739c6811572b087decd561f96382087402cc343
+> Gitweb:        https://git.kernel.org/tip/8739c6811572b087decd561f96382087402cc343
+> Author:        Peter Zijlstra <peterz@infradead.org>
+> AuthorDate:    Thu, 26 Jan 2023 16:08:36 +01:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Tue, 31 Jan 2023 15:01:47 +01:00
+> 
+> sched/clock/x86: Mark sched_clock() noinstr
+> 
+> In order to use sched_clock() from noinstr code, mark it and all it's
+> implenentations noinstr.
+> 
+> The whole pvclock thing (used by KVM/Xen) is a bit of a pain,
+> since it calls out to watchdogs, create a
+> pvclock_clocksource_read_nowd() variant doesn't do that and can be
+> noinstr.
 
-x86/apic: Convert to IRQCHIP_MOVE_DEFERRED
+...
 
-Instead of marking individual interrupts as safe to be migrated in
-arbitrary contexts, mark the interrupt chips, which require the interrupt
-to be moved in actual interrupt context, with the new IRQCHIP_MOVE_DEFERRED
-flag. This makes more sense because this is a per interrupt chip property
-and not restricted to individual interrupts.
+> diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
+> index 16333ba..0f35d44 100644
+> --- a/arch/x86/kernel/kvmclock.c
+> +++ b/arch/x86/kernel/kvmclock.c
+> @@ -71,12 +71,12 @@ static int kvm_set_wallclock(const struct timespec64 *now)
+>  	return -ENODEV;
+>  }
+>  
+> -static u64 kvm_clock_read(void)
+> +static noinstr u64 kvm_clock_read(void)
+>  {
+>  	u64 ret;
+>  
+>  	preempt_disable_notrace();
+> -	ret = pvclock_clocksource_read(this_cpu_pvti());
+> +	ret = pvclock_clocksource_read_nowd(this_cpu_pvti());
+>  	preempt_enable_notrace();
+>  	return ret;
+>  }
+> @@ -86,7 +86,7 @@ static u64 kvm_clock_get_cycles(struct clocksource *cs)
+>  	return kvm_clock_read();
+>  }
+>  
+> -static u64 kvm_sched_clock_read(void)
+> +static noinstr u64 kvm_sched_clock_read(void)
+>  {
+>  	return kvm_clock_read() - kvm_sched_clock_offset;
+>  }
+> diff --git a/arch/x86/kernel/pvclock.c b/arch/x86/kernel/pvclock.c
+> index 5a2a517..56acf53 100644
+> --- a/arch/x86/kernel/pvclock.c
+> +++ b/arch/x86/kernel/pvclock.c
+> @@ -64,7 +64,8 @@ u8 pvclock_read_flags(struct pvclock_vcpu_time_info *src)
+>  	return flags & valid_flags;
+>  }
+>  
+> -u64 pvclock_clocksource_read(struct pvclock_vcpu_time_info *src)
+> +static __always_inline
+> +u64 __pvclock_clocksource_read(struct pvclock_vcpu_time_info *src, bool dowd)
+>  {
+>  	unsigned version;
+>  	u64 ret;
+> @@ -77,7 +78,7 @@ u64 pvclock_clocksource_read(struct pvclock_vcpu_time_info *src)
+>  		flags = src->flags;
+>  	} while (pvclock_read_retry(src, version));
+>  
+> -	if (unlikely((flags & PVCLOCK_GUEST_STOPPED) != 0)) {
+> +	if (dowd && unlikely((flags & PVCLOCK_GUEST_STOPPED) != 0)) {
 
-That flips the logic from the historical opt-out to a opt-in model. This is
-simpler to handle for other architectures, which default to unrestricted
-affinity setting. It also allows to cleanup the redundant core logic
-significantly.
+This effectively broke sched_clock handling of PVCLOCK_GUEST_STOPPED, which was
+added by commit d63285e94af3 ("pvclock: detect watchdog reset at pvclock read").
 
-All interrupt chips, which belong to a top-level domain sitting directly on
-top of the x86 vector domain are marked accordingly, unless the related
-setup code marks the interrupts with IRQ_MOVE_PCNTXT, i.e. XEN.
+By skipping the watchdog goo in the kvm_clock_read() path, the watchdogs will only
+be petted when kvmclock's pvclock_read_wallclock() is invoked, which AFAICT is
+limited to guest boot and suspend+resume (in the guest).  I.e. PVCLOCK_GUEST_STOPPED
+is ignored until the *guest* suspends, which completely defeats the purpose of
+petting the watchdogs when reading the clock.
 
-No functional change intended.
+I'm guessing no one has noticed/complained because watchdog_timer_fn,
+wq_watchdog_timer_fn(), and check_cpu_stall() all manually handling a STOPPED
+vCPU by invoking kvm_check_and_clear_guest_paused().  At a glance, only the
+hung task detector isn't in on the game, but its doggie still gets petted so
+long as one of the other watchdogs runs first.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Link: https://lore.kernel.org/all/20241210103335.563277044@linutronix.de
+One option would be to sprinkle noinstr everywhere, because despite
+pvclock_touch_watchdogs() calling a lot of functions, all of those functions
+are little more than one-liners, i.e. can be noinstr without significant downsides.
 
+Alternatively, we could explicitly revert commit d63285e94af3, and then bribe
+someone into finding a better/common place to handle PVCLOCK_GUEST_STOPPED.
+I am leaning heavily toward this alternative, because the way things are headed
+with kvmclock is that the kernel will stop using it for sched_clock[*], at which
+point VMs that run on modern setups won't get the sched_clock behavior anyways.
 
----
- arch/x86/Kconfig                    | 1 +
- arch/x86/hyperv/irqdomain.c         | 2 +-
- arch/x86/kernel/apic/io_apic.c      | 2 +-
- arch/x86/kernel/apic/msi.c          | 3 ++-
- arch/x86/kernel/hpet.c              | 8 --------
- arch/x86/platform/uv/uv_irq.c       | 3 ---
- drivers/iommu/amd/init.c            | 2 +-
- drivers/iommu/amd/iommu.c           | 1 -
- drivers/iommu/intel/irq_remapping.c | 1 -
- drivers/pci/controller/pci-hyperv.c | 1 +
- drivers/xen/events/events_base.c    | 6 ------
- 11 files changed, 7 insertions(+), 23 deletions(-)
-
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 9d7bd0a..df0fd72 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -173,6 +173,7 @@ config X86
- 	select GENERIC_IRQ_RESERVATION_MODE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_PENDING_IRQ		if SMP
-+	select GENERIC_PENDING_IRQ_CHIPFLAGS	if SMP
- 	select GENERIC_PTDUMP
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
-diff --git a/arch/x86/hyperv/irqdomain.c b/arch/x86/hyperv/irqdomain.c
-index 3215a4a..64b9213 100644
---- a/arch/x86/hyperv/irqdomain.c
-+++ b/arch/x86/hyperv/irqdomain.c
-@@ -304,7 +304,7 @@ static struct irq_chip hv_pci_msi_controller = {
- 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
- 	.irq_compose_msi_msg	= hv_irq_compose_msi_msg,
- 	.irq_set_affinity	= msi_domain_set_affinity,
--	.flags			= IRQCHIP_SKIP_SET_WAKE,
-+	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MOVE_DEFERRED,
- };
- 
- static struct msi_domain_ops pci_msi_domain_ops = {
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 1029ea4..5d033d9 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -1861,7 +1861,7 @@ static struct irq_chip ioapic_chip __read_mostly = {
- 	.irq_set_affinity	= ioapic_set_affinity,
- 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
- 	.irq_get_irqchip_state	= ioapic_irq_get_chip_state,
--	.flags			= IRQCHIP_SKIP_SET_WAKE |
-+	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MOVE_DEFERRED |
- 				  IRQCHIP_AFFINITY_PRE_STARTUP,
- };
- 
-diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
-index 3407692..66bc5d3 100644
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -214,6 +214,7 @@ static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- 		if (WARN_ON_ONCE(domain != real_parent))
- 			return false;
- 		info->chip->irq_set_affinity = msi_set_affinity;
-+		info->chip->flags |= IRQCHIP_MOVE_DEFERRED;
- 		break;
- 	case DOMAIN_BUS_DMAR:
- 	case DOMAIN_BUS_AMDVI:
-@@ -315,7 +316,7 @@ static struct irq_chip dmar_msi_controller = {
- 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
- 	.irq_compose_msi_msg	= dmar_msi_compose_msg,
- 	.irq_write_msi_msg	= dmar_msi_write_msg,
--	.flags			= IRQCHIP_SKIP_SET_WAKE |
-+	.flags			= IRQCHIP_SKIP_SET_WAKE | IRQCHIP_MOVE_DEFERRED |
- 				  IRQCHIP_AFFINITY_PRE_STARTUP,
- };
- 
-diff --git a/arch/x86/kernel/hpet.c b/arch/x86/kernel/hpet.c
-index c96ae8f..87b5a50 100644
---- a/arch/x86/kernel/hpet.c
-+++ b/arch/x86/kernel/hpet.c
-@@ -516,22 +516,14 @@ static int hpet_msi_init(struct irq_domain *domain,
- 			 struct msi_domain_info *info, unsigned int virq,
- 			 irq_hw_number_t hwirq, msi_alloc_info_t *arg)
- {
--	irq_set_status_flags(virq, IRQ_MOVE_PCNTXT);
- 	irq_domain_set_info(domain, virq, arg->hwirq, info->chip, NULL,
- 			    handle_edge_irq, arg->data, "edge");
- 
- 	return 0;
- }
- 
--static void hpet_msi_free(struct irq_domain *domain,
--			  struct msi_domain_info *info, unsigned int virq)
--{
--	irq_clear_status_flags(virq, IRQ_MOVE_PCNTXT);
--}
--
- static struct msi_domain_ops hpet_msi_domain_ops = {
- 	.msi_init	= hpet_msi_init,
--	.msi_free	= hpet_msi_free,
- };
- 
- static struct msi_domain_info hpet_msi_domain_info = {
-diff --git a/arch/x86/platform/uv/uv_irq.c b/arch/x86/platform/uv/uv_irq.c
-index a379501..4f200ac 100644
---- a/arch/x86/platform/uv/uv_irq.c
-+++ b/arch/x86/platform/uv/uv_irq.c
-@@ -92,8 +92,6 @@ static int uv_domain_alloc(struct irq_domain *domain, unsigned int virq,
- 	if (ret >= 0) {
- 		if (info->uv.limit == UV_AFFINITY_CPU)
- 			irq_set_status_flags(virq, IRQ_NO_BALANCING);
--		else
--			irq_set_status_flags(virq, IRQ_MOVE_PCNTXT);
- 
- 		chip_data->pnode = uv_blade_to_pnode(info->uv.blade);
- 		chip_data->offset = info->uv.offset;
-@@ -113,7 +111,6 @@ static void uv_domain_free(struct irq_domain *domain, unsigned int virq,
- 
- 	BUG_ON(nr_irqs != 1);
- 	kfree(irq_data->chip_data);
--	irq_clear_status_flags(virq, IRQ_MOVE_PCNTXT);
- 	irq_clear_status_flags(virq, IRQ_NO_BALANCING);
- 	irq_domain_free_irqs_top(domain, virq, nr_irqs);
- }
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 0e0a531..614f216 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -2332,7 +2332,7 @@ static struct irq_chip intcapxt_controller = {
- 	.irq_retrigger		= irq_chip_retrigger_hierarchy,
- 	.irq_set_affinity       = intcapxt_set_affinity,
- 	.irq_set_wake		= intcapxt_set_wake,
--	.flags			= IRQCHIP_MASK_ON_SUSPEND,
-+	.flags			= IRQCHIP_MASK_ON_SUSPEND | IRQCHIP_MOVE_DEFERRED,
- };
- 
- static const struct irq_domain_ops intcapxt_domain_ops = {
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 3f691e1..b02e631 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3532,7 +3532,6 @@ static int irq_remapping_alloc(struct irq_domain *domain, unsigned int virq,
- 		irq_data->chip_data = data;
- 		irq_data->chip = &amd_ir_chip;
- 		irq_remapping_prepare_irte(data, cfg, info, devid, index, i);
--		irq_set_status_flags(virq + i, IRQ_MOVE_PCNTXT);
- 	}
- 
- 	return 0;
-diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_remapping.c
-index 466c141..f5402df 100644
---- a/drivers/iommu/intel/irq_remapping.c
-+++ b/drivers/iommu/intel/irq_remapping.c
-@@ -1463,7 +1463,6 @@ static int intel_irq_remapping_alloc(struct irq_domain *domain,
- 		else
- 			irq_data->chip = &intel_ir_chip;
- 		intel_irq_remapping_prepare_irte(ird, irq_cfg, info, index, i);
--		irq_set_status_flags(virq + i, IRQ_MOVE_PCNTXT);
- 	}
- 	return 0;
- 
-diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-index cdd5be1..6084b38 100644
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -2053,6 +2053,7 @@ static struct irq_chip hv_msi_irq_chip = {
- 	.irq_set_affinity	= irq_chip_set_affinity_parent,
- #ifdef CONFIG_X86
- 	.irq_ack		= irq_chip_ack_parent,
-+	.flags			= IRQCHIP_MOVE_DEFERRED,
- #elif defined(CONFIG_ARM64)
- 	.irq_eoi		= irq_chip_eoi_parent,
- #endif
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 985e155..41309d3 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -722,12 +722,6 @@ static struct irq_info *xen_irq_init(unsigned int irq)
- 		INIT_RCU_WORK(&info->rwork, delayed_free_irq);
- 
- 		set_info_for_irq(irq, info);
--		/*
--		 * Interrupt affinity setting can be immediate. No point
--		 * in delaying it until an interrupt is handled.
--		 */
--		irq_set_status_flags(irq, IRQ_MOVE_PCNTXT);
--
- 		INIT_LIST_HEAD(&info->eoi_list);
- 		list_add_tail(&info->list, &xen_irq_list_head);
- 	}
+[*] https://lore.kernel.org/all/Z4gqlbumOFPF_rxd@google.com
 
