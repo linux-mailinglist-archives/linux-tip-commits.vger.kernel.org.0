@@ -1,137 +1,126 @@
-Return-Path: <linux-tip-commits+bounces-3299-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3300-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA34EA233A6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jan 2025 19:18:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15D3A23AD6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jan 2025 09:43:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8542E7A2010
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 30 Jan 2025 18:18:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 788B718896E8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Jan 2025 08:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19B91E9B29;
-	Thu, 30 Jan 2025 18:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEBF3D66;
+	Fri, 31 Jan 2025 08:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NmTqDmph";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b8gk1SG7"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1S440gCn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+ehd+SHv"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B97919DFAB;
-	Thu, 30 Jan 2025 18:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E06632;
+	Fri, 31 Jan 2025 08:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738261129; cv=none; b=njm2n+LdTlHqbRY0S/X0u5lUCdaIvu/0t3fDxoSewCnNMD+GulDiMapG5ei5PJAKhV+KlEKl3soGAF8/5MkDcHLjHM4LYlks5Ut53GI/atGt2ZwAUyPZdWyzLliCorKdIL2oLagJUTe4MQrkpB8w+t8cgKL+Yqk82AywKb8wUd0=
+	t=1738312999; cv=none; b=Ts2FWlYnHRLskfkMB2l6CWuaGElH5tGuoBJXmzgKcrnwWAGsH2rwBaSQ5nP7hWJeoIZn4d27q5rqXHfIwKJiBf3QXRYFZ5/bzURK14jD+EgDoKEEZhgV+b2Tic90PGlJgHH2nt3RjWK4kJf4J9XEyAuZtKsZmC8+W1xYz/vknfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738261129; c=relaxed/simple;
-	bh=KJUTP6Ek1Gc0jGJVkkYqdf/IY+6rz2K7560qZXdsZEM=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=JJNSlWWaU7haKtGx6WwMM6mhU1KHf9Q+QxSej0VB1JUQVqJ+l3UhT5ZOyPNVTsWhC3UJuErhxzs63UVgGyZl32iLeD5Q9A/niAsCHcCeiw7OixHcmTz+jRx2P50zP2wf1Md/emaVf/dStVAnRW18EBWScSbLcvwt1Yx116H/DbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NmTqDmph; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b8gk1SG7; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1738312999; c=relaxed/simple;
+	bh=PHyCaQdJAV7gjkBmpAF+bCcvjIXNcMl++HrfUECgM3A=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=M9kbu1r232d5i9/mUwthoEW4BlEgQJyVXAwUeC8BYmc/pMrswTwBA6OKdf5JIwUfMXSIqtf71F8C7lMko/EV3wG4VOAacMZyL5dsryHI+TXLE6gJNaegsx1BuziQ7laegD5INDmaEOVG8iL8a6OMZm8DjylCgzj63pvLycemPmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1S440gCn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+ehd+SHv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 30 Jan 2025 18:18:36 -0000
+Date: Fri, 31 Jan 2025 08:43:12 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738261121;
+	s=2020; t=1738312996;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=rhdwdOeCylo2ySDmBC79sqPq7Y07CQQKD/YoUmULl7w=;
-	b=NmTqDmphZv8G9D6Yw+OHBjYQL11Je4vqtUm2hAn1Lj17PWC9oU/lv5C2Q93UA2VqXnzdpM
-	ysxoCgbk0ySRT/sIK5ZjS6iYtvgsGDkBVxvjCqig/KOwCGiX5xQVjj/NduGtKUhWtZLSaU
-	vQDLLvKgR32Qeuatr5hm00MfEVdZpEC+s3kC3LLFKaUzakxDyRjwfahlCAR6LGq04Lk87X
-	R0PsBj07rEWg5G4h450r6kDlkt3Q5CF2I4p56hwy/fUBhs9WA2T7ztiBwqWMcGuNdwMAiV
-	h9E/PrKK1R/lvIDTQX8IZMWHdiui5ObSYJbqaOr0hAEdymKwqlDzzNsHXXTYCQ==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4j6x8LLvtxLd0fB8/jKqD5ksDv3uRGpB8xaSRDei5SA=;
+	b=1S440gCnNPha5lwA5udbAsb6rwzUT0cHFHXeT0gg/VJYWfvZylOy9BC5S9n7AYifX+HWKr
+	01fppJwn9Hx2gZ5wcNS8hpuMUQnLUU5db5s6nHJnVIqi+KqG1aYGCDEKZpGh93I/5ZOJnM
+	sJnsWbOO9p7qrcDWE0hvriOyBdkA2tFSpPTaU/ORzyGp2yBYxXfv3fhC7S/iV4s1ZrjtZZ
+	6H9BQLILuRG+x8LNitfAvbncrz/7EF8e74NDy3bpRsYJTPelQ8eC8py1xM8zYPdNac1ByF
+	kG5s05vIZ0Ir5MFZ83w/3okTRP9NeDLqrU32NHV0J5By5vZ8KPjAbc4PoxZx3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738261121;
+	s=2020e; t=1738312996;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=rhdwdOeCylo2ySDmBC79sqPq7Y07CQQKD/YoUmULl7w=;
-	b=b8gk1SG73yEGJ1j12zZ0FOAn963vpyyv+Bc+OPZ9KhTmYGkZp2vmVvGAlaeisqSMNrAZF0
-	C9edhYgpZPZPSHAw==
-From: "tip-bot2 for Nathan Chancellor" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4j6x8LLvtxLd0fB8/jKqD5ksDv3uRGpB8xaSRDei5SA=;
+	b=+ehd+SHveTFMO/X8F+goiApklUlTfS4Ev4FS/cueiMFyyWXZ9b3WuEiZ8JkiLiyz+BOSIn
+	c4iNONhEXpGKHfCQ==
+From: "tip-bot2 for Easwar Hariharan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/boot: Use '-std=gnu11' to fix build with GCC 15
-Cc: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>,
- Jakub Jelinek <jakub@redhat.com>, Nathan Chancellor <nathan@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Ard Biesheuvel <ardb@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: timers/urgent] jiffies: Cast to unsigned long in
+ secs_to_jiffies() conversion
+Cc: kernel test robot <lkp@intel.com>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250130192701.99626-1-eahariha@linux.microsoft.com>
+References: <20250130192701.99626-1-eahariha@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173826111721.31546.13704348787528502062.tip-bot2@tip-bot2>
+Message-ID: <173831299312.31546.8797889985487965830.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     ee2ab467bddfb2d7f68d996dbab94d7b88f8eaf7
-Gitweb:        https://git.kernel.org/tip/ee2ab467bddfb2d7f68d996dbab94d7b88f=
-8eaf7
-Author:        Nathan Chancellor <nathan@kernel.org>
-AuthorDate:    Tue, 21 Jan 2025 18:11:33 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 30 Jan 2025 09:59:24 -08:00
+Commit-ID:     bb2784d9ab49587ba4fbff37a319fff2924db289
+Gitweb:        https://git.kernel.org/tip/bb2784d9ab49587ba4fbff37a319fff2924db289
+Author:        Easwar Hariharan <eahariha@linux.microsoft.com>
+AuthorDate:    Thu, 30 Jan 2025 19:26:58 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 31 Jan 2025 09:30:49 +01:00
 
-x86/boot: Use '-std=3Dgnu11' to fix build with GCC 15
+jiffies: Cast to unsigned long in secs_to_jiffies() conversion
 
-GCC 15 changed the default C standard version to C23, which should not
-have impacted the kernel because it requests the gnu11 standard via
-'-std=3D' in the main Makefile. However, the x86 compressed boot Makefile
-uses its own set of KBUILD_CFLAGS without a '-std=3D' value (i.e., using
-the default), resulting in errors from the kernel's definitions of bool,
-true, and false in stddef.h, which are reserved keywords under C23.
+While converting users of msecs_to_jiffies(), lkp reported that some range
+checks would always be true because of the mismatch between the implied int
+value of secs_to_jiffies() vs the unsigned long return value of the
+msecs_to_jiffies() calls it was replacing.
 
-  ./include/linux/stddef.h:11:9: error: expected identifier before =E2=80=98f=
-alse=E2=80=99
-     11 |         false   =3D 0,
-  ./include/linux/types.h:35:33: error: two or more data types in declaration=
- specifiers
-     35 | typedef _Bool                   bool;
+Fix this by casting the secs_to_jiffies() input value to unsigned long.
 
-Set '-std=3Dgnu11' in the x86 compressed boot Makefile to resolve the
-error and consistently use the same C standard version for the entire
-kernel.
-
-Closes: https://lore.kernel.org/4OAhbllK7x4QJGpZjkYjtBYNLd_2whHx9oFiuZcGwtVR4=
-hIzvduultkgfAIRZI3vQpZylu7Gl929HaYFRGeMEalWCpeMzCIIhLxxRhq4U-Y=3D@protonmail.=
-com/
-Closes: https://lore.kernel.org/Z4467umXR2PZ0M1H@tucnak/
-Reported-by: Kostadin Shishmanov <kostadinshishmanov@protonmail.com>
-Reported-by: Jakub Jelinek <jakub@redhat.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250121-x86-use-std-consistently-gcc-15-v1=
--1-8ab0acf645cb%40kernel.org
+Fixes: b35108a51cf7ba ("jiffies: Define secs_to_jiffies()")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250130192701.99626-1-eahariha@linux.microsoft.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202501301334.NB6NszQR-lkp@intel.com/
 ---
- arch/x86/boot/compressed/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/jiffies.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Mak=
-efile
-index f205164..606c74f 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -25,6 +25,7 @@ targets :=3D vmlinux vmlinux.bin vmlinux.bin.gz vmlinux.bin=
-.bz2 vmlinux.bin.lzma \
- # avoid errors with '-march=3Di386', and future flags may depend on the targ=
-et to
- # be valid.
- KBUILD_CFLAGS :=3D -m$(BITS) -O2 $(CLANG_FLAGS)
-+KBUILD_CFLAGS +=3D -std=3Dgnu11
- KBUILD_CFLAGS +=3D -fno-strict-aliasing -fPIE
- KBUILD_CFLAGS +=3D -Wundef
- KBUILD_CFLAGS +=3D -DDISABLE_BRANCH_PROFILING
+diff --git a/include/linux/jiffies.h b/include/linux/jiffies.h
+index ed945f4..0ea8c98 100644
+--- a/include/linux/jiffies.h
++++ b/include/linux/jiffies.h
+@@ -537,7 +537,7 @@ static __always_inline unsigned long msecs_to_jiffies(const unsigned int m)
+  *
+  * Return: jiffies value
+  */
+-#define secs_to_jiffies(_secs) ((_secs) * HZ)
++#define secs_to_jiffies(_secs) (unsigned long)((_secs) * HZ)
+ 
+ extern unsigned long __usecs_to_jiffies(const unsigned int u);
+ #if !(USEC_PER_SEC % HZ)
 
