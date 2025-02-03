@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3312-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3316-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8F12A259C5
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Feb 2025 13:49:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02710A25A15
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Feb 2025 13:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80CF16494C
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Feb 2025 12:49:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56C8F3A8C71
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Feb 2025 12:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788CE205515;
-	Mon,  3 Feb 2025 12:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E06420551E;
+	Mon,  3 Feb 2025 12:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2kvmTlOz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0dMlU4rB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T890XfEe";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="98PLDYX8"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D9D204F8C;
-	Mon,  3 Feb 2025 12:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9869320550E;
+	Mon,  3 Feb 2025 12:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738586905; cv=none; b=dj9KFaAKzQ7T1kRO6tIOoIyNPFtq2z5tv3sUr5Ed76SkS0/3DVavTkqzTkG2CmE/3sY/e6UlvhZgxUqcLFVkxHC8WwRir9OD1+Lzi03mPQFzvl7WuERSbkDTK1w7jvrMOta7v553uBps6k6xOgqRvN1MWXUmXmFjo4qXhYuOzmI=
+	t=1738587006; cv=none; b=kVOhyJTGS6u9gcY8sVs29ARlVovasULLToSJlgtiWrzJIhhYfjK/Mzb9iiuMgJ42BusSyatPVOR+Bg01zxHY/NokR6rSUbxWoEnNA7Ag0/y5pzRTEq4cPCc8qENNtU1Sid3T//19ba6RX20ejxQOZuynitMEFFP45/GDyZgFeLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738586905; c=relaxed/simple;
-	bh=SqBPxJkrb6ETKFTLXVZHFq1UJXDq0NCO+5xLFDQMzE0=;
+	s=arc-20240116; t=1738587006; c=relaxed/simple;
+	bh=T52D8yVqjNMexPh/PaPVha4hQOnbwST3/9mFXWACe1s=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ACRNb3AfsMaHT30lQ9y4VQB4fKnNxiB59IZigPZo54+7elA0HR45EPssgjWDCF2rK8JuWzZyGLIEamb7EBiHNGZItDf85yBCndpeUJRBTfTtxAXr9jwo2Te4DiloVBC/v+BQA0YovuPqCTL0VsdJAehhaHmY+A2cfWLrmW5Hi2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2kvmTlOz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0dMlU4rB; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=XT5mrkfTNtmhGABu5v7vkDyQENMNtSqSqctkg/D/1Y1VYcEHhxIiwLgdh++7SRFsMy/92QZ7aTVKTIyE/MJSqU3dVj+NmfjOnoC6/F8rbRJfJdyJVYOjsrwD286bXZ7cdiJ3lyfhfsd661uFtDS9Zu45dQDdNWdyBnsoC07//Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T890XfEe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=98PLDYX8; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Feb 2025 12:48:20 -0000
+Date: Mon, 03 Feb 2025 12:50:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738586901;
+	s=2020; t=1738587002;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ygulU40BbxrTKuhnwVZ0yk1ptKVvi8uMsUam4ORMcdQ=;
-	b=2kvmTlOzOOCEIMlh0Ap6V+SmKlFdL70pMxXko5bq+W6fW6jHfmyQh+HgQEBSHhw4csZrAD
-	p0JDAHxBDqZ+RVcj+wssrAMldtShwuXou6Qklb2kP9qJVXSsm5XHbhFfOqLds9jwV0HsMJ
-	i4wdGt1XQqbTg4A/pGhyvx+4p0Q6Ns59X2SBnarceByqj55pES2oB2rUC11wyy2iMA8Gqv
-	wFfiTglEpLuzgzD2JFu4Xv9XhannKmInsYtw4Y+8pPvKMFl51lhsu0R22vyskaH0jMgU7O
-	F62eApz8sxs+mwrwpLX6jqxoHqaFan7h87acyGr98YtKe8AihsWjWQLR5Idoaw==
+	bh=k8eaQHekOjZfHpNgYXDkBrHaxw5CaOq8W6esUq9rEv8=;
+	b=T890XfEejZW3SXnnyWuUxGInRsMx51Sw+GYOlUYD4A254uDI+d3f/LB9g59eNvgAgbFOP0
+	G4SbmCnHfyGQbcFVLLZv4FtuY6ZokoDvuleooiX9mzF2EHOo7Z+sfGzqh9roHi+v8p7oel
+	oHAreksjs3BHpMXphq1nAxomjjC8XgKvicsOAYuBho+AzVwOd9T148PnFBUaj6r98arm4Q
+	BsPKprZczPTJ3TzLByLq7woVV7k5Ok1JLkdaynxDWoObDiByxa4kP6Rl6P5PLAVbxIppWO
+	SozOZdJkwh5lZ5EbDUJhGf8ZCo2iiLd6ZBZxPX3TWti4Hb76oSJflxGimYxAoQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738586901;
+	s=2020e; t=1738587002;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ygulU40BbxrTKuhnwVZ0yk1ptKVvi8uMsUam4ORMcdQ=;
-	b=0dMlU4rBpyge+jq0gsIzCGRxD0I10BKFQxdQbQPqC5MmN2FqngtYsdBWVX3D9UWXmZBngJ
-	R/+4JcslNQf5qiDw==
-From: "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
+	bh=k8eaQHekOjZfHpNgYXDkBrHaxw5CaOq8W6esUq9rEv8=;
+	b=98PLDYX8QXz9mM3mV19uY73KVrywl98AMtIUWVNhhgfxFmJxqRiAwsQY4+yygNC5LWZarn
+	lDJnBnu8aFHLmIAw==
+From: "tip-bot2 for Jann Horn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/ibs: Remove pointless sample period check
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Namhyung Kim <namhyung@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250115054438.1021-3-ravi.bangoria@amd.com>
-References: <20250115054438.1021-3-ravi.bangoria@amd.com>
+Subject:
+ [tip: x86/mm] x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
+Cc: Jann Horn <jannh@google.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com>
+References: <20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173858690058.10177.11171001068661803463.tip-bot2@tip-bot2>
+Message-ID: <173858700223.10177.5958477749533350297.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,64 +80,62 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     88c7bcad71c83f52f24108dedcecae0d18dbc627
-Gitweb:        https://git.kernel.org/tip/88c7bcad71c83f52f24108dedcecae0d18dbc627
-Author:        Ravi Bangoria <ravi.bangoria@amd.com>
-AuthorDate:    Wed, 15 Jan 2025 05:44:31 
+Commit-ID:     3ef938c3503563bfc2ac15083557f880d29c2e64
+Gitweb:        https://git.kernel.org/tip/3ef938c3503563bfc2ac15083557f880d29c2e64
+Author:        Jann Horn <jannh@google.com>
+AuthorDate:    Fri, 03 Jan 2025 19:39:38 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 03 Feb 2025 11:46:04 +01:00
+CommitterDate: Mon, 03 Feb 2025 11:46:03 +01:00
 
-perf/amd/ibs: Remove pointless sample period check
+x86/mm: Fix flush_tlb_range() when used for zapping normal PMDs
 
-Valid perf event sample period value for IBS PMUs (Fetch and Op both)
-is limited to multiple of 0x10. perf_ibs_init() has this check:
+On the following path, flush_tlb_range() can be used for zapping normal
+PMD entries (PMD entries that point to page tables) together with the PTE
+entries in the pointed-to page table:
 
-  if (!event->attr.sample_freq && hwc->sample_period & 0x0f)
-          return -EINVAL;
+    collapse_pte_mapped_thp
+      pmdp_collapse_flush
+        flush_tlb_range
 
-But it's broken since hwc->sample_period will always be 0 when
-event->attr.sample_freq is 0 (irrespective of event->attr.freq value.)
+The arm64 version of flush_tlb_range() has a comment describing that it can
+be used for page table removal, and does not use any last-level
+invalidation optimizations. Fix the X86 version by making it behave the
+same way.
 
-One option to fix this is to change the condition:
+Currently, X86 only uses this information for the following two purposes,
+which I think means the issue doesn't have much impact:
 
-  - if (!event->attr.sample_freq && hwc->sample_period & 0x0f)
-  + if (!event->attr.freq && hwc->sample_period & 0x0f)
+ - In native_flush_tlb_multi() for checking if lazy TLB CPUs need to be
+   IPI'd to avoid issues with speculative page table walks.
+ - In Hyper-V TLB paravirtualization, again for lazy TLB stuff.
 
-However, that will break all userspace tools which have been using IBS
-event with sample_period not multiple of 0x10.
+The patch "x86/mm: only invalidate final translations with INVLPGB" which
+is currently under review (see
+<https://lore.kernel.org/all/20241230175550.4046587-13-riel@surriel.com/>)
+would probably be making the impact of this a lot worse.
 
-Another option is to remove the condition altogether and mask lower
-nibble _silently_, same as what current code is inadvertently doing.
-I'm preferring this approach as it keeps the existing behavior.
-
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Fixes: 016c4d92cd16 ("x86/mm/tlb: Add freed_tables argument to flush_tlb_mm_range")
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lkml.kernel.org/r/20250115054438.1021-3-ravi.bangoria@amd.com
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250103-x86-collapse-flush-fix-v1-1-3c521856cfa6@google.com
 ---
- arch/x86/events/amd/ibs.c |  9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/tlbflush.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 4ca8006..bd8919e 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -307,13 +307,8 @@ static int perf_ibs_init(struct perf_event *event)
- 		if (config & perf_ibs->cnt_mask)
- 			/* raw max_cnt may not be set */
- 			return -EINVAL;
--		if (!event->attr.sample_freq && hwc->sample_period & 0x0f)
--			/*
--			 * lower 4 bits can not be set in ibs max cnt,
--			 * but allowing it in case we adjust the
--			 * sample period to set a frequency.
--			 */
--			return -EINVAL;
-+
-+		/* Silently mask off lower nibble. IBS hw mandates it. */
- 		hwc->sample_period &= ~0x0FULL;
- 		if (!hwc->sample_period)
- 			hwc->sample_period = 0x10;
+diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
+index 02fc2aa..3da6451 100644
+--- a/arch/x86/include/asm/tlbflush.h
++++ b/arch/x86/include/asm/tlbflush.h
+@@ -242,7 +242,7 @@ void flush_tlb_multi(const struct cpumask *cpumask,
+ 	flush_tlb_mm_range((vma)->vm_mm, start, end,			\
+ 			   ((vma)->vm_flags & VM_HUGETLB)		\
+ 				? huge_page_shift(hstate_vma(vma))	\
+-				: PAGE_SHIFT, false)
++				: PAGE_SHIFT, true)
+ 
+ extern void flush_tlb_all(void);
+ extern void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
 
