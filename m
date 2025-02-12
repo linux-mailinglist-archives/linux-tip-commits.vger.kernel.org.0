@@ -1,153 +1,250 @@
-Return-Path: <linux-tip-commits+bounces-3354-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3355-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 950D9A30F35
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2025 16:06:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2AAA31E05
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Feb 2025 06:37:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97E0F18832FC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 11 Feb 2025 15:06:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1A4167008
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Feb 2025 05:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28977252918;
-	Tue, 11 Feb 2025 15:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A2D1F3FC6;
+	Wed, 12 Feb 2025 05:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y52hG4aY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bhHP9LGW"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="WHhT0h5b"
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E331324E4B6;
-	Tue, 11 Feb 2025 15:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F12BB67E;
+	Wed, 12 Feb 2025 05:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739286372; cv=none; b=QII3vEcutlIOVTHQWD4mr6VfG+ye0fXxj/VlmJUFdaO/uw0DZfyZ6yQ7j3Ws9uDcmPoeO8xs/GWH+DGVIrRWAL16qJSA5jzKyDiz7dJTTYtH16ZV0wvwbpwU08FGB9DPbiRBOGBAQfTIGTtUYs1sthxt2d++7MpbJNV+CFmk02Y=
+	t=1739338635; cv=none; b=UvnRPA9fpCk0GyaLHeq4SsX1J3aYVeqGhH7UQoKJzdN6f6j/EByjtG3P0BFEPfr/WE3ckU8kDTBgL61/IPNwz4YsLW34RfZnwsunhsqZ6uhG5LAmw/Mq5cbiD3Kme/QpL+uhYR8OFavY3P0QWaWjHLLpqHt0jdvrM40XdjbVDsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739286372; c=relaxed/simple;
-	bh=4B+g3tK9aMfxImDYzfKInCcDdUZK8W55/5LWe/RgXW8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=msiZXK8tl7HAiAZelcO0y2CNV/YhFXeMcoA5xTSAku5WMxOuOUBVxtDQ+AnJ9fFSaOjPEmEaQ48CEkqorOP1y10L+5s3a3Y94yr1kO68sOhQMwD32Q4lyckasWJtPPd4kFvn94SPk7VI7wUx7uFcIPKiEqrKg95/YsezYn2/1gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y52hG4aY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bhHP9LGW; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 11 Feb 2025 15:06:07 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739286368;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fcScyRaVnQ5xb4TwKecBkcpqWVZ8pXQZjuAH5zTPMCI=;
-	b=Y52hG4aYOLSZwSw0lf/dVh0933W3yOxodcNSBo0PPq7FupJthqacMKv0tDLftV0FFdwB5q
-	zMM1fV1UAoJFCecFHploI4vy0qo0fQZuJCcGy6og4b9SIyWfbxj5Lx9lilJlPk00LoBayV
-	5Wsp8XSTyBRAJu76qLiyqXwhh5tY/IQjdDYeSm7coTwEd9BdzBLA12XTwsdVZSisGiKeSs
-	KMZhdjV2Umk5uzycoAo2o6ghNRsDGfmI4p+aYd2nFhhG/dRSdScItJIn0CFIYjHFliGVSf
-	KRwQMPXiP7tD9uEV7oD070e5IeF5FIuCCC9YGChphLkMzIBnU0q7fEh7v1OcBA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739286368;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fcScyRaVnQ5xb4TwKecBkcpqWVZ8pXQZjuAH5zTPMCI=;
-	b=bhHP9LGWNTKuK/BX3dYUwbVeTCv4toFPyKc47xeZre4C5s3AJeTFzmZusNTDbIYC43WLW1
-	8xtCSWBDhpCmRQAQ==
-From: "tip-bot2 for Dhananjay Ugwekar" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/rapl: Fix the error checking order
-Cc: Koichiro Den <koichiro.den@canonical.com>,
- Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250129080513.30353-1-dhananjay.ugwekar@amd.com>
-References: <20250129080513.30353-1-dhananjay.ugwekar@amd.com>
+	s=arc-20240116; t=1739338635; c=relaxed/simple;
+	bh=Vq/sQyw4FHu+wn+41JCedKUlbPLVFsN3KR1dIt4xYOQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SkbJZ5gZQKWqQPuuar3JbnL0DZYC0IB/HBskjg4sD3hZCbgayKokm27OVn+a/Og5WAAE/R2cO34o7xJYPCRmfwDanB/Jwy9EFIkNyKzHPfm3PXLXlRATJZ4amfBlvUq+IbchbcO7aNG1Bm/x/GC726b1vIanehJabOQ8ESqFOUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=WHhT0h5b; arc=none smtp.client-ip=99.78.197.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739338634; x=1770874634;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=N1ldq/teHo/QBZY6cIiNd8wg81nHlAQXLen7eInilfM=;
+  b=WHhT0h5b8/HqP3Pib/O2PCe4p4FyZrGxO8Cp2JIYGnRcIeebq5jTDBax
+   1X0RNE5u/oNCRMSK2EaAMnwBLuXYSiuWpcsFP35jT3v9XL+CbZxqgKoRp
+   FW/4bUQD4TzpuoVwvLMGXQSWj9wyq7t5TJ+WKaVpX4QX6ZAP+tx4MmIOW
+   4=;
+X-IronPort-AV: E=Sophos;i="6.13,279,1732579200"; 
+   d="scan'208";a="168935605"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2025 05:37:13 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:32783]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.25.59:2525] with esmtp (Farcaster)
+ id c69e62f5-4918-4895-af0d-a33eddd4d416; Wed, 12 Feb 2025 05:37:13 +0000 (UTC)
+X-Farcaster-Flow-ID: c69e62f5-4918-4895-af0d-a33eddd4d416
+Received: from EX19D016UWA004.ant.amazon.com (10.13.139.119) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 12 Feb 2025 05:37:13 +0000
+Received: from 88665a51a6b2.amazon.com (10.106.179.55) by
+ EX19D016UWA004.ant.amazon.com (10.13.139.119) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Wed, 12 Feb 2025 05:37:10 +0000
+From: Cristian Prundeanu <cpru@amazon.com>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Cristian Prundeanu <cpru@amazon.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	"Ali Saidi" <alisaidi@amazon.com>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>, Geoff Blake <blakgeof@amazon.com>, Csaba Csoma
+	<csabac@amazon.com>, Bjoern Doebel <doebel@amazon.com>, Gautham Shenoy
+	<gautham.shenoy@amd.com>, Joseph Salisbury <joseph.salisbury@oracle.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, Borislav Petkov
+	<bp@alien8.de>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-tip-commits@vger.kernel.org>,
+	<x86@kernel.org>
+Subject: [PATCH v2] [tip: sched/core] sched: Move PLACE_LAG and RUN_TO_PARITY to sysctl
+Date: Tue, 11 Feb 2025 23:36:44 -0600
+Message-ID: <20250212053644.14787-1-cpru@amazon.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250128230926.11715-1-cpru@amazon.com>
+References: <20250119110410.GAZ4zcKkx5sCjD5XvH@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173928636768.10177.18009351351852464312.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWB003.ant.amazon.com (10.13.138.93) To
+ EX19D016UWA004.ant.amazon.com (10.13.139.119)
 
-The following commit has been merged into the perf/urgent branch of tip:
+Replacing CFS with the EEVDF scheduler in kernel 6.6 introduced
+significant performance degradation in multiple database-oriented
+workloads. This degradation manifests in all kernel versions using EEVDF,
+across multiple Linux distributions, hardware architectures (x86_64,
+aarm64, amd64), and CPU generations.
 
-Commit-ID:     469c76a83bb9f6b2c7b2989c46617c4fe01fee79
-Gitweb:        https://git.kernel.org/tip/469c76a83bb9f6b2c7b2989c46617c4fe01fee79
-Author:        Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-AuthorDate:    Wed, 29 Jan 2025 08:05:14 
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 08 Feb 2025 15:47:25 +01:00
+Testing combinations of available scheduler features showed that the
+largest improvement (short of disabling all EEVDF features) came from
+disabling both PLACE_LAG and RUN_TO_PARITY.
 
-perf/x86/rapl: Fix the error checking order
+Moving PLACE_LAG and RUN_TO_PARITY to sysctl will allow users to override
+their default values and persist them with established mechanisms.
 
-After the commit b4943b8bfc41 ("perf/x86/rapl: Add core energy counter
-support for AMD CPUs"), the default "perf record"/"perf top" command is
-broken in systems where there isn't a PMU registered for type
-PERF_TYPE_RAW.
-
-This is due to the change in order of error checks in rapl_pmu_event_init()
-Due to which we return -EINVAL instead of -ENOENT, when we reach here from
-the fallback loop in perf_init_event().
-
-Move the "PMU and event type match" back to the beginning of the function
-so that we return -ENOENT early on.
-
-Closes: https://lore.kernel.org/all/uv7mz6vew2bzgre5jdpmwldxljp5djzmuiksqdcdwipfm4zm7w@ribobcretidk/
-Fixes: b4943b8bfc41 ("perf/x86/rapl: Add core energy counter support for AMD CPUs")
-Reported-by: Koichiro Den <koichiro.den@canonical.com>
-Signed-off-by: Dhananjay Ugwekar <dhananjay.ugwekar@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250129080513.30353-1-dhananjay.ugwekar@amd.com
+Link: https://lore.kernel.org/20241017052000.99200-1-cpru@amazon.com
+Signed-off-by: Cristian Prundeanu <cpru@amazon.com>
 ---
- arch/x86/events/rapl.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+v2: use latest sched/core; defer default value change to a follow-up patch
 
-diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
-index d3bb386..4952faf 100644
---- a/arch/x86/events/rapl.c
-+++ b/arch/x86/events/rapl.c
-@@ -370,6 +370,10 @@ static int rapl_pmu_event_init(struct perf_event *event)
- 	unsigned int rapl_pmu_idx;
- 	struct rapl_pmus *rapl_pmus;
+ include/linux/sched/sysctl.h |  8 ++++++++
+ kernel/sched/core.c          | 13 +++++++++++++
+ kernel/sched/fair.c          |  7 ++++---
+ kernel/sched/features.h      | 10 ----------
+ kernel/sysctl.c              | 20 ++++++++++++++++++++
+ 5 files changed, 45 insertions(+), 13 deletions(-)
+
+diff --git a/include/linux/sched/sysctl.h b/include/linux/sched/sysctl.h
+index 5a64582b086b..a899398bc1c4 100644
+--- a/include/linux/sched/sysctl.h
++++ b/include/linux/sched/sysctl.h
+@@ -29,4 +29,12 @@ extern int sysctl_numa_balancing_mode;
+ #define sysctl_numa_balancing_mode	0
+ #endif
  
-+	/* only look at RAPL events */
-+	if (event->attr.type != event->pmu->type)
-+		return -ENOENT;
++#if defined(CONFIG_SCHED_DEBUG) && defined(CONFIG_SYSCTL)
++extern unsigned int sysctl_sched_place_lag_enabled;
++extern unsigned int sysctl_sched_run_to_parity_enabled;
++#else
++#define sysctl_sched_place_lag_enabled 1
++#define sysctl_sched_run_to_parity_enabled 1
++#endif
 +
- 	/* unsupported modes and filters */
- 	if (event->attr.sample_period) /* no sampling */
- 		return -EINVAL;
-@@ -387,10 +391,6 @@ static int rapl_pmu_event_init(struct perf_event *event)
- 	rapl_pmus_scope = rapl_pmus->pmu.scope;
+ #endif /* _LINUX_SCHED_SYSCTL_H */
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9142a0394d46..a379240628ea 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -134,6 +134,19 @@ const_debug unsigned int sysctl_sched_features =
+ 	0;
+ #undef SCHED_FEAT
  
- 	if (rapl_pmus_scope == PERF_PMU_SCOPE_PKG || rapl_pmus_scope == PERF_PMU_SCOPE_DIE) {
--		/* only look at RAPL package events */
--		if (event->attr.type != rapl_pmus_pkg->pmu.type)
--			return -ENOENT;
--
- 		cfg = array_index_nospec((long)cfg, NR_RAPL_PKG_DOMAINS + 1);
- 		if (!cfg || cfg >= NR_RAPL_PKG_DOMAINS + 1)
- 			return -EINVAL;
-@@ -398,10 +398,6 @@ static int rapl_pmu_event_init(struct perf_event *event)
- 		bit = cfg - 1;
- 		event->hw.event_base = rapl_model->rapl_pkg_msrs[bit].msr;
- 	} else if (rapl_pmus_scope == PERF_PMU_SCOPE_CORE) {
--		/* only look at RAPL core events */
--		if (event->attr.type != rapl_pmus_core->pmu.type)
--			return -ENOENT;
--
- 		cfg = array_index_nospec((long)cfg, NR_RAPL_CORE_DOMAINS + 1);
- 		if (!cfg || cfg >= NR_RAPL_PKG_DOMAINS + 1)
- 			return -EINVAL;
++#ifdef CONFIG_SYSCTL
++/*
++ * Using the avg_vruntime, do the right thing and preserve lag across
++ * sleep+wake cycles. EEVDF placement strategy #1, #2 if disabled.
++ */
++__read_mostly unsigned int sysctl_sched_place_lag_enabled = 1;
++/*
++ * Inhibit (wakeup) preemption until the current task has either matched the
++ * 0-lag point or until it has exhausted its slice.
++ */
++__read_mostly unsigned int sysctl_sched_run_to_parity_enabled = 1;
++#endif
++
+ /*
+  * Print a warning if need_resched is set for the given duration (if
+  * LATENCY_WARN is enabled).
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 1e78caa21436..c87fd1accd54 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -923,7 +923,8 @@ static struct sched_entity *pick_eevdf(struct cfs_rq *cfs_rq)
+ 	 * Once selected, run a task until it either becomes non-eligible or
+ 	 * until it gets a new slice. See the HACK in set_next_entity().
+ 	 */
+-	if (sched_feat(RUN_TO_PARITY) && curr && curr->vlag == curr->deadline)
++	if (sysctl_sched_run_to_parity_enabled && curr &&
++	    curr->vlag == curr->deadline)
+ 		return curr;
+ 
+ 	/* Pick the leftmost entity if it's eligible */
+@@ -5199,7 +5200,7 @@ place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int flags)
+ 	 *
+ 	 * EEVDF: placement strategy #1 / #2
+ 	 */
+-	if (sched_feat(PLACE_LAG) && cfs_rq->nr_queued && se->vlag) {
++	if (sysctl_sched_place_lag_enabled && cfs_rq->nr_queued && se->vlag) {
+ 		struct sched_entity *curr = cfs_rq->curr;
+ 		unsigned long load;
+ 
+@@ -9327,7 +9328,7 @@ static inline int task_is_ineligible_on_dst_cpu(struct task_struct *p, int dest_
+ #else
+ 	dst_cfs_rq = &cpu_rq(dest_cpu)->cfs;
+ #endif
+-	if (sched_feat(PLACE_LAG) && dst_cfs_rq->nr_queued &&
++	if (sysctl_sched_place_lag_enabled && dst_cfs_rq->nr_queued &&
+ 	    !entity_eligible(task_cfs_rq(p), &p->se))
+ 		return 1;
+ 
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 3c12d9f93331..b98ec31ef2c4 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -1,10 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ 
+-/*
+- * Using the avg_vruntime, do the right thing and preserve lag across
+- * sleep+wake cycles. EEVDF placement strategy #1, #2 if disabled.
+- */
+-SCHED_FEAT(PLACE_LAG, true)
+ /*
+  * Give new tasks half a slice to ease into the competition.
+  */
+@@ -13,11 +8,6 @@ SCHED_FEAT(PLACE_DEADLINE_INITIAL, true)
+  * Preserve relative virtual deadline on 'migration'.
+  */
+ SCHED_FEAT(PLACE_REL_DEADLINE, true)
+-/*
+- * Inhibit (wakeup) preemption until the current task has either matched the
+- * 0-lag point or until is has exhausted it's slice.
+- */
+-SCHED_FEAT(RUN_TO_PARITY, true)
+ /*
+  * Allow wakeup of tasks with a shorter slice to cancel RUN_TO_PARITY for
+  * current.
+diff --git a/kernel/sysctl.c b/kernel/sysctl.c
+index 7ae7a4136855..11651d87f6d4 100644
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -2019,6 +2019,26 @@ static struct ctl_table kern_table[] = {
+ 		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ #endif
++#ifdef CONFIG_SCHED_DEBUG
++	{
++		.procname	= "sched_place_lag_enabled",
++		.data		= &sysctl_sched_place_lag_enabled,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
++	},
++	{
++		.procname	= "sched_run_to_parity_enabled",
++		.data		= &sysctl_sched_run_to_parity_enabled,
++		.maxlen		= sizeof(unsigned int),
++		.mode		= 0644,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_ONE,
++	},
++#endif
+ };
+ 
+ static struct ctl_table vm_table[] = {
+
+base-commit: 05dbaf8dd8bf537d4b4eb3115ab42a5fb40ff1f5
+-- 
+2.48.1
+
 
