@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-3366-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3365-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B53A36D6A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 11:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 414B7A36D68
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 11:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA7E27A4545
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 10:55:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AF6E7A45EE
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 10:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 014A41A83F8;
-	Sat, 15 Feb 2025 10:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8812B1A5B9A;
+	Sat, 15 Feb 2025 10:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3ue3qMwr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="boqWaUlE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sUXyXsdJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vq2qdn/Q"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4590A1A265E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC2119CC3D;
 	Sat, 15 Feb 2025 10:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739616961; cv=none; b=N3dKbYPjp6gyqX3c3CKXUUzRMZpOas9rorl0bsHV0KwGMVaorTVkde7eT56S6CPcoQjlk5rAOdKWDYGqBsRlg/PBq8g2FiPlZ8LTT0u3Q2+d/D5zBjPFT8ta9djWnC6v4+i6sktYwoAGbCv/J9stZ4i53iN4/waoBgWFC9I3Oss=
+	t=1739616961; cv=none; b=SDmJWxrvqgfXQHbZYd40/C0obnMpsJ9lpx6NBhte1jh7/gxg8hIqGrEm6CVfph8tZWUT/w9gNB7Qh4R0XDvHGp0LSAdNwNbh2Iqt9hUZ5ExjtgFv9Mw5HlCPehfdzLQLStn8AiIXjgYOBkTR9xR+Ue7c8g+sRioGSCu2HT4DFEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739616961; c=relaxed/simple;
-	bh=GkY+egXIM3GyYLc2ENwowGhk7sj0FaBsV4aacldQ7Io=;
+	bh=8O8yWa4JNktk/uv1oypFkFQwFMHhFkVkTcZPFq1yMWU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=OSMbDOLxqBNVSP3RSRJayNLH2PwtcUcGuH4Wxp3x1kpaWjCpX6vcuvvx53Ze2wTL/mZKKmabdHhLbMDQ+W0Iwgy1ji4QjIqYUEMV9jG9GM32GKLXH2bn2j0jn90yoHIKBMh4bR4lMsBvU/5Y88bFJkITBndBO4KRgmLm8cGp2Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3ue3qMwr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=boqWaUlE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=sDFPg3adTIyNuOpiFtqSRlbiu8oKbj0vGbtu9Q4UHE3XafbXY38xFTPj+szITa6OrYlg+nUBUErjPKbBvMVAT4D7miKUl0C8Z1QsA2aldt52B1+uUrRYpz6UBUarIIna1HUsePMvNk0545TaX9eJMSYfcrnyBMl59dyp567Y2Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sUXyXsdJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vq2qdn/Q; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Sat, 15 Feb 2025 10:55:57 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jmOJnWNjJT09hc5I0j0v2HvKTNHVDiQWBMYjoEKkBFQ=;
-	b=3ue3qMwrQmZ8awQEWzyx+bSFUpZqwgHJsUf5+z/YLa27dZB178doDLOg4jUlO4/8p/qlF7
-	VLEbB5g8z4bo/8k0vv7VHnKtCRxkjTVSA+eNTkLhNhe1wFzmvoriyaeqRpE4FI/sjXNNcs
-	Hqyd867ksLWHJtfzj48i5fretkvdXtB/Iiyp3VV5/zypNH5Vs6m05R+AdrHYwBvSnc7njK
-	I7V/d+jN0UkbPAMcu3gJ/cRIwKkbzWrrONTUeCZUkHsabbe5TEmpMvQOgbgGLe5bLZL/io
-	dZbU/3vKBcCabIB/XyMv8O3zznApNRXssGg3RBAON+T4Qs1T7Gh7nRyOsTOPOg==
+	bh=62eE9xHp8rG2e/+PSOw3vDtld8Mviy7aPJkKv1ym8WE=;
+	b=sUXyXsdJJ0/HTn5Pxs1/M/48xImsTJpz1nzW+JjcyF8XwC9IDzRqWdw5nFPr7l6Ze5UiLA
+	mp33zkel2YbW0S2ZxxdIlrodn+fdeQ03HjNmEOnRdy7jcS+fcZH39pPtqtUbXKKyw7ehPq
+	u6f6tqPyBYD3ivYtOt6p0d2Bqz2FuTu2q4acXCHQheCOEHG0kAOcX6HL4Ef8wjJxV669xo
+	kNOFIjaC+YLmmTQNxE4cNd8ON3dT6xRBvSjQP3MW6EGTuO/Kqq7jd7vx+upi0E9cUgicKT
+	hoYtN7Wc7/WP8Mv4/wzz+FUAD7QTVM3RMFhLflSkzINk67QMBsjHX5nZ6LdNAw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1739616958;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,111 +52,201 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jmOJnWNjJT09hc5I0j0v2HvKTNHVDiQWBMYjoEKkBFQ=;
-	b=boqWaUlE11U/DWlbhGKVAWqt2h2hkcdlpCBQbO0WziYUdfqumZrISvx9DqV6ldkpf3zHSt
-	cKq7n1ZWEZEr2iAg==
-From: "tip-bot2 for zihan zhou" <tip-bot2@linutronix.de>
+	bh=62eE9xHp8rG2e/+PSOw3vDtld8Mviy7aPJkKv1ym8WE=;
+	b=vq2qdn/QzIMCDoIR4W7ehCdY/J3mqLoDecoLjLUQNGjOp1Y6lGLBtDyux86HxH7mFtEJRF
+	JU8OZ2vGwnPodlBw==
+From: "tip-bot2 for Yafang Shao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Reduce the default slice to avoid tasks
- getting an extra tick
-Cc: zihan zhou <15645113830zzh@gmail.com>,
+Subject:
+ [tip: sched/core] sched: Don't define sched_clock_irqtime as static key
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+ Yafang Shao <laoar.shao@gmail.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250208075322.13139-1-15645113830zzh@gmail.com>
-References: <20250208075322.13139-1-15645113830zzh@gmail.com>
+In-Reply-To: <20250205032438.14668-1-laoar.shao@gmail.com>
+References: <20250205032438.14668-1-laoar.shao@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173961695796.10177.6989709679283453357.tip-bot2@tip-bot2>
+Message-ID: <173961695743.10177.17683780278419896262.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     2ae891b826958b60919ea21c727f77bcd6ffcc2c
-Gitweb:        https://git.kernel.org/tip/2ae891b826958b60919ea21c727f77bcd6ffcc2c
-Author:        zihan zhou <15645113830zzh@gmail.com>
-AuthorDate:    Sat, 08 Feb 2025 15:53:23 +08:00
+Commit-ID:     b9f2b29b94943b08157e3dfc970baabc7944dbc3
+Gitweb:        https://git.kernel.org/tip/b9f2b29b94943b08157e3dfc970baabc794=
+4dbc3
+Author:        Yafang Shao <laoar.shao@gmail.com>
+AuthorDate:    Wed, 05 Feb 2025 11:24:38 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 14 Feb 2025 10:32:00 +01:00
 
-sched: Reduce the default slice to avoid tasks getting an extra tick
+sched: Don't define sched_clock_irqtime as static key
 
-The old default value for slice is 0.75 msec * (1 + ilog(ncpus)) which
-means that we have a default slice of:
+The sched_clock_irqtime was defined as a static key in commit 8722903cbb8f
+('sched: Define sched_clock_irqtime as static key'). However, this change
+introduces a 'sleeping in atomic context' warning, as shown below:
 
-  0.75 for 1 cpu
-  1.50 up to 3 cpus
-  2.25 up to 7 cpus
-  3.00 for 8 cpus and above.
+	arch/x86/kernel/tsc.c:1214 mark_tsc_unstable()
+	warn: sleeping in atomic context
 
-For HZ=250 and HZ=100, because of the tick accuracy, the runtime of
-tasks is far higher than their slice.
+As analyzed by Dan, the affected code path is as follows:
 
-For HZ=1000 with 8 cpus or more, the accuracy of tick is already
-satisfactory, but there is still an issue that tasks will get an extra
-tick because the tick often arrives a little faster than expected. In
-this case, the task can only wait until the next tick to consider that it
-has reached its deadline, and will run 1ms longer.
+vcpu_load() <- disables preempt
+-> kvm_arch_vcpu_load()
+   -> mark_tsc_unstable() <- sleeps
 
-vruntime + sysctl_sched_base_slice =     deadline
-        |-----------|-----------|-----------|-----------|
-             1ms          1ms         1ms         1ms
-                   ^           ^           ^           ^
-                 tick1       tick2       tick3       tick4(nearly 4ms)
+virt/kvm/kvm_main.c
+   166  void vcpu_load(struct kvm_vcpu *vcpu)
+   167  {
+   168          int cpu =3D get_cpu();
+                          ^^^^^^^^^^
+This get_cpu() disables preemption.
 
-There are two reasons for tick error: clockevent precision and the
-CONFIG_IRQ_TIME_ACCOUNTING/CONFIG_PARAVIRT_TIME_ACCOUNTING. with
-CONFIG_IRQ_TIME_ACCOUNTING every tick will be less than 1ms, but even
-without it, because of clockevent precision, tick still often less than
-1ms.
+   169
+   170          __this_cpu_write(kvm_running_vcpu, vcpu);
+   171          preempt_notifier_register(&vcpu->preempt_notifier);
+   172          kvm_arch_vcpu_load(vcpu, cpu);
+   173          put_cpu();
+   174  }
 
-In order to make scheduling more precise, we changed 0.75 to 0.70,
-Using 0.70 instead of 0.75 should not change much for other configs
-and would fix this issue:
+arch/x86/kvm/x86.c
+  4979          if (unlikely(vcpu->cpu !=3D cpu) || kvm_check_tsc_unstable())=
+ {
+  4980                  s64 tsc_delta =3D !vcpu->arch.last_host_tsc ? 0 :
+  4981                                  rdtsc() - vcpu->arch.last_host_tsc;
+  4982                  if (tsc_delta < 0)
+  4983                          mark_tsc_unstable("KVM discovered backwards T=
+SC");
 
-  0.70 for 1 cpu
-  1.40 up to 3 cpus
-  2.10 up to 7 cpus
-  2.8 for 8 cpus and above.
+arch/x86/kernel/tsc.c
+    1206 void mark_tsc_unstable(char *reason)
+    1207 {
+    1208         if (tsc_unstable)
+    1209                 return;
+    1210
+    1211         tsc_unstable =3D 1;
+    1212         if (using_native_sched_clock())
+    1213                 clear_sched_clock_stable();
+--> 1214         disable_sched_clock_irqtime();
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+kernel/jump_label.c
+   245  void static_key_disable(struct static_key *key)
+   246  {
+   247          cpus_read_lock();
+                ^^^^^^^^^^^^^^^^
+This lock has a might_sleep() in it which triggers the static checker
+warning.
 
-This does not guarantee that tasks can run the slice time accurately
-every time, but occasionally running an extra tick has little impact.
+   248          static_key_disable_cpuslocked(key);
+   249          cpus_read_unlock();
+   250  }
 
-Signed-off-by: zihan zhou <15645113830zzh@gmail.com>
+Let revert this change for now as {disable,enable}_sched_clock_irqtime
+are used in many places, as pointed out by Sean, including the following:
+
+The code path in clocksource_watchdog():
+
+  clocksource_watchdog()
+  |
+  -> spin_lock(&watchdog_lock);
+     |
+     -> __clocksource_unstable()
+        |
+        -> clocksource.mark_unstable() =3D=3D tsc_cs_mark_unstable()
+           |
+           -> disable_sched_clock_irqtime()
+
+And the code path in sched_clock_register():
+
+	/* Cannot register a sched_clock with interrupts on */
+	local_irq_save(flags);
+
+	...
+
+	/* Enable IRQ time accounting if we have a fast enough sched_clock() */
+	if (irqtime > 0 || (irqtime =3D=3D -1 && rate >=3D 1000000))
+		enable_sched_clock_irqtime();
+
+	local_irq_restore(flags);
+
+[lkp@intel.com: reported a build error in the prev version]
+
+Closes: https://lore.kernel.org/kvm/37a79ba3-9ce0-479c-a5b0-2bd75d573ed3@stan=
+ley.mountain/
+Fixes: 8722903cbb8f ("sched: Define sched_clock_irqtime as static key")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Debugged-by: Dan Carpenter <dan.carpenter@linaro.org>
+Debugged-by: Sean Christopherson <seanjc@google.com>
+Debugged-by: Michal Koutn=C3=BD <mkoutny@suse.com>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20250208075322.13139-1-15645113830zzh@gmail.com
+Link: https://lkml.kernel.org/r/20250205032438.14668-1-laoar.shao@gmail.com
 ---
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/cputime.c | 8 ++++----
+ kernel/sched/sched.h   | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 61b826f..1784752 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -74,10 +74,10 @@ unsigned int sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_LOG;
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index 5d9143d..6dab485 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -9,8 +9,6 @@
+=20
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+=20
+-DEFINE_STATIC_KEY_FALSE(sched_clock_irqtime);
+-
  /*
-  * Minimal preemption granularity for CPU-bound tasks:
-  *
-- * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
-+ * (default: 0.70 msec * (1 + ilog(ncpus)), units: nanoseconds)
+  * There are no locks covering percpu hardirq/softirq time.
+  * They are only modified in vtime_account, on corresponding CPU
+@@ -24,14 +22,16 @@ DEFINE_STATIC_KEY_FALSE(sched_clock_irqtime);
   */
--unsigned int sysctl_sched_base_slice			= 750000ULL;
--static unsigned int normalized_sysctl_sched_base_slice	= 750000ULL;
-+unsigned int sysctl_sched_base_slice			= 700000ULL;
-+static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
- 
- const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
- 
+ DEFINE_PER_CPU(struct irqtime, cpu_irqtime);
+=20
++int sched_clock_irqtime;
++
+ void enable_sched_clock_irqtime(void)
+ {
+-	static_branch_enable(&sched_clock_irqtime);
++	sched_clock_irqtime =3D 1;
+ }
+=20
+ void disable_sched_clock_irqtime(void)
+ {
+-	static_branch_disable(&sched_clock_irqtime);
++	sched_clock_irqtime =3D 0;
+ }
+=20
+ static void irqtime_account_delta(struct irqtime *irqtime, u64 delta,
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 38e0e32..ab16d3d 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -3259,11 +3259,11 @@ struct irqtime {
+ };
+=20
+ DECLARE_PER_CPU(struct irqtime, cpu_irqtime);
+-DECLARE_STATIC_KEY_FALSE(sched_clock_irqtime);
++extern int sched_clock_irqtime;
+=20
+ static inline int irqtime_enabled(void)
+ {
+-	return static_branch_likely(&sched_clock_irqtime);
++	return sched_clock_irqtime;
+ }
+=20
+ /*
 
