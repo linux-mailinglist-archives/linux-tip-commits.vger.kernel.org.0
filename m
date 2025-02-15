@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3370-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3368-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34DAA36D70
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 11:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA36A36D6E
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 11:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3683218956F8
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 10:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6D18189569C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 15 Feb 2025 10:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060891A7262;
-	Sat, 15 Feb 2025 10:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8799D1A5B8B;
+	Sat, 15 Feb 2025 10:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VYb+VnMZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XXvgKj6x"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="g+AmOBm+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZjNCMXzf"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A09C19D8AC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9395E1A3168;
 	Sat, 15 Feb 2025 10:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739617000; cv=none; b=YVVAwvvKUZq0MkPPpe5XqCdCBJeuglOxEtQAFCLqkDUYKovbkC2YzUhpKttt4m44LL3hybJbfQZB7wpnMYxpar6p2jMShI5H3JblCBLmGBvpA59oEn5nJLf93BD9ZGTNmKHrRfjpd9+i+57206YuktEstng7c3Pi23Cjeoso4VQ=
+	t=1739617000; cv=none; b=JxT+daEk/73x1KF7yq5PzDC7iAbCksXmEoscDsSd/cnmqijuxJeGLNrlThXhvDzSshtn3c+xkeOjNDQ0zCmjbqeNYWLgRkF5rFqaOOIrqh7nDzM+be4lEGOPv4Z+0ctK9oZjgHDkc+BTsV2HT1tGLMkr59OsQ73ADscdilrg4Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739617000; c=relaxed/simple;
-	bh=0EpzDWIm9cl5Xkdwk4yaB2P2H7gqvQ37qGAoy1nCqjU=;
+	bh=iIDOGNcGLoJvc66/45g/yCMkq2atkFudQaSXXdLZzOY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=F0J82sxOj8jlMTlqp9lcI5uw2jZXzEtXqyk0JLvvdCTTXB59HCRT+N4Q5I//jxuZCVCFj24IL3n+mbYrcVd2DArazL0ZGBw+/tEqlFNuLcIdmkAgP3FEKdrR21bmrVS3no6pblXyTcKhMnduxQeIADI7vXF8TxNzfjZ/bU8DIt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VYb+VnMZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XXvgKj6x; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=L1lzl4E/6lKp/xS0ayfi1thaVO4pnqFEYD9t/VKko+IGBdo89kCM7UWtY686rFamFGbrzlWnIGo4MEa71UbXu0bf2crNIF4cvcvwh+yQKEIBEnAbasJqyOstmJzd+xlx6DSBNCMZcNj6dYZiD5gVRHF8UBBZ0GgHfOz9HhDeWes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=g+AmOBm+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZjNCMXzf; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 15 Feb 2025 10:56:35 -0000
+Date: Sat, 15 Feb 2025 10:56:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739616996;
+	s=2020; t=1739616997;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l6lrzJXG3xIpQht/p5fdCLRFyJxX6w2b/fGiLMIuzCI=;
-	b=VYb+VnMZ70j4W9GD+tZwB/y9ncfjbmRnW2p2kZKScpW4MFuSox3kl/LwTRevV8xmF9v42M
-	SeSCDdw2HO4BTLGBEpmz7Sqk8q/AQCkcoYIpWHQg+Vyc61tNHEzsfRzfbR69iDViJCF4OE
-	xmoZxFv/suHVXzBZKkzQ/ClZnrGxcCWCHQqikUTv7gZHNqEMJaj2DQEbUGWpR2j/2jka15
-	KTX2aH475qnikup8c9WGnM3Rlz8eJZZbZGjsRnIPgwx9zaAlISuEYFCRaYSl4pQbTFI0ZQ
-	gYSIYr/Jcs+yK5hIn/2RmyoHlxSXe+tTxaqEu55zq47+IMFByFFFBWhkpT8XiQ==
+	bh=0hM6mQEM2DquiCXn3DFjKV52LFKc/MnW+V8Ac2kU8+M=;
+	b=g+AmOBm+3N1NGKcT7JHn63D69n6UkM4Wj0SkK0mpqaCRAG1mMae7GQxiPn7KUeUqCbs1SA
+	gtc4dPB8XidK+VmoaWgDOYBwx+8ccpGj5mZjk5SP+DW9kOO4FvTlua58CpkIV3tx2/LQAp
+	3F0CzFCGMRv32EDO/fsjCfCa+wO6Enqcep40qXI2A+xjj+Twb/9RfqnNca/mj66oxqeFuT
+	7jZEozBcy1PvA1T3B+kmJ6z1YP0OqVTyeDUCtiNtMSNyF/OvHnMG9QpeQX/lGdUOkqJ3rQ
+	efPFSPghMvFi3moQZQ8QAL8s9Zjn7TOfafgKRCj4heoZvJzUCM3sHrayGRCjfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739616996;
+	s=2020e; t=1739616997;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l6lrzJXG3xIpQht/p5fdCLRFyJxX6w2b/fGiLMIuzCI=;
-	b=XXvgKj6x++v8zf+3j1xK+3LB//4OG3CyUkpE3f/z7mzY87+HJvoUpfPvpTJmRJv2rZ5F7b
-	48l2WFe/J+3Sv0DA==
+	bh=0hM6mQEM2DquiCXn3DFjKV52LFKc/MnW+V8Ac2kU8+M=;
+	b=ZjNCMXzfRPSEHhBmHrB1lUnOtVTPbLL0CC9v7cVyrpTbjX05diOfwYOeAcnh/nntmEfGLc
+	VNeJQI8y9rm2bDBw==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/ibt: Handle FineIBT in handle_cfi_failure()
-Cc: Sami Tolvanen <samitolvanen@google.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/core] x86/early_printk: Harden early_serial
+Cc: Scott Constable <scott.d.constable@intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Sami Tolvanen <samitolvanen@google.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250214092619.GB21726@noisy.programming.kicks-ass.net>
-References: <20250214092619.GB21726@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250207122546.919773202@infradead.org>
+References: <20250207122546.919773202@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173961699585.10177.15712455227180390795.tip-bot2@tip-bot2>
+Message-ID: <173961699643.10177.2484228241413795642.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,140 +82,153 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     882b86fd4e0d49bf91148dbadcdbece19ded40e6
-Gitweb:        https://git.kernel.org/tip/882b86fd4e0d49bf91148dbadcdbece19ded40e6
+Commit-ID:     306859de59e59f88662b6b56ff2ce3bbb1e375bb
+Gitweb:        https://git.kernel.org/tip/306859de59e59f88662b6b56ff2ce3bbb1e375bb
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 13 Feb 2025 12:45:47 +01:00
+AuthorDate:    Fri, 07 Feb 2025 13:15:38 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 14 Feb 2025 10:32:07 +01:00
 
-x86/ibt: Handle FineIBT in handle_cfi_failure()
+x86/early_printk: Harden early_serial
 
-Sami reminded me that FineIBT failure does not hook into the regular
-CFI failure case, and as such CFI_PERMISSIVE does not work.
+Scott found that mem32_serial_in() is an ideal speculation gadget, an
+indirectly callable function that takes an adddress and offset and
+immediately does a load.
 
-Reported-by: Sami Tolvanen <samitolvanen@google.com>
+Use static_call() to take away the need for indirect calls and
+explicitly seal the functions to ensure they're not callable on IBT
+enabled parts.
+
+Reported-by: Scott Constable <scott.d.constable@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lkml.kernel.org/r/20250214092619.GB21726@noisy.programming.kicks-ass.net
+Link: https://lore.kernel.org/r/20250207122546.919773202@infradead.org
 ---
- arch/x86/include/asm/cfi.h    | 11 +++++++++++
- arch/x86/kernel/alternative.c | 30 ++++++++++++++++++++++++++++++
- arch/x86/kernel/cfi.c         | 22 ++++++++++++++++++----
- 3 files changed, 59 insertions(+), 4 deletions(-)
+ arch/x86/kernel/early_printk.c | 49 ++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/include/asm/cfi.h b/arch/x86/include/asm/cfi.h
-index 31d19c8..7dd5ab2 100644
---- a/arch/x86/include/asm/cfi.h
-+++ b/arch/x86/include/asm/cfi.h
-@@ -126,6 +126,17 @@ static inline int cfi_get_offset(void)
+diff --git a/arch/x86/kernel/early_printk.c b/arch/x86/kernel/early_printk.c
+index 44f9370..fc1714b 100644
+--- a/arch/x86/kernel/early_printk.c
++++ b/arch/x86/kernel/early_printk.c
+@@ -19,6 +19,7 @@
+ #include <linux/usb/ehci_def.h>
+ #include <linux/usb/xhci-dbgp.h>
+ #include <asm/pci_x86.h>
++#include <linux/static_call.h>
  
- extern u32 cfi_get_func_hash(void *func);
+ /* Simple VGA output */
+ #define VGABASE		(__ISA_IO_base + 0xb8000)
+@@ -94,26 +95,28 @@ static unsigned long early_serial_base = 0x3f8;  /* ttyS0 */
+ #define DLL             0       /*  Divisor Latch Low         */
+ #define DLH             1       /*  Divisor latch High        */
  
-+#ifdef CONFIG_FINEIBT
-+extern bool decode_fineibt_insn(struct pt_regs *regs, unsigned long *target, u32 *type);
-+#else
-+static inline bool
-+decode_fineibt_insn(struct pt_regs *regs, unsigned long *target, u32 *type)
-+{
-+	return false;
-+}
-+
-+#endif
-+
- #else
- static inline enum bug_trap_type handle_cfi_failure(struct pt_regs *regs)
+-static unsigned int io_serial_in(unsigned long addr, int offset)
++static __noendbr unsigned int io_serial_in(unsigned long addr, int offset)
  {
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index e285933..247ee5f 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1065,6 +1065,7 @@ asm(	".pushsection .rodata			\n"
- 	"	endbr64				\n"
- 	"	subl	$0x12345678, %r10d	\n"
- 	"	je	fineibt_preamble_end	\n"
-+	"fineibt_preamble_ud2:			\n"
- 	"	ud2				\n"
- 	"	nop				\n"
- 	"fineibt_preamble_end:			\n"
-@@ -1072,9 +1073,11 @@ asm(	".pushsection .rodata			\n"
- );
+ 	return inb(addr + offset);
+ }
++ANNOTATE_NOENDBR_SYM(io_serial_in);
  
- extern u8 fineibt_preamble_start[];
-+extern u8 fineibt_preamble_ud2[];
- extern u8 fineibt_preamble_end[];
+-static void io_serial_out(unsigned long addr, int offset, int value)
++static __noendbr void io_serial_out(unsigned long addr, int offset, int value)
+ {
+ 	outb(value, addr + offset);
+ }
++ANNOTATE_NOENDBR_SYM(io_serial_out);
  
- #define fineibt_preamble_size (fineibt_preamble_end - fineibt_preamble_start)
-+#define fineibt_preamble_ud2  (fineibt_preamble_ud2 - fineibt_preamble_start)
- #define fineibt_preamble_hash 7
+-static unsigned int (*serial_in)(unsigned long addr, int offset) = io_serial_in;
+-static void (*serial_out)(unsigned long addr, int offset, int value) = io_serial_out;
++DEFINE_STATIC_CALL(serial_in, io_serial_in);
++DEFINE_STATIC_CALL(serial_out, io_serial_out);
  
- asm(	".pushsection .rodata			\n"
-@@ -1410,6 +1413,33 @@ static void poison_cfi(void *addr)
- 	}
+ static int early_serial_putc(unsigned char ch)
+ {
+ 	unsigned timeout = 0xffff;
+ 
+-	while ((serial_in(early_serial_base, LSR) & XMTRDY) == 0 && --timeout)
++	while ((static_call(serial_in)(early_serial_base, LSR) & XMTRDY) == 0 && --timeout)
+ 		cpu_relax();
+-	serial_out(early_serial_base, TXR, ch);
++	static_call(serial_out)(early_serial_base, TXR, ch);
+ 	return timeout ? 0 : -1;
  }
  
-+/*
-+ * regs->ip points to a UD2 instruction, return true and fill out target and
-+ * type when this UD2 is from a FineIBT preamble.
-+ *
-+ * We check the preamble by checking for the ENDBR instruction relative to the
-+ * UD2 instruction.
-+ */
-+bool decode_fineibt_insn(struct pt_regs *regs, unsigned long *target, u32 *type)
-+{
-+	unsigned long addr = regs->ip - fineibt_preamble_ud2;
-+	u32 endbr, hash;
-+
-+	__get_kernel_nofault(&endbr, addr, u32, Efault);
-+	if (endbr != gen_endbr())
-+		return false;
-+
-+	*target = addr + fineibt_preamble_size;
-+
-+	__get_kernel_nofault(&hash, addr + fineibt_preamble_hash, u32, Efault);
-+	*type = (u32)regs->r10 + hash;
-+
-+	return true;
-+
-+Efault:
-+	return false;
-+}
-+
- #else
+@@ -131,16 +134,16 @@ static __init void early_serial_hw_init(unsigned divisor)
+ {
+ 	unsigned char c;
  
- static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
-diff --git a/arch/x86/kernel/cfi.c b/arch/x86/kernel/cfi.c
-index e6bf78f..f6905be 100644
---- a/arch/x86/kernel/cfi.c
-+++ b/arch/x86/kernel/cfi.c
-@@ -70,11 +70,25 @@ enum bug_trap_type handle_cfi_failure(struct pt_regs *regs)
- 	unsigned long target;
- 	u32 type;
+-	serial_out(early_serial_base, LCR, 0x3);	/* 8n1 */
+-	serial_out(early_serial_base, IER, 0);	/* no interrupt */
+-	serial_out(early_serial_base, FCR, 0);	/* no fifo */
+-	serial_out(early_serial_base, MCR, 0x3);	/* DTR + RTS */
++	static_call(serial_out)(early_serial_base, LCR, 0x3);	/* 8n1 */
++	static_call(serial_out)(early_serial_base, IER, 0);	/* no interrupt */
++	static_call(serial_out)(early_serial_base, FCR, 0);	/* no fifo */
++	static_call(serial_out)(early_serial_base, MCR, 0x3);	/* DTR + RTS */
  
--	if (!is_cfi_trap(regs->ip))
--		return BUG_TRAP_TYPE_NONE;
-+	switch (cfi_mode) {
-+	case CFI_KCFI:
-+		if (!is_cfi_trap(regs->ip))
-+			return BUG_TRAP_TYPE_NONE;
-+
-+		if (!decode_cfi_insn(regs, &target, &type))
-+			return report_cfi_failure_noaddr(regs, regs->ip);
-+
-+		break;
- 
--	if (!decode_cfi_insn(regs, &target, &type))
--		return report_cfi_failure_noaddr(regs, regs->ip);
-+	case CFI_FINEIBT:
-+		if (!decode_fineibt_insn(regs, &target, &type))
-+			return BUG_TRAP_TYPE_NONE;
-+
-+		break;
-+
-+	default:
-+		return BUG_TRAP_TYPE_NONE;
-+	}
- 
- 	return report_cfi_failure(regs, regs->ip, &target, type);
+-	c = serial_in(early_serial_base, LCR);
+-	serial_out(early_serial_base, LCR, c | DLAB);
+-	serial_out(early_serial_base, DLL, divisor & 0xff);
+-	serial_out(early_serial_base, DLH, (divisor >> 8) & 0xff);
+-	serial_out(early_serial_base, LCR, c & ~DLAB);
++	c = static_call(serial_in)(early_serial_base, LCR);
++	static_call(serial_out)(early_serial_base, LCR, c | DLAB);
++	static_call(serial_out)(early_serial_base, DLL, divisor & 0xff);
++	static_call(serial_out)(early_serial_base, DLH, (divisor >> 8) & 0xff);
++	static_call(serial_out)(early_serial_base, LCR, c & ~DLAB);
  }
+ 
+ #define DEFAULT_BAUD 9600
+@@ -183,28 +186,26 @@ static __init void early_serial_init(char *s)
+ 	/* Convert from baud to divisor value */
+ 	divisor = 115200 / baud;
+ 
+-	/* These will always be IO based ports */
+-	serial_in = io_serial_in;
+-	serial_out = io_serial_out;
+-
+ 	/* Set up the HW */
+ 	early_serial_hw_init(divisor);
+ }
+ 
+ #ifdef CONFIG_PCI
+-static void mem32_serial_out(unsigned long addr, int offset, int value)
++static __noendbr void mem32_serial_out(unsigned long addr, int offset, int value)
+ {
+ 	u32 __iomem *vaddr = (u32 __iomem *)addr;
+ 	/* shift implied by pointer type */
+ 	writel(value, vaddr + offset);
+ }
++ANNOTATE_NOENDBR_SYM(mem32_serial_out);
+ 
+-static unsigned int mem32_serial_in(unsigned long addr, int offset)
++static __noendbr unsigned int mem32_serial_in(unsigned long addr, int offset)
+ {
+ 	u32 __iomem *vaddr = (u32 __iomem *)addr;
+ 	/* shift implied by pointer type */
+ 	return readl(vaddr + offset);
+ }
++ANNOTATE_NOENDBR_SYM(mem32_serial_in);
+ 
+ /*
+  * early_pci_serial_init()
+@@ -278,15 +279,13 @@ static __init void early_pci_serial_init(char *s)
+ 	 */
+ 	if ((bar0 & PCI_BASE_ADDRESS_SPACE) == PCI_BASE_ADDRESS_SPACE_IO) {
+ 		/* it is IO mapped */
+-		serial_in = io_serial_in;
+-		serial_out = io_serial_out;
+ 		early_serial_base = bar0 & PCI_BASE_ADDRESS_IO_MASK;
+ 		write_pci_config(bus, slot, func, PCI_COMMAND,
+ 				 cmdreg|PCI_COMMAND_IO);
+ 	} else {
+ 		/* It is memory mapped - assume 32-bit alignment */
+-		serial_in = mem32_serial_in;
+-		serial_out = mem32_serial_out;
++		static_call_update(serial_in, mem32_serial_in);
++		static_call_update(serial_out, mem32_serial_out);
+ 		/* WARNING! assuming the address is always in the first 4G */
+ 		early_serial_base =
+ 			(unsigned long)early_ioremap(bar0 & PCI_BASE_ADDRESS_MEM_MASK, 0x10);
 
