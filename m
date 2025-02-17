@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3382-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3383-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A124A37D7E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2025 09:52:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2B2A38E42
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2025 22:47:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF203A90A0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2025 08:52:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3110116DDC8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Feb 2025 21:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DA11A5B9D;
-	Mon, 17 Feb 2025 08:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230ED224F0;
+	Mon, 17 Feb 2025 21:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y6VbQeQX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X1GBmRjl"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PELFBUR0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ICRbi6t7"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2D71A239A;
-	Mon, 17 Feb 2025 08:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B11419CD19;
+	Mon, 17 Feb 2025 21:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739782320; cv=none; b=ePpnnz9vA5x8y38d404iiTZ2ca7H4n4zpkOws8agrtSLG2wUH8HuiwmFsPzSDY6M74xy2nePy4DhPP6asee5wiFyZwBREAT4OnmfxDxYVkFdOocUIsRWgxcdmTrrefzfS1vKo4CuEWgbfXn6cyLm2kV9YzyuryUfES1IEUK4NRc=
+	t=1739828861; cv=none; b=F2NuZEM6aEUlvTu2/Ft4Ordfxgd5LVVR7wNjny0sPmpzTgrHTezpo1E2GjvJPeLF3WH17HT4R3qw0MWapeuts3qs/XpMqLtiVFYeMGhI8zP/R61InK/hdQbpJ2spud9U1sCQ64aeMAZl5r2QIGxPgrb0y57Koi8uRFpU6BGaW4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739782320; c=relaxed/simple;
-	bh=CyjIe7k3+IMbCFL/LQQGLBD6rDen/ScY64+w54jewVo=;
+	s=arc-20240116; t=1739828861; c=relaxed/simple;
+	bh=6I52qKTO8xXxaGOo+fo6UwbMEZo/VJ4wdhcirNvj9XM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=EYsZCK3w9IZXn+zl2gYPhDdravD3idZYOza/9sxJh03g856r+No20prDp42/AZwgU2Luw/4RI8lpbgz99EQy4Vebvygrvv2lzH5HnxcQHjgJUhm33dGZE/eMWzuWwGE8ViwYb/njCXHtNReuTGYuaRXgaXJEK4ahONy9rz/Bb8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y6VbQeQX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X1GBmRjl; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=l743ZWEk4HfXtnwbif7Ed2L7d0/pdTxTZ+iItlHeOWIHJb309Ls6R7XvdB5xdP5OFHhG14Mn+F5tqsKwsRuj8uy4Yf/RpP67JD817A6Its5GEN9m9FK3q6zluxzQAcJSZLEoHb7pcce71rnZQCRJb6qljkWTene8VRU7benn1b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PELFBUR0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ICRbi6t7; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Feb 2025 08:51:55 -0000
+Date: Mon, 17 Feb 2025 21:47:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739782316;
+	s=2020; t=1739828856;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zjgnbjAxTQ6rHkQ2QmkC3TfqKV2NrHediErt5xaQ6n0=;
-	b=Y6VbQeQXtxcsS07NrA0/zcWhrVLyBxcU2qzGtpOYaX76gmST/miH6HPSY3WqDuTDoumxPJ
-	KWnX1z0T12cu4qmSfVyP9elnvJ5mSWqEwv+OymdTe88v6tH22+MgXTZQE0pJ1gJFZe9F2n
-	9RZoX4mJ721yPv5GHO/HI0+fKdJEPMHnywfAchdA6UkuC9grsUWkv8SCkyezaIXFy1cY1R
-	Ww7Gx40fXurUsRsZM8LZISGmCx7DyqKTWCnpXHQTVExZ9mw4+Qdnbg/cgnBkMXUhl8LH+P
-	StZ++Yy+7U+ZxjmYMHRSYQjIFsip/FHES7sOOsz5IwvKEI0wyoVtYeCMHR83Zg==
+	bh=qR4ihC83aIVBuKTHNw290iskMNQB6fjA69OpPfEtZzw=;
+	b=PELFBUR00FanrjDHaHsxyaI3R64NCpb0GcJn3IDs8FZRf8npIoNthf9NDCvS3DtQTUP0kb
+	vXufOB9PAkOS4xM03RxvKz/sSADV17Ti1QjtY5V6abHyth5bYXaN2m6trRkdKHGFjFGVRV
+	09RtmLB9RV2+PDvQ5qCZLox1BennS5Cwkr6qHXXMMmMhOb/adz42NjfLRyzJgWAguv84a2
+	0V4sTpDGx15Bp02PbLWPekM/NSgBUZNLOXPVsCslKKL4RrDJSjARsgI8WISJDJYVjlY96Z
+	85FvgW6gYbs2yz8yHdjad2U4cAb7PDIr5Yzp9fikV+4O34QGldzQfEyf2XNm/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739782316;
+	s=2020e; t=1739828856;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zjgnbjAxTQ6rHkQ2QmkC3TfqKV2NrHediErt5xaQ6n0=;
-	b=X1GBmRjlRMJ6CC6/OCpusZMxbIb9P7/78gPOfO1e0t+LK6FPUKqJ+LRvg/wZA36pqpMPLE
-	WOz3PeZRIPy2h1Bg==
-From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+	bh=qR4ihC83aIVBuKTHNw290iskMNQB6fjA69OpPfEtZzw=;
+	b=ICRbi6t7B+PwsoUYv7isWBbzRJh2E2/TtU30INmS6Ice8dlGHddkP2K4BdSeqSIVXUDK00
+	0583xvPDHbfzbnCA==
+From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/AMD: Remove ugly linebreak in
- __verify_patch_section() signature
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: irq/urgent] irqchip/gic-v3: Fix rk3399 workaround when secure
+ interrupts are enabled
+Cc: Christoph Fritz <chf.fritz@googlemail.com>, Marc Zyngier <maz@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250211163648.30531-2-bp@kernel.org>
-References: <20250211163648.30531-2-bp@kernel.org>
+In-Reply-To: <20250215185241.3768218-1-maz@kernel.org>
+References: <20250215185241.3768218-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173978231585.10177.3897050426518699504.tip-bot2@tip-bot2>
+Message-ID: <173982885309.10177.1439704589709977070.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,38 +80,157 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     7103f0589ac220eac3d2b1e8411494b31b883d06
-Gitweb:        https://git.kernel.org/tip/7103f0589ac220eac3d2b1e8411494b31b883d06
-Author:        Borislav Petkov (AMD) <bp@alien8.de>
-AuthorDate:    Thu, 23 Jan 2025 13:14:34 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 17 Feb 2025 09:42:13 +01:00
+Commit-ID:     4cb77793842a351b39a030f77caebace3524840e
+Gitweb:        https://git.kernel.org/tip/4cb77793842a351b39a030f77caebace3524840e
+Author:        Marc Zyngier <maz@kernel.org>
+AuthorDate:    Sat, 15 Feb 2025 18:52:41 
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 17 Feb 2025 22:41:06 +01:00
 
-x86/microcode/AMD: Remove ugly linebreak in __verify_patch_section() signature
+irqchip/gic-v3: Fix rk3399 workaround when secure interrupts are enabled
 
-No functional changes.
+Christoph reports that their rk3399 system dies since commit 773c05f417fa1
+("irqchip/gic-v3: Work around insecure GIC integrations").
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250211163648.30531-2-bp@kernel.org
+It appears that some rk3399 have secure payloads, and that the firmware
+sets SCR_EL3.FIQ==1. Obivously, disabling security in that configuration
+leads to even more problems.
+
+Revisit the workaround by:
+
+  - making it rk3399 specific
+  - checking whether Group-0 is available, which is a good proxy
+    for SCR_EL3.FIQ being 0
+  - either apply the workaround if Group-0 is available, or disable
+    pseudo-NMIs if not
+
+Note that this doesn't mean that the secure side is able to receive
+interrupts, as all interrupts are made non-secure anyway.
+
+Clearly, nobody ever tested secure interrupts on this platform.
+
+Fixes: 773c05f417fa1 ("irqchip/gic-v3: Work around insecure GIC integrations")
+Reported-by: Christoph Fritz <chf.fritz@googlemail.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Christoph Fritz <chf.fritz@googlemail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250215185241.3768218-1-maz@kernel.org
+Closes: https://lore.kernel.org/r/b1266652fb64857246e8babdf268d0df8f0c36d9.camel@googlemail.com
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3.c | 53 ++++++++++++++++++++++++++---------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index a5dac7f..4a62625 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -246,8 +246,7 @@ static bool verify_equivalence_table(const u8 *buf, size_t buf_size)
-  * On success, @sh_psize returns the patch size according to the section header,
-  * to the caller.
-  */
--static bool
--__verify_patch_section(const u8 *buf, size_t buf_size, u32 *sh_psize)
-+static bool __verify_patch_section(const u8 *buf, size_t buf_size, u32 *sh_psize)
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 76dce0a..270d7a4 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -44,6 +44,7 @@ static u8 dist_prio_nmi __ro_after_init = GICV3_PRIO_NMI;
+ #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
+ #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
+ #define FLAGS_WORKAROUND_ASR_ERRATUM_8601001	(1ULL << 2)
++#define FLAGS_WORKAROUND_INSECURE		(1ULL << 3)
+ 
+ #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
+ 
+@@ -83,6 +84,8 @@ static DEFINE_STATIC_KEY_TRUE(supports_deactivate_key);
+ #define GIC_LINE_NR	min(GICD_TYPER_SPIS(gic_data.rdists.gicd_typer), 1020U)
+ #define GIC_ESPI_NR	GICD_TYPER_ESPIS(gic_data.rdists.gicd_typer)
+ 
++static bool nmi_support_forbidden;
++
+ /*
+  * There are 16 SGIs, though we only actually use 8 in Linux. The other 8 SGIs
+  * are potentially stolen by the secure side. Some code, especially code dealing
+@@ -163,21 +166,27 @@ static void __init gic_prio_init(void)
  {
- 	u32 p_type, p_size;
- 	const u32 *hdr;
+ 	bool ds;
+ 
+-	ds = gic_dist_security_disabled();
+-	if (!ds) {
+-		u32 val;
+-
+-		val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
+-		val |= GICD_CTLR_DS;
+-		writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
++	cpus_have_group0 = gic_has_group0();
+ 
+-		ds = gic_dist_security_disabled();
+-		if (ds)
+-			pr_warn("Broken GIC integration, security disabled");
++	ds = gic_dist_security_disabled();
++	if ((gic_data.flags & FLAGS_WORKAROUND_INSECURE) && !ds) {
++		if (cpus_have_group0) {
++			u32 val;
++
++			val = readl_relaxed(gic_data.dist_base + GICD_CTLR);
++			val |= GICD_CTLR_DS;
++			writel_relaxed(val, gic_data.dist_base + GICD_CTLR);
++
++			ds = gic_dist_security_disabled();
++			if (ds)
++				pr_warn("Broken GIC integration, security disabled\n");
++		} else {
++			pr_warn("Broken GIC integration, pNMI forbidden\n");
++			nmi_support_forbidden = true;
++		}
+ 	}
+ 
+ 	cpus_have_security_disabled = ds;
+-	cpus_have_group0 = gic_has_group0();
+ 
+ 	/*
+ 	 * How priority values are used by the GIC depends on two things:
+@@ -209,7 +218,7 @@ static void __init gic_prio_init(void)
+ 	 * be in the non-secure range, we program the non-secure values into
+ 	 * the distributor to match the PMR values we want.
+ 	 */
+-	if (cpus_have_group0 & !cpus_have_security_disabled) {
++	if (cpus_have_group0 && !cpus_have_security_disabled) {
+ 		dist_prio_irq = __gicv3_prio_to_ns(dist_prio_irq);
+ 		dist_prio_nmi = __gicv3_prio_to_ns(dist_prio_nmi);
+ 	}
+@@ -1922,6 +1931,18 @@ static bool gic_enable_quirk_arm64_2941627(void *data)
+ 	return true;
+ }
+ 
++static bool gic_enable_quirk_rk3399(void *data)
++{
++	struct gic_chip_data *d = data;
++
++	if (of_machine_is_compatible("rockchip,rk3399")) {
++		d->flags |= FLAGS_WORKAROUND_INSECURE;
++		return true;
++	}
++
++	return false;
++}
++
+ static bool rd_set_non_coherent(void *data)
+ {
+ 	struct gic_chip_data *d = data;
+@@ -1997,6 +2018,12 @@ static const struct gic_quirk gic_quirks[] = {
+ 		.init   = rd_set_non_coherent,
+ 	},
+ 	{
++		.desc	= "GICv3: Insecure RK3399 integration",
++		.iidr	= 0x0000043b,
++		.mask	= 0xff000fff,
++		.init	= gic_enable_quirk_rk3399,
++	},
++	{
+ 	}
+ };
+ 
+@@ -2004,7 +2031,7 @@ static void gic_enable_nmi_support(void)
+ {
+ 	int i;
+ 
+-	if (!gic_prio_masking_enabled())
++	if (!gic_prio_masking_enabled() || nmi_support_forbidden)
+ 		return;
+ 
+ 	rdist_nmi_refs = kcalloc(gic_data.ppi_nr + SGI_NR,
 
