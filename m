@@ -1,71 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-3412-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3411-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7711A3977F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 10:51:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D681A39766
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 10:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 463D33A80B7
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 09:47:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24BDF18922B8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 09:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ACD22FAFD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B25E235BF4;
 	Tue, 18 Feb 2025 09:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L29lIKjk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F80oRI5i"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NRW1knA9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3sABTTNQ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850A2343D4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BCF2343AB;
 	Tue, 18 Feb 2025 09:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739871994; cv=none; b=dPXNRQC0LdwkKRF89G/hie869WAZ9uv07p2fE35OjDsxFjti6UzAc31zgqXha4FYXHBMtuqBnTTsRjLM1i6ouFqZaNxK8JWpdCavmlx9MfLNsyx4aySvPM5z7fXinIDM8C99WC6ZXeT5UvLL/zBiT1HtWtTVMyeSn/A2R2HXNh0=
+	t=1739871994; cv=none; b=tpUEAV0hNltVL77TQfv4uyLRJZPYV/d+jh9EAAeEszZd4MLTh/6I6NlDUCywO3phH4yB3uEBxbqMA9F2Sa1E9KYeKNAfvzCK3ITrmu04EOZEl2vehAJmID1SAhoALZh0NA+6xlii/nbDd5bdbw2mo+SLGLjNHcZxl3Pnn8dG/xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1739871994; c=relaxed/simple;
-	bh=ZRK9DkGAdWHaLVW2FmS2uFw8+3RShiT5gWi20wgEjP4=;
+	bh=NJtKOnxIP1IfIvMiE979mSAZScwzlvnCnioNXbYN3qs=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IYbDbuNh69BzKVi9Vg0897R+fPCO7Q2JzRA60rpxjEvaVHMueypmLAtxpdmlHDMAsmyTimBty4zh+5FuOtoteTwSJxztTtlZ2wi0QSYJvgEuCv6OPsYilGh7y+9eLxxHDXJq7iZgfjuXK2hVwlicwPLUb26VHrpQGR4TOx9lAKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L29lIKjk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F80oRI5i; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bBVC8H+X/HU6es2Kex+cJIbSmtGK3kw/NxTE3/G6dtfNQ9D+wcde5LnwE/Ee6H/ZaIrjLIY5NjC754LWPO18MM5znAhfUm36eKIvZRbgT5oFo+/x9/UqWITZW7anDhS7M5s561Nn/h9KvgE+xeR969OkKY4TVj/hmxAy7YuMeg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NRW1knA9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3sABTTNQ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 18 Feb 2025 09:46:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739871991;
+	s=2020; t=1739871990;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n3/vNErZjl0gewE84wnG96tfUOdnxBJenFzfpO6G/Ec=;
-	b=L29lIKjkIZxuN8QxhDyh4nmY+m4k5Z87aKdUPhIsESf3fApDHZJT0+Jnz7ZfaOnSvyzhAY
-	0IWPUDL9mmI2yjLXnBIJAw00qdxmQ2DIzejqnEQve9PW1hms2bf7yx2CIRyBfIEiiXiGJA
-	dXXhfj5EAO19f/AAiZJFcdrJLc5fV4PMLZTMkdALm+AlG27OgTqaMEvdHthGyjbYvBN4j5
-	T2YTPWQ50LPKotAIHIR1famAfx0nkYsQvZSIFKPhm4k2NAqmnO16NfhgKUR32g6mh/+6Em
-	i7qKxb0zDL+VkozFqS+QruEVRptZUFuur2RSArIx4fSAhrr92djUN34BlNh7bA==
+	bh=Imp0JsdA7qpFLs6ztWT5MyvxkzqBdNfiS5KxScyVkjg=;
+	b=NRW1knA9Z6j6Nc0jRC0k6QVBENNLqcTKxWBaVYwexmCqgq9qNfbxNaP9FtHNRBsatqQdQQ
+	oy4rSjEXH0CpbKWlu3FgXfPHqdE2wTHEa2B8dinmha6+6wCEc1wW/MaxqOin0E0Q/+Ok1r
+	+QTFSTEyVCe2NfNnyMeA3Lfj2n/ol88FPsmI8OSNldMm1m7opS70G9dkP+Dcibui54Mgvx
+	vmAKRD49ZFbY4rMOoeoUg4nIEQdOTPJ3USIwCruQRMuXw1BaKW/MRxH6nuzWOJU6U8+/Sz
+	Z7Iy4FsMb7Bt2u9bW9vFxWWSS9B1lT1UGKl0TRVDq6S+cpN9dh2wdXEGg6qToA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739871991;
+	s=2020e; t=1739871990;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n3/vNErZjl0gewE84wnG96tfUOdnxBJenFzfpO6G/Ec=;
-	b=F80oRI5iZHbXHWuOiGiSVR4oL4g0O64dm4Ii5ckhwKudTErWfEBqlNZqqs+YPJcpjdMmuq
-	sQ3sHv4pnnmRTHAA==
+	bh=Imp0JsdA7qpFLs6ztWT5MyvxkzqBdNfiS5KxScyVkjg=;
+	b=3sABTTNQurbE011PCAEB9QQt+JI3upgxRyKMxSbT2WMOf6NedBlOASHcR9foGZk6pO5Hb+
+	qM5g5GeaVUgIUeBA==
 From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/cleanups] tracing/osnoise: Switch to use hrtimer_setup()
+Subject: [tip: timers/cleanups] block, bfq: Switch to use hrtimer_setup()
 Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Cff8e6e11df5f928b2b97619ac847b4fa045376a1=2E17387?=
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3Cd0d57e1dab46b617856dfb93c721d221cc31ab0b=2E17387?=
  =?utf-8?q?46821=2Egit=2Enamcao=40linutronix=2Ede=3E?=
-References: =?utf-8?q?=3Cff8e6e11df5f928b2b97619ac847b4fa045376a1=2E173874?=
+References: =?utf-8?q?=3Cd0d57e1dab46b617856dfb93c721d221cc31ab0b=2E173874?=
  =?utf-8?q?6821=2Egit=2Enamcao=40linutronix=2Ede=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -73,7 +72,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173987199076.10177.13770385401042617924.tip-bot2@tip-bot2>
+Message-ID: <173987199009.10177.1611648539497449194.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,14 +82,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/cleanups branch of tip:
 
-Commit-ID:     19fec9c4434f86bce6b7227ee70b8d9a2b3c9035
-Gitweb:        https://git.kernel.org/tip/19fec9c4434f86bce6b7227ee70b8d9a2b3c9035
+Commit-ID:     2414f15910c50a714a4f9aa5aa874f0682648536
+Gitweb:        https://git.kernel.org/tip/2414f15910c50a714a4f9aa5aa874f0682648536
 Author:        Nam Cao <namcao@linutronix.de>
-AuthorDate:    Wed, 05 Feb 2025 11:39:08 +01:00
+AuthorDate:    Wed, 05 Feb 2025 11:39:09 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 18 Feb 2025 10:32:33 +01:00
 
-tracing/osnoise: Switch to use hrtimer_setup()
+block, bfq: Switch to use hrtimer_setup()
 
 hrtimer_setup() takes the callback function pointer as argument and
 initializes the timer completely.
@@ -102,35 +101,26 @@ Patch was created by using Coccinelle.
 
 Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://lore.kernel.org/all/ff8e6e11df5f928b2b97619ac847b4fa045376a1.1738746821.git.namcao@linutronix.de
+Link: https://lore.kernel.org/all/d0d57e1dab46b617856dfb93c721d221cc31ab0b.1738746821.git.namcao@linutronix.de
 
 ---
- kernel/trace/trace_osnoise.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ block/bfq-iosched.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index f3a2722..1599953 100644
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -1901,8 +1901,7 @@ static int timerlat_main(void *data)
- 	tlat->count = 0;
- 	tlat->tracing_thread = false;
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 1675422..abd80dc 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -7315,9 +7315,8 @@ static int bfq_init_queue(struct request_queue *q, struct elevator_type *e)
  
--	hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
--	tlat->timer.function = timerlat_irq;
-+	hrtimer_setup(&tlat->timer, timerlat_irq, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
- 	tlat->kthread = current;
- 	osn_var->pid = current->pid;
- 	/*
-@@ -2456,8 +2455,7 @@ static int timerlat_fd_open(struct inode *inode, struct file *file)
- 	tlat = this_cpu_tmr_var();
- 	tlat->count = 0;
+ 	INIT_LIST_HEAD(&bfqd->dispatch);
  
--	hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
--	tlat->timer.function = timerlat_irq;
-+	hrtimer_setup(&tlat->timer, timerlat_irq, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
+-	hrtimer_init(&bfqd->idle_slice_timer, CLOCK_MONOTONIC,
+-		     HRTIMER_MODE_REL);
+-	bfqd->idle_slice_timer.function = bfq_idle_slice_timer;
++	hrtimer_setup(&bfqd->idle_slice_timer, bfq_idle_slice_timer, CLOCK_MONOTONIC,
++		      HRTIMER_MODE_REL);
  
- 	migrate_enable();
- 	return 0;
+ 	bfqd->queue_weights_tree = RB_ROOT_CACHED;
+ #ifdef CONFIG_BFQ_GROUP_IOSCHED
 
