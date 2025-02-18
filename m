@@ -1,71 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-3450-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3452-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3CDA3986E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 11:13:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1DD8A39843
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 11:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ABFC3B79DE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 10:09:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0C92169ACD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Feb 2025 10:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B122417C3;
-	Tue, 18 Feb 2025 10:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4362417E9;
+	Tue, 18 Feb 2025 10:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RaB/UxNN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/qaCqoQw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nBSNTByL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="D9S+4Oul"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C6B2405E6;
-	Tue, 18 Feb 2025 10:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B5D24113E;
+	Tue, 18 Feb 2025 10:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739873213; cv=none; b=VChO3DORNCWEXxGijghF2Ahv82JuO6s4PKr1OzJJYZweeu9yBWqXn80uAdhmedc0MQhPkpG7ArkHjOoBjvaAp2uDY06qB5qpGZv2Y5WAoFU3RKp1honRsb+iDM66Ic1uK8XNOI6XgyroR/ECrP2OjTtzvnIamHXZoGPlOW4wFfM=
+	t=1739873215; cv=none; b=PUlymMPJKAZ1UWhTc4WXP4VNkJ36qk/UYz1Xbxe47rQkHc5FCcbbZ2cRB/gPF90sPJNvNGrzWk64XmIKwFFYbxhTqYb4irwTyaEoA0eTtexBuFo/3pcD1BXNWGTF6iypgF2LOBenEbI3rc54b66U1Z/ltvMDqnbwMzLu6LgxSTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739873213; c=relaxed/simple;
-	bh=3kkCNyvUPN4bu71L0p94DwWn7Hw0B/ZSnRxg3wP8qGE=;
+	s=arc-20240116; t=1739873215; c=relaxed/simple;
+	bh=bRt1T8nVG8am4CVlsxt7UeNmdq42qNUnLTVOWObylwE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JQstPtbrMOYjySvajymRNYkUb6hLFXLjYgHphLcSly8eQ1ObnZj1vkyfObx4OHtGfQYMbqUFfSaruACmMe5WwD4oLkXid/Jz6gzpZm5eVU1UWIvh04FEz6df5+7BpEqal/B274Qi8PBQTU1Yldfm0/7Xywgnq3Zs3RKFmbHlGZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RaB/UxNN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/qaCqoQw; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=tMzuhpypZtQ9gGO803fLlaiseIKPUuV9+QLr3uV0Xn/f81jP6MxF3mdgU98lWrmXcGAnZy+A+0koaC8syv66Q4sgmS7HEz4d/Hh3ib8ZUuzBs8NEtgnyZ+hwnIy/ZAfB48EyKrH1Hg+CqQqsUGojkmbCnZzyx8EHyFb1kYFM8nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nBSNTByL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=D9S+4Oul; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 18 Feb 2025 10:06:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739873209;
+	s=2020; t=1739873210;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jyoxwt4H/hftS3odm/cv5S+Oa5tRYP7UM3NV49mlfoY=;
-	b=RaB/UxNNcVaFyiwfytaVy8ZnvqTnWloCgPwxwRzrIBo1LCoWrnX7c8AVI6yjV88ASwhQDL
-	VLSrsIARGnLSh3IfKOS7Cm9/aQkH8rEtjlEaO7MNHbSsjIxIaXkDoowvNsPydx1MKuP0d/
-	mTYBuowItu7chHEX+bwb4k8x1J6Y/9ordRg2+rQwirxib2/mB/ubroK6rkyAyEKqZ2gkEM
-	XVWoEM108eLribk1wXe6aDpuO7dDzfDE+3ODLN1arpbLssYdPU72F4dcSwM4hT/dD7w/f0
-	vKOiwnzM+B82DcC7dxB5uZFMe1znpUcow+6pH4m+TzalU8d/vf0Wt013arVdcQ==
+	bh=fhFwL23Mr66MNI//Waoq+pQiQpR8vbYoc7IwfFztNBQ=;
+	b=nBSNTByLftJ4ka43JiIA/227CPF5htZtVrw5GWfkil2ZvqG3thJRqmuT7qAP/A6Bicq8st
+	BcO/KvEejggdLIJipPKRFaqODC3s7e3OXKs29qm1h53eR97tl5mcH2aA70UMPyNH6r05eO
+	RdTpY9bePnfTnJl3Ge2Op1rPabR2mmYG2qXqCE8Bz0P930vx4bMhfCyG1ha6w6xsT7aLU8
+	m50xVP99gP7ReLxVLVVQleEHl9z/V6OSqICDRJ0Losl0hUZyy+Ewl3lBErAeQBrHmlu9LN
+	PmjWbNWLRLx04iQGxclIlyS+Po9fXnZJX1XaEOEZSby+KRMF5/cIfKf+IZ/6iQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739873209;
+	s=2020e; t=1739873210;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jyoxwt4H/hftS3odm/cv5S+Oa5tRYP7UM3NV49mlfoY=;
-	b=/qaCqoQwuqecQ4fPVhCX1iqm2fFC7+zfJpJlbToJ6Wl7tkYuQCKb2CpzV7jkpThDjE5pVt
-	asnm4Jm8jGWdFfBw==
+	bh=fhFwL23Mr66MNI//Waoq+pQiQpR8vbYoc7IwfFztNBQ=;
+	b=D9S+4Oul0IHP//ESVn/YpgqEbPfC0t+9Bx1ZmeVqp/UKs8hn7NinMK1ktI5FgeuKyzfOjX
+	jZ5BybFfbC5H4kAg==
 From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: timers/cleanups] net: ethernet: ec_bhf: Switch to use hrtimer_setup()
+ [tip: timers/cleanups] net: ethernet: cortina: Switch to use hrtimer_setup()
 Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C2d8fcf9bf83af507f1ca25cb068af2ac32cdcb2c=2E17387?=
+In-Reply-To: =?utf-8?q?=3Cddbeac1e5d81df33e9cccb099f520111cb8ce9c4=2E17387?=
  =?utf-8?q?46872=2Egit=2Enamcao=40linutronix=2Ede=3E?=
-References: =?utf-8?q?=3C2d8fcf9bf83af507f1ca25cb068af2ac32cdcb2c=2E173874?=
+References: =?utf-8?q?=3Cddbeac1e5d81df33e9cccb099f520111cb8ce9c4=2E173874?=
  =?utf-8?q?6872=2Egit=2Enamcao=40linutronix=2Ede=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -73,7 +73,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <173987320938.10177.5578448773777933370.tip-bot2@tip-bot2>
+Message-ID: <173987320998.10177.17457213977176779693.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,14 +83,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/cleanups branch of tip:
 
-Commit-ID:     66a3898a203d7a62967812d97629ee402a6f2221
-Gitweb:        https://git.kernel.org/tip/66a3898a203d7a62967812d97629ee402a6f2221
+Commit-ID:     f12185af60cb4b81a22e600cbbf33fc91ba662f1
+Gitweb:        https://git.kernel.org/tip/f12185af60cb4b81a22e600cbbf33fc91ba662f1
 Author:        Nam Cao <namcao@linutronix.de>
-AuthorDate:    Wed, 05 Feb 2025 11:43:30 +01:00
+AuthorDate:    Wed, 05 Feb 2025 11:43:29 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 18 Feb 2025 10:35:45 +01:00
 
-net: ethernet: ec_bhf: Switch to use hrtimer_setup()
+net: ethernet: cortina: Switch to use hrtimer_setup()
 
 hrtimer_setup() takes the callback function pointer as argument and
 initializes the timer completely.
@@ -102,24 +102,26 @@ Patch was created by using Coccinelle.
 
 Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/2d8fcf9bf83af507f1ca25cb068af2ac32cdcb2c.1738746872.git.namcao@linutronix.de
+Link: https://lore.kernel.org/all/ddbeac1e5d81df33e9cccb099f520111cb8ce9c4.1738746872.git.namcao@linutronix.de
 
 ---
- drivers/net/ethernet/ec_bhf.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ec_bhf.c b/drivers/net/ethernet/ec_bhf.c
-index 44af1d1..67275aa 100644
---- a/drivers/net/ethernet/ec_bhf.c
-+++ b/drivers/net/ethernet/ec_bhf.c
-@@ -416,8 +416,7 @@ static int ec_bhf_open(struct net_device *net_dev)
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 991e383..2b4bb74 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1833,9 +1833,8 @@ static int gmac_open(struct net_device *netdev)
+ 	gmac_enable_tx_rx(netdev);
+ 	netif_tx_start_all_queues(netdev);
  
- 	netif_start_queue(net_dev);
+-	hrtimer_init(&port->rx_coalesce_timer, CLOCK_MONOTONIC,
+-		     HRTIMER_MODE_REL);
+-	port->rx_coalesce_timer.function = &gmac_coalesce_delay_expired;
++	hrtimer_setup(&port->rx_coalesce_timer, &gmac_coalesce_delay_expired, CLOCK_MONOTONIC,
++		      HRTIMER_MODE_REL);
  
--	hrtimer_init(&priv->hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
--	priv->hrtimer.function = ec_bhf_timer_fun;
-+	hrtimer_setup(&priv->hrtimer, ec_bhf_timer_fun, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
- 	hrtimer_start(&priv->hrtimer, polling_frequency, HRTIMER_MODE_REL);
+ 	netdev_dbg(netdev, "opened\n");
  
- 	return 0;
 
