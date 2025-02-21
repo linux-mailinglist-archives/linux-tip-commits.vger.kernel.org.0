@@ -1,80 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-3571-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3572-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25847A3F776
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 15:40:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F86A3F7B7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 15:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D845A3BFF6C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 14:39:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2C81423CA6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 14:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726EC211272;
-	Fri, 21 Feb 2025 14:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CCE7080D;
+	Fri, 21 Feb 2025 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="urlMX0uf";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sMQ96ddv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bMISUSnM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MNJTTjvs"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE31210F7E;
-	Fri, 21 Feb 2025 14:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922453AC;
+	Fri, 21 Feb 2025 14:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740148667; cv=none; b=oOC6cGHqkaoI0jjfRu/QN/Vgoaa/iGwczLwjLw02Fj83U6qeQORecyQDr0iC3i4leC9bf0nL0f1OxbYDOxYNR7qmI4737q2A8LV69qJSipZCuHIctQvrakObtWNIjUMKX69ySFrvacsRY0x7xVz428EnpLFEs+BuZKSfNhUGu+c=
+	t=1740149348; cv=none; b=dwvUFOpr0xl1p+GIFnb3d8d2wuxOBP7DnR67/1EXTkHoldYkfEj/la1z2Se+dw94/yIigcJXr0Q3pGZv8ni5pXjZZn7RusYryS8h1GhSRYXe9fhSmChU3pcNxKD3HULnIukK18TYaLUpmMU02hlIqlnn9Q+solUWJjUtbec3HDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740148667; c=relaxed/simple;
-	bh=bVcKOp7IeRqWfL3Zyw6j5EDAjnBwDLss90iFubdNemQ=;
+	s=arc-20240116; t=1740149348; c=relaxed/simple;
+	bh=6y5aSOu9XdxgtAIeWMd/qbDJacafNJAX34rjFItQqvc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LxW4khjpfG0mAfNgTiIBX0srIncPzQJemtplB4bDKptLklyFKLOve6RK873G2IdlNWV3dJEreouIMQV/MZz8hHbvEmFeEYkETAd8ehMo3p+i8MXjUQUyZb96lOLR6pPYHOWXH4qV0O3nBX4MTKSeH3BDXuxHkgZi/dkJNMHQxug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=urlMX0uf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sMQ96ddv; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=CB/6mpf908NxbpgF4l4x5CvL+SRmZYSeOgbbhmf06+gyNKiJRxgg7ku0+YtVWp8CfcTTOU3oK8uBdiIuIJdOklLcVgO222HQhlrW4YvSj6hUU1sNg9Io//yYgmwnwFRymVTaLFm3lUazVqg1PkeZdFfDSPna+jzGoJV5eogr/lU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bMISUSnM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MNJTTjvs; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 21 Feb 2025 14:37:42 -0000
+Date: Fri, 21 Feb 2025 14:49:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740148663;
+	s=2020; t=1740149344;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mL+e+11iRXnpGGfTcb2wVZDRgYJuRx6g93sQArL6ZGw=;
-	b=urlMX0ufVcXh3LwtJFSCfRJdrHQhNUh+ldV0mKY2lkeGTnNYr6FpX55rKGCyHhGfr5hQpk
-	Oc1sUcfdotUtoGl9ei+NSgf+dwWIQWW3VHLUtyyvP8ENDKSuxaLVg1WP3Ns3KHs3wc2DlD
-	Ho4U8nXwF0onl+ohuf1JfytTcq+bw4YrqAJhQ6/cdotEG9e4wNTF1GhGs8I1mV6ezNrxYN
-	0D1Ve8bGis3BlKKOSiu2TcV5RwpNgcnClqf0E7R01CXgRX01/c3kbiL+lt5xoYC6/o5Vqm
-	hXMbOsr0mn/k3uYhWMupE2pZ6k1aEGTd7Or1T+iJh0AGAJpM1PqSCW2emuQguQ==
+	bh=UJdEXL+TIqNWTihDfZVUb+0icsv0CT4eBIrIVcULeIc=;
+	b=bMISUSnMq8iHjytGnhs7cGFvje3YSHGuzN0GZWuIhbNXTVvibdczuLiU7yVP/AqMaLY8yv
+	Tof5IKfE4CxMyaKYp4J9jMLeA0g+k6T2jhprBx9BmGxSXv5wRIZYd1ZeqeltNA8E/Wg7it
+	lY3waIO1u9cjH5V5oJuDmDVhr2i1ULbm9GHOf/f5LvaPqpB5BGt5AxfLgs0mGmHtl+6V3K
+	BW6SeXoLGETFiG8VP6kL7VE+6mKB9OHfnZyFRr1a+vERjz8d3u4Yn8mmOlUTH7ZPHAxhVZ
+	jm1wDPpahUsv0hLzxkmHlZ9VKJ29wcAbXqASV6adhD5CzdMhLiayWwtREZ3AKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740148663;
+	s=2020e; t=1740149344;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mL+e+11iRXnpGGfTcb2wVZDRgYJuRx6g93sQArL6ZGw=;
-	b=sMQ96ddvoepdC22D4UFox3ZaoFsj5t6jzYF33tcNC2ZDxMWzT2xwd+BWoBu3duHYM9a/gd
-	X7Iu10BD0aQS+bDg==
-From: "tip-bot2 for Guilherme G. Piccoli" <tip-bot2@linutronix.de>
+	bh=UJdEXL+TIqNWTihDfZVUb+0icsv0CT4eBIrIVcULeIc=;
+	b=MNJTTjvs7qPJMn2dtpa4NA8HivCcC3sLdhucI0VLdAF5gEd0leqyrEOI+kMLi6QDkaXjH3
+	gNhNJlZsKGgmUpBw==
+From: "tip-bot2 for Qasim Ijaz" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] x86/tsc: Always save/restore TSC sched_clock() on
- suspend/resume
-Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
- Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250215210314.351480-1-gpiccoli@igalia.com>
-References: <20250215210314.351480-1-gpiccoli@igalia.com>
+Subject: [tip: x86/mm] x86/mm: Replace open-coded gap bounding with clamp()
+Cc: Qasim Ijaz <qasdev00@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250215125249.10729-1-qasdev00@gmail.com>
+References: <20250215125249.10729-1-qasdev00@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174014866289.10177.10974658062988825500.tip-bot2@tip-bot2>
+Message-ID: <174014934373.10177.13398467994659612713.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,80 +78,52 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     d90c9de9de2f1712df56de6e4f7d6982d358cabe
-Gitweb:        https://git.kernel.org/tip/d90c9de9de2f1712df56de6e4f7d6982d358cabe
-Author:        Guilherme G. Piccoli <gpiccoli@igalia.com>
-AuthorDate:    Sat, 15 Feb 2025 17:58:16 -03:00
+Commit-ID:     282f395244df3663dc24e97a86087431c9192513
+Gitweb:        https://git.kernel.org/tip/282f395244df3663dc24e97a86087431c9192513
+Author:        Qasim Ijaz <qasdev00@gmail.com>
+AuthorDate:    Sat, 15 Feb 2025 12:52:49 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 21 Feb 2025 15:27:38 +01:00
+CommitterDate: Fri, 21 Feb 2025 15:33:57 +01:00
 
-x86/tsc: Always save/restore TSC sched_clock() on suspend/resume
+x86/mm: Replace open-coded gap bounding with clamp()
 
-TSC could be reset in deep ACPI sleep states, even with invariant TSC.
+Rather than manually bounding gap between gap_min and gap_max,
+use the well-known clamp() macro to make the code easier to read.
 
-That's the reason we have sched_clock() save/restore functions, to deal
-with this situation. But what happens is that such functions are guarded
-with a check for the stability of sched_clock - if not considered stable,
-the save/restore routines aren't executed.
-
-On top of that, we have a clear comment in native_sched_clock() saying
-that *even* with TSC unstable, we continue using TSC for sched_clock due
-to its speed.
-
-In other words, if we have a situation of TSC getting detected as unstable,
-it marks the sched_clock as unstable as well, so subsequent S3 sleep cycles
-could bring bogus sched_clock values due to the lack of the save/restore
-mechanism, causing warnings like this:
-
-  [22.954918] ------------[ cut here ]------------
-  [22.954923] Delta way too big! 18446743750843854390 ts=18446744072977390405 before=322133536015 after=322133536015 write stamp=18446744072977390405
-  [22.954923] If you just came from a suspend/resume,
-  [22.954923] please switch to the trace global clock:
-  [22.954923]   echo global > /sys/kernel/tracing/trace_clock
-  [22.954923] or add trace_clock=global to the kernel command line
-  [22.954937] WARNING: CPU: 2 PID: 5728 at kernel/trace/ring_buffer.c:2890 rb_add_timestamp+0x193/0x1c0
-
-Notice that the above was reproduced even with "trace_clock=global".
-
-The fix for that is to _always_ save/restore the sched_clock on suspend
-cycle _if TSC is used_ as sched_clock - only if we fallback to jiffies
-the sched_clock_stable() check becomes relevant to save/restore the
-sched_clock.
-
-Debugged-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250215210314.351480-1-gpiccoli@igalia.com
+Link: https://lore.kernel.org/r/20250215125249.10729-1-qasdev00@gmail.com
 ---
- arch/x86/kernel/tsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/mm/mmap.c |  9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 34dec0b..88e5a4e 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -959,7 +959,7 @@ static unsigned long long cyc2ns_suspend;
- 
- void tsc_save_sched_clock_state(void)
+diff --git a/arch/x86/mm/mmap.c b/arch/x86/mm/mmap.c
+index b8a6fff..5ed2109 100644
+--- a/arch/x86/mm/mmap.c
++++ b/arch/x86/mm/mmap.c
+@@ -84,7 +84,6 @@ static unsigned long mmap_base(unsigned long rnd, unsigned long task_size,
  {
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
+ 	unsigned long gap = rlim_stack->rlim_cur;
+ 	unsigned long pad = stack_maxrandom_size(task_size) + stack_guard_gap;
+-	unsigned long gap_min, gap_max;
  
- 	cyc2ns_suspend = sched_clock();
-@@ -979,7 +979,7 @@ void tsc_restore_sched_clock_state(void)
- 	unsigned long flags;
- 	int cpu;
+ 	/* Values close to RLIM_INFINITY can overflow. */
+ 	if (gap + pad > gap)
+@@ -94,13 +93,7 @@ static unsigned long mmap_base(unsigned long rnd, unsigned long task_size,
+ 	 * Top of mmap area (just below the process stack).
+ 	 * Leave an at least ~128 MB hole with possible stack randomization.
+ 	 */
+-	gap_min = SIZE_128M;
+-	gap_max = (task_size / 6) * 5;
+-
+-	if (gap < gap_min)
+-		gap = gap_min;
+-	else if (gap > gap_max)
+-		gap = gap_max;
++	gap = clamp(gap, SIZE_128M, (task_size / 6) * 5);
  
--	if (!sched_clock_stable())
-+	if (!static_branch_likely(&__use_tsc) && !sched_clock_stable())
- 		return;
- 
- 	local_irq_save(flags);
+ 	return PAGE_ALIGN(task_size - gap - rnd);
+ }
 
