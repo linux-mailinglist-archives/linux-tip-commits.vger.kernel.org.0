@@ -1,90 +1,119 @@
-Return-Path: <linux-tip-commits+bounces-3593-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3594-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BD0A401E7
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 22:15:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 731BBA40234
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 22:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 671B0189FA42
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 21:15:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A35942697E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Feb 2025 21:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA6C1EF0B4;
-	Fri, 21 Feb 2025 21:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E302500BC;
+	Fri, 21 Feb 2025 21:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usiTLATP"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q2lNGBEj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wdd1cYF/"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226851CB501;
-	Fri, 21 Feb 2025 21:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F58253B7C;
+	Fri, 21 Feb 2025 21:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740172537; cv=none; b=L8vmGByINhL+XHhEcloLW57lezRmOJtXnML+olHgch0HCtya1jwayff/stKbzZ9QLi88DzU5F/A4ITErkw1GIXPRRy3302/IgAREu01iMmIZ9llPevzk2xR+2zDA0PgqZ7w3iD6Tknxig6DXSMw6WwCLJkpnj9oxhrfFTn9Vdp4=
+	t=1740174090; cv=none; b=q7BpmotRF6u6VencxsvvolbaHxUGiMSGowUeQqqqUon6+x6WDKnhBp7HMnSrCcBPdFs95peJepGUDeyryX2DPA5eFUApBOR/OjFc3xHLUHmj/0H+WIMztXNHYlfLQMnE2U2iTPBfkKLBfl/GvS1DR7UU4tZeplO7TftGND90Tvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740172537; c=relaxed/simple;
-	bh=fWo2H7ApwGYIDfbBi+A8D7zvz0guh1DOl6kTWm14hKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PDTogPSphzuYehy90LKCNaYwlf+seE29DyEcONo+zTX3EDQAhSao0qVIKss4yQBlQeic9tianUdXgj+IbwrtC7yKXRhkpgqYb9+F4L8srfMHVkdt8/2x6Z3WBo/BrwQYTZnOs9XyWZRfiU85X7gIxrW7W4yIoEnQ82ki3nfx20I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usiTLATP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9128C4CED6;
-	Fri, 21 Feb 2025 21:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740172536;
-	bh=fWo2H7ApwGYIDfbBi+A8D7zvz0guh1DOl6kTWm14hKA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=usiTLATPheqd6kimJTx4Wl1bOR4c8d1mkje4/bZ7k0tEL2MjCM9QCuc+o2jGuE+XQ
-	 UkOyWzcAfBtcrxIzll/fcEkqzsN7GI/LZS5/59pNhqPlbiWCpTtk5JgGOd2jwv6WHt
-	 7Pulw4uAKx1Y8HEpGFIFEZtybq3nGQyWDGJaw8yx8SzrHMNIZEDl8qCjojWWaYxb2/
-	 TunytUu8bm5lLhwIIMmkoGrWFagXZ1YM8XY/woILfCkHsmbT2dmvGgwiI3OSK1Bgdk
-	 A1ECcPNu+WBkQeONHzODaKOui55/edzhQ7IU1H+Vk1H5YYKQWghhNTd4RghowbRIGH
-	 T/CCAvWQh55Lw==
-Date: Fri, 21 Feb 2025 22:15:27 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Kees Cook <kees@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org
-Subject: Re: [tip: x86/cpu] x86/kcfi: Require FRED for FineIBT
-Message-ID: <Z7js71Q8Fl2E8mt7@gmail.com>
-References: <20250214192210.work.253-kees@kernel.org>
- <174015048551.10177.4353365227122906077.tip-bot2@tip-bot2>
- <20250221190024.GC7373@noisy.programming.kicks-ass.net>
- <20250221190236.GD7373@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1740174090; c=relaxed/simple;
+	bh=ZR7BagWzxCfoY5xdXeUMysXR0SHla1vmdjofsLVak4Q=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=T3aVi2UgFE5o6R7B5AChobCZlCYL4S3ewRrC18B5DHBFmrGtVDxJ08PJkikG3QZi/wf3ek9OxB2hiDqi8uJoYK4nJi/UhgdTTyyUjU/1/xPESe9fpI0nShLhFO7h7QNTdZjb8VY87EfjKy1G0BoXST9kNlBsTBmLqqTQkLTHoL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q2lNGBEj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wdd1cYF/; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 21 Feb 2025 21:41:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1740174086;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BRPjxDl2DX3wCxuayZ+2UBpjqpVk0QUoy0ydWEghp6M=;
+	b=q2lNGBEj39/Kqhl3Mfa/K0jmXvX2tsWYNSSfKY2KE5HNImKkmX1UYIkW6vTzXwRfoevFwu
+	9V03UYB8CY5ABRPxgfqFYUlfKHEJbJwG22Z8pUfNK8CcnQ6x9s/m2LiBQYXR3QLy4n6bHw
+	Lxsmsh5XRe98JGHw51gmcm3Dz1SHb57HKgRvWCLiDNsqQTgn0ggb3MHxh3OEp9xc5lfVdD
+	MXjcHNUylZsBc88NHZzdb/h88cDSH4aHaZvcWwfbwqaV9AYaptmV1AXEF8F0b+Wy2zPlJH
+	HnLpMZgzwF2LCDqtH8fPUPF/fduSw2RUobRb506yDIzjf8o4Bb7SnUWt0F2SZg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1740174086;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BRPjxDl2DX3wCxuayZ+2UBpjqpVk0QUoy0ydWEghp6M=;
+	b=Wdd1cYF/oDugCPKVr2Lg3SFpy5XNMjAB0PNYniZBuhXFg3/8CX0BUGUVuY6upAraFnNZcC
+	FQiRTM8dZLMVWuCQ==
+From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/core] x86/arch_prctl/64: Clean up ARCH_MAP_VDSO_32
+Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250202202323.422113-3-brgerst@gmail.com>
+References: <20250202202323.422113-3-brgerst@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250221190236.GD7373@noisy.programming.kicks-ass.net>
+Message-ID: <174017408231.10177.16299420907138004012.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the x86/core branch of tip:
 
-* Peter Zijlstra <peterz@infradead.org> wrote:
+Commit-ID:     684b12916a107157633311f07bb74307221eff92
+Gitweb:        https://git.kernel.org/tip/684b12916a107157633311f07bb74307221eff92
+Author:        Brian Gerst <brgerst@gmail.com>
+AuthorDate:    Sun, 02 Feb 2025 15:23:23 -05:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 21 Feb 2025 22:32:25 +01:00
 
-> On Fri, Feb 21, 2025 at 08:00:24PM +0100, Peter Zijlstra wrote:
-> > On Fri, Feb 21, 2025 at 03:08:05PM -0000, tip-bot2 for Kees Cook wrote:
-> > > The following commit has been merged into the x86/cpu branch of tip:
-> > > 
-> > > Commit-ID:     f12315780faf1cbfe00991077a1e8c8e4c201f3b
-> > > Gitweb:        https://git.kernel.org/tip/f12315780faf1cbfe00991077a1e8c8e4c201f3b
-> > > Author:        Kees Cook <kees@kernel.org>
-> > > AuthorDate:    Fri, 14 Feb 2025 11:22:21 -08:00
-> > > Committer:     Ingo Molnar <mingo@kernel.org>
-> > > CommitterDate: Fri, 21 Feb 2025 15:38:11 +01:00
-> > 
-> > Ingo, seriously NO!
-> 
-> I've zapped the commit.
+x86/arch_prctl/64: Clean up ARCH_MAP_VDSO_32
 
-I've also re-integrated tip:master to make sure it doesn't go out to -next.
-Sorry about that ...
+process_64.c is not built on native 32-bit, so CONFIG_X86_32 will never
+be set.
 
-Thanks,
+No change in functionality intended.
 
-	Ingo
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20250202202323.422113-3-brgerst@gmail.com
+---
+ arch/x86/kernel/process_64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index e067c61..4ca73dd 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -942,7 +942,7 @@ long do_arch_prctl_64(struct task_struct *task, int option, unsigned long arg2)
+ 	case ARCH_MAP_VDSO_X32:
+ 		return prctl_map_vdso(&vdso_image_x32, arg2);
+ # endif
+-# if defined CONFIG_X86_32 || defined CONFIG_IA32_EMULATION
++# ifdef CONFIG_IA32_EMULATION
+ 	case ARCH_MAP_VDSO_32:
+ 		return prctl_map_vdso(&vdso_image_32, arg2);
+ # endif
 
