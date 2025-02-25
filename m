@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3625-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3626-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A255A44F77
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 23:02:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56C81A44FE2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 23:25:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B279169C2E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 22:02:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5152C3AB210
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 22:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B5C210F58;
-	Tue, 25 Feb 2025 22:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A85021517D;
+	Tue, 25 Feb 2025 22:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2IMn18Ot";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UmJdPG9N"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2Sb/yGRU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v0yfjY2S"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D23213E8A;
-	Tue, 25 Feb 2025 22:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01682135CA;
+	Tue, 25 Feb 2025 22:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740520894; cv=none; b=hduVuuxumOaHmLLcxEIPSrr0RTflDw+C2cSM2ZEv3LqjFjcsooNH8K4C4iMqUYSgOLu2/cydLZnrs5Nz7mPpRIaZG+oR6GGJxwI+hcB1McnAUP2xZgdoh8/AKjwnmVyxNAfPQLITrA36tWcB2Ik7N8dbeZE+/9+y7vRtiYOs13s=
+	t=1740522120; cv=none; b=tLzKm1z1pS7qr+FnaLNpiLvLrYHWT8dEmhCr3UffkHckdBdpO1YmBgxxSaOggtCOESTKS5Feo7XEIFSvAN4AB8F2q5jFZ0Icefp6CUyoTEjefC+PCnnZLZtlLtnR/q3ASt7r3rM2hCY98ERQE0e+NU7tN9oRwVyw9LCn68G72Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740520894; c=relaxed/simple;
-	bh=mUFqFrUmE2xpp5y+ciiaJp9Tms2xhtUitgQIxUYuEBk=;
+	s=arc-20240116; t=1740522120; c=relaxed/simple;
+	bh=2lynZGjH5NIE5T4if8PE2TsgWu9XKSidgYSwPADMRnY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aaFIWvienTvCl8sg0FdPmg9vF9wpnxqrbBfCrDdZ7SJ+BvpWXBmjX+uXbQRE7Vb2soxxURwEusZDBVhkXELNaqxJ5y8blBYdwmOO+E5X5jO9H9Jl7iQ9DZGKcs0P/wif9POWWaJHbPJz2kkBpyykAoEQdVMfY2O7+iE9DlxMwDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2IMn18Ot; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UmJdPG9N; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gTYVm+4STCvWz1ojaqMDgH9/MksdykaXlBy0Z7MO1u463ZGMMTOjX4MwG0j5d66FeY4B3Xj1JvGIhg1Wv7lZQOTKhI5iU1SN/Qgbs+s7BDSMniWygWlpX2EdBHKkXZr+QNOzF8x8ADBa6nPs9VrLXjOo39/Y3C3fM1eyzAAcwzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2Sb/yGRU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v0yfjY2S; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Feb 2025 22:01:30 -0000
+Date: Tue, 25 Feb 2025 22:21:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740520891;
+	s=2020; t=1740522116;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hL5efWH5krulfWdyCEDRfFI594ElHaIBqMGzpMJyORQ=;
-	b=2IMn18Otn1/8/9ALKYOUVd3hh1hfdo4ERfrQbeKIabg8oeIp3/DLNjVi39s7Xn8QvSATB6
-	tKav3GSdxz5XSZzVt+MSs2/Ors3u1VSd1vgnU4crMQ/DWNHA+jP5jkspQm8HA9IWHW5aWq
-	AyUzLMQsUZq2q5J95bbfJIh5bLheF7iB9qfLU+g0T3TFRIeyQOkY3W7JUbCxeE71xbuI9D
-	7OnSGrFOVhGJg/LpYwrJCRGVca/J7ocK6eXCqODzva3rVnnLSH4qPwpzQw5KYli6oQKVs2
-	ABhH6FW8LWnvI+uaXSmONVvJE+8GTDef4rL2pu5Elt5CP3PWTUtsa4HiepbOkA==
+	bh=2ptpXKuBybhw/QKQL2zs4ppqiv+yrL5SJGDQgNj5eno=;
+	b=2Sb/yGRUrbFnpJcwwGIxANOFPsceJ6vlTheZ7PmX4Yb6fkFGkinHy21H08gUb/mD5uEM6B
+	khf8zekUBRKkiNudDW0+E8tKy9DVs/Ybyx4ObZpbLjGHh66tGt/ZCquDiyZ21/V9j0fErZ
+	fcE6AwzHwj0sKbfv7mlpM5cdKlN5VbI+MrXmbDrexTNyu2tVkapkQX+w8GdBqH8hvDdzfO
+	YmIGN6osMWTd6ybwoGR17AtxgbGoH5W6u0UZin2DrlKGL6pPVlxln+sUdaRNCdOEsS9bNC
+	EHP35zlkMjCL4FufwUGR9IFxmTAxz/800BQ5o4PbrJZMnZYQca7R1ht+vdPVtw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740520891;
+	s=2020e; t=1740522116;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hL5efWH5krulfWdyCEDRfFI594ElHaIBqMGzpMJyORQ=;
-	b=UmJdPG9NNvk/ABeYzp157soLWgoxw2/9R7ZVRCk3r7ZR8axIaZISHYUAxVXw0sAciM20pr
-	IzwQaIFsRpF53SDA==
-From: "tip-bot2 for Aaron Ma" <tip-bot2@linutronix.de>
+	bh=2ptpXKuBybhw/QKQL2zs4ppqiv+yrL5SJGDQgNj5eno=;
+	b=v0yfjY2S1qM9KyOt0D8FjvHo4X6P0WSnuofJSJHT35YImTQyScgpwOen77Wy7Hgjk9/wsJ
+	gS3Zfp0EGoyCnLBQ==
+From: "tip-bot2 for Daniel Sneddon" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/rapl: Add support for Intel Arrow Lake U
-Cc: Aaron Ma <aaron.ma@canonical.com>, Ingo Molnar <mingo@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241224145516.349028-1-aaron.ma@canonical.com>
-References: <20241224145516.349028-1-aaron.ma@canonical.com>
+Subject: [tip: x86/urgent] x86/entry: Fix kernel-doc warning
+Cc: kernel test robot <lkp@intel.com>,
+ Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241219155227.685692-1-daniel.sneddon@linux.intel.com>
+References: <20241219155227.685692-1-daniel.sneddon@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174052089028.10177.2125405174996624736.tip-bot2@tip-bot2>
+Message-ID: <174052211537.10177.9851928630532239563.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,55 +79,41 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     68a9b0e313302451468c0b0eda53c383fa51a8f4
-Gitweb:        https://git.kernel.org/tip/68a9b0e313302451468c0b0eda53c383fa51a8f4
-Author:        Aaron Ma <aaron.ma@canonical.com>
-AuthorDate:    Tue, 24 Dec 2024 22:55:16 +08:00
+Commit-ID:     0f6750b15ffdf274668b12824b09bd49ea854e18
+Gitweb:        https://git.kernel.org/tip/0f6750b15ffdf274668b12824b09bd49ea854e18
+Author:        Daniel Sneddon <daniel.sneddon@linux.intel.com>
+AuthorDate:    Thu, 19 Dec 2024 08:52:27 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 25 Feb 2025 22:48:50 +01:00
+CommitterDate: Tue, 25 Feb 2025 23:12:58 +01:00
 
-perf/x86/rapl: Add support for Intel Arrow Lake U
+x86/entry: Fix kernel-doc warning
 
-Add Arrow Lake U model for RAPL:
+The do_int80_emulation() function is missing a kernel-doc formatted
+description of its argument. This is causing a warning when building
+with W=1. Add a brief description of the argument to satisfy
+kernel-doc.
 
-  $ ls -1 /sys/devices/power/events/
-  energy-cores
-  energy-cores.scale
-  energy-cores.unit
-  energy-gpu
-  energy-gpu.scale
-  energy-gpu.unit
-  energy-pkg
-  energy-pkg.scale
-  energy-pkg.unit
-  energy-psys
-  energy-psys.scale
-  energy-psys.unit
-
-The same output as ArrowLake:
-
-  $ perf stat -a -I 1000 --per-socket -e power/energy-pkg/
-
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20241224145516.349028-1-aaron.ma@canonical.com
+Link: https://lore.kernel.org/r/20241219155227.685692-1-daniel.sneddon@linux.intel.com
+Closes: https://lore.kernel.org/oe-kbuild-all/202412131236.a5HhOqXo-lkp@intel.com/
 ---
- arch/x86/events/rapl.c | 1 +
+ arch/x86/entry/common.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/events/rapl.c b/arch/x86/events/rapl.c
-index 4952faf..6941f48 100644
---- a/arch/x86/events/rapl.c
-+++ b/arch/x86/events/rapl.c
-@@ -879,6 +879,7 @@ static const struct x86_cpu_id rapl_model_match[] __initconst = {
- 	X86_MATCH_VFM(INTEL_METEORLAKE_L,	&model_skl),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE_H,	&model_skl),
- 	X86_MATCH_VFM(INTEL_ARROWLAKE,		&model_skl),
-+	X86_MATCH_VFM(INTEL_ARROWLAKE_U,	&model_skl),
- 	X86_MATCH_VFM(INTEL_LUNARLAKE_M,	&model_skl),
- 	{},
- };
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 94941c5..14db5b8 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -190,6 +190,7 @@ static __always_inline bool int80_is_external(void)
+ 
+ /**
+  * do_int80_emulation - 32-bit legacy syscall C entry from asm
++ * @regs: syscall arguments in struct pt_args on the stack.
+  *
+  * This entry point can be used by 32-bit and 64-bit programs to perform
+  * 32-bit system calls.  Instances of INT $0x80 can be found inline in
 
