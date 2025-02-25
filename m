@@ -1,72 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-3618-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3619-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC76A44C15
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 21:12:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E88A44D5D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 21:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3591C173305
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 20:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720D5189EC89
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 20:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3199B20E028;
-	Tue, 25 Feb 2025 20:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D946520FA9A;
+	Tue, 25 Feb 2025 20:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fsaP+cGd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HWSPfibB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LwJFf5X+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IqMdak5T"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8217E39ACC;
-	Tue, 25 Feb 2025 20:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208D220E32B;
+	Tue, 25 Feb 2025 20:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740514231; cv=none; b=tBCCQTL1y/2T+z881XRrTx7J7Rao0cy2m+sgadCz26auk1yhHaxwDoISmDIsIxdLMVvDoBfWV31+I2vkav3pdXeY624F0wEmRsExZoMKvL9Zo9aUz05QSfYcHhDGmd8qZCRWR383hz0ljvbni8POdUoioFWhVdOaFZ15lK9rabI=
+	t=1740514779; cv=none; b=Ggw8rjR08RocTpMHKZCPNTvmvEhqRxCOVRJEVTIEBVu1TxCvCTfQQAwQUHc1irGeE7y02DGOCV0YavdWFD8F62yeqCFpfYoZe9d8DZm1xqrnGFodUCvzwhmb/+RS4aSXTgIuQJmebrEbHWz1+ZocwBfwet/H9dxv+5vaIlGtJcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740514231; c=relaxed/simple;
-	bh=qDYT1e1m9ecN1KtKMGCvUM2nIMkPihySw+lOvlXbeh0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=HIrgRutlMIA/y4pZ8BNfCG5CVoOCUTRiLQKno/roqzlJLZ+053BM21iSbCEJrevjMt7vpXcSm8u1OI7o7krx3zJrcQ4MJVdBav7G6gI1V25/M0gz1eZ0STlvuEwJiLnkmKK0q1RugrZpbY2i32M0p1LNJDNKJWzwl/jGF7b/2A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fsaP+cGd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HWSPfibB; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1740514779; c=relaxed/simple;
+	bh=pus0lWIgX9cf9W4hd3DtllbECUcdSaZd86mSGNH8MUI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ZxwK5K8HmYhrPU0/8ad9Hv0eMCc/LOVOGQDK2YX5a6xoRRYYwJQdNPU7V1Y6Yq8s+NJPDHoXw6A2tTHl1YPexZSiREaz8fU80OIFt5p1KjzceUMboqUcodUoOcYCh21ituZXkUiYWfHoEXStceg4rnc2w9bOWGwTN8ABBaVlFqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LwJFf5X+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IqMdak5T; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Feb 2025 20:10:26 -0000
+Date: Tue, 25 Feb 2025 20:19:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740514227;
+	s=2020; t=1740514776;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=cmL1p/OsbYR4UnnPSo5AorXkCfVgmDpvTbyNsH22Tdw=;
-	b=fsaP+cGdcpmPvg0MlTvU00ziUN/gwd6tqMJ6YD8k43U9FjG92dGPvdHA6ARQqDKUiZIvNR
-	J0M5vxvgcC/DDKBIXfpmUenIrWf7kdQs7WpGSE9Jl6HkXL5hWa17e/pkxPwlG6L2L1PFwG
-	mOvgV0X1tOtjeYysP+Bz6Vjh5RqbborN7zRubdq8thIYKm5SDKzYt3WZGl7us2JMZWlz46
-	SyNUaAe1wzuC6wrplF4mVnNJ2wsriKh1kvU0h/m4RJH0pEbpTFHSyCVxaMqMsoI/hxk/F2
-	dY2rDN6Z/RXVDLusckj/8Y1UPBwHnjHntLxDzKgZl3PbPoPTT67MtD8DCyPc1w==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qaKQRJvikQBLvdHwTac/iJwfeVJRDKdWu0sw1lzKP3Y=;
+	b=LwJFf5X+VIC1YrAu3q1o4D9ngcER44+0G86XKr5bYkhSPhgMH9hbRFt2U5MYgCH/+b7R20
+	9h6drXmvUSkpA5QPL2jvxB5mr1ucacf+ou5O+n98F8ov02IrnMBshnPubkBvKKa+Jfxr7J
+	MYPNK36SOoo9CanMavzHiHjsOcCYipTROG4FIZA/G6vxNdOw5g00VnsvyC9Owo+b/6RhLq
+	Vz4cpu3C6vRH8R+Y0gghYKZsq6RYFUFQc7rpnTrn9uiexc3CtZTgLkCqnNyFFfbL3SYMaf
+	Oa9RrYsXPLTfYODjK1xK2BA1JJsviesnARrogdtGW/VPwsxPDs7LDJpIe5hzlw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740514227;
+	s=2020e; t=1740514776;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=cmL1p/OsbYR4UnnPSo5AorXkCfVgmDpvTbyNsH22Tdw=;
-	b=HWSPfibBXailAF2MmCzc5K8tWTBZK4EWpzxgg8M98KlSxkjdP3LEiSHsGWnHbVmq8tVkDC
-	eSziKYKR67cKZ6Dw==
-From: "tip-bot2 for Matthew Wilcox (Oracle)" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qaKQRJvikQBLvdHwTac/iJwfeVJRDKdWu0sw1lzKP3Y=;
+	b=IqMdak5TKZt3RpvcSovAHSwjAVwJ0GjoOpSuTpPlYECKgRuSx2tUUYGb/eQ3rsNz4aEbWe
+	3TXS0Dcol09PujCg==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Clear _PAGE_DIRTY when we clear _PAGE_RW
-Cc: kernel test robot <oliver.sang@intel.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Ingo Molnar <mingo@kernel.org>,
+Subject:
+ [tip: x86/asm] x86/percpu: Construct __percpu_seg_override from __percpu_seg
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
+In-Reply-To: <20250225200235.48007-1-ubizjak@gmail.com>
+References: <20250225200235.48007-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174051422675.10177.13226545170101706336.tip-bot2@tip-bot2>
+Message-ID: <174051477559.10177.12930277278126137493.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,68 +81,55 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     d75a256b6a64132fc7aab57ad4c96218e3ae383b
-Gitweb:        https://git.kernel.org/tip/d75a256b6a64132fc7aab57ad4c96218e3ae383b
-Author:        Matthew Wilcox (Oracle) <willy@infradead.org>
-AuthorDate:    Tue, 25 Feb 2025 19:37:32 
+Commit-ID:     79165720f31868d9a9f7e5a50a09d5fe510d1822
+Gitweb:        https://git.kernel.org/tip/79165720f31868d9a9f7e5a50a09d5fe510d1822
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Tue, 25 Feb 2025 21:02:20 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 25 Feb 2025 20:59:32 +01:00
+CommitterDate: Tue, 25 Feb 2025 21:07:24 +01:00
 
-x86/mm: Clear _PAGE_DIRTY when we clear _PAGE_RW
+x86/percpu: Construct __percpu_seg_override from __percpu_seg
 
-The bit pattern of _PAGE_DIRTY set and _PAGE_RW clear is used to
-mark shadow stacks.  This is currently checked for in mk_pte() but
-not pfn_pte().  If we add the check to pfn_pte(), it catches vfree()
-calling set_direct_map_invalid_noflush() which calls __change_page_attr()
-which loads the old protection bits from the PTE, clears the specified
-bits and uses pfn_pte() to construct the new PTE.
+Construct __percpu_seg_override macro from __percpu_seg by
+concatenating the later with __seg_ prefix to reduce ifdeffery.
 
-We should, therefore, clear the _PAGE_DIRTY bit whenever we clear
-_PAGE_RW.  I opted to do it in the callers in case we want to use
-__change_page_attr() to create shadow stacks inside the kernel at some
-point in the future.  Arguably, we might also want to clear _PAGE_ACCESSED
-here.
+No functional change intended.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Closes: https://lore.kernel.org/oe-lkp/202502241646.719f4651-lkp@intel.com
+Link: https://lore.kernel.org/r/20250225200235.48007-1-ubizjak@gmail.com
 ---
- arch/x86/mm/pat/set_memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/percpu.h | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 84d0bca..d174015 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2628,7 +2628,7 @@ static int __set_pages_np(struct page *page, int numpages)
- 				.pgd = NULL,
- 				.numpages = numpages,
- 				.mask_set = __pgprot(0),
--				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW),
-+				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
- 				.flags = CPA_NO_CHECK_ALIAS };
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index c2a9dfc..7cb4f64 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -22,6 +22,7 @@
  
- 	/*
-@@ -2715,7 +2715,7 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 		.pgd = pgd,
- 		.numpages = numpages,
- 		.mask_set = __pgprot(0),
--		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
-+		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW|_PAGE_DIRTY)),
- 		.flags = CPA_NO_CHECK_ALIAS,
- 	};
+ #else /* !__ASSEMBLY__: */
  
-@@ -2758,7 +2758,7 @@ int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
- 		.pgd		= pgd,
- 		.numpages	= numpages,
- 		.mask_set	= __pgprot(0),
--		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW),
-+		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
- 		.flags		= CPA_NO_CHECK_ALIAS,
- 	};
++#include <linux/args.h>
+ #include <linux/build_bug.h>
+ #include <linux/stringify.h>
+ #include <asm/asm.h>
+@@ -35,12 +36,7 @@
+ # define __seg_fs		__attribute__((address_space(__seg_fs)))
+ #endif
  
+-#ifdef CONFIG_X86_64
+-# define __percpu_seg_override	__seg_gs
+-#else
+-# define __percpu_seg_override	__seg_fs
+-#endif
+-
++#define __percpu_seg_override	CONCATENATE(__seg_, __percpu_seg)
+ #define __percpu_prefix		""
+ 
+ #else /* !CONFIG_CC_HAS_NAMED_AS: */
 
