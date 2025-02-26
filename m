@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-3661-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3663-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFFBA45E4B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2025 13:13:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 208E4A45E4D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2025 13:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A0819C1DBC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2025 12:11:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6698719C21D9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2025 12:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791B62222C9;
-	Wed, 26 Feb 2025 12:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D620222582;
+	Wed, 26 Feb 2025 12:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xkscRwvn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8utmKRMA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CCSFAfUI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gW46MkPt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC512222AD;
-	Wed, 26 Feb 2025 12:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4542222C6;
+	Wed, 26 Feb 2025 12:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740571488; cv=none; b=N2InQM/caDf3s3matCOcoC94EGzMK502tlOcZzirQx6su3toCPtd/3kgYP3+n9ZUraxY1CvKZU7+V7ZnP9g7XtILzzWcvaqL019Pb8voM0uh6MINEmJs/8QyYzBIJpNlg0g90gJjNMFjf/GR+PUNoAUAmcsTXxHZo/iXgGkQx/s=
+	t=1740571490; cv=none; b=j7BtLyPepmBNAOSF19VFk4Hpad+TQk7HLkyB3REEuC5XICgmnQ52y2AM8qtvUEixpYsG56E88WUqR4VYWIzTnDlHsX7Q9qu4CHLE7i7a/Kwc0ggLoCI738uBM+Im1rdE4AvOQL1zt6etDufaC1BCv3cnbVIsVVHeHXJBLLRWzCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740571488; c=relaxed/simple;
-	bh=tzSRnonurqyWAZmghsZH8/Hsxo+lHfo7kdqQwszxR3A=;
+	s=arc-20240116; t=1740571490; c=relaxed/simple;
+	bh=/nQzd3IkT/HgHYsKBwy21xsFE8rdMrKXLIea2d38yEI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qrjO0mYQq4WqBFJNWv1Rz1Gnmer2Bf7uE1lCrvmelix2PhZsUWPFnNjye48Z2bi8HJTSU5qItfnEtDSCY4bGosBKN9AvjyFK0YQaIatLoo+eVmqTrsNOZN68KxkvLMHOpxpp0IPxLsqj4VB1dvz2HPEa7ZckgNJUGTPfHbgDDN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xkscRwvn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8utmKRMA; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=oMzqzDuT1B2VBLIx03ylw/mkObIHJmfZoxPr2IVrj5/zgQjRG70+gUsJFhsJKALkLDJ2AQjEKVMq88SMPWEW0o6N00Kz2UmczakK7+ErJHKoE6e5hFU+NQE7eH8fsWdkVOAYh7nh8g1SfgQyxiFvbe9f9coq6Xwz1RJQQskvD44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CCSFAfUI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gW46MkPt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Feb 2025 12:04:44 -0000
+Date: Wed, 26 Feb 2025 12:04:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740571484;
+	s=2020; t=1740571485;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5lLKY4P6g/tkMIjvsPASpb9fD4PCUESbWXnz85DK6Go=;
-	b=xkscRwvnI9blk5BUyedLQVAnjI0PKJhihsIEEQwKA3zwPiDjOsUKeq8XK+ORx5vG2aZRyO
-	qRkKC2O/JToPUPEiYXg6BNQScKLBLQE3TnK88cCUpKtmS4FucGvRrJeIaTL1wxai/zRcbO
-	hrLwMjtDW5HAknp/E7C12sQkphvgtAviuyDxOeJZX+zkyoB4EWwaZXn8haNuOpAuJYfOMb
-	84D/WLkmqHjeao+lkZfqhOAoy+vw7FaYyVvXYtkNQiv1KBCWnQSHhPWJjoznKxH6QMWeqt
-	X9m791jUIOEf8wpnTWwLISI3z9ikEbKlhZRtn2dBmJXWBNbFxaNWmXXZ+nzHiA==
+	bh=vIjvomu0tDm/cQbC3Hgnhznd6YnkcUPhHJ53JIy9S9s=;
+	b=CCSFAfUIyTQWs9EYTysZGGgxfDjeR3j/HQiCeYaWtsedpyDxdqKwxgtGCTVTcw/vMykKFK
+	BP57GxtkRd3eYg8KujLbjrEhmYncNxF1emH4UrtcDm/lJpyis3QMhYAceTvR4K3YodrW47
+	4En1ul440KoM5sjIf+jrh0Ue6pLBu8fUGwjArZ+jn82MdkAgs4Klrp/thA6AfzFDO+bmot
+	pDJJFZzFx0sneO/sd0fFaYTshFIQoITyl0VNF9toO6OPCPGJXN11uk1ghGCHXw7nJkzurG
+	FVoUl6o1/q1nlpu2W39CTkIkDuYw3+1xFhefopv6hXlh1iSvhIxEmmtXioNLvw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740571484;
+	s=2020e; t=1740571485;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5lLKY4P6g/tkMIjvsPASpb9fD4PCUESbWXnz85DK6Go=;
-	b=8utmKRMAVbxxepS2zF7yGaqCzJbRW3Npxt3utp0/nYFs62345dhB3H+VCOxhr4UHuuWR4r
-	kwnivQxYLxA2ZlCA==
+	bh=vIjvomu0tDm/cQbC3Hgnhznd6YnkcUPhHJ53JIy9S9s=;
+	b=gW46MkPtTXeRBiI2jrwGqm6d7H8WOuu28SMibSnhYJ82r3GbI19qu77U2Ucki5rzUQ1h+J
+	paOgLpDrG4s34aDQ==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/bhi: Add BHI stubs
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+Subject: [tip: x86/core] x86/ibt: Add paranoid FineIBT mode
+Cc: Scott Constable <scott.d.constable@intel.com>,
+ Jennifer Miller <jmill@asu.edu>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Ingo Molnar <mingo@kernel.org>, Kees Cook <kees@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250224124200.717378681@infradead.org>
-References: <20250224124200.717378681@infradead.org>
+In-Reply-To: <20250224124200.598033084@infradead.org>
+References: <20250224124200.598033084@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174057148428.10177.5272015696109585630.tip-bot2@tip-bot2>
+Message-ID: <174057148505.10177.6140715740099958120.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,211 +83,258 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     a18e6715ff4e6e71c2b5dc8ec78f2ddc3fe4b0a8
-Gitweb:        https://git.kernel.org/tip/a18e6715ff4e6e71c2b5dc8ec78f2ddc3fe4b0a8
+Commit-ID:     97e59672a9d2aec0c27f6cd6a6b0edfdd6e5a85c
+Gitweb:        https://git.kernel.org/tip/97e59672a9d2aec0c27f6cd6a6b0edfdd6e5a85c
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 24 Feb 2025 13:37:11 +01:00
+AuthorDate:    Wed, 26 Feb 2025 12:25:17 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 26 Feb 2025 12:28:20 +01:00
+CommitterDate: Wed, 26 Feb 2025 12:27:45 +01:00
 
-x86/bhi: Add BHI stubs
+x86/ibt: Add paranoid FineIBT mode
 
-Add an array of code thunks, to be called from the FineIBT preamble,
-clobbering the first 'n' argument registers for speculative execution.
+Due to concerns about circumvention attacks against FineIBT on 'naked'
+ENDBR, add an additional caller side hash check to FineIBT. This
+should make it impossible to pivot over such a 'naked' ENDBR
+instruction at the cost of an additional load.
 
-Notably the 0th entry will clobber no argument registers and will never
-be used, it exists so the array can be naturally indexed, while the 7th
-entry will clobber all the 6 argument registers and also RSP in order to
-mess up stack based arguments.
+The specific pivot reported was against the SYSCALL entry site and
+FRED will have all those holes fixed up.
 
+  https://lore.kernel.org/linux-hardening/Z60NwR4w%2F28Z7XUa@ubun/
+
+This specific fineibt_paranoid_start[] sequence was concocted by
+Scott.
+
+Suggested-by: Scott Constable <scott.d.constable@intel.com>
+Reported-by: Jennifer Miller <jmill@asu.edu>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Kees Cook <kees@kernel.org>
-Link: https://lore.kernel.org/r/20250224124200.717378681@infradead.org
+Link: https://lore.kernel.org/r/20250224124200.598033084@infradead.org
 ---
- arch/x86/include/asm/cfi.h |   4 +-
- arch/x86/lib/Makefile      |   3 +-
- arch/x86/lib/bhi.S         | 146 ++++++++++++++++++++++++++++++++++++-
- 3 files changed, 152 insertions(+), 1 deletion(-)
- create mode 100644 arch/x86/lib/bhi.S
+ arch/x86/kernel/alternative.c | 144 +++++++++++++++++++++++++++++++--
+ 1 file changed, 138 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/cfi.h b/arch/x86/include/asm/cfi.h
-index 7dd5ab2..7c15c4b 100644
---- a/arch/x86/include/asm/cfi.h
-+++ b/arch/x86/include/asm/cfi.h
-@@ -101,6 +101,10 @@ enum cfi_mode {
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index a2e8ee8..c698c9e 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -741,6 +741,11 @@ void __init_or_module noinline apply_retpolines(s32 *start, s32 *end)
+ 		op2 = insn.opcode.bytes[1];
  
- extern enum cfi_mode cfi_mode;
+ 		switch (op1) {
++		case 0x70 ... 0x7f:	/* Jcc.d8 */
++			/* See cfi_paranoid. */
++			WARN_ON_ONCE(cfi_mode != CFI_FINEIBT);
++			continue;
++
+ 		case CALL_INSN_OPCODE:
+ 		case JMP32_INSN_OPCODE:
+ 			break;
+@@ -998,6 +1003,8 @@ u32 cfi_get_func_hash(void *func)
+ static bool cfi_rand __ro_after_init = true;
+ static u32  cfi_seed __ro_after_init;
  
-+typedef u8 bhi_thunk[32];
-+extern bhi_thunk __bhi_args[];
-+extern bhi_thunk __bhi_args_end[];
++static bool cfi_paranoid __ro_after_init = false;
 +
- struct pt_regs;
+ /*
+  * Re-hash the CFI hash with a boot-time seed while making sure the result is
+  * not a valid ENDBR instruction.
+@@ -1040,6 +1047,12 @@ static __init int cfi_parse_cmdline(char *str)
+ 		} else if (!strcmp(str, "warn")) {
+ 			pr_alert("CFI mismatch non-fatal!\n");
+ 			cfi_warn = true;
++		} else if (!strcmp(str, "paranoid")) {
++			if (cfi_mode == CFI_FINEIBT) {
++				cfi_paranoid = true;
++			} else {
++				pr_err("Ignoring paranoid; depends on fineibt.\n");
++			}
+ 		} else {
+ 			pr_err("Ignoring unknown cfi option (%s).", str);
+ 		}
+@@ -1128,6 +1141,52 @@ extern u8 fineibt_caller_end[];
  
- #ifdef CONFIG_CFI_CLANG
-diff --git a/arch/x86/lib/Makefile b/arch/x86/lib/Makefile
-index 8a59c61..f453507 100644
---- a/arch/x86/lib/Makefile
-+++ b/arch/x86/lib/Makefile
-@@ -66,5 +66,6 @@ endif
-         lib-y += clear_page_64.o copy_page_64.o
-         lib-y += memmove_64.o memset_64.o
-         lib-y += copy_user_64.o copy_user_uncached_64.o
--	lib-y += cmpxchg16b_emu.o
-+        lib-y += cmpxchg16b_emu.o
-+        lib-y += bhi.o
- endif
-diff --git a/arch/x86/lib/bhi.S b/arch/x86/lib/bhi.S
-new file mode 100644
-index 0000000..421e307
---- /dev/null
-+++ b/arch/x86/lib/bhi.S
-@@ -0,0 +1,146 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+
-+#include <linux/linkage.h>
-+#include <asm/unwind_hints.h>
-+#include <asm/nospec-branch.h>
-+
+ #define fineibt_caller_jmp (fineibt_caller_size - 2)
+ 
 +/*
-+ * Notably, the FineIBT preamble calling these will have ZF set and r10 zero.
++ * Since FineIBT does hash validation on the callee side it is prone to
++ * circumvention attacks where a 'naked' ENDBR instruction exists that
++ * is not part of the fineibt_preamble sequence.
 + *
-+ * The very last element is in fact larger than 32 bytes, but since its the
-+ * last element, this does not matter,
++ * Notably the x86 entry points must be ENDBR and equally cannot be
++ * fineibt_preamble.
 + *
-+ * There are 2 #UD sites, located between 0,1-2,3 and 4,5-6,7 such that they
-+ * can be reached using Jcc.d8, these elements (1 and 5) have sufficiently
-+ * big alignment holes for this to not stagger the array.
++ * The fineibt_paranoid caller sequence adds additional caller side
++ * hash validation. This stops such circumvention attacks dead, but at the cost
++ * of adding a load.
++ *
++ * <fineibt_paranoid_start>:
++ *  0:   41 ba 78 56 34 12       mov    $0x12345678, %r10d
++ *  6:   45 3b 53 f7             cmp    -0x9(%r11), %r10d
++ *  a:   4d 8d 5b <f0>           lea    -0x10(%r11), %r11
++ *  e:   75 fd                   jne    d <fineibt_paranoid_start+0xd>
++ * 10:   41 ff d3                call   *%r11
++ * 13:   90                      nop
++ *
++ * Notably LEA does not modify flags and can be reordered with the CMP,
++ * avoiding a dependency. Again, using a non-taken (backwards) branch
++ * for the failure case, abusing LEA's immediate 0xf0 as LOCK prefix for the
++ * Jcc.d8, causing #UD.
 + */
++asm(	".pushsection .rodata				\n"
++	"fineibt_paranoid_start:			\n"
++	"	movl	$0x12345678, %r10d		\n"
++	"	cmpl	-9(%r11), %r10d			\n"
++	"	lea	-0x10(%r11), %r11		\n"
++	"	jne	fineibt_paranoid_start+0xd	\n"
++	"fineibt_paranoid_ind:				\n"
++	"	call	*%r11				\n"
++	"	nop					\n"
++	"fineibt_paranoid_end:				\n"
++	".popsection					\n"
++);
 +
-+.pushsection .noinstr.text, "ax"
++extern u8 fineibt_paranoid_start[];
++extern u8 fineibt_paranoid_ind[];
++extern u8 fineibt_paranoid_end[];
 +
-+	.align 32
-+SYM_CODE_START(__bhi_args)
++#define fineibt_paranoid_size (fineibt_paranoid_end - fineibt_paranoid_start)
++#define fineibt_paranoid_ind  (fineibt_paranoid_ind - fineibt_paranoid_start)
++#define fineibt_paranoid_ud   0xd
 +
-+#ifdef CONFIG_FINEIBT_BHI
+ static u32 decode_preamble_hash(void *addr)
+ {
+ 	u8 *p = addr;
+@@ -1291,18 +1350,48 @@ static int cfi_rewrite_callers(s32 *start, s32 *end)
+ {
+ 	s32 *s;
+ 
++	BUG_ON(fineibt_paranoid_size != 20);
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_0, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_1
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
+ 	for (s = start; s < end; s++) {
+ 		void *addr = (void *)s + *s;
++		struct insn insn;
++		u8 bytes[20];
+ 		u32 hash;
++		int ret;
++		u8 op;
+ 
+ 		addr -= fineibt_caller_size;
+ 		hash = decode_caller_hash(addr);
+-		if (hash) {
++		if (!hash)
++			continue;
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_1, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_1
-+	cmovne %r10, %rdi
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++		if (!cfi_paranoid) {
+ 			text_poke_early(addr, fineibt_caller_start, fineibt_caller_size);
+ 			WARN_ON(*(u32 *)(addr + fineibt_caller_hash) != 0x12345678);
+ 			text_poke_early(addr + fineibt_caller_hash, &hash, 4);
++			/* rely on apply_retpolines() */
++			continue;
++		}
 +
-+	.align 8
-+	ANNOTATE_REACHABLE
-+.Lud_1:	ud2
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++		/* cfi_paranoid */
++		ret = insn_decode_kernel(&insn, addr + fineibt_caller_size);
++		if (WARN_ON_ONCE(ret < 0))
++			continue;
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_2, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_1
-+	cmovne %r10, %rdi
-+	cmovne %r10, %rsi
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++		op = insn.opcode.bytes[0];
++		if (op != CALL_INSN_OPCODE && op != JMP32_INSN_OPCODE) {
++			WARN_ON_ONCE(1);
++			continue;
+ 		}
+-		/* rely on apply_retpolines() */
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_3, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_1
-+	cmovne %r10, %rdi
-+	cmovne %r10, %rsi
-+	cmovne %r10, %rdx
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++		memcpy(bytes, fineibt_paranoid_start, fineibt_paranoid_size);
++		memcpy(bytes + fineibt_caller_hash, &hash, 4);
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_4, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_2
-+	cmovne %r10, %rdi
-+	cmovne %r10, %rsi
-+	cmovne %r10, %rdx
-+	cmovne %r10, %rcx
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++		ret = emit_indirect(op, 11, bytes + fineibt_paranoid_ind);
++		if (WARN_ON_ONCE(ret != 3))
++			continue;
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_5, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_2
-+	cmovne %r10, %rdi
-+	cmovne %r10, %rsi
-+	cmovne %r10, %rdx
-+	cmovne %r10, %rcx
-+	cmovne %r10, %r8
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++		text_poke_early(addr, bytes, fineibt_paranoid_size);
+ 	}
+ 
+ 	return 0;
+@@ -1319,8 +1408,15 @@ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
+ 
+ 	if (cfi_mode == CFI_AUTO) {
+ 		cfi_mode = CFI_KCFI;
+-		if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
++		if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT)) {
++			/*
++			 * FRED has much saner context on exception entry and
++			 * is less easy to take advantage of.
++			 */
++			if (!cpu_feature_enabled(X86_FEATURE_FRED))
++				cfi_paranoid = true;
+ 			cfi_mode = CFI_FINEIBT;
++		}
+ 	}
+ 
+ 	/*
+@@ -1377,8 +1473,10 @@ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
+ 		/* now that nobody targets func()+0, remove ENDBR there */
+ 		cfi_rewrite_endbr(start_cfi, end_cfi);
+ 
+-		if (builtin)
+-			pr_info("Using FineIBT CFI\n");
++		if (builtin) {
++			pr_info("Using %sFineIBT CFI\n",
++				cfi_paranoid ? "paranoid " : "");
++		}
+ 		return;
+ 
+ 	default:
+@@ -1451,7 +1549,7 @@ static void poison_cfi(void *addr)
+  * We check the preamble by checking for the ENDBR instruction relative to the
+  * 0xEA instruction.
+  */
+-bool decode_fineibt_insn(struct pt_regs *regs, unsigned long *target, u32 *type)
++static bool decode_fineibt_preamble(struct pt_regs *regs, unsigned long *target, u32 *type)
+ {
+ 	unsigned long addr = regs->ip - fineibt_preamble_ud;
+ 	u32 hash;
+@@ -1476,6 +1574,40 @@ Efault:
+ 	return false;
+ }
+ 
++/*
++ * regs->ip points to a LOCK Jcc.d8 instruction from the fineibt_paranoid_start[]
++ * sequence.
++ */
++static bool decode_fineibt_paranoid(struct pt_regs *regs, unsigned long *target, u32 *type)
++{
++	unsigned long addr = regs->ip - fineibt_paranoid_ud;
++	u32 hash;
 +
-+	.align 8
-+	ANNOTATE_REACHABLE
-+.Lud_2:	ud2
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++	if (!cfi_paranoid || !is_cfi_trap(addr + fineibt_caller_size - LEN_UD2))
++		return false;
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_6, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_2
-+	cmovne %r10, %rdi
-+	cmovne %r10, %rsi
-+	cmovne %r10, %rdx
-+	cmovne %r10, %rcx
-+	cmovne %r10, %r8
-+	cmovne %r10, %r9
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++	__get_kernel_nofault(&hash, addr + fineibt_caller_hash, u32, Efault);
++	*target = regs->r11 + fineibt_preamble_size;
++	*type = regs->r10;
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_7, SYM_L_LOCAL)
-+	ANNOTATE_NOENDBR
-+	UNWIND_HINT_FUNC
-+	jne .Lud_2
-+	cmovne %r10, %rdi
-+	cmovne %r10, %rsi
-+	cmovne %r10, %rdx
-+	cmovne %r10, %rcx
-+	cmovne %r10, %r8
-+	cmovne %r10, %r9
-+	cmovne %r10, %rsp
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
++	/*
++	 * Since the trapping instruction is the exact, but LOCK prefixed,
++	 * Jcc.d8 that got us here, the normal fixup will work.
++	 */
++	return true;
 +
-+#endif /* CONFIG_FINEIBT_BHI */
++Efault:
++	return false;
++}
 +
-+	.align 32
-+SYM_INNER_LABEL(__bhi_args_end, SYM_L_GLOBAL)
-+	ANNOTATE_NOENDBR
-+SYM_CODE_END(__bhi_args)
++bool decode_fineibt_insn(struct pt_regs *regs, unsigned long *target, u32 *type)
++{
++	if (decode_fineibt_paranoid(regs, target, type))
++		return true;
 +
-+.popsection
++	return decode_fineibt_preamble(regs, target, type);
++}
++
+ #else /* !CONFIG_FINEIBT: */
+ 
+ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
 
