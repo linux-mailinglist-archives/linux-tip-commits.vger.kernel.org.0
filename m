@@ -1,144 +1,109 @@
-Return-Path: <linux-tip-commits+bounces-3627-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3628-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BE4A45064
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 23:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9B2A45364
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2025 03:49:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69C5D188F01E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Feb 2025 22:41:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B37189DD03
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Feb 2025 02:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8856B221571;
-	Tue, 25 Feb 2025 22:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C17C19DF40;
+	Wed, 26 Feb 2025 02:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MpD9HNve";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0UOXBp6L"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XCzviblH"
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DFE221562;
-	Tue, 25 Feb 2025 22:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290D33FB0E;
+	Wed, 26 Feb 2025 02:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740523267; cv=none; b=goI5Cdmj6bw4OQC4SzFe8P8H9bAwt06fNrmn0B2RzY0hApH9cAFJXKVWNaDccXOw39VRAg86dG92B3YuMJR68eYUKFm9gwUpM3UouiXWtJd5Ova6MRmKga37p+4re/BWSdqfR7PLyl9b9JigdcZGnW7jmgFrtzdpTqaj8N3AhHs=
+	t=1740537926; cv=none; b=J8kcAVKvLCu1Ot9F7Kvfpx5TNwMo1Zaz/JpoDZuEXUm7Z5zlyV85usKIiSk0cZY1yFoPVXKuW2f3OWmSVCuqEuv7vS+4iqFo+oHVqrYqdry0P0qQOwlYrCl6IqAavtPqgq7aTLNoAc62QU0HGdydMKjas5rukwjoM5q4y3my+CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740523267; c=relaxed/simple;
-	bh=sHLceq7Gkv7gtVOjZn9zflNF+6VX1dTX67XKwz8Pu0I=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=kG1jWIbLVHt4A6HvC9AaiMwPUUPsI3MxKqH3gk7R9H2s0O7cwQUI79IGZgJMjXTRJqpawwVHFUeeFhRrmtRjn+bvrYvw4RGeig7i3Nmeo7eu+cnF9bgUcGNs4zxJlGhtC7nJW674u4daw7tRwb0pork72YxTY4PImlhLyqmWQQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MpD9HNve; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0UOXBp6L; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Feb 2025 22:41:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740523263;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NueTLAC6VsVDBBnGc27EBd8kAF48flEAgeAcX3ZY5f4=;
-	b=MpD9HNve/RXGeLcDHwEoY9oyhVYSjhEcaq1RDq57ylD1sdqxLyDjzfik5zS+AJrRARYiG9
-	Na9oriVSFMiYSUeUawyQQToSVCRyI0gLB3L/47QDPKeJorJ9zgyZtXNhe7jERZljxIByO9
-	psI0WvcJHVzhI6GhdUdDVfZQh033wLtFgg83n2ryJie06DIXgz/Yy4rPyHKHcEboyQ2yal
-	FHn4BM+SagS7E/612LVhfrXgBCd6Joe07XyUfxZmXnslbiylMEUH+6os0S1mlDuyRxyMqg
-	Cb5tuhLWfIdm++Gz+ES15DiCHV5XSYyoeklpnLGiumLwjfpxVijr2LZ4CmzSXg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740523263;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NueTLAC6VsVDBBnGc27EBd8kAF48flEAgeAcX3ZY5f4=;
-	b=0UOXBp6L+O3kHmGPa/HELfmMPTXv0AIdyjZfs7AdN6BejD/zlUvz5tXHcz9kN9OfhmEJMH
-	LLYRbfHgRZIIcRCQ==
-From: "tip-bot2 for Andrii Nakryiko" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] uprobes: Remove too strict lockdep_assert()
- condition in hprobe_expire()
-Cc: Breno Leitao <leitao@debian.org>, Andrii Nakryiko <andrii@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250225223214.2970740-1-andrii@kernel.org>
-References: <20250225223214.2970740-1-andrii@kernel.org>
+	s=arc-20240116; t=1740537926; c=relaxed/simple;
+	bh=uYMMZXMmXuEmXF+mt2VzXpg5mqrpTp80IRJvj1y0p68=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnpQNMvZmbwOI9e25y8CCjAJ7PnX1bBd0uTagN8vmURDKFHh6uLTgCy+4HaUbTJj2grNiuIJ93QKqdwZMkDQUxBUSWJML+fioFwWptEQynAlIZ2EqVS5WW8YYcDINj5/TbD7qTSyXVjXf00unHv52xyyy/D0jnnWeAA+308zlg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XCzviblH; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=6RwGAOPkxr9NfsXVfI3sYKQyWxyJfmW9afLmo9FB8L0=; b=XCzviblHCpZasiqUlLzleRu1H4
+	BdG31/ftNsKOK9HxMmulkg3wFD7yHrKYgBPcw7NdSSl62pkxPcWK3AWqcRzsTrftOXfmpG31Uvy0k
+	hBmiR4TEBGGlBj93F08A+aJBReKnlnB6LxaG5FChiFofqZ4jWfKRTDLvS6CLP3NoWuKkLr6zMG/Ys
+	avLzjtGVbjywyE/fEvHEltHtx3yS6lth4v2XfnJdFd7nts7Q3AZqfoWpxNs57+V3iE4Q44Po8wJ9n
+	hM29l2h4LWcGHEFF1SJFljA4+3V1DDK4kD6lQk+e9qTa867QAKsItWQHA/lFCjXV0cA6kFEWxfw2I
+	5IN5fweQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tn7QE-0000000DbNB-3trN;
+	Wed, 26 Feb 2025 02:45:19 +0000
+Date: Wed, 26 Feb 2025 02:45:18 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	kernel test robot <oliver.sang@intel.com>,
+	Ingo Molnar <mingo@kernel.org>, x86@kernel.org
+Subject: Re: [tip: x86/mm] x86/mm: Clear _PAGE_DIRTY when we clear _PAGE_RW
+Message-ID: <Z76APkysrjgHjgR2@casper.infradead.org>
+References: <174051422675.10177.13226545170101706336.tip-bot2@tip-bot2>
+ <CAHk-=whfkWMkQOVMCxqcJ6+GWdSZTLcyDUmSRCVHV4BtbwDrHA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174052326196.10177.3535848068595267390.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whfkWMkQOVMCxqcJ6+GWdSZTLcyDUmSRCVHV4BtbwDrHA@mail.gmail.com>
 
-The following commit has been merged into the perf/urgent branch of tip:
+On Tue, Feb 25, 2025 at 01:07:08PM -0800, Linus Torvalds wrote:
+> On Tue, 25 Feb 2025 at 12:10, tip-bot2 for Matthew Wilcox (Oracle)
+> <tip-bot2@linutronix.de> wrote:
+> >
+> > We should, therefore, clear the _PAGE_DIRTY bit whenever we clear
+> > _PAGE_RW.  I opted to do it in the callers in case we want to use
+> > __change_page_attr() to create shadow stacks inside the kernel at some
+> > point in the future.  Arguably, we might also want to clear _PAGE_ACCESSED
+> > here.
+> 
+> This explanation makes ZERO sense, and screams "this is a major bug" to me.
+> 
+> If a page is dirty, it doesn't magically turn clean just because it
+> becomes read-only. The dirty data remains and may need to be written
+> back to memory.
 
-Commit-ID:     f8c857238a392f21d5726d07966f6061007c8d4f
-Gitweb:        https://git.kernel.org/tip/f8c857238a392f21d5726d07966f6061007c8d4f
-Author:        Andrii Nakryiko <andrii@kernel.org>
-AuthorDate:    Tue, 25 Feb 2025 14:32:14 -08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 25 Feb 2025 23:36:19 +01:00
+Are you saying that the PTE dirty bit controls whether the CPU flushes
+cache back to memory?  That isn't how I understand CPUs to work.
 
-uprobes: Remove too strict lockdep_assert() condition in hprobe_expire()
+> Imagine writing to a shared memory area, and then marking it all
+> read-only after you're done. It's still dirty, even if it's read-only.
+> 
+> Now, I don't actually expect this patch to be wrong, I'm literally
+> just complaining about the explanation. Because the explanation is
+> very lacking. That's particularly true for the __set_pages_np() case
+> which also clears _PAGE_PRESENT, because then the whole shadow stacks
+> explanation flies right out the window: the shadow stack rules simply
+> do NOT APPLY to non-present pte's in the first place.
 
-hprobe_expire() is used to atomically switch pending uretprobe instance
-(struct return_instance) from being SRCU protected to be refcounted.
-This can be done from background timer thread, or synchronously within
-current thread when task is forked.
+Dave and I talked about that case.  We were concerned not that _this_
+manipulation would lead to a shadow stack entry appearing (since the
+present bit is being cleared), but that the next manipulation would just
+set the present bit without setting the RW bit and we'd accidentally
+end up with one.
 
-In the former case, return_instance has to be protected through RCU read
-lock, and that's what hprobe_expire() used to check with
-lockdep_assert(rcu_read_lock_held()).
+> So honestly, I think this wants an explanation for why it's actually a
+> safe change, and how the dirty bit has been saved before the
+> operation.
 
-But in the latter case (hprobe_expire() called from dup_utask()) there
-is no RCU lock being held, and it's both unnecessary and incovenient.
-Inconvenient due to the intervening memory allocations inside
-dup_return_instance()'s loop. Unnecessary because dup_utask() is called
-synchronously in current thread, and no uretprobe can run at that point,
-so return_instance can't be freed either.
-
-So drop rcu_read_lock_held() condition, and expand corresponding comment
-to explain necessary lifetime guarantees. lockdep_assert()-detected
-issue is a false positive.
-
-Fixes: dd1a7567784e ("uprobes: SRCU-protect uretprobe lifetime (with timeout)")
-Reported-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250225223214.2970740-1-andrii@kernel.org
----
- kernel/events/uprobes.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index af53fbd..b4ca889 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -767,10 +767,14 @@ static struct uprobe *hprobe_expire(struct hprobe *hprobe, bool get)
- 	enum hprobe_state hstate;
- 
- 	/*
--	 * return_instance's hprobe is protected by RCU.
--	 * Underlying uprobe is itself protected from reuse by SRCU.
-+	 * Caller should guarantee that return_instance is not going to be
-+	 * freed from under us. This can be achieved either through holding
-+	 * rcu_read_lock() or by owning return_instance in the first place.
-+	 *
-+	 * Underlying uprobe is itself protected from reuse by SRCU, so ensure
-+	 * SRCU lock is held properly.
- 	 */
--	lockdep_assert(rcu_read_lock_held() && srcu_read_lock_held(&uretprobes_srcu));
-+	lockdep_assert(srcu_read_lock_held(&uretprobes_srcu));
- 
- 	hstate = READ_ONCE(hprobe->state);
- 	switch (hstate) {
+I don't understand why the dirty bit needs to be saved.  At least in
+the vfree() case, we're freeing the memory so any unflushed writes to
+it may as well disappear.  But I don't know all the circumstances in
+which these functions are called.
 
