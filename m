@@ -1,63 +1,63 @@
-Return-Path: <linux-tip-commits+bounces-3719-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3720-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FAAA4899C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 21:16:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 921FFA489B0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 21:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564553B7321
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 20:16:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95986163CB7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 20:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB2126FA59;
-	Thu, 27 Feb 2025 20:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CEA224889;
+	Thu, 27 Feb 2025 20:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vbJJKtPe";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wBRbC0VT"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OP2kf5q0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RbjwaJxd"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF9A26A0BF;
-	Thu, 27 Feb 2025 20:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF601A841B;
+	Thu, 27 Feb 2025 20:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740687038; cv=none; b=QTEucjNkqxUAhebRBMp2T0QOYuujouMdD9+0XDnDMn2D2cC2NWrvOmKNLl/AKiOg/G6L4ttkWq/cRWoX2+vzw7wkgQ8QyDMIcKO28aDl3Ak10+Vt1WtH5XFN2awozs10BH79QdH5zo/j5uV3hD6OBu5MAkVt91okNVOn3/efHno=
+	t=1740687665; cv=none; b=Q6GkgkvCqzdHjm3cpWMit/yc1v/CWWkuT5YNyJvjZT8Kv52MJgsLNHTCno8mAb8+sLeHh3pCS6L+LaNxBF/UT58XYOo19uy2zr8qg3OjrA7B4BNzw+xQdSuMEojLP/bbVbHXBM9F1i+ZwOD8G+CAz57v6sYgX8pqVxwKO5PzONo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740687038; c=relaxed/simple;
-	bh=IIhv31tHm5nbcYXmnEy2mJ0BZBhMjxvw6fk3HPAcah4=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=CjSydbpsr3rXHllNVkiYjGY09U9zjj7ZLW6FfrW4M028t/nmUOCGqGliPHjWTDQ6Nct2u8y1pTQNGBfnSACqA0dzLEyGjawhki5IP+0ERvnqyMaOnfJPCmOWtZ5R/+F+4TUtrNsq0zfqnTcXoSoxCVrtZaBovyAJq9+IH5Wh0wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vbJJKtPe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wBRbC0VT; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1740687665; c=relaxed/simple;
+	bh=MtJTpeWFMmC6NvtMRah9y80RKfrLTo6oD9RpFUOhNG0=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ItmObFcbgayCt7eJBr531UCuLrjviwqsk1DTK200FZe29H6dIYfunegfzzx80oBXr0O1zHAunoQwoC5eEF7yUgzr35fliELDmWyGLAixzE4L8eSYsrtOC4xaVX3BOfBr7dqPGAOhCO3IpDgLASOENwbj5Lf9ZAnsG+8pe8EH7ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OP2kf5q0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RbjwaJxd; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Feb 2025 20:10:29 -0000
+Date: Thu, 27 Feb 2025 20:20:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740687034;
+	s=2020; t=1740687659;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=t9+V8RePVjSPDpuIDIZ3RFGMA2w2/OJO32B8KrynrsE=;
-	b=vbJJKtPejnkgi1nCm7HXD57VphdQ0yCu6hr+cyJDX58836LY8K1g0eh7506Te7bMoISWgv
-	YJMTpcBDYo/bAVYnKFba4vIutGZ8HBS4HVusYdHoroPBB7HdtCvlFSxvXF1eL8MOC2gZEO
-	rc6DGFka62twIlZy4oaw1YR7IRf4rC7uoRwCEH4LTAuuUujX/w07SgkP4UncAsyCziExc2
-	7jrWwarGI0eIU8oUnPHFHfVfCSwg5meKRd3+pa8OsENpx5ZXzwKTm1XbyBpLXz2R0c9rw1
-	/jixwxC5PYd1vCSezXaC0BawZwmR0HE1SujkadOqRcQlLhJ3wuChpva3VCn8Cg==
+	bh=N5GBxKj2vN1YefaqwaNRI9BMN2xaspLBJCa8Im2OHcY=;
+	b=OP2kf5q0IVeIGBHGUNHPGQaoASvAs2GP1C6inMAcWzKuUXpeaU7gBRXqaVy65B4Lx7tcOK
+	+gi6unj2/buKh8hZJmQ6cp9sZQDZC0uKOpaaXWkU3v85bZfy81D+sKNkJCmOioVZlEQbcr
+	VnlcXybIxNX1sMg3LlWpVVqsrE3gcTHbKcRXDQnHE04k5Wr2VLcWayzhEOsH6+wq74bjoh
+	QgzaHKPBL0GNBONeD786XYKdtFhbNsGEQkYGNU8tRtapXVjZiZtFxzxqQKEH3FnqLXRNp0
+	uzJnGMmfZncEFXSc+bwcNXqnxRb1TOa+SWQGcVw+u0VOYqSK1f2VIHz0eMv/2Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740687034;
+	s=2020e; t=1740687659;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=t9+V8RePVjSPDpuIDIZ3RFGMA2w2/OJO32B8KrynrsE=;
-	b=wBRbC0VTLIdmwgHuIyatirgeO9kJCV70RPFyTY9XXLczsMvLQtn70MFrWBEBnmWs2qUlk9
-	OruKBkbmMILkHWBA==
+	bh=N5GBxKj2vN1YefaqwaNRI9BMN2xaspLBJCa8Im2OHcY=;
+	b=RbjwaJxdXIQx/ehHvdy0foLj6BocsnX5q679cM3v5zSwK7xNE+ujmDI4IWvY6dqpunzXKO
+	onqB0mUADF5uj3CA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject: [tip: sched/urgent] sched/core: Prevent rescheduling when interrupts
  are disabled
-Cc: David Woodhouse <dwmw@amazon.co.uk>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+Cc: David Woodhouse <dwmw@amazon.co.uk>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
@@ -66,7 +66,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174068702952.10177.18201689881316002263.tip-bot2@tip-bot2>
+Message-ID: <174068765743.10177.15505690433402162747.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -76,12 +76,12 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     c092dc7d88c1214e109591790c9021a0f734677a
-Gitweb:        https://git.kernel.org/tip/c092dc7d88c1214e109591790c9021a0f734677a
+Commit-ID:     82c387ef7568c0d96a918a5a78d9cad6256cfa15
+Gitweb:        https://git.kernel.org/tip/82c387ef7568c0d96a918a5a78d9cad6256cfa15
 Author:        Thomas Gleixner <tglx@linutronix.de>
 AuthorDate:    Mon, 16 Dec 2024 14:20:56 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Feb 2025 20:55:16 +01:00
+CommitterDate: Thu, 27 Feb 2025 21:13:57 +01:00
 
 sched/core: Prevent rescheduling when interrupts are disabled
 
@@ -138,10 +138,10 @@ account.
 Cure the problem by adding a corresponding check into cond_resched().
 
 Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: stable@vger.kernel.org
 Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
