@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-3705-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3706-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDBFA47A8B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 11:43:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08BE8A47A8C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 11:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61E2F170C76
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 10:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 566741703EF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 10:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794AE22B8AB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C199822B8B9;
 	Thu, 27 Feb 2025 10:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t8xxvxDt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="20IiSxKE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4Ka/USsk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sU/wFQFW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595F222A7F7;
-	Thu, 27 Feb 2025 10:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB0E22A801;
+	Thu, 27 Feb 2025 10:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740652938; cv=none; b=E5aJjG0nE5YxpW1+O7ETMd82g1KokZSCV57oiKSNrqO35Z+NNY3FcRKD4GPlLiAE9xuCCocsyTjs0byil0xgJJqTzyI7YghING27hUBp3/Up3IJ7O5zT6Gu2+1G/3gDwTNwaSe3Wsz+KcHahJeSQ05hdTgFVcUgIeMoqoVyHn7c=
+	t=1740652938; cv=none; b=O3nbSg7cgWkxLPvlKb2ZYqTWHlFLYg1xD6RB1E+5D5jZwil6Iv8hpQXX4lJPpao1yDhPVaB8RPuaAxzDIy/Ad8+Etv21LDUUS6kBGcQGmufQmEImMwfySR1IEXHDHPLKgAIpiq1LgICCbXZUUL1RFe5SBTPptiCUijISune2AZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1740652938; c=relaxed/simple;
-	bh=GiRVn9LoNskavqSFHOzk9beXXtla4zZyctOvAF/x0lE=;
+	bh=EYnUwjU8rAc7vy5qfgO0HfS6NwKjgIHO5vaApt+0TZ4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RoVPpGNhMDQHcqGmG44ozoPSz+1cW0cyO6yQ0n+2uK5WqqSg2P+RlbRGxeJFzm/I1oC5GZr1M4J/cCja3MG0TxED+L9pl/ILl7n5X6actM5nbJrkiRJOSd6/kIhP4ajyx6FTvf/v3/vsZnQj80iQnI6U4zm+s/uGhPetJjdWOFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t8xxvxDt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=20IiSxKE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=i/e1nckeimHje+rTEeJgokCjraLctmSY59Acbb658GNif/Elt1u9GF4nVEqiqplTkQt8YL0twyljAJ3lvB4c6qkMSU3GXbztuhv8/iVQZEaE15Jz4pmKrQj0e1tQ+1G18tiglL1XMISfR+rtYIy7pF2LBbCDwNHnUHH3pnQfrkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4Ka/USsk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sU/wFQFW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Feb 2025 10:42:12 -0000
+Date: Thu, 27 Feb 2025 10:42:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740652933;
+	s=2020; t=1740652934;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BnS4+DcVp5X3vs3MP68sD221TLxpGbQYe0GuYLfsGgA=;
-	b=t8xxvxDtAj/i6GM7G8VQZKKBX++qCMSh0LUxpG9BN268cgi+sUMAKKJQfSW54RAmEIttCY
-	rHA6Aef0sqz761qNokYquuA/1TqJQQhSH2IDp+nr6hcTHY+003AL/l4zQ0jJsqPfHywWSm
-	Yq59TEeXNnpu4tfsewwpARRonFBH54y7rqPshLL4mnJaUYxp9RcawaZnpbbNMQTzYJFyrI
-	SiX/nrDhedmMVvg0fqwzNeOXfKzIE4zbOqpRRZhCu/MRe5MO1M8P3MGLuRxCATXslqGmr5
-	T/PsMYZ5KvOPh3mNemZot86he8roW+8N+aqdNUPQvRjY91S5FuQwlu4081JcoA==
+	bh=mWzodRqT8YDGO5D5YPAfnFSoEmnHOhgQpZl2QhTGNp4=;
+	b=4Ka/USskZlzI9MAYbIdffAE1kQ0sIgCbBlHRBSWw+cJHkTPbrr6laBNmazm0yYwW62Jwtv
+	KaDmy17nM2X+nPJKIcguHVHuKxSBnBJ8X2FUtsPFpSLwB5NUFoTTilYPv0M0WHwZ8NAfed
+	ssGbINQ0k+jGXqTFsxejNZ83+Hg8r4A1fOqxc4JlSlEqB+nVWvjq+OYgqJxMSPGdiTeaV1
+	VaU4goErw/erbhjZprAeP1IXnJC3tTZjT4zvKGnUW5eYm2O16rr3s4kc6zcI8CYWBMSkOk
+	0qi1JQZGEBqAlvDi17U4EMaHVpq8MjK7TEgSXc6YdOI1n5LeLPisc4C3ltp0tQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740652933;
+	s=2020e; t=1740652934;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BnS4+DcVp5X3vs3MP68sD221TLxpGbQYe0GuYLfsGgA=;
-	b=20IiSxKEEyF+NPcmnCsLHcn8ESaSEezmdA7uQZyyde9nI7qJs4MYGhBqzRngA7/lhDO8qR
-	tKnagJOF+JNO/lDA==
+	bh=mWzodRqT8YDGO5D5YPAfnFSoEmnHOhgQpZl2QhTGNp4=;
+	b=sU/wFQFWL1GxUdOf76J4rCmx9I9FSRv+gdNz7UbqQadrCmreCwDgovpqzy/koEoMxEKZgF
+	+nj53bzj5mGLiJDg==
 From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/mm: Remove CONFIG_HIGHMEM64G support
+Subject:
+ [tip: x86/cpu] x86/cpu: Drop configuration options for early 64-bit CPUs
 Cc: Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250226213714.4040853-6-arnd@kernel.org>
-References: <20250226213714.4040853-6-arnd@kernel.org>
+In-Reply-To: <20250226213714.4040853-5-arnd@kernel.org>
+References: <20250226213714.4040853-5-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174065293297.10177.16425148066296540101.tip-bot2@tip-bot2>
+Message-ID: <174065293385.10177.8552261502512949515.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,236 +82,327 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     bbeb69ce301323e84f1677484eb8e4cd8fb1f9f8
-Gitweb:        https://git.kernel.org/tip/bbeb69ce301323e84f1677484eb8e4cd8fb1f9f8
+Commit-ID:     f388f60ca9041a95c9b3f157d316ed7c8f297e44
+Gitweb:        https://git.kernel.org/tip/f388f60ca9041a95c9b3f157d316ed7c8f297e44
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 26 Feb 2025 22:37:09 +01:00
+AuthorDate:    Wed, 26 Feb 2025 22:37:08 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Feb 2025 11:21:53 +01:00
+CommitterDate: Thu, 27 Feb 2025 11:19:06 +01:00
 
-x86/mm: Remove CONFIG_HIGHMEM64G support
+x86/cpu: Drop configuration options for early 64-bit CPUs
 
-HIGHMEM64G support was added in linux-2.3.25 to support (then)
-high-end Pentium Pro and Pentium III Xeon servers with more than 4GB of
-addressing, NUMA and PCI-X slots started appearing.
+The x86 CPU selection menu is confusing for a number of reasons:
 
-I have found no evidence of this ever being used in regular dual-socket
-servers or consumer devices, all the users seem obsolete these days,
-even by i386 standards:
+When configuring 32-bit kernels, it shows a small number of early 64-bit
+microarchitectures (K8, Core 2) but not the regular generic 64-bit target
+that is the normal default.  There is no longer a reason to run 32-bit
+kernels on production 64-bit systems, so only actual 32-bit CPUs need
+to be shown here.
 
- - Support for NUMA servers (NUMA-Q, IBM x440, unisys) was already
-   removed ten years ago.
+When configuring 64-bit kernels, the options also pointless as there is
+no way to pick any CPU from the past 15 years, leaving GENERIC_CPU as
+the only sensible choice.
 
- - 4+ socket non-NUMA servers based on Intel 450GX/450NX, HP F8 and
-   ServerWorks ServerSet/GrandChampion could theoretically still work
-   with 8GB, but these were exceptionally rare even 20 years ago and
-   would have usually been equipped with than the maximum amount of
-   RAM.
-
- - Some SKUs of the Celeron D from 2004 had 64-bit mode fused off but
-   could still work in a Socket 775 mainboard designed for the later
-   Core 2 Duo and 8GB. Apparently most BIOSes at the time only allowed
-   64-bit CPUs.
-
- - The rare Xeon LV "Sossaman" came on a few motherboards with
-   registered DDR2 memory support up to 16GB.
-
- - In the early days of x86-64 hardware, there was sometimes the need
-   to run a 32-bit kernel to work around bugs in the hardware drivers,
-   or in the syscall emulation for 32-bit userspace. This likely still
-   works but there should never be a need for this any more.
-
-PAE mode is still required to get access to the 'NX' bit on Atom
-'Pentium M' and 'Core Duo' CPUs.
+Address both of the above by removing the obsolete options and making
+all 64-bit kernels run on both Intel and AMD CPUs from any generation.
+Testing generic 32-bit kernels on 64-bit hardware remains possible,
+just not building a 32-bit kernel that requires a 64-bit CPU.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250226213714.4040853-6-arnd@kernel.org
+Link: https://lore.kernel.org/r/20250226213714.4040853-5-arnd@kernel.org
 ---
- Documentation/admin-guide/kdump/kdump.rst     |  4 +--
- Documentation/arch/x86/usb-legacy-support.rst | 11 +----
- arch/x86/Kconfig                              | 46 ++----------------
- arch/x86/configs/xen.config                   |  2 +-
- arch/x86/include/asm/page_32_types.h          |  4 +-
- arch/x86/mm/init_32.c                         |  9 +----
- 6 files changed, 11 insertions(+), 65 deletions(-)
+ arch/x86/Kconfig.cpu            | 95 ++++----------------------------
+ arch/x86/Makefile               | 16 +-----
+ arch/x86/Makefile_32.cpu        |  5 +--
+ arch/x86/include/asm/vermagic.h |  4 +-
+ drivers/misc/mei/Kconfig        |  2 +-
+ 5 files changed, 18 insertions(+), 104 deletions(-)
 
-diff --git a/Documentation/admin-guide/kdump/kdump.rst b/Documentation/admin-guide/kdump/kdump.rst
-index 5376890..1f7f14c 100644
---- a/Documentation/admin-guide/kdump/kdump.rst
-+++ b/Documentation/admin-guide/kdump/kdump.rst
-@@ -180,10 +180,6 @@ Dump-capture kernel config options (Arch Dependent, i386 and x86_64)
- 1) On i386, enable high memory support under "Processor type and
-    features"::
- 
--	CONFIG_HIGHMEM64G=y
--
--   or::
--
- 	CONFIG_HIGHMEM4G
- 
- 2) With CONFIG_SMP=y, usually nr_cpus=1 need specified on the kernel
-diff --git a/Documentation/arch/x86/usb-legacy-support.rst b/Documentation/arch/x86/usb-legacy-support.rst
-index e01c08b..b17bf12 100644
---- a/Documentation/arch/x86/usb-legacy-support.rst
-+++ b/Documentation/arch/x86/usb-legacy-support.rst
-@@ -20,11 +20,7 @@ It has several drawbacks, though:
-    features (wheel, extra buttons, touchpad mode) of the real PS/2 mouse may
-    not be available.
- 
--2) If CONFIG_HIGHMEM64G is enabled, the PS/2 mouse emulation can cause
--   system crashes, because the SMM BIOS is not expecting to be in PAE mode.
--   The Intel E7505 is a typical machine where this happens.
--
--3) If AMD64 64-bit mode is enabled, again system crashes often happen,
-+2) If AMD64 64-bit mode is enabled, again system crashes often happen,
-    because the SMM BIOS isn't expecting the CPU to be in 64-bit mode.  The
-    BIOS manufacturers only test with Windows, and Windows doesn't do 64-bit
-    yet.
-@@ -38,11 +34,6 @@ Problem 1)
-   compiled-in, too.
- 
- Problem 2)
--  can currently only be solved by either disabling HIGHMEM64G
--  in the kernel config or USB Legacy support in the BIOS. A BIOS update
--  could help, but so far no such update exists.
--
--Problem 3)
-   is usually fixed by a BIOS update. Check the board
-   manufacturers web site. If an update is not available, disable USB
-   Legacy support in the BIOS. If this alone doesn't help, try also adding
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 887b77b..737a0c6 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1388,15 +1388,11 @@ config X86_CPUID
- 	  with major 203 and minors 0 to 31 for /dev/cpu/0/cpuid to
- 	  /dev/cpu/31/cpuid.
- 
--choice
--	prompt "High Memory Support"
--	default HIGHMEM4G
-+config HIGHMEM4G
-+	bool "High Memory Support"
- 	depends on X86_32
--
--config NOHIGHMEM
--	bool "off"
- 	help
--	  Linux can use up to 64 Gigabytes of physical memory on x86 systems.
-+	  Linux can use up to 4 Gigabytes of physical memory on x86 systems.
- 	  However, the address space of 32-bit x86 processors is only 4
- 	  Gigabytes large. That means that, if you have a large amount of
- 	  physical memory, not all of it can be "permanently mapped" by the
-@@ -1412,38 +1408,9 @@ config NOHIGHMEM
- 	  possible.
- 
- 	  If the machine has between 1 and 4 Gigabytes physical RAM, then
--	  answer "4GB" here.
-+	  answer "Y" here.
- 
--	  If more than 4 Gigabytes is used then answer "64GB" here. This
--	  selection turns Intel PAE (Physical Address Extension) mode on.
--	  PAE implements 3-level paging on IA32 processors. PAE is fully
--	  supported by Linux, PAE mode is implemented on all recent Intel
--	  processors (Pentium Pro and better). NOTE: If you say "64GB" here,
--	  then the kernel will not boot on CPUs that don't support PAE!
--
--	  The actual amount of total physical memory will either be
--	  auto detected or can be forced by using a kernel command line option
--	  such as "mem=256M". (Try "man bootparam" or see the documentation of
--	  your boot loader (lilo or loadlin) about how to pass options to the
--	  kernel at boot time.)
--
--	  If unsure, say "off".
--
--config HIGHMEM4G
--	bool "4GB"
--	help
--	  Select this if you have a 32-bit processor and between 1 and 4
--	  gigabytes of physical RAM.
--
--config HIGHMEM64G
--	bool "64GB"
--	depends on X86_HAVE_PAE
--	select X86_PAE
--	help
--	  Select this if you have a 32-bit processor and more than 4
--	  gigabytes of physical RAM.
--
--endchoice
-+	  If unsure, say N.
- 
+diff --git a/arch/x86/Kconfig.cpu b/arch/x86/Kconfig.cpu
+index 42e6a40..8fcb8cc 100644
+--- a/arch/x86/Kconfig.cpu
++++ b/arch/x86/Kconfig.cpu
+@@ -1,9 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Put here option for CPU selection and depending optimization
  choice
- 	prompt "Memory split" if EXPERT
-@@ -1489,8 +1456,7 @@ config PAGE_OFFSET
+-	prompt "Processor family"
+-	default M686 if X86_32
+-	default GENERIC_CPU if X86_64
++	prompt "x86-32 Processor family"
++	depends on X86_32
++	default M686
+ 	help
+ 	  This is the processor type of your CPU. This information is
+ 	  used for optimizing purposes. In order to compile a kernel
+@@ -31,7 +31,6 @@ choice
+ 	  - "Pentium-4" for the Intel Pentium 4 or P4-based Celeron.
+ 	  - "K6" for the AMD K6, K6-II and K6-III (aka K6-3D).
+ 	  - "Athlon" for the AMD K7 family (Athlon/Duron/Thunderbird).
+-	  - "Opteron/Athlon64/Hammer/K8" for all K8 and newer AMD CPUs.
+ 	  - "Crusoe" for the Transmeta Crusoe series.
+ 	  - "Efficeon" for the Transmeta Efficeon series.
+ 	  - "Winchip-C6" for original IDT Winchip.
+@@ -42,13 +41,10 @@ choice
+ 	  - "CyrixIII/VIA C3" for VIA Cyrix III or VIA C3.
+ 	  - "VIA C3-2" for VIA C3-2 "Nehemiah" (model 9 and above).
+ 	  - "VIA C7" for VIA C7.
+-	  - "Intel P4" for the Pentium 4/Netburst microarchitecture.
+-	  - "Core 2/newer Xeon" for all core2 and newer Intel CPUs.
+ 	  - "Intel Atom" for the Atom-microarchitecture CPUs.
+-	  - "Generic-x86-64" for a kernel which runs on any x86-64 CPU.
+ 
+ 	  See each option's help text for additional details. If you don't know
+-	  what to do, choose "486".
++	  what to do, choose "Pentium-Pro".
+ 
+ config M486SX
+ 	bool "486SX"
+@@ -114,11 +110,11 @@ config MPENTIUMIII
+ 	  extensions.
+ 
+ config MPENTIUMM
+-	bool "Pentium M"
++	bool "Pentium M/Pentium Dual Core/Core Solo/Core Duo"
  	depends on X86_32
+ 	help
+ 	  Select this for Intel Pentium M (not Pentium-4 M)
+-	  notebook chips.
++	  "Merom" Core Solo/Duo notebook chips
  
- config HIGHMEM
+ config MPENTIUM4
+ 	bool "Pentium-4/Celeron(P4-based)/Pentium-4 M/older Xeon"
+@@ -139,22 +135,10 @@ config MPENTIUM4
+ 		-Mobile Pentium 4
+ 		-Mobile Pentium 4 M
+ 		-Extreme Edition (Gallatin)
+-		-Prescott
+-		-Prescott 2M
+-		-Cedar Mill
+-		-Presler
+-		-Smithfiled
+ 	    Xeons (Intel Xeon, Xeon MP, Xeon LV, Xeon MV) corename:
+ 		-Foster
+ 		-Prestonia
+ 		-Gallatin
+-		-Nocona
+-		-Irwindale
+-		-Cranford
+-		-Potomac
+-		-Paxville
+-		-Dempsey
+-
+ 
+ config MK6
+ 	bool "K6/K6-II/K6-III"
+@@ -172,13 +156,6 @@ config MK7
+ 	  some extended instructions, and passes appropriate optimization
+ 	  flags to GCC.
+ 
+-config MK8
+-	bool "Opteron/Athlon64/Hammer/K8"
+-	help
+-	  Select this for an AMD Opteron or Athlon64 Hammer-family processor.
+-	  Enables use of some extended instructions, and passes appropriate
+-	  optimization flags to GCC.
+-
+ config MCRUSOE
+ 	bool "Crusoe"
+ 	depends on X86_32
+@@ -258,42 +235,14 @@ config MVIAC7
+ 	  Select this for a VIA C7.  Selecting this uses the correct cache
+ 	  shift and tells gcc to treat the CPU as a 686.
+ 
+-config MPSC
+-	bool "Intel P4 / older Netburst based Xeon"
+-	depends on X86_64
+-	help
+-	  Optimize for Intel Pentium 4, Pentium D and older Nocona/Dempsey
+-	  Xeon CPUs with Intel 64bit which is compatible with x86-64.
+-	  Note that the latest Xeons (Xeon 51xx and 53xx) are not based on the
+-	  Netburst core and shouldn't use this option. You can distinguish them
+-	  using the cpu family field
+-	  in /proc/cpuinfo. Family 15 is an older Xeon, Family 6 a newer one.
+-
+-config MCORE2
+-	bool "Core 2/newer Xeon"
+-	help
+-
+-	  Select this for Intel Core 2 and newer Core 2 Xeons (Xeon 51xx and
+-	  53xx) CPUs. You can distinguish newer from older Xeons by the CPU
+-	  family in /proc/cpuinfo. Newer ones have 6 and older ones 15
+-	  (not a typo)
+-
+ config MATOM
+ 	bool "Intel Atom"
+ 	help
+-
+ 	  Select this for the Intel Atom platform. Intel Atom CPUs have an
+ 	  in-order pipelining architecture and thus can benefit from
+ 	  accordingly optimized code. Use a recent GCC with specific Atom
+ 	  support in order to fully benefit from selecting this option.
+ 
+-config GENERIC_CPU
+-	bool "Generic-x86-64"
+-	depends on X86_64
+-	help
+-	  Generic x86-64 CPU.
+-	  Run equally well on all x86-64 CPUs.
+-
+ endchoice
+ 
+ config X86_GENERIC
+@@ -317,8 +266,8 @@ config X86_INTERNODE_CACHE_SHIFT
+ 
+ config X86_L1_CACHE_SHIFT
+ 	int
+-	default "7" if MPENTIUM4 || MPSC
+-	default "6" if MK7 || MK8 || MPENTIUMM || MCORE2 || MATOM || MVIAC7 || X86_GENERIC || GENERIC_CPU
++	default "7" if MPENTIUM4
++	default "6" if MK7 || MPENTIUMM || MATOM || MVIAC7 || X86_GENERIC || X86_64
+ 	default "4" if MELAN || M486SX || M486 || MGEODEGX1
+ 	default "5" if MWINCHIP3D || MWINCHIPC6 || MCRUSOE || MEFFICEON || MCYRIXIII || MK6 || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || M586 || MVIAC3_2 || MGEODE_LX
+ 
+@@ -336,35 +285,19 @@ config X86_ALIGNMENT_16
+ 
+ config X86_INTEL_USERCOPY
+ 	def_bool y
+-	depends on MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M586MMX || X86_GENERIC || MK8 || MK7 || MEFFICEON || MCORE2
++	depends on MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M586MMX || X86_GENERIC || MK7 || MEFFICEON
+ 
+ config X86_USE_PPRO_CHECKSUM
+ 	def_bool y
+-	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MCORE2 || MATOM
+-
+-#
+-# P6_NOPs are a relatively minor optimization that require a family >=
+-# 6 processor, except that it is broken on certain VIA chips.
+-# Furthermore, AMD chips prefer a totally different sequence of NOPs
+-# (which work on all CPUs).  In addition, it looks like Virtual PC
+-# does not understand them.
+-#
+-# As a result, disallow these if we're not compiling for X86_64 (these
+-# NOPs do work on all x86-64 capable chips); the list of processors in
+-# the right-hand clause are the cores that benefit from this optimization.
+-#
+-config X86_P6_NOP
 -	def_bool y
--	depends on X86_32 && (HIGHMEM64G || HIGHMEM4G)
-+	def_bool HIGHMEM4G
+-	depends on X86_64
+-	depends on (MCORE2 || MPENTIUM4 || MPSC)
++	depends on MWINCHIP3D || MWINCHIPC6 || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MEFFICEON || MGEODE_LX || MATOM
  
- config X86_PAE
- 	bool "PAE (Physical Address Extension) Support"
-diff --git a/arch/x86/configs/xen.config b/arch/x86/configs/xen.config
-index 5812962..d5d091e 100644
---- a/arch/x86/configs/xen.config
-+++ b/arch/x86/configs/xen.config
-@@ -1,6 +1,4 @@
- # global x86 required specific stuff
--# On 32-bit HIGHMEM4G is not allowed
--CONFIG_HIGHMEM64G=y
- CONFIG_64BIT=y
+ config X86_TSC
+ 	def_bool y
+-	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MK8 || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MCORE2 || MATOM) || X86_64
++	depends on (MWINCHIP3D || MCRUSOE || MEFFICEON || MCYRIXIII || MK7 || MK6 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || M586MMX || M586TSC || MVIAC3_2 || MVIAC7 || MGEODEGX1 || MGEODE_LX || MATOM) || X86_64
  
- # These enable us to allow some of the
-diff --git a/arch/x86/include/asm/page_32_types.h b/arch/x86/include/asm/page_32_types.h
-index faf9cc1..25c3265 100644
---- a/arch/x86/include/asm/page_32_types.h
-+++ b/arch/x86/include/asm/page_32_types.h
-@@ -11,8 +11,8 @@
-  * a virtual address space of one gigabyte, which limits the
-  * amount of physical memory you can use to about 950MB.
-  *
-- * If you want more physical memory than this then see the CONFIG_HIGHMEM4G
-- * and CONFIG_HIGHMEM64G options in the kernel configuration.
-+ * If you want more physical memory than this then see the CONFIG_VMSPLIT_2G
-+ * and CONFIG_HIGHMEM4G options in the kernel configuration.
-  */
- #define __PAGE_OFFSET_BASE	_AC(CONFIG_PAGE_OFFSET, UL)
- #define __PAGE_OFFSET		__PAGE_OFFSET_BASE
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index ac41b1e..f288aad 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -582,7 +582,7 @@ static void __init lowmem_pfn_init(void)
- 	"only %luMB highmem pages available, ignoring highmem size of %luMB!\n"
+ config X86_HAVE_PAE
+ 	def_bool y
+-	depends on MCRUSOE || MEFFICEON || MCYRIXIII || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MK8 || MVIAC7 || MCORE2 || MATOM || X86_64
++	depends on MCRUSOE || MEFFICEON || MCYRIXIII || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC7 || MATOM || X86_64
  
- #define MSG_HIGHMEM_TRIMMED \
--	"Warning: only 4GB will be used. Use a HIGHMEM64G enabled kernel!\n"
-+	"Warning: only 4GB will be used. Support for for CONFIG_HIGHMEM64G was removed!\n"
- /*
-  * We have more RAM than fits into lowmem - we try to put it into
-  * highmem, also taking the highmem=x boot parameter into account:
-@@ -606,18 +606,13 @@ static void __init highmem_pfn_init(void)
- #ifndef CONFIG_HIGHMEM
- 	/* Maximum memory usable is what is directly addressable */
- 	printk(KERN_WARNING "Warning only %ldMB will be used.\n", MAXMEM>>20);
--	if (max_pfn > MAX_NONPAE_PFN)
--		printk(KERN_WARNING "Use a HIGHMEM64G enabled kernel.\n");
--	else
--		printk(KERN_WARNING "Use a HIGHMEM enabled kernel.\n");
-+	printk(KERN_WARNING "Use a HIGHMEM enabled kernel.\n");
- 	max_pfn = MAXMEM_PFN;
- #else /* !CONFIG_HIGHMEM */
--#ifndef CONFIG_HIGHMEM64G
- 	if (max_pfn > MAX_NONPAE_PFN) {
- 		max_pfn = MAX_NONPAE_PFN;
- 		printk(KERN_WARNING MSG_HIGHMEM_TRIMMED);
- 	}
--#endif /* !CONFIG_HIGHMEM64G */
- #endif /* !CONFIG_HIGHMEM */
- }
+ config X86_CMPXCHG64
+ 	def_bool y
+@@ -374,12 +307,12 @@ config X86_CMPXCHG64
+ # generates cmov.
+ config X86_CMOV
+ 	def_bool y
+-	depends on (MK8 || MK7 || MCORE2 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MCRUSOE || MEFFICEON || X86_64 || MATOM || MGEODE_LX)
++	depends on (MK7 || MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MCRUSOE || MEFFICEON || MATOM || MGEODE_LX || X86_64)
  
+ config X86_MINIMUM_CPU_FAMILY
+ 	int
+ 	default "64" if X86_64
+-	default "6" if X86_32 && (MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MEFFICEON || MATOM || MCORE2 || MK7 || MK8)
++	default "6" if X86_32 && (MPENTIUM4 || MPENTIUMM || MPENTIUMIII || MPENTIUMII || M686 || MVIAC3_2 || MVIAC7 || MEFFICEON || MATOM || MK7)
+ 	default "5" if X86_32 && X86_CMPXCHG64
+ 	default "4"
+ 
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 5af3172..8120085 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -178,20 +178,8 @@ else
+ 	# Use -mskip-rax-setup if supported.
+ 	KBUILD_CFLAGS += $(call cc-option,-mskip-rax-setup)
+ 
+-        # FIXME - should be integrated in Makefile.cpu (Makefile_32.cpu)
+-        cflags-$(CONFIG_MK8)		+= -march=k8
+-        cflags-$(CONFIG_MPSC)		+= -march=nocona
+-        cflags-$(CONFIG_MCORE2)		+= -march=core2
+-        cflags-$(CONFIG_MATOM)		+= -march=atom
+-        cflags-$(CONFIG_GENERIC_CPU)	+= -march=x86-64 -mtune=generic
+-        KBUILD_CFLAGS += $(cflags-y)
+-
+-        rustflags-$(CONFIG_MK8)		+= -Ctarget-cpu=k8
+-        rustflags-$(CONFIG_MPSC)	+= -Ctarget-cpu=nocona
+-        rustflags-$(CONFIG_MCORE2)	+= -Ctarget-cpu=core2
+-        rustflags-$(CONFIG_MATOM)	+= -Ctarget-cpu=atom
+-        rustflags-$(CONFIG_GENERIC_CPU)	+= -Ctarget-cpu=x86-64 -Ztune-cpu=generic
+-        KBUILD_RUSTFLAGS += $(rustflags-y)
++        KBUILD_CFLAGS += -march=x86-64 -mtune=generic
++        KBUILD_RUSTFLAGS += -Ctarget-cpu=x86-64 -Ztune-cpu=generic
+ 
+         KBUILD_CFLAGS += -mno-red-zone
+         KBUILD_CFLAGS += -mcmodel=kernel
+diff --git a/arch/x86/Makefile_32.cpu b/arch/x86/Makefile_32.cpu
+index 94834c4..af7de9a 100644
+--- a/arch/x86/Makefile_32.cpu
++++ b/arch/x86/Makefile_32.cpu
+@@ -24,7 +24,6 @@ cflags-$(CONFIG_MK6)		+= -march=k6
+ # Please note, that patches that add -march=athlon-xp and friends are pointless.
+ # They make zero difference whatsosever to performance at this time.
+ cflags-$(CONFIG_MK7)		+= -march=athlon
+-cflags-$(CONFIG_MK8)		+= $(call cc-option,-march=k8,-march=athlon)
+ cflags-$(CONFIG_MCRUSOE)	+= -march=i686 $(align)
+ cflags-$(CONFIG_MEFFICEON)	+= -march=i686 $(call tune,pentium3) $(align)
+ cflags-$(CONFIG_MWINCHIPC6)	+= $(call cc-option,-march=winchip-c6,-march=i586)
+@@ -32,9 +31,7 @@ cflags-$(CONFIG_MWINCHIP3D)	+= $(call cc-option,-march=winchip2,-march=i586)
+ cflags-$(CONFIG_MCYRIXIII)	+= $(call cc-option,-march=c3,-march=i486) $(align)
+ cflags-$(CONFIG_MVIAC3_2)	+= $(call cc-option,-march=c3-2,-march=i686)
+ cflags-$(CONFIG_MVIAC7)		+= -march=i686
+-cflags-$(CONFIG_MCORE2)		+= -march=i686 $(call tune,core2)
+-cflags-$(CONFIG_MATOM)		+= $(call cc-option,-march=atom,$(call cc-option,-march=core2,-march=i686)) \
+-	$(call cc-option,-mtune=atom,$(call cc-option,-mtune=generic))
++cflags-$(CONFIG_MATOM)		+= -march=atom
+ 
+ # AMD Elan support
+ cflags-$(CONFIG_MELAN)		+= -march=i486
+diff --git a/arch/x86/include/asm/vermagic.h b/arch/x86/include/asm/vermagic.h
+index 75884d2..5d47125 100644
+--- a/arch/x86/include/asm/vermagic.h
++++ b/arch/x86/include/asm/vermagic.h
+@@ -15,8 +15,6 @@
+ #define MODULE_PROC_FAMILY "586TSC "
+ #elif defined CONFIG_M586MMX
+ #define MODULE_PROC_FAMILY "586MMX "
+-#elif defined CONFIG_MCORE2
+-#define MODULE_PROC_FAMILY "CORE2 "
+ #elif defined CONFIG_MATOM
+ #define MODULE_PROC_FAMILY "ATOM "
+ #elif defined CONFIG_M686
+@@ -33,8 +31,6 @@
+ #define MODULE_PROC_FAMILY "K6 "
+ #elif defined CONFIG_MK7
+ #define MODULE_PROC_FAMILY "K7 "
+-#elif defined CONFIG_MK8
+-#define MODULE_PROC_FAMILY "K8 "
+ #elif defined CONFIG_MELAN
+ #define MODULE_PROC_FAMILY "ELAN "
+ #elif defined CONFIG_MCRUSOE
+diff --git a/drivers/misc/mei/Kconfig b/drivers/misc/mei/Kconfig
+index 67d9391..7575fee 100644
+--- a/drivers/misc/mei/Kconfig
++++ b/drivers/misc/mei/Kconfig
+@@ -3,7 +3,7 @@
+ config INTEL_MEI
+ 	tristate "Intel Management Engine Interface"
+ 	depends on X86 && PCI
+-	default GENERIC_CPU || MCORE2 || MATOM || X86_GENERIC
++	default X86_64 || MATOM
+ 	help
+ 	  The Intel Management Engine (Intel ME) provides Manageability,
+ 	  Security and Media services for system containing Intel chipsets.
 
