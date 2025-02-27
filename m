@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3704-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3702-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BFBBA47A8A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 11:42:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B100DA47A82
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 11:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35FF03B178D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 10:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A998B16E794
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 10:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58ED22A80B;
-	Thu, 27 Feb 2025 10:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDD022A4D8;
+	Thu, 27 Feb 2025 10:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hAspTydZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZbD22b2O"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OtNxRClv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4BvVOWfO"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835E2227EBF;
-	Thu, 27 Feb 2025 10:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7A221ABB4;
+	Thu, 27 Feb 2025 10:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740652936; cv=none; b=idrBC98ZsK/68zYxRZNbRkhfMcC+YyaviYaxTeeNpbyuBjVp6I/LDHZIBeONydaSSgBjDq3NdqGGSo2AdKy1GZXGmiD8izgARGlctIFd6uzsWdtBYunXxItwxKtvvt3U6vvjWKOBysZXW/0RVEw0suZst3CG8TeAeQn+NsRyApE=
+	t=1740652935; cv=none; b=JmNgplc6700MFiYUJXvZmiVeiNxvqV5gIufPKQP8GFEkA96/t2YKIe9wDY9Axwuz8WM4AqFzmxhSdjX9GTZCGB30J8TLMQVDkzW75F6rCgEOrudqLZp2UDc8Ykwk0oXRSoTsiDw6NdWgQwf4+atwwf5Mqkm/C7qRZHLLo6YWEuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740652936; c=relaxed/simple;
-	bh=vifOECyumKzNn0344YceHp3ga6qjJykneirBe7VAug0=;
+	s=arc-20240116; t=1740652935; c=relaxed/simple;
+	bh=WNT+XStX07ObPZiO8/WxOt/3FXIfVyCJZsxCedwAgoc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JYZ+IHwYzwxwq+OKBzIr+AXqLZM9cjZhxfGMmX7+9lMiFKsDzZZr1N9q6383BEVYtzpm4WA//jy/PPWKQ9SsRYWpCPk/wrnjOTB/G/h2r2n0/EV70EcGfElRRPr69ukKdPT2dNG3Zd7o0uCgsitjyngg509AeXMrif/0wc1Jk7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hAspTydZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZbD22b2O; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=e53jP8UGsIWrcMBvYEBjIiZLxyopyA3HVEGQwjVbTmeS2wm4v+5tA52AWZfL3BPwsj1ImkdJgLtr0b+uS53CrEeWXoHDVklphFrKohx+d2xDvD8/969QkPCtj4ZozS3yLI04VFWmP4etr37BYIp3IK7ZQ0cBZ9XKYajvrZWnWmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OtNxRClv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4BvVOWfO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Feb 2025 10:42:10 -0000
+Date: Thu, 27 Feb 2025 10:42:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740652931;
+	s=2020; t=1740652932;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hgn1n1sfeOAH2DkruypZgQjMWbuQzoUn8QS+pQ/btKM=;
-	b=hAspTydZgSrUKoXBNqoDoaAQln6tX2nBKEYB/ZLvo7qR0IHAYMllgefFacRZcJJ6qvDdzr
-	pEEmObXyzMjy+xYDAYuNNVJGjFyCbf82cBnKzuoHz0uzKWCXDetxtvWkQGhvkGig8B4I3j
-	d9pSIMw3Cg32BvVs5uLlwd3Y0vJfY7TysRkB6IBzApiWRDGD/rwFyoR5EPgaPib1QT5zI6
-	mcaJOU+q4wNI4tepImppe5/9mZOoUF3tFtseO+3WOYeaOD1sNr1MKpoLWo3ToSPZkfk8mJ
-	CFjw4hAl3ETU1nDcoZrEtFFiuBZHd/BMNEKYPb1JxBLw3KA55ffMFbQGmptj7Q==
+	bh=457Wur7shOQm8hQwXRkkTfzuglETjkKuJSnlQEZ5h5o=;
+	b=OtNxRClvzbQHnMj30QFtIsiTNFeu6rwlYO1Wlznit/TV1rC3L+B05C+O37E0D/ODKfmkam
+	+2N6BmizhXKjHF02n2ZiuzzdrsMeFphNZ0TvVA5A8KNTjIXYCNLAbV+4MffR7xI+CD61Gw
+	ul7t0oIysdyHbdRkjcXrJKvdCU02PPK8AldMSS98HeR4GmnikRvT4kPboSXUgik4Aj1MpT
+	mUANlwijAElcM9SFNfLZkSFr47NBDNC0niktmAIxpCntcjvR1ya6gKP+8rmS1YjZXIJPe9
+	lBmWblunBcBt51w1Z9v5nxvFTFXtZFl3abJjmQdEyEoltRbl+5QWKDuPNsKhBA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740652931;
+	s=2020e; t=1740652932;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hgn1n1sfeOAH2DkruypZgQjMWbuQzoUn8QS+pQ/btKM=;
-	b=ZbD22b2OIeRZs7lVhxF6DwTshNKvKjP84rkyJTyG+Q5q6QPb6ypT9WNugjjWtJ4XXD8P54
-	XSRpSQVRU4VY15BQ==
+	bh=457Wur7shOQm8hQwXRkkTfzuglETjkKuJSnlQEZ5h5o=;
+	b=4BvVOWfOBrV4mTO1I+pifcN01h3CK4bd5uIAVOa/M5OFAV/IfvOamNfPVW/8mKBDiZ0ep5
+	lzZKLnG1lMHUc4Bw==
 From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Document CONFIG_X86_INTEL_MID as 64-bit-only
+Subject: [tip: x86/cpu] x86/mm: Drop support for CONFIG_HIGHPTE
 Cc: Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
- Andy Shevchenko <andy@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250226213714.4040853-9-arnd@kernel.org>
-References: <20250226213714.4040853-9-arnd@kernel.org>
+In-Reply-To: <20250226213714.4040853-8-arnd@kernel.org>
+References: <20250226213714.4040853-8-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174065293024.10177.14667547423310651198.tip-bot2@tip-bot2>
+Message-ID: <174065293149.10177.7265322609739583759.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,122 +81,126 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     ca5955dd5f08727605723b60767fbf2cc3d54046
-Gitweb:        https://git.kernel.org/tip/ca5955dd5f08727605723b60767fbf2cc3d54046
+Commit-ID:     0081fdeccbf610499b79784998b1fd36783209dd
+Gitweb:        https://git.kernel.org/tip/0081fdeccbf610499b79784998b1fd36783209dd
 Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Wed, 26 Feb 2025 22:37:12 +01:00
+AuthorDate:    Wed, 26 Feb 2025 22:37:11 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Feb 2025 11:22:07 +01:00
+CommitterDate: Thu, 27 Feb 2025 11:22:06 +01:00
 
-x86/cpu: Document CONFIG_X86_INTEL_MID as 64-bit-only
+x86/mm: Drop support for CONFIG_HIGHPTE
 
-The X86_INTEL_MID code was originally introduced for the 32-bit
-Moorestown/Medfield/Clovertrail platform, later the 64-bit
-Merrifield/Moorefield variants were added, but the final Morganfield
-14nm platform was canceled before it hit the market.
+With the maximum amount of RAM now 4GB, there is very little point
+to still have PTE pages in highmem. Drop this for simplification.
 
-To help users understand what the option actually refers to, update the
-help text, and add a dependency on 64-bit kernels.
-
-Ferry confirmed that all the hardware can run 64-bit kernels these days,
-but is still testing 32-bit kernels on the Intel Edison board, so this
-remains possible, but is guarded by a CONFIG_EXPERT dependency now,
-to gently push remaining users towards using CONFIG_64BIT.
+The only other architecture supporting HIGHPTE is 32-bit arm, and
+once that feature is removed as well, the highpte logic can be
+dropped from common code as well.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Andy Shevchenko <andy@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250226213714.4040853-9-arnd@kernel.org
+Link: https://lore.kernel.org/r/20250226213714.4040853-8-arnd@kernel.org
 ---
- arch/x86/Kconfig | 50 +++++++++++++++++++++++++++--------------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |  7 +----
+ arch/x86/Kconfig                                |  9 +-----
+ arch/x86/include/asm/pgalloc.h                  |  5 +---
+ arch/x86/mm/pgtable.c                           | 27 +----------------
+ 4 files changed, 1 insertion(+), 47 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 8f92377..9317763 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7668,13 +7668,6 @@
+ 				16 - SIGBUS faults
+ 			Example: user_debug=31
+ 
+-	userpte=
+-			[X86,EARLY] Flags controlling user PTE allocations.
+-
+-				nohigh = do not allocate PTE pages in
+-					HIGHMEM regardless of setting
+-					of CONFIG_HIGHPTE.
+-
+ 	vdso=		[X86,SH,SPARC]
+ 			On X86_32, this is an alias for vdso32=.  Otherwise:
+ 
 diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 73eeaf2..acd4d73 100644
+index 0e0ec2c..73eeaf2 100644
 --- a/arch/x86/Kconfig
 +++ b/arch/x86/Kconfig
-@@ -549,12 +549,12 @@ config X86_EXTENDED_PLATFORM
- 		RDC R-321x SoC
- 		SGI 320/540 (Visual Workstation)
- 		STA2X11-based (e.g. Northville)
--		Moorestown MID devices
+@@ -1628,15 +1628,6 @@ config X86_PMEM_LEGACY
  
- 	  64-bit platforms (CONFIG_64BIT=y):
- 		Numascale NumaChip
- 		ScaleMP vSMP
- 		SGI Ultraviolet
-+		Merrifield/Moorefield MID devices
+ 	  Say Y if unsure.
  
- 	  If you have one of these systems, or if you want to build a
- 	  generic distribution kernel, say Y here - otherwise say N.
-@@ -599,8 +599,31 @@ config X86_UV
- 	  This option is needed in order to support SGI Ultraviolet systems.
- 	  If you don't have one of these, you should say N here.
- 
--# Following is an alphabetically sorted list of 32 bit extended platforms
--# Please maintain the alphabetic order if and when there are additions
-+config X86_INTEL_MID
-+	bool "Intel Z34xx/Z35xx MID platform support"
-+	depends on X86_EXTENDED_PLATFORM
-+	depends on X86_PLATFORM_DEVICES
-+	depends on PCI
-+	depends on X86_64 || (EXPERT && PCI_GOANY)
-+	depends on X86_IO_APIC
-+	select I2C
-+	select DW_APB_TIMER
-+	select INTEL_SCU_PCI
-+	help
-+	  Select to build a kernel capable of supporting 64-bit Intel MID
-+	  (Mobile Internet Device) platform systems which do not have
-+	  the PCI legacy interfaces.
-+
-+	  The only supported devices are the 22nm Merrified (Z34xx)
-+	  and Moorefield (Z35xx) SoC used in the Intel Edison board and
-+	  a small number of Android devices such as the Asus Zenfone 2,
-+	  Asus FonePad 8 and Dell Venue 7.
-+
-+	  If you are building for a PC class system or non-MID tablet
-+	  SoCs like Bay Trail (Z36xx/Z37xx), say N here.
-+
-+	  Intel MID platforms are based on an Intel processor and chipset which
-+	  consume less power than most of the x86 derivatives.
- 
- config X86_GOLDFISH
- 	bool "Goldfish (Virtual Platform)"
-@@ -610,6 +633,9 @@ config X86_GOLDFISH
- 	  for Android development. Unless you are building for the Android
- 	  Goldfish emulator say N here.
- 
-+# Following is an alphabetically sorted list of 32 bit extended platforms
-+# Please maintain the alphabetic order if and when there are additions
-+
- config X86_INTEL_CE
- 	bool "CE4100 TV platform"
- 	depends on PCI
-@@ -625,24 +651,6 @@ config X86_INTEL_CE
- 	  This option compiles in support for the CE4100 SOC for settop
- 	  boxes and media devices.
- 
--config X86_INTEL_MID
--	bool "Intel MID platform support"
--	depends on X86_EXTENDED_PLATFORM
--	depends on X86_PLATFORM_DEVICES
--	depends on PCI
--	depends on X86_64 || (PCI_GOANY && X86_32)
--	depends on X86_IO_APIC
--	select I2C
--	select DW_APB_TIMER
--	select INTEL_SCU_PCI
+-config HIGHPTE
+-	bool "Allocate 3rd-level pagetables from highmem"
+-	depends on HIGHMEM
 -	help
--	  Select to build a kernel capable of supporting Intel MID (Mobile
--	  Internet Device) platform systems which do not have the PCI legacy
--	  interfaces. If you are building for a PC class system say N here.
+-	  The VM uses one page table entry for each page of physical memory.
+-	  For systems with a lot of RAM, this can be wasteful of precious
+-	  low memory.  Setting this option will put user-space page table
+-	  entries in high memory.
 -
--	  Intel MID platforms are based on an Intel processor and chipset which
--	  consume less power than most of the x86 derivatives.
+ config X86_CHECK_BIOS_CORRUPTION
+ 	bool "Check for low memory corruption"
+ 	help
+diff --git a/arch/x86/include/asm/pgalloc.h b/arch/x86/include/asm/pgalloc.h
+index dd48412..a331475 100644
+--- a/arch/x86/include/asm/pgalloc.h
++++ b/arch/x86/include/asm/pgalloc.h
+@@ -29,11 +29,6 @@ static inline void paravirt_release_pud(unsigned long pfn) {}
+ static inline void paravirt_release_p4d(unsigned long pfn) {}
+ #endif
+ 
+-/*
+- * Flags to use when allocating a user page table page.
+- */
+-extern gfp_t __userpte_alloc_gfp;
 -
- config X86_INTEL_QUARK
- 	bool "Intel Quark platform support"
- 	depends on X86_32
+ #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+ /*
+  * Instead of one PGD, we acquire two PGDs.  Being order-1, it is
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index b1c1f72..cec321f 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -12,35 +12,10 @@ phys_addr_t physical_mask __ro_after_init = (1ULL << __PHYSICAL_MASK_SHIFT) - 1;
+ EXPORT_SYMBOL(physical_mask);
+ #endif
+ 
+-#ifdef CONFIG_HIGHPTE
+-#define PGTABLE_HIGHMEM __GFP_HIGHMEM
+-#else
+-#define PGTABLE_HIGHMEM 0
+-#endif
+-
+-gfp_t __userpte_alloc_gfp = GFP_PGTABLE_USER | PGTABLE_HIGHMEM;
+-
+ pgtable_t pte_alloc_one(struct mm_struct *mm)
+ {
+-	return __pte_alloc_one(mm, __userpte_alloc_gfp);
+-}
+-
+-static int __init setup_userpte(char *arg)
+-{
+-	if (!arg)
+-		return -EINVAL;
+-
+-	/*
+-	 * "userpte=nohigh" disables allocation of user pagetables in
+-	 * high memory.
+-	 */
+-	if (strcmp(arg, "nohigh") == 0)
+-		__userpte_alloc_gfp &= ~__GFP_HIGHMEM;
+-	else
+-		return -EINVAL;
+-	return 0;
++	return __pte_alloc_one(mm, GFP_PGTABLE_USER);
+ }
+-early_param("userpte", setup_userpte);
+ 
+ void ___pte_free_tlb(struct mmu_gather *tlb, struct page *pte)
+ {
 
