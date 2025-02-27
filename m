@@ -1,77 +1,72 @@
-Return-Path: <linux-tip-commits+bounces-3718-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3719-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E192A48884
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 20:05:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FAAA4899C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 21:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C0A516DE28
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 19:04:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564553B7321
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Feb 2025 20:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B976126D5B7;
-	Thu, 27 Feb 2025 19:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB2126FA59;
+	Thu, 27 Feb 2025 20:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xyQQXQkT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hmmGfZkG"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vbJJKtPe";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wBRbC0VT"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BCF21858D;
-	Thu, 27 Feb 2025 19:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF9A26A0BF;
+	Thu, 27 Feb 2025 20:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740683082; cv=none; b=TIz8XXnMR9Hdrt3IPXRKQFANjV7Pve66VXeAFtNOID7Pmc8AtmQRnv0dpPt2kKAu2X7+1U8Yi3jFRuncOOJC3euEwVLc38BzLccJjear/0kzR6wVA0fKum7573DimDGdKOnmCYZgeAwsnQvVpyvqL7FF4UGAC4tKh37k4qceqVU=
+	t=1740687038; cv=none; b=QTEucjNkqxUAhebRBMp2T0QOYuujouMdD9+0XDnDMn2D2cC2NWrvOmKNLl/AKiOg/G6L4ttkWq/cRWoX2+vzw7wkgQ8QyDMIcKO28aDl3Ak10+Vt1WtH5XFN2awozs10BH79QdH5zo/j5uV3hD6OBu5MAkVt91okNVOn3/efHno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740683082; c=relaxed/simple;
-	bh=M1BO0EK+5h0CV0zOAebi3D/RM921eo6aP5NxkmQrLe0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HhqyOYOrxBUe2Ls18DP4lJ+Iv7lL2JpgtU4K1VJmKH9NOklaAegD32p5Xiy+TNid0Ov3yyDbwb/KHByYrUs9TpgC0obJWW6jQTCE11AgZcFjnbaC0RfYAUpzVtYgJnEqnccf8fboljfeYS/pyWkpNDTyxJiKWns7ZxDL//NigRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xyQQXQkT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hmmGfZkG; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1740687038; c=relaxed/simple;
+	bh=IIhv31tHm5nbcYXmnEy2mJ0BZBhMjxvw6fk3HPAcah4=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=CjSydbpsr3rXHllNVkiYjGY09U9zjj7ZLW6FfrW4M028t/nmUOCGqGliPHjWTDQ6Nct2u8y1pTQNGBfnSACqA0dzLEyGjawhki5IP+0ERvnqyMaOnfJPCmOWtZ5R/+F+4TUtrNsq0zfqnTcXoSoxCVrtZaBovyAJq9+IH5Wh0wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vbJJKtPe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wBRbC0VT; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Feb 2025 19:04:37 -0000
+Date: Thu, 27 Feb 2025 20:10:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740683079;
+	s=2020; t=1740687034;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t8u47tp5FLSY4NEXzdoQdbIe/BTejFAXpRcfhsP73Kc=;
-	b=xyQQXQkTtr1bWc+gDAg5VarQ03SM5r50cIe4lHZjD9CPkv5MJR66wmOmIUkAYbJ0qrk5RT
-	7v/H4m5pktBJ7Vm/w/mA5GQKHAdE+7RoD13dXahREvMJkxRlM6FYPF/Ztv6/fICF8Ez4EQ
-	D1aG/6aQOZT2+mo2nbxLAZOFQBL9ALETjtBejLnd3Q1cWdamK0ykDjU6Q9D8Jwhc8M2vaz
-	wyj7Ek3zeEvQnSkMeiw3LS8O1PqJbDy0hwBZyawozotH3Rf5Ky7f1vw5aKaHg1UZfXmMNG
-	W9ghwuRLICm7QTJHajfsmj8VD/X995c2LJR6e6O+c2TVUdv66JN4ofgjR9TyOg==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=t9+V8RePVjSPDpuIDIZ3RFGMA2w2/OJO32B8KrynrsE=;
+	b=vbJJKtPejnkgi1nCm7HXD57VphdQ0yCu6hr+cyJDX58836LY8K1g0eh7506Te7bMoISWgv
+	YJMTpcBDYo/bAVYnKFba4vIutGZ8HBS4HVusYdHoroPBB7HdtCvlFSxvXF1eL8MOC2gZEO
+	rc6DGFka62twIlZy4oaw1YR7IRf4rC7uoRwCEH4LTAuuUujX/w07SgkP4UncAsyCziExc2
+	7jrWwarGI0eIU8oUnPHFHfVfCSwg5meKRd3+pa8OsENpx5ZXzwKTm1XbyBpLXz2R0c9rw1
+	/jixwxC5PYd1vCSezXaC0BawZwmR0HE1SujkadOqRcQlLhJ3wuChpva3VCn8Cg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740683079;
+	s=2020e; t=1740687034;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t8u47tp5FLSY4NEXzdoQdbIe/BTejFAXpRcfhsP73Kc=;
-	b=hmmGfZkGoq4PT6+s7+sWbHLXVRBV7kQyjBYqUWgEcgHOvK0bXM7+vHEw5METIPlsf84eMZ
-	vjSGYqI6ysEX8oDg==
-From: "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=t9+V8RePVjSPDpuIDIZ3RFGMA2w2/OJO32B8KrynrsE=;
+	b=wBRbC0VTLIdmwgHuIyatirgeO9kJCV70RPFyTY9XXLczsMvLQtn70MFrWBEBnmWs2qUlk9
+	OruKBkbmMILkHWBA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu/xstate: Simplify print_xstate_features()
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Ingo Molnar <mingo@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250227184502.10288-2-chang.seok.bae@intel.com>
-References: <20250227184502.10288-2-chang.seok.bae@intel.com>
+Subject: [tip: sched/urgent] sched/core: Prevent rescheduling when interrupts
+ are disabled
+Cc: David Woodhouse <dwmw@amazon.co.uk>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174068307835.10177.5760172564992178850.tip-bot2@tip-bot2>
+Message-ID: <174068702952.10177.18201689881316002263.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,78 +74,92 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/fpu branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     69a2fdf446049ae31be4a14a0cf16f2f18f09b6c
-Gitweb:        https://git.kernel.org/tip/69a2fdf446049ae31be4a14a0cf16f2f18f09b6c
-Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Thu, 27 Feb 2025 10:44:46 -08:00
+Commit-ID:     c092dc7d88c1214e109591790c9021a0f734677a
+Gitweb:        https://git.kernel.org/tip/c092dc7d88c1214e109591790c9021a0f734677a
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Mon, 16 Dec 2024 14:20:56 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Feb 2025 19:54:41 +01:00
+CommitterDate: Thu, 27 Feb 2025 20:55:16 +01:00
 
-x86/fpu/xstate: Simplify print_xstate_features()
+sched/core: Prevent rescheduling when interrupts are disabled
 
-print_xstate_features() currently invokes print_xstate_feature() multiple
-times on separate lines, which can be simplified in a loop.
+David reported a warning observed while loop testing kexec jump:
 
-print_xstate_feature() already checks the feature's enabled status and is
-only called within print_xstate_features(). Inline print_xstate_feature()
-and iterate over features in a loop to streamline the enabling message.
+  Interrupts enabled after irqrouter_resume+0x0/0x50
+  WARNING: CPU: 0 PID: 560 at drivers/base/syscore.c:103 syscore_resume+0x18a/0x220
+   kernel_kexec+0xf6/0x180
+   __do_sys_reboot+0x206/0x250
+   do_syscall_64+0x95/0x180
 
-No functional changes.
+The corresponding interrupt flag trace:
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+  hardirqs last  enabled at (15573): [<ffffffffa8281b8e>] __up_console_sem+0x7e/0x90
+  hardirqs last disabled at (15580): [<ffffffffa8281b73>] __up_console_sem+0x63/0x90
+
+That means __up_console_sem() was invoked with interrupts enabled. Further
+instrumentation revealed that in the interrupt disabled section of kexec
+jump one of the syscore_suspend() callbacks woke up a task, which set the
+NEED_RESCHED flag. A later callback in the resume path invoked
+cond_resched() which in turn led to the invocation of the scheduler:
+
+  __cond_resched+0x21/0x60
+  down_timeout+0x18/0x60
+  acpi_os_wait_semaphore+0x4c/0x80
+  acpi_ut_acquire_mutex+0x3d/0x100
+  acpi_ns_get_node+0x27/0x60
+  acpi_ns_evaluate+0x1cb/0x2d0
+  acpi_rs_set_srs_method_data+0x156/0x190
+  acpi_pci_link_set+0x11c/0x290
+  irqrouter_resume+0x54/0x60
+  syscore_resume+0x6a/0x200
+  kernel_kexec+0x145/0x1c0
+  __do_sys_reboot+0xeb/0x240
+  do_syscall_64+0x95/0x180
+
+This is a long standing problem, which probably got more visible with
+the recent printk changes. Something does a task wakeup and the
+scheduler sets the NEED_RESCHED flag. cond_resched() sees it set and
+invokes schedule() from a completely bogus context. The scheduler
+enables interrupts after context switching, which causes the above
+warning at the end.
+
+Quite some of the code paths in syscore_suspend()/resume() can result in
+triggering a wakeup with the exactly same consequences. They might not
+have done so yet, but as they share a lot of code with normal operations
+it's just a question of time.
+
+The problem only affects the PREEMPT_NONE and PREEMPT_VOLUNTARY scheduling
+models. Full preemption is not affected as cond_resched() is disabled and
+the preemption check preemptible() takes the interrupt disabled flag into
+account.
+
+Cure the problem by adding a corresponding check into cond_resched().
+
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250227184502.10288-2-chang.seok.bae@intel.com
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/all/7717fe2ac0ce5f0a2c43fdab8b11f4483d54a2a4.camel@infradead.org
 ---
- arch/x86/kernel/fpu/xstate.c | 30 +++++++++---------------------
- 1 file changed, 9 insertions(+), 21 deletions(-)
+ kernel/sched/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 27417b6..6a41d16 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -259,32 +259,20 @@ static void __init setup_xstate_cache(void)
- 	}
- }
- 
--static void __init print_xstate_feature(u64 xstate_mask)
--{
--	const char *feature_name;
--
--	if (cpu_has_xfeatures(xstate_mask, &feature_name))
--		pr_info("x86/fpu: Supporting XSAVE feature 0x%03Lx: '%s'\n", xstate_mask, feature_name);
--}
--
- /*
-  * Print out all the supported xstate features:
-  */
- static void __init print_xstate_features(void)
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 9aecd91..6718990 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7285,7 +7285,7 @@ out_unlock:
+ #if !defined(CONFIG_PREEMPTION) || defined(CONFIG_PREEMPT_DYNAMIC)
+ int __sched __cond_resched(void)
  {
--	print_xstate_feature(XFEATURE_MASK_FP);
--	print_xstate_feature(XFEATURE_MASK_SSE);
--	print_xstate_feature(XFEATURE_MASK_YMM);
--	print_xstate_feature(XFEATURE_MASK_BNDREGS);
--	print_xstate_feature(XFEATURE_MASK_BNDCSR);
--	print_xstate_feature(XFEATURE_MASK_OPMASK);
--	print_xstate_feature(XFEATURE_MASK_ZMM_Hi256);
--	print_xstate_feature(XFEATURE_MASK_Hi16_ZMM);
--	print_xstate_feature(XFEATURE_MASK_PKRU);
--	print_xstate_feature(XFEATURE_MASK_PASID);
--	print_xstate_feature(XFEATURE_MASK_CET_USER);
--	print_xstate_feature(XFEATURE_MASK_XTILE_CFG);
--	print_xstate_feature(XFEATURE_MASK_XTILE_DATA);
-+	int i;
-+
-+	for (i = 0; i < XFEATURE_MAX; i++) {
-+		u64 mask = BIT_ULL(i);
-+		const char *name;
-+
-+		if (cpu_has_xfeatures(mask, &name))
-+			pr_info("x86/fpu: Supporting XSAVE feature 0x%03Lx: '%s'\n", mask, name);
-+	}
- }
- 
- /*
+-	if (should_resched(0)) {
++	if (should_resched(0) && !irqs_disabled()) {
+ 		preempt_schedule_common();
+ 		return 1;
+ 	}
 
