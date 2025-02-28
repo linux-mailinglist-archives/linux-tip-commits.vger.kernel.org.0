@@ -1,277 +1,181 @@
-Return-Path: <linux-tip-commits+bounces-3729-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3730-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642FCA49514
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 10:33:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293A8A495DF
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 10:51:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 689B63BC418
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 09:31:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 515AA3A626F
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 09:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C75B257453;
-	Fri, 28 Feb 2025 09:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4831125B675;
+	Fri, 28 Feb 2025 09:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oVLXUnOn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ItyjmeQk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LcvZlv3/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6VHkEz6K"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C271125335E;
-	Fri, 28 Feb 2025 09:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0788258CD7;
+	Fri, 28 Feb 2025 09:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740734933; cv=none; b=kF8livH65YZIo3cqvaXsScyAXp8hrWpHpT8F26lr8mQX6LYD1gHnMemcJzTZ8S6agNwEuWZ1JqLuzzoROMcW2sEW9khiEZVjRKSyo0FG6gTsHDOMtD8kbqtHbFd2TKovSRH53yzYO97paqU8hnGTYrgIPHFN953W1CobTcp/lwQ=
+	t=1740736208; cv=none; b=rYKnCgZRB1bthKyJKbf6ffhMgm2tRDjx7+3aQER3lmYz9Pe8ojR8EYEKpZDE9zUhRjDflZtHOPIRV04a2umeJXcUVbiJk4vBcuY8e0AdSusgf1gmRsE2GW8VxObHkTPbZh5d/bYBp+eC0+BdtLrM33ViP3szYZi9c6oH3esJKvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740734933; c=relaxed/simple;
-	bh=UWdEkwmQSd5RN3XbDvZInCegn9+g4c/I3N5soOTqBUI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=jiDbaGVdAJWfQyLESYkzdky3qYieH8tazgYAPbFy10M1gnVYFnfsjpUJYRMvxYpl7bIedhHVLtRO/sSE0BhdO5hBswS9+GQPnh8RcZLh+7irsKrs+aivMXCJPNT8JEJaDLwV4Z57g54nqwsx27QcHkz13f4kY82k0ffFys7LD1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oVLXUnOn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ItyjmeQk; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1740736208; c=relaxed/simple;
+	bh=CuRdK5x7Ft9TJBjYEUJzq/3uEX2OcHRfz3GlRnO+phs=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=uD9RxqcqohztOgbs6XyghghLsDbpggSMrtqahh/gh+CSUEt3bewinXcK8bTaWy+FxvN+ykVd0+TI5vyCD585pT2eUF0nf7JliAP5XNadezGWw/4b6R64qlSAkQirTvwWdRSD5l/lW6pm/SjBmXB0fGGS9iA5YHlYBmp93FWN/Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LcvZlv3/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6VHkEz6K; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 28 Feb 2025 09:28:38 -0000
+Date: Fri, 28 Feb 2025 09:50:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740734923;
+	s=2020; t=1740736203;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e5KXKFDv51Vv6rCZ4mecvKZYZ8RbaGXYpLD2asuihIg=;
-	b=oVLXUnOnq90/QxxB2giTnFOjZaYkXtLErLYR7D6HBEkKR1zghYTMkVnkGHTD3Ec/ria/uA
-	YE1ZU+Wv53Rt35+AeHbFQ3rh8Gmc6vNxu/h5GKnVMBsAKsIRhnZYMVi64wqBPCa9SZo38r
-	2sBTv8657Y4QHtvwutBJVCAzn6ret3YWdrwI06g9Pfk5lff4AQJ6uh+w0DXXZYKGMHw5UL
-	plyHw3Dp5LuWnxClPsmZyDPkrLyc1wrB3XwYVedrYEI2Gw4eO4NcE+bFrCiH4d7lpIKbIO
-	reOMZIsNAI21/ZIJZANQGnILi+txfdc7kTTh6p8RHgYVoTAZVXPNmwDjrv3TKQ==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=23/xB93vSVuzbyXZsjoxtYApF5ifFEHFoiT54zqJVVg=;
+	b=LcvZlv3/a9eiCHuTMdLLF4x82MZbIFZrRsZEGhcKDeptrsU0irx7VIzriRQeGBIe6oTuT/
+	d0GYdWtIvydHy4IrC2QqW8IIdgrq1bXeBXLVMeJVH9LDw15A6n2rS+ktkPLxaG+1ehVQjI
+	bbhKpX2qTfME+8ABoofjN4IhfA3Xne69iZSVLIf7MULmZ7ENXw10fL2D6ienySgLYq4fTK
+	evOKahWfph8RZN0WtPiAO5Q45c+6swNKWJlRw9hoR7GEokGytYk+oi+5TaQK2TQSkBAswm
+	VVnCJjNb+ZfriJDL+Uy/+44CSUbmm0g4jJ1hU+K98o0Td5EmY7D3Hd5cVaVgeA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740734923;
+	s=2020e; t=1740736203;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e5KXKFDv51Vv6rCZ4mecvKZYZ8RbaGXYpLD2asuihIg=;
-	b=ItyjmeQkiC/DouVEZsF/OiYkfhCv+Pz7xqcB2/jEXdttC4JaRzD/DxgVhNyJjy/DLIEwrf
-	P9iwSAXznqLh7eCA==
-From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=23/xB93vSVuzbyXZsjoxtYApF5ifFEHFoiT54zqJVVg=;
+	b=6VHkEz6KpvLITr/s5O89QheWet6ciuCgwTTLJd+G7grC7RvB7Ego2f9jbIhFhIi2Oc4/x6
+	apc1oQ+PIb+tJTBA==
+From: "tip-bot2 for Max Grobecker" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] x86/locking: Remove semicolon from "lock" prefix
-Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250228085149.2478245-1-ubizjak@gmail.com>
-References: <20250228085149.2478245-1-ubizjak@gmail.com>
+Subject: [tip: x86/cpu] x86/cpu: Don't clear X86_FEATURE_LAHF_LM flag in
+ init_amd_k8() on AMD when running in a virtual machine
+Cc: Max Grobecker <max@grobecker.info>, Ingo Molnar <mingo@kernel.org>,
+ linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, x86@kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174073491910.10177.9422897371260856615.tip-bot2@tip-bot2>
+Message-ID: <174073620261.10177.6432223137408528949.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     023f3290b02552ea006c1a2013e373750d2cbff6
-Gitweb:        https://git.kernel.org/tip/023f3290b02552ea006c1a2013e373750d2cbff6
-Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Fri, 28 Feb 2025 09:51:15 +01:00
+Commit-ID:     a4248ee16f411ac1ea7dfab228a6659b111e3d65
+Gitweb:        https://git.kernel.org/tip/a4248ee16f411ac1ea7dfab228a6659b111=
+e3d65
+Author:        Max Grobecker <max@grobecker.info>
+AuthorDate:    Thu, 27 Feb 2025 21:45:05 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 28 Feb 2025 10:18:26 +01:00
+CommitterDate: Fri, 28 Feb 2025 10:42:28 +01:00
 
-x86/locking: Remove semicolon from "lock" prefix
+x86/cpu: Don't clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when ru=
+nning in a virtual machine
 
-Minimum version of binutils required to compile the kernel is 2.25.
-This version correctly handles the "lock" prefix, so it is possible
-to remove the semicolon, which was used to support ancient versions
-of GNU as.
+When running in a virtual machine, we might see the original hardware CPU
+vendor string (i.e. "AuthenticAMD"), but a model and family ID set by the
+hypervisor. In case we run on AMD hardware and the hypervisor sets a model
+ID < 0x14, the LAHF cpu feature is eliminated from the the list of CPU
+capabilities present to circumvent a bug with some BIOSes in conjunction with
+AMD K8 processors.
 
-Due to the semicolon, the compiler considers "lock; insn" as two
-separate instructions. Removing the semicolon makes asm length
-calculations more accurate, consequently making scheduling and
-inlining decisions of the compiler more accurate.
+Parsing the flags list from /proc/cpuinfo seems to be happening mostly in
+bash scripts and prebuilt Docker containers, as it does not need to have
+additionals tools present =E2=80=93 even though more reliable ways like using=
+ "kcpuid",
+which calls the CPUID instruction instead of parsing a list, should be prefer=
+red.
+Scripts, that use /proc/cpuinfo to determine if the current CPU is
+"compliant" with defined microarchitecture levels like x86-64-v2 will falsely
+claim the CPU is incapable of modern CPU instructions when "lahf_lm" is missi=
+ng
+in that flags list.
 
-Removing the semicolon also enables assembler checks involving lock
-prefix. Trying to assemble e.g. "lock andl %eax, %ebx" results in:
+This can prevent some docker containers from starting or build scripts to cre=
+ate
+unoptimized binaries.
 
-  Error: expecting lockable instruction after `lock'
+Admittably, this is more a small inconvenience than a severe bug in the kernel
+and the shoddy scripts that rely on parsing /proc/cpuinfo
+should be fixed instead.
 
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+This patch adds an additional check to see if we're running inside a
+virtual machine (X86_FEATURE_HYPERVISOR is present), which, to my
+understanding, can't be present on a real K8 processor as it was introduced
+only with the later/other Athlon64 models.
+
+Example output with the "lahf_lm" flag missing in the flags list
+(should be shown between "hypervisor" and "abm"):
+
+    $ cat /proc/cpuinfo
+    processor       : 0
+    vendor_id       : AuthenticAMD
+    cpu family      : 15
+    model           : 6
+    model name      : Common KVM processor
+    stepping        : 1
+    microcode       : 0x1000065
+    cpu MHz         : 2599.998
+    cache size      : 512 KB
+    physical id     : 0
+    siblings        : 1
+    core id         : 0
+    cpu cores       : 1
+    apicid          : 0
+    initial apicid  : 0
+    fpu             : yes
+    fpu_exception   : yes
+    cpuid level     : 13
+    wp              : yes
+    flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca
+                      cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx rdt=
+scp
+                      lm rep_good nopl cpuid extd_apicid tsc_known_freq pni
+                      pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe pop=
+cnt
+                      tsc_deadline_timer aes xsave avx f16c hypervisor abm
+                      3dnowprefetch vmmcall bmi1 avx2 bmi2 xsaveopt
+
+... while kcpuid shows the feature to be present in the CPU:
+
+    # kcpuid -d | grep lahf
+         lahf_lm             - LAHF/SAHF available in 64-bit mode
+
+[ mingo: Updated the comment a bit, incorporated Boris's review feedback. ]
+
+Signed-off-by: Max Grobecker <max@grobecker.info>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250228085149.2478245-1-ubizjak@gmail.com
+Cc: linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>
 ---
- arch/x86/include/asm/alternative.h |  2 +-
- arch/x86/include/asm/barrier.h     |  8 ++++----
- arch/x86/include/asm/cmpxchg.h     |  4 ++--
- arch/x86/include/asm/cmpxchg_32.h  |  4 ++--
- arch/x86/include/asm/edac.h        |  2 +-
- arch/x86/include/asm/sync_bitops.h | 12 ++++++------
- 6 files changed, 16 insertions(+), 16 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index e3903b7..3b3d3aa 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -48,7 +48,7 @@
- 		".popsection\n"				\
- 		"671:"
- 
--#define LOCK_PREFIX LOCK_PREFIX_HERE "\n\tlock; "
-+#define LOCK_PREFIX LOCK_PREFIX_HERE "\n\tlock "
- 
- #else /* ! CONFIG_SMP */
- #define LOCK_PREFIX_HERE ""
-diff --git a/arch/x86/include/asm/barrier.h b/arch/x86/include/asm/barrier.h
-index 7b44b3c..db70832 100644
---- a/arch/x86/include/asm/barrier.h
-+++ b/arch/x86/include/asm/barrier.h
-@@ -12,11 +12,11 @@
-  */
- 
- #ifdef CONFIG_X86_32
--#define mb() asm volatile(ALTERNATIVE("lock; addl $0,-4(%%esp)", "mfence", \
-+#define mb() asm volatile(ALTERNATIVE("lock addl $0,-4(%%esp)", "mfence", \
- 				      X86_FEATURE_XMM2) ::: "memory", "cc")
--#define rmb() asm volatile(ALTERNATIVE("lock; addl $0,-4(%%esp)", "lfence", \
-+#define rmb() asm volatile(ALTERNATIVE("lock addl $0,-4(%%esp)", "lfence", \
- 				       X86_FEATURE_XMM2) ::: "memory", "cc")
--#define wmb() asm volatile(ALTERNATIVE("lock; addl $0,-4(%%esp)", "sfence", \
-+#define wmb() asm volatile(ALTERNATIVE("lock addl $0,-4(%%esp)", "sfence", \
- 				       X86_FEATURE_XMM2) ::: "memory", "cc")
- #else
- #define __mb()	asm volatile("mfence":::"memory")
-@@ -50,7 +50,7 @@
- #define __dma_rmb()	barrier()
- #define __dma_wmb()	barrier()
- 
--#define __smp_mb()	asm volatile("lock; addl $0,-4(%%" _ASM_SP ")" ::: "memory", "cc")
-+#define __smp_mb()	asm volatile("lock addl $0,-4(%%" _ASM_SP ")" ::: "memory", "cc")
- 
- #define __smp_rmb()	dma_rmb()
- #define __smp_wmb()	barrier()
-diff --git a/arch/x86/include/asm/cmpxchg.h b/arch/x86/include/asm/cmpxchg.h
-index 5612648..fd8afc1 100644
---- a/arch/x86/include/asm/cmpxchg.h
-+++ b/arch/x86/include/asm/cmpxchg.h
-@@ -134,7 +134,7 @@ extern void __add_wrong_size(void)
- 	__raw_cmpxchg((ptr), (old), (new), (size), LOCK_PREFIX)
- 
- #define __sync_cmpxchg(ptr, old, new, size)				\
--	__raw_cmpxchg((ptr), (old), (new), (size), "lock; ")
-+	__raw_cmpxchg((ptr), (old), (new), (size), "lock ")
- 
- #define __cmpxchg_local(ptr, old, new, size)				\
- 	__raw_cmpxchg((ptr), (old), (new), (size), "")
-@@ -222,7 +222,7 @@ extern void __add_wrong_size(void)
- 	__raw_try_cmpxchg((ptr), (pold), (new), (size), LOCK_PREFIX)
- 
- #define __sync_try_cmpxchg(ptr, pold, new, size)			\
--	__raw_try_cmpxchg((ptr), (pold), (new), (size), "lock; ")
-+	__raw_try_cmpxchg((ptr), (pold), (new), (size), "lock ")
- 
- #define __try_cmpxchg_local(ptr, pold, new, size)			\
- 	__raw_try_cmpxchg((ptr), (pold), (new), (size), "")
-diff --git a/arch/x86/include/asm/cmpxchg_32.h b/arch/x86/include/asm/cmpxchg_32.h
-index 95b5f99..8806c64 100644
---- a/arch/x86/include/asm/cmpxchg_32.h
-+++ b/arch/x86/include/asm/cmpxchg_32.h
-@@ -105,7 +105,7 @@ static __always_inline bool __try_cmpxchg64_local(volatile u64 *ptr, u64 *oldp, 
- 
- static __always_inline u64 arch_cmpxchg64(volatile u64 *ptr, u64 old, u64 new)
- {
--	return __arch_cmpxchg64_emu(ptr, old, new, LOCK_PREFIX_HERE, "lock; ");
-+	return __arch_cmpxchg64_emu(ptr, old, new, LOCK_PREFIX_HERE, "lock ");
- }
- #define arch_cmpxchg64 arch_cmpxchg64
- 
-@@ -140,7 +140,7 @@ static __always_inline u64 arch_cmpxchg64_local(volatile u64 *ptr, u64 old, u64 
- 
- static __always_inline bool arch_try_cmpxchg64(volatile u64 *ptr, u64 *oldp, u64 new)
- {
--	return __arch_try_cmpxchg64_emu(ptr, oldp, new, LOCK_PREFIX_HERE, "lock; ");
-+	return __arch_try_cmpxchg64_emu(ptr, oldp, new, LOCK_PREFIX_HERE, "lock ");
- }
- #define arch_try_cmpxchg64 arch_try_cmpxchg64
- 
-diff --git a/arch/x86/include/asm/edac.h b/arch/x86/include/asm/edac.h
-index 426fc53..dfbd1eb 100644
---- a/arch/x86/include/asm/edac.h
-+++ b/arch/x86/include/asm/edac.h
-@@ -13,7 +13,7 @@ static inline void edac_atomic_scrub(void *va, u32 size)
- 	 * are interrupt, DMA and SMP safe.
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 54194f5..d747515 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -632,7 +632,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
+ 	 * (model =3D 0x14) and later actually support it.
+ 	 * (AMD Erratum #110, docId: 25759).
  	 */
- 	for (i = 0; i < size / 4; i++, virt_addr++)
--		asm volatile("lock; addl $0, %0"::"m" (*virt_addr));
-+		asm volatile("lock addl $0, %0"::"m" (*virt_addr));
- }
- 
- #endif /* _ASM_X86_EDAC_H */
-diff --git a/arch/x86/include/asm/sync_bitops.h b/arch/x86/include/asm/sync_bitops.h
-index 6d8d6bc..cd21a04 100644
---- a/arch/x86/include/asm/sync_bitops.h
-+++ b/arch/x86/include/asm/sync_bitops.h
-@@ -31,7 +31,7 @@
-  */
- static inline void sync_set_bit(long nr, volatile unsigned long *addr)
- {
--	asm volatile("lock; " __ASM_SIZE(bts) " %1,%0"
-+	asm volatile("lock " __ASM_SIZE(bts) " %1,%0"
- 		     : "+m" (ADDR)
- 		     : "Ir" (nr)
- 		     : "memory");
-@@ -49,7 +49,7 @@ static inline void sync_set_bit(long nr, volatile unsigned long *addr)
-  */
- static inline void sync_clear_bit(long nr, volatile unsigned long *addr)
- {
--	asm volatile("lock; " __ASM_SIZE(btr) " %1,%0"
-+	asm volatile("lock " __ASM_SIZE(btr) " %1,%0"
- 		     : "+m" (ADDR)
- 		     : "Ir" (nr)
- 		     : "memory");
-@@ -66,7 +66,7 @@ static inline void sync_clear_bit(long nr, volatile unsigned long *addr)
-  */
- static inline void sync_change_bit(long nr, volatile unsigned long *addr)
- {
--	asm volatile("lock; " __ASM_SIZE(btc) " %1,%0"
-+	asm volatile("lock " __ASM_SIZE(btc) " %1,%0"
- 		     : "+m" (ADDR)
- 		     : "Ir" (nr)
- 		     : "memory");
-@@ -82,7 +82,7 @@ static inline void sync_change_bit(long nr, volatile unsigned long *addr)
-  */
- static inline bool sync_test_and_set_bit(long nr, volatile unsigned long *addr)
- {
--	return GEN_BINARY_RMWcc("lock; " __ASM_SIZE(bts), *addr, c, "Ir", nr);
-+	return GEN_BINARY_RMWcc("lock " __ASM_SIZE(bts), *addr, c, "Ir", nr);
- }
- 
- /**
-@@ -95,7 +95,7 @@ static inline bool sync_test_and_set_bit(long nr, volatile unsigned long *addr)
-  */
- static inline int sync_test_and_clear_bit(long nr, volatile unsigned long *addr)
- {
--	return GEN_BINARY_RMWcc("lock; " __ASM_SIZE(btr), *addr, c, "Ir", nr);
-+	return GEN_BINARY_RMWcc("lock " __ASM_SIZE(btr), *addr, c, "Ir", nr);
- }
- 
- /**
-@@ -108,7 +108,7 @@ static inline int sync_test_and_clear_bit(long nr, volatile unsigned long *addr)
-  */
- static inline int sync_test_and_change_bit(long nr, volatile unsigned long *addr)
- {
--	return GEN_BINARY_RMWcc("lock; " __ASM_SIZE(btc), *addr, c, "Ir", nr);
-+	return GEN_BINARY_RMWcc("lock " __ASM_SIZE(btc), *addr, c, "Ir", nr);
- }
- 
- #define sync_test_bit(nr, addr) test_bit(nr, addr)
+-	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
++	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(c, X=
+86_FEATURE_HYPERVISOR)) {
+ 		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
+ 		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
+ 			value &=3D ~BIT_64(32);
 
