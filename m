@@ -1,181 +1,170 @@
-Return-Path: <linux-tip-commits+bounces-3730-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3731-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293A8A495DF
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 10:51:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B4BA49703
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 11:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 515AA3A626F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 09:50:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E762A1883969
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 10:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4831125B675;
-	Fri, 28 Feb 2025 09:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D9225D909;
+	Fri, 28 Feb 2025 10:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LcvZlv3/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6VHkEz6K"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1TYz3CHn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XU2PVu7j"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0788258CD7;
-	Fri, 28 Feb 2025 09:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE03E25DB0A;
+	Fri, 28 Feb 2025 10:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740736208; cv=none; b=rYKnCgZRB1bthKyJKbf6ffhMgm2tRDjx7+3aQER3lmYz9Pe8ojR8EYEKpZDE9zUhRjDflZtHOPIRV04a2umeJXcUVbiJk4vBcuY8e0AdSusgf1gmRsE2GW8VxObHkTPbZh5d/bYBp+eC0+BdtLrM33ViP3szYZi9c6oH3esJKvc=
+	t=1740737936; cv=none; b=J0EvXWf+ahAb4+b8avU2gi6rBx5LwikvR1wwwKQd7GWWEHDlLVJe6PVmSlT47OnETIZZNYU2vKcl3Skd4qacHOVp8XWmpooI7nnGrFWSeTjP4zTpVLNolyzVSl81osnDlrwMEXCqhGldjZ4SJJPxLTKdjFCSKHms5kQWlvJdFIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740736208; c=relaxed/simple;
-	bh=CuRdK5x7Ft9TJBjYEUJzq/3uEX2OcHRfz3GlRnO+phs=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=uD9RxqcqohztOgbs6XyghghLsDbpggSMrtqahh/gh+CSUEt3bewinXcK8bTaWy+FxvN+ykVd0+TI5vyCD585pT2eUF0nf7JliAP5XNadezGWw/4b6R64qlSAkQirTvwWdRSD5l/lW6pm/SjBmXB0fGGS9iA5YHlYBmp93FWN/Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LcvZlv3/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6VHkEz6K; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1740737936; c=relaxed/simple;
+	bh=h5oR+UK+IF9s7jct0xLfzPSaVXMUfp4JhlUkjTrZgng=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=NNX2savK/EYUcIxn6zHfJzMNj+nPD257DGEwe3CJEGEL4vbD75Tuub6E2IpRQQFp49bZo/QQGe3usfyiLXdXvK0DLmJFpcBGUFazF9Syzr+gXkPbIPai+DWxDqC2Xsf/fkgy9sHwAtUCMybQE99Bgd6B3/g46o6sIKB58cdraEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1TYz3CHn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XU2PVu7j; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 28 Feb 2025 09:50:02 -0000
+Date: Fri, 28 Feb 2025 10:18:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740736203;
+	s=2020; t=1740737933;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=23/xB93vSVuzbyXZsjoxtYApF5ifFEHFoiT54zqJVVg=;
-	b=LcvZlv3/a9eiCHuTMdLLF4x82MZbIFZrRsZEGhcKDeptrsU0irx7VIzriRQeGBIe6oTuT/
-	d0GYdWtIvydHy4IrC2QqW8IIdgrq1bXeBXLVMeJVH9LDw15A6n2rS+ktkPLxaG+1ehVQjI
-	bbhKpX2qTfME+8ABoofjN4IhfA3Xne69iZSVLIf7MULmZ7ENXw10fL2D6ienySgLYq4fTK
-	evOKahWfph8RZN0WtPiAO5Q45c+6swNKWJlRw9hoR7GEokGytYk+oi+5TaQK2TQSkBAswm
-	VVnCJjNb+ZfriJDL+Uy/+44CSUbmm0g4jJ1hU+K98o0Td5EmY7D3Hd5cVaVgeA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Td20xOtlGWt2GXh9rt3aM23ulWnm3sPZmLCuqautPU=;
+	b=1TYz3CHnSzsEOkquzilQOW2yceLv1SgAQcH/ItK23OFPcEv9qXShjFrnqirT8yE/yJpfNS
+	fPj80ImbRMtIlDuZy8Rq1PKiQO5tfMBpYDITlhLqPC8yazs+c11+aZwcerz/k5YcH16Upj
+	zJHXrh831gZ/6mJLwNhHKWQ17d0wpgPdNkomh4ut8A6AVDuO24iB61W9bJiYHrZ0rQ5d2E
+	j14+DOsJ6QTb7pR1q9Oscu79/DE5UmgxcWMnEk4kARHA8EBJXkZ4AX2fLotXwn2/ALU52R
+	nLQCw5xoR2y8VtnG1CvJzq8yaarS0rfLUs7BrVY/H/zCew8DBYSZyGc581oENQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740736203;
+	s=2020e; t=1740737933;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=23/xB93vSVuzbyXZsjoxtYApF5ifFEHFoiT54zqJVVg=;
-	b=6VHkEz6KpvLITr/s5O89QheWet6ciuCgwTTLJd+G7grC7RvB7Ego2f9jbIhFhIi2Oc4/x6
-	apc1oQ+PIb+tJTBA==
-From: "tip-bot2 for Max Grobecker" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+Td20xOtlGWt2GXh9rt3aM23ulWnm3sPZmLCuqautPU=;
+	b=XU2PVu7jw3NxpLQrietN30W25wZWrMvdWWTPKxBAlNmQ7r2XTWoFMNIiQEQ4qAYS5QiMwQ
+	keFQDSbXA1CAt6Ag==
+From: "tip-bot2 for Brendan Jackman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Don't clear X86_FEATURE_LAHF_LM flag in
- init_amd_k8() on AMD when running in a virtual machine
-Cc: Max Grobecker <max@grobecker.info>, Ingo Molnar <mingo@kernel.org>,
- linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>, x86@kernel.org
+Subject: [tip: x86/cpu] x86/cpu: Enable modifying CPU bug flags with
+ '{clear,set}puid='
+Cc: Brendan Jackman <jackmanb@google.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241220-force-cpu-bug-v2-3-7dc71bce742a@google.com>
+References: <20241220-force-cpu-bug-v2-3-7dc71bce742a@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174073620261.10177.6432223137408528949.tip-bot2@tip-bot2>
+Message-ID: <174073793204.10177.9171183498085789285.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     a4248ee16f411ac1ea7dfab228a6659b111e3d65
-Gitweb:        https://git.kernel.org/tip/a4248ee16f411ac1ea7dfab228a6659b111=
-e3d65
-Author:        Max Grobecker <max@grobecker.info>
-AuthorDate:    Thu, 27 Feb 2025 21:45:05 +01:00
+Commit-ID:     ab68d2e36532806b8f86ff2f60861dbb8443f0be
+Gitweb:        https://git.kernel.org/tip/ab68d2e36532806b8f86ff2f60861dbb8443f0be
+Author:        Brendan Jackman <jackmanb@google.com>
+AuthorDate:    Fri, 20 Dec 2024 15:18:33 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 28 Feb 2025 10:42:28 +01:00
+CommitterDate: Fri, 28 Feb 2025 10:57:50 +01:00
 
-x86/cpu: Don't clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when ru=
-nning in a virtual machine
+x86/cpu: Enable modifying CPU bug flags with '{clear,set}puid='
 
-When running in a virtual machine, we might see the original hardware CPU
-vendor string (i.e. "AuthenticAMD"), but a model and family ID set by the
-hypervisor. In case we run on AMD hardware and the hypervisor sets a model
-ID < 0x14, the LAHF cpu feature is eliminated from the the list of CPU
-capabilities present to circumvent a bug with some BIOSes in conjunction with
-AMD K8 processors.
+Sometimes it can be very useful to run CPU vulnerability mitigations on
+systems where they aren't known to mitigate any real-world
+vulnerabilities. This can be handy for mundane reasons like debugging
+HW-agnostic logic on whatever machine is to hand, but also for research
+reasons: while some mitigations are focused on individual vulns and
+uarches, others are fairly general, and it's strategically useful to
+have an idea how they'd perform on systems where they aren't currently
+needed.
 
-Parsing the flags list from /proc/cpuinfo seems to be happening mostly in
-bash scripts and prebuilt Docker containers, as it does not need to have
-additionals tools present =E2=80=93 even though more reliable ways like using=
- "kcpuid",
-which calls the CPUID instruction instead of parsing a list, should be prefer=
-red.
-Scripts, that use /proc/cpuinfo to determine if the current CPU is
-"compliant" with defined microarchitecture levels like x86-64-v2 will falsely
-claim the CPU is incapable of modern CPU instructions when "lahf_lm" is missi=
-ng
-in that flags list.
+As evidence for this being useful, a flag specifically for Retbleed was
+added in:
 
-This can prevent some docker containers from starting or build scripts to cre=
-ate
-unoptimized binaries.
+  5c9a92dec323 ("x86/bugs: Add retbleed=force").
 
-Admittably, this is more a small inconvenience than a severe bug in the kernel
-and the shoddy scripts that rely on parsing /proc/cpuinfo
-should be fixed instead.
+Since CPU bugs are tracked using the same basic mechanism as features,
+and there are already parameters for manipulating them by hand, extend
+that mechanism to support bug as well as capabilities.
 
-This patch adds an additional check to see if we're running inside a
-virtual machine (X86_FEATURE_HYPERVISOR is present), which, to my
-understanding, can't be present on a real K8 processor as it was introduced
-only with the later/other Athlon64 models.
+With this patch and setcpuid=srso, a QEMU guest running on an Intel host
+will boot with Safe-RET enabled.
 
-Example output with the "lahf_lm" flag missing in the flags list
-(should be shown between "hypervisor" and "abm"):
-
-    $ cat /proc/cpuinfo
-    processor       : 0
-    vendor_id       : AuthenticAMD
-    cpu family      : 15
-    model           : 6
-    model name      : Common KVM processor
-    stepping        : 1
-    microcode       : 0x1000065
-    cpu MHz         : 2599.998
-    cache size      : 512 KB
-    physical id     : 0
-    siblings        : 1
-    core id         : 0
-    cpu cores       : 1
-    apicid          : 0
-    initial apicid  : 0
-    fpu             : yes
-    fpu_exception   : yes
-    cpuid level     : 13
-    wp              : yes
-    flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca
-                      cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx rdt=
-scp
-                      lm rep_good nopl cpuid extd_apicid tsc_known_freq pni
-                      pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe pop=
-cnt
-                      tsc_deadline_timer aes xsave avx f16c hypervisor abm
-                      3dnowprefetch vmmcall bmi1 avx2 bmi2 xsaveopt
-
-... while kcpuid shows the feature to be present in the CPU:
-
-    # kcpuid -d | grep lahf
-         lahf_lm             - LAHF/SAHF available in 64-bit mode
-
-[ mingo: Updated the comment a bit, incorporated Boris's review feedback. ]
-
-Signed-off-by: Max Grobecker <max@grobecker.info>
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
-Cc: Borislav Petkov <bp@alien8.de>
+Link: https://lore.kernel.org/r/20241220-force-cpu-bug-v2-3-7dc71bce742a@google.com
 ---
- arch/x86/kernel/cpu/amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/cpufeature.h |  1 +
+ arch/x86/kernel/cpu/common.c      | 16 ++++++++++++----
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 54194f5..d747515 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -632,7 +632,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
- 	 * (model =3D 0x14) and later actually support it.
- 	 * (AMD Erratum #110, docId: 25759).
- 	 */
--	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
-+	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(c, X=
-86_FEATURE_HYPERVISOR)) {
- 		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
- 		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
- 			value &=3D ~BIT_64(32);
+diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
+index de1ad09..e5fc003 100644
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -50,6 +50,7 @@ extern const char * const x86_power_flags[32];
+  * X86_BUG_<name> - NCAPINTS*32.
+  */
+ extern const char * const x86_bug_flags[NBUGINTS*32];
++#define x86_bug_flag(flag) x86_bug_flags[flag]
+ 
+ #define test_cpu_cap(c, bit)						\
+ 	 arch_test_bit(bit, (unsigned long *)((c)->x86_capability))
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index ff483c9..0f32b6f 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1494,7 +1494,8 @@ static inline void parse_set_clear_cpuid(char *arg, bool set)
+ 
+ 		/*
+ 		 * Handle naked numbers first for feature flags which don't
+-		 * have names.
++		 * have names. It doesn't make sense for a bug not to have a
++		 * name so don't handle bug flags here.
+ 		 */
+ 		if (!kstrtouint(opt, 10, &bit)) {
+ 			if (bit < NCAPINTS * 32) {
+@@ -1518,11 +1519,18 @@ static inline void parse_set_clear_cpuid(char *arg, bool set)
+ 			continue;
+ 		}
+ 
+-		for (bit = 0; bit < 32 * NCAPINTS; bit++) {
+-			if (!x86_cap_flag(bit))
++		for (bit = 0; bit < 32 * (NCAPINTS + NBUGINTS); bit++) {
++			const char *flag;
++
++			if (bit < 32 * NCAPINTS)
++				flag = x86_cap_flag(bit);
++			else
++				flag = x86_bug_flag(bit - (32 * NCAPINTS));
++
++			if (!flag)
+ 				continue;
+ 
+-			if (strcmp(x86_cap_flag(bit), opt))
++			if (strcmp(flag, opt))
+ 				continue;
+ 
+ 			pr_cont(" %s", opt);
 
