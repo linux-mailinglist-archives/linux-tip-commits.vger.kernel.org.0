@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3738-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3739-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C0BA49895
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 12:53:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935D5A49898
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 12:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0785817182D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 11:53:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06B4B1717BC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Feb 2025 11:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D900F260A4E;
-	Fri, 28 Feb 2025 11:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3D52620F9;
+	Fri, 28 Feb 2025 11:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s4bFHrY4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fNxy6Tyq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pmm1Wifu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Djx1kyEW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0707925F781;
-	Fri, 28 Feb 2025 11:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C0F25F790;
+	Fri, 28 Feb 2025 11:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740743627; cv=none; b=Oeil9Jsu+K3FVjD76BhR+TlSbRE+hRmjUZCxpa5jrWaeEpYl8/AewCmmPdnY/FyJpFwB288UBdN/3lssul1iBNdVy5A347WxlGcBTe6roJp3jXGIeLtKrT8n/JhrCNHwpuTUzHqUq9WW6pGCwJ9dpldCGQ8+hVXSFYFSA12dv9A=
+	t=1740743629; cv=none; b=oCgoyGToGr7eFklcO11WL2zIYmaJFocILiaeBCDVTfOq8+7Hg0nCLjb/1ICmorP+DCZh+LqX9ED67dIx7QjHWETRfBTrVnfZEG1DoRGgSpsAi0RhMGlw9krj4i+8Nl8Yb2dK+REB2Mot+m0zYbGr6LAShobLEiLGn9UfzG/yU5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740743627; c=relaxed/simple;
-	bh=E1hqlbTgogEWysyrmKzHGbChBIgfmeI6e5ILt4hPov4=;
+	s=arc-20240116; t=1740743629; c=relaxed/simple;
+	bh=Xx+4DZJBedoY68hJkMV5msyJ11vfL3QGPNi6lrxFSOc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DMTSICapU6rYasE/cN0LYgvNvOGxGKb/hQaxUtJRu0kn07iIL5f/MgqAm7fteC61bDIbtBVQR+1glyu6RaEQvm13kChNb+xpe3PbVXZns2T+++8GrgCkFrBTdgkLzJQ5LPb2sk8o6mZ+L3cgunGxxIO8nr9cIIwnnk4JZcWlIFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s4bFHrY4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fNxy6Tyq; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=l8vgkip+TV/ssMAoqDQ4ihrNvRPH4+RrLU8vL3YwUtfZnsWXZVJzClsGCqBDi/Sx7iU6lboXSAq5VCjlRkaeQWi3LVrThyr1jPjegmcC1O6JFaIpxAaa48ntkBLv0spXB32v9gJNO2K1XitezXBrrSeJlqBREEQ6zYG+sUElcgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pmm1Wifu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Djx1kyEW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 28 Feb 2025 11:53:43 -0000
+Date: Fri, 28 Feb 2025 11:53:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740743624;
+	s=2020; t=1740743625;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nsjPWnynEbbF2TFIsikWVKKbCJuqCcEWuoQl6fWp41o=;
-	b=s4bFHrY4B8n8vnuksn6N7YU4CxDyvgN2TCYKsAiopye2GLop7bSqxjn+58Yv9S+wsuVthY
-	iZ/+IOGnDaLHF+v0zx3f6isf5WUhr5BcS6wvp0glbM+Fgw4bSDauNwoWXTMyXz/ArHZKMn
-	QfbCZHznD9LdewrQPU05rKba1QBwvqBU9a/592ZIVpGXpbu6kJ3UPjZD25keaSouQGuGNs
-	xFu8ZF/PXq0tdYjnoVDDxJ8a7LJCm7bY8YIEWGcZeMahr10vAXDZ4UlHi4CEqtX0UiTdOV
-	ZD7UUHZFIdmgNqvtFuXiK/FAuOLrKDD8Orph/6gqN9w/EVXIjfawuVsn7GXK+A==
+	bh=gAPqhRamjcVJxO68ILjzT32M+umBIEEXQgY+krUtrIA=;
+	b=pmm1Wifu4ex4ML80wjiL5vonEhZGuCVysNDcegibtqKxnAU42Gny02u4YVQGBeiqVcC0jZ
+	XUHK7pjwE9C9M4mc2l2WaQ1DWtgLaxS4W5KHurByIESXpbGHd68c4HczqriyG08LQFbB1u
+	2X+dquY/pqKb4WDa2TLLUHuEZARSVpsFscSbPlxDQ3P7HgUUM7hl5jITEuGco4SbxNg3Ul
+	j0Zbk/C9ohN06QMUkeDP2KKFmQEwEZ5VFvAUbKY4OAU1Hp2mA5oy7f7iXN5ocfKN9Ju/mD
+	afB+IO2Zmb0+yAjGmQ96HBoFUU5bXLTtBuAOO8OIWKK6qwzF3zvwdmVEmtfTOw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740743624;
+	s=2020e; t=1740743625;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nsjPWnynEbbF2TFIsikWVKKbCJuqCcEWuoQl6fWp41o=;
-	b=fNxy6Tyq/A+5bzRH+RXbGDr8k/8F6Eb5CdLWZOHzseapiltDM3eEfHriSsA86FueaXGEQj
-	6vlC+CUW0QohSuBg==
+	bh=gAPqhRamjcVJxO68ILjzT32M+umBIEEXQgY+krUtrIA=;
+	b=Djx1kyEWNiaTe6L780mVquGUIK8rVBcfD1jxxohnXE8XtJq9uDw6P5otKoa5bIXi3IHPmB
+	mrWlOJeI7ZMQC1Dw==
 From: "tip-bot2 for David Kaplan" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/bugs] x86/bugs: Relocate mds/taa/mmio/rfds defines
+Subject: [tip: x86/bugs] x86/bugs: Add X86_BUG_SPECTRE_V2_USER
 Cc: David Kaplan <david.kaplan@amd.com>,
  "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250108202515.385902-3-david.kaplan@amd.com>
-References: <20250108202515.385902-3-david.kaplan@amd.com>
+In-Reply-To: <20250108202515.385902-2-david.kaplan@amd.com>
+References: <20250108202515.385902-2-david.kaplan@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174074362368.10177.4839927541564124478.tip-bot2@tip-bot2>
+Message-ID: <174074362446.10177.6431632226859188999.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,117 +81,60 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/bugs branch of tip:
 
-Commit-ID:     2c93762ec4b3ab66980ee7aaffde1e050bfbf291
-Gitweb:        https://git.kernel.org/tip/2c93762ec4b3ab66980ee7aaffde1e050bfbf291
+Commit-ID:     98c7a713db91c5a9a7ffc47cd85e7158e0963cb8
+Gitweb:        https://git.kernel.org/tip/98c7a713db91c5a9a7ffc47cd85e7158e0963cb8
 Author:        David Kaplan <david.kaplan@amd.com>
-AuthorDate:    Wed, 08 Jan 2025 14:24:42 -06:00
+AuthorDate:    Wed, 08 Jan 2025 14:24:41 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 28 Feb 2025 12:39:17 +01:00
+CommitterDate: Fri, 28 Feb 2025 12:34:30 +01:00
 
-x86/bugs: Relocate mds/taa/mmio/rfds defines
+x86/bugs: Add X86_BUG_SPECTRE_V2_USER
 
-Move the mds, taa, mmio, and rfds mitigation enums earlier in the file to
-prepare for restructuring of these mitigations as they are all inter-related.
+All CPU vulnerabilities with command line options map to a single X86_BUG bit
+except for Spectre V2 where both the spectre_v2 and spectre_v2_user command
+line options are related to the same bug.
 
-No functional change.
+The spectre_v2 command line options mostly relate to user->kernel and
+guest->host mitigations, while the spectre_v2_user command line options relate
+to user->user or guest->guest protections.
+
+Define a new X86_BUG bit for spectre_v2_user so each *_select_mitigation()
+function in bugs.c is related to a unique X86_BUG bit.
+
+No functional changes.
 
 Signed-off-by: David Kaplan <david.kaplan@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20250108202515.385902-3-david.kaplan@amd.com
+Link: https://lore.kernel.org/r/20250108202515.385902-2-david.kaplan@amd.com
 ---
- arch/x86/kernel/cpu/bugs.c | 60 +++++++++++++++++++------------------
- 1 file changed, 31 insertions(+), 29 deletions(-)
+ arch/x86/include/asm/cpufeatures.h | 1 +
+ arch/x86/kernel/cpu/common.c       | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 5397d0a..4269ed1 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -247,6 +247,37 @@ static const char * const mds_strings[] = {
- 	[MDS_MITIGATION_VMWERV]	= "Vulnerable: Clear CPU buffers attempted, no microcode",
- };
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index c8701ab..0bc4203 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -537,4 +537,5 @@
+ #define X86_BUG_RFDS			X86_BUG(1*32 + 2) /* "rfds" CPU is vulnerable to Register File Data Sampling */
+ #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* "bhi" CPU is affected by Branch History Injection */
+ #define X86_BUG_IBPB_NO_RET	   	X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
++#define X86_BUG_SPECTRE_V2_USER		X86_BUG(1*32 + 5) /* "spectre_v2_user" CPU is affected by Spectre variant 2 attack between user processes */
+ #endif /* _ASM_X86_CPUFEATURES_H */
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 7cce91b..1e80d76 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1331,8 +1331,10 @@ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
  
-+enum taa_mitigations {
-+	TAA_MITIGATION_OFF,
-+	TAA_MITIGATION_UCODE_NEEDED,
-+	TAA_MITIGATION_VERW,
-+	TAA_MITIGATION_TSX_DISABLED,
-+};
-+
-+/* Default mitigation for TAA-affected CPUs */
-+static enum taa_mitigations taa_mitigation __ro_after_init =
-+	IS_ENABLED(CONFIG_MITIGATION_TAA) ? TAA_MITIGATION_VERW : TAA_MITIGATION_OFF;
-+
-+enum mmio_mitigations {
-+	MMIO_MITIGATION_OFF,
-+	MMIO_MITIGATION_UCODE_NEEDED,
-+	MMIO_MITIGATION_VERW,
-+};
-+
-+/* Default mitigation for Processor MMIO Stale Data vulnerabilities */
-+static enum mmio_mitigations mmio_mitigation __ro_after_init =
-+	IS_ENABLED(CONFIG_MITIGATION_MMIO_STALE_DATA) ? MMIO_MITIGATION_VERW : MMIO_MITIGATION_OFF;
-+
-+enum rfds_mitigations {
-+	RFDS_MITIGATION_OFF,
-+	RFDS_MITIGATION_VERW,
-+	RFDS_MITIGATION_UCODE_NEEDED,
-+};
-+
-+/* Default mitigation for Register File Data Sampling */
-+static enum rfds_mitigations rfds_mitigation __ro_after_init =
-+	IS_ENABLED(CONFIG_MITIGATION_RFDS) ? RFDS_MITIGATION_VERW : RFDS_MITIGATION_OFF;
-+
- static void __init mds_select_mitigation(void)
- {
- 	if (!boot_cpu_has_bug(X86_BUG_MDS) || cpu_mitigations_off()) {
-@@ -290,16 +321,6 @@ early_param("mds", mds_cmdline);
- #undef pr_fmt
- #define pr_fmt(fmt)	"TAA: " fmt
+ 	setup_force_cpu_bug(X86_BUG_SPECTRE_V1);
  
--enum taa_mitigations {
--	TAA_MITIGATION_OFF,
--	TAA_MITIGATION_UCODE_NEEDED,
--	TAA_MITIGATION_VERW,
--	TAA_MITIGATION_TSX_DISABLED,
--};
--
--/* Default mitigation for TAA-affected CPUs */
--static enum taa_mitigations taa_mitigation __ro_after_init =
--	IS_ENABLED(CONFIG_MITIGATION_TAA) ? TAA_MITIGATION_VERW : TAA_MITIGATION_OFF;
- static bool taa_nosmt __ro_after_init;
+-	if (!cpu_matches(cpu_vuln_whitelist, NO_SPECTRE_V2))
++	if (!cpu_matches(cpu_vuln_whitelist, NO_SPECTRE_V2)) {
+ 		setup_force_cpu_bug(X86_BUG_SPECTRE_V2);
++		setup_force_cpu_bug(X86_BUG_SPECTRE_V2_USER);
++	}
  
- static const char * const taa_strings[] = {
-@@ -390,15 +411,6 @@ early_param("tsx_async_abort", tsx_async_abort_parse_cmdline);
- #undef pr_fmt
- #define pr_fmt(fmt)	"MMIO Stale Data: " fmt
- 
--enum mmio_mitigations {
--	MMIO_MITIGATION_OFF,
--	MMIO_MITIGATION_UCODE_NEEDED,
--	MMIO_MITIGATION_VERW,
--};
--
--/* Default mitigation for Processor MMIO Stale Data vulnerabilities */
--static enum mmio_mitigations mmio_mitigation __ro_after_init =
--	IS_ENABLED(CONFIG_MITIGATION_MMIO_STALE_DATA) ? MMIO_MITIGATION_VERW : MMIO_MITIGATION_OFF;
- static bool mmio_nosmt __ro_after_init = false;
- 
- static const char * const mmio_strings[] = {
-@@ -487,16 +499,6 @@ early_param("mmio_stale_data", mmio_stale_data_parse_cmdline);
- #undef pr_fmt
- #define pr_fmt(fmt)	"Register File Data Sampling: " fmt
- 
--enum rfds_mitigations {
--	RFDS_MITIGATION_OFF,
--	RFDS_MITIGATION_VERW,
--	RFDS_MITIGATION_UCODE_NEEDED,
--};
--
--/* Default mitigation for Register File Data Sampling */
--static enum rfds_mitigations rfds_mitigation __ro_after_init =
--	IS_ENABLED(CONFIG_MITIGATION_RFDS) ? RFDS_MITIGATION_VERW : RFDS_MITIGATION_OFF;
--
- static const char * const rfds_strings[] = {
- 	[RFDS_MITIGATION_OFF]			= "Vulnerable",
- 	[RFDS_MITIGATION_VERW]			= "Mitigation: Clear Register File",
+ 	if (!cpu_matches(cpu_vuln_whitelist, NO_SSB) &&
+ 	    !(x86_arch_cap_msr & ARCH_CAP_SSB_NO) &&
 
