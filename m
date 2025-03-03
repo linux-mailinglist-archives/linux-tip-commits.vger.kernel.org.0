@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-3807-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3806-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA07A4CB4B
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Mar 2025 19:52:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4F5A4CB47
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Mar 2025 19:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 404503AC33E
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Mar 2025 18:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 317D73AC3B4
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Mar 2025 18:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC4422F3AB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E56422E405;
 	Mon,  3 Mar 2025 18:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EUhYAG2v";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bJW4Dtpk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cX6vmXHz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lnnz8LTv"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35321DE2BF;
-	Mon,  3 Mar 2025 18:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578CB22D4C8;
+	Mon,  3 Mar 2025 18:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741027925; cv=none; b=b/U4ssUflUf3IU448aXWJOotLePulA2kMaGmEuIYbivVVyasnibYYHEL7bBKuex91RpI1w5n1TABUCBV2OmAmHLH+siPJ4c6tGS0n5TiwWSNz+Z4iqiMYBsv57gqjQy5wlz3vT3HDXwNv+BslaVvnbK2tL6SWidQSCsukRZ9KvQ=
+	t=1741027925; cv=none; b=UseKGjbmTF1PKxLMo/70NrOsrSbwmds9QvYExXCiZ6y4Z1qv54LeCsYvILTFyCCes5Vb9apJgrV7myDBLZF1MtxKEPKUty9YGT0b5m5KMfbdcn24xnBIb+shInUeR/5+V59vF8ESQaJYUoKK4HUS4PqdIjH8AtjYEe3cz7BqtWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741027925; c=relaxed/simple;
-	bh=1yhqGBnCfjY0KGgjkxu73wTI8tWMX8VrGb3opBXDEbQ=;
+	bh=XKm1davLhTjrfgKJD7ZJVOfaLrQzZjIOvHnwYv5dVDo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Jg8uK/DwYusuXx23nrlptNwLJYJshmbB4mRZYcMDduoW4m+JOnT1Au0IwIkZamUhMJVRn5sFH7LpZu3IL4DDwOkeOWgMZ8K6FdUhsY04hocDDhk0LiIEWUijONBHXaYK2JiZvrhKBWp/2sMbr+sO7gta+YaTVvTx+6DrNlOPGDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EUhYAG2v; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bJW4Dtpk; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=VcZV9LdMiIsczUi359Gsz+kZZb60VfSeEVx9uGQo/7u9dxhfFRB084XskUy9oyMVZHka+0FF5NhgXv2AGkvXCgSAeas7iB351UFjaX378PIdMw2nWJLKuvFnFEPa6e/z9iqN+1z0KxTqmU3xEFpEGOQqJHUlQeg73ueYND4vXdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cX6vmXHz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lnnz8LTv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Mar 2025 18:51:54 -0000
+Date: Mon, 03 Mar 2025 18:51:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741027915;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r97iOpjc8uEnhwCRhQJtUxIn9RXKAsNVZFjKDhwF9C0=;
-	b=EUhYAG2v9BNuWDMFKBA6bPYgd/cfEIpix5fpLxskiIo6eYB89DQT2JY3LPSamyaXcbaryp
-	xiiwZP8mMS1+Sl1kQMcwJD1Y8eqldPPFQVp3nU7YNA68lCmhbAThCUHMKnBx6o96AnNjij
-	fVWo4j86EZkU9zEGhA/Rnzbx2zqI79j6GNknjVbYkSYiH6t72RXFvVNRON6dI6RlA1mvtj
-	QszNNYkr4dDWEa+AgjwtCjUxDEibD1z5BbeYqpVshBRZf45kInuCySToI/VJPBWgfW0OyO
-	H+4eXRQb52BzmcLc6nT2GUPZdHSEMKq6dy/dVwjUli9+rqB96JjL2X823ZNrbg==
+	bh=/h1GslIbyju+suPkhMvAD87el/WZtgWXerGF0Q3aAlU=;
+	b=cX6vmXHz9fX8Kv6S/H3MfZgoQVBOZoXUgfOXimK7OBbGnzkblbeadhakPb32P818xTIstK
+	qp6MHiInPIDd1iktfNQm9RlZJdMyYknd7PcPu3t5cue9nDkTnaGJQ50bn/Zl4h6XbMYR/j
+	TGugdpp2MXQjr51HZIWDoEbZwAgsGwsOvev6CpQBlhy0GjJSxCzCiv2Qh62GCezCL6FLo8
+	EOIxoAaPoMMDEJuVNL/T7gc77Jf/B+RSJNKFCD/aHK+Cv/VyBTMVoLvYY+/8xAhV1notTc
+	50ms8ygUOtAByVdsLsiwwRAH3ropMbORHkNdr65rkw0MXH/Y1FWCrSMuyJFKog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741027915;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,28 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r97iOpjc8uEnhwCRhQJtUxIn9RXKAsNVZFjKDhwF9C0=;
-	b=bJW4DtpkFeEyyI66ZqBUBue+SFqZ54CEfkbnXcxzS7R7tW7RqqX4O3bJW/DuTtR5JnsNk6
-	YHqY3rGaaDfcj1CQ==
-From: "tip-bot2 for Mitchell Levy" <tip-bot2@linutronix.de>
+	bh=/h1GslIbyju+suPkhMvAD87el/WZtgWXerGF0Q3aAlU=;
+	b=Lnnz8LTvL68X36RqumzS9ewl3Te0D72Hgwz9FpyIYjZIVBxM9iF8bFkF2LHUX58RAPNykJ
+	Pr55To3Wk2ahiqAw==
+From: "tip-bot2 for Alice Ryhl" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rust: lockdep: Remove support for dynamically
- allocated LockClassKeys
-Cc: Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org,
- Benno Lossin <benno.lossin@proton.me>,
- Mitchell Levy <levymitchell0@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+Subject:
+ [tip: locking/core] rust: sync: condvar: Add wait_interruptible_freezable()
+Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250207-rust-lockdep-v4-1-7a50a7e88656@gmail.com>
-References: <20250207-rust-lockdep-v4-1-7a50a7e88656@gmail.com>
+In-Reply-To: <20250204-condvar-freeze-v2-1-804483096260@google.com>
+References: <20250204-condvar-freeze-v2-1-804483096260@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174102791462.14745.6426418387057210113.tip-bot2@tip-bot2>
+Message-ID: <174102791512.14745.11616490042606107721.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,66 +81,85 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     5fc1506d33db23894e74caf048ba5591f4986767
-Gitweb:        https://git.kernel.org/tip/5fc1506d33db23894e74caf048ba5591f4986767
-Author:        Mitchell Levy <levymitchell0@gmail.com>
-AuthorDate:    Fri, 07 Feb 2025 16:39:08 -08:00
+Commit-ID:     49d72f48a8d9bff481c6f4be838117d07bfa4e4c
+Gitweb:        https://git.kernel.org/tip/49d72f48a8d9bff481c6f4be838117d07bfa4e4c
+Author:        Alice Ryhl <aliceryhl@google.com>
+AuthorDate:    Tue, 04 Feb 2025 13:43:25 
 Committer:     Boqun Feng <boqun.feng@gmail.com>
 CommitterDate: Tue, 25 Feb 2025 08:53:08 -08:00
 
-rust: lockdep: Remove support for dynamically allocated LockClassKeys
+rust: sync: condvar: Add wait_interruptible_freezable()
 
-Currently, dynamically allocated LockCLassKeys can be used from the Rust
-side without having them registered. This is a soundness issue, so
-remove them.
+To support waiting for a `CondVar` as a freezable process, add a
+wait_interruptible_freezable() function.
 
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-3-nmi@metaspace.dk/
-Cc: stable@vger.kernel.org
-Fixes: 6ea5aa08857a ("rust: sync: introduce `LockClassKey`")
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+Binder needs this function in the appropriate places to freeze a process
+where some of its threads are blocked on the Binder driver.
+
+[Boqun: Capitalize the title, reword the commit log and rephrase the
+function doc comment with the impersonal style to align with rest of the
+file]
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/r/20250207-rust-lockdep-v4-1-7a50a7e88656@gmail.com
+Link: https://lore.kernel.org/r/20250204-condvar-freeze-v2-1-804483096260@google.com
 ---
- rust/kernel/sync.rs | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ rust/kernel/sync/condvar.rs | 23 ++++++++++++++++++++++-
+ rust/kernel/task.rs         |  2 ++
+ 2 files changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 3498fb3..16eab91 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -30,28 +30,20 @@ pub struct LockClassKey(Opaque<bindings::lock_class_key>);
- unsafe impl Sync for LockClassKey {}
- 
- impl LockClassKey {
--    /// Creates a new lock class key.
--    pub const fn new() -> Self {
--        Self(Opaque::uninit())
--    }
--
-     pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
-         self.0.get()
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 7df5650..5c1e546 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -11,7 +11,9 @@ use crate::{
+     init::PinInit,
+     pin_init,
+     str::CStr,
+-    task::{MAX_SCHEDULE_TIMEOUT, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE},
++    task::{
++        MAX_SCHEDULE_TIMEOUT, TASK_FREEZABLE, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE,
++    },
+     time::Jiffies,
+     types::Opaque,
+ };
+@@ -159,6 +161,25 @@ impl CondVar {
+         crate::current!().signal_pending()
      }
- }
  
--impl Default for LockClassKey {
--    fn default() -> Self {
--        Self::new()
--    }
--}
--
- /// Defines a new static lock class and returns a pointer to it.
- #[doc(hidden)]
- #[macro_export]
- macro_rules! static_lock_class {
-     () => {{
--        static CLASS: $crate::sync::LockClassKey = $crate::sync::LockClassKey::new();
-+        static CLASS: $crate::sync::LockClassKey =
-+            // SAFETY: lockdep expects uninitialized memory when it's handed a statically allocated
-+            // lock_class_key
-+            unsafe { ::core::mem::MaybeUninit::uninit().assume_init() };
-         &CLASS
-     }};
- }
++    /// Releases the lock and waits for a notification in interruptible and freezable mode.
++    ///
++    /// The process is allowed to be frozen during this sleep. No lock should be held when calling
++    /// this function, and there is a lockdep assertion for this. Freezing a task that holds a lock
++    /// can trivially deadlock vs another task that needs that lock to complete before it too can
++    /// hit freezable.
++    #[must_use = "wait_interruptible_freezable returns if a signal is pending, so the caller must check the return value"]
++    pub fn wait_interruptible_freezable<T: ?Sized, B: Backend>(
++        &self,
++        guard: &mut Guard<'_, T, B>,
++    ) -> bool {
++        self.wait_internal(
++            TASK_INTERRUPTIBLE | TASK_FREEZABLE,
++            guard,
++            MAX_SCHEDULE_TIMEOUT,
++        );
++        crate::current!().signal_pending()
++    }
++
+     /// Releases the lock and waits for a notification in interruptible mode.
+     ///
+     /// Atomically releases the given lock (whose ownership is proven by the guard) and puts the
+diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
+index 07bc22a..ea43a3b 100644
+--- a/rust/kernel/task.rs
++++ b/rust/kernel/task.rs
+@@ -23,6 +23,8 @@ pub const MAX_SCHEDULE_TIMEOUT: c_long = c_long::MAX;
+ pub const TASK_INTERRUPTIBLE: c_int = bindings::TASK_INTERRUPTIBLE as c_int;
+ /// Bitmask for tasks that are sleeping in an uninterruptible state.
+ pub const TASK_UNINTERRUPTIBLE: c_int = bindings::TASK_UNINTERRUPTIBLE as c_int;
++/// Bitmask for tasks that are sleeping in a freezable state.
++pub const TASK_FREEZABLE: c_int = bindings::TASK_FREEZABLE as c_int;
+ /// Convenience constant for waking up tasks regardless of whether they are in interruptible or
+ /// uninterruptible sleep.
+ pub const TASK_NORMAL: c_uint = bindings::TASK_NORMAL as c_uint;
 
