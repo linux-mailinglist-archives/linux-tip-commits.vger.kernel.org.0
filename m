@@ -1,123 +1,116 @@
-Return-Path: <linux-tip-commits+bounces-3941-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3942-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CAFA4E54F
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 17:16:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD70FA4E58E
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 17:21:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0C5619C186D
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 16:04:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D7277A4453
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 16:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7F528D044;
-	Tue,  4 Mar 2025 15:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492D72673BA;
+	Tue,  4 Mar 2025 16:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mm5vzNqn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qs8RDPGm"
-Received: from beeline3.cc.itu.edu.tr (beeline3.cc.itu.edu.tr [160.75.25.117])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tjIZJjcJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0rLHsxSx"
+Received: from beeline1.cc.itu.edu.tr (beeline1.cc.itu.edu.tr [160.75.25.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD94294ED2
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 15:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76762291FB8
+	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 16:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.115
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741103110; cv=pass; b=HCMH2ptNC6B1EqpjOQwouUdy5o0ZqfYcGY1rpNRfZInl1h0vqB9AiHsZIRBgM5oKw5JVmQu4RRn3Rw+zvwbKcrASsWw7TijXGIedy3LudPrDUNyBPKZDzVEf9TqUaWVvIXk5eM+bDs8n4kblKLWab+WRYGy+S/ojHljhd/qvBG8=
+	t=1741104164; cv=pass; b=WWwG1JKEOPdlXp2ZJuCekPZxXqRPQaevwhnMz7szwP7Dtsp+2wkYRtM3Ww6d63NtWattVsCAwfs9/kOdwVx7yRK3oVFhn5scV39a5PMEcHfU8JhDIpJt54PTycu221druA8C1HLdXfzJc0PoJgXQLoB0a4vYO03BP/bMW2/nwl0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741103110; c=relaxed/simple;
-	bh=rb6HiHdTrrfQcE6pGBqpshK1auuAjYTiGBZi4GUMEQg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ujlLkv7uMiE9H/5FkuZUK+dDgfYW8A2f5lqr65lzJCuXE/5kf+gJ1fBgucHg2kwScBBBVgNa/rMFl4OvMaI6WNpKwNdJrZcw1S4YfZmKvjjmCWWAW5A9JjjCLjUN6WhGJyFc1M+mg3YZtpoWhFWoK3qdGkFT6ONbxYdsgE/1n1E=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mm5vzNqn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qs8RDPGm; arc=none smtp.client-ip=193.142.43.55; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; arc=pass smtp.client-ip=160.75.25.117
+	s=arc-20240116; t=1741104164; c=relaxed/simple;
+	bh=JurDxTEUvAXeGf95mxVBEOOVUDSsDo87xxNi9YffqiU=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=QU42DXwQLWMAqw4I0AiH1Pq3VAGCNsNfI2rg3GZ8k6RVXiSd/xiRUFeKKFyu6zJfuNX9Cb75KPVSQJEDC3SYkS6sdtSqjvJR9svuUcW+o6H3aGrHOut4tv4qRW7SEvIQhLAa6KEqHDmKmIJLl2bQYEoHYkwA/2bp2R8ux0X8OVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tjIZJjcJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0rLHsxSx; arc=none smtp.client-ip=193.142.43.55; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; arc=pass smtp.client-ip=160.75.25.115
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
 Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by beeline3.cc.itu.edu.tr (Postfix) with ESMTPS id 750A040CF138
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 18:45:06 +0300 (+03)
+	by beeline1.cc.itu.edu.tr (Postfix) with ESMTPS id 9B68840D975C
+	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 19:02:40 +0300 (+03)
 X-Envelope-From: <root@cc.itu.edu.tr>
 Authentication-Results: lesvatest1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=mm5vzNqn;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Qs8RDPGm
+	dkim=pass (2048-bit key, unprotected) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=tjIZJjcJ;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=0rLHsxSx
 Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6g1b5KFPzG1Fy
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 18:42:59 +0300 (+03)
+	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6gQS41glzG29J
+	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 19:01:04 +0300 (+03)
 Received: by le1 (Postfix, from userid 0)
-	id BDC5B42746; Tue,  4 Mar 2025 18:42:52 +0300 (+03)
+	id 37E8E4273F; Tue,  4 Mar 2025 19:00:37 +0300 (+03)
 Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mm5vzNqn;
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qs8RDPGm
-X-Envelope-From: <linux-kernel+bounces-541358-bozkiru=itu.edu.tr@vger.kernel.org>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tjIZJjcJ;
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0rLHsxSx
+X-Envelope-From: <linux-kernel+bounces-541416-bozkiru=itu.edu.tr@vger.kernel.org>
 Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mm5vzNqn;
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qs8RDPGm
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tjIZJjcJ;
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0rLHsxSx
 Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id 8C58743397
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:23:33 +0300 (+03)
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id 63C8C3063EFC
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:23:33 +0300 (+03)
+	by le2 (Postfix) with ESMTP id A89A242C0C
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:46:43 +0300 (+03)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by fgw1.itu.edu.tr (Postfix) with SMTP id 5A539305F789
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 13:46:43 +0300 (+03)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721BC1893308
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E95B6169296
+	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 10:46:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006421F30B3;
-	Mon,  3 Mar 2025 10:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D2D1F4197;
+	Mon,  3 Mar 2025 10:43:12 +0000 (UTC)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825681DB551;
-	Mon,  3 Mar 2025 10:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935971F4196;
+	Mon,  3 Mar 2025 10:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740997389; cv=none; b=EvDk8k4006U3m0vW58dCbNYWX/z+yAq2z8sZgqWDRkAMYLXoa774K0TsonK2aYDTm/rzfIsFX5rHuHUiexhq8J7BKIblFmcXeQWFJ9eD+WWoaoZNfT8IMKuQNz6qeJUN0cSFA8LZNYW1THICXvXOZr4oN3MtcvGKueaCShQA2PY=
+	t=1740998588; cv=none; b=ULLYcv+FH8TcSKL6J5c9wZGXvdxp43U1s1fTShvGy5xunst+GnIb6DmfKAIBL2AlOD3FmzZfcpaAsVivZj01KUJOlfRcLhPDsCNLfv1E4KvQRfoFjrClloOUNCkngpXf8AoZgsMm1VZCtjmCrTfIYrmHYOTtdimdc+atHHXrRsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740997389; c=relaxed/simple;
-	bh=rb6HiHdTrrfQcE6pGBqpshK1auuAjYTiGBZi4GUMEQg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=h9/wd3oebcTATXPM/dQP5hgHaEBCurP8RljcDohDHDgAr0M97CulDb1bTfq5UnTS5DLuLbYN8W1bHtfo9TlDdRScKURFQfCU9gFwLVP0M9KdNmb10Rsl5sAwZpmQQhbwHbk6w5mzxpbMim2oghgmxRzQX47UEIAekKb5kLApuF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mm5vzNqn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qs8RDPGm; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1740998588; c=relaxed/simple;
+	bh=JurDxTEUvAXeGf95mxVBEOOVUDSsDo87xxNi9YffqiU=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=f+rp5lTZudSZu29iWB6CejOjHImOfj7d7ZOPiiWs07bfiAbt1RtKNK9jAfZ9zFiozd+KXzFd0ru8PGLBooMRFBVJz+KoksKjiuSwtWVk94q6tMTVOVkymFgp8f5Vl6qRaNxK9N+FkO8i7eyNGqLEjpT+mnaFh9UOqb6xD+7Li0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tjIZJjcJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0rLHsxSx; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Mar 2025 10:23:01 -0000
+Date: Mon, 03 Mar 2025 10:43:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740997383;
+	s=2020; t=1740998584;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L93HLqzNF/w4Btg40ftW1mueR1K1M75TuT6aU5m3ApE=;
-	b=mm5vzNqndV7TUbtbTyk1c8Kv6JE8sILgPk/I4OIpJA22D8lVrxr45ddRRW0eFdIGSj/Ch/
-	vAoqOBebLzISUgfGJUF0NISL3LUrTxS0agqMm/jjJyJVVKIZPs+4GVsTTlsZx05KiqAe5u
-	5gHBABH3NpQrvP7taOaSqt+camvDW4IZ7Rr/KNqk++0lbHxv1O8P2tFD82WncjBDQBF6jY
-	/Mh3gY3ZUw75ChDoibCjYYUYcYshS8i2Es4K2Q7DJ2hmlno8UDXNPt5DfziGpqOVZhXO3v
-	gk7qSioJMjZfNpLmZwuJVdD8/I+pxmXcepiDDCCdvFTHjdE5Q/vgKfzAOijhzw==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ohp2f7lO8JogFX5JTIdPGTyHHBYPc/YJJo3X1O3wd80=;
+	b=tjIZJjcJO686TWE9OIeKy4j8Akwl5J34lUqyQVJ9cKUrlLoxVjg4oayUPUEbfnGXt6Dv7e
+	/zdAoFhfYdyZG4CJWPiDux1hRzcYHtf+kgrrXlJ/92p/IpwxNesGWkYg5NdhMJvzPyDHWJ
+	FD4CWH8kweyijTSYwCvMvVCix5SVB8cK+/ezgkgo4ZXA+MNGcMwPTVnFgBcgYNtnbXb4AR
+	xguvzqC0Xn+xsi1AwSKQtn2ZD+lTlPhorprxuCcE7QRbFUlSyv55rpL2XETYvHcSxH6025
+	kR/Js7mhQqApGjhgJ9OD1I926ArQam0MqmboFo2+oE+HOjTRJEpSLRbS+rqQfg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740997383;
+	s=2020e; t=1740998584;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L93HLqzNF/w4Btg40ftW1mueR1K1M75TuT6aU5m3ApE=;
-	b=Qs8RDPGmeGYotipGuX6X/x7R6KoSQx1TZkYCDMWSTIYekdLPWXzrm4Pa0C3DoxxZGpO7Pr
-	JBO2ziwVpHiG+hBg==
-From: "tip-bot2 for Dr. David Alan Gilbert" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=ohp2f7lO8JogFX5JTIdPGTyHHBYPc/YJJo3X1O3wd80=;
+	b=0rLHsxSxjho/WRjOTby8CWefulPCO/vcFEPdE9gMS1z5/90wdYnuVq3BgSAanXZDBUUpAC
+	i8LkhqRAHKAvkfDg==
+From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cleanups] x86/paravirt: Remove unused paravirt_disable_iospace()
-Cc: "Dr. David Alan Gilbert" <linux@treblig.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Juergen Gross <jgross@suse.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250303004441.250451-1-linux@treblig.org>
-References: <20250303004441.250451-1-linux@treblig.org>
+Subject: [tip: timers/vdso] vdso/gettimeofday: Prepare do_hres() for
+ introduction of struct vdso_clock
+Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+ Nam Cao <namcao@linutronix.de>, thomas.weissschuh@linutronix.de,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -125,91 +118,135 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174099738198.10177.3185496763546260161.tip-bot2@tip-bot2>
+Message-ID: <174099858416.10177.9256402844995291380.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6g1b5KFPzG1Fy
+X-ITU-Libra-ESVA-ID: 4Z6gQS41glzG29J
 X-ITU-Libra-ESVA: No virus found
 X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741707787.19234@rzFAkBoQTDRjdz8PK6/jVQ
+X-ITU-Libra-ESVA-Watermark: 1741708895.19275@Ny1cqa0sTPkanIAjg++dtQ
 X-ITU-MailScanner-SpamCheck: not spam
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     47f0008ed7774dd3b12bd5f596e8d106dfea305a
-Gitweb:        https://git.kernel.org/tip/47f0008ed7774dd3b12bd5f596e8d106dfea305a
-Author:        Dr. David Alan Gilbert <linux@treblig.org>
-AuthorDate:    Mon, 03 Mar 2025 00:44:41 
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 03 Mar 2025 10:59:16 +01:00
+Commit-ID:     73153eb2ce038f91e458b5640e7a94dc64fa0718
+Gitweb:        https://git.kernel.org/tip/73153eb2ce038f91e458b5640e7a94dc64f=
+a0718
+Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
+AuthorDate:    Tue, 25 Feb 2025 13:36:39 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 03 Mar 2025 10:24:34 +01:00
 
-x86/paravirt: Remove unused paravirt_disable_iospace()
+vdso/gettimeofday: Prepare do_hres() for introduction of struct vdso_clock
 
-The last use of paravirt_disable_iospace() was removed in 2015 by
-commit d1c29465b8a5 ("lguest: don't disable iospace.")
+To support multiple PTP clocks, the VDSO data structure needs to be
+reworked. All clock specific data will end up in struct vdso_clock and in
+struct vdso_time_data there will be array of it. By now, vdso_clock is
+simply a define which maps vdso_clock to vdso_time_data.
 
-Remove it.
+Prepare for the rework of these structures by adding struct vdso_clock
+pointer argument to do_hres(), and replace the struct vdso_time_data
+pointer with the new pointer arugment whenever applicable.
 
-Note the comment above it about 'entry.S' is unrelated to this
-but stayed when intervening code got deleted.
+No functional change.
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20250303004441.250451-1-linux@treblig.org
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+
 ---
- arch/x86/include/asm/paravirt_types.h |  2 --
- arch/x86/kernel/paravirt.c            | 20 --------------------
- 2 files changed, 22 deletions(-)
+ lib/vdso/gettimeofday.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/include/asm/paravirt_types.h b/arch/x86/include/asm/paravirt_types.h
-index fea56b0..3c54ac5 100644
---- a/arch/x86/include/asm/paravirt_types.h
-+++ b/arch/x86/include/asm/paravirt_types.h
-@@ -242,8 +242,6 @@ extern struct paravirt_patch_template pv_ops;
- 
- #define paravirt_ptr(op)	[paravirt_opptr] "m" (pv_ops.op)
- 
--int paravirt_disable_iospace(void);
--
- /* This generates an indirect call based on the operation type number. */
- #define PARAVIRT_CALL					\
- 	ANNOTATE_RETPOLINE_SAFE				\
-diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 1ccaa33..debe928 100644
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -90,26 +90,6 @@ void paravirt_set_sched_clock(u64 (*func)(void))
- 	static_call_update(pv_sched_clock, func);
+diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
+index 59369a4..15611ab 100644
+--- a/lib/vdso/gettimeofday.c
++++ b/lib/vdso/gettimeofday.c
+@@ -139,10 +139,11 @@ static __always_inline int do_hres_timens(const struct =
+vdso_time_data *vdns, clo
  }
- 
--/* These are in entry.S */
--static struct resource reserve_ioports = {
--	.start = 0,
--	.end = IO_SPACE_LIMIT,
--	.name = "paravirt-ioport",
--	.flags = IORESOURCE_IO | IORESOURCE_BUSY,
--};
--
--/*
-- * Reserve the whole legacy IO space to prevent any legacy drivers
-- * from wasting time probing for their hardware.  This is a fairly
-- * brute-force approach to disabling all non-virtual drivers.
-- *
-- * Note that this must be called very early to have any effect.
-- */
--int paravirt_disable_iospace(void)
--{
--	return request_resource(&ioport_resource, &reserve_ioports);
--}
--
- #ifdef CONFIG_PARAVIRT_XXL
- static noinstr void pv_native_write_cr2(unsigned long val)
+ #endif
+=20
+-static __always_inline int do_hres(const struct vdso_time_data *vd, clockid_=
+t clk,
+-				   struct __kernel_timespec *ts)
++static __always_inline
++int do_hres(const struct vdso_time_data *vd, const struct vdso_clock *vc,
++	    clockid_t clk, struct __kernel_timespec *ts)
  {
+-	const struct vdso_timestamp *vdso_ts =3D &vd->basetime[clk];
++	const struct vdso_timestamp *vdso_ts =3D &vc->basetime[clk];
+ 	u64 cycles, sec, ns;
+ 	u32 seq;
+=20
+@@ -154,31 +155,31 @@ static __always_inline int do_hres(const struct vdso_ti=
+me_data *vd, clockid_t cl
+ 		/*
+ 		 * Open coded function vdso_read_begin() to handle
+ 		 * VDSO_CLOCKMODE_TIMENS. Time namespace enabled tasks have a
+-		 * special VVAR page installed which has vd->seq set to 1 and
+-		 * vd->clock_mode set to VDSO_CLOCKMODE_TIMENS. For non time
++		 * special VVAR page installed which has vc->seq set to 1 and
++		 * vc->clock_mode set to VDSO_CLOCKMODE_TIMENS. For non time
+ 		 * namespace affected tasks this does not affect performance
+-		 * because if vd->seq is odd, i.e. a concurrent update is in
+-		 * progress the extra check for vd->clock_mode is just a few
+-		 * extra instructions while spin waiting for vd->seq to become
++		 * because if vc->seq is odd, i.e. a concurrent update is in
++		 * progress the extra check for vc->clock_mode is just a few
++		 * extra instructions while spin waiting for vc->seq to become
+ 		 * even again.
+ 		 */
+-		while (unlikely((seq =3D READ_ONCE(vd->seq)) & 1)) {
++		while (unlikely((seq =3D READ_ONCE(vc->seq)) & 1)) {
+ 			if (IS_ENABLED(CONFIG_TIME_NS) &&
+-			    vd->clock_mode =3D=3D VDSO_CLOCKMODE_TIMENS)
++			    vc->clock_mode =3D=3D VDSO_CLOCKMODE_TIMENS)
+ 				return do_hres_timens(vd, clk, ts);
+ 			cpu_relax();
+ 		}
+ 		smp_rmb();
+=20
+-		if (unlikely(!vdso_clocksource_ok(vd)))
++		if (unlikely(!vdso_clocksource_ok(vc)))
+ 			return -1;
+=20
+-		cycles =3D __arch_get_hw_counter(vd->clock_mode, vd);
++		cycles =3D __arch_get_hw_counter(vc->clock_mode, vd);
+ 		if (unlikely(!vdso_cycles_ok(cycles)))
+ 			return -1;
+-		ns =3D vdso_calc_ns(vd, cycles, vdso_ts->nsec);
++		ns =3D vdso_calc_ns(vc, cycles, vdso_ts->nsec);
+ 		sec =3D vdso_ts->sec;
+-	} while (unlikely(vdso_read_retry(vd, seq)));
++	} while (unlikely(vdso_read_retry(vc, seq)));
+=20
+ 	/*
+ 	 * Do this outside the loop: a race inside the loop could result
+@@ -278,7 +279,7 @@ __cvdso_clock_gettime_common(const struct vdso_time_data =
+*vd, clockid_t clock,
+ 	else
+ 		return -1;
+=20
+-	return do_hres(vc, clock, ts);
++	return do_hres(vd, vc, clock, ts);
+ }
+=20
+ static __maybe_unused int
+@@ -334,7 +335,7 @@ __cvdso_gettimeofday_data(const struct vdso_time_data *vd,
+ 	if (likely(tv !=3D NULL)) {
+ 		struct __kernel_timespec ts;
+=20
+-		if (do_hres(&vc[CS_HRES_COARSE], CLOCK_REALTIME, &ts))
++		if (do_hres(vd, &vc[CS_HRES_COARSE], CLOCK_REALTIME, &ts))
+ 			return gettimeofday_fallback(tv, tz);
+=20
+ 		tv->tv_sec =3D ts.tv_sec;
 
 
