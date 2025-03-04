@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-3898-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3899-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BDBAA4DA78
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EA9A4DA79
 	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 11:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21DBB16A299
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B21616773C
 	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 10:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D87E120127F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1D6202961;
 	Tue,  4 Mar 2025 10:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tnzlFKje";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TBqceH/I"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qDYlncXI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZxVTQVCG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2754200116;
-	Tue,  4 Mar 2025 10:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18A48201036;
+	Tue,  4 Mar 2025 10:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741083983; cv=none; b=gDPtKJRNMmjcqLq5pf1X4k/e+LrURGyzlTZjs01UQHzkhfYe+5yYR05Iw3fRmsBuuG8SKtkFUf4jFGSTY14VVyiq/TafRFHttK2X1GW3Zxm0Kj20sz+qzvnRULIi6CIuMnz/+wlIm0GU4lfafLnuHwzqBRGduI3l/nFC6Lph3+s=
+	t=1741083983; cv=none; b=h2PczS3P1xKbifTGyqaTB8SARFuPWUWl7pBXYdN8AOSfyayGEMun883QMbVYm+YbOqW+snfg9kjjYY+6DQLP0s0TLD8IcA+9Tuxic8nvV4OFyL7VhplJfz9FtFdI5fsLVNVIuWr+NLSlhFfd4Ar4hJPEfP0QNOniQJiZVDDTtd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741083983; c=relaxed/simple;
-	bh=vBrb+Oz8bcqvvL4ypSdCCw61OZejiK/J1FjIiidFaMA=;
+	bh=8wiJ6CNkWvfsfezUPmZrdEVp7bJt7XnRWsP8mATapc0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MAODiY2Xx5EwcALNjN66C/ZYtlrEIE8/0tQCObpmdqaIh0RTHOOrWz7v3aQyRZKjSvFGwK0Whu4nDMxWy0j0J/VJ5U7kur6YSBnHnlLUPEXfaju0sodo4nQRWN6HmJav/xldtijPz3JR7FSs/unOK7twfctOlUXV/aU2Rxpqb3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tnzlFKje; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TBqceH/I; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Kywp6FfJv2ThjI0ij7kvJlUFooBVlQFlQtERMDu3n8++qTs+yhv/cVzN1upGTHK+yMU0dZmUCR1ceDnP4mJ2QK4ZqcgjkFi6Td2rRcni2LGBumoqvHtJWzuv1IopduXJzovHPSOupQLBMDfl0JyXPy6cH48s6tAKX45lCRSdv24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qDYlncXI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZxVTQVCG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 04 Mar 2025 10:26:19 -0000
+Date: Tue, 04 Mar 2025 10:26:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741083980;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GeXx0OWnyHxO2GxPmEiBoj5Ep+uTOage+OX9RzyzwFI=;
-	b=tnzlFKjetIIabIKAeqX46tsMufquq1oU2CMXWT9LJWTIEcy4EPIEy2Z4/3GsvWcensvTj+
-	HVjbVDFMLQDGNnJDSVz7RuJ3aLFN+2MvGY+Xtc2EJVSgCaNgoOShEUezIuSPE3WFJHKhVh
-	ub5mhRB+AeciFTK7OJT4E4+aQLbjFBymSgC8YtcLLqMM1/Y/wUCRXr3Yvi1O2KnteTkSlq
-	CGrz+nLYgxejZn5ewBapTJx8XLEXK++PXh8Kz8VHVWSFehMYqqXgNLu7qYFqfRfJAFi0pl
-	tkFMe7rayebfW7vesc9tHzPdIPjZN0kfUxEaizRqfqwZn85V+UBc0R0egatzAw==
+	bh=Nvm8HZuDtBkPz1Uou5ov4b6M64loqI04v+ld9z8e6qc=;
+	b=qDYlncXIq2Fg9Hv7MdQD4HdR5MO+ohdgMpvYugYktJ1sADIpYT6g48h0Rl7maiCSQNDRpy
+	d0AStg77oRbsFetGvWjQJYjfWNqzZZAEjoTOTHPGPIqMuNI9njN0kLMkHINWn+dltHuXMf
+	XxVE8eDFQbAxFukmO+lvBwzICm3lt8vZwk1GfVZuIZ0k6L/dGfdHxhCuF+11vDGyacFlH2
+	lvUmGFZ27J71rstCh9HvColFkU/xWpZWmUMqI7tDsXtNhBeMvUFF79OPImlIoO1ReZddY7
+	0379jKqOrj8BBn2h1+ofOcw3ugYVJlI1DeJBJyOyjOTZqBJMIHdptJ3ziqO61A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741083980;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GeXx0OWnyHxO2GxPmEiBoj5Ep+uTOage+OX9RzyzwFI=;
-	b=TBqceH/I42k6e1M6rQYR1hpkF7BEe9Ud5fvS5xRiudxhNdvH19PG7dKRwrxkcn+4nnhFNa
-	BWGc7Oi7NH007pBQ==
+	bh=Nvm8HZuDtBkPz1Uou5ov4b6M64loqI04v+ld9z8e6qc=;
+	b=ZxVTQVCGdTtHmv8l74x7uo5mN9rmD3XT9BWJGm11JJ9xUp1k/pIw0UeQe7IfX/Y7PRgORU
+	/5Dje+6UesJkrjBQ==
 From: "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/cpu] x86/cpu: Use max() for CPUID leaf 0x2 TLB descriptors parsing
-Cc: "Ahmed S. Darwish" <darwi@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+ [tip: x86/cpu] x86/cpu: Remove unnecessary headers and reorder the rest
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ "Ahmed S. Darwish" <darwi@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250304085152.51092-7-darwi@linutronix.de>
-References: <20250304085152.51092-7-darwi@linutronix.de>
+In-Reply-To: <20250304085152.51092-6-darwi@linutronix.de>
+References: <20250304085152.51092-6-darwi@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174108397951.14745.14065199599095053809.tip-bot2@tip-bot2>
+Message-ID: <174108398021.14745.15801075088288394260.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,155 +82,84 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     cb5f4c76b2a9314c35e00c67c98ccd03542c2634
-Gitweb:        https://git.kernel.org/tip/cb5f4c76b2a9314c35e00c67c98ccd03542c2634
+Commit-ID:     dec7fdc0b79c2ae0a537343b17f5ba1c6c47e1ca
+Gitweb:        https://git.kernel.org/tip/dec7fdc0b79c2ae0a537343b17f5ba1c6c47e1ca
 Author:        Ahmed S. Darwish <darwi@linutronix.de>
-AuthorDate:    Tue, 04 Mar 2025 09:51:17 +01:00
+AuthorDate:    Tue, 04 Mar 2025 09:51:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 04 Mar 2025 11:17:33 +01:00
 
-x86/cpu: Use max() for CPUID leaf 0x2 TLB descriptors parsing
+x86/cpu: Remove unnecessary headers and reorder the rest
 
-The conditional statement "if (x < y) { x = y; }" appears 22 times at
-the Intel leaf 0x2 descriptors parsing logic.
+Remove the headers at intel.c that are no longer required.
 
-Replace each of such instances with a max() expression to simplify
-the code.
+Alphabetically reorder what remains since more headers will be included
+in further commits.
 
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250304085152.51092-7-darwi@linutronix.de
+Link: https://lore.kernel.org/r/20250304085152.51092-6-darwi@linutronix.de
 ---
- arch/x86/kernel/cpu/intel.c | 76 +++++++++++++-----------------------
- 1 file changed, 28 insertions(+), 48 deletions(-)
+ arch/x86/kernel/cpu/intel.c | 36 +++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 23 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index 60b58b1..42a57b8 100644
+index c5d833f..60b58b1 100644
 --- a/arch/x86/kernel/cpu/intel.c
 +++ b/arch/x86/kernel/cpu/intel.c
-@@ -3,6 +3,7 @@
+@@ -1,40 +1,30 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#include <linux/kernel.h>
+-#include <linux/pgtable.h>
+ 
+-#include <linux/string.h>
  #include <linux/bitops.h>
+-#include <linux/smp.h>
+-#include <linux/sched.h>
+-#include <linux/sched/clock.h>
+-#include <linux/thread_info.h>
  #include <linux/init.h>
- #include <linux/kernel.h>
-+#include <linux/minmax.h>
- #include <linux/smp.h>
- #include <linux/string.h>
- 
-@@ -700,7 +701,9 @@ static const struct _tlb_table intel_tlb_table[] = {
- 
- static void intel_tlb_lookup(const unsigned char desc)
- {
-+	unsigned int entries;
- 	unsigned char k;
+-#include <linux/uaccess.h>
++#include <linux/kernel.h>
++#include <linux/smp.h>
++#include <linux/string.h>
 +
- 	if (desc == 0)
- 		return;
++#ifdef CONFIG_X86_64
++#include <linux/topology.h>
++#endif
  
-@@ -712,81 +715,58 @@ static void intel_tlb_lookup(const unsigned char desc)
- 	if (intel_tlb_table[k].tlb_type == 0)
- 		return;
+-#include <asm/cpufeature.h>
+-#include <asm/msr.h>
+ #include <asm/bugs.h>
++#include <asm/cpu_device_id.h>
++#include <asm/cpufeature.h>
+ #include <asm/cpu.h>
++#include <asm/hwcap2.h>
+ #include <asm/intel-family.h>
+ #include <asm/microcode.h>
+-#include <asm/hwcap2.h>
+-#include <asm/elf.h>
+-#include <asm/cpu_device_id.h>
+-#include <asm/resctrl.h>
++#include <asm/msr.h>
+ #include <asm/numa.h>
++#include <asm/resctrl.h>
+ #include <asm/thermal.h>
+-
+-#ifdef CONFIG_X86_64
+-#include <linux/topology.h>
+-#endif
++#include <asm/uaccess.h>
  
-+	entries = intel_tlb_table[k].entries;
- 	switch (intel_tlb_table[k].tlb_type) {
- 	case STLB_4K:
--		if (tlb_lli_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4k[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lld_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4k[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lli_4k[ENTRIES] = max(tlb_lli_4k[ENTRIES], entries);
-+		tlb_lld_4k[ENTRIES] = max(tlb_lld_4k[ENTRIES], entries);
- 		break;
- 	case STLB_4K_2M:
--		if (tlb_lli_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4k[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lld_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4k[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lli_2m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_2m[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lld_2m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_2m[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lli_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4m[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lli_4k[ENTRIES] = max(tlb_lli_4k[ENTRIES], entries);
-+		tlb_lld_4k[ENTRIES] = max(tlb_lld_4k[ENTRIES], entries);
-+		tlb_lli_2m[ENTRIES] = max(tlb_lli_2m[ENTRIES], entries);
-+		tlb_lld_2m[ENTRIES] = max(tlb_lld_2m[ENTRIES], entries);
-+		tlb_lli_4m[ENTRIES] = max(tlb_lli_4m[ENTRIES], entries);
-+		tlb_lld_4m[ENTRIES] = max(tlb_lld_4m[ENTRIES], entries);
- 		break;
- 	case TLB_INST_ALL:
--		if (tlb_lli_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4k[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lli_2m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_2m[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lli_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lli_4k[ENTRIES] = max(tlb_lli_4k[ENTRIES], entries);
-+		tlb_lli_2m[ENTRIES] = max(tlb_lli_2m[ENTRIES], entries);
-+		tlb_lli_4m[ENTRIES] = max(tlb_lli_4m[ENTRIES], entries);
- 		break;
- 	case TLB_INST_4K:
--		if (tlb_lli_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4k[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lli_4k[ENTRIES] = max(tlb_lli_4k[ENTRIES], entries);
- 		break;
- 	case TLB_INST_4M:
--		if (tlb_lli_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lli_4m[ENTRIES] = max(tlb_lli_4m[ENTRIES], entries);
- 		break;
- 	case TLB_INST_2M_4M:
--		if (tlb_lli_2m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_2m[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lli_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lli_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lli_2m[ENTRIES] = max(tlb_lli_2m[ENTRIES], entries);
-+		tlb_lli_4m[ENTRIES] = max(tlb_lli_4m[ENTRIES], entries);
- 		break;
- 	case TLB_DATA_4K:
- 	case TLB_DATA0_4K:
--		if (tlb_lld_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4k[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lld_4k[ENTRIES] = max(tlb_lld_4k[ENTRIES], entries);
- 		break;
- 	case TLB_DATA_4M:
- 	case TLB_DATA0_4M:
--		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lld_4m[ENTRIES] = max(tlb_lld_4m[ENTRIES], entries);
- 		break;
- 	case TLB_DATA_2M_4M:
- 	case TLB_DATA0_2M_4M:
--		if (tlb_lld_2m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_2m[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lld_2m[ENTRIES] = max(tlb_lld_2m[ENTRIES], entries);
-+		tlb_lld_4m[ENTRIES] = max(tlb_lld_4m[ENTRIES], entries);
- 		break;
- 	case TLB_DATA_4K_4M:
--		if (tlb_lld_4k[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4k[ENTRIES] = intel_tlb_table[k].entries;
--		if (tlb_lld_4m[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_4m[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lld_4k[ENTRIES] = max(tlb_lld_4k[ENTRIES], entries);
-+		tlb_lld_4m[ENTRIES] = max(tlb_lld_4m[ENTRIES], entries);
- 		break;
- 	case TLB_DATA_1G_2M_4M:
--		if (tlb_lld_2m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
--			tlb_lld_2m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
--		if (tlb_lld_4m[ENTRIES] < TLB_0x63_2M_4M_ENTRIES)
--			tlb_lld_4m[ENTRIES] = TLB_0x63_2M_4M_ENTRIES;
-+		tlb_lld_2m[ENTRIES] = max(tlb_lld_2m[ENTRIES], TLB_0x63_2M_4M_ENTRIES);
-+		tlb_lld_4m[ENTRIES] = max(tlb_lld_4m[ENTRIES], TLB_0x63_2M_4M_ENTRIES);
- 		fallthrough;
- 	case TLB_DATA_1G:
--		if (tlb_lld_1g[ENTRIES] < intel_tlb_table[k].entries)
--			tlb_lld_1g[ENTRIES] = intel_tlb_table[k].entries;
-+		tlb_lld_1g[ENTRIES] = max(tlb_lld_1g[ENTRIES], entries);
- 		break;
- 	}
- }
+ #include "cpu.h"
+ 
+-#ifdef CONFIG_X86_LOCAL_APIC
+-#include <asm/mpspec.h>
+-#include <asm/apic.h>
+-#endif
+-
+ /*
+  * Processors which have self-snooping capability can handle conflicting
+  * memory type across CPUs by snooping its own cache. However, there exists
 
