@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-3924-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3925-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC82A4DAEB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 11:39:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A648A4DAE3
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 11:39:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89E811887EC2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 10:39:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA034167AF5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 10:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03791202C50;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157C7202C53;
 	Tue,  4 Mar 2025 10:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jmlMlZuo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uSBZH5wU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DxBBWDmG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="L29LQ7st"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D526E202962;
-	Tue,  4 Mar 2025 10:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC0A1FDE06;
+	Tue,  4 Mar 2025 10:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741084596; cv=none; b=SYaOHqdH/FBDIiL1+MiS0LEiHiZcHkY0AP5T9I0z4TNOwNo1tJZmeb4BzEywJtWketEFuD86ImG/N4BaRo0EF9lkCXwWhwLB9L+V+m+8TFMGIMP00vd4VTHE1IwMEVGWEc4M/RUfVA0xzfsLHvzWiWm/OH55yQ1hggrs2R7LSiY=
+	t=1741084597; cv=none; b=oULD+XDHR6IN5yg8sz5auovRrcvOr8ydY9MO5IxzFjlq7vD0dB5SMdX594uXYlFH/iTR7hUwo5XZeQJFWIPKgntp4HIoPcuTryCQ04GQIk4oSdUxCWC7S/miFXMV0B7sQh3LqcArFzqguBmaEZphwltivGh76oOpuu2JGR6exUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741084596; c=relaxed/simple;
-	bh=jizlIVH89GAVjfWWuxFTFv+eZL4JmWqxmAd/GnW+OY0=;
+	s=arc-20240116; t=1741084597; c=relaxed/simple;
+	bh=kqJWXTyQtubdiMhdTGun7JTnPnk3ez0ATuGma2d5F2Q=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=V1OIryuTEiyluSKJdWASXkoSx0Vmr6fI1kl1UXGBuswVfRZMcENoiveCRAlQ3O71xFWIF++knDP/cy2ehJQGfdT3w3XvQYpUDhi4eourUyTNJe9BjWwMprBYz1qDhaLohI0PYaK1rbi23BF2s/VjIM6ZZLTJACfOor0nZW/duZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jmlMlZuo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uSBZH5wU; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bmqYAU6LgAEIKln1JnA3XwW5/FCoj8BNFxbmdJCYeB/rvjZrMJo3b5aPwrEgrA4CmfoMSsidrxDkMfhl+uimTSKnFu3nDhZUgZ+aMoIDkalPzIeIjl6I7IMz7JCHx9gFXGODAQOg2Y/5r8YnPjjAg/QGK6f0Jes3q7Xh2GgRef8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DxBBWDmG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=L29LQ7st; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 04 Mar 2025 10:36:32 -0000
+Date: Tue, 04 Mar 2025 10:36:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741084593;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8HYqKHIFsCkpZrTjSAL/ugBeP0IZe/C3M7Dk21MiQs8=;
-	b=jmlMlZuo2euqTDjjvsPH4Fxzb1/P5QeWC75WOknUcAah9tiClhgs3eMVmN3Kox/3yimL2s
-	lyNUxgBR0n6d4CnKQiVvLGFwbQru2ehJipWeGQU47JNukSlhzfQNIcMapgPGq8cmBTlfb+
-	rUNYCA4bpNLaaibBY5pm7JuEWSAopo8uKSZ5MgtirOygJMj25saUnvdii5fQjfOqPSLTao
-	kaxbCpfJv814p2bTnZqmdwJIMqvZQMp5DEEqnDHzIgAA2RCIW9KlZO9FvYWYKge2w4Mx+b
-	idTpm0gVnb/4RFc56wBRAKE/qFH6d9UpJA9QFO5wZ1dq2XU702KOEH3vq+lTIw==
+	bh=GHWWD0MTz5KEaGp9NMQVn+ilLxTKhjYfbT6s55lpOzQ=;
+	b=DxBBWDmGjKuzyy9WfJNqGPf9sDLPvqQYcb+vInUlSLao98oyLj9DRM99NUGCJcMYucxa+m
+	nIC7zLi6MpHaMnt5KYExTKJmIKuA7lKtYufKjPEAj35cRZPdFGOuLQpwrhCBbpxhbSPk6k
+	XG7+eMDHFwksGWKCLclSK6xsraTWuPcjwCRn/3tTL6G1UYIOSFLZ2lR8h4cIZKtoSeGTSO
+	Ptp2Erib96dFHm7WaDNbbFxaeJjRSuTA7B7kETW1E0PuFVO96DC9BSv8Kb6Gei5zyrOtlx
+	jOHF5NvRqRQkOhWbi1Sw41nOUjq9q/3Wu7pa2tpkAoRH4FiNf8ekINn1We1QzA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741084593;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,28 +52,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8HYqKHIFsCkpZrTjSAL/ugBeP0IZe/C3M7Dk21MiQs8=;
-	b=uSBZH5wUZq1DsPxzRJ+TOafedp84pKLyU+53K6BTsbQOr2J6yLtPjQjv6B1vxht+5ZUiIq
-	AcA37tmvERswrICA==
+	bh=GHWWD0MTz5KEaGp9NMQVn+ilLxTKhjYfbT6s55lpOzQ=;
+	b=L29LQ7st6GYtwMzBfXg1+wS/mAZ3EYvuF6ZGK8MP+SUQoG+7BpvNh487Cx7Jc/6yeWG1Fx
+	UYHjQPSr6CnDrUAA==
 From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/retbleed: Move call depth to percpu hot section
+Subject: [tip: x86/core] x86/smp: Move cpu number to percpu hot section
 Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Uros Bizjak <ubizjak@gmail.com>,
  Linus Torvalds <torvalds@linux-foundation.org>,
  Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250303165246.2175811-6-brgerst@gmail.com>
-References: <20250303165246.2175811-6-brgerst@gmail.com>
+In-Reply-To: <20250303165246.2175811-5-brgerst@gmail.com>
+References: <20250303165246.2175811-5-brgerst@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174108459251.14745.5977708392623987124.tip-bot2@tip-bot2>
+Message-ID: <174108459311.14745.14223286895294585090.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,14 +83,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     bacde25dbbad6180b434332ad829b9e2f8064a56
-Gitweb:        https://git.kernel.org/tip/bacde25dbbad6180b434332ad829b9e2f8064a56
+Commit-ID:     816a6123b28ce5be9af27666e4a45b09fde3865b
+Gitweb:        https://git.kernel.org/tip/816a6123b28ce5be9af27666e4a45b09fde3865b
 Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Mon, 03 Mar 2025 11:52:40 -05:00
+AuthorDate:    Mon, 03 Mar 2025 11:52:39 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 04 Mar 2025 11:24:28 +01:00
 
-x86/retbleed: Move call depth to percpu hot section
+x86/smp: Move cpu number to percpu hot section
 
 No functional change.
 
@@ -99,120 +99,91 @@ Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Uros Bizjak <ubizjak@gmail.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250303165246.2175811-6-brgerst@gmail.com
+Link: https://lore.kernel.org/r/20250303165246.2175811-5-brgerst@gmail.com
 ---
- arch/x86/include/asm/current.h       |  3 ---
- arch/x86/include/asm/nospec-branch.h | 11 ++++++-----
- arch/x86/kernel/asm-offsets.c        |  3 ---
- arch/x86/kernel/cpu/common.c         |  8 ++++++++
- arch/x86/lib/retpoline.S             |  2 +-
- 5 files changed, 15 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/current.h | 1 -
+ arch/x86/include/asm/smp.h     | 7 ++++---
+ arch/x86/kernel/setup_percpu.c | 5 ++++-
+ kernel/bpf/verifier.c          | 4 ++--
+ 4 files changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/include/asm/current.h b/arch/x86/include/asm/current.h
-index f988462..8ba2c0f 100644
+index 46a736d..f988462 100644
 --- a/arch/x86/include/asm/current.h
 +++ b/arch/x86/include/asm/current.h
-@@ -14,9 +14,6 @@ struct task_struct;
+@@ -14,7 +14,6 @@ struct task_struct;
  
  struct pcpu_hot {
  	struct task_struct	*current_task;
--#ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
--	u64			call_depth;
--#endif
- 	unsigned long		top_of_stack;
- 	void			*hardirq_stack_ptr;
- 	u16			softirq_pending;
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index aee26bb..44c6076 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -12,7 +12,6 @@
- #include <asm/msr-index.h>
- #include <asm/unwind_hints.h>
- #include <asm/percpu.h>
+-	int			cpu_number;
+ #ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
+ 	u64			call_depth;
+ #endif
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 76d7c01..bcfa002 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -6,7 +6,8 @@
+ #include <linux/thread_info.h>
+ 
+ #include <asm/cpumask.h>
 -#include <asm/current.h>
- 
- /*
-  * Call depth tracking for Intel SKL CPUs to address the RSB underflow
-@@ -78,21 +77,21 @@
- #include <asm/asm-offsets.h>
- 
- #define CREDIT_CALL_DEPTH					\
--	movq	$-1, PER_CPU_VAR(pcpu_hot + X86_call_depth);
-+	movq	$-1, PER_CPU_VAR(__x86_call_depth);
- 
- #define RESET_CALL_DEPTH					\
- 	xor	%eax, %eax;					\
- 	bts	$63, %rax;					\
--	movq	%rax, PER_CPU_VAR(pcpu_hot + X86_call_depth);
-+	movq	%rax, PER_CPU_VAR(__x86_call_depth);
- 
- #define RESET_CALL_DEPTH_FROM_CALL				\
- 	movb	$0xfc, %al;					\
- 	shl	$56, %rax;					\
--	movq	%rax, PER_CPU_VAR(pcpu_hot + X86_call_depth);	\
-+	movq	%rax, PER_CPU_VAR(__x86_call_depth);		\
- 	CALL_THUNKS_DEBUG_INC_CALLS
- 
- #define INCREMENT_CALL_DEPTH					\
--	sarq	$5, PER_CPU_VAR(pcpu_hot + X86_call_depth);	\
-+	sarq	$5, PER_CPU_VAR(__x86_call_depth);		\
- 	CALL_THUNKS_DEBUG_INC_CALLS
- 
- #else
-@@ -387,6 +386,8 @@ extern void call_depth_return_thunk(void);
- 		    __stringify(INCREMENT_CALL_DEPTH),		\
- 		    X86_FEATURE_CALL_DEPTH)
- 
-+DECLARE_PER_CPU_CACHE_HOT(u64, __x86_call_depth);
 +
- #ifdef CONFIG_CALL_THUNKS_DEBUG
- DECLARE_PER_CPU(u64, __x86_call_count);
- DECLARE_PER_CPU(u64, __x86_ret_count);
-diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
-index a98020b..6fae88f 100644
---- a/arch/x86/kernel/asm-offsets.c
-+++ b/arch/x86/kernel/asm-offsets.c
-@@ -109,9 +109,6 @@ static void __used common(void)
- 	OFFSET(TSS_sp2, tss_struct, x86_tss.sp2);
- 	OFFSET(X86_top_of_stack, pcpu_hot, top_of_stack);
- 	OFFSET(X86_current_task, pcpu_hot, current_task);
--#ifdef CONFIG_MITIGATION_CALL_DEPTH_TRACKING
--	OFFSET(X86_call_depth, pcpu_hot, call_depth);
--#endif
- #if IS_ENABLED(CONFIG_CRYPTO_ARIA_AESNI_AVX_X86_64)
- 	/* Offset for fields in aria_ctx */
- 	BLANK();
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index a9d6153..fd224ae 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2075,6 +2075,14 @@ DEFINE_PER_CPU_CACHE_HOT(int, __preempt_count) = INIT_PREEMPT_COUNT;
- EXPORT_PER_CPU_SYMBOL(__preempt_count);
++DECLARE_PER_CPU_CACHE_HOT(int, cpu_number);
  
- #ifdef CONFIG_X86_64
-+/*
-+ * Note: Do not make this dependant on CONFIG_MITIGATION_CALL_DEPTH_TRACKING
-+ * so that this space is reserved in the hot cache section even when the
-+ * mitigation is disabled.
-+ */
-+DEFINE_PER_CPU_CACHE_HOT(u64, __x86_call_depth);
-+EXPORT_PER_CPU_SYMBOL(__x86_call_depth);
-+
- static void wrmsrl_cstar(unsigned long val)
+ DECLARE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_sibling_map);
+ DECLARE_PER_CPU_READ_MOSTLY(cpumask_var_t, cpu_core_map);
+@@ -132,8 +133,8 @@ __visible void smp_call_function_single_interrupt(struct pt_regs *r);
+  * This function is needed by all SMP systems. It must _always_ be valid
+  * from the initial startup.
+  */
+-#define raw_smp_processor_id()  this_cpu_read(pcpu_hot.cpu_number)
+-#define __smp_processor_id() __this_cpu_read(pcpu_hot.cpu_number)
++#define raw_smp_processor_id()  this_cpu_read(cpu_number)
++#define __smp_processor_id() __this_cpu_read(cpu_number)
+ 
+ static inline struct cpumask *cpu_llc_shared_mask(int cpu)
  {
- 	/*
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 038f49a..a26c43a 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -343,7 +343,7 @@ SYM_FUNC_START(call_depth_return_thunk)
- 	 * case.
- 	 */
- 	CALL_THUNKS_DEBUG_INC_RETS
--	shlq	$5, PER_CPU_VAR(pcpu_hot + X86_call_depth)
-+	shlq	$5, PER_CPU_VAR(__x86_call_depth)
- 	jz	1f
- 	ANNOTATE_UNRET_SAFE
- 	ret
+diff --git a/arch/x86/kernel/setup_percpu.c b/arch/x86/kernel/setup_percpu.c
+index 1e7be94..175afc3 100644
+--- a/arch/x86/kernel/setup_percpu.c
++++ b/arch/x86/kernel/setup_percpu.c
+@@ -23,6 +23,9 @@
+ #include <asm/cpumask.h>
+ #include <asm/cpu.h>
+ 
++DEFINE_PER_CPU_CACHE_HOT(int, cpu_number);
++EXPORT_PER_CPU_SYMBOL(cpu_number);
++
+ DEFINE_PER_CPU_READ_MOSTLY(unsigned long, this_cpu_off);
+ EXPORT_PER_CPU_SYMBOL(this_cpu_off);
+ 
+@@ -161,7 +164,7 @@ void __init setup_per_cpu_areas(void)
+ 	for_each_possible_cpu(cpu) {
+ 		per_cpu_offset(cpu) = delta + pcpu_unit_offsets[cpu];
+ 		per_cpu(this_cpu_off, cpu) = per_cpu_offset(cpu);
+-		per_cpu(pcpu_hot.cpu_number, cpu) = cpu;
++		per_cpu(cpu_number, cpu) = cpu;
+ 		setup_percpu_segment(cpu);
+ 		/*
+ 		 * Copy data used in early init routines from the
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index f485951..6e604ca 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -21702,12 +21702,12 @@ patch_map_ops_generic:
+ 		if (insn->imm == BPF_FUNC_get_smp_processor_id &&
+ 		    verifier_inlines_helper_call(env, insn->imm)) {
+ 			/* BPF_FUNC_get_smp_processor_id inlining is an
+-			 * optimization, so if pcpu_hot.cpu_number is ever
++			 * optimization, so if cpu_number is ever
+ 			 * changed in some incompatible and hard to support
+ 			 * way, it's fine to back out this inlining logic
+ 			 */
+ #ifdef CONFIG_SMP
+-			insn_buf[0] = BPF_MOV64_IMM(BPF_REG_0, (u32)(unsigned long)&pcpu_hot.cpu_number);
++			insn_buf[0] = BPF_MOV64_IMM(BPF_REG_0, (u32)(unsigned long)&cpu_number);
+ 			insn_buf[1] = BPF_MOV64_PERCPU_REG(BPF_REG_0, BPF_REG_0);
+ 			insn_buf[2] = BPF_LDX_MEM(BPF_W, BPF_REG_0, BPF_REG_0, 0);
+ 			cnt = 3;
 
