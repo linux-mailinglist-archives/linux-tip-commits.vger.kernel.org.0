@@ -1,81 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-3996-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3997-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A58BA4EE49
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 21:25:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1ACA4EE91
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 21:41:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E84D7A3DF5
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 20:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0EEE3AB22C
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 20:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A599C1FAC46;
-	Tue,  4 Mar 2025 20:25:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4A920C039;
+	Tue,  4 Mar 2025 20:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Y0Nl5Yx2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Wqp33F2V"
 Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5907DA93
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 20:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A381F8917
+	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 20:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741119949; cv=none; b=j14Dnc+ydG8qPof5ILmhf/hlj2OviYeiZqnpi9famT/yyPs+uKpqZhNjLBnBkDA2X8uxwkcNvYDSyTMWBTUHczRiKjyKpsXA5Pk2zvKT5K4ckhsME7tQNOCyq4+j4iSM1S9Jj9dDGp6Xtcjf/c1uXLUxjE6qEDo0UTCU6ewjmxA=
+	t=1741120891; cv=none; b=Nv7tF6M4DS3STs7088hhWpnduSTRtO077plkwVcKnNNiYwR6f6kopg3xy3wUcVn2nhHwpd3ybdsHPCkq+NGHapAfksOihIxWEhR9x+ld3IzPVwSC2MbCcoEsT5py1iQq3o8FbZW/60MSI9Dw+hZt7s5/Bo7MpTeVLA3+1HEEj4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741119949; c=relaxed/simple;
-	bh=X5RiZHBsbLcPKV323Q8tWpZ073WfByOYU3vrxNxusK4=;
+	s=arc-20240116; t=1741120891; c=relaxed/simple;
+	bh=GJUYkFswbf3vcwD4sF00gsfWBJ+WhaC1VZb82bhTK0c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=myMXGb2uBG3mVyLuTaDb0bMZRc+LT5J3DH0SHA+DDkO0UDLyKz3GMwCG7eJBv+cYGipGydZRWF3svVQokknp3mwzfr9UujMnrKzzks1oTYTmV6JvEJFIL2gKJLjPrkPZg2hAP+BdthqdaWUcszSDYMAFUTpDZ8SJmexc4ghAMWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Y0Nl5Yx2; arc=none smtp.client-ip=209.85.218.49
+	 To:Cc:Content-Type; b=Nn/DJJ5Acj3lpUDZrX62QtKkyE2e5CV1o1N0VCtmak5K1R9pMtsgk3le0z2ur48qkvgxDDzjsMFhPCIR+bvm+NQ7PIk81GFnzffR89prevhofjkVVbjWLXSYAmj/R2YDeFsIFJsw3Dq12fDWt4X8iUl/8erMQDZWGou8/RhApOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Wqp33F2V; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so1126912266b.3
-        for <linux-tip-commits@vger.kernel.org>; Tue, 04 Mar 2025 12:25:46 -0800 (PST)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac202264f9cso130941066b.0
+        for <linux-tip-commits@vger.kernel.org>; Tue, 04 Mar 2025 12:41:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1741119945; x=1741724745; darn=vger.kernel.org;
+        d=linux-foundation.org; s=google; t=1741120888; x=1741725688; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ng6/HlQleweYy73ZBFOZ7zU4VxzpXmmE/CHm0RKEds=;
-        b=Y0Nl5Yx2j+BlmEuS/PAv3Oo7E9hLu4VzlJ9lGhTWlb9DyqMQU26irxlbSK1p5lCknX
-         tqim2ldVL4++EnF2Zvq6/dF+l0MYbww9D8C3YRAyexDHVdHUqMvHL1aAn/2yhq8bvykz
-         Vz459Bwwa3Bf9oGkEmDZ0FzU941KwhOPKSp6Y=
+        bh=kxXwhDVyR6qbTJQoUXWwo1wlriinEbaY/hOWV7spF6o=;
+        b=Wqp33F2VaPIJFh3mI3JhHiImierCA39zLrSmudtiepBvTcdh3eG+b9tf17hNy7DoGY
+         rLqWfYOuxk9hjCh8ZrbQFVSmionL8x6fKsTeqm6BIKhl7LZfWsT+yDY1TWb1qspUzI4a
+         H0X+SkUrNsedwghaoFQoFTHdg/o1x1zaMGStM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741119945; x=1741724745;
+        d=1e100.net; s=20230601; t=1741120888; x=1741725688;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=5ng6/HlQleweYy73ZBFOZ7zU4VxzpXmmE/CHm0RKEds=;
-        b=rJVnUFAmpFBoLzj4Zf0lnPoR/vweiXRp7+Eybm3ZVecW9fb0yMaPiV/5HbiflNozhn
-         SDFy74fGyLfY9skBnzBgMjRBSi3uTtt92Ec5SMDWy7bFMztOpL0NxhUn4ZX07BXu6ml2
-         L83Lp5wy1q5bd4yqYKBxwMnpQrcenHejaRU3723aMi9LfRuLY63MKr8CmgtZerb1aS3R
-         qko/DkZpUoOxWNrDnDpfneuNj4jhJfpQP+SqKQ+u2bdzooWzzYXVvm7hDNjI5eFSUfn6
-         5Ts1CC5Y+YJj/P65dfO+9NYyZ6R2QtsfPWZZYqbuADPpzq0W1oMlmCO8h44hDLTmudlf
-         CQ1A==
-X-Forwarded-Encrypted: i=1; AJvYcCX/1E59BDUFeNTMsdBWQ1pQYg1HgeHsS6RDJz1xjtRONo3qRnKvImM2P8Ri6/qpJuawnaop8O4Og1WsHuRC0GA1yQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/mmblRVNtB61gdJyFGvt6/lAFmVfSr0ZKgqkIJvBAWiTiNwsA
-	hW/22WiYgxxnTFQM/wgLpmXbcmxZBe+COhoeeaTkziFSXOBp5jrhlfnbaXb1bmcEPuEPlWmNmm+
-	aKqhjHw==
-X-Gm-Gg: ASbGncvL+zmb5oMrsvCY8cMRAKs9t1FBvMUF6oE32l/BY1SXEm6YbCHLbRzNnwRMu38
-	Aq5pVxxhSpNt2bAndC6ZlaUSH3jfPSCkgMJPJTESgIdDTVNI/q6Km/ZeHrACW61RpXZi+MFNpeU
-	SoXuJ7+5hvpV719VMj8lUD8DH9YqmhOjodNXkTo47pgp5ts8iwYMkMeXlf1apyv+EFe3Fzp8oCM
-	STL5JMRrKgSBHcyGWa/NuSNjLud443O7MmHoGShLSHI7HFaTWm1jxBAegXA6NLf/HchP6gKS+Iu
-	fMVR2a2FKVdklELtTpmJLv75piAGdVs/jft1+gff8yi2etMV3YmwgegLGNZ6E9NCugc+tKsnMTx
-	WyVrRNq8HBvg0s5SPH7o=
-X-Google-Smtp-Source: AGHT+IG5hiyli2usV0Yd/no+Czyjk8P1oYBWkKft7OsTdT8wFh+InFBvze9ngpJkFLaMNKzJCd30NA==
-X-Received: by 2002:a17:907:2dac:b0:abf:70fb:7f05 with SMTP id a640c23a62f3a-ac20dafc173mr62850066b.50.1741119945312;
-        Tue, 04 Mar 2025 12:25:45 -0800 (PST)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf67fa3c05sm518685166b.72.2025.03.04.12.25.44
+        bh=kxXwhDVyR6qbTJQoUXWwo1wlriinEbaY/hOWV7spF6o=;
+        b=c2Cti94mQvnlfg2S0TjCr8DchdsekN6OOx9Lq2TqD6wm2l9sw1nmR2wKarWGU0W43e
+         1Mb28uq25PmItxQfwXnzEi0IG4eA65CcAd3B05HMMbGLnx+vUuIow9o6TdoFVCW4BaPA
+         3F9E6EgZ2eV1shf4yd3rmChVYIOtCZH6gGWTe+cDbJqR2UHRiZ61OqC2swyg7g+Ds0Y+
+         E8LtYdF6RsByrRpIiHqJlnRfWFwI28bFuFrZl0fGXShOWwIZoKj6YIUxd9np+gvYLjX3
+         VvYDc9dzsDdGG9cvkQ81cUi3oa9hTIUqGTlpxi+GW7xYItlJcZcPAUAo6hWyiz7SZf4l
+         3TqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDS5tGkLFu21GsYF02dv2XAdfklUEQbyIPEnODQKH8F36lNLx4HOchbdawZjU9FHXwyG/19uP2CRy8m1I+NHnkeg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbV7rGeL6YjIvzeeiT7oi+iHadW9DmSgh0nRsFNqh8dvOCBBMx
+	FfyunEussLamCWngzEMzLLGUfvWArRPl2BdYJpO/5POycQ161DO85BOZ4O7snIYo97IWkpVLxxl
+	s6tircQ==
+X-Gm-Gg: ASbGncu1qz3cfbEVV9d7m2VUTnjf4GAKPUHfB3TsK7YxP0FAw5pgqCcOxHuWEwbzUmr
+	1Xfk2+54x867FIPEIl+qJyfy4m8iYC7U5ohJC3HuHdhl++XCdauOstszCLNYDy+qFfKEdzPc4LY
+	AOZvLcQXj1nULtVv6jhXzv3BqwmndLwLvtleMGAYnI50KIInvnHzKQAVFb1Jl+t+0x3boEDLLZR
+	IsyrrLp89i0iwXgv4e7izD8YzpF8vqKxelNdl4dwEghWqs+uE32muF4b90UMYOt5DWeSYCs0+zo
+	29rqLBslB/UuLqVIKGsKR95iHicltmY+obM0ytN/DTppIPZMlFTfnlC6fMbj0rNMljnpx/xFCaL
+	9l5LO5Ne43e1n2Cc+A90=
+X-Google-Smtp-Source: AGHT+IHNSWbJEyiTG0L2pnBOJWVI5vHOxmHleGPIm87gwZ1wQr5NCrGrahUqYiVttF+9yqNi8D3zUg==
+X-Received: by 2002:a17:907:7b8d:b0:ac1:e5b1:86fb with SMTP id a640c23a62f3a-ac20da46ccdmr64799366b.10.1741120887733;
+        Tue, 04 Mar 2025 12:41:27 -0800 (PST)
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com. [209.85.218.47])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abf7663b935sm422723466b.150.2025.03.04.12.41.26
         for <linux-tip-commits@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Mar 2025 12:25:44 -0800 (PST)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so1126909566b.3
-        for <linux-tip-commits@vger.kernel.org>; Tue, 04 Mar 2025 12:25:44 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUTT3UPwuTkunUKoUwUEkol/pYRR6xnre+d7L5POyNIqJ83+5kp8WpXE4OXurSIMeKkrU9slc5xAvJCWZ9rKoRK3w==@vger.kernel.org
-X-Received: by 2002:a17:907:9496:b0:ab6:362b:a83a with SMTP id
- a640c23a62f3a-ac20d84509fmr57802866b.8.1741119944023; Tue, 04 Mar 2025
- 12:25:44 -0800 (PST)
+        Tue, 04 Mar 2025 12:41:26 -0800 (PST)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-abf4b376f2fso618253966b.3
+        for <linux-tip-commits@vger.kernel.org>; Tue, 04 Mar 2025 12:41:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWIxt6JdBqyp+Q30tkzFR2ZCODzzyXe5VFWSQFhttLzBf86o8ThwV22RLOPvM5RpBHBJV5V+vYjb3zZEj6sj9hqZA==@vger.kernel.org
+X-Received: by 2002:a17:907:d94:b0:ac1:da0c:f668 with SMTP id
+ a640c23a62f3a-ac20e153524mr57232366b.43.1741120886518; Tue, 04 Mar 2025
+ 12:41:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
@@ -91,10 +91,10 @@ References: <174099976188.10177.7153571701278544000.tip-bot2@tip-bot2>
  <20250304195625.qcxvtv63fqqk6fx4@jpoimboe> <CAHk-=wizdAA_d1yHZQGHoJs2fqywPiT=NJT2wNA0xybV+GVefw@mail.gmail.com>
 In-Reply-To: <CAHk-=wizdAA_d1yHZQGHoJs2fqywPiT=NJT2wNA0xybV+GVefw@mail.gmail.com>
 From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Tue, 4 Mar 2025 10:25:26 -1000
-X-Gmail-Original-Message-ID: <CAHk-=wgtnKe+pH2Sx7C0u_UDzan6paTMesRDhAyDEAcCptyuuw@mail.gmail.com>
-X-Gm-Features: AQ5f1JrMDxVLcTEMY5jJ6-t8Assg5ksjiB7T5IGpvzD8oxsD3xGemkRL0m8NNVE
-Message-ID: <CAHk-=wgtnKe+pH2Sx7C0u_UDzan6paTMesRDhAyDEAcCptyuuw@mail.gmail.com>
+Date: Tue, 4 Mar 2025 10:41:08 -1000
+X-Gmail-Original-Message-ID: <CAHk-=wiwhHKvxZoaCPs2Zs4gaMAfCyZ=arBvXdP_kvNKOH5sKA@mail.gmail.com>
+X-Gm-Features: AQ5f1JqwCdnEAOm6EQyOOf2Fa04agj1a8LvsPchd0a3tBCRJF8Yhs-p8vOWYtdw
+Message-ID: <CAHk-=wiwhHKvxZoaCPs2Zs4gaMAfCyZ=arBvXdP_kvNKOH5sKA@mail.gmail.com>
 Subject: Re: [tip: x86/asm] x86/asm: Make ASM_CALL_CONSTRAINT conditional on
  frame pointers
 To: Josh Poimboeuf <jpoimboe@kernel.org>
@@ -107,32 +107,39 @@ Content-Type: text/plain; charset="UTF-8"
 On Tue, 4 Mar 2025 at 10:13, Linus Torvalds
 <torvalds@linux-foundation.org> wrote:
 >
-> On Tue, 4 Mar 2025 at 09:56, Josh Poimboeuf <jpoimboe@kernel.org> wrote:
-> >
-> > While that may be theoretically true, the reality is that it produces
-> > better code for Clang.
->
-> Does clang even need it? Last we did any changes for clang, it wasn't
-> because clang needed the marker at all, it was because clang was
-> unhappy with the stack pointer register define being local.
+> Does clang even need it?
 
-Put another way: if we make this conditional, it would make a whole
-lot more sense to make it conditional on the *compiler*, not on some
-random kernel config option.
+Bah. Yes it does. I may not have clang sources to try to look at, but
+I can do a test-build.
 
-At least making some "use this to mark inline asms" be
-compiler-specific makes sense. We already do exactly that for other
-compiler issues (we used to have the "asm goto output" gcc bugs that
-way, and we still do asm_inline that way)
+Anyway, I do think it would be better to make this compiler-specific,
+and keep gcc using the old tested case that works well regardless of
+whether frame pointers are enabled or not, since it doesn't _care_.
 
-And as far as I know, we've only ever needed this for gcc, and gcc has
-never had any problem with just using %rsp as the input - whether as a
-local variable or as a global one.
+And I think there's a better way to deal with the whole "generate
+better code when not needed" too, if clang really has to have that
+disgusting __builtin_frame_pointer() thing that then has problems when
+frame pointers aren't enabled.
 
-But regardless, changing from one very tested model to another, when a
-gcc person already has said that the new model isn't reliable, and
-doing it for gcc because of a *clang* issue, really seems all kinds of
-insane.
+IOW, you could do something pointless like
+
+   extern int unused_variable;
+  #define ASM_CALL_CONSTRAINT "+m" (unused_variable)
+
+which generates a dependency that doesn't matter, and then doesn't
+then require preprocessor hacks for when it is empty.
+
+So I *think* the patch could be something like
+
+ - move the define to <asm/compiler-xyzzy,.h>
+
+ - for gcc, use the old tested code
+
+ - for clang, use the "either __builtin_frame_pointer(0) or dummy
+dependency" thing
+
+ - have big comments about it, because our historical changelogs
+clearly are not accurate wrt this all.
 
                  Linus
 
