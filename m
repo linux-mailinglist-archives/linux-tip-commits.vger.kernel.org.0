@@ -1,445 +1,280 @@
-Return-Path: <linux-tip-commits+bounces-3935-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3933-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE34A4E2A8
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 16:15:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C5AA4E273
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 16:10:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64DAF1892753
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 15:08:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A084319C2FB5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 15:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CD525E83F;
-	Tue,  4 Mar 2025 15:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E164C27F4C9;
+	Tue,  4 Mar 2025 14:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HG5bAIKj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1uMmePvw"
-Received: from beeline2.cc.itu.edu.tr (beeline2.cc.itu.edu.tr [160.75.25.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1151427F4CB
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 15:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=160.75.25.116
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741100608; cv=pass; b=Ssa+NJvXka4bU6quUGS/c5B7/Oa+QNovQnmQ8XW9+g3vROgC64obtwofRQiJGrZrkckl2nxonMcK2XbNAMGs12WR7G0mDdhCBOwl1c6Bs+C2jA/QLbqhY6Tj7bTQQxJVWrPWhbM0FxBWTlAdw1cp4GX3NVXeGMmh2OQEMp3CXS0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741100608; c=relaxed/simple;
-	bh=jKFWUEr4H2/w0nnELNAAEBCa2v1mA7owLO7zk59NIT8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mJf4etBqMR5nERs/gRHeqb5Oc0Q5ZnAjNR3l7552w9eywEy9XWIakzolxaHTkBIV7fLNqm3vzviCA73NwadLNR5AWJpN7USL3UpBmoDwQj0+xOzag3O07IKVVTUAaFStkhAAMMT9ZCD7zPfhaXj//+jyG/F2eiGC7smF+xHm3oo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=none smtp.mailfrom=cc.itu.edu.tr; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HG5bAIKj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1uMmePvw; arc=none smtp.client-ip=193.142.43.55; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; arc=pass smtp.client-ip=160.75.25.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cc.itu.edu.tr
-Received: from lesvatest1.cc.itu.edu.tr (lesvatest1.cc.itu.edu.tr [10.146.128.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by beeline2.cc.itu.edu.tr (Postfix) with ESMTPS id 4BD9840F1CDE
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 18:03:24 +0300 (+03)
-X-Envelope-From: <root@cc.itu.edu.tr>
-Received: from lesva1.cc.itu.edu.tr (unknown [160.75.70.79])
-	by lesvatest1.cc.itu.edu.tr (Postfix) with ESMTP id 4Z6f5g48J7zFyFk
-	for <linux-tip-commits@vger.kernel.org>; Tue,  4 Mar 2025 18:01:27 +0300 (+03)
-Received: by le1 (Postfix, from userid 0)
-	id CCF7142721; Tue,  4 Mar 2025 18:01:18 +0300 (+03)
-Authentication-Results: lesva1.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HG5bAIKj;
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1uMmePvw
-X-Envelope-From: <linux-kernel+bounces-541737-bozkiru=itu.edu.tr@vger.kernel.org>
-Authentication-Results: lesva2.cc.itu.edu.tr;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HG5bAIKj;
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1uMmePvw
-Received: from fgw1.itu.edu.tr (fgw1.itu.edu.tr [160.75.25.103])
-	by le2 (Postfix) with ESMTP id 497C941CC5
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:51:05 +0300 (+03)
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by fgw1.itu.edu.tr (Postfix) with SMTP id D703C305F789
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 15:51:04 +0300 (+03)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC0316229B
-	for <bozkiru@itu.edu.tr>; Mon,  3 Mar 2025 12:51:03 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8EB2101B3;
-	Mon,  3 Mar 2025 12:50:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RWMkklXB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IC2GtJeS"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6891F19A;
-	Mon,  3 Mar 2025 12:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAF627F4C0;
+	Tue,  4 Mar 2025 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741006250; cv=none; b=dF1nTq0MwE9u59V03RjLFagWdj6dThwdAUQ5PzO5QauyBItoewfvzQ6tVpL1KUa7H6hRMOwVlm6YdtVCrwd8kr+GRxAv9JLsndUuDTW2vhIwTs/IWAYTI4xe9HTo689OMkT0541Qq8S3GcDWEx9d/7bQUeU4p1K450BDVf+ucCs=
+	t=1741100296; cv=none; b=dVHn0PBWGzBRdOpNZfshzMQCW2aJbPKkK9Q1CBxi8zk/WyJywfrd+5DfuV8O2Xo5SfxnAFXvtWOlPGGNDZbJs5wU7bThwES7hdXuITLMXdhEVekc0Q465FAO514K+oaXlNdBUFv0JdP5v+HDjcGC/N1saPHp0vYyCW7OUiPCXXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741006250; c=relaxed/simple;
-	bh=jKFWUEr4H2/w0nnELNAAEBCa2v1mA7owLO7zk59NIT8=;
+	s=arc-20240116; t=1741100296; c=relaxed/simple;
+	bh=WlwWHQo93Avh0OM5ijW/gcihTSuSzefKRniU7uzkVB8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LbO9tiWcMXfgr9F6O+tbIaB0Ob39qA0KGqPVg1pFCJTl8TWWuuvKb5P44n7U4QI4xvqHgLq1QUMFbmIOAV+McJEVkL54kX97Cv3sOIKphM9TOE/tl6yFFX5Ko/74R67+N1RRODibWg7uRKoOY9eYyZykTyUWYLLebIEgVZyD0fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HG5bAIKj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1uMmePvw; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=VuFR79UTtd7UgoF6hZmaYOm9O2iVkmNGImzJuEwBsK+tQNP8mhKdVBguUQiNwxKdA4n/5+l3Q+bVUUEnvgx2Nu6mUBw6SNOxj8y1VoOXSIj4p4A0e+BTlQnAdM01iXQu23B/i+YTLPbgNoXWTpK2IDwYRRIOe6HES9rfcIm7QEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RWMkklXB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IC2GtJeS; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Mar 2025 12:50:42 -0000
+Date: Tue, 04 Mar 2025 14:58:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741006245;
+	s=2020; t=1741100292;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NEmE9ahNwEwwTzjxMNYxU2gdgR31Xbk7JVVOcGVbkMM=;
-	b=HG5bAIKjpNZP/YqTbIobzNqhviyfBuPe7h3C7+uN9OvHUWZnqbINkvYXHBt9u9WcyK6LjP
-	aMtmxSudc24/BtYndyJXtzLCIzslefPytFZMK47WivZ2VF1AgYOZEdcsQXIrNMqs7ogqgn
-	tSlu3DNfgwOrpQHufsCvD/rwvn+4f0gsHyWrGqeCI6unSuCKoM1F4tf1ZrVV8JkMaQx0Rr
-	Z1MGwMPl5jjb8mzrXvctGjRACAjM4gA4FWswEEUCEQrKcPdhXyLZj0r34jpmC5PNYsTCUn
-	g4UfxYnJcLW1wQ2xVG0qJ+WLVvVYLdVOaz6uJAc0LKvvdSYHtTaf9BHV7jebPg==
+	bh=ASUcyuidWbDClu3x8HSX2PVgWwneiw/9KsPMZPtiGF0=;
+	b=RWMkklXB6X3mFMmW3SVtR1hIqA8Lo5wiSCT/u91gQTSikVTecMpzae/Yv0X2uZF6mC2ZeI
+	0tSztRHjYiMnY4b9gpVIMxQnjqH6o3Bw0f1X3OlYMVu3Wr8RKxZZBbXGX/vYPwrsl6gov+
+	ycZxVX9L2SaIgbwuIprpQm3hor+9qT92dLKbZFqVCNhtUwlR6ErmGZmhlhQdtiajww0Mjh
+	u0FMSZ7KdBo6Hcbr9PrePm/gl2cT1DVN56z0deVqSM8s36FIRMg4oXDGtX9YCrucPk/rV1
+	anjgpTJg2Q4tXCj4FW+PJorH1fyaLDVhWKopv9HLO+qTI9qNyV1Mxyf7TW3yug==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741006245;
+	s=2020e; t=1741100292;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NEmE9ahNwEwwTzjxMNYxU2gdgR31Xbk7JVVOcGVbkMM=;
-	b=1uMmePvwDQ7NbIGtTEOTYZUjqeVJU390qeiZfKMUxJ0Ciy0pCFBn5xzuzfMcNhNJVVnbaZ
-	1YqhGLggyeUoYoAw==
-From: "tip-bot2 for David Hildenbrand" <tip-bot2@linutronix.de>
+	bh=ASUcyuidWbDClu3x8HSX2PVgWwneiw/9KsPMZPtiGF0=;
+	b=IC2GtJeSOq8EbPkETa1Buh2naSvuGFMy712XaynGzjVtSAy9RbawFMaP12NCQSn9B3p4pl
+	itKug4KHozbK86Ag==
+From: "tip-bot2 for Bartosz Golaszewski" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/pat: Fix VM_PAT handling when fork() fails in
- copy_page_range()
-Cc: xingwei lee <xrivendell7@gmail.com>, yuxin wang <wang1315768607@163.com>,
- Marius Fleischer <fleischermarius@gmail.com>,
- David Hildenbrand <david@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Rik van Riel <riel@surriel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Peter Xu <peterx@redhat.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241029210331.1339581-1-david@redhat.com>
-References: <20241029210331.1339581-1-david@redhat.com>
-Precedence: bulk
+Subject: [tip: irq/drivers] irqchip/davinci-cp-intc: Remove public header
+Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250304131815.86549-1-brgl@bgdev.pl>
+References: <20250304131815.86549-1-brgl@bgdev.pl>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174100624258.10177.4534865061014070904.tip-bot2@tip-bot2>
+Message-ID: <174110028955.14745.12031563162378541025.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ITU-Libra-ESVA-Information: Please contact Istanbul Teknik Universitesi for more information
-X-ITU-Libra-ESVA-ID: 4Z6f5g48J7zFyFk
-X-ITU-Libra-ESVA: No virus found
-X-ITU-Libra-ESVA-From: root@cc.itu.edu.tr
-X-ITU-Libra-ESVA-Watermark: 1741705300.27943@IecmNKhJtSwxw1z6/klNgw
-X-ITU-MailScanner-SpamCheck: not spam
 
-The following commit has been merged into the x86/mm branch of tip:
+The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     4e1c520c95849e16f8dfbcacbfd37be5330447b9
-Gitweb:        https://git.kernel.org/tip/4e1c520c95849e16f8dfbcacbfd37be5330447b9
-Author:        David Hildenbrand <david@redhat.com>
-AuthorDate:    Tue, 29 Oct 2024 22:03:31 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 03 Mar 2025 13:39:14 +01:00
+Commit-ID:     71cbbb7149e3de8c39dfe8a97eaa7f1cbcbff52f
+Gitweb:        https://git.kernel.org/tip/71cbbb7149e3de8c39dfe8a97eaa7f1cbcbff52f
+Author:        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+AuthorDate:    Tue, 04 Mar 2025 14:18:14 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 04 Mar 2025 15:46:59 +01:00
 
-x86/mm/pat: Fix VM_PAT handling when fork() fails in copy_page_range()
+irqchip/davinci-cp-intc: Remove public header
 
-If track_pfn_copy() fails, we already added the dst VMA to the maple
-tree. As fork() fails, we'll cleanup the maple tree, and stumble over
-the dst VMA for which we neither performed any reservation nor copied
-any page tables.
+There are no more users of irq-davinci-cp-intc.h (da830.c doesn't use
+any of its symbols). Remove the header and make the driver stop using the
+config structure.
 
-Consequently untrack_pfn() will see VM_PAT and try obtaining the
-PAT information from the page table -- which fails because the page
-table was not copied.
+[ tglx: Mop up coding style ]
 
-The easiest fix would be to simply clear the VM_PAT flag of the dst VMA
-if track_pfn_copy() fails. However, the whole thing is about "simply"
-clearing the VM_PAT flag is shaky as well: if we passed track_pfn_copy()
-and performed a reservation, but copying the page tables fails, we'll
-simply clear the VM_PAT flag, not properly undoing the reservation ...
-which is also wrong.
-
-So let's fix it properly: set the VM_PAT flag only if the reservation
-succeeded (leaving it clear initially), and undo the reservation if
-anything goes wrong while copying the page tables: clearing the VM_PAT
-flag after undoing the reservation.
-
-Note that any copied page table entries will get zapped when the VMA will
-get removed later, after copy_page_range() succeeded; as VM_PAT is not set
-then, we won't try cleaning VM_PAT up once more and untrack_pfn() will be
-happy. Note that leaving these page tables in place without a reservation
-is not a problem, as we are aborting fork(); this process will never run.
-
-A reproducer can trigger this usually at the first try:
-
-  https://gitlab.com/davidhildenbrand/scratchspace/-/raw/main/reproducers/pat_fork.c
-
-  [   45.239440] WARNING: CPU: 26 PID: 11650 at arch/x86/mm/pat/memtype.c:983 get_pat_info+0xf6/0x110
-  [   45.241082] Modules linked in: ...
-  [   45.249119] CPU: 26 UID: 0 PID: 11650 Comm: repro3 Not tainted 6.12.0-rc5+ #92
-  [   45.250598] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-  [   45.252181] RIP: 0010:get_pat_info+0xf6/0x110
-  ...
-  [   45.268513] Call Trace:
-  [   45.269003]  <TASK>
-  [   45.269425]  ? __warn.cold+0xb7/0x14d
-  [   45.270131]  ? get_pat_info+0xf6/0x110
-  [   45.270846]  ? report_bug+0xff/0x140
-  [   45.271519]  ? handle_bug+0x58/0x90
-  [   45.272192]  ? exc_invalid_op+0x17/0x70
-  [   45.272935]  ? asm_exc_invalid_op+0x1a/0x20
-  [   45.273717]  ? get_pat_info+0xf6/0x110
-  [   45.274438]  ? get_pat_info+0x71/0x110
-  [   45.275165]  untrack_pfn+0x52/0x110
-  [   45.275835]  unmap_single_vma+0xa6/0xe0
-  [   45.276549]  unmap_vmas+0x105/0x1f0
-  [   45.277256]  exit_mmap+0xf6/0x460
-  [   45.277913]  __mmput+0x4b/0x120
-  [   45.278512]  copy_process+0x1bf6/0x2aa0
-  [   45.279264]  kernel_clone+0xab/0x440
-  [   45.279959]  __do_sys_clone+0x66/0x90
-  [   45.280650]  do_syscall_64+0x95/0x180
-
-Likely this case was missed in:
-
-  d155df53f310 ("x86/mm/pat: clear VM_PAT if copy_p4d_range failed")
-
-... and instead of undoing the reservation we simply cleared the VM_PAT flag.
-
-Keep the documentation of these functions in include/linux/pgtable.h,
-one place is more than sufficient -- we should clean that up for the other
-functions like track_pfn_remap/untrack_pfn separately.
-
-Fixes: d155df53f310 ("x86/mm/pat: clear VM_PAT if copy_p4d_range failed")
-Fixes: 2ab640379a0a ("x86: PAT: hooks in generic vm code to help archs to track pfnmap regions - v3")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yuxin wang <wang1315768607@163.com>
-Reported-by: Marius Fleischer <fleischermarius@gmail.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20241029210331.1339581-1-david@redhat.com
-Closes: https://lore.kernel.org/lkml/CAJg=8jwijTP5fre8woS4JVJQ8iUA6v+iNcsOgtj9Zfpc3obDOQ@mail.gmail.com/
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250304131815.86549-1-brgl@bgdev.pl
 ---
- arch/x86/mm/pat/memtype.c | 66 ++++++++++++++++++++++++--------------
- include/linux/pgtable.h   | 27 ++++++++++++----
- kernel/fork.c             |  4 ++-
- mm/memory.c               |  9 +----
- 4 files changed, 70 insertions(+), 36 deletions(-)
+ arch/arm/mach-davinci/da830.c               |  1 +-
+ drivers/irqchip/irq-davinci-cp-intc.c       | 57 +++++++-------------
+ include/linux/irqchip/irq-davinci-cp-intc.h | 25 +---------
+ 3 files changed, 21 insertions(+), 62 deletions(-)
+ delete mode 100644 include/linux/irqchip/irq-davinci-cp-intc.h
 
-diff --git a/arch/x86/mm/pat/memtype.c b/arch/x86/mm/pat/memtype.c
-index feb8cc6..3a9e6dd 100644
---- a/arch/x86/mm/pat/memtype.c
-+++ b/arch/x86/mm/pat/memtype.c
-@@ -984,27 +984,54 @@ static int get_pat_info(struct vm_area_struct *vma, resource_size_t *paddr,
- 	return -EINVAL;
- }
+diff --git a/arch/arm/mach-davinci/da830.c b/arch/arm/mach-davinci/da830.c
+index 2e49774..a044ea5 100644
+--- a/arch/arm/mach-davinci/da830.c
++++ b/arch/arm/mach-davinci/da830.c
+@@ -11,7 +11,6 @@
+ #include <linux/gpio.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+-#include <linux/irqchip/irq-davinci-cp-intc.h>
  
--/*
-- * track_pfn_copy is called when vma that is covering the pfnmap gets
-- * copied through copy_page_range().
-- *
-- * If the vma has a linear pfn mapping for the entire range, we get the prot
-- * from pte and reserve the entire vma range with single reserve_pfn_range call.
-- */
--int track_pfn_copy(struct vm_area_struct *vma)
-+int track_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma)
+ #include <clocksource/timer-davinci.h>
+ 
+diff --git a/drivers/irqchip/irq-davinci-cp-intc.c b/drivers/irqchip/irq-davinci-cp-intc.c
+index f4f8e9f..d7948c5 100644
+--- a/drivers/irqchip/irq-davinci-cp-intc.c
++++ b/drivers/irqchip/irq-davinci-cp-intc.c
+@@ -11,7 +11,6 @@
+ #include <linux/init.h>
+ #include <linux/irq.h>
+ #include <linux/irqchip.h>
+-#include <linux/irqchip/irq-davinci-cp-intc.h>
+ #include <linux/irqdomain.h>
+ #include <linux/io.h>
+ #include <linux/of.h>
+@@ -154,24 +153,20 @@ static const struct irq_domain_ops davinci_cp_intc_irq_domain_ops = {
+ 	.xlate = irq_domain_xlate_onetwocell,
+ };
+ 
+-static int __init
+-davinci_cp_intc_do_init(const struct davinci_cp_intc_config *config,
+-			struct device_node *node)
++static int __init davinci_cp_intc_do_init(struct resource *res, unsigned int num_irqs,
++					  struct device_node *node)
  {
-+	const unsigned long vma_size = src_vma->vm_end - src_vma->vm_start;
- 	resource_size_t paddr;
--	unsigned long vma_size = vma->vm_end - vma->vm_start;
- 	pgprot_t pgprot;
-+	int rc;
+-	unsigned int num_regs = BITS_TO_LONGS(config->num_irqs);
++	unsigned int num_regs = BITS_TO_LONGS(num_irqs);
+ 	int offset, irq_base;
+ 	void __iomem *req;
  
--	if (vma->vm_flags & VM_PAT) {
--		if (get_pat_info(vma, &paddr, &pgprot))
--			return -EINVAL;
--		/* reserve the whole chunk covered by vma. */
--		return reserve_pfn_range(paddr, vma_size, &pgprot, 1);
-+	if (!(src_vma->vm_flags & VM_PAT))
-+		return 0;
-+
-+	/*
-+	 * Duplicate the PAT information for the dst VMA based on the src
-+	 * VMA.
-+	 */
-+	if (get_pat_info(src_vma, &paddr, &pgprot))
-+		return -EINVAL;
-+	rc = reserve_pfn_range(paddr, vma_size, &pgprot, 1);
-+	if (!rc)
-+		/* Reservation for the destination VMA succeeded. */
-+		vm_flags_set(dst_vma, VM_PAT);
-+	return rc;
-+}
-+
-+void untrack_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma)
-+{
-+	resource_size_t paddr;
-+	unsigned long size;
-+
-+	if (!(dst_vma->vm_flags & VM_PAT))
-+		return;
-+
-+	/*
-+	 * As the page tables might not have been copied yet, the PAT
-+	 * information is obtained from the src VMA, just like during
-+	 * track_pfn_copy().
-+	 */
-+	if (get_pat_info(src_vma, &paddr, NULL)) {
-+		size = src_vma->vm_end - src_vma->vm_start;
-+		free_pfn_range(paddr, size);
+-	req = request_mem_region(config->reg.start,
+-				 resource_size(&config->reg),
+-				 "davinci-cp-intc");
++	req = request_mem_region(res->start, resource_size(res), "davinci-cp-intc");
+ 	if (!req) {
+ 		pr_err("%s: register range busy\n", __func__);
+ 		return -EBUSY;
  	}
  
--	return 0;
-+	/*
-+	 * Reservation was freed, any copied page tables will get cleaned
-+	 * up later, but without getting PAT involved again.
-+	 */
-+	vm_flags_clear(dst_vma, VM_PAT);
- }
+-	davinci_cp_intc_base = ioremap(config->reg.start,
+-				       resource_size(&config->reg));
++	davinci_cp_intc_base = ioremap(res->start, resource_size(res));
+ 	if (!davinci_cp_intc_base) {
+ 		pr_err("%s: unable to ioremap register range\n", __func__);
+ 		return -EINVAL;
+@@ -184,8 +179,7 @@ davinci_cp_intc_do_init(const struct davinci_cp_intc_config *config,
  
- /*
-@@ -1095,15 +1122,6 @@ void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
+ 	/* Disable system interrupts */
+ 	for (offset = 0; offset < num_regs; offset++)
+-		davinci_cp_intc_write(~0,
+-			DAVINCI_CP_INTC_SYS_ENABLE_CLR(offset));
++		davinci_cp_intc_write(~0, DAVINCI_CP_INTC_SYS_ENABLE_CLR(offset));
+ 
+ 	/* Set to normal mode, no nesting, no priority hold */
+ 	davinci_cp_intc_write(0, DAVINCI_CP_INTC_CTRL);
+@@ -193,28 +187,25 @@ davinci_cp_intc_do_init(const struct davinci_cp_intc_config *config,
+ 
+ 	/* Clear system interrupt status */
+ 	for (offset = 0; offset < num_regs; offset++)
+-		davinci_cp_intc_write(~0,
+-			DAVINCI_CP_INTC_SYS_STAT_CLR(offset));
++		davinci_cp_intc_write(~0, DAVINCI_CP_INTC_SYS_STAT_CLR(offset));
+ 
+ 	/* Enable nIRQ (what about nFIQ?) */
+ 	davinci_cp_intc_write(1, DAVINCI_CP_INTC_HOST_ENABLE_IDX_SET);
+ 
++	/* 4 channels per register */
++	num_regs = (num_irqs + 3) >> 2;
+ 	/* Default all priorities to channel 7. */
+-	num_regs = (config->num_irqs + 3) >> 2;	/* 4 channels per register */
+ 	for (offset = 0; offset < num_regs; offset++)
+-		davinci_cp_intc_write(0x07070707,
+-			DAVINCI_CP_INTC_CHAN_MAP(offset));
++		davinci_cp_intc_write(0x07070707, DAVINCI_CP_INTC_CHAN_MAP(offset));
+ 
+-	irq_base = irq_alloc_descs(-1, 0, config->num_irqs, 0);
++	irq_base = irq_alloc_descs(-1, 0, num_irqs, 0);
+ 	if (irq_base < 0) {
+-		pr_err("%s: unable to allocate interrupt descriptors: %d\n",
+-		       __func__, irq_base);
++		pr_err("%s: unable to allocate interrupt descriptors: %d\n", __func__, irq_base);
+ 		return irq_base;
  	}
- }
  
--/*
-- * untrack_pfn_clear is called if the following situation fits:
-- *
-- * 1) while mremapping a pfnmap for a new region,  with the old vma after
-- * its pfnmap page table has been removed.  The new vma has a new pfnmap
-- * to the same pfn & cache type with VM_PAT set.
-- * 2) while duplicating vm area, the new vma fails to copy the pgtable from
-- * old vma.
-- */
- void untrack_pfn_clear(struct vm_area_struct *vma)
- {
- 	vm_flags_clear(vma, VM_PAT);
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 94d267d..acf387d 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1508,15 +1508,25 @@ static inline void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
- }
+-	davinci_cp_intc_irq_domain = irq_domain_add_legacy(
+-					node, config->num_irqs, irq_base, 0,
+-					&davinci_cp_intc_irq_domain_ops, NULL);
++	davinci_cp_intc_irq_domain = irq_domain_add_legacy(node, num_irqs, irq_base, 0,
++							   &davinci_cp_intc_irq_domain_ops, NULL);
  
- /*
-- * track_pfn_copy is called when vma that is covering the pfnmap gets
-- * copied through copy_page_range().
-+ * track_pfn_copy is called when a VM_PFNMAP VMA is about to get the page
-+ * tables copied during copy_page_range().
-  */
--static inline int track_pfn_copy(struct vm_area_struct *vma)
-+static inline int track_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma)
- {
+ 	if (!davinci_cp_intc_irq_domain) {
+ 		pr_err("%s: unable to create an interrupt domain\n", __func__);
+@@ -229,31 +220,25 @@ davinci_cp_intc_do_init(const struct davinci_cp_intc_config *config,
  	return 0;
  }
  
- /*
-+ * untrack_pfn_copy is called when a VM_PFNMAP VMA failed to copy during
-+ * copy_page_range(), but after track_pfn_copy() was already called.
-+ */
-+static inline void untrack_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma)
-+{
-+}
-+
-+/*
-  * untrack_pfn is called while unmapping a pfnmap for a region.
-  * untrack can be called for a specific region indicated by pfn and size or
-  * can be for the entire vma (in which case pfn, size are zero).
-@@ -1528,8 +1538,10 @@ static inline void untrack_pfn(struct vm_area_struct *vma,
- }
- 
- /*
-- * untrack_pfn_clear is called while mremapping a pfnmap for a new region
-- * or fails to copy pgtable during duplicate vm area.
-+ * untrack_pfn_clear is called in the following cases on a VM_PFNMAP VMA:
-+ *
-+ * 1) During mremap() on the src VMA after the page tables were moved.
-+ * 2) During fork() on the dst VMA, immediately after duplicating the src VMA.
-  */
- static inline void untrack_pfn_clear(struct vm_area_struct *vma)
+-int __init davinci_cp_intc_init(const struct davinci_cp_intc_config *config)
+-{
+-	return davinci_cp_intc_do_init(config, NULL);
+-}
+-
+ static int __init davinci_cp_intc_of_init(struct device_node *node,
+ 					  struct device_node *parent)
  {
-@@ -1540,7 +1552,10 @@ extern int track_pfn_remap(struct vm_area_struct *vma, pgprot_t *prot,
- 			   unsigned long size);
- extern void track_pfn_insert(struct vm_area_struct *vma, pgprot_t *prot,
- 			     pfn_t pfn);
--extern int track_pfn_copy(struct vm_area_struct *vma);
-+extern int track_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma);
-+extern void untrack_pfn_copy(struct vm_area_struct *dst_vma,
-+		struct vm_area_struct *src_vma);
- extern void untrack_pfn(struct vm_area_struct *vma, unsigned long pfn,
- 			unsigned long size, bool mm_wr_locked);
- extern void untrack_pfn_clear(struct vm_area_struct *vma);
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 735405a..ca2ca38 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -504,6 +504,10 @@ struct vm_area_struct *vm_area_dup(struct vm_area_struct *orig)
- 	vma_numab_state_init(new);
- 	dup_anon_vma_name(orig, new);
+-	struct davinci_cp_intc_config config = { };
++	unsigned int num_irqs;
++	struct resource res;
+ 	int ret;
  
-+	/* track_pfn_copy() will later take care of copying internal state. */
-+	if (unlikely(new->vm_flags & VM_PFNMAP))
-+		untrack_pfn_clear(new);
-+
- 	return new;
- }
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 539c0f7..890333c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1379,11 +1379,7 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 		return copy_hugetlb_page_range(dst_mm, src_mm, dst_vma, src_vma);
- 
- 	if (unlikely(src_vma->vm_flags & VM_PFNMAP)) {
--		/*
--		 * We do not free on error cases below as remove_vma
--		 * gets called on error from higher level routine
--		 */
--		ret = track_pfn_copy(src_vma);
-+		ret = track_pfn_copy(dst_vma, src_vma);
- 		if (ret)
- 			return ret;
+-	ret = of_address_to_resource(node, 0, &config.reg);
++	ret = of_address_to_resource(node, 0, &res);
+ 	if (ret) {
+-		pr_err("%s: unable to get the register range from device-tree\n",
+-		       __func__);
++		pr_err("%s: unable to get the register range from device-tree\n", __func__);
+ 		return ret;
  	}
-@@ -1420,7 +1416,6 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 			continue;
- 		if (unlikely(copy_p4d_range(dst_vma, src_vma, dst_pgd, src_pgd,
- 					    addr, next))) {
--			untrack_pfn_clear(dst_vma);
- 			ret = -ENOMEM;
- 			break;
- 		}
-@@ -1430,6 +1425,8 @@ copy_page_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
- 		raw_write_seqcount_end(&src_mm->write_protect_seq);
- 		mmu_notifier_invalidate_range_end(&range);
- 	}
-+	if (ret && unlikely(src_vma->vm_flags & VM_PFNMAP))
-+		untrack_pfn_copy(dst_vma, src_vma);
- 	return ret;
- }
  
-
+-	ret = of_property_read_u32(node, "ti,intc-size", &config.num_irqs);
++	ret = of_property_read_u32(node, "ti,intc-size", &num_irqs);
+ 	if (ret) {
+-		pr_err("%s: unable to read the 'ti,intc-size' property\n",
+-		       __func__);
++		pr_err("%s: unable to read the 'ti,intc-size' property\n", __func__);
+ 		return ret;
+ 	}
+ 
+-	return davinci_cp_intc_do_init(&config, node);
++	return davinci_cp_intc_do_init(&res, num_irqs, node);
+ }
+ IRQCHIP_DECLARE(cp_intc, "ti,cp-intc", davinci_cp_intc_of_init);
+diff --git a/include/linux/irqchip/irq-davinci-cp-intc.h b/include/linux/irqchip/irq-davinci-cp-intc.h
+deleted file mode 100644
+index 8d71ed5..0000000
+--- a/include/linux/irqchip/irq-davinci-cp-intc.h
++++ /dev/null
+@@ -1,25 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * Copyright (C) 2019 Texas Instruments
+- */
+-
+-#ifndef _LINUX_IRQ_DAVINCI_CP_INTC_
+-#define _LINUX_IRQ_DAVINCI_CP_INTC_
+-
+-#include <linux/ioport.h>
+-
+-/**
+- * struct davinci_cp_intc_config - configuration data for davinci-cp-intc
+- *                                 driver.
+- *
+- * @reg: register range to map
+- * @num_irqs: number of HW interrupts supported by the controller
+- */
+-struct davinci_cp_intc_config {
+-	struct resource reg;
+-	unsigned int num_irqs;
+-};
+-
+-int davinci_cp_intc_init(const struct davinci_cp_intc_config *config);
+-
+-#endif /* _LINUX_IRQ_DAVINCI_CP_INTC_ */
 
