@@ -1,173 +1,189 @@
-Return-Path: <linux-tip-commits+bounces-3990-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3991-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4453A4EDBB
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 20:45:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC552A4EDC3
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 20:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02D473AAD89
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 19:45:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE22D1893B29
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 19:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956D927BF92;
-	Tue,  4 Mar 2025 19:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4E6209F59;
+	Tue,  4 Mar 2025 19:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QyvpApyq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Hw4d06Bi"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rX4/M4PL"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6A5278146;
-	Tue,  4 Mar 2025 19:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718381F5826;
+	Tue,  4 Mar 2025 19:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741117442; cv=none; b=qxb0WHyW02P3q5A5hcU4dBwdHpWh15oESFfeG/H6h99c8VG1hzwravrPVb0Cry6797SVVjpwAWRMdwNR/qyQVXS6UWvtzKOnT+sOEifcEkbwSiHuaK1jRcwMdHpil/PZjQq1jXOc1msFNlPYdDCNA8VOPDFMbMT8TNM5+bILVEg=
+	t=1741117672; cv=none; b=KiBH0yutWQdsiwASoe01Qxtv9aidfj5Xuh8qaz3Ur66i4L6U0Ab40nbrueh/7yj2Io/pyRoeiAtXjNWIIDzCC9UfmgrbSeHrjixkT3rNbJFdBz62MQI/MnMiEQl7CREIX8Twjtw8YFyFw09A5V4CJ5XZzjgE5uIDBFYrPBHJraM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741117442; c=relaxed/simple;
-	bh=TCuFq6rnKiqA8FZI/m1q4J5jdHgSjKcMB5/PWjRIZK8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lXasHqC1cUKRqrohncbpn0KnewoA6NHT/pY/pmFy6PWOSEMK3Sax3RqFmDlQt4G9ARePSzW4JbVZM+IoQu3FBB4MYUY1UlC0JpaBnAAGp9jbW/IzHQT0Bmk3XyJUv+Hw6xLoVTaL1p9PMDTM/GYRc3Xt2G9yU/e/88Qmmsk++cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QyvpApyq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Hw4d06Bi; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 04 Mar 2025 19:43:58 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741117438;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MBuByQx1rs3aL7EfvA1FX4xLhJHpjef2EMWCqlyZ4MU=;
-	b=QyvpApyqftEs1yysYpgHlN3frWGEQrK6Wqxad/1NVfum38l9UMVk3W/snLwDux8x/fWjW4
-	iXXcpyHnSck7Rs5+SrqBWmXgKNdB9vIjo3sZQxyVAQ6iOwfVLISnOO+SDdLA4CnNCTzhIf
-	aEHRiQWGXbv13RgqG4ktgSM+CLEnNvBHwBe8qaepgev9nvvtFQZMnTQDfNP9pN4rE007+A
-	Dl0s3nRO/xVLngV0Y/GIwEjdK/2aZcXBP2KV5sYZ+gPxPO0laA4PELmikcw6PgFJYUznLl
-	7yY9Gnm0ObRk+nUjDdffBbLGQyuTKvKYaQLNOHwR5PYQ/IFkwqAUaUMHPbgsUg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741117438;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MBuByQx1rs3aL7EfvA1FX4xLhJHpjef2EMWCqlyZ4MU=;
-	b=Hw4d06Bi00vMpvhn74N7bsl1g9DnwBiaozpYXxRagLn7kYAADP+XDMPuj8DFESzm7aUXIU
-	G5TjV/aHE7HOSmBg==
-From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] percpu: Introduce percpu hot section
-Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Uros Bizjak <ubizjak@gmail.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250303165246.2175811-2-brgerst@gmail.com>
-References: <20250303165246.2175811-2-brgerst@gmail.com>
+	s=arc-20240116; t=1741117672; c=relaxed/simple;
+	bh=4St5DqIAbiz/P2oYmOp5lACJ6oS8rj1SZXkIPTZqsTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=No1q6Ce6lfzyE30pMbqxZknbjSk5P0b6bbTF15+tSBnt0DhHV1wis2gs7/dWz3QpnxrMlNhlJATgAAB6DuuUMc1N0cfYYc8KuIR9/n9WiblMAwWPXqQLPVeRcj5aJrVb08sJi9BU6ZLcuVnTcL3Pl2/yNC7Rf+VcmU3ZxbkdHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rX4/M4PL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90491C4CEE8;
+	Tue,  4 Mar 2025 19:47:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741117671;
+	bh=4St5DqIAbiz/P2oYmOp5lACJ6oS8rj1SZXkIPTZqsTM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rX4/M4PL+nyGTgrc5a7JjX7rR4tK/+4HRh9ZkLq4+isfw2rYU5LTKBekHIjpwchcw
+	 a2SjLWIPjkbuMaTqhpJ6OqsfMp+0u5sc08EXmRgNqUJoOIyaUUzIU8xQtBGeEqont0
+	 F6TjCVdynWVuplvcvfTYRrVqcqHRpXFSlLnxHT84Fd6hzxlF6gzr14og6WCmfpodRW
+	 DGrx//zZf6whqL7zSbOOYMT3TYP00JJiRUOHtCAkrws2B2nVvJSPcuHXW9bXHsB8ZU
+	 RcHkzqzPTdsyeReWtP6/LIKDwedOC+Jsgygg8MMusk0+JOFuvB5E+i+9X8v50r8W1D
+	 dnennUuq8OZ0g==
+Date: Tue, 4 Mar 2025 11:47:49 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org
+Subject: Re: [tip: x86/asm] x86/asm: Make ASM_CALL_CONSTRAINT conditional on
+ frame pointers
+Message-ID: <20250304194749.zw6jdfmrctfgxfxk@jpoimboe>
+References: <174099976188.10177.7153571701278544000.tip-bot2@tip-bot2>
+ <CAHk-=wjSwqJhvzAT-=AY88+7QmN=U0A121cGr286ZpuNdC+yaw@mail.gmail.com>
+ <Z8a66_DbMbP-V5mi@gmail.com>
+ <CAHk-=wjRsMfndBGLZzkq7DOU7JOVZLsUaXnfjFvOcEw_Kd6h5g@mail.gmail.com>
+ <CAHk-=wjc8jnsOkLq1YfmM0eQqceyTunLEcfpXcm1EBhCDaLLgg@mail.gmail.com>
+ <20250304182132.fcn62i4ry5ndli7l@jpoimboe>
+ <CAHk-=wjgGD1p2bOCOeTjikNKmyDJ9zH8Fxiv5A+ts3JYacD3fA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174111743821.14745.6882309467873511423.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjgGD1p2bOCOeTjikNKmyDJ9zH8Fxiv5A+ts3JYacD3fA@mail.gmail.com>
 
-The following commit has been merged into the x86/core branch of tip:
+On Tue, Mar 04, 2025 at 08:48:29AM -1000, Linus Torvalds wrote:
+> In your own words from 8 years go in commit f5caf621ee35 ("x86/asm:
+> Fix inline asm call constraints for Clang"), just having the register
+> variable makes the problem go away:
+> 
+>     With GCC 7.2, however, GCC's behavior has changed.  It now changes its
+>     behavior based on the conversion of the register variable to a global.
+>     That somehow convinces it to *always* set up the frame pointer before
+>     inserting *any* inline asm.  (Therefore, listing the variable as an
+>     output constraint is a no-op and is no longer necessary.)
+> 
+> and the whole ASM_CALL_CONSTRAINT thing is just unnecessary.
 
-Commit-ID:     ab2bb9c084f7e3b641ceba91efc33b3adcd1846e
-Gitweb:        https://git.kernel.org/tip/ab2bb9c084f7e3b641ceba91efc33b3adcd1846e
-Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Mon, 03 Mar 2025 11:52:36 -05:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 04 Mar 2025 20:30:33 +01:00
+I don't know if that GCC 7.2 thing from eight years ago was a fluke or
+what, but without ASM_CALL_CONSTRAINT, those "call without frame pointer
+save/setup" warnings are still very much active with recent compilers.
 
-percpu: Introduce percpu hot section
+Below is what I get with empty ASM_CALL_CONSTRAINT + GCC 14 + defconfig
++ CONFIG_UNWINDER_FRAME_POINTER.
 
-Add a subsection to the percpu data for frequently accessed variables
-that should remain cached on each processor.  These varables should not
-be accessed from other processors to avoid cacheline bouncing.
+vmlinux.o: warning: objtool: .altinstr_replacement+0x569: call without frame pointer save/setup
+vmlinux.o: warning: objtool: cyc2ns_read_end+0x12: call without frame pointer save/setup
+vmlinux.o: warning: objtool: native_sched_clock_from_tsc+0x66: call without frame pointer save/setup
+vmlinux.o: warning: objtool: kernel_fpu_end+0x26: call without frame pointer save/setup
+vmlinux.o: warning: objtool: set_tls_desc+0x170: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid.isra.0+0x8c: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __ioremap_collect_map_flags+0xf4: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_modify_allowed+0x13a: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __virt_addr_valid+0x112: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0xd22: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0xd58: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0xd62: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0xd71: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0xd7b: call without frame pointer save/setup
+vmlinux.o: warning: objtool: migrate_disable+0x57: call without frame pointer save/setup
+vmlinux.o: warning: objtool: down_read_trylock+0x55: call without frame pointer save/setup
+vmlinux.o: warning: objtool: down_write_trylock+0x38: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0xbb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: class_preempt_notrace_destructor.isra.0+0x13: call without frame pointer save/setup
+vmlinux.o: warning: objtool: rcu_is_watching+0x2d: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __is_module_percpu_address+0xc4: call without frame pointer save/setup
+vmlinux.o: warning: objtool: get_compat_sigevent+0x41: call without frame pointer save/setup
+vmlinux.o: warning: objtool: kprobe_busy_end+0x1e: call without frame pointer save/setup
+vmlinux.o: warning: objtool: ring_buffer_discard_commit+0x22a: call without frame pointer save/setup
+vmlinux.o: warning: objtool: ring_buffer_nest_end+0x27: call without frame pointer save/setup
+vmlinux.o: warning: objtool: saved_cmdlines_stop+0x19: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x124c: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0xbb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0xbb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0xbb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __pageblock_pfn_to_page+0x1cb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x1722: call without frame pointer save/setup
+vmlinux.o: warning: objtool: fput+0xe6: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __fput_sync+0x57: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __getname_maybe_null+0x7: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __d_rehash+0x7c: call without frame pointer save/setup
+vmlinux.o: warning: objtool: ___d_drop+0x84: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __d_lookup_unhash+0xde: call without frame pointer save/setup
+vmlinux.o: warning: objtool: get_next_ino+0x3f: call without frame pointer save/setup
+vmlinux.o: warning: objtool: mnt_get_write_access+0x68: call without frame pointer save/setup
+vmlinux.o: warning: objtool: mnt_put_write_access+0x21: call without frame pointer save/setup
+vmlinux.o: warning: objtool: mnt_put_write_access_file+0x2b: call without frame pointer save/setup
+vmlinux.o: warning: objtool: mb_cache_entry_get+0x9d: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0xbb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0xbb: call without frame pointer save/setup
+vmlinux.o: warning: objtool: jbd2_journal_grab_journal_head+0x5c: call without frame pointer save/setup
+vmlinux.o: warning: objtool: class_preempt_notrace_destructor.isra.0+0x13: call without frame pointer save/setup
+vmlinux.o: warning: objtool: autofs_expire_multi+0xf: call without frame pointer save/setup
+vmlinux.o: warning: objtool: ksys_msgsnd+0xa: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __x64_sys_msgsnd+0x16: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __ia32_sys_msgsnd+0x15: call without frame pointer save/setup
+vmlinux.o: warning: objtool: compat_ksys_msgsnd+0xf: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __ia32_compat_sys_msgsnd+0x16: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __x64_sys_lsm_list_modules+0x21: call without frame pointer save/setup
+vmlinux.o: warning: objtool: __ia32_sys_lsm_list_modules+0x20: call without frame pointer save/setup
+vmlinux.o: warning: objtool: blk_account_io_merge_bio.part.0+0x6c: call without frame pointer save/setup
+vmlinux.o: warning: objtool: blk_account_io_completion.part.0+0x5a: call without frame pointer save/setup
+vmlinux.o: warning: objtool: iocg_commit_bio+0x30: call without frame pointer save/setup
+vmlinux.o: warning: objtool: class_preempt_notrace_destructor.isra.0+0x13: call without frame pointer save/setup
+vmlinux.o: warning: objtool: sg_miter_stop+0x6d: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x1c6b: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x1c82: call without frame pointer save/setup
+vmlinux.o: warning: objtool: write_port+0x6f: call without frame pointer save/setup
+vmlinux.o: warning: objtool: drm_clflush_page+0x67: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x1fae: call without frame pointer save/setup
+vmlinux.o: warning: objtool: check_relocations+0x62: call without frame pointer save/setup
+vmlinux.o: warning: objtool: scsi_kunmap_atomic_sg+0x21: call without frame pointer save/setup
+vmlinux.o: warning: objtool: serport_ldisc_compat_ioctl+0xe: call without frame pointer save/setup
+vmlinux.o: warning: objtool: serport_ldisc_ioctl+0xf: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x2286: call without frame pointer save/setup
+vmlinux.o: warning: objtool: cpuidle_use_deepest_state+0x2a: call without frame pointer save/setup
+vmlinux.o: warning: objtool: cpuidle_get_driver+0x20: call without frame pointer save/setup
+vmlinux.o: warning: objtool: skb_abort_seq_read+0x28: call without frame pointer save/setup
+vmlinux.o: warning: objtool: skb_ts_finish+0x28: call without frame pointer save/setup
+vmlinux.o: warning: objtool: skb_seq_read+0x24e: call without frame pointer save/setup
+vmlinux.o: warning: objtool: xdr_terminate_string+0x55: call without frame pointer save/setup
+vmlinux.o: warning: objtool: class_preempt_notrace_destructor.isra.0+0x13: call without frame pointer save/setup
+vmlinux.o: warning: objtool: class_preempt_notrace_destructor.isra.0+0x13: call without frame pointer save/setup
+vmlinux.o: warning: objtool: find_bug+0xad: call without frame pointer save/setup
+vmlinux.o: warning: objtool: generic_bug_clear_once+0x96: call without frame pointer save/setup
+vmlinux.o: warning: objtool: delay_tsc+0x87: call without frame pointer save/setup
+vmlinux.o: warning: objtool: .altinstr_replacement+0x5f6: call without frame pointer save/setup
+vmlinux.o: warning: objtool: pfn_valid+0x81: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_spin_trylock+0x36: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_write_unlock+0x15: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_write_unlock_irq+0x16: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_write_unlock_irqrestore+0x1e: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_read_trylock+0x45: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_write_trylock+0x36: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_read_unlock+0x1b: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_read_unlock_irq+0x1c: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_read_unlock_irqrestore+0x24: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_spin_unlock+0x15: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_spin_unlock_irq+0x16: call without frame pointer save/setup
+vmlinux.o: warning: objtool: _raw_spin_unlock_irqrestore+0x1e: call without frame pointer save/setup
 
-This will replace the pcpu_hot struct on x86, and open up similar
-functionality to other architectures and the kernel core.
-
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Uros Bizjak <ubizjak@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250303165246.2175811-2-brgerst@gmail.com
----
- include/asm-generic/vmlinux.lds.h | 11 +++++++++++
- include/linux/percpu-defs.h       | 13 +++++++++++++
- 2 files changed, 24 insertions(+)
-
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index b32e453..c4e8fac 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -385,6 +385,11 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 	. = ALIGN(PAGE_SIZE);						\
- 	__nosave_end = .;
- 
-+#define CACHE_HOT_DATA(align)						\
-+	. = ALIGN(align);						\
-+	*(SORT_BY_ALIGNMENT(.data..hot.*))				\
-+	. = ALIGN(align);
-+
- #define PAGE_ALIGNED_DATA(page_align)					\
- 	. = ALIGN(page_align);						\
- 	*(.data..page_aligned)						\
-@@ -1065,6 +1070,11 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 	. = ALIGN(PAGE_SIZE);						\
- 	*(.data..percpu..page_aligned)					\
- 	. = ALIGN(cacheline);						\
-+	__per_cpu_hot_start = .;					\
-+	*(SORT_BY_ALIGNMENT(.data..percpu..hot.*))			\
-+	__per_cpu_hot_pad = .;						\
-+	. = ALIGN(cacheline);						\
-+	__per_cpu_hot_end = .;						\
- 	*(.data..percpu..read_mostly)					\
- 	. = ALIGN(cacheline);						\
- 	*(.data..percpu)						\
-@@ -1112,6 +1122,7 @@ defined(CONFIG_AUTOFDO_CLANG) || defined(CONFIG_PROPELLER_CLANG)
- 		INIT_TASK_DATA(inittask)				\
- 		NOSAVE_DATA						\
- 		PAGE_ALIGNED_DATA(pagealigned)				\
-+		CACHE_HOT_DATA(cacheline)				\
- 		CACHELINE_ALIGNED_DATA(cacheline)			\
- 		READ_MOSTLY_DATA(cacheline)				\
- 		DATA_DATA						\
-diff --git a/include/linux/percpu-defs.h b/include/linux/percpu-defs.h
-index 40d34e0..0fcacb9 100644
---- a/include/linux/percpu-defs.h
-+++ b/include/linux/percpu-defs.h
-@@ -113,6 +113,19 @@
- 	DEFINE_PER_CPU_SECTION(type, name, "")
- 
- /*
-+ * Declaration/definition used for per-CPU variables that are frequently
-+ * accessed and should be in a single cacheline.
-+ *
-+ * For use only by architecture and core code.  Only use scalar or pointer
-+ * types to maximize density.
-+ */
-+#define DECLARE_PER_CPU_CACHE_HOT(type, name)				\
-+	DECLARE_PER_CPU_SECTION(type, name, "..hot.." #name)
-+
-+#define DEFINE_PER_CPU_CACHE_HOT(type, name)				\
-+	DEFINE_PER_CPU_SECTION(type, name, "..hot.." #name)
-+
-+/*
-  * Declaration/definition used for per-CPU variables that must be cacheline
-  * aligned under SMP conditions so that, whilst a particular instance of the
-  * data corresponds to a particular CPU, inefficiencies due to direct access by
+-- 
+Josh
 
