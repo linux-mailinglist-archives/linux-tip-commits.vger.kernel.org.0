@@ -1,80 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-3906-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3907-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5942A4DA86
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 11:31:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7638A4DA8C
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 11:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CDA189B119
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 10:30:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771363B25D5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 10:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACA42046AA;
-	Tue,  4 Mar 2025 10:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398BD2046B7;
+	Tue,  4 Mar 2025 10:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o+3un1Ow";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FAbl5B3+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ELApevrY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w0vYS5Fb"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F062045AE;
-	Tue,  4 Mar 2025 10:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B2C202974;
+	Tue,  4 Mar 2025 10:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741083992; cv=none; b=NqvjWyFM8aI0Hn6lHZ4/TGuBtsHDjsM+dUk9wSwUcXpF2L6DpTsdXSj5cMyaupdut13CMV+CWay93iKZ1YUlS8fieAjtOmceAYbo/TfFShgdPGRLrJhNyT8p5S6tzfNmMZ1DN90FL5Amh748Hpelyk4mTGQVZYJqoPFctguB5BE=
+	t=1741083993; cv=none; b=P/QBz7eqayn70bAFLr30vcjMMJjkxusV1if/aRFYnA6qLQUhP5ytapYG9rIMLWJAihl9uCQjFUirnxCHX2a+bPBHwC0k7TU/sFp1WP8B4gp0oa2436x51MPg94fy7MrgaCzHlUk2HDdt8/xIT43/thNO2xbe6LWovCSeGlpJTmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741083992; c=relaxed/simple;
-	bh=6uEAJ8nD7fDYMEhw/EcoWoFmQyEslDZJFKt5CsJ8GCA=;
+	s=arc-20240116; t=1741083993; c=relaxed/simple;
+	bh=NP9PLM9c91/HpUWLW8InVHb1TkmjEZWoZ8fjVLtukRs=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tEfBGmExVhA1b2MpjfWVJDMEnqNiR9UZVgcccHkDJAmwJDW6VvjoAjLu2EnI74TNSIL+YnTDjxV2gkb3qn+ixJB1NbaghVrJaz0lKLicihxHp/cloHLhb++7/LmAXO//944lwza7fgL8rW43aYVr80O9J3WOV1hELLBkKelJ/+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o+3un1Ow; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FAbl5B3+; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=QQ43YZHJ/losvwVh4d3+0rMcEO47IsaXg8VL4HIqOwOhJzTu9hE2qTWHMAAFjWpLv736x/rwHCv8dMttKKVdIafgh7QWN8dYx9/VzKkm+WrGKJb05ZgEZdIedlLhErFgajdtUvIydBsvUt6shV6dTl+IgPyyQz2SCu5FqpOnN+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ELApevrY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w0vYS5Fb; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 04 Mar 2025 10:26:25 -0000
+Date: Tue, 04 Mar 2025 10:26:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741083988;
+	s=2020; t=1741083989;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CHHe/QlEvJCZDxnMMZ6s6iM4BrQ+XxwIJ9j9GMaOkS4=;
-	b=o+3un1OwvZ1VKbqkwYYsnfwyhaAZwGiRofXez0ZXu6/Dd5OX6tdUa7Fnv/7T9GnLqVoQ8v
-	fVuTLk2Y10EKoELMlSCVfIM+FXEfVq9bpGJiG6S9ZfJXR/YrG9tVxzT7PnTUUYeXzzOzWD
-	fpoKWe8mo0zrr2BPCZx9Ai7f3YCpE+X+RPOf198L/Px+1ZSmVov8piHKb/qfq65niI7q0K
-	p3rjCx7UXPoE/oZHlJY2FBpIXcxLLLXAwZHNFxWhv7FhjeGzk2/hbsv8gHVOE9MB4lTgIK
-	T5K2tLEdvxgijSx4pIW7gwDWEwrqKj7Tz8ux6hFg3xQt3lVbfHtWFAyN5nl5Dw==
+	bh=pArQYtOKuLD/t+TUgDC66fA77LQO/Rai5zODWIcEq1U=;
+	b=ELApevrYJxWBMTl8BQzL02y8pQ0dvonDTWuGst6Ej66E7qcfI/phuIjqK1C7ti2l992aVl
+	9fGBO0ksQzzBPVBIwg/B/CVbm9W509MEgGHfEbhshQdUJSoBfrdiBM+mUdE1dV1tPwDZ09
+	CUsjQn7kppqGcQ3ZAn2GW156kmLnLeGLXUo1zbQzmq8i2N+cVVAk//5CsfCl4g/JiWcuf8
+	s4dtWcx+VkxHEWaeao7W9UnAbNgKDkjfg8E8nzqfmGTHLAxMoGzCH8HaCuwpG8jCOUFcaV
+	o7udlautFz5PAHaEuBcNJU//cBVQtrnIK7RylOj4bz4MSsSUsW1mCYalopLypg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741083988;
+	s=2020e; t=1741083989;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CHHe/QlEvJCZDxnMMZ6s6iM4BrQ+XxwIJ9j9GMaOkS4=;
-	b=FAbl5B3+qfhNANqVrP6wcNxQ4Bx8YowQDSnwKXBG9ALdQN7OgDLpxdXkqhAPa9bQdERkpA
-	GGnJ/OjPWe9tbIAA==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+	bh=pArQYtOKuLD/t+TUgDC66fA77LQO/Rai5zODWIcEq1U=;
+	b=w0vYS5Fb1R0yp1R9h1I6LDkQs6+6S3EEWG+NO8lwNZ3+I59ewySigeJwOi1MBtVuzEPojB
+	HVsL6zZUtrUp+ADA==
+From: "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/smp: Fix mwait_play_dead() and
- acpi_processor_ffh_play_dead() noreturn behavior
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To:
- <e885c6fa9e96a61471b33e48c2162d28b15b14c5.1740962711.git.jpoimboe@kernel.org>
-References:
- <e885c6fa9e96a61471b33e48c2162d28b15b14c5.1740962711.git.jpoimboe@kernel.org>
+Subject: [tip: x86/cpu] xen: Kconfig: Drop reference to obsolete configs
+ MCORE2 and MK8
+Cc: Lukas Bulwahn <lukas.bulwahn@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ Juergen Gross <jgross@suse.com>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250303093759.371445-1-lukas.bulwahn@redhat.com>
+References: <20250303093759.371445-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174108398752.14745.6850468204610985728.tip-bot2@tip-bot2>
+Message-ID: <174108398871.14745.16916807649583411965.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,132 +81,41 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     4e32645cd8f97a308300623f81c902747df6b97b
-Gitweb:        https://git.kernel.org/tip/4e32645cd8f97a308300623f81c902747df6b97b
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Sun, 02 Mar 2025 16:48:51 -08:00
+Commit-ID:     091b768604a8df7822aade75dd5bfc5c788154ee
+Gitweb:        https://git.kernel.org/tip/091b768604a8df7822aade75dd5bfc5c788154ee
+Author:        Lukas Bulwahn <lukas.bulwahn@redhat.com>
+AuthorDate:    Mon, 03 Mar 2025 10:37:59 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 04 Mar 2025 11:14:25 +01:00
+CommitterDate: Tue, 04 Mar 2025 11:14:15 +01:00
 
-x86/smp: Fix mwait_play_dead() and acpi_processor_ffh_play_dead() noreturn behavior
+xen: Kconfig: Drop reference to obsolete configs MCORE2 and MK8
 
-Fix some related issues (done in a single patch to avoid introducing
-intermediate bisect warnings):
+Commit f388f60ca904 ("x86/cpu: Drop configuration options for early 64-bit CPUs")
+removes the config symbols MCORE2 and MK8.
 
-  1) The SMP version of mwait_play_dead() doesn't return, but its
-     !SMP counterpart does.  Make its calling behavior consistent by
-     resolving the !SMP version to a BUG().  It should never be called
-     anyway, this just enforces that at runtime and enables its callers
-     to be marked as __noreturn.
+With that, the references to those two config symbols in xen's x86 Kconfig
+are obsolete. Drop them.
 
-  2) While the SMP definition of mwait_play_dead() is annotated as
-     __noreturn, the declaration isn't.  Nor is it listed in
-     tools/objtool/noreturns.h.  Fix that.
-
-  3) Similar to #1, the SMP version of acpi_processor_ffh_play_dead()
-     doesn't return but its !SMP counterpart does.  Make the !SMP
-     version a BUG().  It should never be called.
-
-  4) acpi_processor_ffh_play_dead() doesn't return, but is lacking any
-     __noreturn annotations.  Fix that.
-
-This fixes the following objtool warnings:
-
-  vmlinux.o: warning: objtool: acpi_processor_ffh_play_dead+0x67: mwait_play_dead() is missing a __noreturn annotation
-  vmlinux.o: warning: objtool: acpi_idle_play_dead+0x3c: acpi_processor_ffh_play_dead() is missing a __noreturn annotation
-
-Fixes: a7dd183f0b38 ("x86/smp: Allow calling mwait_play_dead with an arbitrary hint")
-Fixes: 541ddf31e300 ("ACPI/processor_idle: Add FFH state handling")
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Fixes: f388f60ca904 ("x86/cpu: Drop configuration options for early 64-bit CPUs")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/r/e885c6fa9e96a61471b33e48c2162d28b15b14c5.1740962711.git.jpoimboe@kernel.org
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20250303093759.371445-1-lukas.bulwahn@redhat.com
 ---
- arch/x86/include/asm/smp.h    | 4 ++--
- arch/x86/kernel/acpi/cstate.c | 2 +-
- include/acpi/processor.h      | 6 +++---
- tools/objtool/noreturns.h     | 2 ++
- 4 files changed, 8 insertions(+), 6 deletions(-)
+ arch/x86/xen/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
-index 80f8bfd..1d3b11e 100644
---- a/arch/x86/include/asm/smp.h
-+++ b/arch/x86/include/asm/smp.h
-@@ -114,7 +114,7 @@ void wbinvd_on_cpu(int cpu);
- int wbinvd_on_all_cpus(void);
- 
- void smp_kick_mwait_play_dead(void);
--void mwait_play_dead(unsigned int eax_hint);
-+void __noreturn mwait_play_dead(unsigned int eax_hint);
- 
- void native_smp_send_reschedule(int cpu);
- void native_send_call_func_ipi(const struct cpumask *mask);
-@@ -166,7 +166,7 @@ static inline struct cpumask *cpu_llc_shared_mask(int cpu)
- 	return (struct cpumask *)cpumask_of(0);
- }
- 
--static inline void mwait_play_dead(unsigned int eax_hint) { }
-+static inline void __noreturn mwait_play_dead(unsigned int eax_hint) { BUG(); }
- #endif /* CONFIG_SMP */
- 
- #ifdef CONFIG_DEBUG_NMI_SELFTEST
-diff --git a/arch/x86/kernel/acpi/cstate.c b/arch/x86/kernel/acpi/cstate.c
-index 86c87c0..d255842 100644
---- a/arch/x86/kernel/acpi/cstate.c
-+++ b/arch/x86/kernel/acpi/cstate.c
-@@ -206,7 +206,7 @@ int acpi_processor_ffh_cstate_probe(unsigned int cpu,
- }
- EXPORT_SYMBOL_GPL(acpi_processor_ffh_cstate_probe);
- 
--void acpi_processor_ffh_play_dead(struct acpi_processor_cx *cx)
-+void __noreturn acpi_processor_ffh_play_dead(struct acpi_processor_cx *cx)
- {
- 	unsigned int cpu = smp_processor_id();
- 	struct cstate_entry *percpu_entry;
-diff --git a/include/acpi/processor.h b/include/acpi/processor.h
-index 63a37e7..d0eccbd 100644
---- a/include/acpi/processor.h
-+++ b/include/acpi/processor.h
-@@ -280,7 +280,7 @@ int acpi_processor_ffh_cstate_probe(unsigned int cpu,
- 				    struct acpi_processor_cx *cx,
- 				    struct acpi_power_register *reg);
- void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx *cstate);
--void acpi_processor_ffh_play_dead(struct acpi_processor_cx *cx);
-+void __noreturn acpi_processor_ffh_play_dead(struct acpi_processor_cx *cx);
- #else
- static inline void acpi_processor_power_init_bm_check(struct
- 						      acpi_processor_flags
-@@ -301,9 +301,9 @@ static inline void acpi_processor_ffh_cstate_enter(struct acpi_processor_cx
- {
- 	return;
- }
--static inline void acpi_processor_ffh_play_dead(struct acpi_processor_cx *cx)
-+static inline void __noreturn acpi_processor_ffh_play_dead(struct acpi_processor_cx *cx)
- {
--	return;
-+	BUG();
- }
- #endif
- 
-diff --git a/tools/objtool/noreturns.h b/tools/objtool/noreturns.h
-index b217489..5a4aec4 100644
---- a/tools/objtool/noreturns.h
-+++ b/tools/objtool/noreturns.h
-@@ -16,6 +16,7 @@ NORETURN(__tdx_hypercall_failed)
- NORETURN(__ubsan_handle_builtin_unreachable)
- NORETURN(__x64_sys_exit)
- NORETURN(__x64_sys_exit_group)
-+NORETURN(acpi_processor_ffh_play_dead)
- NORETURN(arch_cpu_idle_dead)
- NORETURN(bch2_trans_in_restart_error)
- NORETURN(bch2_trans_restart_error)
-@@ -34,6 +35,7 @@ NORETURN(kunit_try_catch_throw)
- NORETURN(machine_real_restart)
- NORETURN(make_task_dead)
- NORETURN(mpt_halt_firmware)
-+NORETURN(mwait_play_dead)
- NORETURN(nmi_panic_self_stop)
- NORETURN(panic)
- NORETURN(panic_smp_self_stop)
+diff --git a/arch/x86/xen/Kconfig b/arch/x86/xen/Kconfig
+index 77e788e..98d8a50 100644
+--- a/arch/x86/xen/Kconfig
++++ b/arch/x86/xen/Kconfig
+@@ -9,7 +9,7 @@ config XEN
+ 	select PARAVIRT_CLOCK
+ 	select X86_HV_CALLBACK_VECTOR
+ 	depends on X86_64 || (X86_32 && X86_PAE)
+-	depends on X86_64 || (X86_GENERIC || MPENTIUM4 || MCORE2 || MATOM || MK8)
++	depends on X86_64 || (X86_GENERIC || MPENTIUM4 || MATOM)
+ 	depends on X86_LOCAL_APIC && X86_TSC
+ 	help
+ 	  This is the Linux Xen port.  Enabling this will allow the
 
