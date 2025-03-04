@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-3847-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3846-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68726A4D64A
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D96C6A4D64B
 	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 09:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED65F1713B2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 08:28:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0886C7A3AB0
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 08:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6940C1FC119;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4922F1FC10F;
 	Tue,  4 Mar 2025 08:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IzG2nsyU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DS4Ttey/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hiYvBbjM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0f8E23OB"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449DD1FBCA9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFC01FBC99;
 	Tue,  4 Mar 2025 08:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741076871; cv=none; b=ldL+LvE4GYakAvqwRDa7UQSj49TG38TpuMRBba+FdBd6xs3pACsjRRXjcnNjXprE1m7s2j92Dz3k4EL6h9PIpJfPf/uigWW1ea3CtJSotwgpb6LUcE7O6/ydbMMV80+dM9b2E9xkBpWRQnONKw555u/LVQqSoZMP14m0OGm9eDQ=
+	t=1741076871; cv=none; b=ezuN8diiA9XQa8HlXUJaAQvFAsS9DhueRjmBixg1TBVdHTQM+5n3HvI2odYzI4yaK6k7iMnScqQ3nl8+8K+iJxnN/tTnshE444aw6Xs8/yjC3MldOWQ6sXoc7NHA4lHkNirMIdAHk8g9aZVU9xk9M/jj7N3oPxFdy9miqUZIjuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741076871; c=relaxed/simple;
-	bh=7B6Dd4z1tXDgSzsrRNRbL1yjfLO1eCa5S9QMplDmwf4=;
+	bh=bBFJj9csERqhDSTEaX9BqyTRWInbCdV1PsdD9YOadMw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=vANnD2TZc47ZDM2fX5B/EpGfM4LyWMkC/k5UvVMDaw4Hdq+T43MpyUanHW/2BnFNWWy74zIndG5YZni9PzjLjBnppQmBrMFGJjGywwwFMMkBTUJ6UkUqaa1ayK5YbPjm3T5XwzVdzE0uYEY3CvtiMgabKdJHFGD7l3Hz6nRAwm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IzG2nsyU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DS4Ttey/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=f2VHHXaWM/LZeNecDKG1YQkKtPnvJfFI3k76O5la2GzVzMb67MVgJqW9I0n/INcEvKlJdMfelp/BvbPt77DSKn62bFTKdUu21ccFtdy49t6g4/39dQZE6dSdoTs72SbVxV7CPpECR5cJrlk3GctDmZqIqt3xl7ogL+Wbxesqn3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hiYvBbjM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0f8E23OB; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Tue, 04 Mar 2025 08:27:46 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rKV1E6hBdptBMKcL7aqq4GddtOHcg+epFseXtf+pbOE=;
-	b=IzG2nsyUPPSfrtH97KzAkRn7+YqQRcracLeGyjoGLAEeel9R/hD8uHs/d9OrferdXZi5F6
-	n1K3/uxvPlbayIsLjTgcPdKhktULlcJwJYnUCYscuP27+QX0S2rwmYfjE1rcHWmAw4//9c
-	EI9JgLG/a1QyTFu5GTbfKJFsb7HJtSQhJ8Umd1ufCyltTt29eetczwOqhW2RpoGiIKlhMg
-	ZkE0thCVyqZ1xDnXvimkQcPw+/TdEhVCaBqPo3+mFhgEgG6KL/BYIMlifvUcfXBKYqGqOG
-	nkN8w7w+y02Dtz+aIAb7hcW+2SfZNgehdOUhNJYWcN+JEbG5+gNmlWQ3HQfIig==
+	bh=UfUTmALqNfhaPsAMg6LMDc4KptGddRwPDm24fK1VUlI=;
+	b=hiYvBbjMI/Yz38PXb7JstR07SGfaT/RblLobWowjlQaJPFPqOCJAGX7O7vw4T400OVZXVd
+	Hsm7QmA445QV8PI8p/j424YpORiV743oIfnWccLGqtgfeQl76zVSeXec3FjXarQlmkSeSV
+	0KmwqBLPIHZvxUsTTb8ObtMWWhzvXFP1n/gPOs2wl1Kk85WpCbCJ/jJKbcu5a3O86Kv9Ka
+	CqPmvnPN0tWP7PqGv2AKRFQbQJcdZckS3TEw0ZjeZcxCDOGx0ED6qhpOkl9v0iiV6SBdQI
+	0efT570lb/2MItNyjtTCjAEM2lUupPFthe9WZ4ypXoL+RRhruC9XhsFlRMQlPg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741076867;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,28 +52,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rKV1E6hBdptBMKcL7aqq4GddtOHcg+epFseXtf+pbOE=;
-	b=DS4Ttey/PmvH4JJrcYQ3q/v6fAErNsU1Vw+SMDinuicLUcNiTplbe9xrj0Jiwx4l0HGbBv
-	IL5dYp30gx3GOhBA==
+	bh=UfUTmALqNfhaPsAMg6LMDc4KptGddRwPDm24fK1VUlI=;
+	b=0f8E23OBU/vzG4W8U11w+AqZC/mikWPLdB1ooUs6VmKxiFbkqnlCyXn1IX8Sqix4KQ4uNc
+	qDZtDKbvU3iqgHAg==
 From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/irq: Move irq stacks to percpu hot section
+Subject: [tip: x86/core] x86/percpu: Move top_of_stack to percpu hot section
 Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Uros Bizjak <ubizjak@gmail.com>,
  Linus Torvalds <torvalds@linux-foundation.org>,
  Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250303165246.2175811-8-brgerst@gmail.com>
-References: <20250303165246.2175811-8-brgerst@gmail.com>
+In-Reply-To: <20250303165246.2175811-9-brgerst@gmail.com>
+References: <20250303165246.2175811-9-brgerst@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174107686692.14745.9588821701434915484.tip-bot2@tip-bot2>
+Message-ID: <174107686639.14745.1893443735807879396.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,14 +83,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     e4ac257c96fa96eae93d24a9d296c8cbc9c72db1
-Gitweb:        https://git.kernel.org/tip/e4ac257c96fa96eae93d24a9d296c8cbc9c72db1
+Commit-ID:     1105a9997f71a8d71a4a5c9306edfbcacd20e21e
+Gitweb:        https://git.kernel.org/tip/1105a9997f71a8d71a4a5c9306edfbcacd20e21e
 Author:        Brian Gerst <brgerst@gmail.com>
-AuthorDate:    Mon, 03 Mar 2025 11:52:42 -05:00
+AuthorDate:    Mon, 03 Mar 2025 11:52:43 -05:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Mon, 03 Mar 2025 21:37:41 +01:00
 
-x86/irq: Move irq stacks to percpu hot section
+x86/percpu: Move top_of_stack to percpu hot section
 
 No functional change.
 
@@ -99,248 +99,239 @@ Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Uros Bizjak <ubizjak@gmail.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250303165246.2175811-8-brgerst@gmail.com
+Link: https://lore.kernel.org/r/20250303165246.2175811-9-brgerst@gmail.com
 ---
- arch/x86/include/asm/current.h   |  6 ------
- arch/x86/include/asm/irq_stack.h | 12 ++++++------
- arch/x86/include/asm/processor.h |  7 +++++++
- arch/x86/kernel/dumpstack_32.c   |  4 ++--
- arch/x86/kernel/dumpstack_64.c   |  2 +-
- arch/x86/kernel/irq.c            |  2 ++
- arch/x86/kernel/irq_32.c         | 12 +++++++-----
- arch/x86/kernel/irq_64.c         |  7 ++++---
+ arch/x86/entry/entry_32.S        |  4 ++--
+ arch/x86/entry/entry_64.S        |  6 +++---
+ arch/x86/entry/entry_64_compat.S |  4 ++--
+ arch/x86/include/asm/current.h   |  1 -
+ arch/x86/include/asm/percpu.h    |  2 +-
+ arch/x86/include/asm/processor.h |  9 +++++++--
+ arch/x86/kernel/asm-offsets.c    |  1 -
+ arch/x86/kernel/cpu/common.c     |  3 ++-
+ arch/x86/kernel/process_32.c     |  4 ++--
  arch/x86/kernel/process_64.c     |  2 +-
- 9 files changed, 30 insertions(+), 24 deletions(-)
+ arch/x86/kernel/smpboot.c        |  2 +-
+ arch/x86/kernel/vmlinux.lds.S    |  1 +
+ 12 files changed, 22 insertions(+), 17 deletions(-)
 
+diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
+index 20be575..92c0b4a 100644
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -1153,7 +1153,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 	 * is using the thread stack right now, so it's safe for us to use it.
+ 	 */
+ 	movl	%esp, %ebx
+-	movl	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %esp
++	movl	PER_CPU_VAR(cpu_current_top_of_stack), %esp
+ 	call	exc_nmi
+ 	movl	%ebx, %esp
+ 
+@@ -1217,7 +1217,7 @@ SYM_CODE_START(rewind_stack_and_make_dead)
+ 	/* Prevent any naive code from trying to unwind to our caller. */
+ 	xorl	%ebp, %ebp
+ 
+-	movl	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %esi
++	movl	PER_CPU_VAR(cpu_current_top_of_stack), %esi
+ 	leal	-TOP_OF_KERNEL_STACK_PADDING-PTREGS_SIZE(%esi), %esp
+ 
+ 	call	make_task_dead
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index 49d3b22..f40bdf9 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -92,7 +92,7 @@ SYM_CODE_START(entry_SYSCALL_64)
+ 	/* tss.sp2 is scratch space. */
+ 	movq	%rsp, PER_CPU_VAR(cpu_tss_rw + TSS_sp2)
+ 	SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
+-	movq	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %rsp
++	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+ 
+ SYM_INNER_LABEL(entry_SYSCALL_64_safe_stack, SYM_L_GLOBAL)
+ 	ANNOTATE_NOENDBR
+@@ -1168,7 +1168,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 	FENCE_SWAPGS_USER_ENTRY
+ 	SWITCH_TO_KERNEL_CR3 scratch_reg=%rdx
+ 	movq	%rsp, %rdx
+-	movq	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %rsp
++	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+ 	UNWIND_HINT_IRET_REGS base=%rdx offset=8
+ 	pushq	5*8(%rdx)	/* pt_regs->ss */
+ 	pushq	4*8(%rdx)	/* pt_regs->rsp */
+@@ -1486,7 +1486,7 @@ SYM_CODE_START_NOALIGN(rewind_stack_and_make_dead)
+ 	/* Prevent any naive code from trying to unwind to our caller. */
+ 	xorl	%ebp, %ebp
+ 
+-	movq	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %rax
++	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rax
+ 	leaq	-PTREGS_SIZE(%rax), %rsp
+ 	UNWIND_HINT_REGS
+ 
+diff --git a/arch/x86/entry/entry_64_compat.S b/arch/x86/entry/entry_64_compat.S
+index ed0a5f2..a45e112 100644
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -57,7 +57,7 @@ SYM_CODE_START(entry_SYSENTER_compat)
+ 	SWITCH_TO_KERNEL_CR3 scratch_reg=%rax
+ 	popq	%rax
+ 
+-	movq	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %rsp
++	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+ 
+ 	/* Construct struct pt_regs on stack */
+ 	pushq	$__USER_DS		/* pt_regs->ss */
+@@ -193,7 +193,7 @@ SYM_CODE_START(entry_SYSCALL_compat)
+ 	SWITCH_TO_KERNEL_CR3 scratch_reg=%rsp
+ 
+ 	/* Switch to the kernel stack */
+-	movq	PER_CPU_VAR(pcpu_hot + X86_top_of_stack), %rsp
++	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+ 
+ SYM_INNER_LABEL(entry_SYSCALL_compat_safe_stack, SYM_L_GLOBAL)
+ 	ANNOTATE_NOENDBR
 diff --git a/arch/x86/include/asm/current.h b/arch/x86/include/asm/current.h
-index f153c77..6fad5a4 100644
+index 6fad5a4..3d1b123 100644
 --- a/arch/x86/include/asm/current.h
 +++ b/arch/x86/include/asm/current.h
-@@ -15,12 +15,6 @@ struct task_struct;
+@@ -14,7 +14,6 @@ struct task_struct;
+ 
  struct pcpu_hot {
  	struct task_struct	*current_task;
- 	unsigned long		top_of_stack;
--	void			*hardirq_stack_ptr;
--#ifdef CONFIG_X86_64
--	bool			hardirq_stack_inuse;
--#else
--	void			*softirq_stack_ptr;
--#endif
+-	unsigned long		top_of_stack;
  };
  
  DECLARE_PER_CPU_CACHE_HOT(struct pcpu_hot, pcpu_hot);
-diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
-index 8e56a07..3ce0314 100644
---- a/arch/x86/include/asm/irq_stack.h
-+++ b/arch/x86/include/asm/irq_stack.h
-@@ -117,7 +117,7 @@
- 	ASM_CALL_ARG2
- 
- #define call_on_irqstack(func, asm_call, argconstr...)			\
--	call_on_stack(__this_cpu_read(pcpu_hot.hardirq_stack_ptr),	\
-+	call_on_stack(__this_cpu_read(hardirq_stack_ptr),		\
- 		      func, asm_call, argconstr)
- 
- /* Macros to assert type correctness for run_*_on_irqstack macros */
-@@ -136,7 +136,7 @@
- 	 * User mode entry and interrupt on the irq stack do not	\
- 	 * switch stacks. If from user mode the task stack is empty.	\
- 	 */								\
--	if (user_mode(regs) || __this_cpu_read(pcpu_hot.hardirq_stack_inuse)) { \
-+	if (user_mode(regs) || __this_cpu_read(hardirq_stack_inuse)) {	\
- 		irq_enter_rcu();					\
- 		func(c_args);						\
- 		irq_exit_rcu();						\
-@@ -147,9 +147,9 @@
- 		 * places. Invoke the stack switch macro with the call	\
- 		 * sequence which matches the above direct invocation.	\
- 		 */							\
--		__this_cpu_write(pcpu_hot.hardirq_stack_inuse, true);	\
-+		__this_cpu_write(hardirq_stack_inuse, true);		\
- 		call_on_irqstack(func, asm_call, constr);		\
--		__this_cpu_write(pcpu_hot.hardirq_stack_inuse, false);	\
-+		__this_cpu_write(hardirq_stack_inuse, false);		\
- 	}								\
- }
- 
-@@ -213,9 +213,9 @@
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 60390a0..1ca290b 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -549,7 +549,7 @@ do {									\
+  * it is accessed while this_cpu_read_stable() allows the value to be cached.
+  * this_cpu_read_stable() is more efficient and can be used if its value
+  * is guaranteed to be valid across CPUs.  The current users include
+- * pcpu_hot.current_task and pcpu_hot.top_of_stack, both of which are
++ * pcpu_hot.current_task and cpu_current_top_of_stack, both of which are
+  * actually per-thread variables implemented as per-CPU variables and
+  * thus stable for the duration of the respective task.
   */
- #define do_softirq_own_stack()						\
- {									\
--	__this_cpu_write(pcpu_hot.hardirq_stack_inuse, true);		\
-+	__this_cpu_write(hardirq_stack_inuse, true);			\
- 	call_on_irqstack(__do_softirq, ASM_CALL_ARG0);			\
--	__this_cpu_write(pcpu_hot.hardirq_stack_inuse, false);		\
-+	__this_cpu_write(hardirq_stack_inuse, false);			\
- }
- 
- #endif
 diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 0e8602e..2ba079d 100644
+index 2ba079d..862df50 100644
 --- a/arch/x86/include/asm/processor.h
 +++ b/arch/x86/include/asm/processor.h
-@@ -420,6 +420,13 @@ struct irq_stack {
- 	char		stack[IRQ_STACK_SIZE];
- } __aligned(IRQ_STACK_SIZE);
+@@ -427,6 +427,11 @@ DECLARE_PER_CPU_CACHE_HOT(bool, hardirq_stack_inuse);
+ DECLARE_PER_CPU_CACHE_HOT(struct irq_stack *, softirq_stack_ptr);
+ #endif
  
-+DECLARE_PER_CPU_CACHE_HOT(struct irq_stack *, hardirq_stack_ptr);
-+#ifdef CONFIG_X86_64
-+DECLARE_PER_CPU_CACHE_HOT(bool, hardirq_stack_inuse);
-+#else
-+DECLARE_PER_CPU_CACHE_HOT(struct irq_stack *, softirq_stack_ptr);
-+#endif
++DECLARE_PER_CPU_CACHE_HOT(unsigned long, cpu_current_top_of_stack);
++/* const-qualified alias provided by the linker. */
++DECLARE_PER_CPU_CACHE_HOT(const unsigned long __percpu_seg_override,
++			  const_cpu_current_top_of_stack);
 +
  #ifdef CONFIG_X86_64
  static inline unsigned long cpu_kernelmode_gs_base(int cpu)
  {
-diff --git a/arch/x86/kernel/dumpstack_32.c b/arch/x86/kernel/dumpstack_32.c
-index b4905d5..722fd71 100644
---- a/arch/x86/kernel/dumpstack_32.c
-+++ b/arch/x86/kernel/dumpstack_32.c
-@@ -37,7 +37,7 @@ const char *stack_type_name(enum stack_type type)
+@@ -552,9 +557,9 @@ static __always_inline unsigned long current_top_of_stack(void)
+ 	 *  entry trampoline.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_USE_X86_SEG_SUPPORT))
+-		return this_cpu_read_const(const_pcpu_hot.top_of_stack);
++		return this_cpu_read_const(const_cpu_current_top_of_stack);
  
- static bool in_hardirq_stack(unsigned long *stack, struct stack_info *info)
- {
--	unsigned long *begin = (unsigned long *)this_cpu_read(pcpu_hot.hardirq_stack_ptr);
-+	unsigned long *begin = (unsigned long *)this_cpu_read(hardirq_stack_ptr);
- 	unsigned long *end   = begin + (THREAD_SIZE / sizeof(long));
+-	return this_cpu_read_stable(pcpu_hot.top_of_stack);
++	return this_cpu_read_stable(cpu_current_top_of_stack);
+ }
  
- 	/*
-@@ -62,7 +62,7 @@ static bool in_hardirq_stack(unsigned long *stack, struct stack_info *info)
+ static __always_inline bool on_thread_stack(void)
+diff --git a/arch/x86/kernel/asm-offsets.c b/arch/x86/kernel/asm-offsets.c
+index 6fae88f..54ace80 100644
+--- a/arch/x86/kernel/asm-offsets.c
++++ b/arch/x86/kernel/asm-offsets.c
+@@ -107,7 +107,6 @@ static void __used common(void)
+ 	OFFSET(TSS_sp0, tss_struct, x86_tss.sp0);
+ 	OFFSET(TSS_sp1, tss_struct, x86_tss.sp1);
+ 	OFFSET(TSS_sp2, tss_struct, x86_tss.sp2);
+-	OFFSET(X86_top_of_stack, pcpu_hot, top_of_stack);
+ 	OFFSET(X86_current_task, pcpu_hot, current_task);
+ #if IS_ENABLED(CONFIG_CRYPTO_ARIA_AESNI_AVX_X86_64)
+ 	/* Offset for fields in aria_ctx */
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index ffa291c..80fcc91 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -2049,7 +2049,6 @@ __setup("setcpuid=", setup_setcpuid);
  
- static bool in_softirq_stack(unsigned long *stack, struct stack_info *info)
- {
--	unsigned long *begin = (unsigned long *)this_cpu_read(pcpu_hot.softirq_stack_ptr);
-+	unsigned long *begin = (unsigned long *)this_cpu_read(softirq_stack_ptr);
- 	unsigned long *end   = begin + (THREAD_SIZE / sizeof(long));
+ DEFINE_PER_CPU_CACHE_HOT(struct pcpu_hot, pcpu_hot) = {
+ 	.current_task	= &init_task,
+-	.top_of_stack	= TOP_OF_INIT_STACK,
+ };
+ EXPORT_PER_CPU_SYMBOL(pcpu_hot);
+ EXPORT_PER_CPU_SYMBOL(const_pcpu_hot);
+@@ -2057,6 +2056,8 @@ EXPORT_PER_CPU_SYMBOL(const_pcpu_hot);
+ DEFINE_PER_CPU_CACHE_HOT(int, __preempt_count) = INIT_PREEMPT_COUNT;
+ EXPORT_PER_CPU_SYMBOL(__preempt_count);
  
- 	/*
-diff --git a/arch/x86/kernel/dumpstack_64.c b/arch/x86/kernel/dumpstack_64.c
-index f05339f..6c5defd 100644
---- a/arch/x86/kernel/dumpstack_64.c
-+++ b/arch/x86/kernel/dumpstack_64.c
-@@ -134,7 +134,7 @@ static __always_inline bool in_exception_stack(unsigned long *stack, struct stac
- 
- static __always_inline bool in_irq_stack(unsigned long *stack, struct stack_info *info)
- {
--	unsigned long *end = (unsigned long *)this_cpu_read(pcpu_hot.hardirq_stack_ptr);
-+	unsigned long *end = (unsigned long *)this_cpu_read(hardirq_stack_ptr);
- 	unsigned long *begin;
- 
- 	/*
-diff --git a/arch/x86/kernel/irq.c b/arch/x86/kernel/irq.c
-index 83a5252..81f9b78 100644
---- a/arch/x86/kernel/irq.c
-+++ b/arch/x86/kernel/irq.c
-@@ -36,6 +36,8 @@ EXPORT_PER_CPU_SYMBOL(irq_stat);
- DEFINE_PER_CPU_CACHE_HOT(u16, __softirq_pending);
- EXPORT_PER_CPU_SYMBOL(__softirq_pending);
- 
-+DEFINE_PER_CPU_CACHE_HOT(struct irq_stack *, hardirq_stack_ptr);
++DEFINE_PER_CPU_CACHE_HOT(unsigned long, cpu_current_top_of_stack) = TOP_OF_INIT_STACK;
 +
- atomic_t irq_err_count;
- 
+ #ifdef CONFIG_X86_64
  /*
-diff --git a/arch/x86/kernel/irq_32.c b/arch/x86/kernel/irq_32.c
-index dc1049c..48a27cd 100644
---- a/arch/x86/kernel/irq_32.c
-+++ b/arch/x86/kernel/irq_32.c
-@@ -52,6 +52,8 @@ static inline int check_stack_overflow(void) { return 0; }
- static inline void print_stack_overflow(void) { }
- #endif
- 
-+DEFINE_PER_CPU_CACHE_HOT(struct irq_stack *, softirq_stack_ptr);
-+
- static void call_on_stack(void *func, void *stack)
- {
- 	asm volatile("xchgl	%%ebx,%%esp	\n"
-@@ -74,7 +76,7 @@ static inline int execute_on_irq_stack(int overflow, struct irq_desc *desc)
- 	u32 *isp, *prev_esp, arg1;
- 
- 	curstk = (struct irq_stack *) current_stack();
--	irqstk = __this_cpu_read(pcpu_hot.hardirq_stack_ptr);
-+	irqstk = __this_cpu_read(hardirq_stack_ptr);
+  * Note: Do not make this dependant on CONFIG_MITIGATION_CALL_DEPTH_TRACKING
+diff --git a/arch/x86/kernel/process_32.c b/arch/x86/kernel/process_32.c
+index 2bdab41..8ec44ac 100644
+--- a/arch/x86/kernel/process_32.c
++++ b/arch/x86/kernel/process_32.c
+@@ -190,13 +190,13 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
+ 	arch_end_context_switch(next_p);
  
  	/*
- 	 * this is where we switch to the IRQ stack. However, if we are
-@@ -112,7 +114,7 @@ int irq_init_percpu_irqstack(unsigned int cpu)
- 	int node = cpu_to_node(cpu);
- 	struct page *ph, *ps;
+-	 * Reload esp0 and pcpu_hot.top_of_stack.  This changes
++	 * Reload esp0 and cpu_current_top_of_stack.  This changes
+ 	 * current_thread_info().  Refresh the SYSENTER configuration in
+ 	 * case prev or next is vm86.
+ 	 */
+ 	update_task_stack(next_p);
+ 	refresh_sysenter_cs(next);
+-	this_cpu_write(pcpu_hot.top_of_stack,
++	this_cpu_write(cpu_current_top_of_stack,
+ 		       (unsigned long)task_stack_page(next_p) +
+ 		       THREAD_SIZE);
  
--	if (per_cpu(pcpu_hot.hardirq_stack_ptr, cpu))
-+	if (per_cpu(hardirq_stack_ptr, cpu))
- 		return 0;
- 
- 	ph = alloc_pages_node(node, THREADINFO_GFP, THREAD_SIZE_ORDER);
-@@ -124,8 +126,8 @@ int irq_init_percpu_irqstack(unsigned int cpu)
- 		return -ENOMEM;
- 	}
- 
--	per_cpu(pcpu_hot.hardirq_stack_ptr, cpu) = page_address(ph);
--	per_cpu(pcpu_hot.softirq_stack_ptr, cpu) = page_address(ps);
-+	per_cpu(hardirq_stack_ptr, cpu) = page_address(ph);
-+	per_cpu(softirq_stack_ptr, cpu) = page_address(ps);
- 	return 0;
- }
- 
-@@ -135,7 +137,7 @@ void do_softirq_own_stack(void)
- 	struct irq_stack *irqstk;
- 	u32 *isp, *prev_esp;
- 
--	irqstk = __this_cpu_read(pcpu_hot.softirq_stack_ptr);
-+	irqstk = __this_cpu_read(softirq_stack_ptr);
- 
- 	/* build the stack frame on the softirq stack */
- 	isp = (u32 *) ((char *)irqstk + sizeof(*irqstk));
-diff --git a/arch/x86/kernel/irq_64.c b/arch/x86/kernel/irq_64.c
-index 56bdeec..ca78dce 100644
---- a/arch/x86/kernel/irq_64.c
-+++ b/arch/x86/kernel/irq_64.c
-@@ -26,6 +26,7 @@
- #include <asm/io_apic.h>
- #include <asm/apic.h>
- 
-+DEFINE_PER_CPU_CACHE_HOT(bool, hardirq_stack_inuse);
- DEFINE_PER_CPU_PAGE_ALIGNED(struct irq_stack, irq_stack_backing_store) __visible;
- 
- #ifdef CONFIG_VMAP_STACK
-@@ -50,7 +51,7 @@ static int map_irq_stack(unsigned int cpu)
- 		return -ENOMEM;
- 
- 	/* Store actual TOS to avoid adjustment in the hotpath */
--	per_cpu(pcpu_hot.hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE - 8;
-+	per_cpu(hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE - 8;
- 	return 0;
- }
- #else
-@@ -63,14 +64,14 @@ static int map_irq_stack(unsigned int cpu)
- 	void *va = per_cpu_ptr(&irq_stack_backing_store, cpu);
- 
- 	/* Store actual TOS to avoid adjustment in the hotpath */
--	per_cpu(pcpu_hot.hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE - 8;
-+	per_cpu(hardirq_stack_ptr, cpu) = va + IRQ_STACK_SIZE - 8;
- 	return 0;
- }
- #endif
- 
- int irq_init_percpu_irqstack(unsigned int cpu)
- {
--	if (per_cpu(pcpu_hot.hardirq_stack_ptr, cpu))
-+	if (per_cpu(hardirq_stack_ptr, cpu))
- 		return 0;
- 	return map_irq_stack(cpu);
- }
 diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index f983d2a..2f38416 100644
+index 2f38416..d8f4bce 100644
 --- a/arch/x86/kernel/process_64.c
 +++ b/arch/x86/kernel/process_64.c
-@@ -614,7 +614,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
- 	int cpu = smp_processor_id();
+@@ -669,7 +669,7 @@ __switch_to(struct task_struct *prev_p, struct task_struct *next_p)
+ 	 * Switch the PDA and FPU contexts.
+ 	 */
+ 	raw_cpu_write(pcpu_hot.current_task, next_p);
+-	raw_cpu_write(pcpu_hot.top_of_stack, task_top_of_stack(next_p));
++	raw_cpu_write(cpu_current_top_of_stack, task_top_of_stack(next_p));
  
- 	WARN_ON_ONCE(IS_ENABLED(CONFIG_DEBUG_ENTRY) &&
--		     this_cpu_read(pcpu_hot.hardirq_stack_inuse));
-+		     this_cpu_read(hardirq_stack_inuse));
+ 	switch_fpu_finish(next_p);
  
- 	if (!test_tsk_thread_flag(prev_p, TIF_NEED_FPU_LOAD))
- 		switch_fpu_prepare(prev_p, cpu);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 5820169..83ec0e9 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -852,7 +852,7 @@ int common_cpu_up(unsigned int cpu, struct task_struct *idle)
+ 
+ #ifdef CONFIG_X86_32
+ 	/* Stack for startup_32 can be just as for start_secondary onwards */
+-	per_cpu(pcpu_hot.top_of_stack, cpu) = task_top_of_stack(idle);
++	per_cpu(cpu_current_top_of_stack, cpu) = task_top_of_stack(idle);
+ #endif
+ 	return 0;
+ }
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 0ef9870..475f671 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -44,6 +44,7 @@ ENTRY(phys_startup_64)
+ 
+ jiffies = jiffies_64;
+ const_pcpu_hot = pcpu_hot;
++const_cpu_current_top_of_stack = cpu_current_top_of_stack;
+ 
+ #if defined(CONFIG_X86_64)
+ /*
 
