@@ -1,83 +1,134 @@
-Return-Path: <linux-tip-commits+bounces-3842-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3844-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C59CA4D163
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 03:05:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF768A4D644
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 09:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6F8188E643
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 02:05:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90CFB7A2EA2
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 08:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5430A2B9A6;
-	Tue,  4 Mar 2025 02:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCC21FBC9C;
+	Tue,  4 Mar 2025 08:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="c4KwiHBI"
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vD6cO9wm";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y1AXLZiJ"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AB02F46;
-	Tue,  4 Mar 2025 02:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8909C1F583F;
+	Tue,  4 Mar 2025 08:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741053925; cv=none; b=Ya5kZdeHlP2k+QavjN+1YWm3V7uu8gGhe++WYZTf98ns7y/cpIaTEnWdt1lV4e57RoEyWlYS+fckxYS7LDUWq/13GycU1JwDCwNRCoQRopFikpFwUaeJdK3a1DLTPOvqlGYLU5me8ybb5XTHK0bPtMLur33Bc19OULw74dYnjXE=
+	t=1741076869; cv=none; b=pJJezkFFaQiBpBGEpJelJKszQ8s5YeNGIJocgKVrfggpzn5YL1Bu4k4Y3LviC5nDVGZFUf4XPIbRxSch9pzBiJGXqPBtgUAyByF4tzv5VW3Tz9ri1HV68UXuSlkazFR8GNn+wnEoTLBfV5R3im9ozJ+MmNPrRpC/tfGwzHlHHj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741053925; c=relaxed/simple;
-	bh=yBZyz1mdolXu0Q3RyY+DqnuV/lS4Po8UP2Kw13JYse4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=kY20teJWy2XoVxM63rNWtgWiK55/r5M5EW0fmfiVIhBYjiMa2sWAxAh8NAzmk/L4SNVTnJRZz4tsCMDVFACFLpte3QiCsizLGRCnCRFhYFsg8bvNoIe+/miBoNiYbW88LfvuI3kgnhZmkb5KD5KmjlHm+go8RohMLy0VlAV8rMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=c4KwiHBI; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 524259Jg1865183
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 3 Mar 2025 18:05:09 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 524259Jg1865183
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741053910;
-	bh=yBZyz1mdolXu0Q3RyY+DqnuV/lS4Po8UP2Kw13JYse4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=c4KwiHBIHo53jaQyApLHheGK0DtiwZbD0ODuxpU1U9W40b3jSW0yK3xfH8rNPJ79t
-	 P7CNFMCl3+a4lprdWnXZMVoSOhNem9DFt6BBEw0h0jXTAtTu8jZdQ2WS0TJdQB3F6f
-	 XW0TkCmso+gYxGIMuE2Fo+oNK/SOYlkTTZY8KWVzu6T53sDr74RXOprnWhc0ini5CH
-	 kFMLoEwPV+dKUOS2Jz3c+iAQID5dC4q6f1SphtLIPT+vV1bOkMw9+2b2slDz7+6fpF
-	 gIgduFxZ8sX5O0SdSercEDw1q7eHSuYL41/jtBUGtYI4JKlbmPLdxEEsiT0XwdJ7v9
-	 IHOryPlpzr6SA==
-Date: Mon, 03 Mar 2025 18:05:07 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-CC: brgerst@gmail.com, jpoimboe@kernel.org, linux-kernel@vger.kernel.org,
-        linux-tip-commits@vger.kernel.org, mingo@kernel.org,
-        peterz@infradead.org, tip-bot2@linutronix.de,
-        torvalds@linux-foundation.org, x86@kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_x86/asm=5D_x86/asm=3A_Make_ASM=5FCALL?=
- =?US-ASCII?Q?=5FCONSTRAINT_conditional_on_frame_pointers?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <c7496069-2630-45ca-b6d3-c8d6b3678271@citrix.com>
-References: <28D821BB-96B5-4389-839E-5B7CB4D49F5F@zytor.com> <c7496069-2630-45ca-b6d3-c8d6b3678271@citrix.com>
-Message-ID: <82FF5D6C-15F5-44FE-8436-CDBB9F35FDD5@zytor.com>
+	s=arc-20240116; t=1741076869; c=relaxed/simple;
+	bh=8s9mfSTjGq35hseD13vVNB76BI7vZ1PYjIXWOxCKhUo=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=E46+sH9JAfVQJlJe6l38zrP43yfpWsmAjf16Vt5lNXBtlj6GGh/OR3M8uO6EtXQJ9dlGYZWopiY97Memx8KCohRqKjOgvX1FtVmjOC1MrJqlozu40DpG/Po88451kym1e3qYaagZkbohUhidsIlcP33MOh5/h4XHVldX3Ohjzec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vD6cO9wm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y1AXLZiJ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 04 Mar 2025 08:27:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741076865;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gRboBk4SHCTRowwtoMhXVJknuO/qqSn/Bp5SdhLxiqM=;
+	b=vD6cO9wmg61ma7zwibcizBsH2StD1LZsugjnQ4pRUt1WxiY0jUnW6108rddqhyInSwbZvk
+	I9Kb5uyoiJKqlVHS2mOXiF6bekx3+mgibyUuIIC/NshzhEPAhdliQ8dAUXcwwMNXEyUCMs
+	Ewcu/LgGGi2KcTr9kToWgjLeFVIZHfx+i/ainvzP4u2w1QsR6fQpl8ixPNqw/kclJrwn1Q
+	CPnm8Zzj7XxcqIjFnERO4yTnZHe9LHfW8hWNF7H71OSYr0Px4ezVFTGCI7rwIqh2+jj+Po
+	r9BBteoL9j/i8XAl+Tc1bXYjC+8NfRwH3Z4fZe495dQQGMmLQYN70BbC9Kchaw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741076865;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gRboBk4SHCTRowwtoMhXVJknuO/qqSn/Bp5SdhLxiqM=;
+	b=y1AXLZiJqm5uaByrRXn+SXYE2GpITmz1K2EK7F7LD8aJObGCuscRvoi8xk6tyh9aVFigaj
+	cGgNMBR9s4rY5bDA==
+From: "tip-bot2 for Brian Gerst" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/core] x86/smp: Move this_cpu_off to percpu hot section
+Cc: Brian Gerst <brgerst@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Uros Bizjak <ubizjak@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250303165246.2175811-12-brgerst@gmail.com>
+References: <20250303165246.2175811-12-brgerst@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <174107686201.14745.11976222982822439246.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On March 3, 2025 4:57:49 PM PST, Andrew Cooper <andrew=2Ecooper3@citrix=2Ec=
-om> wrote:
->> One more thing: if we remove ASM_CALL_CONSTRAINTS, we will not be able =
-to use the redzone in future FRED only kernel builds=2E
->
->That's easy enough to fix with "|| CONFIG_FRED_EXCLUSIVE" in some
->theoretical future when it's a feasible config to use=2E
->
->~Andrew
+The following commit has been merged into the x86/core branch of tip:
 
-Assuming it hasn't bitrotted=2E=2E=2E
+Commit-ID:     cfe31c859a8123a282e0ecee76bf77fdc3bccf74
+Gitweb:        https://git.kernel.org/tip/cfe31c859a8123a282e0ecee76bf77fdc3bccf74
+Author:        Brian Gerst <brgerst@gmail.com>
+AuthorDate:    Mon, 03 Mar 2025 11:52:46 -05:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 03 Mar 2025 21:37:41 +01:00
+
+x86/smp: Move this_cpu_off to percpu hot section
+
+No functional change.
+
+Signed-off-by: Brian Gerst <brgerst@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250303165246.2175811-12-brgerst@gmail.com
+---
+ arch/x86/include/asm/percpu.h  | 2 +-
+ arch/x86/kernel/setup_percpu.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 6fbb52a..4f202cd 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -584,7 +584,7 @@ do {									\
+ #include <asm-generic/percpu.h>
+ 
+ /* We can use this directly for local CPU (faster). */
+-DECLARE_PER_CPU_READ_MOSTLY(unsigned long, this_cpu_off);
++DECLARE_PER_CPU_CACHE_HOT(unsigned long, this_cpu_off);
+ 
+ #endif /* !__ASSEMBLY__ */
+ 
+diff --git a/arch/x86/kernel/setup_percpu.c b/arch/x86/kernel/setup_percpu.c
+index 175afc3..bfa48e7 100644
+--- a/arch/x86/kernel/setup_percpu.c
++++ b/arch/x86/kernel/setup_percpu.c
+@@ -26,7 +26,7 @@
+ DEFINE_PER_CPU_CACHE_HOT(int, cpu_number);
+ EXPORT_PER_CPU_SYMBOL(cpu_number);
+ 
+-DEFINE_PER_CPU_READ_MOSTLY(unsigned long, this_cpu_off);
++DEFINE_PER_CPU_CACHE_HOT(unsigned long, this_cpu_off);
+ EXPORT_PER_CPU_SYMBOL(this_cpu_off);
+ 
+ unsigned long __per_cpu_offset[NR_CPUS] __ro_after_init;
 
