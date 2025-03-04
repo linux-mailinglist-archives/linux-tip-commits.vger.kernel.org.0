@@ -1,134 +1,113 @@
-Return-Path: <linux-tip-commits+bounces-3958-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-3959-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37657A4ECE5
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 20:12:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EC5A4ED3B
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 20:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 862C87A1B54
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 19:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07A813AF3AB
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Mar 2025 19:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C68253B75;
-	Tue,  4 Mar 2025 19:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A9A259C88;
+	Tue,  4 Mar 2025 19:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="W6FLAw6O";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kSDF5jxY"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wd9JANeJ"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4270A1EEA36;
-	Tue,  4 Mar 2025 19:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07837255251;
+	Tue,  4 Mar 2025 19:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741115552; cv=none; b=t7v/JA06VvwRnpNBybYHcvcjBkYovYa4otknLITrNMO9REW3j6GX80Dnv+bvRIdkDaFnDgB8Ng5XnM1D63Yy12lg85dGlGJhpdGO7HM3v8qqnrehMjpnF04/WLp5Stt3DckKTL/eZ7HrUv+nVLKbTnZQjQO2B3rWo9jyUJ2xnKY=
+	t=1741115706; cv=none; b=EdfhHjsgD9qox0lmV7yFxww6/YOfsBbHfZikf0oEfO11rULxWDAXyJlQWLA7rG6hPabr0Tg3kgdgXQE6mdPazDfZpJQ9a62UKYsGTqMEMqtVnni8PbXLkS7IN1b9l+1VZ76VJaFSEE910jSm31rIH4YJ8uav/DFbB71pSIFVYjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741115552; c=relaxed/simple;
-	bh=pFcur4LhuU6e7exEBimRKYlZhg0Ha9BKAc0GUJNEMGM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=fVeGVmHCoRWnlyZbC5PEMcWciJxKdGMhC3c+1mE0JlslpOHhIC4iDr+SPeo66HZq9lojeD9f7Y+PlF9l+H9ZooO5G4T3iby/HxjdZIPd9AsnPlvPTVh9P+E3JTUJvQBuEjdusVKjZ/vIT0RRBZ2oQstRRIeTXnKlB8K4doVbYSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=W6FLAw6O; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kSDF5jxY; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 04 Mar 2025 19:12:27 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741115549;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vdfWzjh5f8yU2E686H+/CLEZdKtId2rsdnVtVaeCwGY=;
-	b=W6FLAw6OMPwzebe2HBezMvAysuU91LRybJEwTTDZwyRIEjh60/7K6ucpar6NyfhuV+wS05
-	v2piG5uG1MYkyd8TaRltI5wqyEaAdJJkkZA3pKy74rr0Ndyv2nvvUD52v+VNfHiYiSSoYW
-	dxIb7KQr+KqbVyDiZM1SYDUHWgqmwdp3Es8rJDRr3HRr34R87saoFpQZL/IFrMkKoB5RDs
-	eXSWq2tgq0LFta4XtIdnLvyBIqObPJM+CD0BuAgmZ76KZ1QqN/zo0mhF8w8zjTrsOt/UjJ
-	SJGmduxury8yg/MaM1A1cQTocrcv/xqQeRJpQlbKyY4BZZYy5dHlEt95LB8TGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741115549;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vdfWzjh5f8yU2E686H+/CLEZdKtId2rsdnVtVaeCwGY=;
-	b=kSDF5jxYZWc/zcWbzFIe3MGw02/ibEDqpW97iKYJHJzaXOKX5Kvmh/EwZVun9LuOFF0A9N
-	Cz9tajr4OHbVHSCg==
-From: "tip-bot2 for Thorsten Blum" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/core] perf/x86: Annotate struct bts_buffer with __counted_by()
-Cc: Thorsten Blum <thorsten.blum@linux.dev>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250304183056.78920-2-thorsten.blum@linux.dev>
-References: <20250304183056.78920-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1741115706; c=relaxed/simple;
+	bh=JJAJkxUJ1Ssn3V4i6mnrB10sKcPRACeB/DFOKNhD4xs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LyJsb9mVOFPSeYH92xmuAozREWP4dirgBrq+Wl0Klk/jYq/RS72zeXn4Pt29N2Emr2U+sk171pdO5XNehNpBHnTNuszfV8x09gAYCziW4nYi18vLiU543VQnYkSE/hsTx4XZAFX3dOVx22Mfifm5vWX2JdGKnXD7fpESuMsPTo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wd9JANeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B85C4CEE5;
+	Tue,  4 Mar 2025 19:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741115705;
+	bh=JJAJkxUJ1Ssn3V4i6mnrB10sKcPRACeB/DFOKNhD4xs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Wd9JANeJfOHYEK6EVPAw2D9d0oO9xu0TCn07i8JUGEwPwIzMrEo5kUUUM0JRxSgCe
+	 Ya3UwIMByvZ6Uh+tYsP68ftGLlEZ5Sb2oUUlEb2wleHZY8s8Pi7V+xko8gXaIKzaHz
+	 clG23v9FmTavanU2W+8MXoBWlc5e9ueafFP+tdJGVKSy+9lrjvfuaOAaalcU5GXcVD
+	 7Hu53N+0GntPjjXh8ZtcVDqw6t5o60eAhQii5IMPK0chk/6rFPiJH05vFD5SPwMIbf
+	 7al0iIOlOcya//ouNSpRt/9UXCO9EbsX118KNqgGFOyrqNAMIwu/5JCnXAgRtIZaxs
+	 DxmBf9AudKkRA==
+Date: Tue, 4 Mar 2025 20:15:00 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Brian Gerst <brgerst@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	x86@kernel.org
+Subject: Re: [tip: x86/asm] x86/asm: Make ASM_CALL_CONSTRAINT conditional on
+ frame pointers
+Message-ID: <Z8dRNO1-_1YmIpAv@gmail.com>
+References: <174099976188.10177.7153571701278544000.tip-bot2@tip-bot2>
+ <CAHk-=wjSwqJhvzAT-=AY88+7QmN=U0A121cGr286ZpuNdC+yaw@mail.gmail.com>
+ <Z8a66_DbMbP-V5mi@gmail.com>
+ <CAHk-=wjRsMfndBGLZzkq7DOU7JOVZLsUaXnfjFvOcEw_Kd6h5g@mail.gmail.com>
+ <CAHk-=wjc8jnsOkLq1YfmM0eQqceyTunLEcfpXcm1EBhCDaLLgg@mail.gmail.com>
+ <20250304182132.fcn62i4ry5ndli7l@jpoimboe>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174111554764.14745.14213573362217486017.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250304182132.fcn62i4ry5ndli7l@jpoimboe>
 
-The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     077dcef270361089c322a969b792438b33cfb479
-Gitweb:        https://git.kernel.org/tip/077dcef270361089c322a969b792438b33cfb479
-Author:        Thorsten Blum <thorsten.blum@linux.dev>
-AuthorDate:    Tue, 04 Mar 2025 19:30:57 +01:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 04 Mar 2025 19:58:01 +01:00
+* Josh Poimboeuf <jpoimboe@kernel.org> wrote:
 
-perf/x86: Annotate struct bts_buffer with __counted_by()
+> On Tue, Mar 04, 2025 at 08:01:58AM -1000, Linus Torvalds wrote:
+> > On Tue, 4 Mar 2025 at 07:51, Linus Torvalds
+> > <torvalds@linux-foundation.org> wrote:
+> > >
+> > > Put another way: the old code has years of testing and is
+> > > significantly simpler. The new code is new and untested and more
+> > > complicated and has already caused known new problems, never mind any
+> > > unknown ones.
+> > >
+> > > It really doesn't sound like a good trade-off to me.
+> 
+> I'm utterly confused, what are these new problems you're referring to?
+> 
+> And how specifically is this more fragile?
+> 
+> AFAICT, there was one known bug before the patches.  Now there are zero
+> known bugs.
+> 
+> Of course, it's entirely possible the build bots will shake out new
+> objtool warnings over the next weeks.  But as of now, I haven't seen
+> anything.
 
-Add the __counted_by() compiler attribute to the flexible array member
-buf to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
-CONFIG_FORTIFY_SOURCE.
+In any case I've zapped these two commits from tip:x86/asm for the time 
+being:
 
-Use struct_size() to calculate the number of bytes to allocate for a new
-bts_buffer. Compared to offsetof(), struct_size() has additional
-compile-time checks (e.g., __must_be_array()).
+  x86/asm: Fix ASM_CALL_CONSTRAINT for Clang 19 + KCOV + KMSAN
+  x86/asm: Make ASM_CALL_CONSTRAINT conditional on frame pointers
 
-No functional changes intended.
+Until there's consensus.
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250304183056.78920-2-thorsten.blum@linux.dev
----
- arch/x86/events/intel/bts.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I left the 3 preparatory patches, which make sense as standalone 
+cleanups:
 
-diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
-index 8e09319..debfc18 100644
---- a/arch/x86/events/intel/bts.c
-+++ b/arch/x86/events/intel/bts.c
-@@ -58,7 +58,7 @@ struct bts_buffer {
- 	local_t		head;
- 	unsigned long	end;
- 	void		**data_pages;
--	struct bts_phys	buf[];
-+	struct bts_phys	buf[] __counted_by(nr_bufs);
- };
- 
- static struct pmu bts_pmu;
-@@ -101,7 +101,7 @@ bts_buffer_setup_aux(struct perf_event *event, void **pages,
- 	if (overwrite && nbuf > 1)
- 		return NULL;
- 
--	buf = kzalloc_node(offsetof(struct bts_buffer, buf[nbuf]), GFP_KERNEL, node);
-+	buf = kzalloc_node(struct_size(buf, buf, nbuf), GFP_KERNEL, node);
- 	if (!buf)
- 		return NULL;
- 
+  KVM: VMX: Use named operands in inline asm
+  x86/hyperv: Use named operands in inline asm
+  x86/alternatives: Simplify alternative_call() interface
+
+Thanks,
+
+	Ingo
 
