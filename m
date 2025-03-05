@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-4006-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4007-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29D7A4FD4C
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Mar 2025 12:12:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F6CA4FD9D
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Mar 2025 12:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5DBB18855E4
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Mar 2025 11:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1BE3A604B
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  5 Mar 2025 11:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071BC230BC6;
-	Wed,  5 Mar 2025 11:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12B61F4172;
+	Wed,  5 Mar 2025 11:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="USVcAcsv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IGhzJ6CJ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xzfcZ1wB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lqyic2pG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFE920469F;
-	Wed,  5 Mar 2025 11:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D371230BD9;
+	Wed,  5 Mar 2025 11:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741173107; cv=none; b=Dt/CQBif28GGtuzF08hD/YkJ9Jmq2T4L+T2ii/6kZ8OX/QWXzIGZjoHubjt/27e2qDvEfOjiTB6rz5wr2AeSLcNDg+Kt678IjXTydDkejRsnhedlu6/cfj5UzEGrJYnS3T1agi0Z9Bo4X3FRtXgc5IQyPfvjO/CRHKoHQUC5VpU=
+	t=1741174198; cv=none; b=fBBsYBip9PeR3kz6oeIXYUl65cwY5bWfr7Ek3iBVrEe/huPL9i/O/cQA5JciGPp/16F0UoHyJTxjbv7t5epEfXkarj7H6LWuywaDJjHyD68GZSjjVxI9fLD1T6btCzu2cBUez7AqPefknAuf8+6kNI/5M6qLEYSPUyUy+fc/q7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741173107; c=relaxed/simple;
-	bh=L5HHsYst9ISHE7nYU/AknLZ60xHajjWuFQEfPoaBcIk=;
+	s=arc-20240116; t=1741174198; c=relaxed/simple;
+	bh=yxyEV+rxv4aAei7Y67AAaG1cSrJIbyWbGQ9QClSmoRo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=M7N6BNhztngpOblN/Ff+wMxhoP6H+YcwtuFNwTKZeo+mVhpcs/lSVEM5Sj/bJZT9T13CzchRUP4LmgwoTsOe+FdSZ8VmCBvsr3pyRWsFwFp3t4QFiIgWmTZeRem808tUALqtv9hEUF10bke9MdUo21VlDf+JEUxoVJDRE3+8Bhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=USVcAcsv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IGhzJ6CJ; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Ivtdvlb0jtRZY8TC4bTmiDyUrAn+l0Pp6QX0shnm8sOFG8kR4pWEACIyXuSF+bg+NY5iYf6CTSjFd6+wEsNX6q4H19XAY6RkRsP2SUTHakryMIXuD6+TgOO6E6xOyUSqgzieKGrDvIhQw6Cp21KqFsg7C+HGCJrpBiRCqGI4Q6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xzfcZ1wB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lqyic2pG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 05 Mar 2025 11:11:40 -0000
+Date: Wed, 05 Mar 2025 11:29:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741173104;
+	s=2020; t=1741174194;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ya1VBObvCjvw/wt8IPOmIefcMv/CC9W7CsnJSGYxhu8=;
-	b=USVcAcsvdiUpJRgIsgMxvvL4kGINeGtQ3on3KsRLqJT+1ojYqFZA53/xIF8Ke/AfjLGovd
-	WjdhI2GiMDHDxJ2XzZXLWv4HvcizMR5xq4cLznlBQq+MKv+ZZlZp1K9NUdK+0lL2ekojUQ
-	ya1/VcRC4FGO6onMAgfaJ9F5E8KKeSwy/3NagymB0MxDpqWUoJRwtvm1lfDmN0N/x0RefY
-	/+reB2wasf842u7NbIV6jqoV/prVV2a4yiHYxszsGPoVMtL/VOElt9HsEHgJ9Ol4p5Rn3O
-	bjbvvvuQnpjBZdqD9k85jwe5wItubQBusyYKZwUXcpOt0iFyiwTEl77YaU/tEA==
+	bh=ntubxHJVsH7XJ/HAJf1fULkz5dfevC//cSeAVJUIwKA=;
+	b=xzfcZ1wBj3A9zfLuVrQMEMagep7G32MxxvsffEc1fNz0tjgdar3CCnDTB6mUjjEtTXFJkB
+	bYZR7dHJwpSzENhl8DdkwJeZeGm0wVIsF/WeFpiruNtgicXHVrlx24bwkAkCPtzDTHeibW
+	ya0QbHeCMWiSKLT8zIh7Tw5Cc089abZd5YIhLEgWxWNiE6BugPlNY0r5TUNi6J3Vpu49ef
+	xxKSAKZiex7YhhXkfM6TbMCrHtgAOFaH0clxqlZUcRc029QkhpuQQR+1rM47I31dLNq1Vt
+	aZncR5pmRYO3bkXC8aDVLj0D4sikjFjcIIlS/dbTItSpRsC7cBR6MIuQ5CbnFg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741173104;
+	s=2020e; t=1741174194;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ya1VBObvCjvw/wt8IPOmIefcMv/CC9W7CsnJSGYxhu8=;
-	b=IGhzJ6CJMKHWTzQcILhs6VGbt3WwypBV1TRc1C5qc1VRYfBHplC6hLOGaFKRm3++cWnWcg
-	jo6TzPdGh2NREsBQ==
-From: "tip-bot2 for Joerg Roedel" <tip-bot2@linutronix.de>
+	bh=ntubxHJVsH7XJ/HAJf1fULkz5dfevC//cSeAVJUIwKA=;
+	b=lqyic2pG96mGda+lB3yLlQ4KAj4VqCOEfc0IhZtqiyAsJ51k6myMCzlrFv795VOgWX0AgA
+	K4cS+iWUga89waCg==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Make SEV_STATUS available via SYSFS
-Cc: Joerg Roedel <jroedel@suse.de>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: perf/core] perf/core: Clean up perf_try_init_event()
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, Ravi Bangoria <ravi.bangoria@amd.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250305105234.235553-1-joro@8bytes.org>
-References: <20250305105234.235553-1-joro@8bytes.org>
+In-Reply-To: <20250205102449.110145835@infradead.org>
+References: <20250205102449.110145835@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174117310090.14745.4903355074119364385.tip-bot2@tip-bot2>
+Message-ID: <174117419275.14745.5246949160919511795.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,54 +79,109 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1d307efcf3b75d1d3aa2f8e7e932eae182d5323a
-Gitweb:        https://git.kernel.org/tip/1d307efcf3b75d1d3aa2f8e7e932eae182d5323a
-Author:        Joerg Roedel <jroedel@suse.de>
-AuthorDate:    Wed, 05 Mar 2025 11:52:34 +01:00
+Commit-ID:     da02f54e81db2f7bf6af9d1d0cfc5b41ec6d0dcb
+Gitweb:        https://git.kernel.org/tip/da02f54e81db2f7bf6af9d1d0cfc5b41ec6d0dcb
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 05 Feb 2025 11:21:28 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 05 Mar 2025 12:05:42 +01:00
+CommitterDate: Wed, 05 Mar 2025 12:13:59 +01:00
 
-x86/sev: Make SEV_STATUS available via SYSFS
+perf/core: Clean up perf_try_init_event()
 
-Current user-space tooling which needs access to the SEV_STATUS MSR is
-using the MSR module. The use of this module poses a security risk in
-any trusted execution environment and is generally discouraged.
+Make sure that perf_try_init_event() doesn't leave event->pmu nor
+event->destroy set on failure.
 
-Instead, provide an file in SYSFS in the already existing
-/sys/devices/system/cpu/sev/ directory to provide the value of the
-SEV_STATUS MSR to user-space.
-
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250305105234.235553-1-joro@8bytes.org
+Acked-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250205102449.110145835@infradead.org
 ---
- arch/x86/coco/sev/core.c |  9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/events/core.c | 65 +++++++++++++++++++++++++------------------
+ 1 file changed, 38 insertions(+), 27 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 82492ef..7b23fb8 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2678,10 +2678,19 @@ static ssize_t vmpl_show(struct kobject *kobj,
- 	return sysfs_emit(buf, "%d\n", snp_vmpl);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index b2334d2..f159dba 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -12109,40 +12109,51 @@ static int perf_try_init_event(struct pmu *pmu, struct perf_event *event)
+ 	if (ctx)
+ 		perf_event_ctx_unlock(event->group_leader, ctx);
+ 
+-	if (!ret) {
+-		if (!(pmu->capabilities & PERF_PMU_CAP_EXTENDED_REGS) &&
+-		    has_extended_regs(event))
+-			ret = -EOPNOTSUPP;
++	if (ret)
++		goto err_pmu;
+ 
+-		if (pmu->capabilities & PERF_PMU_CAP_NO_EXCLUDE &&
+-		    event_has_any_exclude_flag(event))
+-			ret = -EINVAL;
++	if (!(pmu->capabilities & PERF_PMU_CAP_EXTENDED_REGS) &&
++	    has_extended_regs(event)) {
++		ret = -EOPNOTSUPP;
++		goto err_destroy;
++	}
+ 
+-		if (pmu->scope != PERF_PMU_SCOPE_NONE && event->cpu >= 0) {
+-			const struct cpumask *cpumask = perf_scope_cpu_topology_cpumask(pmu->scope, event->cpu);
+-			struct cpumask *pmu_cpumask = perf_scope_cpumask(pmu->scope);
+-			int cpu;
+-
+-			if (pmu_cpumask && cpumask) {
+-				cpu = cpumask_any_and(pmu_cpumask, cpumask);
+-				if (cpu >= nr_cpu_ids)
+-					ret = -ENODEV;
+-				else
+-					event->event_caps |= PERF_EV_CAP_READ_SCOPE;
+-			} else {
+-				ret = -ENODEV;
+-			}
+-		}
++	if (pmu->capabilities & PERF_PMU_CAP_NO_EXCLUDE &&
++	    event_has_any_exclude_flag(event)) {
++		ret = -EINVAL;
++		goto err_destroy;
++	}
+ 
+-		if (ret && event->destroy)
+-			event->destroy(event);
++	if (pmu->scope != PERF_PMU_SCOPE_NONE && event->cpu >= 0) {
++		const struct cpumask *cpumask;
++		struct cpumask *pmu_cpumask;
++		int cpu;
++
++		cpumask = perf_scope_cpu_topology_cpumask(pmu->scope, event->cpu);
++		pmu_cpumask = perf_scope_cpumask(pmu->scope);
++
++		ret = -ENODEV;
++		if (!pmu_cpumask || !cpumask)
++			goto err_destroy;
++
++		cpu = cpumask_any_and(pmu_cpumask, cpumask);
++		if (cpu >= nr_cpu_ids)
++			goto err_destroy;
++
++		event->event_caps |= PERF_EV_CAP_READ_SCOPE;
+ 	}
+ 
+-	if (ret) {
+-		event->pmu = NULL;
+-		module_put(pmu->module);
++	return 0;
++
++err_destroy:
++	if (event->destroy) {
++		event->destroy(event);
++		event->destroy = NULL;
+ 	}
+ 
++err_pmu:
++	event->pmu = NULL;
++	module_put(pmu->module);
+ 	return ret;
  }
- 
-+static ssize_t sev_status_show(struct kobject *kobj,
-+			       struct kobj_attribute *attr, char *buf)
-+{
-+	return sysfs_emit(buf, "%llx\n", sev_status);
-+}
-+
- static struct kobj_attribute vmpl_attr = __ATTR_RO(vmpl);
-+static struct kobj_attribute sev_status_attr = __ATTR_RO(sev_status);
-+
- 
- static struct attribute *vmpl_attrs[] = {
- 	&vmpl_attr.attr,
-+	&sev_status_attr.attr,
- 	NULL
- };
  
 
