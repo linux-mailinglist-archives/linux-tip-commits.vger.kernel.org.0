@@ -1,170 +1,161 @@
-Return-Path: <linux-tip-commits+bounces-4038-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4039-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A286A55925
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:54:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F23DA55932
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 23:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B0A3A3C30
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 21:53:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722441763EC
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B3927603F;
-	Thu,  6 Mar 2025 21:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E575C27C14D;
+	Thu,  6 Mar 2025 22:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JfJDu03/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Au7ecFd"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bi9LCvTA"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1282702B8;
-	Thu,  6 Mar 2025 21:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F95277024;
+	Thu,  6 Mar 2025 22:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741298046; cv=none; b=EaaRu94sEF1VNzEHZgAv/gYS8verTZSMXTbgggmjpCWnwgoYpJ1yThJUxtGFsyrMIru9+Gi6iBRt1bJFL8cij7Bn/NCy72P6FwNTAheoXHKMXvycTGdeik04NwfydRf03QHQHAwFJRu2tNtC/EFyfuHULrooEayo2VeVAUyQe/E=
+	t=1741298421; cv=none; b=cwXHtHKibSdz+wdej6pRMmLpGDdRhqjdEsd3uguQDNZ0tNtoPEDex7CA3If9ZWImhmocaAIhXjewoOvsHXtxu4yYLmj1fmu2pLeUdxYR61Ml7bKCnMPFZTq8E3wG+gbp042NOgiAWe6v6HB1S3MbIo1TurWAuPhv/7zl0xc/ls0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741298046; c=relaxed/simple;
-	bh=0MxTVhkkqUJm8NYR6Rhvn3k8STzYB9/KQ8s+JjzPUL4=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZKy4r76xF1gj7L66xhGYLrAc7mjdO6K4BjtntIn6AG2DRv2I1Ej1ZhmfD3V+Fr4M6GMtrRs9UgPU0Z+rXUqACI9AZMcVTqRZdd0CZL0NsfNj6yvv0hdAqwKdfE3S/KO5GWCu27QXWWAaREG6YfwSl7wWT6siTpO0wkyOCtRyGoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JfJDu03/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1Au7ecFd; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 06 Mar 2025 21:54:01 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741298042;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsV/qOj1S2gyLzpiAdU+wKdYkU8ijPMIXpcYVkegI3o=;
-	b=JfJDu03/OQxbdbNyoRL+qz0Rk6XqHoxzn9s2IWbdHqO3seQh8ms/EJq24M8T/nAEHyiYsL
-	nF9VJ78OpBvVQKRloahEzCRGcwk9ABGY3Gr7a2TYQnZtjm0/EBPa+yrXtVlSGycP4iptqX
-	mf3/wPz7yFk48na3Wgw7N8FvnNeva/kzwkVS1tpUu87Mu1Vv7LQtvFZ4cZKJJtcoAATOfY
-	iizucM5dFMbFL1vllYzXfwm96IgbWWVeJamYwOJEdM/f8XgSW7OxxsS87A5KiHRRlNTPbX
-	p2tymo1Yg7LO9DFbqSzRsPWN+71W756gNTJ8IX1Qj654n4NgVfHA+o83LbZWqA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741298042;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zsV/qOj1S2gyLzpiAdU+wKdYkU8ijPMIXpcYVkegI3o=;
-	b=1Au7ecFdWnpoTdWCo69KVnRQd7SKkz/4yeeC25kibiQBw2ycT1R0ltiGlEa6zO/Al5aIkv
-	3SzLa4pagSU6NoBA==
-From: "tip-bot2 for Li RongQing" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/bts: Check if bts_ctx is allocated
- when calling BTS functions
-Cc: Jiri Olsa <olsajiri@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
- Adrian Hunter <adrian.hunter@intel.com>, Dave Hansen <dave.hansen@intel.com>,
- Li RongQing <lirongqing@baidu.com>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250306051102.2642-1-lirongqing@baidu.com>
-References: <20250306051102.2642-1-lirongqing@baidu.com>
+	s=arc-20240116; t=1741298421; c=relaxed/simple;
+	bh=Zs+tTAIxX3ePN/KYhRZTW8Wmq0k2cGIFNrzoMNDUR3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S5G0VzO/rfVAF2Iiq8CV0LpiXYByde9zD/FhH+MDeNS6v3QuH2jrf9FsC/37p/c34Hz5iW2MORk95bvky1GKntniCcXnewyyh0ZkZrIpl1oY5W8c6rDYU1PWGcNuKlq5FW55cWoZqT4y9HRYGmjKugE5nYWZeV6XG5yAu5lbVTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bi9LCvTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5265C4CEE0;
+	Thu,  6 Mar 2025 22:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741298420;
+	bh=Zs+tTAIxX3ePN/KYhRZTW8Wmq0k2cGIFNrzoMNDUR3w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bi9LCvTA7VrS+yobZyd4FP6V2NU7Jd84HaSskT/Bjxn2Riy6icyAiJIBk+F2GEAYm
+	 hmR7FLVHWQU1VQTYnZxeDOibogfv08JIRoN8ZxmVKnXZfISxfHAiVxMs2a8QIb1a7V
+	 i11P+wNAkaDnzISQBzUho3Z0/d3fZbm+SI6GHjGF1p05tKdLeXQq4u6lJrGNWki8Xk
+	 N0oFVRf1XhHmJnp09vO05dWY4sSzn8/H65GxABDUdLE6awBX2TKOX/j1bx4Nol0VJf
+	 KsT8NtJYKb5Oo/q12j2VHf77aa8FTZagXqzBg1Dw0N+5q97X7ybdPV7LSVOqedindd
+	 eggVxomNEsBJA==
+Date: Thu, 6 Mar 2025 23:00:16 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, x86@kernel.org
+Subject: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
+Message-ID: <Z8oa8AUVyi2HWfo9@gmail.com>
+References: <20250306092658.378837-1-andriy.shevchenko@linux.intel.com>
+ <174125602814.14745.12946945836213678532.tip-bot2@tip-bot2>
+ <CAHk-=whTGVy1aaEashu3K49wuG7-hARh02xbAr_hMm3844Ec7Q@mail.gmail.com>
+ <Z8oSAQiBvVJ_METQ@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174129804137.14745.8636756193763878398.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8oSAQiBvVJ_METQ@gmail.com>
 
-The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     7a310c644cf571fbdb1d447a1dc39cf048634589
-Gitweb:        https://git.kernel.org/tip/7a310c644cf571fbdb1d447a1dc39cf048634589
-Author:        Li RongQing <lirongqing@baidu.com>
-AuthorDate:    Thu, 06 Mar 2025 13:11:02 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 06 Mar 2025 22:42:26 +01:00
+* Ingo Molnar <mingo@kernel.org> wrote:
 
-perf/x86/intel/bts: Check if bts_ctx is allocated when calling BTS functions
+> Separating out the assembler-compatible defines from the types 
+> headers appears to be a bigger patch, since it's all mixed in with C 
+> syntax:
+> 
+> <=-----------------------------------===============================
+> typedef struct { pud_t pud; } pmd_t;
+> 
+> #define PMD_SHIFT       PUD_SHIFT
+> #define PTRS_PER_PMD    1
+> #define PMD_SIZE        (1UL << PMD_SHIFT)
+> #define PMD_MASK        (~(PMD_SIZE-1))
+> 
+> /*
+>  * The "pud_xxx()" functions here are trivial for a folded two-level
+>  * setup: the pmd is never bad, and a pmd always exists (as it's folded
+>  * into the pud entry)
+>  */
+> static inline int pud_none(pud_t pud)           { return 0; }
+> static inline int pud_bad(pud_t pud)            { return 0; }
+> static inline int pud_present(pud_t pud)        { return 1; }
+> ================================================================>
+> 
+> In any case I've removed the commit for the time being until this all 
+> is cleared up.
 
-bts_ctx might not be allocated, for example if the CPU has X86_FEATURE_PTI,
-but intel_bts_disable/enable_local() and intel_bts_interrupt() are called
-unconditionally from intel_pmu_handle_irq() and crash on bts_ctx.
+So there's a simple solution: define it on i386 too, via the patch 
+below. It appears the double-definition doesn't create any warnings, on 
+GCC at least.
 
-So check if bts_ctx is allocated when calling BTS functions.
+But if it's an issue, we could do something like this in 
+<asm-generic/pgtable-nopmd.h>:
 
-Fixes: 3acfcefa795c ("perf/x86/intel/bts: Allocate bts_ctx only if necessary")
-Reported-by: Jiri Olsa <olsajiri@gmail.com>
-Tested-by: Jiri Olsa <jolsa@kernel.org>
-Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
+ #if defined(PTRS_PER_PMD) && (PTRS_PER_PMD != 1)
+ # error "mm: Wait a minute, that's a super confusing pagetable setup ..."
+ #endif
+
+?
+
+Thanks,
+
+	Ingo
+
+=========================>
+From: Ingo Molnar <mingo@kernel.org>
+Date: Thu, 6 Mar 2025 22:53:49 +0100
+Subject: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
+
+Andy reported the following build warning from head_32.S:
+
+  In file included from arch/x86/kernel/head_32.S:29:
+  arch/x86/include/asm/pgtable_32.h:59:5: error: "PTRS_PER_PMD" is not defined, evaluates to 0 [-Werror=undef]
+       59 | #if PTRS_PER_PMD > 1
+
+The reason is that on 2-level i386 paging the folded in PMD's
+PTRS_PER_PMD constant is not defined in assembly headers,
+only in generic MM C headers.
+
+Instead of trying to fish out the definition from the generic
+headers, just define it - it even has a comment for it already...
+
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250306051102.2642-1-lirongqing@baidu.com
 ---
- arch/x86/events/intel/bts.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/pgtable-2level_types.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
-index 953868d..39a987d 100644
---- a/arch/x86/events/intel/bts.c
-+++ b/arch/x86/events/intel/bts.c
-@@ -338,9 +338,14 @@ static void bts_event_stop(struct perf_event *event, int flags)
+diff --git a/arch/x86/include/asm/pgtable-2level_types.h b/arch/x86/include/asm/pgtable-2level_types.h
+index 7f6ccff0ba72..4a12c276b181 100644
+--- a/arch/x86/include/asm/pgtable-2level_types.h
++++ b/arch/x86/include/asm/pgtable-2level_types.h
+@@ -23,17 +23,17 @@ typedef union {
+ #define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
  
- void intel_bts_enable_local(void)
- {
--	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
--	int state = READ_ONCE(bts->state);
-+	struct bts_ctx *bts;
-+	int state;
+ /*
+- * traditional i386 two-level paging structure:
++ * Traditional i386 two-level paging structure:
+  */
  
-+	if (!bts_ctx)
-+		return;
-+
-+	bts = this_cpu_ptr(bts_ctx);
-+	state = READ_ONCE(bts->state);
- 	/*
- 	 * Here we transition from INACTIVE to ACTIVE;
- 	 * if we instead are STOPPED from the interrupt handler,
-@@ -358,7 +363,12 @@ void intel_bts_enable_local(void)
+ #define PGDIR_SHIFT	22
+ #define PTRS_PER_PGD	1024
  
- void intel_bts_disable_local(void)
- {
--	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
-+	struct bts_ctx *bts;
-+
-+	if (!bts_ctx)
-+		return;
-+
-+	bts = this_cpu_ptr(bts_ctx);
+-
+ /*
+- * the i386 is two-level, so we don't really have any
+- * PMD directory physically.
++ * The i386 is two-level, so we don't really have any
++ * PMD directory physically:
+  */
++#define PTRS_PER_PMD	1
  
- 	/*
- 	 * Here we transition from ACTIVE to INACTIVE;
-@@ -450,12 +460,17 @@ bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle)
- int intel_bts_interrupt(void)
- {
- 	struct debug_store *ds = this_cpu_ptr(&cpu_hw_events)->ds;
--	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
--	struct perf_event *event = bts->handle.event;
-+	struct bts_ctx *bts;
-+	struct perf_event *event;
- 	struct bts_buffer *buf;
- 	s64 old_head;
- 	int err = -ENOSPC, handled = 0;
+ #define PTRS_PER_PTE	1024
  
-+	if (!bts_ctx)
-+		return 0;
-+
-+	bts = this_cpu_ptr(bts_ctx);
-+	event = bts->handle.event;
- 	/*
- 	 * The only surefire way of knowing if this NMI is ours is by checking
- 	 * the write ptr against the PMI threshold.
+
 
