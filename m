@@ -1,136 +1,142 @@
-Return-Path: <linux-tip-commits+bounces-4034-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4035-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6175FA558AE
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:22:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C32A558DA
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8497D3A6382
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 21:22:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F481893AF1
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 21:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37E0207DF3;
-	Thu,  6 Mar 2025 21:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF5F20764B;
+	Thu,  6 Mar 2025 21:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uwn0bef7"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bZsjzzv9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AbHbZCHf"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B928E1A3176;
-	Thu,  6 Mar 2025 21:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25932207669;
+	Thu,  6 Mar 2025 21:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741296134; cv=none; b=ER85SDVPtcKNq6dHaO5zHRxyLXX8OTyhX84qOBW/bVZ+ziZBuHwqzaCqBGaAaJ9SVWRaedqeX+3QFGrypvQ5+3eJstFNeVNr1yfU6UP87KGw+188jgVctUb6jVjuToJ3cJNz1PdX7nMpthPSI5UaBga6UFwYY95HB9wrdYeeRj4=
+	t=1741296823; cv=none; b=rca1qIVbyKtVjMQNv+R+6afPvIx1aoesW/oizVPiI7xIO7quj4VFoDNUD9y0kPnPo39cUw7tl5KuTQ6CsluPvqoMX91xnqcJ2MSJJ2V91lkfbBykK0jiArMdjKN8v+mTvhNe+sADMXZb66BeiYuWYlTLv74ox28F1XTj6AcUhCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741296134; c=relaxed/simple;
-	bh=RJ7L2/PCOnNpUBmkwWMftwXfB0mjGlfWd+PF6zlAMkA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aeemr+JhJJ31Mp6gBx+ILcL5k33WG2jWccCZRgJidZDYCmmpjmZiMLjN3glddko5b301eGNV+d7H5Br3+pAGtTC9ftKoVfR1yIRTbDjb4JgHNVndi/ypiIDjM3dkktIBX3SMLM7nTGK6VhMsnXL29Qv0X+j4IQlV4FH+sq8VLD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uwn0bef7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935FDC4CEE0;
-	Thu,  6 Mar 2025 21:22:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741296134;
-	bh=RJ7L2/PCOnNpUBmkwWMftwXfB0mjGlfWd+PF6zlAMkA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uwn0bef73GNPx8L+gZZiaT2/B3QVQ9uwWwTinqdvReKlNxgAvoNOUcLt4sZDnmvnY
-	 TUoqzUoCvAzNPrUydPuDJ/5v4FvnJ9EMOXKd1JumVsuNFR6kqZ6yfv3j0JmIjiMqmr
-	 n6OGX/ATcIBE5IOV3OyHPwslxDAR20y5NSjfbu7TIbY4a9lxdnQ4e0YNEFMNTRId/N
-	 NqK8DACwLywDYuBKuh9zEdubIAVo20kZDk/uP10B2kvM2M6vLJ2qMR6GPkaTFbo+WP
-	 wW+0GZNoQPOYx2WlVz86poGqMuRrzFbWEwBS1KfOj5w30V8X6XTtVO4LswlIa0HeWu
-	 RG+Z8wS42ZglQ==
-Date: Thu, 6 Mar 2025 22:22:09 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, x86@kernel.org
-Subject: Re: [tip: x86/mm] x86/mm: Check if PTRS_PER_PMD is defined before use
-Message-ID: <Z8oSAQiBvVJ_METQ@gmail.com>
-References: <20250306092658.378837-1-andriy.shevchenko@linux.intel.com>
- <174125602814.14745.12946945836213678532.tip-bot2@tip-bot2>
- <CAHk-=whTGVy1aaEashu3K49wuG7-hARh02xbAr_hMm3844Ec7Q@mail.gmail.com>
+	s=arc-20240116; t=1741296823; c=relaxed/simple;
+	bh=y5SFPMw1ZxPPYZSH5ahTZc4SyXIQztlkZlEL+XAXbA8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=jkh+paJ39/FDAM/CwCOPzRXMOzXIEdGEcE/RwyV7qvOUtzXxj2fpWU8PvKCYlYAot75IcBeEUMjkVVfkgzr7gdY0FpZ4oySLAxJLC5t6SkfZa3h9Y+09rpkjy2vFi+Gi9waU7OrA5TCYOA9LAMsOXsV2I5RLEsiRU053BAV2eUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bZsjzzv9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AbHbZCHf; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 06 Mar 2025 21:33:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741296820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l8keB3TccVIEx9x7nioQcAlV/fWzwl5jFltbXmTUFXs=;
+	b=bZsjzzv9Xyv0DgQHTPd+MkrZxW1vXwjlnqdVrbP9rvcba26PNFo8mUTmrwcXkTRn6uTXr0
+	cMbQ54glXQZsKboZRffGx2jabIFstS16cr9xiItjGOVsZBCJuPvJzBit7RaX4oIOfV2fT5
+	V/1DinzaLVDBSuEry92f2GkMZ6kOz8yllOXbTbRDM4fquVqmUrJgvckfeLwipPW+xQSPNG
+	uCSnFL3IVfD2YqjCOSCGskqepvmSZnfEJFMlIzeDrNORB0AgTXOp52dw23VnF5AL9DlmCL
+	Ja296aeEfIQyxhgwpt+wv5HXql0u7C2y0Q3zJ1mrPg2/o2NWxUS5BTa2a4B2OQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741296820;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l8keB3TccVIEx9x7nioQcAlV/fWzwl5jFltbXmTUFXs=;
+	b=AbHbZCHfQfoqcLBa/EnTGIlzDo2/O6D4gW+CP4DwMrD4wV8Ezhq2IsOTt5UgOqbtcy0M0E
+	M/HIo00hG4N6fLCQ==
+From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/boot: Sanitize boot params before parsing command line
+Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,  <stable@vger.kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250306155915.342465-2-ardb+git@google.com>
+References: <20250306155915.342465-2-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=whTGVy1aaEashu3K49wuG7-hARh02xbAr_hMm3844Ec7Q@mail.gmail.com>
+Message-ID: <174129681612.14745.2037949092408216187.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the x86/urgent branch of tip:
 
-* Linus Torvalds <torvalds@linux-foundation.org> wrote:
+Commit-ID:     c00b413a96261faef4ce22329153c6abd4acef25
+Gitweb:        https://git.kernel.org/tip/c00b413a96261faef4ce22329153c6abd4acef25
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Thu, 06 Mar 2025 16:59:16 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 06 Mar 2025 22:02:39 +01:00
 
-> On Thu, 6 Mar 2025 at 00:13, tip-bot2 for Andy Shevchenko
-> <tip-bot2@linutronix.de> wrote:
-> >
-> > x86/mm: Check if PTRS_PER_PMD is defined before use
-> 
-> I'm not at all happy with this one.
-> 
-> > -#if PTRS_PER_PMD > 1
-> > +#if defined(PTRS_PER_PMD) && (PTRS_PER_PMD > 1)
-> 
-> Honestly, I feel that if PTRS_PER_PMD isn't defined, we've missed some
-> include, and now the code is making random decisions based on lack of
-> information.
+x86/boot: Sanitize boot params before parsing command line
 
-Yeah, so <asm/pgtable-2level_types.h> hasn't defined it historically, 
-because 2-level paging only has PGDs and PTE tables - and it relies on 
-<asm-generic/pgtable-nopmd.h> doing it:
+The 5-level paging code parses the command line to look for the 'no5lvl'
+string, and does so very early, before sanitize_boot_params() has been
+called and has been given the opportunity to wipe bogus data from the
+fields in boot_params that are not covered by struct setup_header, and
+are therefore supposed to be initialized to zero by the bootloader.
 
- #define PTRS_PER_PMD    1
+This triggers an early boot crash when using syslinux-efi to boot a
+recent kernel built with CONFIG_X86_5LEVEL=y and CONFIG_EFI_STUB=n, as
+the 0xff padding that now fills the unused PE/COFF header is copied into
+boot_params by the bootloader, and interpreted as the top half of the
+command line pointer.
 
-<asm/pgtable_types.h> includes <asm-generic/pgtable-nopmd.h>, and with 
-it most of the MM headers.
+Fix this by sanitizing the boot_params before use. Note that there is no
+harm in calling this more than once; subsequent invocations are able to
+spot that the boot_params have already been cleaned up.
 
-But:
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Link: https://lore.kernel.org/r/20250306155915.342465-2-ardb+git@google.com
+Closes: https://lore.kernel.org/all/202503041549.35913.ulrich.gemkow@ikr.uni-stuttgart.de
+---
+ arch/x86/boot/compressed/pgtable_64.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> It should be defined either by the architecture pgtable_types.h
-> header, or if the PMD is folded away, the architecture should have
-> included <asm-generic/pgtable-nopmd.h>.
-> 
-> So I'm *really* thinking this patch is completely bogus and is hiding
-> a serious problem, and making PAGE_TABLE_SIZE() have random values.
-
-Yeah, so the MM headers cover the C case - but the bugreport was about 
-the assembly side (head_32.S):
-
-  In file included from arch/x86/kernel/head_32.S:29:
-  arch/x86/include/asm/pgtable_32.h:59:5: error: "PTRS_PER_PMD" is not defined, evaluates to 0 [-Werror=undef]
-     59 | #if PTRS_PER_PMD > 1
-
-and AFAICS the assembly version of these headers doesn't define 
-PTRS_PER_PMD.
-
-Separating out the assembler-compatible defines from the types headers 
-appears to be a bigger patch, since it's all mixed in with C syntax:
-
-<=-----------------------------------===============================
-typedef struct { pud_t pud; } pmd_t;
-
-#define PMD_SHIFT       PUD_SHIFT
-#define PTRS_PER_PMD    1
-#define PMD_SIZE        (1UL << PMD_SHIFT)
-#define PMD_MASK        (~(PMD_SIZE-1))
-
-/*
- * The "pud_xxx()" functions here are trivial for a folded two-level
- * setup: the pmd is never bad, and a pmd always exists (as it's folded
- * into the pud entry)
- */
-static inline int pud_none(pud_t pud)           { return 0; }
-static inline int pud_bad(pud_t pud)            { return 0; }
-static inline int pud_present(pud_t pud)        { return 1; }
-================================================================>
-
-In any case I've removed the commit for the time being until this all 
-is cleared up.
-
-Thanks,
-
-	Ingo
+diff --git a/arch/x86/boot/compressed/pgtable_64.c b/arch/x86/boot/compressed/pgtable_64.c
+index c882e1f..d8c5de4 100644
+--- a/arch/x86/boot/compressed/pgtable_64.c
++++ b/arch/x86/boot/compressed/pgtable_64.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "misc.h"
+ #include <asm/bootparam.h>
++#include <asm/bootparam_utils.h>
+ #include <asm/e820/types.h>
+ #include <asm/processor.h>
+ #include "pgtable.h"
+@@ -107,6 +108,7 @@ asmlinkage void configure_5level_paging(struct boot_params *bp, void *pgtable)
+ 	bool l5_required = false;
+ 
+ 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
++	sanitize_boot_params(bp);
+ 	boot_params_ptr = bp;
+ 
+ 	/*
 
