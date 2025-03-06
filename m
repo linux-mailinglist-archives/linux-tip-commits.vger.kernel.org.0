@@ -1,82 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-4029-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4030-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DD1A5493D
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 12:30:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87712A54A33
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 13:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64E3188EB49
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 11:30:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6B0C3A28DE
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 12:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0462C2066C8;
-	Thu,  6 Mar 2025 11:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BB4146588;
+	Thu,  6 Mar 2025 12:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZZUwjdE1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qBfNQ4Bp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q9v+vhmI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WGTpdKVc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3232E20ADC9;
-	Thu,  6 Mar 2025 11:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78442E3397;
+	Thu,  6 Mar 2025 12:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741260607; cv=none; b=o/RA4Jz9iYWt2UzbbOBUHNWwAyqKADjtkmPP14QO9QZieQzQ1l0K7WakYr85X4lqEyqfMvBCFOJ4+0GC0zxqvRvdxIcFVU7iwhFsfcxyAJXfB6MuNAp+1TlHqsaSA4HW4XfMI8I+u/pBTQnXYNKj/A2bMnYQv0Wo4oh/aPv0VaE=
+	t=1741262423; cv=none; b=XdBl+IAMTgH9+dfbhqt9hIdydzA6JOiwMxR3U+jOF+uY9dfTlhsDPDJT46GV+5QjQNvZmbrA7+2EvsinQi8nU71JgByUQG2e5Ewtl/W5EvSMYy2aMwmPdA2GUEnEeLeFZ7h6bdiNhvmNQGAkHDrGF3nJTFKxOLfEcUDS9xx0ObQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741260607; c=relaxed/simple;
-	bh=OpJrKTIFzZ5pckjudi3Qin4EgJkRHJdkbCYsaO+8+/E=;
+	s=arc-20240116; t=1741262423; c=relaxed/simple;
+	bh=k/Z3JskPodBWb7rxNqwMFKnqIJPwtUB3Twegd1jUOEg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=L2vOMEzW30Ns+WzijtUN6lpvUVGC5CkLLzm1CsggXtpDFVKy9REsvSIlotdUGZCb4C2CilhfhkUc85X308NzjAQpBr6WdFtIWAFBwgDJCuPnuiDtlYCzjXmSncXa2PzBtgSKZdjlDLgSJpfqmviSM9fiq4dA92ca30pbVWrRQ6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZZUwjdE1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qBfNQ4Bp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=hU3FwJ8Vw0ZOd0UzOGrpGKUFdlJyrquoI93flC9002L+SSymuyZp/keM1Tdx0wqWnzC9pgW+2cdtQlJg8GUxh4KbgIZw90OG0kswDJGnhf0BwM/EPytYW617MubCvo6SIYdM36KoFrZDNItOxkQxJGbXF00emMtjkvj60LmwL7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q9v+vhmI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WGTpdKVc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 06 Mar 2025 11:30:02 -0000
+Date: Thu, 06 Mar 2025 12:00:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741260604;
+	s=2020; t=1741262418;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7NdCogl1ODaHR/OAf9QpmrH+l5xcgxjNSNuiCkD2Hn8=;
-	b=ZZUwjdE137yKZD+ExuxH6v4eTf56vE7QF4nmnNP8QQJQ3MtkvgOF4HJ93hENavhTmIHdPK
-	GsEY8KDgvZvZxnknZXz68+SROSzlPtzQjMRftLw+9g5Xobf9YrE+1kYCh41TpIm2ri2GMU
-	qDqEly49yyTyhrA6bGrL7cfeXQ51CE/d+eB7luJTPje/ZUQT/h96Nsi+0ecCnwDbmTks9k
-	gaBaDNDzwFRL0M/foPXBJ9OyQmv8J02rJwjkQNO5Wh1+yqkHe1gQs7Xj9wd57lOygBL5Re
-	ZKV83vhShqcNZY4ZBHq6g7E7KMMqsLybVtA/2An/gmZuxIuQMF0rX0/pILVADw==
+	bh=TKYsissuzvT9ielN6X7uJeEG5droGUC8fYTwP7lvPJ0=;
+	b=Q9v+vhmIBX7SlwAa15q4qCci46LQKpUlamCEZ3uXxLPU0pssyiarXHJfXy3VXblvQIpWs+
+	vYyxBgL0RIuT8EJmowLVu/cC9xz0Y2NxGhj8pCWfJY0+0TJ8Lzu5ZhAOExmcDmd3xC39ML
+	4MTT3QFarTCr6Bb+uSxJ57umVYD38oYHhaJ4X2SY9nNRooUoZQcn+pxCbq5qosj2E7AYPs
+	yj0Br6fCNlSxtMuefxjMqyXm6ejhZi/CvsQnWRtZtYIEO0tAzCKOhdIKtvsJ5QFJBd0lln
+	irPetMXmm5W5p4tN4iE970+N1rZ0HaRAA1j/3FLl8iqFWFxMKJYPaUNE+fvhoA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741260604;
+	s=2020e; t=1741262418;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7NdCogl1ODaHR/OAf9QpmrH+l5xcgxjNSNuiCkD2Hn8=;
-	b=qBfNQ4Bp5xJmWqiW+NECXOZqYZPqE1vH5opXz1Ove/f77XPCa/pK3zuw8qLYjLa5XYbmoW
-	Am03WtcDc6+cpLAA==
-From: "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+	bh=TKYsissuzvT9ielN6X7uJeEG5droGUC8fYTwP7lvPJ0=;
+	b=WGTpdKVcTMRxjTCeIyJ5rVn+MA0wDj6C5aVp0vPvz1U1FCfV2Jwv03leeVQ4zxP3YtLBLW
+	1T9L37YelVAGcvAg==
+From: "tip-bot2 for Eric Biggers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/core] uprobes/x86: Harden uretprobe syscall trampoline check
-Cc: Jann Horn <jannh@google.com>, Jiri Olsa <jolsa@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Kees Cook <kees@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Andy Lutomirski <luto@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250212220433.3624297-1-jolsa@kernel.org>
-References: <20250212220433.3624297-1-jolsa@kernel.org>
+Subject: [tip: x86/fpu] x86/fpu: Improve crypto performance by making
+ kernel-mode FPU reliably usable in softirqs
+Cc: Eric Biggers <ebiggers@google.com>, Ingo Molnar <mingo@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Oleg Nesterov <oleg@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250304204954.3901-1-ebiggers@kernel.org>
+References: <20250304204954.3901-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174126060240.14745.15365015848455636391.tip-bot2@tip-bot2>
+Message-ID: <174126241675.14745.2521678635311279694.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,103 +82,194 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0
-Gitweb:        https://git.kernel.org/tip/fa6192adc32f4fdfe5b74edd5b210e12afd6ecc0
-Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Wed, 12 Feb 2025 23:04:33 +01:00
+Commit-ID:     d02198550423a0b695e7a24ec77153209ad45b09
+Gitweb:        https://git.kernel.org/tip/d02198550423a0b695e7a24ec77153209ad45b09
+Author:        Eric Biggers <ebiggers@google.com>
+AuthorDate:    Tue, 04 Mar 2025 12:49:54 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 06 Mar 2025 12:22:45 +01:00
+CommitterDate: Thu, 06 Mar 2025 12:44:09 +01:00
 
-uprobes/x86: Harden uretprobe syscall trampoline check
+x86/fpu: Improve crypto performance by making kernel-mode FPU reliably usable in softirqs
 
-Jann reported a possible issue when trampoline_check_ip returns
-address near the bottom of the address space that is allowed to
-call into the syscall if uretprobes are not set up:
+Background:
+===========
 
-   https://lore.kernel.org/bpf/202502081235.5A6F352985@keescook/T/#m9d416df341b8fbc11737dacbcd29f0054413cbbf
+Currently kernel-mode FPU is not always usable in softirq context on
+x86, since softirqs can nest inside a kernel-mode FPU section in task
+context, and nested use of kernel-mode FPU is not supported.
 
-Though the mmap minimum address restrictions will typically prevent
-creating mappings there, let's make sure uretprobe syscall checks
-for that.
+Therefore, x86 SIMD-optimized code that can be called in softirq context
+has to sometimes fall back to non-SIMD code.  There are two options for
+the fallback, both of which are pretty terrible:
 
-Fixes: ff474a78cef5 ("uprobe: Add uretprobe syscall to speed up return probe")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+  (a) Use a scalar fallback.  This can be 10-100x slower than vectorized
+      code because it cannot use specialized instructions like AES, SHA,
+      or carryless multiplication.
+
+  (b) Execute the request asynchronously using a kworker.  In other
+      words, use the "crypto SIMD helper" in crypto/simd.c.
+
+Currently most of the x86 en/decryption code (skcipher and aead
+algorithms) uses option (b), since this avoids the slow scalar fallback
+and it is easier to wire up.  But option (b) is still really bad for its
+own reasons:
+
+  - Punting the request to a kworker is bad for performance too.
+
+  - It forces the algorithm to be marked as asynchronous
+    (CRYPTO_ALG_ASYNC), preventing it from being used by crypto API
+    users who request a synchronous algorithm.  That's another huge
+    performance problem, which is especially unfortunate for users who
+    don't even do en/decryption in softirq context.
+
+  - It makes all en/decryption operations take a detour through
+    crypto/simd.c.  That involves additional checks and an additional
+    indirect call, which slow down en/decryption for *everyone*.
+
+Fortunately, the skcipher and aead APIs are only usable in task and
+softirq context in the first place.  Thus, if kernel-mode FPU were to be
+reliably usable in softirq context, no fallback would be needed.
+Indeed, other architectures such as arm, arm64, and riscv have already
+done this.
+
+Changes implemented:
+====================
+
+Therefore, this patch updates x86 accordingly to reliably support
+kernel-mode FPU in softirqs.
+
+This is done by just disabling softirq processing in kernel-mode FPU
+sections (when hardirqs are not already disabled), as that prevents the
+nesting that was problematic.
+
+This will delay some softirqs slightly, but only ones that would have
+otherwise been nested inside a task context kernel-mode FPU section.
+Any such softirqs would have taken the slow fallback path before if they
+tried to do any en/decryption.  Now these softirqs will just run at the
+end of the task context kernel-mode FPU section (since local_bh_enable()
+runs pending softirqs) and will no longer take the slow fallback path.
+
+Alternatives considered:
+========================
+
+- Make kernel-mode FPU sections fully preemptible.  This would require
+  growing task_struct by another struct fpstate which is more than 2K.
+
+- Make softirqs save/restore the kernel-mode FPU state to a per-CPU
+  struct fpstate when nested use is detected.  Somewhat interesting, but
+  seems unnecessary when a simpler solution exists.
+
+Performance results:
+====================
+
+I did some benchmarks with AES-XTS encryption of 16-byte messages (which is
+unrealistically small, but this makes it easier to see the overhead of
+kernel-mode FPU...).  The baseline was 384 MB/s.  Removing the use of
+crypto/simd.c, which this work makes possible, increases it to 487 MB/s,
+a +27% improvement in throughput.
+
+CPU was AMD Ryzen 9 9950X (Zen 5).  No debugging options were enabled.
+
+[ mingo: Prettified the changelog and added performance results. ]
+
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Oleg Nesterov <oleg@redhat.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Acked-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
 Cc: Andy Lutomirski <luto@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250212220433.3624297-1-jolsa@kernel.org
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lore.kernel.org/r/20250304204954.3901-1-ebiggers@kernel.org
 ---
- arch/x86/kernel/uprobes.c | 14 +++++++++-----
- include/linux/uprobes.h   |  2 ++
- kernel/events/uprobes.c   |  2 +-
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/fpu/api.h | 17 +++++++----------
+ arch/x86/kernel/fpu/core.c     | 17 +++++++++++++----
+ 2 files changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 5a952c5..9194695 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -357,19 +357,23 @@ void *arch_uprobe_trampoline(unsigned long *psize)
- 	return &insn;
- }
+diff --git a/arch/x86/include/asm/fpu/api.h b/arch/x86/include/asm/fpu/api.h
+index f86ad33..f42de5f 100644
+--- a/arch/x86/include/asm/fpu/api.h
++++ b/arch/x86/include/asm/fpu/api.h
+@@ -16,10 +16,9 @@
  
--static unsigned long trampoline_check_ip(void)
-+static unsigned long trampoline_check_ip(unsigned long tramp)
- {
--	unsigned long tramp = uprobe_get_trampoline_vaddr();
--
- 	return tramp + (uretprobe_syscall_check - uretprobe_trampoline_entry);
- }
- 
- SYSCALL_DEFINE0(uretprobe)
- {
- 	struct pt_regs *regs = task_pt_regs(current);
--	unsigned long err, ip, sp, r11_cx_ax[3];
-+	unsigned long err, ip, sp, r11_cx_ax[3], tramp;
-+
-+	/* If there's no trampoline, we are called from wrong place. */
-+	tramp = uprobe_get_trampoline_vaddr();
-+	if (unlikely(tramp == UPROBE_NO_TRAMPOLINE_VADDR))
-+		goto sigill;
- 
--	if (regs->ip != trampoline_check_ip())
-+	/* Make sure the ip matches the only allowed sys_uretprobe caller. */
-+	if (unlikely(regs->ip != trampoline_check_ip(tramp)))
- 		goto sigill;
- 
- 	err = copy_from_user(r11_cx_ax, (void __user *)regs->sp, sizeof(r11_cx_ax));
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index a40efdd..2e46b69 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -39,6 +39,8 @@ struct page;
- 
- #define MAX_URETPROBE_DEPTH		64
- 
-+#define UPROBE_NO_TRAMPOLINE_VADDR	(~0UL)
-+
- struct uprobe_consumer {
- 	/*
- 	 * handler() can return UPROBE_HANDLER_REMOVE to signal the need to
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 921ad91..70c84b9 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -2169,8 +2169,8 @@ void uprobe_copy_process(struct task_struct *t, unsigned long flags)
+ /*
+  * Use kernel_fpu_begin/end() if you intend to use FPU in kernel context. It
+- * disables preemption so be careful if you intend to use it for long periods
+- * of time.
+- * If you intend to use the FPU in irq/softirq you need to check first with
+- * irq_fpu_usable() if it is possible.
++ * disables preemption and softirq processing, so be careful if you intend to
++ * use it for long periods of time.  Kernel-mode FPU cannot be used in all
++ * contexts -- see irq_fpu_usable() for details.
   */
- unsigned long uprobe_get_trampoline_vaddr(void)
- {
-+	unsigned long trampoline_vaddr = UPROBE_NO_TRAMPOLINE_VADDR;
- 	struct xol_area *area;
--	unsigned long trampoline_vaddr = -1;
  
- 	/* Pairs with xol_add_vma() smp_store_release() */
- 	area = READ_ONCE(current->mm->uprobes_state.xol_area); /* ^^^ */
+ /* Kernel FPU states to initialize in kernel_fpu_begin_mask() */
+@@ -50,10 +49,10 @@ static inline void kernel_fpu_begin(void)
+ }
+ 
+ /*
+- * Use fpregs_lock() while editing CPU's FPU registers or fpu->fpstate.
+- * A context switch will (and softirq might) save CPU's FPU registers to
+- * fpu->fpstate.regs and set TIF_NEED_FPU_LOAD leaving CPU's FPU registers in
+- * a random state.
++ * Use fpregs_lock() while editing CPU's FPU registers or fpu->fpstate, or while
++ * using the FPU in kernel mode.  A context switch will (and softirq might) save
++ * CPU's FPU registers to fpu->fpstate.regs and set TIF_NEED_FPU_LOAD leaving
++ * CPU's FPU registers in a random state.
+  *
+  * local_bh_disable() protects against both preemption and soft interrupts
+  * on !RT kernels.
+@@ -63,8 +62,6 @@ static inline void kernel_fpu_begin(void)
+  * preemptible. Disabling preemption is the right choice here as bottom
+  * half processing is always in thread context on RT kernels so it
+  * implicitly prevents bottom half processing as well.
+- *
+- * Disabling preemption also serializes against kernel_fpu_begin().
+  */
+ static inline void fpregs_lock(void)
+ {
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 36df548..422c98c 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -60,9 +60,16 @@ bool irq_fpu_usable(void)
+ 	if (WARN_ON_ONCE(in_nmi()))
+ 		return false;
+ 
+-	/* In kernel FPU usage already active? */
+-	if (this_cpu_read(in_kernel_fpu))
++	/*
++	 * In kernel FPU usage already active?  This detects any explicitly
++	 * nested usage in task or softirq context, which is unsupported.  It
++	 * also detects attempted usage in a hardirq that has interrupted a
++	 * kernel-mode FPU section.
++	 */
++	if (this_cpu_read(in_kernel_fpu)) {
++		WARN_ON_FPU(!in_hardirq());
+ 		return false;
++	}
+ 
+ 	/*
+ 	 * When not in NMI or hard interrupt context, FPU can be used in:
+@@ -420,7 +427,8 @@ EXPORT_SYMBOL_GPL(fpu_copy_uabi_to_guest_fpstate);
+ 
+ void kernel_fpu_begin_mask(unsigned int kfpu_mask)
+ {
+-	preempt_disable();
++	if (!irqs_disabled())
++		fpregs_lock();
+ 
+ 	WARN_ON_FPU(!irq_fpu_usable());
+ 	WARN_ON_FPU(this_cpu_read(in_kernel_fpu));
+@@ -448,7 +456,8 @@ void kernel_fpu_end(void)
+ 	WARN_ON_FPU(!this_cpu_read(in_kernel_fpu));
+ 
+ 	this_cpu_write(in_kernel_fpu, false);
+-	preempt_enable();
++	if (!irqs_disabled())
++		fpregs_unlock();
+ }
+ EXPORT_SYMBOL_GPL(kernel_fpu_end);
+ 
 
