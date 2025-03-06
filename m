@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-4037-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4038-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EF1A55907
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:44:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A286A55925
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:54:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6CE218988B6
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 21:44:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B0A3A3C30
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 21:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E90D249E5;
-	Thu,  6 Mar 2025 21:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B3927603F;
+	Thu,  6 Mar 2025 21:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KwVhrkrc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QNFICH44"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JfJDu03/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Au7ecFd"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6232770B;
-	Thu,  6 Mar 2025 21:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1282702B8;
+	Thu,  6 Mar 2025 21:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741297448; cv=none; b=G5E4GaHrLcrVQjfj3J/BMExOMOYss2MdLV+pM0mHsn03XfPK8ekpwVPuyTUit9vk4h8b1w1e1U2I5YzUbPchqJBX/B58530m2Z9bK+Wjp2l2aMDwGSj6VfxNkKt8TTSp/5bbrQ3Tp+If3D6Zd46PMAgj/+Ju7uNxlcWGJNJqoRk=
+	t=1741298046; cv=none; b=EaaRu94sEF1VNzEHZgAv/gYS8verTZSMXTbgggmjpCWnwgoYpJ1yThJUxtGFsyrMIru9+Gi6iBRt1bJFL8cij7Bn/NCy72P6FwNTAheoXHKMXvycTGdeik04NwfydRf03QHQHAwFJRu2tNtC/EFyfuHULrooEayo2VeVAUyQe/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741297448; c=relaxed/simple;
-	bh=vIDPFdcIQsK2yn6F8srF6rsyapyfD7uRrCI/ehlgppA=;
+	s=arc-20240116; t=1741298046; c=relaxed/simple;
+	bh=0MxTVhkkqUJm8NYR6Rhvn3k8STzYB9/KQ8s+JjzPUL4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=uvz7VwvgxeqZwfyREFy5CuKvLJzCqmXCO+EzIq1Clp0Bkuizlx8ciuQ4M/UflwkSfDkhPI1zxmdxfv4wZehiORL/xR3sQS/S+tobrvv3ZyqHu+4175gvWBmEvX2ntMsq3BwrloJLsrqBnfFvawi+GLoO7FQ0Up9EyweF5baZ5E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KwVhrkrc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QNFICH44; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ZKy4r76xF1gj7L66xhGYLrAc7mjdO6K4BjtntIn6AG2DRv2I1Ej1ZhmfD3V+Fr4M6GMtrRs9UgPU0Z+rXUqACI9AZMcVTqRZdd0CZL0NsfNj6yvv0hdAqwKdfE3S/KO5GWCu27QXWWAaREG6YfwSl7wWT6siTpO0wkyOCtRyGoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JfJDu03/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1Au7ecFd; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 06 Mar 2025 21:44:00 -0000
+Date: Thu, 06 Mar 2025 21:54:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741297444;
+	s=2020; t=1741298042;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bBbX+unALGmbgkrG93JWzPul4iVf1dsagdd6bL2PSEA=;
-	b=KwVhrkrc/KOoSfhRiOGR3cqftXyQ5YXvZnmxkVClJyphT/fguUSZebYCzzQeIoYPHQDzFY
-	8nBVniK9ME++g/OX9JaH2nVljlaxS7d9bqw5RpGxvjjKW5U4zEiYeDUQSEC9pv7h2CJlIJ
-	DHSQAJfVIS7Gf9vDztGYrtqy4cerQi/5w7xResyEgSlDNQPnMMgpoTF8M1TNa1jyDAyeAl
-	0ZzXFluSh14nGolIhONJewu8klqTLQUXeoFTg8S1w5hfDxExmvXadubXK9PhkX8BlLtDhL
-	iGrv5vZAT7BeYEWPFqdiPyma0XETlOmVpx5zASXrH63gtHnhv4btBJtoqgULpw==
+	bh=zsV/qOj1S2gyLzpiAdU+wKdYkU8ijPMIXpcYVkegI3o=;
+	b=JfJDu03/OQxbdbNyoRL+qz0Rk6XqHoxzn9s2IWbdHqO3seQh8ms/EJq24M8T/nAEHyiYsL
+	nF9VJ78OpBvVQKRloahEzCRGcwk9ABGY3Gr7a2TYQnZtjm0/EBPa+yrXtVlSGycP4iptqX
+	mf3/wPz7yFk48na3Wgw7N8FvnNeva/kzwkVS1tpUu87Mu1Vv7LQtvFZ4cZKJJtcoAATOfY
+	iizucM5dFMbFL1vllYzXfwm96IgbWWVeJamYwOJEdM/f8XgSW7OxxsS87A5KiHRRlNTPbX
+	p2tymo1Yg7LO9DFbqSzRsPWN+71W756gNTJ8IX1Qj654n4NgVfHA+o83LbZWqA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741297444;
+	s=2020e; t=1741298042;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bBbX+unALGmbgkrG93JWzPul4iVf1dsagdd6bL2PSEA=;
-	b=QNFICH442JPbOPk9FunC/NuJIuplCql2SnCKfjLC3NIp8ibsGx5dup5s5rZFZkMMFzlxQS
-	5rQL8EW9EwcriZDQ==
-From: "tip-bot2 for Michael Jeanson" <tip-bot2@linutronix.de>
+	bh=zsV/qOj1S2gyLzpiAdU+wKdYkU8ijPMIXpcYVkegI3o=;
+	b=1Au7ecFdWnpoTdWCo69KVnRQd7SKkz/4yeeC25kibiQBw2ycT1R0ltiGlEa6zO/Al5aIkv
+	3SzLa4pagSU6NoBA==
+From: "tip-bot2 for Li RongQing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/core] rseq: Fix segfault on registration when rseq_cs is non-zero
-Cc: Michael Jeanson <mjeanson@efficios.com>, Ingo Molnar <mingo@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/intel/bts: Check if bts_ctx is allocated
+ when calling BTS functions
+Cc: Jiri Olsa <olsajiri@gmail.com>, Jiri Olsa <jolsa@kernel.org>,
+ Adrian Hunter <adrian.hunter@intel.com>, Dave Hansen <dave.hansen@intel.com>,
+ Li RongQing <lirongqing@baidu.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250306211223.109455-1-mjeanson@efficios.com>
-References: <20250306211223.109455-1-mjeanson@efficios.com>
+In-Reply-To: <20250306051102.2642-1-lirongqing@baidu.com>
+References: <20250306051102.2642-1-lirongqing@baidu.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174129744100.14745.4036542013398635459.tip-bot2@tip-bot2>
+Message-ID: <174129804137.14745.8636756193763878398.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,163 +82,89 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fd881d0a085fc54354414aed990ccf05f282ba53
-Gitweb:        https://git.kernel.org/tip/fd881d0a085fc54354414aed990ccf05f282ba53
-Author:        Michael Jeanson <mjeanson@efficios.com>
-AuthorDate:    Thu, 06 Mar 2025 16:12:21 -05:00
+Commit-ID:     7a310c644cf571fbdb1d447a1dc39cf048634589
+Gitweb:        https://git.kernel.org/tip/7a310c644cf571fbdb1d447a1dc39cf048634589
+Author:        Li RongQing <lirongqing@baidu.com>
+AuthorDate:    Thu, 06 Mar 2025 13:11:02 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 06 Mar 2025 22:26:49 +01:00
+CommitterDate: Thu, 06 Mar 2025 22:42:26 +01:00
 
-rseq: Fix segfault on registration when rseq_cs is non-zero
+perf/x86/intel/bts: Check if bts_ctx is allocated when calling BTS functions
 
-The rseq_cs field is documented as being set to 0 by user-space prior to
-registration, however this is not currently enforced by the kernel. This
-can result in a segfault on return to user-space if the value stored in
-the rseq_cs field doesn't point to a valid struct rseq_cs.
+bts_ctx might not be allocated, for example if the CPU has X86_FEATURE_PTI,
+but intel_bts_disable/enable_local() and intel_bts_interrupt() are called
+unconditionally from intel_pmu_handle_irq() and crash on bts_ctx.
 
-The correct solution to this would be to fail the rseq registration when
-the rseq_cs field is non-zero. However, some older versions of glibc
-will reuse the rseq area of previous threads without clearing the
-rseq_cs field and will also terminate the process if the rseq
-registration fails in a secondary thread. This wasn't caught in testing
-because in this case the leftover rseq_cs does point to a valid struct
-rseq_cs.
+So check if bts_ctx is allocated when calling BTS functions.
 
-What we can do is clear the rseq_cs field on registration when it's
-non-zero which will prevent segfaults on registration and won't break
-the glibc versions that reuse rseq areas on thread creation.
-
-Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+Fixes: 3acfcefa795c ("perf/x86/intel/bts: Allocate bts_ctx only if necessary")
+Reported-by: Jiri Olsa <olsajiri@gmail.com>
+Tested-by: Jiri Olsa <jolsa@kernel.org>
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Suggested-by: Dave Hansen <dave.hansen@intel.com>
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250306211223.109455-1-mjeanson@efficios.com
+Link: https://lore.kernel.org/r/20250306051102.2642-1-lirongqing@baidu.com
 ---
- kernel/rseq.c | 60 ++++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 48 insertions(+), 12 deletions(-)
+ arch/x86/events/intel/bts.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index a7d8122..b7a1ec3 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -236,6 +236,29 @@ efault:
- 	return -EFAULT;
- }
+diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
+index 953868d..39a987d 100644
+--- a/arch/x86/events/intel/bts.c
++++ b/arch/x86/events/intel/bts.c
+@@ -338,9 +338,14 @@ static void bts_event_stop(struct perf_event *event, int flags)
  
-+/*
-+ * Get the user-space pointer value stored in the 'rseq_cs' field.
-+ */
-+static int rseq_get_rseq_cs_ptr_val(struct rseq __user *rseq, u64 *rseq_cs)
-+{
-+	if (!rseq_cs)
-+		return -EFAULT;
-+
-+#ifdef CONFIG_64BIT
-+	if (get_user(*rseq_cs, &rseq->rseq_cs))
-+		return -EFAULT;
-+#else
-+	if (copy_from_user(rseq_cs, &rseq->rseq_cs, sizeof(*rseq_cs)))
-+		return -EFAULT;
-+#endif
-+
-+	return 0;
-+}
-+
-+/*
-+ * If the rseq_cs field of 'struct rseq' contains a valid pointer to
-+ * user-space, copy 'struct rseq_cs' from user-space and validate its fields.
-+ */
- static int rseq_get_rseq_cs(struct task_struct *t, struct rseq_cs *rseq_cs)
+ void intel_bts_enable_local(void)
  {
- 	struct rseq_cs __user *urseq_cs;
-@@ -244,17 +267,16 @@ static int rseq_get_rseq_cs(struct task_struct *t, struct rseq_cs *rseq_cs)
- 	u32 sig;
- 	int ret;
+-	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
+-	int state = READ_ONCE(bts->state);
++	struct bts_ctx *bts;
++	int state;
  
--#ifdef CONFIG_64BIT
--	if (get_user(ptr, &t->rseq->rseq_cs))
--		return -EFAULT;
--#else
--	if (copy_from_user(&ptr, &t->rseq->rseq_cs, sizeof(ptr)))
--		return -EFAULT;
--#endif
-+	ret = rseq_get_rseq_cs_ptr_val(t->rseq, &ptr);
-+	if (ret)
-+		return ret;
++	if (!bts_ctx)
++		return;
 +
-+	/* If the rseq_cs pointer is NULL, return a cleared struct rseq_cs. */
- 	if (!ptr) {
- 		memset(rseq_cs, 0, sizeof(*rseq_cs));
- 		return 0;
- 	}
-+	/* Check that the pointer value fits in the user-space process space. */
- 	if (ptr >= TASK_SIZE)
- 		return -EINVAL;
- 	urseq_cs = (struct rseq_cs __user *)(unsigned long)ptr;
-@@ -330,7 +352,7 @@ static int rseq_need_restart(struct task_struct *t, u32 cs_flags)
- 	return !!event_mask;
- }
- 
--static int clear_rseq_cs(struct task_struct *t)
-+static int clear_rseq_cs(struct rseq __user *rseq)
- {
++	bts = this_cpu_ptr(bts_ctx);
++	state = READ_ONCE(bts->state);
  	/*
- 	 * The rseq_cs field is set to NULL on preemption or signal
-@@ -341,9 +363,9 @@ static int clear_rseq_cs(struct task_struct *t)
- 	 * Set rseq_cs to NULL.
- 	 */
- #ifdef CONFIG_64BIT
--	return put_user(0UL, &t->rseq->rseq_cs);
-+	return put_user(0UL, &rseq->rseq_cs);
- #else
--	if (clear_user(&t->rseq->rseq_cs, sizeof(t->rseq->rseq_cs)))
-+	if (clear_user(&rseq->rseq_cs, sizeof(rseq->rseq_cs)))
- 		return -EFAULT;
- 	return 0;
- #endif
-@@ -375,11 +397,11 @@ static int rseq_ip_fixup(struct pt_regs *regs)
- 	 * Clear the rseq_cs pointer and return.
- 	 */
- 	if (!in_rseq_cs(ip, &rseq_cs))
--		return clear_rseq_cs(t);
-+		return clear_rseq_cs(t->rseq);
- 	ret = rseq_need_restart(t, rseq_cs.flags);
- 	if (ret <= 0)
- 		return ret;
--	ret = clear_rseq_cs(t);
-+	ret = clear_rseq_cs(t->rseq);
- 	if (ret)
- 		return ret;
- 	trace_rseq_ip_fixup(ip, rseq_cs.start_ip, rseq_cs.post_commit_offset,
-@@ -453,6 +475,7 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
- 		int, flags, u32, sig)
- {
- 	int ret;
-+	u64 rseq_cs;
+ 	 * Here we transition from INACTIVE to ACTIVE;
+ 	 * if we instead are STOPPED from the interrupt handler,
+@@ -358,7 +363,12 @@ void intel_bts_enable_local(void)
  
- 	if (flags & RSEQ_FLAG_UNREGISTER) {
- 		if (flags & ~RSEQ_FLAG_UNREGISTER)
-@@ -507,6 +530,19 @@ SYSCALL_DEFINE4(rseq, struct rseq __user *, rseq, u32, rseq_len,
- 		return -EINVAL;
- 	if (!access_ok(rseq, rseq_len))
- 		return -EFAULT;
+ void intel_bts_disable_local(void)
+ {
+-	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
++	struct bts_ctx *bts;
 +
-+	/*
-+	 * If the rseq_cs pointer is non-NULL on registration, clear it to
-+	 * avoid a potential segfault on return to user-space. The proper thing
-+	 * to do would have been to fail the registration but this would break
-+	 * older libcs that reuse the rseq area for new threads without
-+	 * clearing the fields.
-+	 */
-+	if (rseq_get_rseq_cs_ptr_val(rseq, &rseq_cs))
-+	        return -EFAULT;
-+	if (rseq_cs && clear_rseq_cs(rseq))
-+		return -EFAULT;
++	if (!bts_ctx)
++		return;
 +
- #ifdef CONFIG_DEBUG_RSEQ
++	bts = this_cpu_ptr(bts_ctx);
+ 
  	/*
- 	 * Initialize the in-kernel rseq fields copy for validation of
+ 	 * Here we transition from ACTIVE to INACTIVE;
+@@ -450,12 +460,17 @@ bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle)
+ int intel_bts_interrupt(void)
+ {
+ 	struct debug_store *ds = this_cpu_ptr(&cpu_hw_events)->ds;
+-	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
+-	struct perf_event *event = bts->handle.event;
++	struct bts_ctx *bts;
++	struct perf_event *event;
+ 	struct bts_buffer *buf;
+ 	s64 old_head;
+ 	int err = -ENOSPC, handled = 0;
+ 
++	if (!bts_ctx)
++		return 0;
++
++	bts = this_cpu_ptr(bts_ctx);
++	event = bts->handle.event;
+ 	/*
+ 	 * The only surefire way of knowing if this NMI is ours is by checking
+ 	 * the write ptr against the PMI threshold.
 
