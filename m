@@ -1,191 +1,127 @@
-Return-Path: <linux-tip-commits+bounces-4050-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4052-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1C9A5707A
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 19:27:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C355A574A0
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 23:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F093D189B859
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 18:27:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 991C37A6B58
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 22:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BE82405E4;
-	Fri,  7 Mar 2025 18:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4890D25A2A7;
+	Fri,  7 Mar 2025 22:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mm//iCO7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fmX1k1+O"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="u7tHnnC5"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5024113E;
-	Fri,  7 Mar 2025 18:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF95208973;
+	Fri,  7 Mar 2025 22:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741371952; cv=none; b=SNVerXXqYmpzbaDlWp1g4uocN4p09YvADiagRUgiz2ajH57N0LH0ecxlFScNaKa7cNPPbuq+R7Tuhp56E1Hd70/vzmoz3nP/to/zTCdqPadQifri4nCFx+OkmV8UzVN9NnNWT+mkGWodeLT8INc/GPFJBP+YijWQecrSyp0PtLg=
+	t=1741385066; cv=none; b=YJxW0SUbXyBvr2hFmta6g+AlDvjFoNYzNXP3/7RfsmFxSMXRZxCAyOWamhQn6oOM+CwYP2Ui3rjilKlvKYlA2Pm3jl0ONGRNfBMS0gLz7lFvnfout+tX9vQLaOZoeiRGTOT3BwwoUlUmEE2YOj3Pl678IAmBOf4ZZDeaGxgzL9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741371952; c=relaxed/simple;
-	bh=3Ovd0J5I7/I82BSajaIsMtk4zYygg6eqFGLuo+FNr+c=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=n5z3Rh34K01N/vpVToGlj2V5qoVxTrZ/tbqz3aRYck9WjPYRkRgTvsVRscKzmUe0zlXd5wGkHD7+tckt0No+HcB4Ju8/udlgQYyhxPK5zm0ADxf7h9kYscLXJuz13+lNc1/9uC71Ttcrwr/zbyh1tMsEhgnixoXKWaOFyRShnCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mm//iCO7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fmX1k1+O; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Mar 2025 18:25:48 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741371949;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5BAgIn8+hjI+E0W6vDfg3HoDMlP1tfnkvdf5IbyHekU=;
-	b=Mm//iCO7c+5qdVznzFCR2OHq615G9xyG96ZJYFFa2pSwTtvRQ9Rp46L72AMDLWnfBVOLYi
-	UWCW6p58tKIyZZYy/6FI3lK7aofLdM/1E78rro5AgGEn8V1RdEqSsFIeB7phjKX28hWD5y
-	dSLbwewfO40Ik/4nzqJromU9Y3YpeetwaR99sM0k/maS85z8u+wbbsSMuf/w5LNA9TtMZr
-	nkK1LUpf3f/h1/jmjHuyBoi1mnNtj5uVRtFWREAq6Hw7vjlArtCxT34K7DSxD4ivcf1BPy
-	e2Z2mSiCrfZm3II6LLcMyR3js93/Ko291/AnsqGyhMfK+QMpKJrZ/RtWavcCmA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741371949;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5BAgIn8+hjI+E0W6vDfg3HoDMlP1tfnkvdf5IbyHekU=;
-	b=fmX1k1+OCjgOUtmCNEhhMZnAwgrtRaotgSiddGMlv9zpXyJuehL76LajuBc0lgXKDdMsQF
-	JIg4EYkP7YxbTcDg==
-From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] virt: sev-guest: Allocate request data dynamically
-Cc: andreas.stuehrk@yaxi.tech, Nikunj A Dadhania <nikunj@amd.com>,
- Alexey Kardashevskiy <aik@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250307013700.437505-2-aik@amd.com>
-References: <20250307013700.437505-2-aik@amd.com>
+	s=arc-20240116; t=1741385066; c=relaxed/simple;
+	bh=UnCLBxDmaqUfb6z9OONJeWG56N0sDqbKeQXKsxxGvjw=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=R7izOHobFfrgsZL+Q8xSRS2lRg1SO7lhYoxgEpIeFYJ83UgsrNUsE+RnJAEhoVSYgXTZX6i5lZPRPmI1GOCfkxobJDiOHzYaHhPlyzlLcgV32WY745PtuGUnHwW4A8yO21zeA1P0FfTLxe+YNYYo4I4ILYIh+w/TZFGx5xX3nog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=u7tHnnC5; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 527M4DMm454517
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 7 Mar 2025 14:04:13 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 527M4DMm454517
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741385054;
+	bh=UJbdZO4NXWE6XGj+XSl8E0fP10MWbuXN/k4XZtGRd9E=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=u7tHnnC5oRK5X5oA6CGk0yJMmI9Au4UA9t5hSpEuGibfx0iFtOqA6VHKhbrksnyqW
+	 8PifKKzmZ8CFnDQ+4IBmQ7mGHDfNs3KarLdHQIR0xTY+cn7lKV/ZGH71NNZM3URkBF
+	 1axXAdWPDd0eV/0W8bT5zaQPMgpi1HlIhXCWtZ2NEGv2ZS6E739gZ+QcqQVTRyLhxq
+	 ukvRvDLMgJz1vWvakBd8pH5s7Xs7MWOVo3v0iKI7ayx9otXb76zU86Ad4jrTwfQrlm
+	 9hb/Cn6XvKSNx0ZP2Npq+skZZkn6Ku+1/gCn/4Kx4ol+7R0haQ0jq63qOjdk4JPdyT
+	 XDxPBx0vrlkSQ==
+Date: Fri, 07 Mar 2025 14:04:10 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: linux-kernel@vger.kernel.org,
+        tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org
+CC: Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Brian Gerst <brgerst@gmail.com>, x86@kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_x86/asm=5D_x86/asm=3A_Make_ASM=5FCALL?=
+ =?US-ASCII?Q?=5FCONSTRAINT_conditional_on_frame_pointers?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <174108458405.14745.4864877018394987266.tip-bot2@tip-bot2>
+References: <174108458405.14745.4864877018394987266.tip-bot2@tip-bot2>
+Message-ID: <90B1074B-E7D4-4CE0-8A82-ADEB7BAED7AD@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174137194865.14745.6525578423507333253.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On March 4, 2025 2:36:24 AM PST, tip-bot2 for Josh Poimboeuf <tip-bot2@linu=
+tronix=2Ede> wrote:
+>The following commit has been merged into the x86/asm branch of tip:
+>
+>Commit-ID:     05844663b4fcf22bb3a1494615ae3f25852c9abc
+>Gitweb:        https://git=2Ekernel=2Eorg/tip/05844663b4fcf22bb3a1494615a=
+e3f25852c9abc
+>Author:        Josh Poimboeuf <jpoimboe@kernel=2Eorg>
+>AuthorDate:    Sun, 02 Mar 2025 17:21:03 -08:00
+>Committer:     Ingo Molnar <mingo@kernel=2Eorg>
+>CommitterDate: Tue, 04 Mar 2025 11:21:40 +01:00
+>
+>x86/asm: Make ASM_CALL_CONSTRAINT conditional on frame pointers
+>
+>With frame pointers enabled, ASM_CALL_CONSTRAINT is used in an inline
+>asm statement with a call instruction to force the compiler to set up
+>the frame pointer before doing the call=2E
+>
+>Without frame pointers, no such constraint is needed=2E  Make it
+>conditional on frame pointers=2E
+>
+>Signed-off-by: Josh Poimboeuf <jpoimboe@kernel=2Eorg>
+>Signed-off-by: Ingo Molnar <mingo@kernel=2Eorg>
+>Acked-by: Peter Zijlstra (Intel) <peterz@infradead=2Eorg>
+>Cc: Linus Torvalds <torvalds@linux-foundation=2Eorg>
+>Cc: Brian Gerst <brgerst@gmail=2Ecom>
+>Cc: H=2E Peter Anvin <hpa@zytor=2Ecom>
+>Cc: linux-kernel@vger=2Ekernel=2Eorg
+>---
+> arch/x86/include/asm/asm=2Eh | 4 ++++
+> 1 file changed, 4 insertions(+)
+>
+>diff --git a/arch/x86/include/asm/asm=2Eh b/arch/x86/include/asm/asm=2Eh
+>index 0d268e6=2E=2Ef1db9e8 100644
+>--- a/arch/x86/include/asm/asm=2Eh
+>+++ b/arch/x86/include/asm/asm=2Eh
+>@@ -232,7 +232,11 @@ register unsigned long current_stack_pointer asm(_AS=
+M_SP);
+>  * gets set up by the containing function=2E  If you forget to do this, =
+objtool
+>  * may print a "call without frame pointer save/setup" warning=2E
+>  */
+>+#ifdef CONFIG_UNWINDER_FRAME_POINTER
+> #define ASM_CALL_CONSTRAINT "r" (__builtin_frame_address(0))
+>+#else
+>+#define ASM_CALL_CONSTRAINT
+>+#endif
+>=20
+> #endif /* __ASSEMBLY__ */
+>=20
 
-Commit-ID:     ac7c06acaa3738b38e83815ac0f07140ad320f13
-Gitweb:        https://git.kernel.org/tip/ac7c06acaa3738b38e83815ac0f07140ad320f13
-Author:        Nikunj A Dadhania <nikunj@amd.com>
-AuthorDate:    Thu, 06 Mar 2025 19:17:21 +11:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 07 Mar 2025 13:34:25 +01:00
-
-virt: sev-guest: Allocate request data dynamically
-
-Commit
-
-  ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-
-narrowed the command mutex scope to snp_send_guest_request().  However,
-GET_REPORT, GET_DERIVED_KEY, and GET_EXT_REPORT share the req structure in
-snp_guest_dev. Without the mutex protection, concurrent requests can overwrite
-each other's data. Fix it by dynamically allocating the request structure.
-
-Fixes: ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
-Closes: https://github.com/AMDESE/AMDSEV/issues/265
-Reported-by: andreas.stuehrk@yaxi.tech
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250307013700.437505-2-aik@amd.com
----
- drivers/virt/coco/sev-guest/sev-guest.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 264b652..23ac177 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -38,12 +38,6 @@ struct snp_guest_dev {
- 	struct miscdevice misc;
- 
- 	struct snp_msg_desc *msg_desc;
--
--	union {
--		struct snp_report_req report;
--		struct snp_derived_key_req derived_key;
--		struct snp_ext_report_req ext_report;
--	} req;
- };
- 
- /*
-@@ -71,7 +65,7 @@ struct snp_req_resp {
- 
- static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
--	struct snp_report_req *report_req = &snp_dev->req.report;
-+	struct snp_report_req *report_req __free(kfree) = NULL;
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_report_resp *report_resp;
- 	struct snp_guest_req req = {};
-@@ -80,6 +74,10 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
- 
-+	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
-+	if (!report_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_user(report_req, (void __user *)arg->req_data, sizeof(*report_req)))
- 		return -EFAULT;
- 
-@@ -116,7 +114,7 @@ e_free:
- 
- static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
--	struct snp_derived_key_req *derived_key_req = &snp_dev->req.derived_key;
-+	struct snp_derived_key_req *derived_key_req __free(kfree) = NULL;
- 	struct snp_derived_key_resp derived_key_resp = {0};
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_guest_req req = {};
-@@ -136,6 +134,10 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 	if (sizeof(buf) < resp_len)
- 		return -ENOMEM;
- 
-+	derived_key_req = kzalloc(sizeof(*derived_key_req), GFP_KERNEL_ACCOUNT);
-+	if (!derived_key_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_user(derived_key_req, (void __user *)arg->req_data,
- 			   sizeof(*derived_key_req)))
- 		return -EFAULT;
-@@ -168,7 +170,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 			  struct snp_req_resp *io)
- 
- {
--	struct snp_ext_report_req *report_req = &snp_dev->req.ext_report;
-+	struct snp_ext_report_req *report_req __free(kfree) = NULL;
- 	struct snp_msg_desc *mdesc = snp_dev->msg_desc;
- 	struct snp_report_resp *report_resp;
- 	struct snp_guest_req req = {};
-@@ -178,6 +180,10 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
- 		return -EINVAL;
- 
-+	report_req = kzalloc(sizeof(*report_req), GFP_KERNEL_ACCOUNT);
-+	if (!report_req)
-+		return -ENOMEM;
-+
- 	if (copy_from_sockptr(report_req, io->req_data, sizeof(*report_req)))
- 		return -EFAULT;
- 
+So we are going to be using this version despite the gcc maintainers telli=
+ng us it is not supported?
 
