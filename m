@@ -1,197 +1,305 @@
-Return-Path: <linux-tip-commits+bounces-4049-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4051-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57AEA56E5D
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 17:52:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BDADA57078
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 19:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F099C1699E9
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 16:52:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C1C2179A01
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 18:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B864121C177;
-	Fri,  7 Mar 2025 16:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A6D2417C5;
+	Fri,  7 Mar 2025 18:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N0j/PDvY"
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TqxdwOBf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vQaePyWt"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7DD634EC;
-	Fri,  7 Mar 2025 16:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D571123F411;
+	Fri,  7 Mar 2025 18:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741366302; cv=none; b=sDJ9MXAqOJhVcs4r/M2MyLNgOoeR2Ap+ENpYKouFVpBzHEHLltLQVYMa4w00CxBSe67ANpetik8s4HLYnZnudHqysl+0mrlwWYumtuooyP9QU9z9E3CycncfVWUJDf5ysbRLgY5ji+xXGVXhZefPSUMrfRNqn70THaa8ivuwAhU=
+	t=1741371953; cv=none; b=HtlUB6vjs6K5M7wngVB0kxjcukjrE72xkseT0Yy//gt9B9b6wjp8TaN29RIfPLhymj3IGbV2x2yT07F8DWF7yMNfLOHwF3HuRJHTfV1DpoGD7aZ1mNN39r1x6VK3r+uX01F3R/YAqKQBBBssVYGVkjIC2AKvF+vVevdZgFnapBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741366302; c=relaxed/simple;
-	bh=alWLxts8I1LVeHcFD4o9Tk354TpdfgHz+c6UXPKGrvk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LTxdt2v+DFBbXD/h1IsYUfKxKoTP6LFPHXgni61buxfFTWuFcfiDND1BoD/wkHZcBJudJS5zy4QiqSFwyEEQIRCIoZwchD1ClianvlAOVjpcYF0DwcKVqnzYE9SBZ9uLSbVmjKHAmUBgpmVa3aMFAz4Gnu1bfnHYglxD9W37QBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N0j/PDvY; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741366301; x=1772902301;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=alWLxts8I1LVeHcFD4o9Tk354TpdfgHz+c6UXPKGrvk=;
-  b=N0j/PDvYIPZ/7ksu6e04bddaHhT0/INH2+8m5NiIo04BTU1VmvZhUuQq
-   3Z7hZGHNV5XZAwcNcwisIdCYalxLsMXqyUuzAWoIdkfEPpCjYUNW1oMFz
-   EPxuPNfsblfR5jJ3PHVMTmcrez1lR+3JeY9c+CVi7LXukvcnKAAx+gZNF
-   o5sLJPZrKcz6EJIor0ohzB0r5ycxRi+v+y//6Pk6/uh8Fq85555BPMg9a
-   nwvCZrVWgHPSnnJZIdkIWBpLiQjkSlyslrHA1G7zrM2T4azNfbrWfZgv5
-   H8ZzCgKYb1YI+I5lhYk5b+GezdsOlb/2lEtn6nxZQvN2SMkuby3a/EQ3H
-   Q==;
-X-CSE-ConnectionGUID: tiH8hyVuR8mcyFBNlW9YKA==
-X-CSE-MsgGUID: Z9GVsp3LTum44YsKtk6c6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46345802"
-X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
-   d="scan'208";a="46345802"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 08:51:40 -0800
-X-CSE-ConnectionGUID: WtD25zaFT3mXXARehBlPTA==
-X-CSE-MsgGUID: 7Z7n2cvwQLuhP/uYgVY9Yw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="124601988"
-Received: from smile.fi.intel.com ([10.237.72.58])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 08:51:38 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1tqav9-00000000SjA-1hoP;
-	Fri, 07 Mar 2025 18:51:35 +0200
-Date: Fri, 7 Mar 2025 18:51:35 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	kernel test robot <lkp@intel.com>, x86@kernel.org
-Subject: Re: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
-Message-ID: <Z8skF4rtRzaDL2Ou@smile.fi.intel.com>
-References: <20250306092658.378837-1-andriy.shevchenko@linux.intel.com>
- <174125602814.14745.12946945836213678532.tip-bot2@tip-bot2>
- <CAHk-=whTGVy1aaEashu3K49wuG7-hARh02xbAr_hMm3844Ec7Q@mail.gmail.com>
- <Z8oSAQiBvVJ_METQ@gmail.com>
- <Z8oa8AUVyi2HWfo9@gmail.com>
+	s=arc-20240116; t=1741371953; c=relaxed/simple;
+	bh=6+uvT56j5CrXhq5A9atDqahn5SDHgYAbOnqBawc8lDI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=OiecRRmIcIiiuz+b8XdjS36JLZT+RvjJUQUNKz2Pv7fiFDWtm0/DAjBa8LUnyuu+VggOLdzMLQ2BchT82eZDe4JqczDJ0gJSPFl8mRF5SM1qtPbgZ4Fj8QS++AUXob5KcisLEYjbqh6ajl30wA5Yk31wpdfXltisuJ1KmPX4U1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TqxdwOBf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vQaePyWt; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 07 Mar 2025 18:25:44 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741371948;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jyRUoZ/VYkRkOOmhD+6bodu6hSbBK4ZHB5ncQD57VD0=;
+	b=TqxdwOBfq0FliLvzPFUllR9jaxACaRhQbpkH4xCYfpdKN+N7/qSCPALfathCJW7rM/FKyB
+	YcNsrlDHf7Fr7nR/vBlIifDZ9q0PsDK7DHI78fv9P60P2Nlqv1tsYhazGzd/HCZJk00umJ
+	zUBD398KMwzbLMLnqI+gFLFYZ0o646YCsWcJBuHi3mxHD2DPHjnN6YRItsQrcom3zkPO9x
+	qPoGydyD6zReQM7AtcCJN0Jza4D/AFL+Bivl7QiB5eiVcVf6R4YksHYvrBidHOe2+WTT5p
+	c1nqC3/JcQ5vHHrd8P0zfbYMJdAymAcAb4+Rs7RPNgIE+vLFPehlgGLWK/4CHw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741371948;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jyRUoZ/VYkRkOOmhD+6bodu6hSbBK4ZHB5ncQD57VD0=;
+	b=vQaePyWtW2PwMlnco7CkX2rTFbdPZMe3Z+x9P1r4MGJs9AQpIA4D/NJwggFBRWHByg5dAK
+	+DpNQdgRbOTzGZBQ==
+From: "tip-bot2 for Alexey Kardashevskiy" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] virt: sev-guest: Move SNP Guest Request data pages
+ handling under snp_cmd_mutex
+Cc: Alexey Kardashevskiy <aik@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Nikunj A Dadhania <nikunj@amd.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250307013700.437505-3-aik@amd.com>
+References: <20250307013700.437505-3-aik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8oa8AUVyi2HWfo9@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Message-ID: <174137194498.14745.3512028477594108437.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 06, 2025 at 11:00:16PM +0100, Ingo Molnar wrote:
-> * Ingo Molnar <mingo@kernel.org> wrote:
-> 
-> > Separating out the assembler-compatible defines from the types 
-> > headers appears to be a bigger patch, since it's all mixed in with C 
-> > syntax:
-> > 
-> > <=-----------------------------------===============================
-> > typedef struct { pud_t pud; } pmd_t;
-> > 
-> > #define PMD_SHIFT       PUD_SHIFT
-> > #define PTRS_PER_PMD    1
-> > #define PMD_SIZE        (1UL << PMD_SHIFT)
-> > #define PMD_MASK        (~(PMD_SIZE-1))
-> > 
-> > /*
-> >  * The "pud_xxx()" functions here are trivial for a folded two-level
-> >  * setup: the pmd is never bad, and a pmd always exists (as it's folded
-> >  * into the pud entry)
-> >  */
-> > static inline int pud_none(pud_t pud)           { return 0; }
-> > static inline int pud_bad(pud_t pud)            { return 0; }
-> > static inline int pud_present(pud_t pud)        { return 1; }
-> > ================================================================>
-> > 
-> > In any case I've removed the commit for the time being until this all 
-> > is cleared up.
-> 
-> So there's a simple solution: define it on i386 too, via the patch 
-> below. It appears the double-definition doesn't create any warnings, on 
-> GCC at least.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Fine by me as long as it gets fixed. Currently it prevents the WERROR=y
-to be used along with `make W=1` for x86_32 by both compilers.
+Commit-ID:     3e385c0d6ce88ac9916dcf84267bd5855d830748
+Gitweb:        https://git.kernel.org/tip/3e385c0d6ce88ac9916dcf84267bd5855d830748
+Author:        Alexey Kardashevskiy <aik@amd.com>
+AuthorDate:    Fri, 07 Mar 2025 12:37:00 +11:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 07 Mar 2025 14:09:33 +01:00
 
-> But if it's an issue, we could do something like this in 
-> <asm-generic/pgtable-nopmd.h>:
-> 
->  #if defined(PTRS_PER_PMD) && (PTRS_PER_PMD != 1)
->  # error "mm: Wait a minute, that's a super confusing pagetable setup ..."
->  #endif
-> 
-> ?
-> 
-> Thanks,
-> 
-> 	Ingo
-> 
-> =========================>
-> From: Ingo Molnar <mingo@kernel.org>
-> Date: Thu, 6 Mar 2025 22:53:49 +0100
-> Subject: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
-> 
-> Andy reported the following build warning from head_32.S:
-> 
->   In file included from arch/x86/kernel/head_32.S:29:
->   arch/x86/include/asm/pgtable_32.h:59:5: error: "PTRS_PER_PMD" is not defined, evaluates to 0 [-Werror=undef]
->        59 | #if PTRS_PER_PMD > 1
-> 
-> The reason is that on 2-level i386 paging the folded in PMD's
-> PTRS_PER_PMD constant is not defined in assembly headers,
-> only in generic MM C headers.
-> 
-> Instead of trying to fish out the definition from the generic
-> headers, just define it - it even has a comment for it already...
-> 
-> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> ---
->  arch/x86/include/asm/pgtable-2level_types.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/pgtable-2level_types.h b/arch/x86/include/asm/pgtable-2level_types.h
-> index 7f6ccff0ba72..4a12c276b181 100644
-> --- a/arch/x86/include/asm/pgtable-2level_types.h
-> +++ b/arch/x86/include/asm/pgtable-2level_types.h
-> @@ -23,17 +23,17 @@ typedef union {
->  #define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
->  
->  /*
-> - * traditional i386 two-level paging structure:
-> + * Traditional i386 two-level paging structure:
->   */
->  
->  #define PGDIR_SHIFT	22
->  #define PTRS_PER_PGD	1024
->  
-> -
->  /*
-> - * the i386 is two-level, so we don't really have any
-> - * PMD directory physically.
-> + * The i386 is two-level, so we don't really have any
-> + * PMD directory physically:
->   */
-> +#define PTRS_PER_PMD	1
+virt: sev-guest: Move SNP Guest Request data pages handling under snp_cmd_mutex
 
-Should I give a try?
+Compared to the SNP Guest Request, the "Extended" version adds data pages for
+receiving certificates. If not enough pages provided, the HV can report to the
+VM how much is needed so the VM can reallocate and repeat.
 
-Okay, just
+Commit
 
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+  ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
 
-for x86_32 with Clang 19.1.7 and GCC 14.2.0.
+moved handling of the allocated/desired pages number out of scope of said
+mutex and create a possibility for a race (multiple instances trying to
+trigger Extended request in a VM) as there is just one instance of
+snp_msg_desc per /dev/sev-guest and no locking other than snp_cmd_mutex.
 
--- 
-With Best Regards,
-Andy Shevchenko
+Fix the issue by moving the data blob/size and the GHCB input struct
+(snp_req_data) into snp_guest_req which is allocated on stack now and accessed
+by the GHCB caller under that mutex.
 
+Stop allocating SEV_FW_BLOB_MAX_SIZE in snp_msg_alloc() as only one of four
+callers needs it. Free the received blob in get_ext_report() right after it is
+copied to the userspace. Possible future users of snp_send_guest_request() are
+likely to have different ideas about the buffer size anyways.
 
+Fixes: ae596615d93d ("virt: sev-guest: Reduce the scope of SNP command mutex")
+Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250307013700.437505-3-aik@amd.com
+---
+ arch/x86/coco/sev/core.c                | 23 +++++-----------
+ arch/x86/include/asm/sev.h              |  6 ++--
+ drivers/virt/coco/sev-guest/sev-guest.c | 34 +++++++++++++++++++-----
+ 3 files changed, 39 insertions(+), 24 deletions(-)
+
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 82492ef..96c7bc6 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -2853,19 +2853,8 @@ struct snp_msg_desc *snp_msg_alloc(void)
+ 	if (!mdesc->response)
+ 		goto e_free_request;
+ 
+-	mdesc->certs_data = alloc_shared_pages(SEV_FW_BLOB_MAX_SIZE);
+-	if (!mdesc->certs_data)
+-		goto e_free_response;
+-
+-	/* initial the input address for guest request */
+-	mdesc->input.req_gpa = __pa(mdesc->request);
+-	mdesc->input.resp_gpa = __pa(mdesc->response);
+-	mdesc->input.data_gpa = __pa(mdesc->certs_data);
+-
+ 	return mdesc;
+ 
+-e_free_response:
+-	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
+ e_free_request:
+ 	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
+ e_unmap:
+@@ -2885,7 +2874,6 @@ void snp_msg_free(struct snp_msg_desc *mdesc)
+ 	kfree(mdesc->ctx);
+ 	free_shared_pages(mdesc->response, sizeof(struct snp_guest_msg));
+ 	free_shared_pages(mdesc->request, sizeof(struct snp_guest_msg));
+-	free_shared_pages(mdesc->certs_data, SEV_FW_BLOB_MAX_SIZE);
+ 	iounmap((__force void __iomem *)mdesc->secrets);
+ 
+ 	memset(mdesc, 0, sizeof(*mdesc));
+@@ -3054,7 +3042,7 @@ retry_request:
+ 	 * sequence number must be incremented or the VMPCK must be deleted to
+ 	 * prevent reuse of the IV.
+ 	 */
+-	rc = snp_issue_guest_request(req, &mdesc->input, rio);
++	rc = snp_issue_guest_request(req, &req->input, rio);
+ 	switch (rc) {
+ 	case -ENOSPC:
+ 		/*
+@@ -3064,7 +3052,7 @@ retry_request:
+ 		 * order to increment the sequence number and thus avoid
+ 		 * IV reuse.
+ 		 */
+-		override_npages = mdesc->input.data_npages;
++		override_npages = req->input.data_npages;
+ 		req->exit_code	= SVM_VMGEXIT_GUEST_REQUEST;
+ 
+ 		/*
+@@ -3120,7 +3108,7 @@ retry_request:
+ 	}
+ 
+ 	if (override_npages)
+-		mdesc->input.data_npages = override_npages;
++		req->input.data_npages = override_npages;
+ 
+ 	return rc;
+ }
+@@ -3158,6 +3146,11 @@ int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req
+ 	 */
+ 	memcpy(mdesc->request, &mdesc->secret_request, sizeof(mdesc->secret_request));
+ 
++	/* Initialize the input address for guest request */
++	req->input.req_gpa = __pa(mdesc->request);
++	req->input.resp_gpa = __pa(mdesc->response);
++	req->input.data_gpa = req->certs_data ? __pa(req->certs_data) : 0;
++
+ 	rc = __handle_guest_request(mdesc, req, rio);
+ 	if (rc) {
+ 		if (rc == -EIO &&
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 1581246..ba7999f 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -203,6 +203,9 @@ struct snp_guest_req {
+ 	unsigned int vmpck_id;
+ 	u8 msg_version;
+ 	u8 msg_type;
++
++	struct snp_req_data input;
++	void *certs_data;
+ };
+ 
+ /*
+@@ -263,9 +266,6 @@ struct snp_msg_desc {
+ 	struct snp_guest_msg secret_request, secret_response;
+ 
+ 	struct snp_secrets_page *secrets;
+-	struct snp_req_data input;
+-
+-	void *certs_data;
+ 
+ 	struct aesgcm_ctx *ctx;
+ 
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 23ac177..70fbc9a 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -176,6 +176,7 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+ 	struct snp_guest_req req = {};
+ 	int ret, npages = 0, resp_len;
+ 	sockptr_t certs_address;
++	struct page *page;
+ 
+ 	if (sockptr_is_null(io->req_data) || sockptr_is_null(io->resp_data))
+ 		return -EINVAL;
+@@ -209,8 +210,20 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
+ 	 * the host. If host does not supply any certs in it, then copy
+ 	 * zeros to indicate that certificate data was not provided.
+ 	 */
+-	memset(mdesc->certs_data, 0, report_req->certs_len);
+ 	npages = report_req->certs_len >> PAGE_SHIFT;
++	page = alloc_pages(GFP_KERNEL_ACCOUNT | __GFP_ZERO,
++			   get_order(report_req->certs_len));
++	if (!page)
++		return -ENOMEM;
++
++	req.certs_data = page_address(page);
++	ret = set_memory_decrypted((unsigned long)req.certs_data, npages);
++	if (ret) {
++		pr_err("failed to mark page shared, ret=%d\n", ret);
++		__free_pages(page, get_order(report_req->certs_len));
++		return -EFAULT;
++	}
++
+ cmd:
+ 	/*
+ 	 * The intermediate response buffer is used while decrypting the
+@@ -219,10 +232,12 @@ cmd:
+ 	 */
+ 	resp_len = sizeof(report_resp->data) + mdesc->ctx->authsize;
+ 	report_resp = kzalloc(resp_len, GFP_KERNEL_ACCOUNT);
+-	if (!report_resp)
+-		return -ENOMEM;
++	if (!report_resp) {
++		ret = -ENOMEM;
++		goto e_free_data;
++	}
+ 
+-	mdesc->input.data_npages = npages;
++	req.input.data_npages = npages;
+ 
+ 	req.msg_version = arg->msg_version;
+ 	req.msg_type = SNP_MSG_REPORT_REQ;
+@@ -237,7 +252,7 @@ cmd:
+ 
+ 	/* If certs length is invalid then copy the returned length */
+ 	if (arg->vmm_error == SNP_GUEST_VMM_ERR_INVALID_LEN) {
+-		report_req->certs_len = mdesc->input.data_npages << PAGE_SHIFT;
++		report_req->certs_len = req.input.data_npages << PAGE_SHIFT;
+ 
+ 		if (copy_to_sockptr(io->req_data, report_req, sizeof(*report_req)))
+ 			ret = -EFAULT;
+@@ -246,7 +261,7 @@ cmd:
+ 	if (ret)
+ 		goto e_free;
+ 
+-	if (npages && copy_to_sockptr(certs_address, mdesc->certs_data, report_req->certs_len)) {
++	if (npages && copy_to_sockptr(certs_address, req.certs_data, report_req->certs_len)) {
+ 		ret = -EFAULT;
+ 		goto e_free;
+ 	}
+@@ -256,6 +271,13 @@ cmd:
+ 
+ e_free:
+ 	kfree(report_resp);
++e_free_data:
++	if (npages) {
++		if (set_memory_encrypted((unsigned long)req.certs_data, npages))
++			WARN_ONCE(ret, "failed to restore encryption mask (leak it)\n");
++		else
++			__free_pages(page, get_order(report_req->certs_len));
++	}
+ 	return ret;
+ }
+ 
 
