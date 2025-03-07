@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-4042-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4043-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CD5A56228
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 09:02:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8FBA562FA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 09:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A481C3B4C69
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 08:02:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB18D3AB5FF
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 08:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EC61A8F95;
-	Fri,  7 Mar 2025 08:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560C31AF4C1;
+	Fri,  7 Mar 2025 08:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1tOH8Cld";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wgAY7OV7"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UAG/w4vI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ikro9N4G"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA571A3162;
-	Fri,  7 Mar 2025 08:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA7F14D283;
+	Fri,  7 Mar 2025 08:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741334558; cv=none; b=cTEtKvRLrNDfU5gpBojKYeAGuyZD56o670kHXXBheSM+QtT/lCSBVS4zF9aHPjTs8zIqJ5qhRvBBLMpRrnCVbdPzuDJGp8EFWRNrx5Sm877WV1auHQewxZZdTvb2Uz1vFiuzFwrku15yqWZiKxL696gFp2KUFEGx5Hm/Mx0cDto=
+	t=1741337527; cv=none; b=c6G63SqpBlOOFiqneZE7krtgVzlMGgTd9LkdUQeE5viNMJpjxx73mny5s9eDKNiAfJJBLfXcUM9q9slG9PDWqbWjznqiWhxrI2+enpu3WZvVCbQTig7kR2lmTudA0AQ2mXHOyM+YLEPVERvxXQ8SbpYL4X/PZJZ0Da9i1NLKHLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741334558; c=relaxed/simple;
-	bh=4vbmOVp9L1Ut7mMb/QngIcoQM3MIh5EpdvtUrMJyG98=;
+	s=arc-20240116; t=1741337527; c=relaxed/simple;
+	bh=hQfwJhsHr4CVUi0qKhXrIyhGMy24OKMPo63dqahohSs=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=eUrPbTAsn/yJKJOyXs6BM9qADes5xmNU1l6Ung3bdH3FjYRKBAKRdgxdQx6k1U+E/YkrD3jsfXQZquHVpaqyZIKVLzac3rrRcRTPxsn7aMvRasOEHeVFeVXypHCxrLILXoQdTD4tPGzl8yDDoiqiWxvrOv9uQ3oFKkpiA5gfsgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1tOH8Cld; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wgAY7OV7; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=GLkVKx6xAIlYRhNDcvquGgKibJcB7vZm3l2Es9FhJ5VOCYpxZpS/eBZGgQpVeIworhl0JgYQYrsfI982rhOkd4is0KgsVOCg87TF1PR/hlGyl59oFNXm4Cw275iuUb6IyL2C9Hkoylpk7jvcMcVGR8ksGADxI+4GGPHY5wuzufc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UAG/w4vI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ikro9N4G; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Mar 2025 08:02:33 -0000
+Date: Fri, 07 Mar 2025 08:51:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741334554;
+	s=2020; t=1741337522;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gic+4k3qcVUsvjzx2gzfn58kQN97RprLHLQdbUevN5M=;
-	b=1tOH8CldmLFHshosqNA1CbvS7drhXEmX5BtVeq0J7Rh1iGjnJnyBKTUuDI39tID8fjLzU1
-	+V+ykAc+9Zva/boYXK/1tBl8SmeiXSPhVbFHxKiC9admVOHngCQ+8qJ7kZDwH2DJVZypkJ
-	AF1QYL01yV7r+wwmke3O9C7gp8qKwG6Y3gphv/hk72lHezTWKmB6ymT86DUOfz2ib176Tb
-	BysKElBTiquwZHx7V7kTTUBO209l6NPFzFot+zPPSKtUyJVUlHrursRoHhf/8M8e2/w2la
-	dcaqe17IyMk5RItDMW3nRm/3avClN+iVqy3XB0/59RigS64NbWGZnt3uCkUp1A==
+	bh=CZtKkUi0W48B0wBvZKOzYOBZ4voGfhG5b2Iwp2Q0xCo=;
+	b=UAG/w4vIJp2Cte7DKidQQMLByTRm7UBMKJoLIYB/e21u/0OfcddHRMkf2PkdHudBe5fXtB
+	540TkuyLO2DXvLsjT2quS2HkN1BlvLJ7opuS1yzTIoRKHPJKelW8+xt+B/LvQzd69SRUaf
+	ajy8mt3lQQ9AgT44Zliq6yrbzP752vt8buWWB+KSl7mrDgE8lTlp76DCtrEkmCQk0x6hVB
+	KWUKX01p/rEvsFEInSdtGvqoz/8RoHhrzyGBptZponeyWdzzLpQ/bX+C69gacIKq67SVhy
+	/owWLzEz3pU6RcsVxmj2KSZrUyOn4RVIfuqaTbJzZIEChWnbFzrPwNDM+RslnQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741334554;
+	s=2020e; t=1741337522;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Gic+4k3qcVUsvjzx2gzfn58kQN97RprLHLQdbUevN5M=;
-	b=wgAY7OV7lLKuMz6tflWAGCjVSlAH8e2on8u+XdpBj0BOUp8nsa+a2xugb2ZXgzRkZvdiOx
-	yCew8vPRJ2+4seDg==
-From: "tip-bot2 for Andre Przywara" <tip-bot2@linutronix.de>
+	bh=CZtKkUi0W48B0wBvZKOzYOBZ4voGfhG5b2Iwp2Q0xCo=;
+	b=Ikro9N4G5VqxccWN+caeh0cWaTkEx+TZS4fa7ltkjB9Onmzzpi4Fzu7KpOi+hQGM8mGCyc
+	Jam7HiuHG1mOCNAA==
+From: "tip-bot2 for Shengjiu Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] dt-bindings: irq: sun7i-nmi: Document the
- Allwinner A523 NMI controller
-Cc: Andre Przywara <andre.przywara@arm.com>,
- Thomas Gleixner <tglx@linutronix.de>, "Rob Herring (Arm)" <robh@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250307005712.16828-6-andre.przywara@arm.com>
-References: <20250307005712.16828-6-andre.przywara@arm.com>
+Subject:
+ [tip: irq/drivers] irqchip/imx-irqsteer: Support up to 960 input interrupts
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, Jacky Bai <ping.bai@nxp.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ye Li <ye.li@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250305095522.2177843-1-ping.bai@nxp.com>
+References: <20250305095522.2177843-1-ping.bai@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174133455399.14745.13278977624916567172.tip-bot2@tip-bot2>
+Message-ID: <174133751827.14745.2072440373199317211.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,40 +83,82 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     be494a35683e1cbba58395eacb00d4b5cd4e23a3
-Gitweb:        https://git.kernel.org/tip/be494a35683e1cbba58395eacb00d4b5cd4e23a3
-Author:        Andre Przywara <andre.przywara@arm.com>
-AuthorDate:    Fri, 07 Mar 2025 00:57:02 
+Commit-ID:     7db5fd6b751fbcaca253efc4de68f4346299948f
+Gitweb:        https://git.kernel.org/tip/7db5fd6b751fbcaca253efc4de68f4346299948f
+Author:        Shengjiu Wang <shengjiu.wang@nxp.com>
+AuthorDate:    Wed, 05 Mar 2025 17:55:22 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 07 Mar 2025 08:39:02 +01:00
+CommitterDate: Fri, 07 Mar 2025 09:42:46 +01:00
 
-dt-bindings: irq: sun7i-nmi: Document the Allwinner A523 NMI controller
+irqchip/imx-irqsteer: Support up to 960 input interrupts
 
-The Allwinner A523 SoC contains an NMI controller very close to the one
-used in the recent Allwinner SoCs, but it adds another bit that needs to
-be toggled to actually deliver the IRQs. Sigh.
+The irqsteer IP routes groups of input interrupts to a dedicated system
+interrupt per group. Each group handles 64 input interrupts.
 
-Add the A523 specific name to the list of allowed compatible strings.
+The current driver is limited to 8 groups, i.e. 512 input interrupts, which
+is sufficient for the existing i.MX SoCs. The upcoming i.MX94 family
+extends the irqsteer IP to 15 groups, i.e. 960 interrupts.
 
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Extending the group limit to 15 enables this, but the new SoCs are not
+guaranteed to utilize all 15 groups. Unused groups have no mapping for the
+underlying output interrupt, which makes the probe function fail as it
+expects a valid mapping for each group output.
+
+Remove this limitation and stop the mapping loop, when no valid mapping is
+detected.
+
+[ tglx: Massage change log ]
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/all/20250307005712.16828-6-andre.przywara@arm.com
-
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/all/20250305095522.2177843-1-ping.bai@nxp.com
 ---
- Documentation/devicetree/bindings/interrupt-controller/allwinner,sun7i-a20-sc-nmi.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-imx-irqsteer.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/allwinner,sun7i-a20-sc-nmi.yaml b/Documentation/devicetree/bindings/interrupt-controller/allwinner,sun7i-a20-sc-nmi.yaml
-index f49b43f..06e3621 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/allwinner,sun7i-a20-sc-nmi.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/allwinner,sun7i-a20-sc-nmi.yaml
-@@ -26,6 +26,7 @@ properties:
-         deprecated: true
-       - const: allwinner,sun7i-a20-sc-nmi
-       - const: allwinner,sun9i-a80-nmi
-+      - const: allwinner,sun55i-a523-nmi
-       - items:
-           - enum:
-               - allwinner,sun8i-v3s-nmi
+diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
+index b0e9788..afbfcce 100644
+--- a/drivers/irqchip/irq-imx-irqsteer.c
++++ b/drivers/irqchip/irq-imx-irqsteer.c
+@@ -24,7 +24,7 @@
+ #define CHAN_MINTDIS(t)		(CTRL_STRIDE_OFF(t, 3) + 0x4)
+ #define CHAN_MASTRSTAT(t)	(CTRL_STRIDE_OFF(t, 3) + 0x8)
+ 
+-#define CHAN_MAX_OUTPUT_INT	0x8
++#define CHAN_MAX_OUTPUT_INT	0xF
+ 
+ struct irqsteer_data {
+ 	void __iomem		*regs;
+@@ -228,10 +228,8 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
+ 
+ 	for (i = 0; i < data->irq_count; i++) {
+ 		data->irq[i] = irq_of_parse_and_map(np, i);
+-		if (!data->irq[i]) {
+-			ret = -EINVAL;
+-			goto out;
+-		}
++		if (!data->irq[i])
++			break;
+ 
+ 		irq_set_chained_handler_and_data(data->irq[i],
+ 						 imx_irqsteer_irq_handler,
+@@ -254,9 +252,13 @@ static void imx_irqsteer_remove(struct platform_device *pdev)
+ 	struct irqsteer_data *irqsteer_data = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	for (i = 0; i < irqsteer_data->irq_count; i++)
++	for (i = 0; i < irqsteer_data->irq_count; i++) {
++		if (!irqsteer_data->irq[i])
++			break;
++
+ 		irq_set_chained_handler_and_data(irqsteer_data->irq[i],
+ 						 NULL, NULL);
++	}
+ 
+ 	irq_domain_remove(irqsteer_data->domain);
+ 
 
