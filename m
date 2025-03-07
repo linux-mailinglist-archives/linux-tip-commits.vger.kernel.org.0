@@ -1,79 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-4047-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4048-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD48CA56784
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 13:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB5BA56801
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 13:41:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3C967A6883
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 12:09:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE6AC7A62E3
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 12:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FC221767D;
-	Fri,  7 Mar 2025 12:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2A314A4F9;
+	Fri,  7 Mar 2025 12:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SHGmB75G";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qgoGIvye"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EhLbZYRN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NRP4bvSx"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAA71E1DE5;
-	Fri,  7 Mar 2025 12:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671D72192F6;
+	Fri,  7 Mar 2025 12:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741349398; cv=none; b=oZrBQQXmkm9SjlWw64k0Gs7OKnbE/9OhquloQCFQuo3D4paJaydNqy/bmnYIphxY+DOnwFMe3trdnZ/Nj3i8lQcw81qWDDL/TiioH35cedYZk3pkXxOVguMGX7lLNpwTBVqmpIXkVIUDDhnTiwE1+/NqKVtHBiSs2bzoUtoG2Ck=
+	t=1741351272; cv=none; b=PNEmwQIm4KlwSv+dys2OYQlHh4OAeNiqoDT6rzmEh0ClvMpugvtgDtWLdid1zcwja0gKoSO1zkXY6CGa+FTbn2S7dqEFKxb+3MaTB3KmvRriYzDbR4zlNhvJxSFovPJ24tk4vY6j5uklBg64KSNOVRxQ7d2brb6wzMWYtWM/Qj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741349398; c=relaxed/simple;
-	bh=QGDqhnVTkMxUD/s/oQfklPC6spqn0PHAdbKwzCq7oQU=;
+	s=arc-20240116; t=1741351272; c=relaxed/simple;
+	bh=RFnMpGCEq6KusUZOTkqeWE75JiqiNWQN8xEID0URfTk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=P39ny2VGR3astKgBA9+8aPNRRCz6SbKxlspheZYdXWkpLgoLrUeuzD9BYcFaDo+LoP5BDKA1k1AKt3Z4HoYD5mqv8LLzkwVB1oo2S5oLV9G2mxpMMQyXLGyVDrZpep3G3SRIajrYxmpY5uwgDlun7IZkM/DMzyWVqYHG6UB/H5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SHGmB75G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qgoGIvye; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=KMuzMtb3I4aH0N3musOVd+vHrFY0JfBWPcdf9XPXrKxSFlC3c6vtKLrteuwdTNcUqMlV5hJdHykT2sAD6/Doy9HAdH/v1QKXVfOpCUCogMw6MTzlZIpYRIq1rx8COQfxQjS0rsjDbGtsxtHHzOSbgfDDueSqSbVJVTMfgUy+AFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EhLbZYRN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NRP4bvSx; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Mar 2025 12:09:48 -0000
+Date: Fri, 07 Mar 2025 12:41:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741349392;
+	s=2020; t=1741351269;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UigKyD5FBJEO172t/PeVjmazgOFcEa1nbtu2g0lmZug=;
-	b=SHGmB75Gj7sRmq31H9EmNfMuA2LJiC/VgFl21502hQ3pNgtmPdgdjun9qvtsucGO6fRjIA
-	Z9Oa+uqkuyEL1DDivZrTcKbZ2rsMarsMrbQ2a5B+CVbsR5LH8WrQB5JmNGBFd04W3NN2DT
-	K1pw3Nrkz0fZirDZsg5ZQ4tpWcm9HVrP4FfbfTmJLroxRePWLuCEkufv+l1sQ88chpKlLn
-	COdpbjsAqgLJ5XZGIEZ9ypSinp+iLzzDZfXdMMJ6LgWXc7jkVbDc2MQRPfmw5fmSRMhuk3
-	XOT3nGVUwaB+0qUAtJBTYPPP+3wAVf9zmWWEQBXbyFnavjANHkAZTChLOLWZNw==
+	bh=h7hW6K9PJ8lxkQjFDwtGIOrFreGrUa4zCoiv+rlaSd8=;
+	b=EhLbZYRNoA5BbficassE/mzKeBYeXZOVAx+wWg5T5GPUY/BVVbwgsea8umvLcODkeR8dX3
+	om/YDJ4ht57ykfmVDKtk3lQnVt0jFq0F9k3Syp3DU+enkP6ZjkgHtgGAOj2gmauH90YGVo
+	nc+fJtWEs26/VW2oeyicOTlxfQj6MB2VyrV5k/mFkmGDE9UhYmj2zE5ogHBd389MXQgdM7
+	2bc5uAD445xngOhSfVA3vHwIDssjBmF5okp8aTH+CGX1c5LKAMcVciB1nQ3UCtfkTv8sp/
+	M8jHaXCGpl9zC0dh0iCP+ndX6tfvB2T4qpB9D6XGmFEE426I7CLNk0AmZlNHLQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741349392;
+	s=2020e; t=1741351269;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UigKyD5FBJEO172t/PeVjmazgOFcEa1nbtu2g0lmZug=;
-	b=qgoGIvyem2reeyyt+6bYhYvR7UPJYwSHU2g24LFnMGvuymA/phATJ8TXssMgOEsWQ7BrCi
-	e3e0R0GGb8xfZOAQ==
-From: "tip-bot2 for Maksim Davydov" <tip-bot2@linutronix.de>
+	bh=h7hW6K9PJ8lxkQjFDwtGIOrFreGrUa4zCoiv+rlaSd8=;
+	b=NRP4bvSxu5XmY4ProwuwqSoE8WSEQHhrKS4fnT87YLfHoF3ASUvpgvJttqgwND65inJQqD
+	1M9yUn2ZGVkOWmDg==
+From: "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] x86/split_lock: Fix the delayed detection logic
-Cc: Maksim Davydov <davydov-max@yandex-team.ru>,
- Ingo Molnar <mingo@kernel.org>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ravi Bangoria <ravi.bangoria@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250115131704.132609-1-davydov-max@yandex-team.ru>
-References: <20250115131704.132609-1-davydov-max@yandex-team.ru>
+Subject:
+ [tip: x86/urgent] x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250307002846.3026685-1-andrew.cooper3@citrix.com>
+References: <20250307002846.3026685-1-andrew.cooper3@citrix.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174134938906.14745.11174609071483438403.tip-bot2@tip-bot2>
+Message-ID: <174135126828.14745.8496438046154822833.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,163 +79,80 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     c929d08df8bee855528b9d15b853c892c54e1eee
-Gitweb:        https://git.kernel.org/tip/c929d08df8bee855528b9d15b853c892c54e1eee
-Author:        Maksim Davydov <davydov-max@yandex-team.ru>
-AuthorDate:    Wed, 15 Jan 2025 16:17:04 +03:00
+Commit-ID:     14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457
+Gitweb:        https://git.kernel.org/tip/14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457
+Author:        Andrew Cooper <andrew.cooper3@citrix.com>
+AuthorDate:    Fri, 07 Mar 2025 00:28:46 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 07 Mar 2025 13:01:02 +01:00
+CommitterDate: Fri, 07 Mar 2025 13:28:31 +01:00
 
-x86/split_lock: Fix the delayed detection logic
+x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
 
-If the warning mode with disabled mitigation mode is used, then on each
-CPU where the split lock occurred detection will be disabled in order to
-make progress and delayed work will be scheduled, which then will enable
-detection back.
+Xen doesn't offer MSR_FAM10H_MMIO_CONF_BASE to all guests.  This results
+in the following warning:
 
-Now it turns out that all CPUs use one global delayed work structure.
-This leads to the fact that if a split lock occurs on several CPUs
-at the same time (within 2 jiffies), only one CPU will schedule delayed
-work, but the rest will not.
+  unchecked MSR access error: RDMSR from 0xc0010058 at rIP: 0xffffffff8101d19f (xen_do_read_msr+0x7f/0xa0)
+  Call Trace:
+   xen_read_msr+0x1e/0x30
+   amd_get_mmconfig_range+0x2b/0x80
+   quirk_amd_mmconfig_area+0x28/0x100
+   pnp_fixup_device+0x39/0x50
+   __pnp_add_device+0xf/0x150
+   pnp_add_device+0x3d/0x100
+   pnpacpi_add_device_handler+0x1f9/0x280
+   acpi_ns_get_device_callback+0x104/0x1c0
+   acpi_ns_walk_namespace+0x1d0/0x260
+   acpi_get_devices+0x8a/0xb0
+   pnpacpi_init+0x50/0x80
+   do_one_initcall+0x46/0x2e0
+   kernel_init_freeable+0x1da/0x2f0
+   kernel_init+0x16/0x1b0
+   ret_from_fork+0x30/0x50
+   ret_from_fork_asm+0x1b/0x30
 
-The return value of schedule_delayed_work_on() would have shown this,
-but it is not checked in the code.
+based on quirks for a "PNP0c01" device.  Treating MMCFG as disabled is the
+right course of action, so no change is needed there.
 
-A diagram that can help to understand the bug reproduction:
+This was most likely exposed by fixing the Xen MSR accessors to not be
+silently-safe.
 
- - sld_update_msr() enables/disables SLD on both CPUs on the same core
-
- - schedule_delayed_work_on() internally checks WORK_STRUCT_PENDING_BIT.
-   If a work has the 'pending' status, then schedule_delayed_work_on()
-   will return an error code and, most importantly, the work will not
-   be placed in the workqueue.
-
-Let's say we have a multicore system on which split_lock_mitigate=0 and
-a multithreaded application is running that calls splitlock in multiple
-threads. Due to the fact that sld_update_msr() affects the entire core
-(both CPUs), we will consider 2 CPUs from different cores. Let the 2
-threads of this application schedule to CPU0 (core 0) and to CPU 2
-(core 1), then:
-
-|                                 ||                                   |
-|             CPU 0 (core 0)      ||          CPU 2 (core 1)           |
-|_________________________________||___________________________________|
-|                                 ||                                   |
-| 1) SPLIT LOCK occured           ||                                   |
-|                                 ||                                   |
-| 2) split_lock_warn()            ||                                   |
-|                                 ||                                   |
-| 3) sysctl_sld_mitigate == 0     ||                                   |
-|    (work = &sl_reenable)        ||                                   |
-|                                 ||                                   |
-| 4) schedule_delayed_work_on()   ||                                   |
-|    (reenable will be called     ||                                   |
-|     after 2 jiffies on CPU 0)   ||                                   |
-|                                 ||                                   |
-| 5) disable SLD for core 0       ||                                   |
-|                                 ||                                   |
-|    -------------------------    ||                                   |
-|                                 ||                                   |
-|                                 || 6) SPLIT LOCK occured             |
-|                                 ||                                   |
-|                                 || 7) split_lock_warn()              |
-|                                 ||                                   |
-|                                 || 8) sysctl_sld_mitigate == 0       |
-|                                 ||    (work = &sl_reenable,          |
-|                                 ||     the same address as in 3) )   |
-|                                 ||                                   |
-|            2 jiffies            || 9) schedule_delayed_work_on()     |
-|                                 ||    fials because the work is in   |
-|                                 ||    the pending state since 4).    |
-|                                 ||    The work wasn't placed to the  |
-|                                 ||    workqueue. reenable won't be   |
-|                                 ||    called on CPU 2                |
-|                                 ||                                   |
-|                                 || 10) disable SLD for core 0        |
-|                                 ||                                   |
-|                                 ||     From now on SLD will          |
-|                                 ||     never be reenabled on core 1  |
-|                                 ||                                   |
-|    -------------------------    ||                                   |
-|                                 ||                                   |
-|    11) enable SLD for core 0 by ||                                   |
-|        __split_lock_reenable    ||                                   |
-|                                 ||                                   |
-
-If the application threads can be scheduled to all processor cores,
-then over time there will be only one core left, on which SLD will be
-enabled and split lock will be able to be detected; and on all other
-cores SLD will be disabled all the time.
-
-Most likely, this bug has not been noticed for so long because
-sysctl_sld_mitigate default value is 1, and in this case a semaphore
-is used that does not allow 2 different cores to have SLD disabled at
-the same time, that is, strictly only one work is placed in the
-workqueue.
-
-In order to fix the warning mode with disabled mitigation mode,
-delayed work has to be per-CPU. Implement it.
-
-Fixes: 727209376f49 ("x86/split_lock: Add sysctl to control the misery mode")
-Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+Fixes: 3fac3734c43a ("xen/pv: support selecting safe/unsafe msr accesses")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20250115131704.132609-1-davydov-max@yandex-team.ru
+Link: https://lore.kernel.org/r/20250307002846.3026685-1-andrew.cooper3@citrix.com
 ---
- arch/x86/kernel/cpu/bus_lock.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ arch/x86/kernel/amd_nb.c |  9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_lock.c
-index 6cba85c..97222ef 100644
---- a/arch/x86/kernel/cpu/bus_lock.c
-+++ b/arch/x86/kernel/cpu/bus_lock.c
-@@ -192,7 +192,13 @@ static void __split_lock_reenable(struct work_struct *work)
+diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
+index 11fac09..67e7737 100644
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -143,7 +143,6 @@ bool __init early_is_amd_nb(u32 device)
+ 
+ struct resource *amd_get_mmconfig_range(struct resource *res)
  {
- 	sld_update_msr(true);
- }
--static DECLARE_DELAYED_WORK(sl_reenable, __split_lock_reenable);
-+/*
-+ * In order for each CPU to schedule its delayed work independently of the
-+ * others, delayed work struct must be per-CPU. This is not required when
-+ * sysctl_sld_mitigate is enabled because of the semaphore that limits
-+ * the number of simultaneously scheduled delayed works to 1.
-+ */
-+static DEFINE_PER_CPU(struct delayed_work, sl_reenable);
+-	u32 address;
+ 	u64 base, msr;
+ 	unsigned int segn_busn_bits;
  
- /*
-  * If a CPU goes offline with pending delayed work to re-enable split lock
-@@ -213,7 +219,7 @@ static int splitlock_cpu_offline(unsigned int cpu)
+@@ -151,13 +150,11 @@ struct resource *amd_get_mmconfig_range(struct resource *res)
+ 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+ 		return NULL;
  
- static void split_lock_warn(unsigned long ip)
- {
--	struct delayed_work *work;
-+	struct delayed_work *work = NULL;
- 	int cpu;
+-	/* assume all cpus from fam10h have mmconfig */
+-	if (boot_cpu_data.x86 < 0x10)
++	/* Assume CPUs from Fam10h have mmconfig, although not all VMs do */
++	if (boot_cpu_data.x86 < 0x10 ||
++	    rdmsrl_safe(MSR_FAM10H_MMIO_CONF_BASE, &msr))
+ 		return NULL;
  
- 	if (!current->reported_split_lock)
-@@ -235,11 +241,17 @@ static void split_lock_warn(unsigned long ip)
- 		if (down_interruptible(&buslock_sem) == -EINTR)
- 			return;
- 		work = &sl_reenable_unlock;
--	} else {
--		work = &sl_reenable;
- 	}
- 
- 	cpu = get_cpu();
-+
-+	if (!work) {
-+		work = this_cpu_ptr(&sl_reenable);
-+		/* Deferred initialization of per-CPU struct */
-+		if (!work->work.func)
-+			INIT_DELAYED_WORK(work, __split_lock_reenable);
-+	}
-+
- 	schedule_delayed_work_on(cpu, work, 2);
- 
- 	/* Disable split lock detection on this CPU to make progress */
+-	address = MSR_FAM10H_MMIO_CONF_BASE;
+-	rdmsrl(address, msr);
+-
+ 	/* mmconfig is not enabled */
+ 	if (!(msr & FAM10H_MMIO_CONF_ENABLE))
+ 		return NULL;
 
