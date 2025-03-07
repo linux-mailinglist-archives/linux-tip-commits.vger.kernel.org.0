@@ -1,161 +1,191 @@
-Return-Path: <linux-tip-commits+bounces-4039-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4040-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F23DA55932
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 23:00:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51152A55DF6
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 04:01:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 722441763EC
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Mar 2025 22:00:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D3AB3B27BC
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 03:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E575C27C14D;
-	Thu,  6 Mar 2025 22:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BA054673;
+	Fri,  7 Mar 2025 03:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bi9LCvTA"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="qEMb/0vq"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F95277024;
-	Thu,  6 Mar 2025 22:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62D51F94C;
+	Fri,  7 Mar 2025 03:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741298421; cv=none; b=cwXHtHKibSdz+wdej6pRMmLpGDdRhqjdEsd3uguQDNZ0tNtoPEDex7CA3If9ZWImhmocaAIhXjewoOvsHXtxu4yYLmj1fmu2pLeUdxYR61Ml7bKCnMPFZTq8E3wG+gbp042NOgiAWe6v6HB1S3MbIo1TurWAuPhv/7zl0xc/ls0=
+	t=1741316470; cv=none; b=nxm2R5BOWN/+LXbZ2MUckTileZFV7t5ij3l4wPoqDbH+4MZfatp4LX+Zfbt2BV9vL+cCF5xmePp7VUPMhnPV0bXyq9k5E0X8HRFpGwM/pGhlOV5cVXuGhEKCDyio3jDlcQ9eBosUoQo374IdnBG6Ne+KQN53pAq3uiDW16a7moI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741298421; c=relaxed/simple;
-	bh=Zs+tTAIxX3ePN/KYhRZTW8Wmq0k2cGIFNrzoMNDUR3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S5G0VzO/rfVAF2Iiq8CV0LpiXYByde9zD/FhH+MDeNS6v3QuH2jrf9FsC/37p/c34Hz5iW2MORk95bvky1GKntniCcXnewyyh0ZkZrIpl1oY5W8c6rDYU1PWGcNuKlq5FW55cWoZqT4y9HRYGmjKugE5nYWZeV6XG5yAu5lbVTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bi9LCvTA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5265C4CEE0;
-	Thu,  6 Mar 2025 22:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741298420;
-	bh=Zs+tTAIxX3ePN/KYhRZTW8Wmq0k2cGIFNrzoMNDUR3w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bi9LCvTA7VrS+yobZyd4FP6V2NU7Jd84HaSskT/Bjxn2Riy6icyAiJIBk+F2GEAYm
-	 hmR7FLVHWQU1VQTYnZxeDOibogfv08JIRoN8ZxmVKnXZfISxfHAiVxMs2a8QIb1a7V
-	 i11P+wNAkaDnzISQBzUho3Z0/d3fZbm+SI6GHjGF1p05tKdLeXQq4u6lJrGNWki8Xk
-	 N0oFVRf1XhHmJnp09vO05dWY4sSzn8/H65GxABDUdLE6awBX2TKOX/j1bx4Nol0VJf
-	 KsT8NtJYKb5Oo/q12j2VHf77aa8FTZagXqzBg1Dw0N+5q97X7ybdPV7LSVOqedindd
-	 eggVxomNEsBJA==
-Date: Thu, 6 Mar 2025 23:00:16 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, x86@kernel.org
-Subject: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
-Message-ID: <Z8oa8AUVyi2HWfo9@gmail.com>
-References: <20250306092658.378837-1-andriy.shevchenko@linux.intel.com>
- <174125602814.14745.12946945836213678532.tip-bot2@tip-bot2>
- <CAHk-=whTGVy1aaEashu3K49wuG7-hARh02xbAr_hMm3844Ec7Q@mail.gmail.com>
- <Z8oSAQiBvVJ_METQ@gmail.com>
+	s=arc-20240116; t=1741316470; c=relaxed/simple;
+	bh=Ce+92LM+uM4YqylDZSx7GYV7EDCMsE46HHc8u/9jI8k=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=EkYfItq6V0uguCI9H25nS/TzomE55Qt78uJJJ57/Ain+KpjBY6d3aIDfsLDn4eI3hjRXh0PKs3496FeM050wubvZo8OVoULGa4YMFZjDCv6FNsA4CmpFmRXbDQ+0AhLf/f9Q8QZnD2ulKrH2gYlhdZb2gB17RSW9I7u0fhnia40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=qEMb/0vq; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52730beo023818
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 6 Mar 2025 19:00:37 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52730beo023818
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741316438;
+	bh=Z55d4SeZwwI/wUtJOp92wkIpa/kadSMCflhcc0ibZ4k=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=qEMb/0vqMjeKOkB2AUT2CZCp2TbxNZhEPUcO0EbXj+rqLOuI2KZnicviOYxiNz2MU
+	 3h1kzQ2BPcdt8jhOKYx0tFRhr3r35duWQDs21MkZvb1AbC2f6vfIWD7wL/DpyMCgJT
+	 3MuNXbCzzJ90S6gBQEFEgsnZqRwvMH5zihrF1CzNM4nZ92kDu033wHWMytiRI67DnK
+	 diZEzo50jOCEPVR4EyvoxLwmyHUNhsEITdMAoCGbT2CSOhbrjGgL3tlKx43AGmP7kk
+	 PXKDARPObino/LK4nr7uOrwOTnPbig623lP+MVndmHVng8C8IFnL9Rs1FTnzUZ1nvs
+	 nC4Zw+PrMt0dA==
+Date: Thu, 06 Mar 2025 19:00:35 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: linux-kernel@vger.kernel.org,
+        tip-bot2 for Uros Bizjak <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org
+CC: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+        David Woodhouse <dwmw@amazon.co.uk>, Baoquan He <bhe@redhat.com>,
+        Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_x86/asm=5D_x86/kexec=3A_Merge_x86=5F32_a?=
+ =?US-ASCII?Q?nd_x86=5F64_code_using_macros_from_=3Casm/asm=2Eh=3E?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <174129682336.14745.3287112422322924162.tip-bot2@tip-bot2>
+References: <20250306145227.55819-1-ubizjak@gmail.com> <174129682336.14745.3287112422322924162.tip-bot2@tip-bot2>
+Message-ID: <36B61764-A297-459A-AD55-ACC54C409876@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8oSAQiBvVJ_METQ@gmail.com>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
+On March 6, 2025 1:33:43 PM PST, tip-bot2 for Uros Bizjak <tip-bot2@linutro=
+nix=2Ede> wrote:
+>The following commit has been merged into the x86/asm branch of tip:
+>
+>Commit-ID:     aa3942d4d12ef57f031faa2772fe410c24191e36
+>Gitweb:        https://git=2Ekernel=2Eorg/tip/aa3942d4d12ef57f031faa2772f=
+e410c24191e36
+>Author:        Uros Bizjak <ubizjak@gmail=2Ecom>
+>AuthorDate:    Thu, 06 Mar 2025 15:52:11 +01:00
+>Committer:     Ingo Molnar <mingo@kernel=2Eorg>
+>CommitterDate: Thu, 06 Mar 2025 22:04:48 +01:00
+>
+>x86/kexec: Merge x86_32 and x86_64 code using macros from <asm/asm=2Eh>
+>
+>Merge common x86_32 and x86_64 code in crash_setup_regs()
+>using macros from <asm/asm=2Eh>=2E
+>
+>The compiled object files before and after the patch are unchanged=2E
+>
+>Signed-off-by: Uros Bizjak <ubizjak@gmail=2Ecom>
+>Signed-off-by: Ingo Molnar <mingo@kernel=2Eorg>
+>Cc: David Woodhouse <dwmw@amazon=2Eco=2Euk>
+>Cc: Baoquan He <bhe@redhat=2Ecom>
+>Cc: Vivek Goyal <vgoyal@redhat=2Ecom>
+>Cc: Dave Young <dyoung@redhat=2Ecom>
+>Cc: Ard Biesheuvel <ardb@kernel=2Eorg>
+>Cc: "H=2E Peter Anvin" <hpa@zytor=2Ecom>
+>Link: https://lore=2Ekernel=2Eorg/r/20250306145227=2E55819-1-ubizjak@gmai=
+l=2Ecom
+>---
+> arch/x86/include/asm/kexec=2Eh | 58 +++++++++++++++--------------------
+> 1 file changed, 25 insertions(+), 33 deletions(-)
+>
+>diff --git a/arch/x86/include/asm/kexec=2Eh b/arch/x86/include/asm/kexec=
+=2Eh
+>index 8ad1874=2E=2Ee3589d6 100644
+>--- a/arch/x86/include/asm/kexec=2Eh
+>+++ b/arch/x86/include/asm/kexec=2Eh
+>@@ -18,6 +18,7 @@
+> #include <linux/string=2Eh>
+> #include <linux/kernel=2Eh>
+>=20
+>+#include <asm/asm=2Eh>
+> #include <asm/page=2Eh>
+> #include <asm/ptrace=2Eh>
+>=20
+>@@ -71,41 +72,32 @@ static inline void crash_setup_regs(struct pt_regs *n=
+ewregs,
+> 	if (oldregs) {
+> 		memcpy(newregs, oldregs, sizeof(*newregs));
+> 	} else {
+>+		asm volatile("mov %%" _ASM_BX ",%0" : "=3Dm"(newregs->bx));
+>+		asm volatile("mov %%" _ASM_CX ",%0" : "=3Dm"(newregs->cx));
+>+		asm volatile("mov %%" _ASM_DX ",%0" : "=3Dm"(newregs->dx));
+>+		asm volatile("mov %%" _ASM_SI ",%0" : "=3Dm"(newregs->si));
+>+		asm volatile("mov %%" _ASM_DI ",%0" : "=3Dm"(newregs->di));
+>+		asm volatile("mov %%" _ASM_BP ",%0" : "=3Dm"(newregs->bp));
+>+		asm volatile("mov %%" _ASM_AX ",%0" : "=3Dm"(newregs->ax));
+>+		asm volatile("mov %%" _ASM_SP ",%0" : "=3Dm"(newregs->sp));
+>+#ifdef CONFIG_X86_64
+>+		asm volatile("mov %%r8,%0" : "=3Dm"(newregs->r8));
+>+		asm volatile("mov %%r9,%0" : "=3Dm"(newregs->r9));
+>+		asm volatile("mov %%r10,%0" : "=3Dm"(newregs->r10));
+>+		asm volatile("mov %%r11,%0" : "=3Dm"(newregs->r11));
+>+		asm volatile("mov %%r12,%0" : "=3Dm"(newregs->r12));
+>+		asm volatile("mov %%r13,%0" : "=3Dm"(newregs->r13));
+>+		asm volatile("mov %%r14,%0" : "=3Dm"(newregs->r14));
+>+		asm volatile("mov %%r15,%0" : "=3Dm"(newregs->r15));
+>+#endif
+>+		asm volatile("mov %%ss,%k0" : "=3Da"(newregs->ss));
+>+		asm volatile("mov %%cs,%k0" : "=3Da"(newregs->cs));
+> #ifdef CONFIG_X86_32
+>-		asm volatile("movl %%ebx,%0" : "=3Dm"(newregs->bx));
+>-		asm volatile("movl %%ecx,%0" : "=3Dm"(newregs->cx));
+>-		asm volatile("movl %%edx,%0" : "=3Dm"(newregs->dx));
+>-		asm volatile("movl %%esi,%0" : "=3Dm"(newregs->si));
+>-		asm volatile("movl %%edi,%0" : "=3Dm"(newregs->di));
+>-		asm volatile("movl %%ebp,%0" : "=3Dm"(newregs->bp));
+>-		asm volatile("movl %%eax,%0" : "=3Dm"(newregs->ax));
+>-		asm volatile("movl %%esp,%0" : "=3Dm"(newregs->sp));
+>-		asm volatile("movl %%ss, %%eax;" :"=3Da"(newregs->ss));
+>-		asm volatile("movl %%cs, %%eax;" :"=3Da"(newregs->cs));
+>-		asm volatile("movl %%ds, %%eax;" :"=3Da"(newregs->ds));
+>-		asm volatile("movl %%es, %%eax;" :"=3Da"(newregs->es));
+>-		asm volatile("pushfl; popl %0" :"=3Dm"(newregs->flags));
+>-#else
+>-		asm volatile("movq %%rbx,%0" : "=3Dm"(newregs->bx));
+>-		asm volatile("movq %%rcx,%0" : "=3Dm"(newregs->cx));
+>-		asm volatile("movq %%rdx,%0" : "=3Dm"(newregs->dx));
+>-		asm volatile("movq %%rsi,%0" : "=3Dm"(newregs->si));
+>-		asm volatile("movq %%rdi,%0" : "=3Dm"(newregs->di));
+>-		asm volatile("movq %%rbp,%0" : "=3Dm"(newregs->bp));
+>-		asm volatile("movq %%rax,%0" : "=3Dm"(newregs->ax));
+>-		asm volatile("movq %%rsp,%0" : "=3Dm"(newregs->sp));
+>-		asm volatile("movq %%r8,%0" : "=3Dm"(newregs->r8));
+>-		asm volatile("movq %%r9,%0" : "=3Dm"(newregs->r9));
+>-		asm volatile("movq %%r10,%0" : "=3Dm"(newregs->r10));
+>-		asm volatile("movq %%r11,%0" : "=3Dm"(newregs->r11));
+>-		asm volatile("movq %%r12,%0" : "=3Dm"(newregs->r12));
+>-		asm volatile("movq %%r13,%0" : "=3Dm"(newregs->r13));
+>-		asm volatile("movq %%r14,%0" : "=3Dm"(newregs->r14));
+>-		asm volatile("movq %%r15,%0" : "=3Dm"(newregs->r15));
+>-		asm volatile("movl %%ss, %%eax;" :"=3Da"(newregs->ss));
+>-		asm volatile("movl %%cs, %%eax;" :"=3Da"(newregs->cs));
+>-		asm volatile("pushfq; popq %0" :"=3Dm"(newregs->flags));
+>+		asm volatile("mov %%ds,%k0" : "=3Da"(newregs->ds));
+>+		asm volatile("mov %%es,%k0" : "=3Da"(newregs->es));
+> #endif
+>+		asm volatile("pushf\n\t"
+>+			     "pop %0" : "=3Dm"(newregs->flags));
+> 		newregs->ip =3D _THIS_IP_;
+> 	}
+> }
 
-* Ingo Molnar <mingo@kernel.org> wrote:
-
-> Separating out the assembler-compatible defines from the types 
-> headers appears to be a bigger patch, since it's all mixed in with C 
-> syntax:
-> 
-> <=-----------------------------------===============================
-> typedef struct { pud_t pud; } pmd_t;
-> 
-> #define PMD_SHIFT       PUD_SHIFT
-> #define PTRS_PER_PMD    1
-> #define PMD_SIZE        (1UL << PMD_SHIFT)
-> #define PMD_MASK        (~(PMD_SIZE-1))
-> 
-> /*
->  * The "pud_xxx()" functions here are trivial for a folded two-level
->  * setup: the pmd is never bad, and a pmd always exists (as it's folded
->  * into the pud entry)
->  */
-> static inline int pud_none(pud_t pud)           { return 0; }
-> static inline int pud_bad(pud_t pud)            { return 0; }
-> static inline int pud_present(pud_t pud)        { return 1; }
-> ================================================================>
-> 
-> In any case I've removed the commit for the time being until this all 
-> is cleared up.
-
-So there's a simple solution: define it on i386 too, via the patch 
-below. It appears the double-definition doesn't create any warnings, on 
-GCC at least.
-
-But if it's an issue, we could do something like this in 
-<asm-generic/pgtable-nopmd.h>:
-
- #if defined(PTRS_PER_PMD) && (PTRS_PER_PMD != 1)
- # error "mm: Wait a minute, that's a super confusing pagetable setup ..."
- #endif
-
-?
-
-Thanks,
-
-	Ingo
-
-=========================>
-From: Ingo Molnar <mingo@kernel.org>
-Date: Thu, 6 Mar 2025 22:53:49 +0100
-Subject: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
-
-Andy reported the following build warning from head_32.S:
-
-  In file included from arch/x86/kernel/head_32.S:29:
-  arch/x86/include/asm/pgtable_32.h:59:5: error: "PTRS_PER_PMD" is not defined, evaluates to 0 [-Werror=undef]
-       59 | #if PTRS_PER_PMD > 1
-
-The reason is that on 2-level i386 paging the folded in PMD's
-PTRS_PER_PMD constant is not defined in assembly headers,
-only in generic MM C headers.
-
-Instead of trying to fish out the definition from the generic
-headers, just define it - it even has a comment for it already...
-
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- arch/x86/include/asm/pgtable-2level_types.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/include/asm/pgtable-2level_types.h b/arch/x86/include/asm/pgtable-2level_types.h
-index 7f6ccff0ba72..4a12c276b181 100644
---- a/arch/x86/include/asm/pgtable-2level_types.h
-+++ b/arch/x86/include/asm/pgtable-2level_types.h
-@@ -23,17 +23,17 @@ typedef union {
- #define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
- 
- /*
-- * traditional i386 two-level paging structure:
-+ * Traditional i386 two-level paging structure:
-  */
- 
- #define PGDIR_SHIFT	22
- #define PTRS_PER_PGD	1024
- 
--
- /*
-- * the i386 is two-level, so we don't really have any
-- * PMD directory physically.
-+ * The i386 is two-level, so we don't really have any
-+ * PMD directory physically:
-  */
-+#define PTRS_PER_PMD	1
- 
- #define PTRS_PER_PTE	1024
- 
-
+Incidentally, doing this in C code is obviously completely broken, especia=
+lly doing it in multiple statements=2E You have no idea what the compiler h=
+as messed with before you get there=2E
 
