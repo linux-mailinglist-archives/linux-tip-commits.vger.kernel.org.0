@@ -1,158 +1,197 @@
-Return-Path: <linux-tip-commits+bounces-4048-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4049-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB5BA56801
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 13:41:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57AEA56E5D
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 17:52:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE6AC7A62E3
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 12:40:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F099C1699E9
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 16:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2A314A4F9;
-	Fri,  7 Mar 2025 12:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B864121C177;
+	Fri,  7 Mar 2025 16:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EhLbZYRN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NRP4bvSx"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N0j/PDvY"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671D72192F6;
-	Fri,  7 Mar 2025 12:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7DD634EC;
+	Fri,  7 Mar 2025 16:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741351272; cv=none; b=PNEmwQIm4KlwSv+dys2OYQlHh4OAeNiqoDT6rzmEh0ClvMpugvtgDtWLdid1zcwja0gKoSO1zkXY6CGa+FTbn2S7dqEFKxb+3MaTB3KmvRriYzDbR4zlNhvJxSFovPJ24tk4vY6j5uklBg64KSNOVRxQ7d2brb6wzMWYtWM/Qj8=
+	t=1741366302; cv=none; b=sDJ9MXAqOJhVcs4r/M2MyLNgOoeR2Ap+ENpYKouFVpBzHEHLltLQVYMa4w00CxBSe67ANpetik8s4HLYnZnudHqysl+0mrlwWYumtuooyP9QU9z9E3CycncfVWUJDf5ysbRLgY5ji+xXGVXhZefPSUMrfRNqn70THaa8ivuwAhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741351272; c=relaxed/simple;
-	bh=RFnMpGCEq6KusUZOTkqeWE75JiqiNWQN8xEID0URfTk=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KMuzMtb3I4aH0N3musOVd+vHrFY0JfBWPcdf9XPXrKxSFlC3c6vtKLrteuwdTNcUqMlV5hJdHykT2sAD6/Doy9HAdH/v1QKXVfOpCUCogMw6MTzlZIpYRIq1rx8COQfxQjS0rsjDbGtsxtHHzOSbgfDDueSqSbVJVTMfgUy+AFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EhLbZYRN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NRP4bvSx; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Mar 2025 12:41:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741351269;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h7hW6K9PJ8lxkQjFDwtGIOrFreGrUa4zCoiv+rlaSd8=;
-	b=EhLbZYRNoA5BbficassE/mzKeBYeXZOVAx+wWg5T5GPUY/BVVbwgsea8umvLcODkeR8dX3
-	om/YDJ4ht57ykfmVDKtk3lQnVt0jFq0F9k3Syp3DU+enkP6ZjkgHtgGAOj2gmauH90YGVo
-	nc+fJtWEs26/VW2oeyicOTlxfQj6MB2VyrV5k/mFkmGDE9UhYmj2zE5ogHBd389MXQgdM7
-	2bc5uAD445xngOhSfVA3vHwIDssjBmF5okp8aTH+CGX1c5LKAMcVciB1nQ3UCtfkTv8sp/
-	M8jHaXCGpl9zC0dh0iCP+ndX6tfvB2T4qpB9D6XGmFEE426I7CLNk0AmZlNHLQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741351269;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h7hW6K9PJ8lxkQjFDwtGIOrFreGrUa4zCoiv+rlaSd8=;
-	b=NRP4bvSxu5XmY4ProwuwqSoE8WSEQHhrKS4fnT87YLfHoF3ASUvpgvJttqgwND65inJQqD
-	1M9yUn2ZGVkOWmDg==
-From: "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250307002846.3026685-1-andrew.cooper3@citrix.com>
-References: <20250307002846.3026685-1-andrew.cooper3@citrix.com>
+	s=arc-20240116; t=1741366302; c=relaxed/simple;
+	bh=alWLxts8I1LVeHcFD4o9Tk354TpdfgHz+c6UXPKGrvk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LTxdt2v+DFBbXD/h1IsYUfKxKoTP6LFPHXgni61buxfFTWuFcfiDND1BoD/wkHZcBJudJS5zy4QiqSFwyEEQIRCIoZwchD1ClianvlAOVjpcYF0DwcKVqnzYE9SBZ9uLSbVmjKHAmUBgpmVa3aMFAz4Gnu1bfnHYglxD9W37QBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N0j/PDvY; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741366301; x=1772902301;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=alWLxts8I1LVeHcFD4o9Tk354TpdfgHz+c6UXPKGrvk=;
+  b=N0j/PDvYIPZ/7ksu6e04bddaHhT0/INH2+8m5NiIo04BTU1VmvZhUuQq
+   3Z7hZGHNV5XZAwcNcwisIdCYalxLsMXqyUuzAWoIdkfEPpCjYUNW1oMFz
+   EPxuPNfsblfR5jJ3PHVMTmcrez1lR+3JeY9c+CVi7LXukvcnKAAx+gZNF
+   o5sLJPZrKcz6EJIor0ohzB0r5ycxRi+v+y//6Pk6/uh8Fq85555BPMg9a
+   nwvCZrVWgHPSnnJZIdkIWBpLiQjkSlyslrHA1G7zrM2T4azNfbrWfZgv5
+   H8ZzCgKYb1YI+I5lhYk5b+GezdsOlb/2lEtn6nxZQvN2SMkuby3a/EQ3H
+   Q==;
+X-CSE-ConnectionGUID: tiH8hyVuR8mcyFBNlW9YKA==
+X-CSE-MsgGUID: Z9GVsp3LTum44YsKtk6c6A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46345802"
+X-IronPort-AV: E=Sophos;i="6.14,229,1736841600"; 
+   d="scan'208";a="46345802"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 08:51:40 -0800
+X-CSE-ConnectionGUID: WtD25zaFT3mXXARehBlPTA==
+X-CSE-MsgGUID: 7Z7n2cvwQLuhP/uYgVY9Yw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="124601988"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 08:51:38 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tqav9-00000000SjA-1hoP;
+	Fri, 07 Mar 2025 18:51:35 +0200
+Date: Fri, 7 Mar 2025 18:51:35 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	kernel test robot <lkp@intel.com>, x86@kernel.org
+Subject: Re: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
+Message-ID: <Z8skF4rtRzaDL2Ou@smile.fi.intel.com>
+References: <20250306092658.378837-1-andriy.shevchenko@linux.intel.com>
+ <174125602814.14745.12946945836213678532.tip-bot2@tip-bot2>
+ <CAHk-=whTGVy1aaEashu3K49wuG7-hARh02xbAr_hMm3844Ec7Q@mail.gmail.com>
+ <Z8oSAQiBvVJ_METQ@gmail.com>
+ <Z8oa8AUVyi2HWfo9@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174135126828.14745.8496438046154822833.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z8oa8AUVyi2HWfo9@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Thu, Mar 06, 2025 at 11:00:16PM +0100, Ingo Molnar wrote:
+> * Ingo Molnar <mingo@kernel.org> wrote:
+> 
+> > Separating out the assembler-compatible defines from the types 
+> > headers appears to be a bigger patch, since it's all mixed in with C 
+> > syntax:
+> > 
+> > <=-----------------------------------===============================
+> > typedef struct { pud_t pud; } pmd_t;
+> > 
+> > #define PMD_SHIFT       PUD_SHIFT
+> > #define PTRS_PER_PMD    1
+> > #define PMD_SIZE        (1UL << PMD_SHIFT)
+> > #define PMD_MASK        (~(PMD_SIZE-1))
+> > 
+> > /*
+> >  * The "pud_xxx()" functions here are trivial for a folded two-level
+> >  * setup: the pmd is never bad, and a pmd always exists (as it's folded
+> >  * into the pud entry)
+> >  */
+> > static inline int pud_none(pud_t pud)           { return 0; }
+> > static inline int pud_bad(pud_t pud)            { return 0; }
+> > static inline int pud_present(pud_t pud)        { return 1; }
+> > ================================================================>
+> > 
+> > In any case I've removed the commit for the time being until this all 
+> > is cleared up.
+> 
+> So there's a simple solution: define it on i386 too, via the patch 
+> below. It appears the double-definition doesn't create any warnings, on 
+> GCC at least.
 
-Commit-ID:     14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457
-Gitweb:        https://git.kernel.org/tip/14cb5d83068ecf15d2da6f7d0e9ea9edbcbc0457
-Author:        Andrew Cooper <andrew.cooper3@citrix.com>
-AuthorDate:    Fri, 07 Mar 2025 00:28:46 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 07 Mar 2025 13:28:31 +01:00
+Fine by me as long as it gets fixed. Currently it prevents the WERROR=y
+to be used along with `make W=1` for x86_32 by both compilers.
 
-x86/amd_nb: Use rdmsr_safe() in amd_get_mmconfig_range()
+> But if it's an issue, we could do something like this in 
+> <asm-generic/pgtable-nopmd.h>:
+> 
+>  #if defined(PTRS_PER_PMD) && (PTRS_PER_PMD != 1)
+>  # error "mm: Wait a minute, that's a super confusing pagetable setup ..."
+>  #endif
+> 
+> ?
+> 
+> Thanks,
+> 
+> 	Ingo
+> 
+> =========================>
+> From: Ingo Molnar <mingo@kernel.org>
+> Date: Thu, 6 Mar 2025 22:53:49 +0100
+> Subject: [PATCH] x86/mm: Define PTRS_PER_PMD for assembly code too
+> 
+> Andy reported the following build warning from head_32.S:
+> 
+>   In file included from arch/x86/kernel/head_32.S:29:
+>   arch/x86/include/asm/pgtable_32.h:59:5: error: "PTRS_PER_PMD" is not defined, evaluates to 0 [-Werror=undef]
+>        59 | #if PTRS_PER_PMD > 1
+> 
+> The reason is that on 2-level i386 paging the folded in PMD's
+> PTRS_PER_PMD constant is not defined in assembly headers,
+> only in generic MM C headers.
+> 
+> Instead of trying to fish out the definition from the generic
+> headers, just define it - it even has a comment for it already...
+> 
+> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> ---
+>  arch/x86/include/asm/pgtable-2level_types.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/pgtable-2level_types.h b/arch/x86/include/asm/pgtable-2level_types.h
+> index 7f6ccff0ba72..4a12c276b181 100644
+> --- a/arch/x86/include/asm/pgtable-2level_types.h
+> +++ b/arch/x86/include/asm/pgtable-2level_types.h
+> @@ -23,17 +23,17 @@ typedef union {
+>  #define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
+>  
+>  /*
+> - * traditional i386 two-level paging structure:
+> + * Traditional i386 two-level paging structure:
+>   */
+>  
+>  #define PGDIR_SHIFT	22
+>  #define PTRS_PER_PGD	1024
+>  
+> -
+>  /*
+> - * the i386 is two-level, so we don't really have any
+> - * PMD directory physically.
+> + * The i386 is two-level, so we don't really have any
+> + * PMD directory physically:
+>   */
+> +#define PTRS_PER_PMD	1
 
-Xen doesn't offer MSR_FAM10H_MMIO_CONF_BASE to all guests.  This results
-in the following warning:
+Should I give a try?
 
-  unchecked MSR access error: RDMSR from 0xc0010058 at rIP: 0xffffffff8101d19f (xen_do_read_msr+0x7f/0xa0)
-  Call Trace:
-   xen_read_msr+0x1e/0x30
-   amd_get_mmconfig_range+0x2b/0x80
-   quirk_amd_mmconfig_area+0x28/0x100
-   pnp_fixup_device+0x39/0x50
-   __pnp_add_device+0xf/0x150
-   pnp_add_device+0x3d/0x100
-   pnpacpi_add_device_handler+0x1f9/0x280
-   acpi_ns_get_device_callback+0x104/0x1c0
-   acpi_ns_walk_namespace+0x1d0/0x260
-   acpi_get_devices+0x8a/0xb0
-   pnpacpi_init+0x50/0x80
-   do_one_initcall+0x46/0x2e0
-   kernel_init_freeable+0x1da/0x2f0
-   kernel_init+0x16/0x1b0
-   ret_from_fork+0x30/0x50
-   ret_from_fork_asm+0x1b/0x30
+Okay, just
 
-based on quirks for a "PNP0c01" device.  Treating MMCFG as disabled is the
-right course of action, so no change is needed there.
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-This was most likely exposed by fixing the Xen MSR accessors to not be
-silently-safe.
+for x86_32 with Clang 19.1.7 and GCC 14.2.0.
 
-Fixes: 3fac3734c43a ("xen/pv: support selecting safe/unsafe msr accesses")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250307002846.3026685-1-andrew.cooper3@citrix.com
----
- arch/x86/kernel/amd_nb.c |  9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+-- 
+With Best Regards,
+Andy Shevchenko
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 11fac09..67e7737 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -143,7 +143,6 @@ bool __init early_is_amd_nb(u32 device)
- 
- struct resource *amd_get_mmconfig_range(struct resource *res)
- {
--	u32 address;
- 	u64 base, msr;
- 	unsigned int segn_busn_bits;
- 
-@@ -151,13 +150,11 @@ struct resource *amd_get_mmconfig_range(struct resource *res)
- 	    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
- 		return NULL;
- 
--	/* assume all cpus from fam10h have mmconfig */
--	if (boot_cpu_data.x86 < 0x10)
-+	/* Assume CPUs from Fam10h have mmconfig, although not all VMs do */
-+	if (boot_cpu_data.x86 < 0x10 ||
-+	    rdmsrl_safe(MSR_FAM10H_MMIO_CONF_BASE, &msr))
- 		return NULL;
- 
--	address = MSR_FAM10H_MMIO_CONF_BASE;
--	rdmsrl(address, msr);
--
- 	/* mmconfig is not enabled */
- 	if (!(msr & FAM10H_MMIO_CONF_ENABLE))
- 		return NULL;
+
 
