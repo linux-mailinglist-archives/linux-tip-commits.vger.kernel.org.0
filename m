@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-4056-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4057-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D6DEA575D0
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 00:11:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0583DA575EB
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 00:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98FE21792B6
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 23:11:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78950189B29D
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 23:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AC0258CFA;
-	Fri,  7 Mar 2025 23:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D192E258CDF;
+	Fri,  7 Mar 2025 23:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="S6rX/t3X";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/HLmL+Zr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="stKjhNRv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B//fOggG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B249420D503;
-	Fri,  7 Mar 2025 23:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C103219E8;
+	Fri,  7 Mar 2025 23:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741389093; cv=none; b=Q4r1nSLX+hb9SiQAWvdUyrgb42v7B2cFq5eSmk77VUVvmdkoarXYTIAr24Rccn/8khaJheedaT3zbDBibmScagi5XIbqjtgVugrNv2EY/JVDzNjgGp5X6pvTa3KEm7r+FofwuJQciu7BWUOrE/roD9WzcuLpQi6ZN+i5aBs+jlA=
+	t=1741389694; cv=none; b=Mmusmqdc+L54dGnHhDx6f4AIZf6fMjaU8MKRuDWZ1KytgK5zWBHZ0Q3RkE94VfCKnbx2G2mnJpSRoJtPv9bKsCZZ0+e8hOr6Vn0YCvbDsb0XkM415NfLw1XLereF4WkdyiBSgqy3IGQAvdFdzGCArTr0sAq4ssD+etS95jamLu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741389093; c=relaxed/simple;
-	bh=Ij3hVw5vTDgBEzFeIoHCJcqczFlrcv5Zl8n4/HRAUPs=;
+	s=arc-20240116; t=1741389694; c=relaxed/simple;
+	bh=xdF4Coi8t6ioFlnnCVxfLvP45sOsP7ih0UV8SaalgC0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Xja3oNmLgg8xPFZ2iQ8kZfRQHm4ZyASB3ERrkAmDZBbhrdwP1Tl4ySK/iT2KgceO9zL1yALEWK7zscKroJPq6WNVTKfL4+D0N8W/xEgwy3m6VVq866XDpGa6pKYlVUdGWTfjs4O3kMxp1Xa1UwTWGKxWxfgJyScbYbYe7tSOHIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=S6rX/t3X; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/HLmL+Zr; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qD9i1EDWdTVpDVHufXs93m/CL6tq1LIgjQKTDrKutBzjcsCtxqeeS5HD7mVZCB3FcI6P8vpPpS7EX5Q866lgM0HTez30BWPohphv8EZsVEafra9BXAOOSyUnnDrA4dof6kFQmMzoek/QzKhp+w/YZsfjfYvL253jze92/1C2Duw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=stKjhNRv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=B//fOggG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 07 Mar 2025 23:11:17 -0000
+Date: Fri, 07 Mar 2025 23:21:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741389082;
+	s=2020; t=1741389690;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ru1AZXogPtRV+/rRsRR3EzDIkWTbilwRn0lS/h0ZCQI=;
-	b=S6rX/t3XpVjx41U3yIunXJRy4y3zz29e/FDLysMVbErwAgejDXF0vj/J5TyBt2pT5jz40I
-	qshmEWJJNKab/CQ7XL3E5g5qxuIAq3k419A8obvz1mfAP/lxAmFx3alsp+X7T3rBrrqLLd
-	k5aEqkzPgZzbwn+CDNJ63rj6SBG/Z3FJ3TTHVQZljt8YLYl4Ji5vnTtWJ/tas9Vlrjr80L
-	NxrCNiA79wOs0797UH/A9DoipeCdQ6MrYRRpJxmsNE6b6p/XVOyMCcMsepbJdB2rxB68bG
-	DcXrl1DlxJRPoMpKTz2vUrd8QvFXjbsn+lv3rimgSbKSA09JbHxj2OyE+1DV4w==
+	bh=xLd+148MThUg2Gz4aNJysluLFeSRWK6160erUWfSWMk=;
+	b=stKjhNRveeVM7znmaR7QQ28SfHEcoIk4TYMDc/4KhMVQN2jW22R1smDZq5c0M5FuWQqtAt
+	T2Af4anG9e0mODFAlJw18lwcmg43KPmdbNEnNkFKaTIEzl96EGFCkIbrqeMGJcShW5I5Bh
+	brfD86+v2FanXTr9ngRwvmZWBY93sD4cDAwqOhwCyK27DZ4bgqxcr9wl7NVBrbkpizhZoq
+	Ir4GrSbfc2+TteQ4vFx6wQikRWLmJqnCtB9p/xh7HnNth7+CFP9U2iSHl1MZh+nBDpg/0Z
+	NBCVKGQINcdh098WXCBkdtVGG2L6OJV4UVrWwEF5c0hHhy1E+mEhQOz3aATp8g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741389082;
+	s=2020e; t=1741389690;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ru1AZXogPtRV+/rRsRR3EzDIkWTbilwRn0lS/h0ZCQI=;
-	b=/HLmL+ZrrqOAljKqT6QwSTyW2gV84YE+9qooqY2yJSlxAOVs1UggYxkaB5WN1zfpDBLuLN
-	i36nSercOAHhE1DA==
-From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+	bh=xLd+148MThUg2Gz4aNJysluLFeSRWK6160erUWfSWMk=;
+	b=B//fOggGT4/QmxE1wjJ9M+a2NYc7LbIwfcfPpSv2F31mpUEDlaeRkaaAzxzGAwB0aTOVQW
+	SY6dQRiEroJu3XBw==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/build] x86/boot: Drop CRC-32 checksum and the build tool
- that generates it
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ian Campbell <ijc@hellion.org.uk>,
+Subject: [tip: x86/urgent] x86/mm: Define PTRS_PER_PMD for assembly code too
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Ingo Molnar <mingo@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250307164801.885261-2-ardb+git@google.com>
-References: <20250307164801.885261-2-ardb+git@google.com>
+In-Reply-To: <Z8oa8AUVyi2HWfo9@gmail.com>
+References: <Z8oa8AUVyi2HWfo9@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
+Message-ID: <174138968981.14745.2513243286942332493.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,390 +80,63 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/build branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9c54baab4401db249d6938806b812231e0259380
-Gitweb:        https://git.kernel.org/tip/9c54baab4401db249d6938806b812231e0259380
-Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Fri, 07 Mar 2025 17:48:02 +01:00
+Commit-ID:     6914f7e2e25fac9d1d2b62c208eaa5f2bf810fe9
+Gitweb:        https://git.kernel.org/tip/6914f7e2e25fac9d1d2b62c208eaa5f2bf810fe9
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Thu, 06 Mar 2025 23:00:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 07 Mar 2025 23:59:10 +01:00
+CommitterDate: Sat, 08 Mar 2025 00:09:09 +01:00
 
-x86/boot: Drop CRC-32 checksum and the build tool that generates it
+x86/mm: Define PTRS_PER_PMD for assembly code too
 
-Apart from some sanity checks on the size of setup.bin, the only
-remaining task carried out by the arch/x86/boot/tools/build.c build tool
-is generating the CRC-32 checksum of the bzImage. This feature was added
-in commit
+Andy reported the following build warning from head_32.S:
 
-  7d6e737c8d2698b6 ("x86: add a crc32 checksum to the kernel image.")
+  In file included from arch/x86/kernel/head_32.S:29:
+  arch/x86/include/asm/pgtable_32.h:59:5: error: "PTRS_PER_PMD" is not defined, evaluates to 0 [-Werror=undef]
+       59 | #if PTRS_PER_PMD > 1
 
-without any motivation (or any commit log text, for that matter). This
-checksum is not verified by any known bootloader, and given that
+The reason is that on 2-level i386 paging the folded in PMD's
+PTRS_PER_PMD constant is not defined in assembly headers,
+only in generic MM C headers.
 
- a) the checksum of the entire bzImage is reported by most tools (zlib,
-    rhash) as 0xffffffff and not 0x0 as documented,
+Instead of trying to fish out the definition from the generic
+headers, just define it - it even has a comment for it already...
 
- b) the checksum is corrupted when the image is signed for secure boot,
-    which means that no distro ships x86 images with valid CRCs,
-
-it seems quite unlikely that this checksum is being used, so let's just
-drop it, along with the tool that generates it.
-
-Instead, use simple file concatenation and truncation to combine the two
-pieces into bzImage, and replace the checks on the size of the setup
-block with a couple of ASSERT()s in the linker script.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ian Campbell <ijc@hellion.org.uk>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250307164801.885261-2-ardb+git@google.com
+Link: https://lore.kernel.org/r/Z8oa8AUVyi2HWfo9@gmail.com
 ---
- Documentation/arch/x86/boot.rst        |  10 +-
- arch/x86/boot/Makefile                 |   7 +-
- arch/x86/boot/compressed/vmlinux.lds.S |   3 +-
- arch/x86/boot/setup.ld                 |   2 +-
- arch/x86/boot/tools/.gitignore         |   2 +-
- arch/x86/boot/tools/build.c            | 247 +------------------------
- 6 files changed, 5 insertions(+), 266 deletions(-)
- delete mode 100644 arch/x86/boot/tools/.gitignore
- delete mode 100644 arch/x86/boot/tools/build.c
+ arch/x86/include/asm/pgtable-2level_types.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index 76f53d3..77e6163 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -1038,16 +1038,6 @@ Offset/size:	0x000c/4
-   This field contains maximal allowed type for setup_data and setup_indirect structs.
+diff --git a/arch/x86/include/asm/pgtable-2level_types.h b/arch/x86/include/asm/pgtable-2level_types.h
+index 7f6ccff..4a12c27 100644
+--- a/arch/x86/include/asm/pgtable-2level_types.h
++++ b/arch/x86/include/asm/pgtable-2level_types.h
+@@ -23,17 +23,17 @@ typedef union {
+ #define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
  
+ /*
+- * traditional i386 two-level paging structure:
++ * Traditional i386 two-level paging structure:
+  */
  
--The Image Checksum
--==================
--
--From boot protocol version 2.08 onwards the CRC-32 is calculated over
--the entire file using the characteristic polynomial 0x04C11DB7 and an
--initial remainder of 0xffffffff.  The checksum is appended to the
--file; therefore the CRC of the file up to the limit specified in the
--syssize field of the header is always 0.
--
--
- The Kernel Command Line
- =======================
+ #define PGDIR_SHIFT	22
+ #define PTRS_PER_PGD	1024
  
-diff --git a/arch/x86/boot/Makefile b/arch/x86/boot/Makefile
-index 9cc0ff6..8589471 100644
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -35,7 +35,6 @@ setup-y		+= video-vesa.o
- setup-y		+= video-bios.o
+-
+ /*
+- * the i386 is two-level, so we don't really have any
+- * PMD directory physically.
++ * The i386 is two-level, so we don't really have any
++ * PMD directory physically:
+  */
++#define PTRS_PER_PMD	1
  
- targets		+= $(setup-y)
--hostprogs	:= tools/build
- hostprogs	+= mkcpustr
+ #define PTRS_PER_PTE	1024
  
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include \
-@@ -61,11 +60,9 @@ KBUILD_CFLAGS	+= $(CONFIG_CC_IMPLICIT_FALLTHROUGH)
- $(obj)/bzImage: asflags-y  := $(SVGA_MODE)
- 
- quiet_cmd_image = BUILD   $@
--silent_redirect_image = >/dev/null
--cmd_image = $(obj)/tools/build $(obj)/setup.bin $(obj)/vmlinux.bin \
--			       $(obj)/zoffset.h $@ $($(quiet)redirect_image)
-+      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
- 
--$(obj)/bzImage: $(obj)/setup.bin $(obj)/vmlinux.bin $(obj)/tools/build FORCE
-+$(obj)/bzImage: $(obj)/setup.bin $(obj)/vmlinux.bin FORCE
- 	$(call if_changed,image)
- 	@$(kecho) 'Kernel: $@ is ready' ' (#'$(or $(KBUILD_BUILD_VERSION),`cat .version`)')'
- 
-diff --git a/arch/x86/boot/compressed/vmlinux.lds.S b/arch/x86/boot/compressed/vmlinux.lds.S
-index 083ec6d..48d0b51 100644
---- a/arch/x86/boot/compressed/vmlinux.lds.S
-+++ b/arch/x86/boot/compressed/vmlinux.lds.S
-@@ -48,8 +48,7 @@ SECTIONS
- 		*(.data)
- 		*(.data.*)
- 
--		/* Add 4 bytes of extra space for a CRC-32 checksum */
--		. = ALIGN(. + 4, 0x200);
-+		. = ALIGN(0x200);
- 		_edata = . ;
- 	}
- 	. = ALIGN(L1_CACHE_BYTES);
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index 3a2d136..e1d594a 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -45,6 +45,8 @@ SECTIONS
- 
- 		setup_size = ALIGN(ABSOLUTE(.), 4096);
- 		setup_sects = ABSOLUTE(setup_size / 512);
-+		ASSERT(setup_sects >= 5, "The setup must be at least 5 sectors in size");
-+		ASSERT(setup_sects <= 64, "The setup must be at most 64 sectors in size");
- 	}
- 
- 	. = ALIGN(16);
-diff --git a/arch/x86/boot/tools/.gitignore b/arch/x86/boot/tools/.gitignore
-deleted file mode 100644
-index ae91f4d..0000000
---- a/arch/x86/boot/tools/.gitignore
-+++ /dev/null
-@@ -1,2 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--build
-diff --git a/arch/x86/boot/tools/build.c b/arch/x86/boot/tools/build.c
-deleted file mode 100644
-index 10311d7..0000000
---- a/arch/x86/boot/tools/build.c
-+++ /dev/null
-@@ -1,247 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- *  Copyright (C) 1991, 1992  Linus Torvalds
-- *  Copyright (C) 1997 Martin Mares
-- *  Copyright (C) 2007 H. Peter Anvin
-- */
--
--/*
-- * This file builds a disk-image from three different files:
-- *
-- * - setup: 8086 machine code, sets up system parm
-- * - system: 80386 code for actual system
-- * - zoffset.h: header with ZO_* defines
-- *
-- * It does some checking that all files are of the correct type, and writes
-- * the result to the specified destination, removing headers and padding to
-- * the right amount. It also writes some system data to stdout.
-- */
--
--/*
-- * Changes by tytso to allow root device specification
-- * High loaded stuff by Hans Lermen & Werner Almesberger, Feb. 1996
-- * Cross compiling fixes by Gertjan van Wingerde, July 1996
-- * Rewritten by Martin Mares, April 1997
-- * Substantially overhauled by H. Peter Anvin, April 2007
-- */
--
--#include <stdio.h>
--#include <string.h>
--#include <stdlib.h>
--#include <stdarg.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <unistd.h>
--#include <fcntl.h>
--#include <sys/mman.h>
--#include <tools/le_byteshift.h>
--
--typedef unsigned char  u8;
--typedef unsigned short u16;
--typedef unsigned int   u32;
--
--/* Minimal number of setup sectors */
--#define SETUP_SECT_MIN 5
--#define SETUP_SECT_MAX 64
--
--/* This must be large enough to hold the entire setup */
--u8 buf[SETUP_SECT_MAX*512];
--
--static unsigned long _edata;
--
--/*----------------------------------------------------------------------*/
--
--static const u32 crctab32[] = {
--	0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
--	0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
--	0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07,
--	0x90bf1d91, 0x1db71064, 0x6ab020f2, 0xf3b97148, 0x84be41de,
--	0x1adad47d, 0x6ddde4eb, 0xf4d4b551, 0x83d385c7, 0x136c9856,
--	0x646ba8c0, 0xfd62f97a, 0x8a65c9ec, 0x14015c4f, 0x63066cd9,
--	0xfa0f3d63, 0x8d080df5, 0x3b6e20c8, 0x4c69105e, 0xd56041e4,
--	0xa2677172, 0x3c03e4d1, 0x4b04d447, 0xd20d85fd, 0xa50ab56b,
--	0x35b5a8fa, 0x42b2986c, 0xdbbbc9d6, 0xacbcf940, 0x32d86ce3,
--	0x45df5c75, 0xdcd60dcf, 0xabd13d59, 0x26d930ac, 0x51de003a,
--	0xc8d75180, 0xbfd06116, 0x21b4f4b5, 0x56b3c423, 0xcfba9599,
--	0xb8bda50f, 0x2802b89e, 0x5f058808, 0xc60cd9b2, 0xb10be924,
--	0x2f6f7c87, 0x58684c11, 0xc1611dab, 0xb6662d3d, 0x76dc4190,
--	0x01db7106, 0x98d220bc, 0xefd5102a, 0x71b18589, 0x06b6b51f,
--	0x9fbfe4a5, 0xe8b8d433, 0x7807c9a2, 0x0f00f934, 0x9609a88e,
--	0xe10e9818, 0x7f6a0dbb, 0x086d3d2d, 0x91646c97, 0xe6635c01,
--	0x6b6b51f4, 0x1c6c6162, 0x856530d8, 0xf262004e, 0x6c0695ed,
--	0x1b01a57b, 0x8208f4c1, 0xf50fc457, 0x65b0d9c6, 0x12b7e950,
--	0x8bbeb8ea, 0xfcb9887c, 0x62dd1ddf, 0x15da2d49, 0x8cd37cf3,
--	0xfbd44c65, 0x4db26158, 0x3ab551ce, 0xa3bc0074, 0xd4bb30e2,
--	0x4adfa541, 0x3dd895d7, 0xa4d1c46d, 0xd3d6f4fb, 0x4369e96a,
--	0x346ed9fc, 0xad678846, 0xda60b8d0, 0x44042d73, 0x33031de5,
--	0xaa0a4c5f, 0xdd0d7cc9, 0x5005713c, 0x270241aa, 0xbe0b1010,
--	0xc90c2086, 0x5768b525, 0x206f85b3, 0xb966d409, 0xce61e49f,
--	0x5edef90e, 0x29d9c998, 0xb0d09822, 0xc7d7a8b4, 0x59b33d17,
--	0x2eb40d81, 0xb7bd5c3b, 0xc0ba6cad, 0xedb88320, 0x9abfb3b6,
--	0x03b6e20c, 0x74b1d29a, 0xead54739, 0x9dd277af, 0x04db2615,
--	0x73dc1683, 0xe3630b12, 0x94643b84, 0x0d6d6a3e, 0x7a6a5aa8,
--	0xe40ecf0b, 0x9309ff9d, 0x0a00ae27, 0x7d079eb1, 0xf00f9344,
--	0x8708a3d2, 0x1e01f268, 0x6906c2fe, 0xf762575d, 0x806567cb,
--	0x196c3671, 0x6e6b06e7, 0xfed41b76, 0x89d32be0, 0x10da7a5a,
--	0x67dd4acc, 0xf9b9df6f, 0x8ebeeff9, 0x17b7be43, 0x60b08ed5,
--	0xd6d6a3e8, 0xa1d1937e, 0x38d8c2c4, 0x4fdff252, 0xd1bb67f1,
--	0xa6bc5767, 0x3fb506dd, 0x48b2364b, 0xd80d2bda, 0xaf0a1b4c,
--	0x36034af6, 0x41047a60, 0xdf60efc3, 0xa867df55, 0x316e8eef,
--	0x4669be79, 0xcb61b38c, 0xbc66831a, 0x256fd2a0, 0x5268e236,
--	0xcc0c7795, 0xbb0b4703, 0x220216b9, 0x5505262f, 0xc5ba3bbe,
--	0xb2bd0b28, 0x2bb45a92, 0x5cb36a04, 0xc2d7ffa7, 0xb5d0cf31,
--	0x2cd99e8b, 0x5bdeae1d, 0x9b64c2b0, 0xec63f226, 0x756aa39c,
--	0x026d930a, 0x9c0906a9, 0xeb0e363f, 0x72076785, 0x05005713,
--	0x95bf4a82, 0xe2b87a14, 0x7bb12bae, 0x0cb61b38, 0x92d28e9b,
--	0xe5d5be0d, 0x7cdcefb7, 0x0bdbdf21, 0x86d3d2d4, 0xf1d4e242,
--	0x68ddb3f8, 0x1fda836e, 0x81be16cd, 0xf6b9265b, 0x6fb077e1,
--	0x18b74777, 0x88085ae6, 0xff0f6a70, 0x66063bca, 0x11010b5c,
--	0x8f659eff, 0xf862ae69, 0x616bffd3, 0x166ccf45, 0xa00ae278,
--	0xd70dd2ee, 0x4e048354, 0x3903b3c2, 0xa7672661, 0xd06016f7,
--	0x4969474d, 0x3e6e77db, 0xaed16a4a, 0xd9d65adc, 0x40df0b66,
--	0x37d83bf0, 0xa9bcae53, 0xdebb9ec5, 0x47b2cf7f, 0x30b5ffe9,
--	0xbdbdf21c, 0xcabac28a, 0x53b39330, 0x24b4a3a6, 0xbad03605,
--	0xcdd70693, 0x54de5729, 0x23d967bf, 0xb3667a2e, 0xc4614ab8,
--	0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b,
--	0x2d02ef8d
--};
--
--static u32 partial_crc32_one(u8 c, u32 crc)
--{
--	return crctab32[(crc ^ c) & 0xff] ^ (crc >> 8);
--}
--
--static u32 partial_crc32(const u8 *s, int len, u32 crc)
--{
--	while (len--)
--		crc = partial_crc32_one(*s++, crc);
--	return crc;
--}
--
--static void die(const char * str, ...)
--{
--	va_list args;
--	va_start(args, str);
--	vfprintf(stderr, str, args);
--	va_end(args);
--	fputc('\n', stderr);
--	exit(1);
--}
--
--static void usage(void)
--{
--	die("Usage: build setup system zoffset.h image");
--}
--
--/*
-- * Parse zoffset.h and find the entry points. We could just #include zoffset.h
-- * but that would mean tools/build would have to be rebuilt every time. It's
-- * not as if parsing it is hard...
-- */
--#define PARSE_ZOFS(p, sym) do { \
--	if (!strncmp(p, "#define ZO_" #sym " ", 11+sizeof(#sym)))	\
--		sym = strtoul(p + 11 + sizeof(#sym), NULL, 16);		\
--} while (0)
--
--static void parse_zoffset(char *fname)
--{
--	FILE *file;
--	char *p;
--	int c;
--
--	file = fopen(fname, "r");
--	if (!file)
--		die("Unable to open `%s': %m", fname);
--	c = fread(buf, 1, sizeof(buf) - 1, file);
--	if (ferror(file))
--		die("read-error on `zoffset.h'");
--	fclose(file);
--	buf[c] = 0;
--
--	p = (char *)buf;
--
--	while (p && *p) {
--		PARSE_ZOFS(p, _edata);
--
--		p = strchr(p, '\n');
--		while (p && (*p == '\r' || *p == '\n'))
--			p++;
--	}
--}
--
--int main(int argc, char ** argv)
--{
--	unsigned int i, sz, setup_sectors;
--	int c;
--	struct stat sb;
--	FILE *file, *dest;
--	int fd;
--	void *kernel;
--	u32 crc = 0xffffffffUL;
--
--	if (argc != 5)
--		usage();
--	parse_zoffset(argv[3]);
--
--	dest = fopen(argv[4], "w");
--	if (!dest)
--		die("Unable to write `%s': %m", argv[4]);
--
--	/* Copy the setup code */
--	file = fopen(argv[1], "r");
--	if (!file)
--		die("Unable to open `%s': %m", argv[1]);
--	c = fread(buf, 1, sizeof(buf), file);
--	if (ferror(file))
--		die("read-error on `setup'");
--	if (c < 1024)
--		die("The setup must be at least 1024 bytes");
--	if (get_unaligned_le16(&buf[510]) != 0xAA55)
--		die("Boot block hasn't got boot flag (0xAA55)");
--	fclose(file);
--
--	/* Pad unused space with zeros */
--	setup_sectors = (c + 4095) / 4096;
--	setup_sectors *= 8;
--	if (setup_sectors < SETUP_SECT_MIN)
--		setup_sectors = SETUP_SECT_MIN;
--	i = setup_sectors*512;
--	memset(buf+c, 0, i-c);
--
--	/* Open and stat the kernel file */
--	fd = open(argv[2], O_RDONLY);
--	if (fd < 0)
--		die("Unable to open `%s': %m", argv[2]);
--	if (fstat(fd, &sb))
--		die("Unable to stat `%s': %m", argv[2]);
--	if (_edata != sb.st_size)
--		die("Unexpected file size `%s': %u != %u", argv[2], _edata,
--		    sb.st_size);
--	sz = _edata - 4;
--	kernel = mmap(NULL, sz, PROT_READ, MAP_SHARED, fd, 0);
--	if (kernel == MAP_FAILED)
--		die("Unable to mmap '%s': %m", argv[2]);
--
--	crc = partial_crc32(buf, i, crc);
--	if (fwrite(buf, 1, i, dest) != i)
--		die("Writing setup failed");
--
--	/* Copy the kernel code */
--	crc = partial_crc32(kernel, sz, crc);
--	if (fwrite(kernel, 1, sz, dest) != sz)
--		die("Writing kernel failed");
--
--	/* Write the CRC */
--	put_unaligned_le32(crc, buf);
--	if (fwrite(buf, 1, 4, dest) != 4)
--		die("Writing CRC failed");
--
--	/* Catch any delayed write failures */
--	if (fclose(dest))
--		die("Writing image failed");
--
--	close(fd);
--
--	/* Everything is OK */
--	return 0;
--}
 
