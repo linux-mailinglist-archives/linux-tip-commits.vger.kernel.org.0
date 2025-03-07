@@ -1,222 +1,163 @@
-Return-Path: <linux-tip-commits+bounces-4045-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4046-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43054A5665C
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 12:14:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B749A566EB
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 12:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D345171D97
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 11:14:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6976F3B0E2F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  7 Mar 2025 11:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE458212D61;
-	Fri,  7 Mar 2025 11:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D845213252;
+	Fri,  7 Mar 2025 11:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="k7GhPtBi"
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lKjjt++J"
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B4F20ADF8;
-	Fri,  7 Mar 2025 11:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC4E21767C;
+	Fri,  7 Mar 2025 11:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741346055; cv=none; b=esrcgz/AzDdIb1FZSA83VO6loCsHx3lpT5leYV3RIHimIt3T13X1LRztH+GENq7V2ofROsmnDsG572OZvUJzj07cPO/UFuRALfKuF9VQs3dpM0/UEIQQs4mKjZr/CpIWkkNaVplGwA1f7na2Sb6I5LKMSB90OBUXPGE7uCKjadA=
+	t=1741347607; cv=none; b=Q2dtAJxy+kK6sjvjXBL4ALEN+BSJBx7IJnUjRUlMuwu8KqBAlxNT8vrKRMk/Y5wOPYOUtJisA5K6eLehYWIklvJ3st7Yf/WhurcEj/6fM7mG7jhODjh/XLqz4DBmLPpVa9ROz6O2d01DRTQHK51fT8yDKYV6UVouKi7VQxdca+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741346055; c=relaxed/simple;
-	bh=Klkb0vtj1sM3oTPIpH/xSYTsoRjUsFuMFwvsxNanhZU=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=QTARfxX1h9NGqxxd1cyEHc2rFVN/9Zm+dDEBCm58W/dPqfpbRJ7WoHgh1CZgaMr6RQ4YC9fH9Bt00dUJvCkIEg2T8S1gwqHrh4P1sB5D9/Pi/O6Tj+2qDXCC9CQFx+O5oH+DoXfrDzFNEea/Y7muNPIcJSV5++DuceFAJnm9BoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=k7GhPtBi; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
-Received: from [127.0.0.1] ([76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 527BDxLt191898
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 7 Mar 2025 03:13:59 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 527BDxLt191898
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025021701; t=1741346040;
-	bh=3s+/bqEB2e2NCp19RKTF/Cq+N1C1HPXRqZ5qT8xuGJE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=k7GhPtBib9vwuZchKCk71nNsYd3krTOiYtvrA0yLljkCrgl6gBXYJsHVQzeGqVuBv
-	 if/Zcs0aKYpNlSEMjSyZvXs0qF1Wtlwz1IAQbmOOpASX9I9H+ruOuUaXBdSws9ovpy
-	 LwLhK7xq4O4rvr0XcMhZNs3cRk16P+X7Yk9Kqxa80NnkSId+b6JagFJE9R1i/RrhQz
-	 e9TcSY15uX1T2mFJiQUX+kX58Gyopf0FTHHmXEmbyEgN3vxxes7iO+lKzHjyMTRxhB
-	 zvZ0MW5SIh6Jynykx5J/snlr9o/BAo01vWAvkBMEhk6TD7Fp5gwv7rW+8Ocx6shjP+
-	 vE+dy70IW2qlQ==
-Date: Fri, 07 Mar 2025 03:13:55 -0800
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Uros Bizjak <ubizjak@gmail.com>
-CC: linux-kernel@vger.kernel.org,
-        tip-bot2 for Uros Bizjak <tip-bot2@linutronix.de>,
-        linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-        David Woodhouse <dwmw@amazon.co.uk>, Baoquan He <bhe@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-        Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_x86/asm=5D_x86/kexec=3A_Merge_x86=5F32_a?=
- =?US-ASCII?Q?nd_x86=5F64_code_using_macros_from_=3Casm/asm=2Eh=3E?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAFULd4b29XMoBoN9_0BCtuV2dgasO=WUu0re91Refjx68Q9O9A@mail.gmail.com>
-References: <20250306145227.55819-1-ubizjak@gmail.com> <174129682336.14745.3287112422322924162.tip-bot2@tip-bot2> <36B61764-A297-459A-AD55-ACC54C409876@zytor.com> <CAFULd4b29XMoBoN9_0BCtuV2dgasO=WUu0re91Refjx68Q9O9A@mail.gmail.com>
-Message-ID: <426BE71F-FAF6-4C68-944D-9F559FF42737@zytor.com>
+	s=arc-20240116; t=1741347607; c=relaxed/simple;
+	bh=RdXGeUksPX5nBK/Nql891UU9+VHLyZXp5Jp77NwC/lM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IB9p3AhczKJJnUGQ2DGi7l1kQysRwZynawcDobuG6SSoiRwa6ZTIoa/j7Wiez4PX1RIjN9+CUBE9jB08EjniqW/YowWx91kcFqzkZqZXlzX0ERWagkMqLEO9xGt+kAW/Wq0a3XKTK3qw60N/mvlcGcfgDfsJkiRZ5TiHJPira+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lKjjt++J; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qJd8io4yNDJMwXhLW9Dt8G+ZqODy5u6PCGa0y547CXU=; b=lKjjt++J+HBCgfVI9IYXcazi5Q
+	72CTIpHnw6xOivdf9EBin4omOJsOOKakaGp2XCz3wfinSdS7UNgYuW31GA9rk5cpvCNrqMmxikhnq
+	QT2g4ezgHGZZgNCHMTE+RIx+c9dQiqtQ1W9HiKyHoGKjuM4jFsS6zOwRTGiV6beHFyVT45uukbja/
+	rRAR5rJ2tmeqT+mz/r+LZPNTydv1KZwuz2FFnrKHDgcXmS6Uq5PIejr6RyvyKx8EiEsCBwq/lqoMG
+	3AI7by4DSf4Y0t65jFGhZ6pXkttWOOYJxsERUsvbt+vTrpRaC6fJRrdsWBR+H1fDSTlyBi2HaIghT
+	Sk5UKx/w==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tqW3Y-0000000CMER-1YFt;
+	Fri, 07 Mar 2025 11:39:56 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id A392D30031C; Fri,  7 Mar 2025 12:39:55 +0100 (CET)
+Date: Fri, 7 Mar 2025 12:39:55 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Ryo Takakura <ryotkkr98@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org
+Subject: Re: [tip: locking/core] lockdep: Fix wait context check on softirq
+ for PREEMPT_RT
+Message-ID: <20250307113955.GK16878@noisy.programming.kicks-ass.net>
+References: <20250118054900.18639-1-ryotkkr98@gmail.com>
+ <174102791921.14745.9525905092448169732.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <174102791921.14745.9525905092448169732.tip-bot2@tip-bot2>
 
-On March 7, 2025 1:20:17 AM PST, Uros Bizjak <ubizjak@gmail=2Ecom> wrote:
->On Fri, Mar 7, 2025 at 4:00=E2=80=AFAM H=2E Peter Anvin <hpa@zytor=2Ecom>=
- wrote:
->>
->> On March 6, 2025 1:33:43 PM PST, tip-bot2 for Uros Bizjak <tip-bot2@lin=
-utronix=2Ede> wrote:
->> >The following commit has been merged into the x86/asm branch of tip:
->> >
->> >Commit-ID:     aa3942d4d12ef57f031faa2772fe410c24191e36
->> >Gitweb:        https://git=2Ekernel=2Eorg/tip/aa3942d4d12ef57f031faa27=
-72fe410c24191e36
->> >Author:        Uros Bizjak <ubizjak@gmail=2Ecom>
->> >AuthorDate:    Thu, 06 Mar 2025 15:52:11 +01:00
->> >Committer:     Ingo Molnar <mingo@kernel=2Eorg>
->> >CommitterDate: Thu, 06 Mar 2025 22:04:48 +01:00
->> >
->> >x86/kexec: Merge x86_32 and x86_64 code using macros from <asm/asm=2Eh=
->
->> >
->> >Merge common x86_32 and x86_64 code in crash_setup_regs()
->> >using macros from <asm/asm=2Eh>=2E
->> >
->> >The compiled object files before and after the patch are unchanged=2E
->> >
->> >Signed-off-by: Uros Bizjak <ubizjak@gmail=2Ecom>
->> >Signed-off-by: Ingo Molnar <mingo@kernel=2Eorg>
->> >Cc: David Woodhouse <dwmw@amazon=2Eco=2Euk>
->> >Cc: Baoquan He <bhe@redhat=2Ecom>
->> >Cc: Vivek Goyal <vgoyal@redhat=2Ecom>
->> >Cc: Dave Young <dyoung@redhat=2Ecom>
->> >Cc: Ard Biesheuvel <ardb@kernel=2Eorg>
->> >Cc: "H=2E Peter Anvin" <hpa@zytor=2Ecom>
->> >Link: https://lore=2Ekernel=2Eorg/r/20250306145227=2E55819-1-ubizjak@g=
-mail=2Ecom
->> >---
->> > arch/x86/include/asm/kexec=2Eh | 58 +++++++++++++++------------------=
---
->> > 1 file changed, 25 insertions(+), 33 deletions(-)
->> >
->> >diff --git a/arch/x86/include/asm/kexec=2Eh b/arch/x86/include/asm/kex=
-ec=2Eh
->> >index 8ad1874=2E=2Ee3589d6 100644
->> >--- a/arch/x86/include/asm/kexec=2Eh
->> >+++ b/arch/x86/include/asm/kexec=2Eh
->> >@@ -18,6 +18,7 @@
->> > #include <linux/string=2Eh>
->> > #include <linux/kernel=2Eh>
->> >
->> >+#include <asm/asm=2Eh>
->> > #include <asm/page=2Eh>
->> > #include <asm/ptrace=2Eh>
->> >
->> >@@ -71,41 +72,32 @@ static inline void crash_setup_regs(struct pt_regs=
- *newregs,
->> >       if (oldregs) {
->> >               memcpy(newregs, oldregs, sizeof(*newregs));
->> >       } else {
->> >+              asm volatile("mov %%" _ASM_BX ",%0" : "=3Dm"(newregs->b=
-x));
->> >+              asm volatile("mov %%" _ASM_CX ",%0" : "=3Dm"(newregs->c=
-x));
->> >+              asm volatile("mov %%" _ASM_DX ",%0" : "=3Dm"(newregs->d=
-x));
->> >+              asm volatile("mov %%" _ASM_SI ",%0" : "=3Dm"(newregs->s=
-i));
->> >+              asm volatile("mov %%" _ASM_DI ",%0" : "=3Dm"(newregs->d=
-i));
->> >+              asm volatile("mov %%" _ASM_BP ",%0" : "=3Dm"(newregs->b=
-p));
->> >+              asm volatile("mov %%" _ASM_AX ",%0" : "=3Dm"(newregs->a=
-x));
->> >+              asm volatile("mov %%" _ASM_SP ",%0" : "=3Dm"(newregs->s=
-p));
->> >+#ifdef CONFIG_X86_64
->> >+              asm volatile("mov %%r8,%0" : "=3Dm"(newregs->r8));
->> >+              asm volatile("mov %%r9,%0" : "=3Dm"(newregs->r9));
->> >+              asm volatile("mov %%r10,%0" : "=3Dm"(newregs->r10));
->> >+              asm volatile("mov %%r11,%0" : "=3Dm"(newregs->r11));
->> >+              asm volatile("mov %%r12,%0" : "=3Dm"(newregs->r12));
->> >+              asm volatile("mov %%r13,%0" : "=3Dm"(newregs->r13));
->> >+              asm volatile("mov %%r14,%0" : "=3Dm"(newregs->r14));
->> >+              asm volatile("mov %%r15,%0" : "=3Dm"(newregs->r15));
->> >+#endif
->> >+              asm volatile("mov %%ss,%k0" : "=3Da"(newregs->ss));
->> >+              asm volatile("mov %%cs,%k0" : "=3Da"(newregs->cs));
->> > #ifdef CONFIG_X86_32
->> >-              asm volatile("movl %%ebx,%0" : "=3Dm"(newregs->bx));
->> >-              asm volatile("movl %%ecx,%0" : "=3Dm"(newregs->cx));
->> >-              asm volatile("movl %%edx,%0" : "=3Dm"(newregs->dx));
->> >-              asm volatile("movl %%esi,%0" : "=3Dm"(newregs->si));
->> >-              asm volatile("movl %%edi,%0" : "=3Dm"(newregs->di));
->> >-              asm volatile("movl %%ebp,%0" : "=3Dm"(newregs->bp));
->> >-              asm volatile("movl %%eax,%0" : "=3Dm"(newregs->ax));
->> >-              asm volatile("movl %%esp,%0" : "=3Dm"(newregs->sp));
->> >-              asm volatile("movl %%ss, %%eax;" :"=3Da"(newregs->ss));
->> >-              asm volatile("movl %%cs, %%eax;" :"=3Da"(newregs->cs));
->> >-              asm volatile("movl %%ds, %%eax;" :"=3Da"(newregs->ds));
->> >-              asm volatile("movl %%es, %%eax;" :"=3Da"(newregs->es));
->> >-              asm volatile("pushfl; popl %0" :"=3Dm"(newregs->flags))=
-;
->> >-#else
->> >-              asm volatile("movq %%rbx,%0" : "=3Dm"(newregs->bx));
->> >-              asm volatile("movq %%rcx,%0" : "=3Dm"(newregs->cx));
->> >-              asm volatile("movq %%rdx,%0" : "=3Dm"(newregs->dx));
->> >-              asm volatile("movq %%rsi,%0" : "=3Dm"(newregs->si));
->> >-              asm volatile("movq %%rdi,%0" : "=3Dm"(newregs->di));
->> >-              asm volatile("movq %%rbp,%0" : "=3Dm"(newregs->bp));
->> >-              asm volatile("movq %%rax,%0" : "=3Dm"(newregs->ax));
->> >-              asm volatile("movq %%rsp,%0" : "=3Dm"(newregs->sp));
->> >-              asm volatile("movq %%r8,%0" : "=3Dm"(newregs->r8));
->> >-              asm volatile("movq %%r9,%0" : "=3Dm"(newregs->r9));
->> >-              asm volatile("movq %%r10,%0" : "=3Dm"(newregs->r10));
->> >-              asm volatile("movq %%r11,%0" : "=3Dm"(newregs->r11));
->> >-              asm volatile("movq %%r12,%0" : "=3Dm"(newregs->r12));
->> >-              asm volatile("movq %%r13,%0" : "=3Dm"(newregs->r13));
->> >-              asm volatile("movq %%r14,%0" : "=3Dm"(newregs->r14));
->> >-              asm volatile("movq %%r15,%0" : "=3Dm"(newregs->r15));
->> >-              asm volatile("movl %%ss, %%eax;" :"=3Da"(newregs->ss));
->> >-              asm volatile("movl %%cs, %%eax;" :"=3Da"(newregs->cs));
->> >-              asm volatile("pushfq; popq %0" :"=3Dm"(newregs->flags))=
-;
->> >+              asm volatile("mov %%ds,%k0" : "=3Da"(newregs->ds));
->> >+              asm volatile("mov %%es,%k0" : "=3Da"(newregs->es));
->> > #endif
->> >+              asm volatile("pushf\n\t"
->> >+                           "pop %0" : "=3Dm"(newregs->flags));
->> >               newregs->ip =3D _THIS_IP_;
->> >       }
->> > }
->>
->> Incidentally, doing this in C code is obviously completely broken, espe=
-cially doing it in multiple statements=2E You have no idea what the compile=
-r has messed with before you get there=2E
->
->These are "asm volatile" statemets, so at least they won't be
->scheduled in a different way=2E OTOH, please note that the patch is very
->carefully written to not change code flow, usage of hardregs in the
->inline asm is usually the sign of fragile code=2E
->
->Uros=2E
->
+On Mon, Mar 03, 2025 at 06:51:59PM -0000, tip-bot2 for Ryo Takakura wrote:
+> The following commit has been merged into the locking/core branch of tip:
+> 
+> Commit-ID:     8a9d677a395703ef9075c91dd04066be8a553405
+> Gitweb:        https://git.kernel.org/tip/8a9d677a395703ef9075c91dd04066be8a553405
+> Author:        Ryo Takakura <ryotkkr98@gmail.com>
+> AuthorDate:    Sat, 18 Jan 2025 14:49:00 +09:00
+> Committer:     Boqun Feng <boqun.feng@gmail.com>
+> CommitterDate: Sun, 23 Feb 2025 18:24:46 -08:00
+> 
+> lockdep: Fix wait context check on softirq for PREEMPT_RT
+> 
+> Since commit 0c1d7a2c2d32 ("lockdep: Remove softirq accounting on
+> PREEMPT_RT."), the wait context test for mutex usage within
+> "in softirq context" fails as it references @softirq_context.
+> 
+> [    0.184549]   | wait context tests |
+> [    0.184549]   --------------------------------------------------------------------------
+> [    0.184549]                                  | rcu  | raw  | spin |mutex |
+> [    0.184549]   --------------------------------------------------------------------------
+> [    0.184550]                in hardirq context:  ok  |  ok  |  ok  |  ok  |
+> [    0.185083] in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
+> [    0.185606]                in softirq context:  ok  |  ok  |  ok  |FAILED|
+> 
+> As a fix, add lockdep map for BH disabled section. This fixes the
+> issue by letting us catch cases when local_bh_disable() gets called
+> with preemption disabled where local_lock doesn't get acquired.
+> In the case of "in softirq context" selftest, local_bh_disable() was
+> being called with preemption disable as it's early in the boot.
+> 
+> Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Link: https://lore.kernel.org/r/20250118054900.18639-1-ryotkkr98@gmail.com
 
-That doesn't matter, though; that only means they can't be moved relativel=
-y to each other, but the compiler is perfectly capable of inserting code be=
-fore, or in between=2E=20
+This commit is causing:
 
-Your patch might be a functional null, but the code is broken on a deep an=
-d fundamental basis=2E
+[    7.184373] NET: Registered PF_INET6 protocol family
+[    7.196129] =============================
+[    7.196129] [ BUG: Invalid wait context ]
+[    7.196129] 6.14.0-rc5-00547-g67de62470d82-dirty #629 Not tainted
+[    7.196129] -----------------------------
+[    7.196129] swapper/0/1 is trying to lock:
+[    7.196129] ffffffff83312108 (pcpu_alloc_mutex){+.+.}-{4:4}, at: pcpu_alloc_noprof+0x818/0xc20
+[    7.196129] other info that might help us debug this:
+[    7.196129] context-{5:5}
+[    7.238009] ata7.00: ATA-8: ST91000640NS, SN03, max UDMA/133
+[    7.196129] 3 locks held by swapper/0/1:
+[    7.196129]  #0: ffffffff834414d0 (pernet_ops_rwsem){+.+.}-{4:4}, at: register_netdevice_notifier+0x1a/0x120
+[    7.196129]  #1: ffffffff83442988 (rtnl_mutex){+.+.}-{4:4}, at: register_netdevice_notifier+0x1f/0x120
+[    7.196129]  #2: ffffffff8324c740 (local_bh){.+.+}-{1:3}, at: dev_mc_add+0x39/0xb0
+[    7.196129] stack backtrace:
+[    7.196129] CPU: 31 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-rc5-00547-g67de62470d82-dirty #629
+[    7.196129] Hardware name: Intel Corporation S2600GZ/S2600GZ, BIOS SE5C600.86B.02.02.0002.122320131210 12/23/2013
+[    7.196129] Call Trace:
+[    7.196129]  <TASK>
+[    7.196129]  dump_stack_lvl+0x57/0x80
+[    7.196129]  __lock_acquire+0xd72/0x17d0
+[    7.196129]  ? ret_from_fork_asm+0x1a/0x30
+[    7.196129]  lock_acquire+0xcd/0x2f0
+[    7.196129]  ? pcpu_alloc_noprof+0x818/0xc20
+[    7.196129]  __mutex_lock+0xa4/0x820
+[    7.196129]  ? pcpu_alloc_noprof+0x818/0xc20
+[    7.196129]  ? pcpu_alloc_noprof+0x818/0xc20
+[    7.196129]  ? lock_acquire+0xcd/0x2f0
+[    7.239989]  ? pcpu_alloc_noprof+0x818/0xc20
+[    7.239990]  pcpu_alloc_noprof+0x818/0xc20
+[    7.239993]  ? lockdep_hardirqs_on+0x74/0x110
+[    7.239996]  ? neigh_parms_alloc+0xed/0x160
+[    7.240001]  ? neigh_parms_alloc+0xed/0x160
+[    7.240005]  ipv6_add_dev+0x154/0x520
+[    7.240005]  addrconf_notify+0x2de/0x8b0
+[    7.240005]  ? register_netdevice_notifier+0x1f/0x120
+[    7.240005]  ? lock_acquire+0xdd/0x2f0
+[    7.240005]  call_netdevice_register_net_notifiers+0x5b/0x100
+[    7.240005]  register_netdevice_notifier+0x87/0x120
+[    7.240005]  addrconf_init+0xa5/0x150
+[    7.240005]  inet6_init+0x1f3/0x3b0
+[    7.240005]  ? __pfx_inet6_init+0x10/0x10
+[    7.240005]  do_one_initcall+0x53/0x2b0
+[    7.240005]  ? rcu_is_watching+0xd/0x40
+[    7.240005]  kernel_init_freeable+0x23f/0x280
+[    7.240005]  ? __pfx_kernel_init+0x10/0x10
+[    7.240005]  kernel_init+0x16/0x130
+[    7.240005]  ret_from_fork+0x2d/0x50
+[    7.240005]  ? __pfx_kernel_init+0x10/0x10
+[    7.240005]  ret_from_fork_asm+0x1a/0x30
+[    7.240005]  </TASK>
+
+And some other weirdness for bpetkov:
+
+  https://lkml.kernel.org/r/20250306122413.GBZ8mT7Z61Tmgnh5Y9@fat_crate.local
+
+
+I suspect you missed a release somewhere.
 
