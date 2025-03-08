@@ -1,100 +1,142 @@
-Return-Path: <linux-tip-commits+bounces-4092-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4093-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD75A57C35
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 18:06:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19403A57DBB
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 20:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 934C11894086
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 17:06:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4594216D2DF
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 19:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7E614D2BB;
-	Sat,  8 Mar 2025 17:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA501A7AF7;
+	Sat,  8 Mar 2025 19:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMHomYj9"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZyOD8aDR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="l2bClFKX"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E33961FF2;
-	Sat,  8 Mar 2025 17:06:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69BF8148857;
+	Sat,  8 Mar 2025 19:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741453574; cv=none; b=QVs1Tnkb4IN81aWr+L6tF3G+XNT5QVMbK/APxwCG7+H6TspbY7WVBQIBWoZOFCsppmoM4YzmT/Om9/8INXLC7dlT1i8iGU73Rnm1Z4vPqUG5Rf1QjlEbyd7z6gxX1MBbvriDsfEuTVHhaI272cIKESljwzlcSrewzUBReVcbe8o=
+	t=1741461707; cv=none; b=tc6Z2AdE8hoA3I5l0Lje1sFNjgxWsCn5IpaECPPcxcrRlKnT9HuXl/5sEMiwGmSZttWw9r39pe8mtCByu32l8WHGavzAk/wQsUw7MNRJzuCmF8wNvhZ92moKRrrCP5Mo53v6Ht3cWp1N32ThR9mOXRRRpFm/bAo4ra7A0Y5jfh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741453574; c=relaxed/simple;
-	bh=6S/5uBVZCMtGp4vXQgSPKhfqMz5sJD/S0kF5/+dM5H8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d+ucmsTQj4mCqF8uwzeqvGdybDTu97t8Ib3arv6eDR40B73/32GsoMcPdBUi1Q4giylTteeF8Py5K/hmjBGg7XZDd13BplqKjOdaVeRLESh+5wGPy6HphAeTEQ0/6uIQvLZ/fZLkGnFyGGwu8CFvkJLBO5IjoEbBQGUglO735lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMHomYj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC970C4CEE0;
-	Sat,  8 Mar 2025 17:06:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741453573;
-	bh=6S/5uBVZCMtGp4vXQgSPKhfqMz5sJD/S0kF5/+dM5H8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WMHomYj9uz80vvROkeWKMENJe6tBo4waZ28+6f9BlqsjzamAVD1nGtKGRV5aLYIUE
-	 fJji7yGbiN14FBo6XDeFypJZCUTbYkfpvJPfQZsKfYieBeA2pjC9cxUGFOmstJNaSe
-	 JwK/9PerwG03d/mgfeXK1XiP4LJRJJnvP4pUk2/Ydy8U7rYjw+rMP/JJ5xJA9FIZpz
-	 fTqdfsQH5V8Eg8riHfIbXTdTbeDP9Ic0e4Jt5d6hEW14ugsVPs6Kfc3jBwZ4Gnr6cl
-	 H27BBgXtdk2arz+GFJP0GwBaGFq2sUH22AyvUCmordUKirfFVdHx8wUBCX0idPDIWb
-	 NaPJK0CJEvOPw==
-Date: Sat, 8 Mar 2025 09:06:11 -0800
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>,
-	linux-tip-commits@vger.kernel.org,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Brian Gerst <brgerst@gmail.com>, x86@kernel.org
-Subject: Re: [tip: x86/asm] x86/asm: Make ASM_CALL_CONSTRAINT conditional on
- frame pointers
-Message-ID: <20250308170611.4hlwdz5dndd4bnms@jpoimboe>
-References: <174108458405.14745.4864877018394987266.tip-bot2@tip-bot2>
- <90B1074B-E7D4-4CE0-8A82-ADEB7BAED7AD@zytor.com>
- <Z8t7ubUE5P7woAr5@gmail.com>
- <20250307232157.comm4lycebr7zmre@jpoimboe>
- <A669251B-7414-4EE7-B0AD-735E845C0B5B@zytor.com>
- <20250308013814.sa745d25m3ddlu2b@jpoimboe>
- <20250308081530.7c7e4f94@pumpkin>
+	s=arc-20240116; t=1741461707; c=relaxed/simple;
+	bh=RATPhOfpra1/I+BxdMC+oE7skHS5uIAnknN2HIJQnMc=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=VS0JcvIdYCQ4/Wuim2CtQ9SlNTWZLSp+aHg4Ax5J+SAjZTwHgCiq2Hnx/zZnHBfuZdHdTtXYsAWd7TZKttzYUBypulSCDubDIQ+ZoT7Rdk5Y8CtT/lvYoq5WyprlQOsx8+FP07HkzxoH/1w5N09cwzmjNcgXw7cGx1pOb4vm79Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZyOD8aDR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=l2bClFKX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 08 Mar 2025 19:21:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741461703;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OO29idI/yKCRQXHBjKq9k9/QC7tAMjU2iKwSNpMRCu8=;
+	b=ZyOD8aDRsJKjqFu6mvStfUABBCK2q5MOMjLOtsDfp4rKb/dt2bb+irokKXVOtQD8KvDb/R
+	ts2e/87Ydnf6+tCDZFbJCDWpY3vb6DLmp20y8oC4rquo1vkadPjyxCxGREzo2qvndrgKUw
+	FgbqnRuCv3t+yYYUfTJYFbLjzt9KhaMa81zm6qOhZMQ9vKuvdr37WPmIp/jggSsE1DQYML
+	46WCosmHxxVSQKJTTmi5da6eA5e/qcj0A5U4abD/7kyvnq3EW+uKaVAZ+9S8B1cwRm+74d
+	lYzIpxrc+fDe9CWFIhBRdUxuhnOCalXysEkCsNRTb9wk1ACdDzLgwqI0GaFi5Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741461703;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OO29idI/yKCRQXHBjKq9k9/QC7tAMjU2iKwSNpMRCu8=;
+	b=l2bClFKXnb//C8oBog2vdWHtZ4eDrd330x1alzl/Fj7/cVTWN8cSubj2esBRytjr0C6Wjn
+	geYpGzYBZ5eD6MDQ==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/microcode/AMD: Add some forgotten models to the
+ SHA check
+Cc: toralf.foerster@gmx.de, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250307220256.11816-1-bp@kernel.org>
+References: <20250307220256.11816-1-bp@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250308081530.7c7e4f94@pumpkin>
+Message-ID: <174146170187.14745.11298103616852645546.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Mar 08, 2025 at 08:15:30AM +0000, David Laight wrote:
-> On Fri, 7 Mar 2025 17:38:14 -0800
-> Josh Poimboeuf <jpoimboe@kernel.org> wrote:
-> 
-> ...
-> > We hopefully won't need those hacks much longer anyway, as I'll have
-> > another series to propose removing frame pointers for x86-64.
-> > 
-> > x86-32 can keep frame pointers, but doesn't need the constraints.  It's
-> > not supported for livepatch so it doesn't need to be 100% reliable.
-> > Worst case, an unwind skips a frame, but the call address still shows up
-> > on stack trace dumps prepended with '?'.
-> 
-> Doesn't 'user copy hardening' also do stack following?
-> That needs to find all the stack frames (that have locals) and I think
-> is is more reliable with frame pointers.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Yeah, that's arch_within_stack_frames(), which is frame pointer only.
+Commit-ID:     058a6bec37c6c3b826158f6d26b75de43816a880
+Gitweb:        https://git.kernel.org/tip/058a6bec37c6c3b826158f6d26b75de4381=
+6a880
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Fri, 07 Mar 2025 23:02:56 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 08 Mar 2025 20:09:37 +01:00
 
-ORC would actually be more reliable than frame pointers, but IIRC,
-hardened usercopy didn't get an ORC implementation due to performance
-concerns about doing an ORC unwind for every usercopy to/from the stack.
+x86/microcode/AMD: Add some forgotten models to the SHA check
 
-So yeah, hardened usercopy is one minor benefit of frame pointers vs ORC.
+Add some more forgotten models to the SHA check.
 
--- 
-Josh
+Fixes: 50cef76d5cb0 ("x86/microcode/AMD: Load only SHA256-checksummed patches=
+")
+Reported-by: Toralf F=C3=B6rster <toralf.foerster@gmx.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Toralf F=C3=B6rster <toralf.foerster@gmx.de>
+Link: https://lore.kernel.org/r/20250307220256.11816-1-bp@kernel.org
+---
+ arch/x86/kernel/cpu/microcode/amd.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microc=
+ode/amd.c
+index 95ac1c6..c69b1bc 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -175,23 +175,29 @@ static bool need_sha_check(u32 cur_rev)
+ {
+ 	switch (cur_rev >> 8) {
+ 	case 0x80012: return cur_rev <=3D 0x800126f; break;
++	case 0x80082: return cur_rev <=3D 0x800820f; break;
+ 	case 0x83010: return cur_rev <=3D 0x830107c; break;
+ 	case 0x86001: return cur_rev <=3D 0x860010e; break;
+ 	case 0x86081: return cur_rev <=3D 0x8608108; break;
+ 	case 0x87010: return cur_rev <=3D 0x8701034; break;
+ 	case 0x8a000: return cur_rev <=3D 0x8a0000a; break;
++	case 0xa0010: return cur_rev <=3D 0xa00107a; break;
+ 	case 0xa0011: return cur_rev <=3D 0xa0011da; break;
+ 	case 0xa0012: return cur_rev <=3D 0xa001243; break;
++	case 0xa0082: return cur_rev <=3D 0xa00820e; break;
+ 	case 0xa1011: return cur_rev <=3D 0xa101153; break;
+ 	case 0xa1012: return cur_rev <=3D 0xa10124e; break;
+ 	case 0xa1081: return cur_rev <=3D 0xa108109; break;
+ 	case 0xa2010: return cur_rev <=3D 0xa20102f; break;
+ 	case 0xa2012: return cur_rev <=3D 0xa201212; break;
++	case 0xa4041: return cur_rev <=3D 0xa404109; break;
++	case 0xa5000: return cur_rev <=3D 0xa500013; break;
+ 	case 0xa6012: return cur_rev <=3D 0xa60120a; break;
+ 	case 0xa7041: return cur_rev <=3D 0xa704109; break;
+ 	case 0xa7052: return cur_rev <=3D 0xa705208; break;
+ 	case 0xa7080: return cur_rev <=3D 0xa708009; break;
+ 	case 0xa70c0: return cur_rev <=3D 0xa70C009; break;
++	case 0xaa001: return cur_rev <=3D 0xaa00116; break;
+ 	case 0xaa002: return cur_rev <=3D 0xaa00218; break;
+ 	default: break;
+ 	}
 
