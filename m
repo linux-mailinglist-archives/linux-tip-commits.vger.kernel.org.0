@@ -1,80 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-4065-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4066-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435AAA57693
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 01:08:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB30A57692
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 01:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92AF1165D5E
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 00:08:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39BFE3B6A39
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 00:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AE41DFF0;
-	Sat,  8 Mar 2025 00:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F5A286A9;
+	Sat,  8 Mar 2025 00:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Md8SDkH3";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rfkneWX3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uKWP21F/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/Hglsecd"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEAD8BEC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2FFEACD;
 	Sat,  8 Mar 2025 00:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741392490; cv=none; b=Cmi6Z5XwfVFRlZaOwKK8584wzsRsT6hvnwXTs4F/G2cPIn/AAXYpSNgZt4fCk0SDslwwxE+R5NbFvuf2FWCBT5k2XLAnM9OCgf7eML9VxkfxGtR7y52+egMe2RyBLvMAkhZY3Kkf9uHEFtIa1b75Hwnl8HSyvNWd8H/j1rUaGR4=
+	t=1741392491; cv=none; b=UeDF2/rzv2RivAOIUTVIPb8KwGsZtdvqW5MlKpebBp/Q0GogXYpZ85eAFmxX3w/MImV8oOsTqJuG19V+w6q93PenvtH+fj4OXbhMa+LRBxTZ/LaILyjgAZuY7ehC7yYgblcx2pvdF9ZxeDHGiCgaUhna5c22PPKqvJJWrHHOy5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741392490; c=relaxed/simple;
-	bh=m3Vr8ax/OjNyXL2N4S+/26pguhXdx4y1eP7VFUFqczY=;
+	s=arc-20240116; t=1741392491; c=relaxed/simple;
+	bh=c0NqB6CF+ue+4CbqOdqgDsD7lzwUax7DRqFAxWrBgiA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ldJ26XQ3VL3vBMMU/QXNCM4eOprThurO94ZMOGVaLsFHFUD4fdXAUMe3KIiMAZF9zWXyhZP4v3bwFILN3TZ+PAjxFuM2/xC9HTXnlgMHyQHM/OZUNRru8r/uyqxuXTp5bRn/OS1C/xHrpeSrdE2ZpqdgkPu9CAJInEMJTEQzAk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Md8SDkH3; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rfkneWX3; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=b5DFxmCkJLnGW7bjPiCHdIhB4APZwnZanNEnU/P+yeDXm+oEqh5Nq+ko9s4peg23EMS6M8C0Lfv+yVtm8e2+BKrobiWGAnrLxfH9uAkMhmsbiofex2h1IlYLSmaC4/eEEhSWlulaoetF/wXNxXdclOPwrT4aVJTXEbjJUuTjiLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uKWP21F/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/Hglsecd; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 08 Mar 2025 00:08:05 -0000
+Date: Sat, 08 Mar 2025 00:08:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741392486;
+	s=2020; t=1741392487;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QwpVdOqED2gCbNEJ27AVmzxa0U69YlzQ6mV4OB2pE7c=;
-	b=Md8SDkH3owWIn4zDI9adz4cbFNVbrCv9qdqn0eNlRGPaiAlG/XKOiSDr+LebbViVirTz2i
-	4dkaJlbXbCH79SQNsNcMtvqbxFDTp2J/vXDyTPhanl2UPhzJJEGIGpiw5bpiezzJ0CrHa3
-	tk/hkG/ZVMSOscbrMkjBei929mrMcERoSdVqVTBoBqVmS3+yYL966vZzL3fM48tWWXQAuq
-	NxxuTnrBA4Z6t4Xl14GDgbwc+xMNlI1m164B2Jr5M5ZqbRgCsIW6EXM3m2aFg0fK5HgvP9
-	viLyD5ZKQDoQo95JPBdkGPe/x3fgZWgNk9+yrVWsNWCp3BtgeTRdcxE99PzjFA==
+	bh=KoXqXAypsvzEIa1eHB8gIQ36LC9ITn+x1iV+Tykh4Bw=;
+	b=uKWP21F/2HP3QfJvjVi2hD1CR2mrIwo4VdPtPGkVe5dEVHFl3fec3qu4FM0son2J9dZa70
+	aox1XkVz7ZoWCYJOrhSXRjpeRLJQJGWBGDfv18pwOAs3qJz43aLPvUvEezV4rpzjaSitBi
+	UZgXII6DJrENWUz8836amNHZ8pYW130aKdVN1RqFB8pyKAyeToJHMC63z93jWKjhFCIWgx
+	DKUpxsKwpqo5GCSt7GCUNjXqBGv8/szNLNU6TOGrYCXOyse6Q+Dy/6UqRT3Q3GqP9BlQnY
+	Jvhwgk//KIm5I11SaCBIbcux0dlwtvWStrU5AAGLsQiVyfknwYkp3lU59DJzRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741392486;
+	s=2020e; t=1741392487;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QwpVdOqED2gCbNEJ27AVmzxa0U69YlzQ6mV4OB2pE7c=;
-	b=rfkneWX3uiXrOUpZMMS8UopnAXHcvnVm+ybyAGzqfTHNq0CcR/cdLkmDWH09D1bHhwrkoN
-	QGXOwpIv1VNkm7DQ==
+	bh=KoXqXAypsvzEIa1eHB8gIQ36LC9ITn+x1iV+Tykh4Bw=;
+	b=/HglsecdUdK95behu0Mg+8iRjPz47tynfv/+sutXPMsqipxlPYMNzVL0jrFmUOanqzHaU4
+	f4CWGxzqHEURdBBA==
 From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/lockdep: Disable KASAN instrumentation of
- lockdep.c
+Subject:
+ [tip: locking/core] locking/lock_events: Add locking events for lockdep
 Cc: Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Marco Elver <elver@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250307232717.1759087-6-boqun.feng@gmail.com>
-References: <20250307232717.1759087-6-boqun.feng@gmail.com>
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250307232717.1759087-5-boqun.feng@gmail.com>
+References: <20250307232717.1759087-5-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174139248565.14745.7590713481070648225.tip-bot2@tip-bot2>
+Message-ID: <174139248654.14745.6049947955619993643.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,172 +81,73 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     ee57ab5a32129f599ee1d358548dbebcb5e45953
-Gitweb:        https://git.kernel.org/tip/ee57ab5a32129f599ee1d358548dbebcb5e45953
+Commit-ID:     a94d32446ab5e85c7ba97e48a8c9bd85be4fe889
+Gitweb:        https://git.kernel.org/tip/a94d32446ab5e85c7ba97e48a8c9bd85be4fe889
 Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Fri, 07 Mar 2025 15:26:55 -08:00
+AuthorDate:    Fri, 07 Mar 2025 15:26:54 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sat, 08 Mar 2025 00:55:03 +01:00
 
-locking/lockdep: Disable KASAN instrumentation of lockdep.c
+locking/lock_events: Add locking events for lockdep
 
-Both KASAN and LOCKDEP are commonly enabled in building a debug kernel.
-Each of them can significantly slow down the speed of a debug kernel.
-Enabling KASAN instrumentation of the LOCKDEP code will further slow
-things down.
-
-Since LOCKDEP is a high overhead debugging tool, it will never get
-enabled in a production kernel. The LOCKDEP code is also pretty mature
-and is unlikely to get major changes. There is also a possibility of
-recursion similar to KCSAN.
-
-To evaluate the performance impact of disabling KASAN instrumentation
-of lockdep.c, the time to do a parallel build of the Linux defconfig
-kernel was used as the benchmark. Two x86-64 systems (Skylake & Zen 2)
-and an arm64 system were used as test beds. Two sets of non-RT and RT
-kernels with similar configurations except mainly CONFIG_PREEMPT_RT
-were used for evaluation.
-
-For the Skylake system:
-
-  Kernel			Run time	    Sys time
-  ------			--------	    --------
-  Non-debug kernel (baseline)	0m47.642s	      4m19.811s
-
-  [CONFIG_KASAN_INLINE=y]
-  Debug kernel			2m11.108s (x2.8)     38m20.467s (x8.9)
-  Debug kernel (patched)	1m49.602s (x2.3)     31m28.501s (x7.3)
-  Debug kernel
-  (patched + mitigations=off)	1m30.988s (x1.9)     26m41.993s (x6.2)
-
-  RT kernel (baseline)		0m54.871s	      7m15.340s
-
-  [CONFIG_KASAN_INLINE=n]
-  RT debug kernel		6m07.151s (x6.7)    135m47.428s (x18.7)
-  RT debug kernel (patched)	3m42.434s (x4.1)     74m51.636s (x10.3)
-  RT debug kernel
-  (patched + mitigations=off)	2m40.383s (x2.9)     57m54.369s (x8.0)
-
-  [CONFIG_KASAN_INLINE=y]
-  RT debug kernel		3m22.155s (x3.7)     77m53.018s (x10.7)
-  RT debug kernel (patched)	2m36.700s (x2.9)     54m31.195s (x7.5)
-  RT debug kernel
-  (patched + mitigations=off)	2m06.110s (x2.3)     45m49.493s (x6.3)
-
-For the Zen 2 system:
-
-  Kernel			Run time	    Sys time
-  ------			--------	    --------
-  Non-debug kernel (baseline)	1m42.806s	     39m48.714s
-
-  [CONFIG_KASAN_INLINE=y]
-  Debug kernel			4m04.524s (x2.4)    125m35.904s (x3.2)
-  Debug kernel (patched)	3m56.241s (x2.3)    127m22.378s (x3.2)
-  Debug kernel
-  (patched + mitigations=off)	2m38.157s (x1.5)     92m35.680s (x2.3)
-
-  RT kernel (baseline)		 1m51.500s	     14m56.322s
-
-  [CONFIG_KASAN_INLINE=n]
-  RT debug kernel		16m04.962s (x8.7)   244m36.463s (x16.4)
-  RT debug kernel (patched)	 9m09.073s (x4.9)   129m28.439s (x8.7)
-  RT debug kernel
-  (patched + mitigations=off)	 3m31.662s (x1.9)    51m01.391s (x3.4)
-
-For the arm64 system:
-
-  Kernel			Run time	    Sys time
-  ------			--------	    --------
-  Non-debug kernel (baseline)	1m56.844s	      8m47.150s
-  Debug kernel			3m54.774s (x2.0)     92m30.098s (x10.5)
-  Debug kernel (patched)	3m32.429s (x1.8)     77m40.779s (x8.8)
-
-  RT kernel (baseline)		 4m01.641s	     18m16.777s
-
-  [CONFIG_KASAN_INLINE=n]
-  RT debug kernel		19m32.977s (x4.9)   304m23.965s (x16.7)
-  RT debug kernel (patched)	16m28.354s (x4.1)   234m18.149s (x12.8)
-
-Turning the mitigations off doesn't seems to have any noticeable impact
-on the performance of the arm64 system. So the mitigation=off entries
-aren't included.
-
-For the x86 CPUs, CPU mitigations has a much bigger
-impact on performance, especially the RT debug kernel with
-CONFIG_KASAN_INLINE=n. The SRSO mitigation in Zen 2 has an especially
-big impact on the debug kernel. It is also the majority of the slowdown
-with mitigations on. It is because the patched RET instruction slows
-down function returns. A lot of helper functions that are normally
-compiled out or inlined may become real function calls in the debug
-kernel.
-
-With !CONFIG_KASAN_INLINE, the KASAN instrumentation inserts a
-lot of __asan_loadX*() and __kasan_check_read() function calls to memory
-access portion of the code. The lockdep's __lock_acquire() function,
-for instance, has 66 __asan_loadX*() and 6 __kasan_check_read() calls
-added with KASAN instrumentation. Of course, the actual numbers may vary
-depending on the compiler used and the exact version of the lockdep code.
-
-With the Skylake test system, the parallel kernel build times reduction
-of the RT debug kernel with this patch are:
-
- CONFIG_KASAN_INLINE=n: -37%
- CONFIG_KASAN_INLINE=y: -22%
-
-The time reduction is less with CONFIG_KASAN_INLINE=y, but it is still
-significant.
-
-Setting CONFIG_KASAN_INLINE=y can result in a significant performance
-improvement. The major drawback is a significant increase in the size
-of kernel text. In the case of vmlinux, its text size increases from
-45997948 to 67606807. That is a 47% size increase (about 21 Mbytes). The
-size increase of other kernel modules should be similar.
-
-With the newly added rtmutex and lockdep lock events, the relevant
-event counts for the test runs with the Skylake system were:
-
-  Event type		Debug kernel	RT debug kernel
-  ----------		------------	---------------
-  lockdep_acquire	1,968,663,277	5,425,313,953
-  rtlock_slowlock	     -		  401,701,156
-  rtmutex_slowlock	     -		      139,672
-
-The __lock_acquire() calls in the RT debug kernel are x2.8 times of the
-non-RT debug kernel with the same workload. Since the __lock_acquire()
-function is a big hitter in term of performance slowdown, this makes
-the RT debug kernel much slower than the non-RT one. The average lock
-nesting depth is likely to be higher in the RT debug kernel too leading
-to longer execution time in the __lock_acquire() function.
-
-As the small advantage of enabling KASAN instrumentation to catch
-potential memory access error in the lockdep debugging tool is probably
-not worth the drawback of further slowing down a debug kernel, disable
-KASAN instrumentation in the lockdep code to allow the debug kernels
-to regain some performance back, especially for the RT debug kernels.
+Add some lock events to lockdep to profile its behavior.
 
 Signed-off-by: Waiman Long <longman@redhat.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250307232717.1759087-6-boqun.feng@gmail.com
+Link: https://lore.kernel.org/r/20250307232717.1759087-5-boqun.feng@gmail.com
 ---
- kernel/locking/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/locking/lock_events_list.h | 7 +++++++
+ kernel/locking/lockdep.c          | 8 +++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/locking/Makefile b/kernel/locking/Makefile
-index 0db4093..a114949 100644
---- a/kernel/locking/Makefile
-+++ b/kernel/locking/Makefile
-@@ -5,7 +5,8 @@ KCOV_INSTRUMENT		:= n
+diff --git a/kernel/locking/lock_events_list.h b/kernel/locking/lock_events_list.h
+index 80b11f1..9ef9850 100644
+--- a/kernel/locking/lock_events_list.h
++++ b/kernel/locking/lock_events_list.h
+@@ -88,3 +88,10 @@ LOCK_EVENT(rtmutex_slow_acq3)	/* # of locks acquired in *block()	*/
+ LOCK_EVENT(rtmutex_slow_sleep)	/* # of sleeps				*/
+ LOCK_EVENT(rtmutex_slow_wake)	/* # of wakeup's			*/
+ LOCK_EVENT(rtmutex_deadlock)	/* # of rt_mutex_handle_deadlock()'s	*/
++
++/*
++ * Locking events for lockdep
++ */
++LOCK_EVENT(lockdep_acquire)
++LOCK_EVENT(lockdep_lock)
++LOCK_EVENT(lockdep_nocheck)
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 4470680..8436f01 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -61,6 +61,7 @@
+ #include <asm/sections.h>
  
- obj-y += mutex.o semaphore.o rwsem.o percpu-rwsem.o
+ #include "lockdep_internals.h"
++#include "lock_events.h"
  
--# Avoid recursion lockdep -> sanitizer -> ... -> lockdep.
-+# Avoid recursion lockdep -> sanitizer -> ... -> lockdep & improve performance.
-+KASAN_SANITIZE_lockdep.o := n
- KCSAN_SANITIZE_lockdep.o := n
+ #include <trace/events/lock.h>
  
- ifdef CONFIG_FUNCTION_TRACER
+@@ -170,6 +171,7 @@ static struct task_struct *lockdep_selftest_task_struct;
+ static int graph_lock(void)
+ {
+ 	lockdep_lock();
++	lockevent_inc(lockdep_lock);
+ 	/*
+ 	 * Make sure that if another CPU detected a bug while
+ 	 * walking the graph we dont change it (while the other
+@@ -5091,8 +5093,12 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
+ 	if (unlikely(lock->key == &__lockdep_no_track__))
+ 		return 0;
+ 
+-	if (!prove_locking || lock->key == &__lockdep_no_validate__)
++	lockevent_inc(lockdep_acquire);
++
++	if (!prove_locking || lock->key == &__lockdep_no_validate__) {
+ 		check = 0;
++		lockevent_inc(lockdep_nocheck);
++	}
+ 
+ 	if (subclass < NR_LOCKDEP_CACHING_CLASSES)
+ 		class = lock->class_cache[subclass];
 
