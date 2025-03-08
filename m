@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-4086-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4087-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DCB9A57AB2
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 14:46:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCFFA57AB1
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 14:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C93FD7A7CC0
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 13:45:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B8BF16D539
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  8 Mar 2025 13:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5E21EB5C0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501251CEAC8;
 	Sat,  8 Mar 2025 13:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BtEQFz/M";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wn32xY0p"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U6XPw9Xz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SRXPZMuu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A84D1C84CC;
-	Sat,  8 Mar 2025 13:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FD01E3DD7;
+	Sat,  8 Mar 2025 13:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741441508; cv=none; b=BkIyaa+wVCF/Cs9Li28yhCoQxMycfOfDvNkOQMoEQ3TJJs9LZx2qEyTJAr1FLBDJz8DKSVvULndN4EV8343FG211ou/DxLD3dlxwe8LaX5Pih/NYiYLZI5FLuGxkN/9p6dM/Dmansc8LALhis/HozVkE59JaMZXAzE1SIDHzW0Y=
+	t=1741441508; cv=none; b=V3ha1LkTI4pUD7S3UOK4zBRuxqyfX/uB2PDmDd/TtKxRrv+GNHYgLaGjTbif8r6vCkeNmtQ70NwX523AJS2cJHejZyRUHI1kSEekZ1EBtY0VbP9fTqxfoDXkPXEbP9Cvm4HbzBgRuzUkWQKbEMSbKWClXyu1o0MPJaGfM7XDqCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741441508; c=relaxed/simple;
-	bh=Lm603i6B8HVeh6jFNbnu+pZVMF/ZqvgN9xAJFL69zlU=;
+	bh=MsozlJIBLCDs2MpwTmGDiT2hxD4XhwFvzbqOD83oe+8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YqXiCRqd8dcW9ENdGLTBdX9zuvswOrZJiV82LoNviX1TQCpf3IFrJlbk4wRj6fbkCcT67yjeOHWHjQyGL/BQanV3nrwD5/KOK1dvGrKM2vu/qwVS/bACR6qCfQAfUNMyQhiQ8yuo+ElpMfPLPRpdw0cXI/oSI0q8rKFKy1jW4ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BtEQFz/M; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wn32xY0p; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=TkCaWtre7lkZeqBr6Qk7b5OM8ok3wbRkHS+BqmxZc0T3GtyLbeF+UwZ9zYMHm5/k3puV7KbJSh9Lkhbz1AhFLXo8IJNjxQm4m7CUgMLkG6edi63SzOCQKH8et85K+iC8JTg0KmdgZZIW77T/DRkUTDEyaLG1SB0VqDVcfMLTcR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U6XPw9Xz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SRXPZMuu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 08 Mar 2025 13:45:03 -0000
+Date: Sat, 08 Mar 2025 13:45:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741441504;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Sr3exRsu33OHuDXo/d9jtEK0SOWIpt3Z/quNJZ0foNQ=;
-	b=BtEQFz/MwVZebQperm2tifNiixpmdzTu3l3hB6LZRBjrqutvBk56Y6QRumwm3ueZNZCMX9
-	eQp8yepx2Hglq4O/r050vDPgDh8aUm6j26Edb73hOha+FWQPjfft9TDlkp8SdvLfDMurBj
-	RN3tSZdcy943NzWi1IwfJzrFftievZHMLuaymTWNUVAABofEbE/GFK6KFDEbZTC8HVc11B
-	igSVqmtzjDwgl3exFbmc9XqAYZG9KVSLM0861/IiXUOWfoi3eVTIBd5i3PTM5VKou2r0rJ
-	VHkVCnuLAYrSTXlKcDXdaUIZCpGKzXt/2yfCvfZ0+L32NeQZUE4NUS2QnhVBqQ==
+	bh=qf1jVFzyCxyGhnlEgHcX46xwhXr3L0NMqrq3FVQUWHg=;
+	b=U6XPw9XzoQxnjuExTtZDl68N8hXCOW9/GJ3ONDN9ytN01/uagaynWP9ttTwMXFOVpy2eKk
+	zVVGu6F75CZjaNPAlNYkhGpSLsTSY7HCRi7FQH75f7SJMSzMAr8cgg3A+6ySTUieC16mSP
+	phWJkFuDxGW2VLkqYVJXZWns2B9I47nzeKE1IO2s2g3hCJ3A4nBKFdhg1fWiBKN6JX9Dz2
+	BBd9SYa5fMmh+gg0m9Puh14MbLb6j9F7nJU1qfoy7OkK+1+eyOh4BFLyK8dgGywhQjmJw/
+	bGb71n+fp2RN4kztnUHabjBvLnAeBQlLQPlt9Qc8QQSIiR9pR4aBjRrmyKU6zg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741441504;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,28 +52,28 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Sr3exRsu33OHuDXo/d9jtEK0SOWIpt3Z/quNJZ0foNQ=;
-	b=wn32xY0pRJK3Hii7etIuO1Jfxi1gHDIJgO9pdcDJsm1nksfH1+mQBVsunHD4GNvbhAaFvw
-	2X6ueAoebwMuYJAA==
+	bh=qf1jVFzyCxyGhnlEgHcX46xwhXr3L0NMqrq3FVQUWHg=;
+	b=SRXPZMuufyn54QOqh833yBiAv5pgpadQEHwVK1KBeMA8avK9fzWAa5dL9n4oKGync6gof/
+	7s/u/EdMDLYlNIDw==
 From: "tip-bot2 for Anna-Maria Behnsen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: timers/vdso] vdso/helpers: Prepare introduction of struct vdso_clock
+Subject: [tip: timers/vdso] vdso/datapage: Define vdso_clock to prepare for
+ multiple PTP clocks
 Cc: "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
  Nam Cao <namcao@linutronix.de>, thomas.weissschuh@linutronix.de,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250303-vdso-clock-v1-5-c1b5c69a166f@linutronix.de>
-References: <20250303-vdso-clock-v1-5-c1b5c69a166f@linutronix.de>
+In-Reply-To: <20250303-vdso-clock-v1-4-c1b5c69a166f@linutronix.de>
+References: <20250303-vdso-clock-v1-4-c1b5c69a166f@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174144150374.14745.184225322975142640.tip-bot2@tip-bot2>
+Message-ID: <174144150426.14745.9552475560705652616.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,24 +83,27 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     e15bf9e34b5716e8c4a50b32a98752ff1f53d647
-Gitweb:        https://git.kernel.org/tip/e15bf9e34b5716e8c4a50b32a98752ff1f5=
-3d647
+Commit-ID:     a05f14de04e989f0bc32cea128243090e5e5d54b
+Gitweb:        https://git.kernel.org/tip/a05f14de04e989f0bc32cea128243090e5e=
+5d54b
 Author:        Anna-Maria Behnsen <anna-maria@linutronix.de>
-AuthorDate:    Mon, 03 Mar 2025 12:11:07 +01:00
+AuthorDate:    Mon, 03 Mar 2025 12:11:06 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Sat, 08 Mar 2025 14:37:40 +01:00
 
-vdso/helpers: Prepare introduction of struct vdso_clock
+vdso/datapage: Define vdso_clock to prepare for multiple PTP clocks
 
-To support multiple PTP clocks, the VDSO data structure needs to be
-reworked. All clock specific data will end up in struct vdso_clock and in
-struct vdso_time_data there will be an array of VDSO clocks. For now,
-vdso_clock is simply a define which maps vdso_clock to vdso_time_data.
+Multiple PTP clocks, which are independent of timekeeping, are required for
+systems, which utilize PTP for synchronizing e.g. automation systems
+independent of clock TAI.
 
-Prepare all functions which need the pointer to the vdso_clock array to
-work well after the structures get reworked. Replace the struct vdso_time_data
-pointer with a struct vdso_clock pointer where applicable.
+PTP clocks are slow to access, but applications require fast access to the
+relevant time similar to the regular timekeeping relevant clocks.
+
+To prepare for that the VDSO data representation must be reworked. For
+transition to the new structure of the vdso, add a define which maps
+vdso_clock to vdso_data. This will be removed when all users are updated
+step by step.
 
 No functional change.
 
@@ -108,77 +111,24 @@ Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250303-vdso-clock-v1-5-c1b5c69a166f@linut=
+Link: https://lore.kernel.org/all/20250303-vdso-clock-v1-4-c1b5c69a166f@linut=
 ronix.de
 
 ---
- include/vdso/helpers.h | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ include/vdso/datapage.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/vdso/helpers.h b/include/vdso/helpers.h
-index 41c3087..28f0707 100644
---- a/include/vdso/helpers.h
-+++ b/include/vdso/helpers.h
-@@ -7,49 +7,53 @@
- #include <asm/barrier.h>
- #include <vdso/datapage.h>
+diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
+index dfd98f9..1df22e8 100644
+--- a/include/vdso/datapage.h
++++ b/include/vdso/datapage.h
+@@ -129,6 +129,8 @@ struct vdso_time_data {
+ 	struct arch_vdso_time_data arch_data;
+ } ____cacheline_aligned;
 =20
--static __always_inline u32 vdso_read_begin(const struct vdso_time_data *vd)
-+static __always_inline u32 vdso_read_begin(const struct vdso_clock *vc)
- {
- 	u32 seq;
-=20
--	while (unlikely((seq =3D READ_ONCE(vd->seq)) & 1))
-+	while (unlikely((seq =3D READ_ONCE(vc->seq)) & 1))
- 		cpu_relax();
-=20
- 	smp_rmb();
- 	return seq;
- }
-=20
--static __always_inline u32 vdso_read_retry(const struct vdso_time_data *vd,
-+static __always_inline u32 vdso_read_retry(const struct vdso_clock *vc,
- 					   u32 start)
- {
- 	u32 seq;
-=20
- 	smp_rmb();
--	seq =3D READ_ONCE(vd->seq);
-+	seq =3D READ_ONCE(vc->seq);
- 	return seq !=3D start;
- }
-=20
- static __always_inline void vdso_write_begin(struct vdso_time_data *vd)
- {
-+	struct vdso_clock *vc =3D vd;
++#define vdso_clock vdso_time_data
 +
- 	/*
- 	 * WRITE_ONCE() is required otherwise the compiler can validly tear
- 	 * updates to vd[x].seq and it is possible that the value seen by the
- 	 * reader is inconsistent.
- 	 */
--	WRITE_ONCE(vd[CS_HRES_COARSE].seq, vd[CS_HRES_COARSE].seq + 1);
--	WRITE_ONCE(vd[CS_RAW].seq, vd[CS_RAW].seq + 1);
-+	WRITE_ONCE(vc[CS_HRES_COARSE].seq, vc[CS_HRES_COARSE].seq + 1);
-+	WRITE_ONCE(vc[CS_RAW].seq, vc[CS_RAW].seq + 1);
- 	smp_wmb();
- }
-=20
- static __always_inline void vdso_write_end(struct vdso_time_data *vd)
- {
-+	struct vdso_clock *vc =3D vd;
-+
- 	smp_wmb();
- 	/*
- 	 * WRITE_ONCE() is required otherwise the compiler can validly tear
- 	 * updates to vd[x].seq and it is possible that the value seen by the
- 	 * reader is inconsistent.
- 	 */
--	WRITE_ONCE(vd[CS_HRES_COARSE].seq, vd[CS_HRES_COARSE].seq + 1);
--	WRITE_ONCE(vd[CS_RAW].seq, vd[CS_RAW].seq + 1);
-+	WRITE_ONCE(vc[CS_HRES_COARSE].seq, vc[CS_HRES_COARSE].seq + 1);
-+	WRITE_ONCE(vc[CS_RAW].seq, vc[CS_RAW].seq + 1);
- }
-=20
- #endif /* !__ASSEMBLY__ */
+ /**
+  * struct vdso_rng_data - vdso RNG state information
+  * @generation:	counter representing the number of RNG reseeds
 
