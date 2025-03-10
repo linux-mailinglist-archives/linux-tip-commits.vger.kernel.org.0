@@ -1,80 +1,82 @@
-Return-Path: <linux-tip-commits+bounces-4103-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4104-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44AA6A592BE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 12:29:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B302A592E0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 12:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15383A1D26
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 11:29:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CF783A54D2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 11:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0B414F11E;
-	Mon, 10 Mar 2025 11:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2759121E097;
+	Mon, 10 Mar 2025 11:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ljis8C/n";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mTx3nw30"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cK5KKD80";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2lntwmXZ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8152B9A7;
-	Mon, 10 Mar 2025 11:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D3C21E092;
+	Mon, 10 Mar 2025 11:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741606182; cv=none; b=EZ1s5mnhaf1ZpGPZJedonu0uf8e6ku8N3S6o7ekqRsZfc6b8+lJYBQNNf9lTHYUaynUDdoOjgcOV0/Us39o5aNwJMcj+Cxl9cNtvzmm10/MuLbgSOLoct6VK7DJFdqQiqCXufSJCJybbNn1EKrazhcZSoomAusx1B6MdcL+DFnQ=
+	t=1741606811; cv=none; b=KUVWEVkc4Z7L2H/qZoG2HAToQnaaUff8ByPNTSRqq92BRT3Y9QFYoqROE/l+oD+M3StlHXjGZ8e6zoN2zWokIpBiQW7XG28ZYKs3Rv2Y4JXF1H6nk8PvumXMpKXutkxLxoKMQx37ziCeUj2OMGSrOYtao8xepO/SjlkUbMue5z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741606182; c=relaxed/simple;
-	bh=wRskSNsRDgIrGaBA+Nzg57VLuHdelDBgChxRqJHgvcY=;
+	s=arc-20240116; t=1741606811; c=relaxed/simple;
+	bh=kec7Xe22wLpgK4izJqAFm7oJGHVWRD9CwUdN50ODEqM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iXbaxznUaURikD3AedWgTyiA2qrv0bUaGHFG7qbamwZXq0nh24in9xxlkxQF3RGhGCxmrPSvz/r3Nig3AS20YbBXSry/xJC/j8RMpa4Qked5baItNWunKhDegaW/4UhX4a+mzhwCmpGvj1Yc3jUAL3nFGxW3InYp76tDXZIx+yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ljis8C/n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mTx3nw30; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=GNzVw5t0Jx3GyY/bTsCMtA4wlhoFJ2QBdEgID0FpEE+J3ZJw6tNlYFDDifGCNjLz/GdjJhO0IXGSa07N/grKZhahf5IerV6lUM0zW19r11F2/kAHbw3WA0ww7ckbDaRGxixdD2HcvGaJyzFjHev+W3hgv8jqRO2scREWTs5pTEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cK5KKD80; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2lntwmXZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 10 Mar 2025 11:29:34 -0000
+Date: Mon, 10 Mar 2025 11:40:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741606177;
+	s=2020; t=1741606806;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dW4U/UWste6RQ2XWfnqv+c+jNSCtrde/vkpxM1zTZfw=;
-	b=ljis8C/newo0h1XGmPrubhfkhyK6E15u0EYFYPexur/j8RqmmD+wso/fWcaMXI8JoTjBsF
-	wA8cn021nlf73dFHpqUtDGoOEck3kySBICZkTq4s5FLOg3JSnYmOQx2r7+8cHYCWVKXSHD
-	0R8dg1eR9znOTB3u+Exx+hjwszJ+MSQgae9MvFVjXave7luAoc5/gyXJ8xybxznX1mPW0d
-	Zu5EjDkzERORo6xTocUoavXWPVCEO/bvszRRMJQ4xn11+zbKsiJ8uuN673hYCdK4PDTPce
-	i20dVQroj+Ts6SkETd1hKp5+gTa7Pj/A6K/G5mHc9IS97JOyJpveqJBihyOKag==
+	bh=8MxmdXnTmQfNGGgvujUzBMNfCepMANVcFw/xgvmjWL8=;
+	b=cK5KKD8077yMfJs6ImH+dyZ+GCcD00UGat+CDHMWrhFewb/b89T7TTa/mvMjFEpNJ4m7/N
+	vVHishTSPBXqEM8SvrSiiUrPinwFWUunh2L8nYzvnpZy+fZCs5C3+L4lsAEsawYKcOn5fz
+	YyP2b6dnOh6mja5D3iDe86qXAOYf3Ox0HRoM4iiXBqEAWE9SEg2h5V9Uh1FR/D5MqjRXti
+	T9HDMpCPT5LbdVcLBWPEXN6YgCF7oyz5H55g/DrvJCa7en6cg8zTTAXXjviAq4CVVk+yKT
+	cZa4DZwt58GurT8JUzE3hpZswlaiX7ZPS8ptUxNFhXzdSlMHh9nhlv50ObLGsw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741606177;
+	s=2020e; t=1741606806;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dW4U/UWste6RQ2XWfnqv+c+jNSCtrde/vkpxM1zTZfw=;
-	b=mTx3nw305GA9n+vOwTl90KXhdqlf02dOzui/BCyeo5CieVY5r9KGfvUy8ifc3BbIAPqUnk
-	5DAu5SrOhTKLaABQ==
-From: "tip-bot2 for Thomas Huth" <tip-bot2@linutronix.de>
+	bh=8MxmdXnTmQfNGGgvujUzBMNfCepMANVcFw/xgvmjWL8=;
+	b=2lntwmXZRmFt9zSU3P/z98UanFyhD7C3hoaX+a94xf7ldkYma7K/lnPBIC0YtjGMUSJH6p
+	S9hXf2tD+yPxTXBw==
+From: "tip-bot2 for Vladis Dronov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/headers] x86/headers: Replace __ASSEMBLY__ with
- __ASSEMBLER__ in UAPI headers
-Cc: Thomas Huth <thuth@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>,
+Subject: [tip: x86/urgent] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is
+ not enabled
+Cc: Vladis Dronov <vdronov@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ Kai Huang <kai.huang@intel.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
  Linus Torvalds <torvalds@linux-foundation.org>,
- Kees Cook <keescook@chromium.org>, Brian Gerst <brgerst@gmail.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250310104256.123527-1-thuth@redhat.com>
-References: <20250310104256.123527-1-thuth@redhat.com>
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250309172215.21777-2-vdronov@redhat.com>
+References: <20250309172215.21777-2-vdronov@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174160617464.14745.3081665054786018758.tip-bot2@tip-bot2>
+Message-ID: <174160680181.14745.6498994786003224468.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,234 +84,89 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/headers branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     e28eecf2602bdce826833ccb9a6b7a6bacafd98b
-Gitweb:        https://git.kernel.org/tip/e28eecf2602bdce826833ccb9a6b7a6bacafd98b
-Author:        Thomas Huth <thuth@redhat.com>
-AuthorDate:    Mon, 10 Mar 2025 11:42:56 +01:00
+Commit-ID:     65be5c95d08eedda570a6c888a12384c77fe7614
+Gitweb:        https://git.kernel.org/tip/65be5c95d08eedda570a6c888a12384c77fe7614
+Author:        Vladis Dronov <vdronov@redhat.com>
+AuthorDate:    Sun, 09 Mar 2025 18:22:16 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 10 Mar 2025 12:18:42 +01:00
+CommitterDate: Mon, 10 Mar 2025 12:29:18 +01:00
 
-x86/headers: Replace __ASSEMBLY__ with __ASSEMBLER__ in UAPI headers
+x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
 
-__ASSEMBLY__ is only defined by the Makefile of the kernel, so
-this is not really useful for UAPI headers (unless the userspace
-Makefile defines it, too). Let's switch to __ASSEMBLER__ which
-gets set automatically by the compiler when compiling assembly
-code.
+The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
+not just X86_FEATURE_SGX.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
+There is quite a number of hardware which has X86_FEATURE_SGX but not
+X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
+the /dev/sgx_enclave file and does so silently.
+
+Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
+users that the kernel disabled the SGX driver.
+
+The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
+that enables LE (Launch Enclave) hash MSRs to be writable (with
+additional opt-in required in the 'feature control' MSR) when running
+enclaves, i.e. using a custom root key rather than the Intel proprietary
+key for enclave signing.
+
+I've hit this issue myself and have spent some time researching where
+my /dev/sgx_enclave file went on SGX-enabled hardware.
+
+Related links:
+
+  https://github.com/intel/linux-sgx/issues/837
+  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
+
+[ mingo: Made the error message a bit more verbose, and added other cases
+         where the kernel fails to create the /dev/sgx_enclave device node. ]
+
+Signed-off-by: Vladis Dronov <vdronov@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Link: https://lore.kernel.org/r/20250310104256.123527-1-thuth@redhat.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
 ---
- arch/x86/include/uapi/asm/bootparam.h  | 4 ++--
- arch/x86/include/uapi/asm/e820.h       | 4 ++--
- arch/x86/include/uapi/asm/ldt.h        | 4 ++--
- arch/x86/include/uapi/asm/msr.h        | 4 ++--
- arch/x86/include/uapi/asm/ptrace-abi.h | 6 +++---
- arch/x86/include/uapi/asm/ptrace.h     | 4 ++--
- arch/x86/include/uapi/asm/setup_data.h | 4 ++--
- arch/x86/include/uapi/asm/signal.h     | 8 ++++----
- 8 files changed, 19 insertions(+), 19 deletions(-)
+ arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/uapi/asm/bootparam.h b/arch/x86/include/uapi/asm/bootparam.h
-index 9b82eeb..dafbf58 100644
---- a/arch/x86/include/uapi/asm/bootparam.h
-+++ b/arch/x86/include/uapi/asm/bootparam.h
-@@ -26,7 +26,7 @@
- #define XLF_5LEVEL_ENABLED		(1<<6)
- #define XLF_MEM_ENCRYPTION		(1<<7)
+diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
+index 22b65a5..7f8d1e1 100644
+--- a/arch/x86/kernel/cpu/sgx/driver.c
++++ b/arch/x86/kernel/cpu/sgx/driver.c
+@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
+ 	u64 xfrm_mask;
+ 	int ret;
  
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
+-	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
++	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
++		pr_info("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
++	}
  
- #include <linux/types.h>
- #include <linux/screen_info.h>
-@@ -210,6 +210,6 @@ enum x86_hardware_subarch {
- 	X86_NR_SUBARCHS,
- };
+ 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
  
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
+ 	if (!(eax & 1))  {
+-		pr_err("SGX disabled: SGX1 instruction support not available.\n");
++		pr_info("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
+ 	}
  
- #endif /* _ASM_X86_BOOTPARAM_H */
-diff --git a/arch/x86/include/uapi/asm/e820.h b/arch/x86/include/uapi/asm/e820.h
-index 2f491ef..55bc668 100644
---- a/arch/x86/include/uapi/asm/e820.h
-+++ b/arch/x86/include/uapi/asm/e820.h
-@@ -54,7 +54,7 @@
-  */
- #define E820_RESERVED_KERN        128
+@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
+ 	}
  
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <linux/types.h>
- struct e820entry {
- 	__u64 addr;	/* start of memory segment */
-@@ -76,7 +76,7 @@ struct e820map {
- #define BIOS_ROM_BASE		0xffe00000
- #define BIOS_ROM_END		0xffffffff
+ 	ret = misc_register(&sgx_dev_enclave);
+-	if (ret)
++	if (ret) {
++		pr_info("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
+ 		return ret;
++	}
  
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- 
- #endif /* _UAPI_ASM_X86_E820_H */
-diff --git a/arch/x86/include/uapi/asm/ldt.h b/arch/x86/include/uapi/asm/ldt.h
-index d62ac5d..a82c039 100644
---- a/arch/x86/include/uapi/asm/ldt.h
-+++ b/arch/x86/include/uapi/asm/ldt.h
-@@ -12,7 +12,7 @@
- /* The size of each LDT entry. */
- #define LDT_ENTRY_SIZE	8
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- /*
-  * Note on 64bit base and limit is ignored and you cannot set DS/ES/CS
-  * not to the default values if you still want to do syscalls. This
-@@ -44,5 +44,5 @@ struct user_desc {
- #define MODIFY_LDT_CONTENTS_STACK	1
- #define MODIFY_LDT_CONTENTS_CODE	2
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASM_X86_LDT_H */
-diff --git a/arch/x86/include/uapi/asm/msr.h b/arch/x86/include/uapi/asm/msr.h
-index e7516b4..4b8917c 100644
---- a/arch/x86/include/uapi/asm/msr.h
-+++ b/arch/x86/include/uapi/asm/msr.h
-@@ -2,7 +2,7 @@
- #ifndef _UAPI_ASM_X86_MSR_H
- #define _UAPI_ASM_X86_MSR_H
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <linux/types.h>
- #include <linux/ioctl.h>
-@@ -10,5 +10,5 @@
- #define X86_IOC_RDMSR_REGS	_IOWR('c', 0xA0, __u32[8])
- #define X86_IOC_WRMSR_REGS	_IOWR('c', 0xA1, __u32[8])
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- #endif /* _UAPI_ASM_X86_MSR_H */
-diff --git a/arch/x86/include/uapi/asm/ptrace-abi.h b/arch/x86/include/uapi/asm/ptrace-abi.h
-index 16074b9..5823584 100644
---- a/arch/x86/include/uapi/asm/ptrace-abi.h
-+++ b/arch/x86/include/uapi/asm/ptrace-abi.h
-@@ -25,7 +25,7 @@
- 
- #else /* __i386__ */
- 
--#if defined(__ASSEMBLY__) || defined(__FRAME_OFFSETS)
-+#if defined(__ASSEMBLER__) || defined(__FRAME_OFFSETS)
- /*
-  * C ABI says these regs are callee-preserved. They aren't saved on kernel entry
-  * unless syscall needs a complete, fully filled "struct pt_regs".
-@@ -57,7 +57,7 @@
- #define EFLAGS 144
- #define RSP 152
- #define SS 160
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- /* top of stack page */
- #define FRAME_SIZE 168
-@@ -87,7 +87,7 @@
- 
- #define PTRACE_SINGLEBLOCK	33	/* resume execution until next branch */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <linux/types.h>
- #endif
- 
-diff --git a/arch/x86/include/uapi/asm/ptrace.h b/arch/x86/include/uapi/asm/ptrace.h
-index 85165c0..e0b5b4f 100644
---- a/arch/x86/include/uapi/asm/ptrace.h
-+++ b/arch/x86/include/uapi/asm/ptrace.h
-@@ -7,7 +7,7 @@
- #include <asm/processor-flags.h>
- 
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #ifdef __i386__
- /* this struct defines the way the registers are stored on the
-@@ -81,6 +81,6 @@ struct pt_regs {
- 
- 
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- 
- #endif /* _UAPI_ASM_X86_PTRACE_H */
-diff --git a/arch/x86/include/uapi/asm/setup_data.h b/arch/x86/include/uapi/asm/setup_data.h
-index b111b0c..50c45ea 100644
---- a/arch/x86/include/uapi/asm/setup_data.h
-+++ b/arch/x86/include/uapi/asm/setup_data.h
-@@ -18,7 +18,7 @@
- #define SETUP_INDIRECT			(1<<31)
- #define SETUP_TYPE_MAX			(SETUP_ENUM_MAX | SETUP_INDIRECT)
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <linux/types.h>
- 
-@@ -78,6 +78,6 @@ struct ima_setup_data {
- 	__u64 size;
- } __attribute__((packed));
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _UAPI_ASM_X86_SETUP_DATA_H */
-diff --git a/arch/x86/include/uapi/asm/signal.h b/arch/x86/include/uapi/asm/signal.h
-index f777346..1067efa 100644
---- a/arch/x86/include/uapi/asm/signal.h
-+++ b/arch/x86/include/uapi/asm/signal.h
-@@ -2,7 +2,7 @@
- #ifndef _UAPI_ASM_X86_SIGNAL_H
- #define _UAPI_ASM_X86_SIGNAL_H
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <linux/types.h>
- #include <linux/compiler.h>
- 
-@@ -16,7 +16,7 @@ struct siginfo;
- typedef unsigned long sigset_t;
- 
- #endif /* __KERNEL__ */
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- 
- #define SIGHUP		 1
-@@ -68,7 +68,7 @@ typedef unsigned long sigset_t;
- 
- #include <asm-generic/signal-defs.h>
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- 
- # ifndef __KERNEL__
-@@ -106,6 +106,6 @@ typedef struct sigaltstack {
- 	__kernel_size_t ss_size;
- } stack_t;
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _UAPI_ASM_X86_SIGNAL_H */
+ 	return 0;
+ }
 
