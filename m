@@ -1,120 +1,172 @@
-Return-Path: <linux-tip-commits+bounces-4099-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4100-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7941A58EA8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 09:55:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D84FA58EB5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 09:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAF6A3A53BD
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 08:55:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43FB67A59A3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 08:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86B91A724C;
-	Mon, 10 Mar 2025 08:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23051224245;
+	Mon, 10 Mar 2025 08:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qY1eII80"
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MKdKAr/7";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NyXraeWr"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCB9380;
-	Mon, 10 Mar 2025 08:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCEC224244;
+	Mon, 10 Mar 2025 08:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741596944; cv=none; b=COq0PKzoCnwBThABMElXfBbKLttnp9ca6tUmNTb0rCfLmolN0QhhcRsXliZS8WHUXtF+PY14fYQlbHQUfizXyRfoPyignbzmJzVkbMGl5usCrEs6HDzRY6VaKL7XX5Nzlu0ZvmfJsO0hSZuGykQovhNcF+MZZhwofix0LzU2eow=
+	t=1741597041; cv=none; b=UHr4/pTbQ04plovgnSghFoPFoG7EvwSaY4ONHYjAoIZTND2qg5FBInr/e+n3FwOoZYIIQdoY1dyLtssE+3ZwqB6TIgkXX5FmB6rL4NJvKJkn5jhdodDBt572Dx94e51KJUdlue+U+cuMv1j6WSuE7F1ejvzg2MI6tzUFlc5QVVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741596944; c=relaxed/simple;
-	bh=yHvsB5ALBqO6HcLi9r38BJv6YSoU1qYhhIzz3JKUdcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kpseceWbJu62WYZSeEQgkPgZjtKYYA2Dy8Ukat3JahOHQmrH66L9iGyPiZuipYDnr0kkcMQT0RJZpY1HEvevd2xAC1UxrfVSs3lH+OHYZiddRobn/+i7yqEN0duBDpp/BUSr1dTf6G8RwWHtVNXYrKX6NkgszVSJdCni8y0TpmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qY1eII80; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=y6ewIZM2dtnWRQcBfslu1okDKdEcc8mCLFTRLy3nMdY=; b=qY1eII80wtVqZhUqGvphOqBc6p
-	/Jc/c2Qop8wc3+/ZOOpcICg5f9hfwLEigNpRZIuPPgKCdXlJpQDdko+7npdFpw195J3r8FNnY+Ige
-	gKdoDuBlowUr+76i3AxH3r3JCj9+5YznP6kmMGqzr7VBY3MMvByJZytnp3FY9G3MPuwOUj8g/vk+K
-	b6pkv+WIYphhe8aR9OKtrofYhshhS/XzIv7YqeES9uv7RgZoQf2zeLgDao+NBHsSQPzfb2Xtj5RvX
-	xnFXcfSi8zwQy0SC6gyBU2+p25yfevV+tZSJsOrmUvdAD05WOkioZg6rLZfhPcTCYce5tp4GUojBP
-	vn+QbTUQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1trYvA-00000002l58-1k5G;
-	Mon, 10 Mar 2025 08:55:39 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id DDB143006C0; Mon, 10 Mar 2025 09:55:35 +0100 (CET)
-Date: Mon, 10 Mar 2025 09:55:35 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org, ojeda@kernel.org
-Cc: linux-tip-commits@vger.kernel.org,
-	Scott Constable <scott.d.constable@intel.com>,
-	Ingo Molnar <mingo@kernel.org>, Kees Cook <kees@kernel.org>,
-	x86@kernel.org
-Subject: Re: [tip: x86/core] x86/ibt: Implement FineIBT-BHI mitigation
-Message-ID: <20250310085535.GQ31462@noisy.programming.kicks-ass.net>
-References: <20250224124200.820402212@infradead.org>
- <174057447519.10177.9447726208823079202.tip-bot2@tip-bot2>
- <20250226195308.GA29387@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1741597041; c=relaxed/simple;
+	bh=+k6GtvcSmIj42+huiKCmhixjot6lu6A3lN07YI0QX8I=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=HmXVaT807K/XACXJuf5knIcPeTYgc9r35yG3VkH58apVvBNU1oT9iS0Nblocp9aAkWodCovZcauhogCXpsbjRvq1908kBacq5Ccv4FyzxnK92r28/tJ7wz15tbGM8UWwiPxZdcnhYNdCAQxdbfC/NWJmoarIsa0w5wb97WzB+Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MKdKAr/7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NyXraeWr; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 10 Mar 2025 08:57:06 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741597032;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5pqoPT5gocZWBmKMd4J0Ax3d81NKoizTihr2tTgYqw=;
+	b=MKdKAr/7PYZitax+pmOLOj50GZGqMoxwVBjnnT9bFrOpbIMw52IRpcx+oYIDGaNtxha+Hn
+	HD9yvyyRF85etgy9s9rV17KBK08Ykl+jYeBRGOVPKaRNYUkVw8xrHLLxI43LjS0A2xULb9
+	ihldehBjuLGodE2ktLb5fSkL8IMb7fszFYME0IW8TnUU2SkZMHekXNeSP7OkG5qOK/dxv9
+	LANfmfyZsJgUhGz52uQz1kJg6mQqMZDIFDfZiu4Vx9E9tCIQYiNg9VbWIcTyCQHpU1EDOS
+	yXU8qtIIXLbuSFKQicqY7pYAGAwB8LuGHT9BQ95IS+j7tJZ2/CkcCZkSGyTpJw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741597032;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5pqoPT5gocZWBmKMd4J0Ax3d81NKoizTihr2tTgYqw=;
+	b=NyXraeWrbLjWLGsM08hnaWFXojdgy9CuOhGn8vlbbV65rSbfKWeA9UWwTB6ND68KE02GE9
+	sJDMplYkRZfs7aCQ==
+From: "tip-bot2 for Vladis Dronov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is
+ not enabled
+Cc: Vladis Dronov <vdronov@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ Kai Huang <kai.huang@intel.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>,
+ Sean Christopherson <sean.j.christopherson@intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250309172215.21777-2-vdronov@redhat.com>
+References: <20250309172215.21777-2-vdronov@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226195308.GA29387@noisy.programming.kicks-ass.net>
+Message-ID: <174159702651.14745.5605222445633760713.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the x86/urgent branch of tip:
 
-Ping -- anything I can do the help?
+Commit-ID:     baf6a4fdb5ead6be10aa0a0e620d6078a669fc75
+Gitweb:        https://git.kernel.org/tip/baf6a4fdb5ead6be10aa0a0e620d6078a669fc75
+Author:        Vladis Dronov <vdronov@redhat.com>
+AuthorDate:    Sun, 09 Mar 2025 18:22:16 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 10 Mar 2025 09:40:38 +01:00
 
-On Wed, Feb 26, 2025 at 08:53:08PM +0100, Peter Zijlstra wrote:
-> On Wed, Feb 26, 2025 at 12:54:35PM -0000, tip-bot2 for Peter Zijlstra wrote:
-> 
-> > diff --git a/Makefile b/Makefile
-> > index 96407c1..f19431f 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -1014,6 +1014,9 @@ CC_FLAGS_CFI	:= -fsanitize=kcfi
-> >  ifdef CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
-> >  	CC_FLAGS_CFI	+= -fsanitize-cfi-icall-experimental-normalize-integers
-> >  endif
-> > +ifdef CONFIG_FINEIBT_BHI
-> > +	CC_FLAGS_CFI	+= -fsanitize-kcfi-arity
-> > +endif
-> >  ifdef CONFIG_RUST
-> >  	# Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST selects
-> >  	# CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
-> > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> > index c4175f4..5c27726 100644
-> > --- a/arch/x86/Kconfig
-> > +++ b/arch/x86/Kconfig
-> > @@ -2473,6 +2473,10 @@ config CC_HAS_RETURN_THUNK
-> >  config CC_HAS_ENTRY_PADDING
-> >  	def_bool $(cc-option,-fpatchable-function-entry=16,16)
-> >  
-> > +config CC_HAS_KCFI_ARITY
-> > +	def_bool $(cc-option,-fsanitize=kcfi -fsanitize-kcfi-arity)
-> > +	depends on CC_IS_CLANG && !RUST
-> > +
-> 
-> Miguel, can we work on fixing that !RUST dep?
-> 
-> >  config FUNCTION_PADDING_CFI
-> >  	int
-> >  	default 59 if FUNCTION_ALIGNMENT_64B
-> > @@ -2498,6 +2502,10 @@ config FINEIBT
-> >  	depends on X86_KERNEL_IBT && CFI_CLANG && MITIGATION_RETPOLINE
-> >  	select CALL_PADDING
-> >  
-> > +config FINEIBT_BHI
-> > +	def_bool y
-> > +	depends on FINEIBT && CC_HAS_KCFI_ARITY
-> > +
-> >  config HAVE_CALL_THUNKS
-> >  	def_bool y
-> >  	depends on CC_HAS_ENTRY_PADDING && MITIGATION_RETHUNK && OBJTOOL
+x86/sgx: Warn explicitly if X86_FEATURE_SGX_LC is not enabled
+
+The kernel requires X86_FEATURE_SGX_LC to be able to create SGX enclaves,
+not just X86_FEATURE_SGX.
+
+There is quite a number of hardware which has X86_FEATURE_SGX but not
+X86_FEATURE_SGX_LC. A kernel running on such hardware does not create
+the /dev/sgx_enclave file and does so silently.
+
+Explicitly warn if X86_FEATURE_SGX_LC is not enabled to properly notify
+users that the kernel disabled the SGX driver.
+
+The X86_FEATURE_SGX_LC, a.k.a. SGX Launch Control, is a CPU feature
+that enables LE (Launch Enclave) hash MSRs to be writable (with
+additional opt-in required in the 'feature control' MSR) when running
+enclaves, i.e. using a custom root key rather than the Intel proprietary
+key for enclave signing.
+
+I've hit this issue myself and have spent some time researching where
+my /dev/sgx_enclave file went on SGX-enabled hardware.
+
+Related links:
+
+  https://github.com/intel/linux-sgx/issues/837
+  https://patchwork.kernel.org/project/platform-driver-x86/patch/20180827185507.17087-3-jarkko.sakkinen@linux.intel.com/
+
+[ mingo: Made the error message a bit more verbose, and added other cases
+         where the kernel fails to create the /dev/sgx_enclave device node. ]
+
+Signed-off-by: Vladis Dronov <vdronov@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Kai Huang <kai.huang@intel.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Sean Christopherson <sean.j.christopherson@intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250309172215.21777-2-vdronov@redhat.com
+---
+ arch/x86/kernel/cpu/sgx/driver.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/sgx/driver.c b/arch/x86/kernel/cpu/sgx/driver.c
+index 22b65a5..40c3347 100644
+--- a/arch/x86/kernel/cpu/sgx/driver.c
++++ b/arch/x86/kernel/cpu/sgx/driver.c
+@@ -150,13 +150,15 @@ int __init sgx_drv_init(void)
+ 	u64 xfrm_mask;
+ 	int ret;
+ 
+-	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC))
++	if (!cpu_feature_enabled(X86_FEATURE_SGX_LC)) {
++		pr_err("SGX disabled: SGX launch control CPU feature is not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
++	}
+ 
+ 	cpuid_count(SGX_CPUID, 0, &eax, &ebx, &ecx, &edx);
+ 
+ 	if (!(eax & 1))  {
+-		pr_err("SGX disabled: SGX1 instruction support not available.\n");
++		pr_err("SGX disabled: SGX1 instruction support not available, /dev/sgx_enclave disabled.\n");
+ 		return -ENODEV;
+ 	}
+ 
+@@ -173,8 +175,10 @@ int __init sgx_drv_init(void)
+ 	}
+ 
+ 	ret = misc_register(&sgx_dev_enclave);
+-	if (ret)
++	if (ret) {
++		pr_err("SGX disabled: Unable to register the /dev/sgx_enclave driver (%d).\n", ret);
+ 		return ret;
++	}
+ 
+ 	return 0;
+ }
 
