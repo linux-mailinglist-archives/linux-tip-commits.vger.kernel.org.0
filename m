@@ -1,256 +1,342 @@
-Return-Path: <linux-tip-commits+bounces-4105-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4106-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBF9A5966B
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 14:33:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9266A597FC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 15:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D5C87A3266
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 13:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 703853A49ED
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 10 Mar 2025 14:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76561374EA;
-	Mon, 10 Mar 2025 13:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C3F1C68B6;
+	Mon, 10 Mar 2025 14:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NFw6lo44";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="09sEgtRZ"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="kzYOvGRi"
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E93222423F;
-	Mon, 10 Mar 2025 13:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF89717C91;
+	Mon, 10 Mar 2025 14:44:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741613582; cv=none; b=NO/4NU8NcKQrBZs1rIFs4AuksGoCftlKhDjp54HZQRNV5Eksr4aFA8hOe8CH57ueurfD+haqZTaTMLncdmI1QrZdArX3GKFVIoYeL7zD7g6qcVtpoFivxfQOf0EsOC7+2epwAqaHJCOIlDljD7oPxkIrYbcjYP+d8gmxoXJRGTg=
+	t=1741617871; cv=none; b=CLwM4JlGit/v+q6xytBqxHULdmZqEaeP/NZQ6dAoff40eQmvhdzE2FGOOxS/DVFFX3TaRNa6WE9qxfbgUxsoukmFcU47zHRcy/PKuwHIGQa7ouwra9ThtbbZDOUYTUjOQP+0IuArgGBimc7WHtcknWLPmU4tv8fqQ0Ol5s6e40c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741613582; c=relaxed/simple;
-	bh=pPO6jYdwMoqL3V8oJELFQhsA3MHL1bJzSyUQlu1DkWU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YXTwY/S26mvXcwbfN3ykiLM5mchE5ta1fsE+K5R8nIWhSaQTLOtvi2M7aaLS5BsS/mO0+dDnskadeB4gTdpyfIfDPR/Qoy4W3bzBQols+RQks5YGk9yuReseZC1qsfxwTUsKgjsknfM1MfttgQTSEG/U4GJ1yZJZyy7e2WU4pHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NFw6lo44; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=09sEgtRZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 10 Mar 2025 13:32:53 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741613577;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fiTYNeL7CB349A2biujNXPhjhq5XSMbGAIrgqUm6BmQ=;
-	b=NFw6lo44pl0VKiLznKbhX0PMxjBi1Pe18TbBditsnhCzNh55nDX1NTVs/p80WDvSl4ghFM
-	E1YGsjZJixHfKiHrp2ndh8Zcq/h/vb+xdJZkhkxMrIM5WmCKqG7OWR9RVLnf3i6jovdokS
-	J4QxMmbgc0oCV8+GXpSPQyjJwHrTeD+j7n3B7GiV2YJQjkf9rmayC5cAI30kkCPYdowbE0
-	QsdrPkGwsiMxc3W8mj0PrDTN3LmQdE/4PatoMm8eS1A2zF6ONl5llvKby6MOAYXphysg9/
-	zLzLG95CKGjHVS4i4iXDOupqe10JicC5tzGbjWVBBUl22ybWCerp3rmzMeimoA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741613577;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fiTYNeL7CB349A2biujNXPhjhq5XSMbGAIrgqUm6BmQ=;
-	b=09sEgtRZxqEo744VyqFCB6O7f6GLwkdRsBCMnjnFsXW97/sOE93PyzKjQ1TYIDmgYk5ZI8
-	XK1A78U9+ilKUmAA==
-From: "tip-bot2 for Yafang Shao" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/clock: Don't define sched_clock_irqtime as
- static key
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
- Yafang Shao <laoar.shao@gmail.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Vincent Guittot <vincent.guittot@linaro.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250205032438.14668-1-laoar.shao@gmail.com>
-References: <20250205032438.14668-1-laoar.shao@gmail.com>
+	s=arc-20240116; t=1741617871; c=relaxed/simple;
+	bh=AWGdILAJCqyYw70Fz71s/VUq9OD4bGclRpIIaKy0rbQ=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=r4CV5rtiXv+7XNa/sR7qJxGquO7Vk/kK5z1OElSF3x9nD8ozSFk2sMeN0Vgoe3aYDh+YQkOUBTPZWgHL/Exl+97E7DyYQ18K88OqsMIZa/TTNcAvJyWiaDBg8U/nU3bG+op4OvyN+waX5OOqpLZwt4Q/Z70EnkJGdgDOSTIPB3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=kzYOvGRi; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from [127.0.0.1] ([76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 52AEhlDh1651296
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 10 Mar 2025 07:43:48 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 52AEhlDh1651296
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2025021701; t=1741617828;
+	bh=0uA3V382m3l0tHHlvz8LxRrQ3w3WQneW8pBx2P3/oJg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=kzYOvGRiCDaEPMPYdEHfeipKCgighAk/B3PAIB9hpENPKr7rgteR1v5u+irHsnvIL
+	 9tnH4gj/2uIbdQnzB8Xb5ebyCMc3sWELNFDXUc+w/J+BHrOTIjQJsfC8h2eh4LWBSy
+	 kh3lZkEAQoWwJEBrccurPtMVCWksmUoICYaWpcIPC3jkdWpiLsEpbgzs1yh1tYAsn0
+	 OgyukXcbKCpCluz9kZPjPqgF263C3i1WIikiHBsAnuDAp0H+fsuK2TIAi3ruou8ndg
+	 WtWAbcHMf/8nNkoQ6dfYu6zpTVH/ACcNVGj3GfahDytC3otbahgrfT8DWpwKTmYxmB
+	 njIla0YG321QA==
+Date: Mon, 10 Mar 2025 07:43:44 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: linux-kernel@vger.kernel.org,
+        "tip-bot2 for H. Peter Anvin (Intel)" <tip-bot2@linutronix.de>,
+        linux-tip-commits@vger.kernel.org
+CC: "Xin Li (Intel)" <xin@zytor.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5Btip=3A_x86/cpu=5D_x86/cpufeatures=3A_A?=
+ =?US-ASCII?Q?dd_=7BREQUIRED=2CDISABLED=7D_feature_configs?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <174159470920.14745.5729743445717865267.tip-bot2@tip-bot2>
+References: <20250228082338.73859-3-xin@zytor.com> <174159470920.14745.5729743445717865267.tip-bot2@tip-bot2>
+Message-ID: <A0C784F1-EF4F-4CCC-98AE-954197CD7554@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174161357383.14745.8770394914047302959.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the sched/urgent branch of tip:
+On March 10, 2025 1:18:29 AM PDT, "tip-bot2 for H=2E Peter Anvin (Intel)" <=
+tip-bot2@linutronix=2Ede> wrote:
+>The following commit has been merged into the x86/cpu branch of tip:
+>
+>Commit-ID:     dc6e8bfc0c9e27cbfed27c7ed50c71205a7c9551
+>Gitweb:        https://git=2Ekernel=2Eorg/tip/dc6e8bfc0c9e27cbfed27c7ed50=
+c71205a7c9551
+>Author:        H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
+>AuthorDate:    Fri, 28 Feb 2025 00:23:35 -08:00
+>Committer:     Ingo Molnar <mingo@kernel=2Eorg>
+>CommitterDate: Mon, 10 Mar 2025 09:02:30 +01:00
+>
+>x86/cpufeatures: Add {REQUIRED,DISABLED} feature configs
+>
+>Required and disabled feature masks completely rely on build configs,
+>i=2Ee=2E, once a build config is fixed, so are the feature masks=2E
+>
+>To prepare for auto-generating the <asm/cpufeaturemasks=2Eh> header
+>with required and disabled feature masks based on a build config,
+>add feature Kconfig items:
+>
+>  - X86_REQUIRED_FEATURE_x
+>  - X86_DISABLED_FEATURE_x
+>
+>each of which may be set to "y" if and only if its preconditions from
+>current build config are met=2E
+>
+>Signed-off-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
+>Signed-off-by: Xin Li (Intel) <xin@zytor=2Ecom>
+>Signed-off-by: Borislav Petkov (AMD) <bp@alien8=2Ede>
+>Signed-off-by: Ingo Molnar <mingo@kernel=2Eorg>
+>Cc: Linus Torvalds <torvalds@linux-foundation=2Eorg>
+>Link: https://lore=2Ekernel=2Eorg/r/20250228082338=2E73859-3-xin@zytor=2E=
+com
+>---
+> arch/x86/Kconfig             |   2 +-
+> arch/x86/Kconfig=2Ecpufeatures | 201 ++++++++++++++++++++++++++++++++++-
+> 2 files changed, 203 insertions(+)
+> create mode 100644 arch/x86/Kconfig=2Ecpufeatures
+>
+>diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+>index 017035f=2E=2E7caf2fd 100644
+>--- a/arch/x86/Kconfig
+>+++ b/arch/x86/Kconfig
+>@@ -3128,4 +3128,6 @@ config HAVE_ATOMIC_IOMAP
+>=20
+> source "arch/x86/kvm/Kconfig"
+>=20
+>+source "arch/x86/Kconfig=2Ecpufeatures"
+>+
+> source "arch/x86/Kconfig=2Eassembler"
+>diff --git a/arch/x86/Kconfig=2Ecpufeatures b/arch/x86/Kconfig=2Ecpufeatu=
+res
+>new file mode 100644
+>index 0000000=2E=2Ee12d5b7
+>--- /dev/null
+>+++ b/arch/x86/Kconfig=2Ecpufeatures
+>@@ -0,0 +1,201 @@
+>+# SPDX-License-Identifier: GPL-2=2E0
+>+#
+>+# x86 feature bits (see arch/x86/include/asm/cpufeatures=2Eh) that are
+>+# either REQUIRED to be enabled, or DISABLED (always ignored) for this
+>+# particular compile-time configuration=2E  The tests for these features
+>+# are turned into compile-time constants via the generated
+>+# <asm/cpufeaturemasks=2Eh>=2E
+>+#
+>+# The naming of these variables *must* match asm/cpufeatures=2Eh, e=2Eg=
+=2E,
+>+#     X86_FEATURE_ALWAYS <=3D=3D> X86_REQUIRED_FEATURE_ALWAYS
+>+#     X86_FEATURE_FRED   <=3D=3D> X86_DISABLED_FEATURE_FRED
+>+#
+>+# And these REQUIRED and DISABLED config options are manipulated in an
+>+# AWK script as the following example:
+>+#
+>+#                          +----------------------+
+>+#                          |    X86_FRED =3D y ?    |
+>+#                          +----------------------+
+>+#                              /             \
+>+#                           Y /               \ N
+>+#  +-------------------------------------+   +--------------------------=
+-----+
+>+#  | X86_DISABLED_FEATURE_FRED undefined |   | X86_DISABLED_FEATURE_FRED=
+ =3D y |
+>+#  +-------------------------------------+   +--------------------------=
+-----+
+>+#                                                        |
+>+#                                                        |
+>+#     +-------------------------------------------+      |
+>+#     | X86_FEATURE_FRED: feature word 12, bit 17 | ---->|
+>+#     +-------------------------------------------+      |
+>+#                                                        |
+>+#                                                        |
+>+#                                     +-------------------------------+
+>+#                                     | set bit 17 of DISABLED_MASK12 |
+>+#                                     +-------------------------------+
+>+#
+>+
+>+config X86_REQUIRED_FEATURE_ALWAYS
+>+	def_bool y
+>+
+>+config X86_REQUIRED_FEATURE_NOPL
+>+	def_bool y
+>+	depends on X86_64 || X86_P6_NOP
+>+
+>+config X86_REQUIRED_FEATURE_CX8
+>+	def_bool y
+>+	depends on X86_CX8
+>+
+>+# this should be set for all -march=3D=2E=2E options where the compiler
+>+# generates cmov=2E
+>+config X86_REQUIRED_FEATURE_CMOV
+>+	def_bool y
+>+	depends on X86_CMOV
+>+
+>+# this should be set for all -march=3D options where the compiler
+>+# generates movbe=2E
+>+config X86_REQUIRED_FEATURE_MOVBE
+>+	def_bool y
+>+	depends on MATOM
+>+
+>+config X86_REQUIRED_FEATURE_CPUID
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_REQUIRED_FEATURE_UP
+>+	def_bool y
+>+	depends on !SMP
+>+
+>+config X86_REQUIRED_FEATURE_FPU
+>+	def_bool y
+>+	depends on !MATH_EMULATION
+>+
+>+config X86_REQUIRED_FEATURE_PAE
+>+	def_bool y
+>+	depends on X86_64 || X86_PAE
+>+
+>+config X86_REQUIRED_FEATURE_PSE
+>+	def_bool y
+>+	depends on X86_64 && !PARAVIRT_XXL
+>+
+>+config X86_REQUIRED_FEATURE_PGE
+>+	def_bool y
+>+	depends on X86_64 && !PARAVIRT_XXL
+>+
+>+config X86_REQUIRED_FEATURE_MSR
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_REQUIRED_FEATURE_FXSR
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_REQUIRED_FEATURE_XMM
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_REQUIRED_FEATURE_XMM2
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_REQUIRED_FEATURE_LM
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_DISABLED_FEATURE_UMIP
+>+	def_bool y
+>+	depends on !X86_UMIP
+>+
+>+config X86_DISABLED_FEATURE_VME
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_DISABLED_FEATURE_K6_MTRR
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_DISABLED_FEATURE_CYRIX_ARR
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_DISABLED_FEATURE_CENTAUR_MCR
+>+	def_bool y
+>+	depends on X86_64
+>+
+>+config X86_DISABLED_FEATURE_PCID
+>+	def_bool y
+>+	depends on !X86_64
+>+
+>+config X86_DISABLED_FEATURE_PKU
+>+	def_bool y
+>+	depends on !X86_INTEL_MEMORY_PROTECTION_KEYS
+>+
+>+config X86_DISABLED_FEATURE_OSPKE
+>+	def_bool y
+>+	depends on !X86_INTEL_MEMORY_PROTECTION_KEYS
+>+
+>+config X86_DISABLED_FEATURE_LA57
+>+	def_bool y
+>+	depends on !X86_5LEVEL
+>+
+>+config X86_DISABLED_FEATURE_PTI
+>+	def_bool y
+>+	depends on !MITIGATION_PAGE_TABLE_ISOLATION
+>+
+>+config X86_DISABLED_FEATURE_RETPOLINE
+>+	def_bool y
+>+	depends on !MITIGATION_RETPOLINE
+>+
+>+config X86_DISABLED_FEATURE_RETPOLINE_LFENCE
+>+	def_bool y
+>+	depends on !MITIGATION_RETPOLINE
+>+
+>+config X86_DISABLED_FEATURE_RETHUNK
+>+	def_bool y
+>+	depends on !MITIGATION_RETHUNK
+>+
+>+config X86_DISABLED_FEATURE_UNRET
+>+	def_bool y
+>+	depends on !MITIGATION_UNRET_ENTRY
+>+
+>+config X86_DISABLED_FEATURE_CALL_DEPTH
+>+	def_bool y
+>+	depends on !MITIGATION_CALL_DEPTH_TRACKING
+>+
+>+config X86_DISABLED_FEATURE_LAM
+>+	def_bool y
+>+	depends on !ADDRESS_MASKING
+>+
+>+config X86_DISABLED_FEATURE_ENQCMD
+>+	def_bool y
+>+	depends on !INTEL_IOMMU_SVM
+>+
+>+config X86_DISABLED_FEATURE_SGX
+>+	def_bool y
+>+	depends on !X86_SGX
+>+
+>+config X86_DISABLED_FEATURE_XENPV
+>+	def_bool y
+>+	depends on !XEN_PV
+>+
+>+config X86_DISABLED_FEATURE_TDX_GUEST
+>+	def_bool y
+>+	depends on !INTEL_TDX_GUEST
+>+
+>+config X86_DISABLED_FEATURE_USER_SHSTK
+>+	def_bool y
+>+	depends on !X86_USER_SHADOW_STACK
+>+
+>+config X86_DISABLED_FEATURE_IBT
+>+	def_bool y
+>+	depends on !X86_KERNEL_IBT
+>+
+>+config X86_DISABLED_FEATURE_FRED
+>+	def_bool y
+>+	depends on !X86_FRED
+>+
+>+config X86_DISABLED_FEATURE_SEV_SNP
+>+	def_bool y
+>+	depends on !KVM_AMD_SEV
+>+
+>+config X86_DISABLED_FEATURE_INVLPGB
+>+	def_bool y
+>+	depends on !BROADCAST_TLB_FLUSH
 
-Commit-ID:     f3fa0e40df175acd60b71036b9a1fd62310aec03
-Gitweb:        https://git.kernel.org/tip/f3fa0e40df175acd60b71036b9a1fd62310=
-aec03
-Author:        Yafang Shao <laoar.shao@gmail.com>
-AuthorDate:    Wed, 05 Feb 2025 11:24:38 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 10 Mar 2025 14:22:58 +01:00
+I think it is worth noting that the list here was intentionally unchanged =
+from the previous definitions, but that several of these could and probably=
+ should be overhauled=2E=20
 
-sched/clock: Don't define sched_clock_irqtime as static key
-
-The sched_clock_irqtime was defined as a static key in:
-
-  8722903cbb8f ("sched: Define sched_clock_irqtime as static key")
-
-However, this change introduces a 'sleeping in atomic context' warning:
-
-	arch/x86/kernel/tsc.c:1214 mark_tsc_unstable()
-	warn: sleeping in atomic context
-
-As analyzed by Dan, the affected code path is as follows:
-
-vcpu_load() <- disables preempt
--> kvm_arch_vcpu_load()
-   -> mark_tsc_unstable() <- sleeps
-
-virt/kvm/kvm_main.c
-   166  void vcpu_load(struct kvm_vcpu *vcpu)
-   167  {
-   168          int cpu =3D get_cpu();
-                          ^^^^^^^^^^
-This get_cpu() disables preemption.
-
-   169
-   170          __this_cpu_write(kvm_running_vcpu, vcpu);
-   171          preempt_notifier_register(&vcpu->preempt_notifier);
-   172          kvm_arch_vcpu_load(vcpu, cpu);
-   173          put_cpu();
-   174  }
-
-arch/x86/kvm/x86.c
-  4979          if (unlikely(vcpu->cpu !=3D cpu) || kvm_check_tsc_unstable())=
- {
-  4980                  s64 tsc_delta =3D !vcpu->arch.last_host_tsc ? 0 :
-  4981                                  rdtsc() - vcpu->arch.last_host_tsc;
-  4982                  if (tsc_delta < 0)
-  4983                          mark_tsc_unstable("KVM discovered backwards T=
-SC");
-
-arch/x86/kernel/tsc.c
-    1206 void mark_tsc_unstable(char *reason)
-    1207 {
-    1208         if (tsc_unstable)
-    1209                 return;
-    1210
-    1211         tsc_unstable =3D 1;
-    1212         if (using_native_sched_clock())
-    1213                 clear_sched_clock_stable();
---> 1214         disable_sched_clock_irqtime();
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-kernel/jump_label.c
-   245  void static_key_disable(struct static_key *key)
-   246  {
-   247          cpus_read_lock();
-                ^^^^^^^^^^^^^^^^
-This lock has a might_sleep() in it which triggers the static checker
-warning.
-
-   248          static_key_disable_cpuslocked(key);
-   249          cpus_read_unlock();
-   250  }
-
-Let revert this change for now as {disable,enable}_sched_clock_irqtime
-are used in many places, as pointed out by Sean, including the following:
-
-The code path in clocksource_watchdog():
-
-  clocksource_watchdog()
-  |
-  -> spin_lock(&watchdog_lock);
-     |
-     -> __clocksource_unstable()
-        |
-        -> clocksource.mark_unstable() =3D=3D tsc_cs_mark_unstable()
-           |
-           -> disable_sched_clock_irqtime()
-
-And the code path in sched_clock_register():
-
-	/* Cannot register a sched_clock with interrupts on */
-	local_irq_save(flags);
-
-	...
-
-	/* Enable IRQ time accounting if we have a fast enough sched_clock() */
-	if (irqtime > 0 || (irqtime =3D=3D -1 && rate >=3D 1000000))
-		enable_sched_clock_irqtime();
-
-	local_irq_restore(flags);
-
-[ lkp@intel.com: reported a build error in the prev version ]
-[ mingo: cherry-picked it over into sched/urgent ]
-
-Closes: https://lore.kernel.org/kvm/37a79ba3-9ce0-479c-a5b0-2bd75d573ed3@stan=
-ley.mountain/
-Fixes: 8722903cbb8f ("sched: Define sched_clock_irqtime as static key")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Debugged-by: Dan Carpenter <dan.carpenter@linaro.org>
-Debugged-by: Sean Christopherson <seanjc@google.com>
-Debugged-by: Michal Koutn=C3=BD <mkoutny@suse.com>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20250205032438.14668-1-laoar.shao@gmail.com
----
- kernel/sched/cputime.c | 8 ++++----
- kernel/sched/sched.h   | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index 5d9143d..6dab485 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -9,8 +9,6 @@
-=20
- #ifdef CONFIG_IRQ_TIME_ACCOUNTING
-=20
--DEFINE_STATIC_KEY_FALSE(sched_clock_irqtime);
--
- /*
-  * There are no locks covering percpu hardirq/softirq time.
-  * They are only modified in vtime_account, on corresponding CPU
-@@ -24,14 +22,16 @@ DEFINE_STATIC_KEY_FALSE(sched_clock_irqtime);
-  */
- DEFINE_PER_CPU(struct irqtime, cpu_irqtime);
-=20
-+int sched_clock_irqtime;
-+
- void enable_sched_clock_irqtime(void)
- {
--	static_branch_enable(&sched_clock_irqtime);
-+	sched_clock_irqtime =3D 1;
- }
-=20
- void disable_sched_clock_irqtime(void)
- {
--	static_branch_disable(&sched_clock_irqtime);
-+	sched_clock_irqtime =3D 0;
- }
-=20
- static void irqtime_account_delta(struct irqtime *irqtime, u64 delta,
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index c8512a9..023b844 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3259,11 +3259,11 @@ struct irqtime {
- };
-=20
- DECLARE_PER_CPU(struct irqtime, cpu_irqtime);
--DECLARE_STATIC_KEY_FALSE(sched_clock_irqtime);
-+extern int sched_clock_irqtime;
-=20
- static inline int irqtime_enabled(void)
- {
--	return static_branch_likely(&sched_clock_irqtime);
-+	return sched_clock_irqtime;
- }
-=20
- /*
+For example, CPUID is actually required by any i586+ configuration=2E
 
