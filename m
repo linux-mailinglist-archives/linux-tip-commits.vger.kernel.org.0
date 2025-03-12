@@ -1,66 +1,65 @@
-Return-Path: <linux-tip-commits+bounces-4153-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4155-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7432EA5E28D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 18:23:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18565A5E295
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 18:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C68F7AC825
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 17:22:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 436223BC4FF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 17:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0356525D8E4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A107F25DAE2;
 	Wed, 12 Mar 2025 17:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q5MpEBDF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lO6OXbDx"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wCRUFV6W";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KBLsC+IB"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F6C25CC9F;
-	Wed, 12 Mar 2025 17:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F69025D209;
+	Wed, 12 Mar 2025 17:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741800034; cv=none; b=n6VniEwnSvdJXSWO9DgVyTOF9lVWIH0XTGnv0SpqRcXItIp0GSSpWFs/3SNAw4rF6lJSQ3tQrkhDa48mEwCRgBl3zyg2ebt/U45ya14oKmZbdz/XsX/o5P/Wlz85ToUjw2McreXJf4GFb16t/asBGj7atJMH622QND0LG722VjU=
+	t=1741800035; cv=none; b=sIyUTBHIMuI0VZgwkgA9pkm5aaPLjUCmGUAeyAcSQq35MsKvS+6E+zQRqcphMKJ7isHQChIS/yPXSrpU48gIYxkF86uC/jljM3DhvYDMK0LRuCfKuPaTzRvhSoqkmVQv+TZbYy+xeO7EIbFuU1QYOd0NViat2HJfHPyGQ0YD5ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741800034; c=relaxed/simple;
-	bh=TXjY7L8ABk4dx025hAyDOsnJ+9mYyFuSUhmydrP53Po=;
+	s=arc-20240116; t=1741800035; c=relaxed/simple;
+	bh=4orXo2inF4y8R5uwILa65aMLpQo25HQzXT6Q27Q1h34=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=NepBZ6hbgoXRj9YOe5Ftw9fIxBn9tAXIcPi2ScH++EVDlCy35ZrgoGtk9HcBvXKRW+TMkmkzzVvc4IIfR6wIJFvTgNAYyDxNw1N/SEXIUsCQISvyiSydE/ZT2XxdIDM7089ZwUIGXRkyPDe7bef7RFo741ZyAqjVcV6YPsnP5fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q5MpEBDF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lO6OXbDx; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bZiAVzkzl36hKp2kmNqRRQ36vXkJHTRLUL58/9kW3J/UpPNW/iSSgRbZB3CxfgRvApNQGyP9cbdHEM2//N9LlLqnMGqk7dsgi/CIVNxK0mqLuo7oMvCBd7piZqAkiFiFKXdo+GMJdj8XymTM9lTAfvvYJtqKTqS5EruTkPph1Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wCRUFV6W; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KBLsC+IB; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 12 Mar 2025 17:20:29 -0000
+Date: Wed, 12 Mar 2025 17:20:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741800030;
+	s=2020; t=1741800031;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aAl+ZRT8UvHHdTpK70TGngKi/4TlYVEZdioC5BERGsU=;
-	b=q5MpEBDFs43iWx0DkSh3fkT3MtTm9teWuOQOgEBRX6DxUfgE9YzHHsvqh5/7P2O5V401hW
-	RtOdpyg/Bg9tBGdk/5GNdQrgWfwlEETU1RWmr8YXX0V+uTMf/ZXGmpBicaiYNJ6CfoD98u
-	dJXWlas12en/WH/TlLWVf6Eh6v+844bz4FKc9avwxlemDSLST7yL5JbsKjy35fBlSrvhXq
-	szbIgPt6b6kjF9xpuWW50futeugmTHk+eSetrVnipwIdCO1x0IhZS3D/lCu+1DVmygKYZD
-	37iyewpF0donZkzaz7VSgXDcOEBErdBhM1DleHo/WaT17R2CTPPGxjYT+xUBLA==
+	bh=dui/5SHkVURY9gC4mvXjW6PpOGrWOFgSyUycTotglMc=;
+	b=wCRUFV6W8XT3Hk9mQz5u53yFZef76WXlGb2Wa1fe2PcJ0r69qAlc+6bs+gDoeJUu+LQnmT
+	gHd5kFHD22LYTgm8O4EyN3/L7vW+gAvdlcPe06Tv4jG7pSzoRNeKN3n7Qli01pu3XaPHLI
+	heXlYA3f3NCvtnHn2zcgMMtE889vHFiVswAhGzPpuZYgRdiS2GhhRDAVvUKojne528mgoa
+	WFposc5wyvZz80ngF+ilHEoTEJAefXjbbN8mT3qTtSixswWcurtJ0sJjS4Z36NHH6G1T5q
+	2fv9oJbI/ypwyW/EESLZCVCb/O1xr++7FL/wVCFbujKau9wWlmWWeptiH1E+aw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741800030;
+	s=2020e; t=1741800031;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aAl+ZRT8UvHHdTpK70TGngKi/4TlYVEZdioC5BERGsU=;
-	b=lO6OXbDxsz+HLCuheA9CvzY0bSOOMF08X8V80acBc204UVG6lOPK3foo3DzcClmfM46H1u
-	5L35J9P8BRrOVqBw==
+	bh=dui/5SHkVURY9gC4mvXjW6PpOGrWOFgSyUycTotglMc=;
+	b=KBLsC+IByISQaTmYjK54TCOMhEBrc5IuVAtNIJyEQm0+6YyxZpjZ9tTXYZ3iLlh9sn84tR
+	7/A/h8N4SlA9dkBg==
 From: "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cache] x86/resctrl: Move monitor exit work to a resctrl exit call
+Subject: [tip: x86/cache] x86/resctrl: Move resctrl types to a separate header
 Cc: James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Tony Luck <tony.luck@intel.com>,
  Reinette Chatre <reinette.chatre@intel.com>, Fenghua Yu <fenghuay@nvidia.com>,
@@ -69,15 +68,15 @@ Cc: James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Amit Singh Tomar <amitsinght@marvell.com>,
  Shanker Donthineni <sdonthineni@nvidia.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250311183715.16445-16-james.morse@arm.com>
-References: <20250311183715.16445-16-james.morse@arm.com>
+In-Reply-To: <20250311183715.16445-14-james.morse@arm.com>
+References: <20250311183715.16445-14-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174180002923.14745.15958337522013936223.tip-bot2@tip-bot2>
+Message-ID: <174180003096.14745.762106599659100204.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,26 +86,44 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     011842727fa449f834c17b69d1273d88eb6e3309
-Gitweb:        https://git.kernel.org/tip/011842727fa449f834c17b69d1273d88eb6e3309
+Commit-ID:     f16adbaf9272ea7ed5d7bf8b261be8a9be949c31
+Gitweb:        https://git.kernel.org/tip/f16adbaf9272ea7ed5d7bf8b261be8a9be949c31
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Tue, 11 Mar 2025 18:37:00 
+AuthorDate:    Tue, 11 Mar 2025 18:36:58 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 12 Mar 2025 12:23:13 +01:00
+CommitterDate: Wed, 12 Mar 2025 12:23:00 +01:00
 
-x86/resctrl: Move monitor exit work to a resctrl exit call
+x86/resctrl: Move resctrl types to a separate header
 
-rdt_put_mon_l3_config() is called via the architecture's resctrl_arch_exit()
-call, and appears to free the rmid_ptrs[] and closid_num_dirty_rmid[] arrays.
-In reality this code is marked __exit, and is removed by the linker as resctrl
-can't be built as a module.
+When resctrl is fully factored into core and per-arch code, each arch will
+need to use some resctrl common definitions in order to define its own
+specializations and helpers.  Following conventional practice, it would be
+desirable to put the dependent arch definitions in an <asm/resctrl.h> header
+that is included by the common <linux/resctrl.h> header.  However, this can
+make it awkward to avoid a circular dependency between <linux/resctrl.h> and
+the arch header.
 
-To separate the filesystem and architecture parts of resctrl, this free()ing
-work needs to be triggered by the filesystem, as these structures belong to
-the filesystem code.
+To avoid such dependencies, move the affected common types and constants into
+a new header that does not need to depend on <linux/resctrl.h> or on the arch
+headers.
 
-Rename rdt_put_mon_l3_config() to resctrl_mon_resource_exit() and call it from
-resctrl_exit(). The kfree() is currently dependent on r->mon_capable.
+The same logic applies to the monitor-configuration defines, move these too.
+
+Some kind of enumeration for events is needed between the filesystem and
+architecture code. Take the x86 definition as its convenient for x86.
+
+The definition of enum resctrl_event_id is needed to allow the architecture
+code to define resctrl_arch_mon_ctx_alloc() and resctrl_arch_mon_ctx_free().
+
+The definition of enum resctrl_res_level is needed to allow the architecture
+code to define resctrl_arch_set_cdp_enabled() and
+resctrl_arch_get_cdp_enabled().
+
+The bits for mbm_local_bytes_config et al are ABI, and must be the same on all
+architectures. These are documented in Documentation/arch/x86/resctrl.rst
+
+The maintainers entry for these headers was missed when resctrl.h was created.
+Add a wildcard entry to match both resctrl.h and resctrl_types.h.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -121,96 +138,174 @@ Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Amit Singh Tomar <amitsinght@marvell.com> # arm64
 Tested-by: Shanker Donthineni <sdonthineni@nvidia.com> # arm64
 Tested-by: Babu Moger <babu.moger@amd.com>
-Link: https://lore.kernel.org/r/20250311183715.16445-16-james.morse@arm.com
+Link: https://lore.kernel.org/r/20250311183715.16445-14-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c     |  5 -----
- arch/x86/kernel/cpu/resctrl/internal.h |  2 +-
- arch/x86/kernel/cpu/resctrl/monitor.c  | 12 +++++++++---
- arch/x86/kernel/cpu/resctrl/rdtgroup.c |  2 ++
- 4 files changed, 12 insertions(+), 9 deletions(-)
+ MAINTAINERS                            |  1 +-
+ arch/x86/include/asm/resctrl.h         |  1 +-
+ arch/x86/kernel/cpu/resctrl/internal.h | 24 +-----------
+ include/linux/resctrl.h                | 21 +----------
+ include/linux/resctrl_types.h          | 54 +++++++++++++++++++++++++-
+ 5 files changed, 57 insertions(+), 44 deletions(-)
+ create mode 100644 include/linux/resctrl_types.h
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 850cb86..a1577bd 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -1074,14 +1074,9 @@ late_initcall(resctrl_arch_late_init);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index ed7aa68..2d0b669 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -19894,6 +19894,7 @@ S:	Supported
+ F:	Documentation/arch/x86/resctrl*
+ F:	arch/x86/include/asm/resctrl.h
+ F:	arch/x86/kernel/cpu/resctrl/
++F:	include/linux/resctrl*.h
+ F:	tools/testing/selftests/resctrl/
  
- static void __exit resctrl_arch_exit(void)
- {
--	struct rdt_resource *r = &rdt_resources_all[RDT_RESOURCE_L3].r_resctrl;
--
- 	cpuhp_remove_state(rdt_online);
+ READ-COPY UPDATE (RCU)
+diff --git a/arch/x86/include/asm/resctrl.h b/arch/x86/include/asm/resctrl.h
+index 6908cd0..52f2326 100644
+--- a/arch/x86/include/asm/resctrl.h
++++ b/arch/x86/include/asm/resctrl.h
+@@ -6,6 +6,7 @@
  
- 	resctrl_exit();
--
--	if (r->mon_capable)
--		rdt_put_mon_l3_config();
- }
+ #include <linux/jump_label.h>
+ #include <linux/percpu.h>
++#include <linux/resctrl_types.h>
+ #include <linux/sched.h>
  
- __exitcall(resctrl_arch_exit);
+ /*
 diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 5f3713f..73005ca 100644
+index da73404..5f3713f 100644
 --- a/arch/x86/kernel/cpu/resctrl/internal.h
 +++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -586,7 +586,7 @@ void closid_free(int closid);
- int alloc_rmid(u32 closid);
- void free_rmid(u32 closid, u32 rmid);
- int rdt_get_mon_l3_config(struct rdt_resource *r);
--void __exit rdt_put_mon_l3_config(void);
-+void __exit resctrl_mon_resource_exit(void);
- bool __init rdt_cpu_has(int flag);
- void mon_event_count(void *info);
- int rdtgroup_mondata_show(struct seq_file *m, void *arg);
-diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resctrl/monitor.c
-index e8388d1..15e8c01 100644
---- a/arch/x86/kernel/cpu/resctrl/monitor.c
-+++ b/arch/x86/kernel/cpu/resctrl/monitor.c
-@@ -1040,10 +1040,13 @@ out_unlock:
- 	return err;
- }
+@@ -32,30 +32,6 @@
+  */
+ #define MBM_CNTR_WIDTH_OFFSET_MAX (62 - MBM_CNTR_WIDTH_BASE)
  
--static void __exit dom_data_exit(void)
-+static void __exit dom_data_exit(struct rdt_resource *r)
- {
- 	mutex_lock(&rdtgroup_mutex);
+-/* Reads to Local DRAM Memory */
+-#define READS_TO_LOCAL_MEM		BIT(0)
+-
+-/* Reads to Remote DRAM Memory */
+-#define READS_TO_REMOTE_MEM		BIT(1)
+-
+-/* Non-Temporal Writes to Local Memory */
+-#define NON_TEMP_WRITE_TO_LOCAL_MEM	BIT(2)
+-
+-/* Non-Temporal Writes to Remote Memory */
+-#define NON_TEMP_WRITE_TO_REMOTE_MEM	BIT(3)
+-
+-/* Reads to Local Memory the system identifies as "Slow Memory" */
+-#define READS_TO_LOCAL_S_MEM		BIT(4)
+-
+-/* Reads to Remote Memory the system identifies as "Slow Memory" */
+-#define READS_TO_REMOTE_S_MEM		BIT(5)
+-
+-/* Dirty Victims to All Types of Memory */
+-#define DIRTY_VICTIMS_TO_ALL_MEM	BIT(6)
+-
+-/* Max event bits supported */
+-#define MAX_EVT_CONFIG_BITS		GENMASK(6, 0)
+-
+ /**
+  * cpumask_any_housekeeping() - Choose any CPU in @mask, preferring those that
+  *			        aren't marked nohz_full
+diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
+index 93d9a43..326f7ba 100644
+--- a/include/linux/resctrl.h
++++ b/include/linux/resctrl.h
+@@ -6,6 +6,7 @@
+ #include <linux/kernel.h>
+ #include <linux/list.h>
+ #include <linux/pid.h>
++#include <linux/resctrl_types.h>
  
-+	if (!r->mon_capable)
-+		goto out_unlock;
+ /* CLOSID, RMID value used by the default control group */
+ #define RESCTRL_RESERVED_CLOSID		0
+@@ -37,28 +38,8 @@ enum resctrl_conf_type {
+ 	CDP_DATA,
+ };
+ 
+-enum resctrl_res_level {
+-	RDT_RESOURCE_L3,
+-	RDT_RESOURCE_L2,
+-	RDT_RESOURCE_MBA,
+-	RDT_RESOURCE_SMBA,
+-
+-	/* Must be the last */
+-	RDT_NUM_RESOURCES,
+-};
+-
+ #define CDP_NUM_TYPES	(CDP_DATA + 1)
+ 
+-/*
+- * Event IDs, the values match those used to program IA32_QM_EVTSEL before
+- * reading IA32_QM_CTR on RDT systems.
+- */
+-enum resctrl_event_id {
+-	QOS_L3_OCCUP_EVENT_ID		= 0x01,
+-	QOS_L3_MBM_TOTAL_EVENT_ID	= 0x02,
+-	QOS_L3_MBM_LOCAL_EVENT_ID	= 0x03,
+-};
+-
+ /**
+  * struct resctrl_staged_config - parsed configuration to be applied
+  * @new_ctrl:		new ctrl value to be loaded
+diff --git a/include/linux/resctrl_types.h b/include/linux/resctrl_types.h
+new file mode 100644
+index 0000000..f26450b
+--- /dev/null
++++ b/include/linux/resctrl_types.h
+@@ -0,0 +1,54 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2025 Arm Ltd.
++ * Based on arch/x86/kernel/cpu/resctrl/internal.h
++ */
 +
- 	if (IS_ENABLED(CONFIG_RESCTRL_RMID_DEPENDS_ON_CLOSID)) {
- 		kfree(closid_num_dirty_rmid);
- 		closid_num_dirty_rmid = NULL;
-@@ -1052,6 +1055,7 @@ static void __exit dom_data_exit(void)
- 	kfree(rmid_ptrs);
- 	rmid_ptrs = NULL;
- 
-+out_unlock:
- 	mutex_unlock(&rdtgroup_mutex);
- }
- 
-@@ -1237,9 +1241,11 @@ int __init rdt_get_mon_l3_config(struct rdt_resource *r)
- 	return 0;
- }
- 
--void __exit rdt_put_mon_l3_config(void)
-+void __exit resctrl_mon_resource_exit(void)
- {
--	dom_data_exit();
-+	struct rdt_resource *r = resctrl_arch_get_resource(RDT_RESOURCE_L3);
++#ifndef __LINUX_RESCTRL_TYPES_H
++#define __LINUX_RESCTRL_TYPES_H
 +
-+	dom_data_exit(r);
- }
- 
- void __init intel_rdt_mbm_apply_quirk(void)
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index 9eb57eb..42c48e7 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -4296,4 +4296,6 @@ void __exit resctrl_exit(void)
- 	debugfs_remove_recursive(debugfs_resctrl);
- 	unregister_filesystem(&rdt_fs_type);
- 	sysfs_remove_mount_point(fs_kobj, "resctrl");
++/* Reads to Local DRAM Memory */
++#define READS_TO_LOCAL_MEM		BIT(0)
 +
-+	resctrl_mon_resource_exit();
- }
++/* Reads to Remote DRAM Memory */
++#define READS_TO_REMOTE_MEM		BIT(1)
++
++/* Non-Temporal Writes to Local Memory */
++#define NON_TEMP_WRITE_TO_LOCAL_MEM	BIT(2)
++
++/* Non-Temporal Writes to Remote Memory */
++#define NON_TEMP_WRITE_TO_REMOTE_MEM	BIT(3)
++
++/* Reads to Local Memory the system identifies as "Slow Memory" */
++#define READS_TO_LOCAL_S_MEM		BIT(4)
++
++/* Reads to Remote Memory the system identifies as "Slow Memory" */
++#define READS_TO_REMOTE_S_MEM		BIT(5)
++
++/* Dirty Victims to All Types of Memory */
++#define DIRTY_VICTIMS_TO_ALL_MEM	BIT(6)
++
++/* Max event bits supported */
++#define MAX_EVT_CONFIG_BITS		GENMASK(6, 0)
++
++enum resctrl_res_level {
++	RDT_RESOURCE_L3,
++	RDT_RESOURCE_L2,
++	RDT_RESOURCE_MBA,
++	RDT_RESOURCE_SMBA,
++
++	/* Must be the last */
++	RDT_NUM_RESOURCES,
++};
++
++/*
++ * Event IDs, the values match those used to program IA32_QM_EVTSEL before
++ * reading IA32_QM_CTR on RDT systems.
++ */
++enum resctrl_event_id {
++	QOS_L3_OCCUP_EVENT_ID		= 0x01,
++	QOS_L3_MBM_TOTAL_EVENT_ID	= 0x02,
++	QOS_L3_MBM_LOCAL_EVENT_ID	= 0x03,
++};
++
++#endif /* __LINUX_RESCTRL_TYPES_H */
 
