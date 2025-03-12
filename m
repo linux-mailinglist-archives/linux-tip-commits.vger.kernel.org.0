@@ -1,66 +1,66 @@
-Return-Path: <linux-tip-commits+bounces-4144-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4143-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7544BA5E278
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 18:21:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3232A5E277
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 18:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59EBD7AABAF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 17:20:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7AC3BC0F3
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 17:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9980259C81;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A71258CD6;
 	Wed, 12 Mar 2025 17:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cqVFt8kr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+BOKQ/IP"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OMzoKwu0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KI6gd/S3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682FE2571CA;
-	Wed, 12 Mar 2025 17:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241812571A6;
+	Wed, 12 Mar 2025 17:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741800026; cv=none; b=Wa9EKKysavx0icDXPqEw8YBflckV76jwnh4pIhnNObB9VutmBAimWkfRhPVP1i6QVCmULn5Ba8KQpM0zvOabZE9vkly10jEaSwLfU6KtTD1jw1r9+rMraTHgYLEKWuii0zu4USvHd8b/iQzqo/PayZgHHeXlt1YuKlZteN/8svI=
+	t=1741800026; cv=none; b=HfGRwS+xqn/PAmfA8M9lgIobmblPozmI1kHzpNBfpxelvEyLnDP5pAV2lX3Byl6EZh3pk+VcTo481t3KT2OXA3rI33lK9300VfFtWUBwbBKn3KNgAkbU1+5bDT9uGweQlBHIWqnXhsAxUdDpYI7NeJ/EDVNx3z8TCreYaph/bR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1741800026; c=relaxed/simple;
-	bh=CJNNoAFbRMgXZG+xjQiVbDluGKofMBgK42jQShSUiIw=;
+	bh=EaTi/48jpa8K2rytyxZNMBpIB0EDkMSLiWmGfAEhG7o=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mwXMcFAi8vzNvsSuxr+9OZf+Nadp5R5uuXgLv1I5Ldh90nEKilSSzj6TOItELM0DE6CaBvIlvryjJngmvT3q2Z97Gb5LDGm8wAdzQ+farTfZSgUVYr4RDmrAm3pcXQAVw6TVPlVaLyiFQpFqAHnP3sYx5MYgXvIh0mYY+vV7QRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cqVFt8kr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+BOKQ/IP; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=aGFSouq9xB8ycc0heHNuzvKDWzMsAIq0FpPRSMGGNjPZWxpg5WbcSPR+vRp/bShsS3Q9dMjn3baL9nTN7feOqPjvFZfY+fMTp4voRxLykfQr9NIQgIItp25i/8wmVOKpz/obh60FjXMoeMFA8ENRIWUSK1rhfBkwg0ymsmB9ROE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OMzoKwu0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KI6gd/S3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 12 Mar 2025 17:20:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741800022;
+	s=2020; t=1741800021;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8CFtm9R4Da6z6/jvB7L60iEDrGh9zRS0uxzm+dje9wc=;
-	b=cqVFt8krFOgXw28YayV9krcPqNE4/M1qMJ0iJdRscXFV81M3G0zNsDjUgtVjoI8gVJ/hkK
-	b0RYHp/rWKsyN/wXnILt0jsc0/0i4TcbdMlbDcILBPHbn3HntHvLoln/u1gepJWK7WDKkO
-	RVYr9w/38tpfR0PY6VIKNNozK1f6+mjacOPEa9wBEBj/rdTf4eBp0iVLFUCQ3crpOU1MZG
-	IDNYyqxB0w4zIcNZWMYtw280gla3e/sfZWxN81djKia0QA3sRphucWJQCPmgmUP1ukL7Fk
-	MtpalqCx6k0ix/tlC4P4FWABl4wcVMg3hgmNN/zot9l7a9RtTwIjQcwRTY0scQ==
+	bh=VPRNPaN020NLWUZd8x+3MaPuz2nVpHT8MJiVwjhol2Q=;
+	b=OMzoKwu00e5UFAc1EtnjHMxhq6Dt5hHgKxyKgIwP/kHUxzguEhJo01/UXXm/YZXKGDxZL4
+	Z60sfKETX1L8eeJvp0yk8wj5GDGrF0nFRrxu3/2/bhqqGQyRKLTZctWpiwJ4lRRsO0hDW2
+	j/VxTLCAYmZ7cHBu1JpJFSYGu2e0mROQe+Wj02eNgjppopO99vpu1sgPqiS9v4NFAjYoby
+	nBRzVKd9fh1wF80Oa5mgAN97Saig6CHJcPkh/8EHk35U8+oiyHkZPidq1Fakjrvhfs2cLw
+	1W5aX3rxewNcKU244ga3meeQ+7QsqKG6/IAxJTPeQ/wOl0t84Oegzdi43wwNNA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741800022;
+	s=2020e; t=1741800021;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8CFtm9R4Da6z6/jvB7L60iEDrGh9zRS0uxzm+dje9wc=;
-	b=+BOKQ/IPZVoGMOXHiTgIUBBw1DzQqvzb5HOc83YAELgzZC7/xC919cE67Q7tuN1/Giu5ia
-	brLebgtyzFWDQcDQ==
+	bh=VPRNPaN020NLWUZd8x+3MaPuz2nVpHT8MJiVwjhol2Q=;
+	b=KI6gd/S3wO6kB66uSF0OYB6G32dowfsWmRh1W4g2MP8qzmVr2m/O1NWU/gUkp9Mz6ueW3x
+	9Dc2C/yvkso/IdDg==
 From: "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cache] x86/resctrl: Allow an architecture to disable pseudo lock
+Subject: [tip: x86/cache] x86/resctrl: Make prefetch_disable_bits belong to
+ the arch code
 Cc: James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Tony Luck <tony.luck@intel.com>,
  Reinette Chatre <reinette.chatre@intel.com>, Fenghua Yu <fenghuay@nvidia.com>,
@@ -69,15 +69,15 @@ Cc: James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Amit Singh Tomar <amitsinght@marvell.com>,
  Shanker Donthineni <sdonthineni@nvidia.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250311183715.16445-25-james.morse@arm.com>
-References: <20250311183715.16445-25-james.morse@arm.com>
+In-Reply-To: <20250311183715.16445-26-james.morse@arm.com>
+References: <20250311183715.16445-26-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174180002199.14745.18052959552909230430.tip-bot2@tip-bot2>
+Message-ID: <174180002117.14745.15433290797717039575.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,27 +87,22 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     7028840552a220ac5efe51a4b554195cd954a912
-Gitweb:        https://git.kernel.org/tip/7028840552a220ac5efe51a4b554195cd954a912
+Commit-ID:     4d20f38ab6d922dd6b8a33795b6e72516d733eb2
+Gitweb:        https://git.kernel.org/tip/4d20f38ab6d922dd6b8a33795b6e72516d733eb2
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Tue, 11 Mar 2025 18:37:09 
+AuthorDate:    Tue, 11 Mar 2025 18:37:10 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 12 Mar 2025 12:24:25 +01:00
+CommitterDate: Wed, 12 Mar 2025 12:24:30 +01:00
 
-x86/resctrl: Allow an architecture to disable pseudo lock
+x86/resctrl: Make prefetch_disable_bits belong to the arch code
 
-Pseudo-lock relies on knowledge of the micro-architecture to disable
-prefetchers etc.
+prefetch_disable_bits is set by rdtgroup_locksetup_enter() from a value
+provided by the architecture, but is largely read by other architecture
+helpers.
 
-On arm64 these controls are typically secure only, meaning Linux can't access
-them. Arm's cache-lockdown feature works in a very different way. Resctrl's
-pseudo-lock isn't going to be used on arm64 platforms.
-
-Add a Kconfig symbol that can be selected by the architecture. This enables or
-disables building of the pseudo_lock.c file, and replaces the functions with
-stubs. An additional IS_ENABLED() check is needed in rdtgroup_mode_write() so
-that attempting to enable pseudo-lock reports an "Unknown or unsupported mode"
-to user-space via the last_cmd_status file.
+Make resctrl_arch_get_prefetch_disable_bits() set prefetch_disable_bits so
+that it can be isolated to arch-code from where the other arch-code helpers
+can use its cached value.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -122,128 +117,56 @@ Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Amit Singh Tomar <amitsinght@marvell.com> # arm64
 Tested-by: Shanker Donthineni <sdonthineni@nvidia.com> # arm64
 Tested-by: Babu Moger <babu.moger@amd.com>
-Link: https://lore.kernel.org/r/20250311183715.16445-25-james.morse@arm.com
+Link: https://lore.kernel.org/r/20250311183715.16445-26-james.morse@arm.com
 ---
- arch/x86/Kconfig                       |  7 ++++-
- arch/x86/kernel/cpu/resctrl/Makefile   |  5 +--
- arch/x86/kernel/cpu/resctrl/internal.h | 49 ++++++++++++++++++++-----
- arch/x86/kernel/cpu/resctrl/rdtgroup.c |  3 +-
- 4 files changed, 53 insertions(+), 11 deletions(-)
+ arch/x86/kernel/cpu/resctrl/pseudo_lock.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 0e27ebd..3cb3acd 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -505,6 +505,7 @@ config X86_CPU_RESCTRL
- 	depends on X86 && (CPU_SUP_INTEL || CPU_SUP_AMD)
- 	select KERNFS
- 	select PROC_CPU_RESCTRL		if PROC_FS
-+	select RESCTRL_FS_PSEUDO_LOCK
- 	help
- 	  Enable x86 CPU resource control support.
+diff --git a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
+index 1f42c11..90044a0 100644
+--- a/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
++++ b/arch/x86/kernel/cpu/resctrl/pseudo_lock.c
+@@ -84,6 +84,8 @@ static const struct class pseudo_lock_class = {
+  */
+ u64 resctrl_arch_get_prefetch_disable_bits(void)
+ {
++	prefetch_disable_bits = 0;
++
+ 	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL ||
+ 	    boot_cpu_data.x86 != 6)
+ 		return 0;
+@@ -99,7 +101,8 @@ u64 resctrl_arch_get_prefetch_disable_bits(void)
+ 		 * 3    DCU IP Prefetcher Disable (R/W)
+ 		 * 63:4 Reserved
+ 		 */
+-		return 0xF;
++		prefetch_disable_bits = 0xF;
++		break;
+ 	case INTEL_ATOM_GOLDMONT:
+ 	case INTEL_ATOM_GOLDMONT_PLUS:
+ 		/*
+@@ -110,10 +113,11 @@ u64 resctrl_arch_get_prefetch_disable_bits(void)
+ 		 * 2     DCU Hardware Prefetcher Disable (R/W)
+ 		 * 63:3  Reserved
+ 		 */
+-		return 0x5;
++		prefetch_disable_bits = 0x5;
++		break;
+ 	}
  
-@@ -521,6 +522,12 @@ config X86_CPU_RESCTRL
+-	return 0;
++	return prefetch_disable_bits;
+ }
  
- 	  Say N if unsure.
- 
-+config RESCTRL_FS_PSEUDO_LOCK
-+	bool
-+	help
-+	  Software mechanism to pin data in a cache portion using
-+	  micro-architecture specific knowledge.
-+
- config X86_FRED
- 	bool "Flexible Return and Event Delivery"
- 	depends on X86_64
-diff --git a/arch/x86/kernel/cpu/resctrl/Makefile b/arch/x86/kernel/cpu/resctrl/Makefile
-index 4a06c37..0c13b0b 100644
---- a/arch/x86/kernel/cpu/resctrl/Makefile
-+++ b/arch/x86/kernel/cpu/resctrl/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-$(CONFIG_X86_CPU_RESCTRL)	+= core.o rdtgroup.o monitor.o
--obj-$(CONFIG_X86_CPU_RESCTRL)	+= ctrlmondata.o pseudo_lock.o
-+obj-$(CONFIG_X86_CPU_RESCTRL)		+= core.o rdtgroup.o monitor.o
-+obj-$(CONFIG_X86_CPU_RESCTRL)		+= ctrlmondata.o
-+obj-$(CONFIG_RESCTRL_FS_PSEUDO_LOCK)	+= pseudo_lock.o
- CFLAGS_pseudo_lock.o = -I$(src)
-diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
-index 725f223..8d35bb4 100644
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -512,14 +512,6 @@ unsigned int rdtgroup_cbm_to_size(struct rdt_resource *r, struct rdt_ctrl_domain
- 				  unsigned long cbm);
- enum rdtgrp_mode rdtgroup_mode_by_closid(int closid);
- int rdtgroup_tasks_assigned(struct rdtgroup *r);
--int rdtgroup_locksetup_enter(struct rdtgroup *rdtgrp);
--int rdtgroup_locksetup_exit(struct rdtgroup *rdtgrp);
--bool rdtgroup_cbm_overlaps_pseudo_locked(struct rdt_ctrl_domain *d, unsigned long cbm);
--bool rdtgroup_pseudo_locked_in_hierarchy(struct rdt_ctrl_domain *d);
--int rdt_pseudo_lock_init(void);
--void rdt_pseudo_lock_release(void);
--int rdtgroup_pseudo_lock_create(struct rdtgroup *rdtgrp);
--void rdtgroup_pseudo_lock_remove(struct rdtgroup *rdtgrp);
- struct rdt_ctrl_domain *get_ctrl_domain_from_cpu(int cpu, struct rdt_resource *r);
- struct rdt_mon_domain *get_mon_domain_from_cpu(int cpu, struct rdt_resource *r);
- int closids_supported(void);
-@@ -551,4 +543,45 @@ void resctrl_file_fflags_init(const char *config, unsigned long fflags);
- void rdt_staged_configs_clear(void);
- bool closid_allocated(unsigned int closid);
- int resctrl_find_cleanest_closid(void);
-+
-+#ifdef CONFIG_RESCTRL_FS_PSEUDO_LOCK
-+int rdtgroup_locksetup_enter(struct rdtgroup *rdtgrp);
-+int rdtgroup_locksetup_exit(struct rdtgroup *rdtgrp);
-+bool rdtgroup_cbm_overlaps_pseudo_locked(struct rdt_ctrl_domain *d, unsigned long cbm);
-+bool rdtgroup_pseudo_locked_in_hierarchy(struct rdt_ctrl_domain *d);
-+int rdt_pseudo_lock_init(void);
-+void rdt_pseudo_lock_release(void);
-+int rdtgroup_pseudo_lock_create(struct rdtgroup *rdtgrp);
-+void rdtgroup_pseudo_lock_remove(struct rdtgroup *rdtgrp);
-+#else
-+static inline int rdtgroup_locksetup_enter(struct rdtgroup *rdtgrp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline int rdtgroup_locksetup_exit(struct rdtgroup *rdtgrp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline bool rdtgroup_cbm_overlaps_pseudo_locked(struct rdt_ctrl_domain *d, unsigned long cbm)
-+{
-+	return false;
-+}
-+
-+static inline bool rdtgroup_pseudo_locked_in_hierarchy(struct rdt_ctrl_domain *d)
-+{
-+	return false;
-+}
-+
-+static inline int rdt_pseudo_lock_init(void) { return 0; }
-+static inline void rdt_pseudo_lock_release(void) { }
-+static inline int rdtgroup_pseudo_lock_create(struct rdtgroup *rdtgrp)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static inline void rdtgroup_pseudo_lock_remove(struct rdtgroup *rdtgrp) { }
-+#endif /* CONFIG_RESCTRL_FS_PSEUDO_LOCK */
-+
- #endif /* _ASM_X86_RESCTRL_INTERNAL_H */
-diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-index a388ef6..e592715 100644
---- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-+++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
-@@ -1453,7 +1453,8 @@ static ssize_t rdtgroup_mode_write(struct kernfs_open_file *of,
- 				goto out;
- 		}
- 		rdtgrp->mode = RDT_MODE_EXCLUSIVE;
--	} else if (!strcmp(buf, "pseudo-locksetup")) {
-+	} else if (IS_ENABLED(CONFIG_RESCTRL_FS_PSEUDO_LOCK) &&
-+		   !strcmp(buf, "pseudo-locksetup")) {
- 		ret = rdtgroup_locksetup_enter(rdtgrp);
- 		if (ret)
- 			goto out;
+ /**
+@@ -713,8 +717,7 @@ int rdtgroup_locksetup_enter(struct rdtgroup *rdtgrp)
+ 	 * Not knowing the bits to disable prefetching implies that this
+ 	 * platform does not support Cache Pseudo-Locking.
+ 	 */
+-	prefetch_disable_bits = resctrl_arch_get_prefetch_disable_bits();
+-	if (prefetch_disable_bits == 0) {
++	if (resctrl_arch_get_prefetch_disable_bits() == 0) {
+ 		rdt_last_cmd_puts("Pseudo-locking not supported\n");
+ 		return -EINVAL;
+ 	}
 
