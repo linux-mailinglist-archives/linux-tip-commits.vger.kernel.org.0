@@ -1,82 +1,82 @@
-Return-Path: <linux-tip-commits+bounces-4161-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4162-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351BAA5E29F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 18:25:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3CD2A5E2A5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 18:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD16A189758B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 17:25:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E1C73BC484
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 12 Mar 2025 17:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA6C25F7B7;
-	Wed, 12 Mar 2025 17:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A0925F992;
+	Wed, 12 Mar 2025 17:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gMsbgRqa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6rqbt5+P"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xgOIaG1s";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TjpDNIK3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4414925E47B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B5525E817;
 	Wed, 12 Mar 2025 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741800041; cv=none; b=NjE63O+j9KFbGCNTE6CbFYahGbJRhXwB6FTfDoRGJbyWY86V6HMDgAc46jzuyo4JjtDgNJ3gQxiWnVSZLYqWNmqHD5V+2nacEzc3GTqn3h515PWYg2bRu8dL3pPC9J9obXG3cln9O2jxDqg5/o77idwIDvn8okKFigMb7JhB5e0=
+	t=1741800042; cv=none; b=iWhQUBA1zWHeFrUaIhL+FkNvx9ffHpA9nL7xNRFwDyp/I/PpC9t553ASJOg+/B2imKFEaNG2aGNGStPAtq4yKB9THzFjvK7lpMVqyANbtw6wTIajxD/hf8TGTYwThOaBrfRb4KtgA6gDJW1kURS9I9yg1QtqbJedi7Rb7KpbnWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741800041; c=relaxed/simple;
-	bh=Es2c0s7vxbhxr/C7eN06Pm9WRIVoZxQZ7FzgURqj/Cw=;
+	s=arc-20240116; t=1741800042; c=relaxed/simple;
+	bh=WxG0Ek7ELZx4Jhl88ofMlJcbmL4+792+KAbhxBlQN50=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VOux07tzydn65JzdIwUO7x++F+OfSD48SMjdQrEmy2Plca1xlfgF8zdIbVsGoWPmdUM0w48zV9dYBeI/UIX61q4hBbpanbiysiR7wjzbAv4TBZYIJaS5EZkuAYHGiRqhT0ZuXCJbDU4sC0plG/gu5EKF3CA4CCTiDMWZhl84uIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gMsbgRqa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6rqbt5+P; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=tmYCSvCHR8MVyd4eZ0aGLVLLDHNe1RNcxD6JElYsJJA/+30GcEjjvTEd8tt52IkgMsr9Muc2w3Scj+pBUvaHJ6fTlKmJ6cgdAAz/QUj8bheRmY/4C4M6+2GSXWN5Jwg5XOPnBdhDIrCRsXGrB9dgi+e+3ZEkxsOqfNE1qiexfdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xgOIaG1s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TjpDNIK3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 12 Mar 2025 17:20:35 -0000
+Date: Wed, 12 Mar 2025 17:20:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741800036;
+	s=2020; t=1741800037;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sMHHVUzTZQAeAbXSlk8G3JP8hJJ0AEBirdjZIGtO3us=;
-	b=gMsbgRqa+N9JkICGManB+zLmHNM+mkRk/6ErQx9GO6LjIob6j/9EF+ws4nooi7PGwyq8Wd
-	19Mw0tJ8Ut1jhlzCtoebfxpWcx8AiFE2YwQvZ5z5/GPknSw5s1GR82azGcucYQ6XY/3q/2
-	rmgQajITm6ADwNp9RMqTysKzK6zyRLwITfIcprf7DOo7LX23J2HZaEx8DR0NIXd0bqOyy2
-	Ul0Xk43KU+5JXZz0qnduhrMQac9e/6v4/pX7PUCiJ62ml7M7SLswvoy4lCWxVish1zI9sX
-	mbewm0f7T8jytP6YnP7/1jPFqjIhOVTwMewJkDCHOPurGGVYCUKxy+fiWAIGUQ==
+	bh=dq0Z5tPyqBPs0WdFIlkyk8kWp8l5nm3GzkBmSYW4BRg=;
+	b=xgOIaG1s9g5ySG/P7P2S/R9mI15GDLqmi78lUU6dhinIDR1sMUo736pUbJnHPtYzOKClzJ
+	qt7pXCMkRALYjCA3hpfSf8/HplogiSy/ZZKlxdMfMwvqi1jKG6okJOXOh2cqS3CS9Gzidl
+	HqL5nGSF9aVyflVHXPnOOFLuBUIlqOcTD9h6qrYcH3aDeLtNtSuWv50hdRdKrzxGGyq+7X
+	P531VgNFpo98++C0UCG+STahZquxHtyqgfyMbwNzAc14WHDy0gIg/1s3x3fz/3kzyJAyg2
+	/MPNEkHBb6tK1BAduiMAEozPO1UujqGTp+ZcamhwIVykV5Vajb1mth04m/n/KQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741800036;
+	s=2020e; t=1741800037;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sMHHVUzTZQAeAbXSlk8G3JP8hJJ0AEBirdjZIGtO3us=;
-	b=6rqbt5+P1fyEKqICYKjoHPaqNZJDxkgcL3vCXdafmgANNTgTni+vNXezep/Ck7h8CAElgK
-	xFruEL+N7glZL4DQ==
+	bh=dq0Z5tPyqBPs0WdFIlkyk8kWp8l5nm3GzkBmSYW4BRg=;
+	b=TjpDNIK3h6h2oaYUx/BU43y19ejo+JOnXMSMB3qDJEWJ89vndDnhkaIP9KQKQjtH/1rkMH
+	wn8qWEKALfmCUuCQ==
 From: "tip-bot2 for James Morse" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86/resctrl: Add max_bw to struct resctrl_membw
+Subject:
+ [tip: x86/cache] x86/resctrl: Remove data_width and the tabular format
 Cc: James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>, Tony Luck <tony.luck@intel.com>,
  Reinette Chatre <reinette.chatre@intel.com>, Fenghua Yu <fenghuay@nvidia.com>,
- Babu Moger <babu.moger@amd.com>, Carl Worth <carl@os.amperecomputing.com>,
- Peter Newman <peternewman@google.com>,
+ Babu Moger <babu.moger@amd.com>, Peter Newman <peternewman@google.com>,
  Amit Singh Tomar <amitsinght@marvell.com>,
  Shanker Donthineni <sdonthineni@nvidia.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250311183715.16445-8-james.morse@arm.com>
-References: <20250311183715.16445-8-james.morse@arm.com>
+In-Reply-To: <20250311183715.16445-7-james.morse@arm.com>
+References: <20250311183715.16445-7-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174180003592.14745.7367404008398105750.tip-bot2@tip-bot2>
+Message-ID: <174180003687.14745.12857836521662809331.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -86,34 +86,37 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     634ebb98b929443ea1a5502c93f26d01aedbd5c8
-Gitweb:        https://git.kernel.org/tip/634ebb98b929443ea1a5502c93f26d01aedbd5c8
+Commit-ID:     43312b8ea1c61abbc5e3bdc87fe2e18f755d549d
+Gitweb:        https://git.kernel.org/tip/43312b8ea1c61abbc5e3bdc87fe2e18f755d549d
 Author:        James Morse <james.morse@arm.com>
-AuthorDate:    Tue, 11 Mar 2025 18:36:52 
+AuthorDate:    Tue, 11 Mar 2025 18:36:51 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 12 Mar 2025 12:22:41 +01:00
+CommitterDate: Wed, 12 Mar 2025 12:22:36 +01:00
 
-x86/resctrl: Add max_bw to struct resctrl_membw
+x86/resctrl: Remove data_width and the tabular format
 
-__rdt_get_mem_config_amd() and __get_mem_config_intel() both use the
-default_ctrl property as a maximum value. This is because the MBA schema works
-differently between these platforms. Doing this complicates determining
-whether the default_ctrl property belongs to the arch code, or can be derived
-from the schema format.
+The resctrl architecture code provides a data_width for the controls of each
+resource. This is used to zero pad all control values in the schemata file so
+they appear in columns. The same is done with the resource names to complete
+the visual effect. e.g.
 
-Deriving the maximum or default value from the schema format would avoid the
-architecture code having to tell resctrl such obvious things as the maximum
-percentage is 100, and the maximum bitmap is all ones.
+  | SMBA:0=2048
+  |   L3:0=00ff
 
-Maximum bandwidth is always going to vary per platform. Add max_bw as
-a special case. This is currently used for the maximum MBA percentage on Intel
-platforms, but can be removed from the architecture code if 'percentage'
-becomes a schema format resctrl supports directly.
+AMD platforms discover their maximum bandwidth for the MB resource from
+firmware, but hard-code the data_width to 4. If the maximum bandwidth requires
+more digits - the tabular format is silently broken.  This is also broken when
+the mba_MBps mount option is used as the field width isn't updated. If new
+schema are added resctrl will need to be able to determine the maximum width.
+The benefit of this pretty-printing is questionable.
 
-This value isn't needed for other schema formats.
+Instead of handling runtime discovery of the data_width for AMD platforms,
+remove the feature. These fields are always zero padded so should be harmless
+to remove if the whole field has been treated as a number.  In the above
+example, this would now look like this:
 
-This will allow the default_ctrl to be generated from the schema properties
-when it is needed.
+  | SMBA:0=2048
+  |   L3:0=ff
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
@@ -122,73 +125,167 @@ Reviewed-by: Tony Luck <tony.luck@intel.com>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 Reviewed-by: Babu Moger <babu.moger@amd.com>
-Tested-by: Carl Worth <carl@os.amperecomputing.com> # arm64
 Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 Tested-by: Peter Newman <peternewman@google.com>
 Tested-by: Amit Singh Tomar <amitsinght@marvell.com> # arm64
 Tested-by: Shanker Donthineni <sdonthineni@nvidia.com> # arm64
 Tested-by: Babu Moger <babu.moger@amd.com>
-Link: https://lore.kernel.org/r/20250311183715.16445-8-james.morse@arm.com
+Link: https://lore.kernel.org/r/20250311183715.16445-7-james.morse@arm.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c        | 2 ++
- arch/x86/kernel/cpu/resctrl/ctrlmondata.c | 4 ++--
- include/linux/resctrl.h                   | 2 ++
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/resctrl/core.c        | 26 +----------------------
+ arch/x86/kernel/cpu/resctrl/ctrlmondata.c |  3 +--
+ arch/x86/kernel/cpu/resctrl/internal.h    |  2 +-
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c    | 10 ++++++--
+ include/linux/resctrl.h                   |  2 +--
+ 5 files changed, 10 insertions(+), 33 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl/core.c
-index 754fb65..4504a12 100644
+index 542503a..754fb65 100644
 --- a/arch/x86/kernel/cpu/resctrl/core.c
 +++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -212,6 +212,7 @@ static __init bool __get_mem_config_intel(struct rdt_resource *r)
- 	hw_res->num_closid = edx.split.cos_max + 1;
- 	max_delay = eax.split.max_delay + 1;
- 	r->default_ctrl = MAX_MBA_BW;
-+	r->membw.max_bw = MAX_MBA_BW;
- 	r->membw.arch_needs_linear = true;
- 	if (ecx & MBA_IS_LINEAR) {
- 		r->membw.delay_linear = true;
-@@ -250,6 +251,7 @@ static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
- 	cpuid_count(0x80000020, subleaf, &eax, &ebx, &ecx, &edx);
- 	hw_res->num_closid = edx + 1;
- 	r->default_ctrl = 1 << eax;
-+	r->membw.max_bw = 1 << eax;
+@@ -44,12 +44,6 @@ static DEFINE_MUTEX(domain_list_lock);
+ DEFINE_PER_CPU(struct resctrl_pqr_state, pqr_state);
  
- 	/* AMD does not use delay */
- 	r->membw.delay_linear = false;
+ /*
+- * Used to store the max resource name width and max resource data width
+- * to display the schemata in a tabular format
+- */
+-int max_name_width, max_data_width;
+-
+-/*
+  * Global boolean for rdt_alloc which is true if any
+  * resource allocation is enabled.
+  */
+@@ -228,7 +222,6 @@ static __init bool __get_mem_config_intel(struct rdt_resource *r)
+ 			return false;
+ 		r->membw.arch_needs_linear = false;
+ 	}
+-	r->data_width = 3;
+ 
+ 	if (boot_cpu_has(X86_FEATURE_PER_THREAD_MBA))
+ 		r->membw.throttle_mode = THREAD_THROTTLE_PER_THREAD;
+@@ -269,8 +262,6 @@ static __init bool __rdt_get_mem_config_amd(struct rdt_resource *r)
+ 	r->membw.throttle_mode = THREAD_THROTTLE_UNDEFINED;
+ 	r->membw.min_bw = 0;
+ 	r->membw.bw_gran = 1;
+-	/* Max value is 2048, Data width should be 4 in decimal */
+-	r->data_width = 4;
+ 
+ 	r->alloc_capable = true;
+ 
+@@ -290,7 +281,6 @@ static void rdt_get_cache_alloc_cfg(int idx, struct rdt_resource *r)
+ 	r->cache.cbm_len = eax.split.cbm_len + 1;
+ 	r->default_ctrl = BIT_MASK(eax.split.cbm_len + 1) - 1;
+ 	r->cache.shareable_bits = ebx & r->default_ctrl;
+-	r->data_width = (r->cache.cbm_len + 3) / 4;
+ 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
+ 		r->cache.arch_has_sparse_bitmasks = ecx.split.noncont;
+ 	r->alloc_capable = true;
+@@ -786,20 +776,6 @@ static int resctrl_arch_offline_cpu(unsigned int cpu)
+ 	return 0;
+ }
+ 
+-/*
+- * Choose a width for the resource name and resource data based on the
+- * resource that has widest name and cbm.
+- */
+-static __init void rdt_init_padding(void)
+-{
+-	struct rdt_resource *r;
+-
+-	for_each_alloc_capable_rdt_resource(r) {
+-		if (r->data_width > max_data_width)
+-			max_data_width = r->data_width;
+-	}
+-}
+-
+ enum {
+ 	RDT_FLAG_CMT,
+ 	RDT_FLAG_MBM_TOTAL,
+@@ -1102,8 +1078,6 @@ static int __init resctrl_late_init(void)
+ 	if (!get_rdt_resources())
+ 		return -ENODEV;
+ 
+-	rdt_init_padding();
+-
+ 	state = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+ 				  "x86/resctrl/cat:online:",
+ 				  resctrl_arch_online_cpu,
 diff --git a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-index 59610b2..23a01ea 100644
+index c763cb4..59610b2 100644
 --- a/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
 +++ b/arch/x86/kernel/cpu/resctrl/ctrlmondata.c
-@@ -63,9 +63,9 @@ static bool bw_validate(char *buf, u32 *data, struct rdt_resource *r)
- 		return true;
- 	}
+@@ -487,8 +487,7 @@ static void show_doms(struct seq_file *s, struct resctrl_schema *schema, int clo
+ 			ctrl_val = resctrl_arch_get_config(r, dom, closid,
+ 							   schema->conf_type);
  
--	if (bw < r->membw.min_bw || bw > r->default_ctrl) {
-+	if (bw < r->membw.min_bw || bw > r->membw.max_bw) {
- 		rdt_last_cmd_printf("MB value %u out of range [%d,%d]\n",
--				    bw, r->membw.min_bw, r->default_ctrl);
-+				    bw, r->membw.min_bw, r->membw.max_bw);
- 		return false;
+-		seq_printf(s, schema->fmt_str, dom->hdr.id, max_data_width,
+-			   ctrl_val);
++		seq_printf(s, schema->fmt_str, dom->hdr.id, ctrl_val);
+ 		sep = true;
+ 	}
+ 	seq_puts(s, "\n");
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/resctrl/internal.h
+index b5543bd..f975cd6 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -326,7 +326,7 @@ struct rdtgroup {
+ /* List of all resource groups */
+ extern struct list_head rdt_all_groups;
+ 
+-extern int max_name_width, max_data_width;
++extern int max_name_width;
+ 
+ int __init rdtgroup_init(void);
+ void __exit rdtgroup_exit(void);
+diff --git a/arch/x86/kernel/cpu/resctrl/rdtgroup.c b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+index e7862d0..1e0bae1 100644
+--- a/arch/x86/kernel/cpu/resctrl/rdtgroup.c
++++ b/arch/x86/kernel/cpu/resctrl/rdtgroup.c
+@@ -57,6 +57,12 @@ static struct kernfs_node *kn_mongrp;
+ /* Kernel fs node for "mon_data" directory under root */
+ static struct kernfs_node *kn_mondata;
+ 
++/*
++ * Used to store the max resource name width to display the schemata names in
++ * a tabular format.
++ */
++int max_name_width;
++
+ static struct seq_buf last_cmd_status;
+ static char last_cmd_status_buf[512];
+ 
+@@ -2613,10 +2619,10 @@ static int schemata_list_add(struct rdt_resource *r, enum resctrl_conf_type type
+ 
+ 	switch (r->schema_fmt) {
+ 	case RESCTRL_SCHEMA_BITMAP:
+-		s->fmt_str = "%d=%0*x";
++		s->fmt_str = "%d=%x";
+ 		break;
+ 	case RESCTRL_SCHEMA_RANGE:
+-		s->fmt_str = "%d=%0*u";
++		s->fmt_str = "%d=%u";
+ 		break;
  	}
  
 diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
-index e1a982a..465f3cf 100644
+index 736b9a9..e1a982a 100644
 --- a/include/linux/resctrl.h
 +++ b/include/linux/resctrl.h
-@@ -165,6 +165,7 @@ enum membw_throttle_mode {
- /**
-  * struct resctrl_membw - Memory bandwidth allocation related data
-  * @min_bw:		Minimum memory bandwidth percentage user can request
-+ * @max_bw:		Maximum memory bandwidth value, used as the reset value
-  * @bw_gran:		Granularity at which the memory bandwidth is allocated
-  * @delay_linear:	True if memory B/W delay is in linear scale
-  * @arch_needs_linear:	True if we can't configure non-linear resources
-@@ -175,6 +176,7 @@ enum membw_throttle_mode {
-  */
- struct resctrl_membw {
- 	u32				min_bw;
-+	u32				max_bw;
- 	u32				bw_gran;
- 	u32				delay_linear;
- 	bool				arch_needs_linear;
+@@ -214,7 +214,6 @@ enum resctrl_schema_fmt {
+  * @ctrl_domains:	RCU list of all control domains for this resource
+  * @mon_domains:	RCU list of all monitor domains for this resource
+  * @name:		Name to use in "schemata" file.
+- * @data_width:		Character width of data when displaying
+  * @default_ctrl:	Specifies default cache cbm or memory B/W percent.
+  * @schema_fmt:		Which format string and parser is used for this schema.
+  * @evt_list:		List of monitoring events
+@@ -232,7 +231,6 @@ struct rdt_resource {
+ 	struct list_head	ctrl_domains;
+ 	struct list_head	mon_domains;
+ 	char			*name;
+-	int			data_width;
+ 	u32			default_ctrl;
+ 	enum resctrl_schema_fmt	schema_fmt;
+ 	struct list_head	evt_list;
 
