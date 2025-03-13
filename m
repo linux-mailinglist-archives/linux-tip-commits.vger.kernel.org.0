@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-4176-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4177-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2220A5F1C2
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Mar 2025 12:02:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4934CA5F1C5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Mar 2025 12:02:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40A7316A82A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Mar 2025 11:02:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2262219C1503
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 13 Mar 2025 11:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95157257AE4;
-	Thu, 13 Mar 2025 11:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A18326618D;
+	Thu, 13 Mar 2025 11:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="10fV8290";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RyD+aO15"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4vc/t03D";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wJt5pLFK"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2141EF084;
-	Thu, 13 Mar 2025 11:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FABE1E8325;
+	Thu, 13 Mar 2025 11:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741863749; cv=none; b=J+/OaXibRWMIj2LNK3zHYgyVOr05SnG5MBJLrwMXQoh29eSBd/mllwWWdSz63e9pyZmKtsiHTKR9rAVtWYIJ/aP272SBoBzYywNAN6bog0YXGyGwI/hp875nLC/iEleKQFqJkHdnCaWBF91W3o0gnUIfQcWIJyYoQOu3j8XGOdg=
+	t=1741863753; cv=none; b=ZxbEquzM2dVOxvaUIwj8pUl3kV2oNeRcAhBzUFEmj75EZ5ZSwg9IZzsB2xQzmYqy9zIZjw8jFy5OoXywgYnPHkPC3aKvLDPbQo/D7zotfXX7fKsMCiCTEUhhnk9RVJaXgfx+5Yo61YzGcfbhvY9mJ3348ia0ZdhpPbK4plIv5tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741863749; c=relaxed/simple;
-	bh=gmd+vFJn/CIq5D1WGFAbR1IkJcgk/J79zaFkakN2rNc=;
+	s=arc-20240116; t=1741863753; c=relaxed/simple;
+	bh=/1X1OejHJ7+mHLpFxyP8mgS/XfgKwuughi5RsNew5Jo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=uk1fmYg02//OksyTcN53H2lxiu+UluXvj956zL/B3b8Hxdj9xdoROwhkCAzgt4uVB6nyWroRFGn9pJsJlw9d2z+qRmTm4PP+Z14gJ7YJJKxFyN8Khz01J4tUiKJq5kTKjXY3zV9ESjiUk0y4/TECpoL7fOffNrk8Y399T4IeN9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=10fV8290; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RyD+aO15; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=MRrvPlqVvSz/RVqOFBJ93w3pau9SC9InNjd9eNVDJYKXlloO2gaX7DQqrBDheQdoIQ/H2n7Gnj2wPOPj9w2xIF3GrJQ9cK59QYNIEFfWmza5ONKf2i/G7Nvjby9Z5bujYup+X/FsKozVTuejL3OUN2OUmnP8J+ZZoz0bkjXGVwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4vc/t03D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wJt5pLFK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 13 Mar 2025 11:02:24 -0000
+Date: Thu, 13 Mar 2025 11:02:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741863746;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CGaiGM/YpXVS342vHkME08fQn1Vtg+sQcj7Tsw5pmrY=;
-	b=10fV8290jPA7G/HF6qV21uvO4Tnw9VBkI+EHPtFvRLyGM/rV5EEqTayQegwauxMoVDgmM/
-	iLxtFZN95l+I2DirKOQF87vIBQgCxB5MpzHdpxje7GPi1UmtXjSo33VpHunC99UHSRsze9
-	8dk6mHTA5l+PXtO5UrHoiyeAYMP1VCA4Jb39A751ZjOzrB5ndQ/Yh2pp0n3/o4BRT9y23A
-	EfRY9vwZQvvRI3pd0nqlbtqqyEC0GWnfwYlYPUYg7Ek8bSkAPMyYtV5CfpZc/Gx0p4k5lb
-	oBwdzZZh9R4E8IQcNRex91tj+5vN34/IV5XBKZuQrIcNNgeuDNKaPmRKJgbnIw==
+	bh=yksDjSd2s2G6MkV6YGFRqtwNo2kniQFahpf1acUStls=;
+	b=4vc/t03DXOc2RoZVFUf0QFQ2BjnwHtq4C1+NsVY2ASP5efHpp6Ps1TbQju1o7jFGUC21MP
+	HDYUU8hcxHBSX/VP1p6z2XvtVciZWakIbW8Xnv9hgKIC5NJtG/RLouzsxzgzTPdAK7whu/
+	9cIRNycKBNC9375k8f4nKZg8r9+eE50yc2dBGd1Uo3RB0ms9F2T92i8TS1ztl2k7Fj2G+z
+	KcR4NNuShxXkAdpUnqKaVvdm6bbIh5z5aU6mjbsrtXcaSID9tThBlnaWUb8u6NdHk/IY0p
+	5d1RH4TIoHVSfKW6yu+a85RBScTQUqw9qUAyvbpsTLE1OUqkDYqzbsE/TV4G0g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741863746;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,28 +52,29 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CGaiGM/YpXVS342vHkME08fQn1Vtg+sQcj7Tsw5pmrY=;
-	b=RyD+aO152Fxywma2+g7+Wsha1bwU0g/F/ZHkr/bGSkMRGks4T99sz3zGT7tgBlyL2+RtUS
-	ZlLmyMwV/zqDpvDQ==
+	bh=yksDjSd2s2G6MkV6YGFRqtwNo2kniQFahpf1acUStls=;
+	b=wJt5pLFKXbydnKUTwleLYZ2X4hOkVlXMUyPKv9deKy0jCs8dIcyP1BkAF7qIN1kiWGuuXN
+	g+4BDgornnOTUlBA==
 From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/asm] x86/asm: Use asm_inline() instead of asm() in clwb()
+Subject: [tip: x86/asm] x86/asm: Use CLFLUSHOPT and CLWB mnemonics in
+ <asm/special_insns.h>
 Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
  Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
  "H. Peter Anvin" <hpa@zytor.com>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250313102715.333142-2-ubizjak@gmail.com>
-References: <20250313102715.333142-2-ubizjak@gmail.com>
+In-Reply-To: <20250313102715.333142-1-ubizjak@gmail.com>
+References: <20250313102715.333142-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174186374489.14745.3324838262167564569.tip-bot2@tip-bot2>
+Message-ID: <174186374591.14745.4656117553319645080.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,36 +84,22 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/asm branch of tip:
 
-Commit-ID:     6e9e4961767b76ec67268c991ae90116ce76cc70
-Gitweb:        https://git.kernel.org/tip/6e9e4961767b76ec67268c991ae90116ce76cc70
+Commit-ID:     cc2e9e09d1a3c59cfb138a0fc6ad6f624f3d4ac8
+Gitweb:        https://git.kernel.org/tip/cc2e9e09d1a3c59cfb138a0fc6ad6f624f3d4ac8
 Author:        Uros Bizjak <ubizjak@gmail.com>
-AuthorDate:    Thu, 13 Mar 2025 11:26:56 +01:00
+AuthorDate:    Thu, 13 Mar 2025 11:26:55 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Thu, 13 Mar 2025 11:50:14 +01:00
 
-x86/asm: Use asm_inline() instead of asm() in clwb()
+x86/asm: Use CLFLUSHOPT and CLWB mnemonics in <asm/special_insns.h>
 
-Use asm_inline() to instruct the compiler that the size of asm()
-is the minimum size of one instruction, ignoring how many instructions
-the compiler thinks it is. ALTERNATIVE macro that expands to several
-pseudo directives causes instruction length estimate to count
-more than 20 instructions.
+Current minimum required version of binutils is 2.25,
+which supports CLFLUSHOPT and CLWB instruction mnemonics.
 
-bloat-o-meter reports slight increase of the code size
-for x86_64 defconfig object file, compiled with gcc-14.2:
+Replace the byte-wise specification of CLFLUSHOPT and
+CLWB with these proper mnemonics.
 
-  add/remove: 0/2 grow/shrink: 3/0 up/down: 190/-59 (131)
-
-  Function                                     old     new   delta
-  __copy_user_flushcache                       166     247     +81
-  __memcpy_flushcache                          369     437     +68
-  arch_wb_cache_pmem                             6      47     +41
-  __pfx_clean_cache_range                       16       -     -16
-  clean_cache_range                             43       -     -43
-
-  Total: Before=22807167, After=22807298, chg +0.00%
-
-The compiler now inlines and removes the clean_cache_range() function.
+No functional change intended.
 
 Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
@@ -120,22 +107,43 @@ Cc: Andy Lutomirski <luto@kernel.org>
 Cc: Brian Gerst <brgerst@gmail.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250313102715.333142-2-ubizjak@gmail.com
+Link: https://lore.kernel.org/r/20250313102715.333142-1-ubizjak@gmail.com
 ---
- arch/x86/include/asm/special_insns.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/special_insns.h | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index 856d4ad..f5a8ff4 100644
+index 03e7c2d..856d4ad 100644
 --- a/arch/x86/include/asm/special_insns.h
 +++ b/arch/x86/include/asm/special_insns.h
-@@ -185,7 +185,7 @@ static inline void clwb(volatile void *__p)
+@@ -176,9 +176,8 @@ static __always_inline void clflush(volatile void *__p)
+ 
+ static inline void clflushopt(volatile void *__p)
  {
+-	alternative_io(".byte 0x3e; clflush %0",
+-		       ".byte 0x66; clflush %0",
+-		       X86_FEATURE_CLFLUSHOPT,
++	alternative_io("ds clflush %0",
++		       "clflushopt %0", X86_FEATURE_CLFLUSHOPT,
+ 		       "+m" (*(volatile char __force *)__p));
+ }
+ 
+@@ -187,13 +186,10 @@ static inline void clwb(volatile void *__p)
  	volatile struct { char x[64]; } *p = __p;
  
--	asm volatile(ALTERNATIVE_2(
-+	asm_inline volatile(ALTERNATIVE_2(
- 		"ds clflush %0",
- 		"clflushopt %0", X86_FEATURE_CLFLUSHOPT,
- 		"clwb %0", X86_FEATURE_CLWB)
+ 	asm volatile(ALTERNATIVE_2(
+-		".byte 0x3e; clflush (%[pax])",
+-		".byte 0x66; clflush (%[pax])", /* clflushopt (%%rax) */
+-		X86_FEATURE_CLFLUSHOPT,
+-		".byte 0x66, 0x0f, 0xae, 0x30",  /* clwb (%%rax) */
+-		X86_FEATURE_CLWB)
+-		: [p] "+m" (*p)
+-		: [pax] "a" (p));
++		"ds clflush %0",
++		"clflushopt %0", X86_FEATURE_CLFLUSHOPT,
++		"clwb %0", X86_FEATURE_CLWB)
++		: "+m" (*p));
+ }
+ 
+ #ifdef CONFIG_X86_USER_SHADOW_STACK
 
