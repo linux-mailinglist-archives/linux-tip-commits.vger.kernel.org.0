@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-4215-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4217-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA03A61C05
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 21:11:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 999EEA61C07
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 21:11:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2361C7AFAD0
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 20:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C68AE175F49
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 20:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65242063D1;
-	Fri, 14 Mar 2025 20:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4167E2063F9;
+	Fri, 14 Mar 2025 20:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="03UJSN3t";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AljCFgP+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZOYiMIrI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w1H3V+qL"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBECD530;
-	Fri, 14 Mar 2025 20:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5242063C6;
+	Fri, 14 Mar 2025 20:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741982644; cv=none; b=LXKp2EyHJtiZPJ3RqBDUbz/462wXLKWw64Gopo/uborIjwHAbuqyiGP4LcOscGeX4JgGg4W8vw/DQHuyYlxWNcPgL+nk5nd1zz4fq5p5hvtQoBVW4tnJzTtEdcjzEUQNBer/WBunvm5zMki/mLTo3iIL/vk/hxid8oFWsZYU+dI=
+	t=1741982646; cv=none; b=hRTjrucNdS12E9PQ0J4zyyun5dCL7ymEOPeIWZ7+W9m6cDJkPLjcUkyNlzSqOmy8iCIst6MRvVqKS2GLoVT+aPP485kRq/gAIXPdnokGHct15UE0V++8gL4Zn+XpAph3NkZJ9P3RsQJ9gWq0tVEha8IshGuHkNNpIrn8MHbaoLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741982644; c=relaxed/simple;
-	bh=M1KfpW+r2Gg6BsJXBKm1oUP3jUcDa8yNDJiNm0+jyug=;
+	s=arc-20240116; t=1741982646; c=relaxed/simple;
+	bh=f93t0ylYFeqreUDog/uafU1v3H9n8Q3EOKqa5aTt7Bo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=dZEXcNhzf+rXV+IEhlFPo2kitqBm28OS+Di/fWix2SEGM/rR/UO8MRuRnKPpLOqBKs8hxHtMTpaH1HG38TAmYJEvhlymcHHi/T9zhTdXOE/nrmKlcaD3edwqqEv3k0OeANtWJrOfVOyeiplioS0wIQkev2ySCmy5ymvvlc/cAfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=03UJSN3t; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AljCFgP+; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=SslaG5HDM1qbhMJ2C2Hn67/CLXEyQ0I7pNO7qeFIuI44e/PeQj5KOyDdX2vq/EjvKqj4BKjKxSKZj7j5yGdhS90GhMYvhGYPc/KWydj1QaKBvpvbgfNHlscbAGd4jAWD4cgP0jcE/4F4BEQJjB9HHOHDqLB4JvevWZXZD7Z7DMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZOYiMIrI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w1H3V+qL; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 14 Mar 2025 20:04:00 -0000
+Date: Fri, 14 Mar 2025 20:04:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741982640;
+	s=2020; t=1741982642;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EDZemfn0Tzwmt8S6J0TBvq6Eu73mEDZBCPgMPeCmcjE=;
-	b=03UJSN3t2OrEzR/GPcHyRx+BZB736BkUczmTyh1AGezr8vfQ+hoBJs4GDhMDDMGS8BAcSF
-	10QOdaSHdE2ZJhnINC7SIIc+1nzltfENdVQr3X3xLxFRq+76O3egq0QdCpAd2Dxi/NKeP7
-	jaLbM1/cm6RBsi/F2/aCk4EsxaLw2x0SbV5K2S4xZYj8zBEbNcThlIZ48wu6mqfcYWxWvg
-	91RKlEq0DAEpRg3S3nuCYCMF9mSMn9io8NbEcWIkzMk1dex1Cl/NRZoWeVQYESFDJR7F3O
-	BXzJzXGpV4U9HJMoh9TFWHiyu52v8EdgIe5GrGneaG9iw+7IEDRAEdOj79xhKg==
+	bh=d8zoXieHQ7WBGX+NBxUp+J8UShKHDAjzWpBLcbaUlp8=;
+	b=ZOYiMIrIgNNsZrmS9KyEm6ol5blRdLB3ohUUkOUIt5HzVjKuwKo3CcD/8rEZ1/XN1bQCnS
+	VPuZC9m/Fgo3IdjmyiyVJCOxvBuicgS3yvdAfZ4rpsrp6Uvl9wSeE9rnZ85jJhZnj9XWF+
+	5sixLMchmdpvoOEYyX8hrg2fPdzz/tCcCqMJTKTSyZ4a1ckfIhbSSrHj3HnE8zaXtpT/gn
+	LyVtoH58zuuj52JFYdshulkrzTVUix01BKPxFMC2XO0I94z6aMdZDJfO33h6aLcOXc8eBQ
+	BXUIJMeAzw3Ec1uCaDAmvyGTG6HGeGiWqu48SGpCi9B8oOXdqNOYZJ02wGopHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741982640;
+	s=2020e; t=1741982642;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EDZemfn0Tzwmt8S6J0TBvq6Eu73mEDZBCPgMPeCmcjE=;
-	b=AljCFgP+AyM8P42CA0FK+5P+9X390SO0jCKLGe8F/sNX4t5iCtpOhY1ScyOoH34wX9s063
-	XM6Uz5Y7wECyh2Ag==
+	bh=d8zoXieHQ7WBGX+NBxUp+J8UShKHDAjzWpBLcbaUlp8=;
+	b=w1H3V+qL9K0g/byfQkW8102GXNqQaYYx1t3SNwMJArFmve3iMSkIL0wSEpc1BZchYC3y6r
+	zdUYrH3LbKtzI6Dw==
 From: "tip-bot2 for Tiezhu Yang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool/LoongArch: Add support for goto table
+Subject: [tip: objtool/core] objtool: Handle PC relative relocation type
 Cc: Tiezhu Yang <yangtiezhu@loongson.cn>, Huacai Chen <chenhuacai@loongson.cn>,
  Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250211115016.26913-6-yangtiezhu@loongson.cn>
-References: <20250211115016.26913-6-yangtiezhu@loongson.cn>
+In-Reply-To: <20250211115016.26913-4-yangtiezhu@loongson.cn>
+References: <20250211115016.26913-4-yangtiezhu@loongson.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174198264000.14745.17559738726347127621.tip-bot2@tip-bot2>
+Message-ID: <174198264190.14745.11242987232838483115.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,110 +81,140 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     88cbb468d4545526a33126f8a41352cac6dd0f3c
-Gitweb:        https://git.kernel.org/tip/88cbb468d4545526a33126f8a41352cac6dd0f3c
+Commit-ID:     c4b93b06230ae49870187189d9f7342f6ad4f14e
+Gitweb:        https://git.kernel.org/tip/c4b93b06230ae49870187189d9f7342f6ad4f14e
 Author:        Tiezhu Yang <yangtiezhu@loongson.cn>
-AuthorDate:    Tue, 11 Feb 2025 19:50:14 +08:00
+AuthorDate:    Tue, 11 Feb 2025 19:50:12 +08:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Wed, 12 Mar 2025 15:43:39 -07:00
+CommitterDate: Wed, 12 Mar 2025 15:43:38 -07:00
 
-objtool/LoongArch: Add support for goto table
+objtool: Handle PC relative relocation type
 
-The objtool program need to analysis the control flow of each object file
-generated by compiler toolchain, it needs to know all the locations that
-a branch instruction may jump into, if a jump table is used, objtool has
-to correlate the jump instruction with the table.
+For the most part, an absolute relocation type is used for rodata.
+In the case of STT_SECTION, reloc->sym->offset is always zero, for
+the other symbol types, reloc_addend(reloc) is always zero, thus it
+can use a simple statement "reloc->sym->offset + reloc_addend(reloc)"
+to obtain the symbol offset for various symbol types.
 
-On x86 (which is the only port supported by objtool before LoongArch),
-there is a relocation type on the jump instruction and directly points
-to the table. But on LoongArch, the relocation is on another kind of
-instruction prior to the jump instruction, and also with scheduling it
-is not very easy to tell the offset of that instruction from the jump
-instruction. Furthermore, because LoongArch has -fsection-anchors (often
-enabled at -O1 or above) the relocation may actually points to a section
-anchor instead of the table itself.
+When compiling on LoongArch, there exist PC relative relocation types
+for rodata, it needs to calculate the symbol offset with "S + A - PC"
+according to the spec of "ELF for the LoongArch Architecture".
 
-For the jump table of switch cases, a GCC patch "LoongArch: Add support
-to annotate tablejump" and a Clang patch "[LoongArch] Add options for
-annotate tablejump" have been merged into the upstream mainline, it can
-parse the additional section ".discard.tablejump_annotate" which stores
-the jump info as pairs of addresses, each pair contains the address of
-jump instruction and the address of jump table.
+If there is only one jump table in the rodata, the "PC" is the entry
+address which is equal with the value of reloc_offset(reloc), at this
+time, reloc_offset(table) is 0.
 
-For the jump table of computed gotos, it is indeed not easy to implement
-in the compiler, especially if there is more than one computed goto in a
-function such as ___bpf_prog_run(). objdump kernel/bpf/core.o shows that
-there are many table jump instructions in ___bpf_prog_run(), but there are
-no relocations on the table jump instructions and to the table directly on
-LoongArch.
+If there are many jump tables in the rodata, the "PC" is the offset
+of the jump table's base address which is equal with the value of
+reloc_offset(reloc) - reloc_offset(table).
 
-Without the help of compiler, in order to figure out the address of goto
-table for the special case of ___bpf_prog_run(), since the instruction
-sequence is relatively single and stable, it makes sense to add a helper
-find_reloc_of_rodata_c_jump_table() to find the relocation which points
-to the section ".rodata..c_jump_table".
+So for LoongArch, if the relocation type is PC relative, it can use a
+statement "reloc_offset(reloc) - reloc_offset(table)" to get the "PC"
+value when calculating the symbol offset with "S + A - PC" for one or
+many jump tables in the rodata.
 
-If find_reloc_by_table_annotate() failed, it means there is no relocation
-info of switch table address in ".rela.discard.tablejump_annotate", then
-objtool may find the relocation info of goto table ".rodata..c_jump_table"
-with find_reloc_of_rodata_c_jump_table().
+Add an arch-specific function arch_jump_table_sym_offset() to assign
+the symbol offset, for the most part that is an absolute relocation,
+the default value is "reloc->sym->offset + reloc_addend(reloc)" in
+the weak definition, it can be overridden by each architecture that
+has different requirements.
 
+Link: https://github.com/loongson/la-abi-specs/blob/release/laelf.adoc
 Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Link: https://lore.kernel.org/r/20250211115016.26913-6-yangtiezhu@loongson.cn
+Link: https://lore.kernel.org/r/20250211115016.26913-4-yangtiezhu@loongson.cn
 Acked-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/arch/loongarch/special.c | 32 +++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ tools/objtool/arch/loongarch/decode.c           | 17 ++++++++++++----
+ tools/objtool/arch/loongarch/include/arch/elf.h |  7 +++++++-
+ tools/objtool/check.c                           |  7 ++++++-
+ tools/objtool/include/objtool/arch.h            |  1 +-
+ 4 files changed, 27 insertions(+), 5 deletions(-)
 
-diff --git a/tools/objtool/arch/loongarch/special.c b/tools/objtool/arch/loongarch/special.c
-index 4fa6877..e39f86d 100644
---- a/tools/objtool/arch/loongarch/special.c
-+++ b/tools/objtool/arch/loongarch/special.c
-@@ -116,6 +116,30 @@ static struct reloc *find_reloc_by_table_annotate(struct objtool_file *file,
- 	return NULL;
+diff --git a/tools/objtool/arch/loongarch/decode.c b/tools/objtool/arch/loongarch/decode.c
+index b64205b..02e4905 100644
+--- a/tools/objtool/arch/loongarch/decode.c
++++ b/tools/objtool/arch/loongarch/decode.c
+@@ -5,10 +5,7 @@
+ #include <asm/inst.h>
+ #include <asm/orc_types.h>
+ #include <linux/objtool_types.h>
+-
+-#ifndef EM_LOONGARCH
+-#define EM_LOONGARCH	258
+-#endif
++#include <arch/elf.h>
+ 
+ int arch_ftrace_match(char *name)
+ {
+@@ -374,3 +371,15 @@ unsigned int arch_reloc_size(struct reloc *reloc)
+ 		return 8;
+ 	}
+ }
++
++unsigned long arch_jump_table_sym_offset(struct reloc *reloc, struct reloc *table)
++{
++	switch (reloc_type(reloc)) {
++	case R_LARCH_32_PCREL:
++	case R_LARCH_64_PCREL:
++		return reloc->sym->offset + reloc_addend(reloc) -
++		       (reloc_offset(reloc) - reloc_offset(table));
++	default:
++		return reloc->sym->offset + reloc_addend(reloc);
++	}
++}
+diff --git a/tools/objtool/arch/loongarch/include/arch/elf.h b/tools/objtool/arch/loongarch/include/arch/elf.h
+index 9623d66..ec79062 100644
+--- a/tools/objtool/arch/loongarch/include/arch/elf.h
++++ b/tools/objtool/arch/loongarch/include/arch/elf.h
+@@ -18,6 +18,13 @@
+ #ifndef R_LARCH_32_PCREL
+ #define R_LARCH_32_PCREL	99
+ #endif
++#ifndef R_LARCH_64_PCREL
++#define R_LARCH_64_PCREL	109
++#endif
++
++#ifndef EM_LOONGARCH
++#define EM_LOONGARCH		258
++#endif
+ 
+ #define R_NONE			R_LARCH_NONE
+ #define R_ABS32			R_LARCH_32
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index f762d23..7dbf22c 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1944,6 +1944,11 @@ out:
+ 	return ret;
  }
  
-+static struct reloc *find_reloc_of_rodata_c_jump_table(struct section *sec,
-+						       unsigned long offset,
-+						       unsigned long *table_size)
++__weak unsigned long arch_jump_table_sym_offset(struct reloc *reloc, struct reloc *table)
 +{
-+	struct section *rsec;
-+	struct reloc *reloc;
-+
-+	rsec = sec->rsec;
-+	if (!rsec)
-+		return NULL;
-+
-+	for_each_reloc(rsec, reloc) {
-+		if (reloc_offset(reloc) > offset)
-+			break;
-+
-+		if (!strcmp(reloc->sym->sec->name, C_JUMP_TABLE_SECTION)) {
-+			*table_size = 0;
-+			return reloc;
-+		}
-+	}
-+
-+	return NULL;
++	return reloc->sym->offset + reloc_addend(reloc);
 +}
 +
- struct reloc *arch_find_switch_table(struct objtool_file *file,
- 				     struct instruction *insn,
- 				     unsigned long *table_size)
-@@ -126,8 +150,12 @@ struct reloc *arch_find_switch_table(struct objtool_file *file,
- 	unsigned long table_offset;
+ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+ 			  struct reloc *next_table)
+ {
+@@ -1972,7 +1977,7 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+ 		if (prev_offset && reloc_offset(reloc) != prev_offset + arch_reloc_size(reloc))
+ 			break;
  
- 	annotate_reloc = find_reloc_by_table_annotate(file, insn, table_size);
--	if (!annotate_reloc)
--		return NULL;
-+	if (!annotate_reloc) {
-+		annotate_reloc = find_reloc_of_rodata_c_jump_table(
-+				 insn->sec, insn->offset, table_size);
-+		if (!annotate_reloc)
-+			return NULL;
-+	}
+-		sym_offset = reloc->sym->offset + reloc_addend(reloc);
++		sym_offset = arch_jump_table_sym_offset(reloc, table);
  
- 	table_sec = annotate_reloc->sym->sec;
- 	table_offset = annotate_reloc->sym->offset + reloc_addend(annotate_reloc);
+ 		/* Detect function pointers from contiguous objects: */
+ 		if (reloc->sym->sec == pfunc->sec && sym_offset == pfunc->offset)
+diff --git a/tools/objtool/include/objtool/arch.h b/tools/objtool/include/objtool/arch.h
+index 396f7c6..089a1ac 100644
+--- a/tools/objtool/include/objtool/arch.h
++++ b/tools/objtool/include/objtool/arch.h
+@@ -98,5 +98,6 @@ int arch_rewrite_retpolines(struct objtool_file *file);
+ bool arch_pc_relative_reloc(struct reloc *reloc);
+ 
+ unsigned int arch_reloc_size(struct reloc *reloc);
++unsigned long arch_jump_table_sym_offset(struct reloc *reloc, struct reloc *table);
+ 
+ #endif /* _ARCH_H */
 
