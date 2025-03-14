@@ -1,80 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-4224-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4223-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B76A61C9F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 21:25:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EF5A61C9B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 21:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B47319C425C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 20:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C47D460488
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Mar 2025 20:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147A42063D0;
-	Fri, 14 Mar 2025 20:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6066F2054FF;
+	Fri, 14 Mar 2025 20:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JMcnU4n2";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JL13NzfW"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TrG1RFDg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/rSJUp6e"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DA5204F8D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0E8204582;
 	Fri, 14 Mar 2025 20:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741983898; cv=none; b=dba9FnSdYwo9tpWCy+IZWiO7fQTNePveQDMlzgceDFyv8u1Gv64Z+Jb1pzlhkUrfQGP5ttG9k2LnKcZi53F6X+NneIVS/XtnHdZA7ebdyTEY8ANJS0LigzpNZPid7PDQ0jZYnOL/Wrsd1b3a6z4VJnbWuz+ij7NVpuSjbmBIpco=
+	t=1741983897; cv=none; b=dTiIzogmiQ1QNdM8Xhfcc9abvt8jaVJ29qYWNUI8rbZrfSJCCqUCl75nA75Ck9cvDud2Us+9N2IUsXokTr8PhyiCq0mmQYSQMshOSmVbcv4Va65D+sPf5PIuqE0/JyjXdLi7gw11/q6fhr30cObUTWTerU1J7M5xsIX4VpiTBFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741983898; c=relaxed/simple;
-	bh=p45vM0xMPg/lg4/VXoM5+vmaxs0CEy0qpaTqGyYOnJg=;
+	s=arc-20240116; t=1741983897; c=relaxed/simple;
+	bh=sxwMWdSqReKStcakbOMNx3ParqnzRqK9tY3V2vGuz38=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=cbWhAgYmyueytGF+JGzYIMrdwiE3LjgUuRCdydd348Imfw47RF6sZde3CXwBzFf2aewIOdpCLIOHdEs5JAUwLNwnm/4QkolMxURvKojgO/06HFiiylKaU3uTnZgyuyXo9teKQc7PZEALxzmBqGWgGvA5q/Tps1PDlkHBLcNoC9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JMcnU4n2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JL13NzfW; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=U3h4vAqB265dLXex3a7ZMhRbj9DIOUJVBL5kRzprxCUoz6hhoz4IvSkyiu9n/uJ5/ZjA1S2FQ7vZ25zf7quJJIYOFKSrWcr6JI2tRWGM3wefSZ7krfQ9kqA5+ptoDDITPLHIrqx7OskUvlftY+7/4JSqMPU0D+D4rKpi1m5ox/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TrG1RFDg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/rSJUp6e; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Fri, 14 Mar 2025 20:24:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1741983894;
+	s=2020; t=1741983893;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ujiLRTsqzxMQjJn8lDFpHGxGGQtx3HwoP9PWymzQrVk=;
-	b=JMcnU4n2nK0Nk2XZDbJrCnrun2S+SzGNqGxBZ21CziJ/A16lXX9Kzkq4ue4bW6cR3XYLT4
-	iAF/2PjIFpIIwx7FI65hMgeLdPdhTSkLi0VRIsBSH4OZrm97RJuoBnglrRg5UEg9HEszEz
-	CqgNDC7wQW9N9OlzqckBZH2ZKiA0Ny4TL25qrfz/eaINOAmJS7czV1yqqELv/9pYp3rHcl
-	dgtCSeymPvCzI0Ctgf1spK2AkiII5LUwoi1S2nDe+IlfHMhoi5AXES72+nTDSaSYbgab91
-	oZp35EMyZfa348XEVwYNgwc+7pef1Mhh3/cKwsFP3Q/m5SA/wDTbYA9gmdFuxA==
+	bh=WMvwZMbyykMou1vWN31xaMckge6+H823md+CbX1XxEs=;
+	b=TrG1RFDgyRG0Xw658IaXtNtP1MjTtS3IqYyW5/rZhMIgnFEAggCd7m3qF7KJNTmQL4RBOM
+	tjMyuy2/P+6rm2ueB5wXVx80E+9zme7RoSldH5SHetSskAgY85v/IJM+ucgMrPglUTFCVZ
+	9wp+71z/6zfkXZ5u/f58NSN9AO7y7UulnLe6hCN+dzpdyBOsXDwL2/BcDELD/36zpNB0cR
+	H13mQAkjtrPpWUNa9Jtg+UdIFjdE7ZGOBlrCds3JqL0/B17wnlm1Jpt7fuXtI0xj0QnTSZ
+	A8IqvCfRI0UccimowjkryHIIVrhtWQ2m/Cfo7pxNFGi8SRhpxxp0IWeDlgf0dQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1741983894;
+	s=2020e; t=1741983893;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ujiLRTsqzxMQjJn8lDFpHGxGGQtx3HwoP9PWymzQrVk=;
-	b=JL13NzfWc6YG90gkyO1COdx/riuwzGzI7x+FFcDdFZSMYcW2/JRkmyvDRWbNDe2LYVgeUx
-	Q83SZ6AFosPDh+Dw==
-From: "tip-bot2 for Xuewen Yan" <tip-bot2@linutronix.de>
+	bh=WMvwZMbyykMou1vWN31xaMckge6+H823md+CbX1XxEs=;
+	b=/rSJUp6e5+lekeZw9FA5O+TAWEPXf7+ZP/GrryRMfwbpLNG9zyRB9swjP51o4Gf0ABEZFt
+	xv2JJMWWsEZvciAg==
+From: "tip-bot2 for Dietmar Eggemann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/core] sched/uclamp: Add uclamp_is_used() check before enable it
-Cc: Xuewen Yan <xuewen.yan@unisoc.com>,
+Subject: [tip: sched/core] Revert "sched/core: Reduce cost of sched_move_task
+ when config autogroup"
+Cc: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Christian Loehle <christian.loehle@arm.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Hagar Hemdan <hagarhem@amazon.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250219093747.2612-2-xuewen.yan@unisoc.com>
-References: <20250219093747.2612-2-xuewen.yan@unisoc.com>
+In-Reply-To: <20250314151345.275739-1-dietmar.eggemann@arm.com>
+References: <20250314151345.275739-1-dietmar.eggemann@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174198389366.14745.13900064422716479622.tip-bot2@tip-bot2>
+Message-ID: <174198389307.14745.11414256611900922252.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,105 +85,188 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     4a14bd0c67d5670844c54356a163aa0ce623dbe1
-Gitweb:        https://git.kernel.org/tip/4a14bd0c67d5670844c54356a163aa0ce623dbe1
-Author:        Xuewen Yan <xuewen.yan@unisoc.com>
-AuthorDate:    Wed, 19 Feb 2025 17:37:47 +08:00
+Commit-ID:     3b15262e0019eb4bb212215951a45559d29381fc
+Gitweb:        https://git.kernel.org/tip/3b15262e0019eb4bb212215951a45559d29381fc
+Author:        Dietmar Eggemann <dietmar.eggemann@arm.com>
+AuthorDate:    Fri, 14 Mar 2025 16:13:45 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 14 Mar 2025 21:13:19 +01:00
 
-sched/uclamp: Add uclamp_is_used() check before enable it
+Revert "sched/core: Reduce cost of sched_move_task when config autogroup"
 
-Because the static_branch_enable() would get the cpus_read_lock(),
-and sometimes users may frequently set the uclamp value of tasks,
-and this operation would call the static_branch_enable()
-frequently, so add the uclamp_is_used() check to prevent calling
-the cpus_read_lock() frequently.
-And to make the code more concise, add a helper function to encapsulate
-this and use it everywhere we enable sched_uclamp_used.
+This reverts commit eff6c8ce8d4d7faef75f66614dd20bb50595d261.
 
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Hazem reported a 30% drop in UnixBench spawn test with commit
+eff6c8ce8d4d ("sched/core: Reduce cost of sched_move_task when config
+autogroup") on a m6g.xlarge AWS EC2 instance with 4 vCPUs and 16 GiB RAM
+(aarch64) (single level MC sched domain) [1].
+
+There is an early bail from sched_move_task() if p->sched_task_group is
+equal to p's 'cpu cgroup' (sched_get_task_group()). E.g. both are
+pointing to taskgroup '/user.slice/user-1000.slice/session-1.scope'
+(Ubuntu '22.04.5 LTS').
+
+So in:
+
+  do_exit()
+
+    sched_autogroup_exit_task()
+
+      sched_move_task()
+
+        if sched_get_task_group(p) == p->sched_task_group
+          return
+
+        /* p is enqueued */
+        dequeue_task()              \
+        sched_change_group()        |
+          task_change_group_fair()  |
+            detach_task_cfs_rq()    |                              (1)
+            set_task_rq()           |
+            attach_task_cfs_rq()    |
+        enqueue_task()              /
+
+(1) isn't called for p anymore.
+
+Turns out that the regression is related to sgs->group_util in
+group_is_overloaded() and group_has_capacity(). If (1) isn't called for
+all the 'spawn' tasks then sgs->group_util is ~900 and
+sgs->group_capacity = 1024 (single CPU sched domain) and this leads to
+group_is_overloaded() returning true (2) and group_has_capacity() false
+(3) much more often compared to the case when (1) is called.
+
+I.e. there are much more cases of 'group_is_overloaded' and
+'group_fully_busy' in WF_FORK wakeup sched_balance_find_dst_cpu() which
+then returns much more often a CPU != smp_processor_id() (5).
+
+This isn't good for these extremely short running tasks (FORK + EXIT)
+and also involves calling sched_balance_find_dst_group_cpu() unnecessary
+(single CPU sched domain).
+
+Instead if (1) is called for 'p->flags & PF_EXITING' then the path
+(4),(6) is taken much more often.
+
+  select_task_rq_fair(..., wake_flags = WF_FORK)
+
+    cpu = smp_processor_id()
+
+    new_cpu = sched_balance_find_dst_cpu(..., cpu, ...)
+
+      group = sched_balance_find_dst_group(..., cpu)
+
+        do {
+
+          update_sg_wakeup_stats()
+
+            sgs->group_type = group_classify()
+
+              if group_is_overloaded()                             (2)
+                return group_overloaded
+
+              if !group_has_capacity()                             (3)
+                return group_fully_busy
+
+              return group_has_spare                               (4)
+
+        } while group
+
+        if local_sgs.group_type > idlest_sgs.group_type
+          return idlest                                            (5)
+
+        case group_has_spare:
+
+          if local_sgs.idle_cpus >= idlest_sgs.idle_cpus
+            return NULL                                            (6)
+
+Unixbench Tests './Run -c 4 spawn' on:
+
+(a) VM AWS instance (m7gd.16xlarge) with v6.13 ('maxcpus=4 nr_cpus=4')
+    and Ubuntu 22.04.5 LTS (aarch64).
+
+    Shell & test run in '/user.slice/user-1000.slice/session-1.scope'.
+
+    w/o patch	w/ patch
+    21005	27120
+
+(b) i7-13700K with tip/sched/core ('nosmt maxcpus=8 nr_cpus=8') and
+    Ubuntu 22.04.5 LTS (x86_64).
+
+    Shell & test run in '/A'.
+
+    w/o patch	w/ patch
+    67675	88806
+
+CONFIG_SCHED_AUTOGROUP=y & /sys/proc/kernel/sched_autogroup_enabled equal
+0 or 1.
+
+[1] https://lkml.kernel.org/r/20250205151026.13061-1-hagarhem@amazon.com
+
+Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
 Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lore.kernel.org/r/20250219093747.2612-2-xuewen.yan@unisoc.com
+Tested-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20250314151345.275739-1-dietmar.eggemann@arm.com
 ---
- kernel/sched/core.c     |  6 +++---
- kernel/sched/sched.h    | 14 ++++++++++++++
- kernel/sched/syscalls.c |  2 +-
- 3 files changed, 18 insertions(+), 4 deletions(-)
+ kernel/sched/core.c | 21 +++------------------
+ 1 file changed, 3 insertions(+), 18 deletions(-)
 
 diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 45daa41..03d7b63 100644
+index 03d7b63..17e16a1 100644
 --- a/kernel/sched/core.c
 +++ b/kernel/sched/core.c
-@@ -1941,12 +1941,12 @@ static int sysctl_sched_uclamp_handler(const struct ctl_table *table, int write,
- 	}
- 
- 	if (update_root_tg) {
--		static_branch_enable(&sched_uclamp_used);
-+		sched_uclamp_enable();
- 		uclamp_update_root_tg();
- 	}
- 
- 	if (old_min_rt != sysctl_sched_uclamp_util_min_rt_default) {
--		static_branch_enable(&sched_uclamp_used);
-+		sched_uclamp_enable();
- 		uclamp_sync_util_min_rt_default();
- 	}
- 
-@@ -9294,7 +9294,7 @@ static ssize_t cpu_uclamp_write(struct kernfs_open_file *of, char *buf,
- 	if (req.ret)
- 		return req.ret;
- 
--	static_branch_enable(&sched_uclamp_used);
-+	sched_uclamp_enable();
- 
- 	guard(mutex)(&uclamp_mutex);
- 	guard(rcu)();
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 8d42d3c..0212a0c 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3407,6 +3407,18 @@ static inline bool uclamp_is_used(void)
- 	return static_branch_likely(&sched_uclamp_used);
+@@ -9015,7 +9015,7 @@ void sched_release_group(struct task_group *tg)
+ 	spin_unlock_irqrestore(&task_group_lock, flags);
  }
  
-+/*
-+ * Enabling static branches would get the cpus_read_lock(),
-+ * check whether uclamp_is_used before enable it to avoid always
-+ * calling cpus_read_lock(). Because we never disable this
-+ * static key once enable it.
-+ */
-+static inline void sched_uclamp_enable(void)
-+{
-+	if (!uclamp_is_used())
-+		static_branch_enable(&sched_uclamp_used);
-+}
-+
- static inline unsigned long uclamp_rq_get(struct rq *rq,
- 					  enum uclamp_id clamp_id)
+-static struct task_group *sched_get_task_group(struct task_struct *tsk)
++static void sched_change_group(struct task_struct *tsk)
  {
-@@ -3486,6 +3498,8 @@ static inline bool uclamp_is_used(void)
- 	return false;
- }
+ 	struct task_group *tg;
  
-+static inline void sched_uclamp_enable(void) {}
-+
- static inline unsigned long
- uclamp_rq_get(struct rq *rq, enum uclamp_id clamp_id)
+@@ -9027,13 +9027,7 @@ static struct task_group *sched_get_task_group(struct task_struct *tsk)
+ 	tg = container_of(task_css_check(tsk, cpu_cgrp_id, true),
+ 			  struct task_group, css);
+ 	tg = autogroup_task_group(tsk, tg);
+-
+-	return tg;
+-}
+-
+-static void sched_change_group(struct task_struct *tsk, struct task_group *group)
+-{
+-	tsk->sched_task_group = group;
++	tsk->sched_task_group = tg;
+ 
+ #ifdef CONFIG_FAIR_GROUP_SCHED
+ 	if (tsk->sched_class->task_change_group)
+@@ -9054,20 +9048,11 @@ void sched_move_task(struct task_struct *tsk, bool for_autogroup)
  {
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index 9f40348..c326de1 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -368,7 +368,7 @@ static int uclamp_validate(struct task_struct *p,
- 	 * blocking operation which obviously cannot be done while holding
- 	 * scheduler locks.
- 	 */
--	static_branch_enable(&sched_uclamp_used);
-+	sched_uclamp_enable();
+ 	int queued, running, queue_flags =
+ 		DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+-	struct task_group *group;
+ 	struct rq *rq;
  
- 	return 0;
- }
+ 	CLASS(task_rq_lock, rq_guard)(tsk);
+ 	rq = rq_guard.rq;
+ 
+-	/*
+-	 * Esp. with SCHED_AUTOGROUP enabled it is possible to get superfluous
+-	 * group changes.
+-	 */
+-	group = sched_get_task_group(tsk);
+-	if (group == tsk->sched_task_group)
+-		return;
+-
+ 	update_rq_clock(rq);
+ 
+ 	running = task_current_donor(rq, tsk);
+@@ -9078,7 +9063,7 @@ void sched_move_task(struct task_struct *tsk, bool for_autogroup)
+ 	if (running)
+ 		put_prev_task(rq, tsk);
+ 
+-	sched_change_group(tsk, group);
++	sched_change_group(tsk);
+ 	if (!for_autogroup)
+ 		scx_cgroup_move_task(tsk);
+ 
 
