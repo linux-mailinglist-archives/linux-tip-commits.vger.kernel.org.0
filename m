@@ -1,125 +1,184 @@
-Return-Path: <linux-tip-commits+bounces-4244-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4245-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CFCA64941
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:17:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05C7A64A19
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C28D9173228
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:16:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59C13B63BF
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE2C226D16;
-	Mon, 17 Mar 2025 10:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EE4235BE2;
+	Mon, 17 Mar 2025 10:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aLVGiqTz"
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cueQOBAa"
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CF123314C;
-	Mon, 17 Mar 2025 10:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BB42253AE;
+	Mon, 17 Mar 2025 10:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742206509; cv=none; b=mIsplYNFTlVXBRa2gt4c+LYW2MHIm4NVQJeTDOg6swZiVEqbvOm4QJ+EMfHrKtJQmOR8qbP2orImh9rxmyWqJpWJwgTTPHNQ+y4XORzXGVwimFS6rnm4WUnx8ri1W8rI9wqpxkOcGqmSM8tHXpQEHl4n3l5CelNT5VjUd1OLI9s=
+	t=1742207330; cv=none; b=tshjFnhIwxFQXCf/gAcmHOb3Jr0s1hIksnjGJdhmpNcEHQeCshfrPogp64nUjfvUnT7TS0cAZBX0EGyLoicuIP+hHeSYPvnIgLyeP//gJzG/IXcvPC4dKf+v/HgtLcM0I8q2+L2fKqLXKuw+MOPD+WIMEGzS68u/PrFiqdfedn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742206509; c=relaxed/simple;
-	bh=n5LhFU+YcX3bAX7sgQ2s3sUFXvzJJrWqs184HxNL3mY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WdBB5V1DzkQMNbv0NxCMuZN+E4RM0O2DdlTPaqz81eqX0C9YfA8Is/213ovQ7IfHgWgXkInylyqMngsHYqAPq2yBAZNzIx5cuz/sOEKfv/Mv1ejkE6hFntd8qq4SDJ96HCu7pytzvumkLAtgm7vDBXCn41+DlifA+OyKd9DZ4T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aLVGiqTz; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zeww+8QuNj0jixKn798iJsLySUWHlgG2Ok7itDbaQOA=; b=aLVGiqTzNMlNSFx9F4sKZ07K3S
-	LELgeZkQuAdgIVYhpE9Vyz5t91GSXRaPdjJO9fl/PxvvdxTrgMs4bCI2pHSXvqcaKYJGy6CypO0jn
-	DuuVgqoBKqdJE5wN/wDsGD8p2MFBKSeC3WWlqzXgUz/90Ea8f8OX+yXqdkeby5zY1JXhPLePlR2ul
-	viqo23YF08xvFhlzJx3LJ4zRYJ6A4aIv1vgqOnCYFdvEsuoPWsEX94+3WxHKoA2IoxFdIL5P/R2AX
-	NUlPq57twSmTMduV+xmgcx18HRIUgdL2j0XASErZzUM8kWrOl+xdlZt+EvlXZ/yCI4d5nvQ8XJ+Pd
-	uC/ES09Q==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tu7Uv-00000003Q9M-0x4t;
-	Mon, 17 Mar 2025 10:15:05 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A09EB300783; Mon, 17 Mar 2025 11:15:04 +0100 (CET)
-Date: Mon, 17 Mar 2025 11:15:04 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org,
-	Matteo Rizzo <matteorizzo@google.com>,
-	Namhyung Kim <namhyung@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	x86@kernel.org
-Subject: Re: [tip: perf/urgent] perf/x86: Check data address for IBS software
- filter
-Message-ID: <20250317101504.GB34541@noisy.programming.kicks-ass.net>
-References: <20250317081058.1794729-1-namhyung@kernel.org>
- <174220290574.14745.9132867025462242568.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1742207330; c=relaxed/simple;
+	bh=L34jB4X9J4PZF6KWyGeB6Jx7x+Zl35dwlBDiykQHLjY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NCB+f3whp8y94maCL1wlBzksocomdmZSlLhfxExiNmFHbrYaitxoBEO4rrF+S+E8wyekuSfIRAirizQrceXCMrMc2PxfWnByG/ITsfoYJV2jZF9P9UeILZs52lf5JuNxR7yt+JOuynR8wLD7rfO0d+xT/5oxa6D2zHwUV8ROhHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cueQOBAa; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30bf1d48843so40602361fa.2;
+        Mon, 17 Mar 2025 03:28:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742207327; x=1742812127; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yX6QzfcRz1cLG12S1tGWCTgUvcgx+pPDbW34AvRgEOc=;
+        b=cueQOBAaRPwNs46et8k80dwvTwRNQ6UTEwqd/pqjfs/6z1KGK4AGL3qEJeCYwmwhNW
+         8r03DymCUcqy3HLfad5BxDyx/rFzxjcPVECkh7jKLLL2Yjbpffg6KTjHZzWVdburXq8d
+         9RtswQU4SpaY/Mffs+/3ySW1QOdFUL15p7seYIkzM9zJLhr+NOXUESWL3rp7dAlV/urp
+         /Ua5cFbwoc9h8QqvRl3MR87JK7oyfrnBbB583vPftXtRKBHfu4Xjat6KAJEtHHd8stXi
+         cJufQLv8Cqvm8eIMHRwWtNpo1XXnO3nT18aJFcJdzIDrQYiGxTg5z4nNWCXAWLsLQ75u
+         OtqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742207327; x=1742812127;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yX6QzfcRz1cLG12S1tGWCTgUvcgx+pPDbW34AvRgEOc=;
+        b=H8+qFgFRwrOrckrMg36xHZxX1L4SOZBviJbvpXIUUysE99pEUkTcM/2n6pcH4BcNEE
+         MoR3+5IGUtU0BU48TAufffUbAQt6EVYJGO3XLvtYQAnSPCzoViAcwNbFR8QTmn0knaBJ
+         fd6bQ7VX4NhiSDrvlzWqRdnR3J3rSjzCJxxJ2EMx8KBpeQYarGB0tSKpArbNzzFyZyEI
+         gu5iSDBqX+rSLhBlBiL8Ls2u+W1xo/lSudiyvLZXQ3S9uqUhz77Ez7aFuTQJsP33a7xb
+         6VuQ+u6zeL2s1Ppff15o0S3ob8Da5Zvg5NhblOZ62dqdrK2SBZpLxWX9fv7Dhup5pB/z
+         PHhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWij3oanz+1mBDdHhODw+sqE0wZIFW9PlGSQlbNkelQLFwoT1SzDvZausCyXJJ/HSli/HrR/KpoVwAHyBF7JFMgCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7v/xNBSJ9N+hX7m7Jq6L+cAA16jC8yKD+bOCl7zVX0h+A2NB9
+	9gLort6n11NjBJ+EZwnCSMoTfznqbYDWCGBPI2oRvbGwWXReGdoIq9O2KohgeBxsZbdFG14Esbp
+	l6atbCVOZZq9cfV33FfSbf5DYdN685jcs
+X-Gm-Gg: ASbGnctjYrOdNoLgFC7PzzzORbPSO7UjX7nmV0JPjz0VeRNkxYMBVYESN8JM9+bdNIf
+	E3xZv5qLwAMG7UQCCOyPW974naNTAvozJsdupU6lnT2nbGH+5/L3pusA3IgcainOcZ1PtsqdiuT
+	5uBrfB3KfRpSVORbAOpkBH8hICoA==
+X-Google-Smtp-Source: AGHT+IGtJsdfASo1y5f5AiQd1PN5VoHhf+fGkskM+nRARafy/0ttN4WxuSfGQwNtc4VqigOk0W1XJfkhJR0TWa59A1w=
+X-Received: by 2002:a05:651c:210a:b0:30a:2a8a:e4b5 with SMTP id
+ 38308e7fff4ca-30c4a8d1e1amr60541301fa.27.1742207326612; Mon, 17 Mar 2025
+ 03:28:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174220290574.14745.9132867025462242568.tip-bot2@tip-bot2>
+References: <20250313130251.383204-1-ubizjak@gmail.com> <174188823430.14745.17591986001259957573.tip-bot2@tip-bot2>
+ <20250317101415.GBZ9f198PAh90nMWDf@fat_crate.local>
+In-Reply-To: <20250317101415.GBZ9f198PAh90nMWDf@fat_crate.local>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Mon, 17 Mar 2025 11:28:58 +0100
+X-Gm-Features: AQ5f1Jr75R0dKtWfeXD10vh_mXTYQbuMEKe0rum7dfiueZyr8dno-rCoH-AIJbc
+Message-ID: <CAFULd4b-sZucEtvx19==5wcOfOCzj5fuZ2SHS7ZMboZQXdVycg@mail.gmail.com>
+Subject: Re: [tip: x86/fpu] x86/fpu: Use XSAVE{,OPT,C,S} and XRSTOR{,S}
+ mnemonics in xstate.h
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
+	Ingo Molnar <mingo@kernel.org>, Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 17, 2025 at 09:15:05AM -0000, tip-bot2 for Namhyung Kim wrote:
-> The following commit has been merged into the perf/urgent branch of tip:
-> 
-> Commit-ID:     b0be17d8108bf3448a58be319d085155a128cf3a
-> Gitweb:        https://git.kernel.org/tip/b0be17d8108bf3448a58be319d085155a128cf3a
-> Author:        Namhyung Kim <namhyung@kernel.org>
-> AuthorDate:    Mon, 17 Mar 2025 01:10:58 -07:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Mon, 17 Mar 2025 10:04:31 +01:00
-> 
-> perf/x86: Check data address for IBS software filter
-> 
-> The IBS software filter is filtering kernel samples for regular users in
-> PMI handler.  It checks the instruction address in the IBS register to
-> determine if it was in the kernel mode or not.
-> 
-> But it turns out that it's possible to report a kernel data address even
-> if the instruction address belongs to the user space.  Matteo Rizzo
-> found that when an instruction raises an exception, IBS can report some
-> kernel data address like IDT while holding the faulting instruction's
-> RIP.  To prevent an information leak, it should double check if the data
-> address in PERF_SAMPLE_DATA is in the kernel space as well.
-> 
-> Suggested-by: Matteo Rizzo <matteorizzo@google.com>
-> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Link: https://lore.kernel.org/r/20250317081058.1794729-1-namhyung@kernel.org
-> ---
->  arch/x86/events/amd/ibs.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-> index e7a8b87..24985c7 100644
-> --- a/arch/x86/events/amd/ibs.c
-> +++ b/arch/x86/events/amd/ibs.c
-> @@ -1147,6 +1147,13 @@ fail:
->  	if (perf_ibs == &perf_ibs_op)
->  		perf_ibs_parse_ld_st_data(event->attr.sample_type, &ibs_data, &data);
->  
-> +	if ((event->attr.config2 & IBS_SW_FILTER_MASK) &&
-> +	    (event->attr.sample_type & PERF_SAMPLE_ADDR) &&
-> +	    event->attr.exclude_kernel && !access_ok(data.addr)) {
+On Mon, Mar 17, 2025 at 11:14=E2=80=AFAM Borislav Petkov <bp@alien8.de> wro=
+te:
+>
+> On Thu, Mar 13, 2025 at 05:50:34PM -0000, tip-bot2 for Uros Bizjak wrote:
+> > The following commit has been merged into the x86/fpu branch of tip:
+> >
+> > Commit-ID:     2883b4c2169a435488f7845e1b6fdc6f3438c7c6
+> > Gitweb:        https://git.kernel.org/tip/2883b4c2169a435488f7845e1b6fd=
+c6f3438c7c6
+> > Author:        Uros Bizjak <ubizjak@gmail.com>
+> > AuthorDate:    Thu, 13 Mar 2025 14:02:27 +01:00
+> > Committer:     Ingo Molnar <mingo@kernel.org>
+> > CommitterDate: Thu, 13 Mar 2025 18:36:52 +01:00
+> >
+> > x86/fpu: Use XSAVE{,OPT,C,S} and XRSTOR{,S} mnemonics in xstate.h
+> >
+> > Current minimum required version of binutils is 2.25, which
+> > supports XSAVE{,OPT,C,S} and XRSTOR{,S} instruction mnemonics.
+> >
+> > Replace the byte-wise specification of XSAVE{,OPT,C,S}
+> > and XRSTOR{,S} with these proper mnemonics.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > Cc: Andy Lutomirski <luto@kernel.org>
+> > Cc: Brian Gerst <brgerst@gmail.com>
+> > Cc: H. Peter Anvin <hpa@zytor.com>
+> > Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> > Link: https://lore.kernel.org/r/20250313130251.383204-1-ubizjak@gmail.c=
+om
+> > ---
+> >  arch/x86/kernel/fpu/xstate.h | 27 +++++++++++++--------------
+> >  1 file changed, 13 insertions(+), 14 deletions(-)
+> >
+> > diff --git a/arch/x86/kernel/fpu/xstate.h b/arch/x86/kernel/fpu/xstate.=
+h
+> > index aa16f1a..1418423 100644
+> > --- a/arch/x86/kernel/fpu/xstate.h
+> > +++ b/arch/x86/kernel/fpu/xstate.h
+> > @@ -94,18 +94,17 @@ static inline int update_pkru_in_sigframe(struct xr=
+egs_state __user *buf, u64 ma
+> >  /* XSAVE/XRSTOR wrapper functions */
+> >
+> >  #ifdef CONFIG_X86_64
+> > -#define REX_PREFIX   "0x48, "
+> > +#define REX_SUFFIX   "64"
+> >  #else
+> > -#define REX_PREFIX
+> > +#define REX_SUFFIX
+> >  #endif
+> >
+> > -/* These macros all use (%edi)/(%rdi) as the single memory argument. *=
+/
+> > -#define XSAVE                ".byte " REX_PREFIX "0x0f,0xae,0x27"
+> > -#define XSAVEOPT     ".byte " REX_PREFIX "0x0f,0xae,0x37"
+> > -#define XSAVEC               ".byte " REX_PREFIX "0x0f,0xc7,0x27"
+> > -#define XSAVES               ".byte " REX_PREFIX "0x0f,0xc7,0x2f"
+> > -#define XRSTOR               ".byte " REX_PREFIX "0x0f,0xae,0x2f"
+> > -#define XRSTORS              ".byte " REX_PREFIX "0x0f,0xc7,0x1f"
+> > +#define XSAVE                "xsave" REX_SUFFIX " %[xa]"
+> > +#define XSAVEOPT     "xsaveopt" REX_SUFFIX " %[xa]"
+> > +#define XSAVEC               "xsavec" REX_SUFFIX " %[xa]"
+> > +#define XSAVES               "xsaves" REX_SUFFIX " %[xa]"
+> > +#define XRSTOR               "xrstor" REX_SUFFIX " %[xa]"
+> > +#define XRSTORS              "xrstors" REX_SUFFIX " %[xa]"
+> >
+> >  /*
+> >   * After this @err contains 0 on success or the trap number when the
+> > @@ -114,10 +113,10 @@ static inline int update_pkru_in_sigframe(struct =
+xregs_state __user *buf, u64 ma
+> >  #define XSTATE_OP(op, st, lmask, hmask, err)                         \
+> >       asm volatile("1:" op "\n\t"                                     \
+> >                    "xor %[err], %[err]\n"                             \
+> > -                  "2:\n\t"                                           \
+> > +                  "2:\n"                                             \
+> >                    _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_FAULT_MCE_SAFE)  \
+> >                    : [err] "=3Da" (err)                                =
+ \
+> > -                  : "D" (st), "m" (*st), "a" (lmask), "d" (hmask)    \
+> > +                  : [xa] "m" (*(st)), "a" (lmask), "d" (hmask)       \
+>
+> This [xa] needs documenting in the comment above this.
+>
+> What does "xa" even mean?
 
-If only you'd looked at all the other filter code :/ everybody uses
-kernel_ip() helper for this, not access_ok().
+xsave area.
 
-> +		throttle = perf_event_account_interrupt(event);
-> +		goto out;
-> +	}
-> +
->  	/*
->  	 * rip recorded by IbsOpRip will not be consistent with rsp and rbp
->  	 * recorded as part of interrupt regs. Thus we need to use rip from
+Uros.
 
