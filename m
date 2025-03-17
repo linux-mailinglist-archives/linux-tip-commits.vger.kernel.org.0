@@ -1,113 +1,139 @@
-Return-Path: <linux-tip-commits+bounces-4285-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4286-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF370A64B69
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 12:01:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440E6A64BC0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 12:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 806593AE9FE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5A3C188C53E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849B92356BD;
-	Mon, 17 Mar 2025 10:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C52642069;
+	Mon, 17 Mar 2025 11:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x0pA+9GX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VPCevTLp"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cvdm7R6I"
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF19738B;
-	Mon, 17 Mar 2025 10:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852232E3370;
+	Mon, 17 Mar 2025 11:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742208974; cv=none; b=pbdJFSI+Oi6Xd6pk+c7ig9s6UvSMV4DT2OSvNFODdeuwFM0c6vIlPnO+4KZL1SIz0lR3H/nvgT5SyJ9aPVaMjW6yww9EV66UfE4cpY1j94mUJiy0L5nETIjXAS+2IbjYeCWoaQO8rsJhTWeThvtUxv+rPwPCikgOBYJAT6UP3ic=
+	t=1742209563; cv=none; b=T2w9j/lbiVeFioN5gtXhO4dLZlqveJa1xNEw+KBy5bu3+s+EDKJsqCCJfuSIp69N9n38OIlo8CyIfbUQQYA3mzAJfttBB/hjXq1nhAz9uRGv+uSHpzAg6FVcseFxP/OKK7g0HKf0l8aPtoBNvn6qqE4Yjuhv8SZXrSEGU/IcGZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742208974; c=relaxed/simple;
-	bh=uM3t34ivaC8KST6x7dY0wBU/L8Tud9ZHPJ+748U3/q0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Ef/d3lMS0/JgLsmb/JHn0Pz560oKPDgqAk/Sq+/O0S+O8R9sbrBE0U2gRDCn8psTVAvPUV6gXQEFaJH/JVDYFqgRk3hNNxy4umuUPV67TBR/XEhw/u4M7WUczBOBh1Ym4zLxd54zVADoxf2FKdjzzoSsVjxy/fro0Pg5krac0xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x0pA+9GX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VPCevTLp; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Mar 2025 10:56:08 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742208971;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=KEYABpgu10Wbc5MikT3BKwHLSq4ftetYGyL8ksfu4kM=;
-	b=x0pA+9GX7B2xHuJ81rYzYczskDxD3/VIz6ywWzxL1/DBObuCDqnVhRHy5ib3OujsVvQsVy
-	IXYe8oY/3e9Slt9AT4HAvut2wbChFvVdA6oeFHPoHzs6DWM+wJmMs8dj3U70nM0zyJb+UE
-	zSQlRhNgMuxn6PZtJ+W2TA+uO5aUyWgrhZQzkHxod85nEOWwAczqduEj4ph9ThdQcS/s+c
-	eeJBibxlJhuCKK9U9N+FDcHiZqRby7Buq0cUNOVxqKWmgKUM9sVaB53YYXa5FYtUUiIpnb
-	TyETd0iIhO6N8XGj1W+LLM5G01Meqd99B0u6ngd5GmOZ9epUrl+8c3/R/cZMuA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742208971;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=KEYABpgu10Wbc5MikT3BKwHLSq4ftetYGyL8ksfu4kM=;
-	b=VPCevTLpROtLXmcwVHY+LIKFjuPWpRYSHBwO+wCaSYJ0mKcTYFJ+47yb/uz3/cKMbJ8Cfz
-	zvpuAFssp21t+NBQ==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Fix __percpu annotation
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, jirislaby@kernel.org,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1742209563; c=relaxed/simple;
+	bh=O5U1kQYPtoo1453wWTerwkVykU62NLa6ubh3OOtQiT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BLzgEvRiq9AMWmkpo6XWYwDKOxPjjfhQxZPlw2dKUawRYFfhWYlEyiiag842KLvzW3I73gfyGKrVmzFnNdLdsgj+Gc8BLH/UB5ole8wD7+z0j7eo2o0GpmQYoU8G/UwnHArIN0i+SG12cyzGwrbUMqfFOLFq1jP/ZmejLiIhgcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cvdm7R6I; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-30bfc8faef9so43816781fa.1;
+        Mon, 17 Mar 2025 04:06:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742209559; x=1742814359; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zgkosUeo/nhS7GWQwCRcAN3753nsD7ErN/0YpE+CRAg=;
+        b=Cvdm7R6I5vPziTcGC7n9NQuA7eUTJ1ASFMHwoCf8VUw9AHu1QOJQbNnfVdydKxC1oa
+         UZSv/V91qaxcF2FC8CEpSKt6ZyA8468XvGtwPkXk6BvjBQUgVICe0z1VWiGCNQgCOI8a
+         CpeJyjPHFHIq1Suj0mzGvGs+f+XO1dp6uQu6qm4XY+m73ylaVojSE5y+DfvxFjFsqjgK
+         VyKKz06JNVyVlSXh26Y7lA3oDbRk42NZNVgAXcMVo7GOJMTk31A92lfr3rS2uW6kjubN
+         Iizg78qdWai9rKWsXiogXLSEyTS1nM//VZ7H4wN1G8RhG8PrbM5MBkwN81H2t8WY5SQL
+         dajw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742209559; x=1742814359;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zgkosUeo/nhS7GWQwCRcAN3753nsD7ErN/0YpE+CRAg=;
+        b=Zdu4DYpY4jHxACToxM/5RsCsOynnwxWkIKxjuRjkzLSRViOx3Otqaw1Gl1SzLsWIAJ
+         74dkfZfJWjMoeQRIRTrXJk2IOIaFYP05gpVU+BWQVsYnC5gDSfAjf8iSBEb4HSp4Mz3S
+         sUfdBcdlcX0hHDuqr9oUDqEXjaBBQ2JyNBGt604xPgMwcx2jmRrQPaoeYMgWf3F2TGml
+         M33uUT2f7qKwZqixNc7H20/suXB8cCI9HVAdUUsrAwxBc0jGU75CC8+D9d5bPihUxKtQ
+         q2hxDZfS0eGo6H739YN7nmJo7PvbQSJZYXojYPb+6r8XyNSarEDIRNvZyLRtFqluvsEZ
+         RnQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmuIWDjpAiZWqhV5W/6A0YxppPx5RYjMkVGNU6UtqK9zZ9/b5mbmEmBwdXTSKS1wB6NHhjYsNm9cr90Z1TdyGR/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YypiO/UBDdoI99Uwn0TwZ7JlQLk4PACJcz1fMg/9VLB8s4iPSyU
+	rn4Rge2gArD2Ea0zZPgeT7u4oALhTSrrfWnmomegW+oBtT1KW7s33vZMyBsp4Nxju1ffpfM7KAm
+	IrtNGSZkUl7c0eOAtTYi1K06i+ZazHcbQ
+X-Gm-Gg: ASbGnct+jskNPX/agqpBMmsntENmI2JShb5rxAI20QNQAX1KfgKwbau5KiWv+GgJSCk
+	ScSbHJw8vBdJwz2RGWEiGtQKrR7O6mqg/5KH6IxetEYZzbSP7FRKHRjcDmsCzCnBdDlapDpkFU7
+	uYKQa+Dufv0GqJNUmXpXG+ZP4Uzg==
+X-Google-Smtp-Source: AGHT+IFpWWCedHMKqSi5+gojuQ85aERJhkVX4+QmX0hFRdA12H+C+YoECrHkL0rH0qZWow7vGfw7WpKsGZ1eaploexM=
+X-Received: by 2002:a05:6512:1282:b0:549:8f01:6a71 with SMTP id
+ 2adb3069b0e04-549c39aed5cmr6443133e87.51.1742209559265; Mon, 17 Mar 2025
+ 04:05:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174220896862.14745.11004519106792441790.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20250313130251.383204-1-ubizjak@gmail.com> <174188823430.14745.17591986001259957573.tip-bot2@tip-bot2>
+ <20250317101415.GBZ9f198PAh90nMWDf@fat_crate.local> <CAFULd4b-sZucEtvx19==5wcOfOCzj5fuZ2SHS7ZMboZQXdVycg@mail.gmail.com>
+ <20250317104616.GCZ9f9eF-0n0qPbWwk@fat_crate.local>
+In-Reply-To: <20250317104616.GCZ9f9eF-0n0qPbWwk@fat_crate.local>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Mon, 17 Mar 2025 12:06:11 +0100
+X-Gm-Features: AQ5f1Jq9hRnWG1ApqvvbzeztgDbboVw75z7WTtvhChtJiyl18U4tnnqBRQs62Uk
+Message-ID: <CAFULd4b_a=3xs2b_88WaDR9hLuhMqNZiMu+kNAbrgJf2MoVNnQ@mail.gmail.com>
+Subject: Re: [tip: x86/fpu] x86/fpu: Use XSAVE{,OPT,C,S} and XRSTOR{,S}
+ mnemonics in xstate.h
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
+	Ingo Molnar <mingo@kernel.org>, Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>, 
+	"H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the perf/core branch of tip:
+On Mon, Mar 17, 2025 at 11:46=E2=80=AFAM Borislav Petkov <bp@alien8.de> wro=
+te:
+>
+> On Mon, Mar 17, 2025 at 11:28:58AM +0100, Uros Bizjak wrote:
+> > > > @@ -114,10 +113,10 @@ static inline int update_pkru_in_sigframe(str=
+uct xregs_state __user *buf, u64 ma
+> > > >  #define XSTATE_OP(op, st, lmask, hmask, err)                      =
+   \
+> > > >       asm volatile("1:" op "\n\t"                                  =
+   \
+> > > >                    "xor %[err], %[err]\n"                          =
+   \
+> > > > -                  "2:\n\t"                                        =
+   \
+> > > > +                  "2:\n"                                          =
+   \
+> > > >                    _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_FAULT_MCE_SAFE=
+)  \
+> > > >                    : [err] "=3Da" (err)                            =
+     \
+> > > > -                  : "D" (st), "m" (*st), "a" (lmask), "d" (hmask) =
+   \
+> > > > +                  : [xa] "m" (*(st)), "a" (lmask), "d" (hmask)    =
+   \
+> > >
+> > > This [xa] needs documenting in the comment above this.
+> > >
+> > > What does "xa" even mean?
+> >
+> > xsave area.
+>
+> That's struct xregs_state in kernel nomenclature.
+>
+> And the macro's argument is called "st".
+>
+> And when it says [xa] there, one wonders where that "xa" comes from. So p=
+lease
+> add a comment above the macro explaining that.
 
-Commit-ID:     12e766d16814808b6a581597cef6ce9fc029e917
-Gitweb:        https://git.kernel.org/tip/12e766d16814808b6a581597cef6ce9fc029e917
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 17 Mar 2025 11:39:35 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 17 Mar 2025 11:42:57 +01:00
+This is an internal label for a named argument. The name shouldn't
+bother anybody, it could be anything, [xa], [ptr], [arg] or whatnot,
+so I see no reason why a comment should explain the choice. It's like
+arguing about the name of a variable.
 
-perf: Fix __percpu annotation
-
-With bcecd5a529c1 ("percpu: repurpose __percpu tag as a named address
-space qualifier") the normal compilers start caring about the __percpu
-annotation, as such f67d1ffd841f ("perf/core: Detach 'struct
-perf_cpu_pmu_context' and 'struct pmu' lifetimes") needs a fixup.
-
-Fixes: f67d1ffd841f ("perf/core: Detach 'struct perf_cpu_pmu_context' and 'struct pmu' lifetimes")
-Fixes: bcecd5a529c1 ("percpu: repurpose __percpu tag as a named address space qualifier")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Reported-by: jirislaby@kernel.org
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- include/linux/perf_event.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 5b8e3aa..63dddb3 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -343,7 +343,7 @@ struct pmu {
- 	 */
- 	unsigned int			scope;
- 
--	struct perf_cpu_pmu_context __percpu **cpu_pmu_context;
-+	struct perf_cpu_pmu_context * __percpu *cpu_pmu_context;
- 	atomic_t			exclusive_cnt; /* < 0: cpu; > 0: tsk */
- 	int				task_ctx_nr;
- 	int				hrtimer_interval_ms;
+Uros.
 
