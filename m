@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-4260-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4262-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF64A64A75
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:41:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC798A64A79
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0CAB3BB089
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:37:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21CD63A39D2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6A023E336;
-	Mon, 17 Mar 2025 10:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C73A23ED6A;
+	Mon, 17 Mar 2025 10:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YILW1/7Q";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PpCfhSir"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h4hg39D5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dwxz/1Ha"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA5323C8D4;
-	Mon, 17 Mar 2025 10:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECA823E242;
+	Mon, 17 Mar 2025 10:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742207687; cv=none; b=ZUP0tJ/RC6H2RMhUIAMciJcg1J+c5RlwDznT9AxaLJ4gcX8GQgAERzDoMq17a9yDWRumgZI3cMkNJUEQMROLZhAe7ntloOTaG8H8lZZay8Yk9Xwq2hyzeed4d3vJvbIMOdjiQ2WxmwvmB098o1s08bLgS0gWznEHQoDWAv49RD8=
+	t=1742207688; cv=none; b=LACfGphsRa52H6JsIN12wHWx+E7w2eQqa/pkrwPnjySNzlRM7I7L3iDLHzsBZoc0wYeygQh8i54S6XUtuRM9YmHcaFaWpP3rR63Z2Ce0YJbuJE6CwL8yBeqbiF+wrqPKP532TRS+a+WJhKmwWlCT6JRIa5Y9ZRMY0wivkvMXVm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742207687; c=relaxed/simple;
-	bh=XOwHEu3aZH+jWa2ukkLM+I+tM4BH3KKySj4wwJtwe4Y=;
+	s=arc-20240116; t=1742207688; c=relaxed/simple;
+	bh=bsbr5Rzzdn7i5a2MqMLq8M3Bl1mapL2f45eDcRgPhKE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZxQxfDKwtbewgsqw3LePVQfMKfoTOqUPso+5254cxoL9N+Zkl+ILkWfhVidTNyCJpYfZrpyka4Hd9Hb2DB+d+10ydSCxXtrh8k0ry741UAovQHKU8QKS4iOMR6fflF9X3IH83rww+zb6JLgtQSBECRW/uSv6eS4pSXhL6oQLDQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YILW1/7Q; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PpCfhSir; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=du3A5GpK51H+mgk71a5Zx8ZYPxXz6/CL+j4n/CS+v6iupSKc2EQMxhCy5bhYUEqwncNL0h4iBiH+bAAuhOlufyIEIH65x/Fvr3nak3Fd/qj/u7eYEM1/RFqR8eMWzy8aWGlT6AO7sAQsD7WOhJlPKAzexbnhHkNa2N0dNU5cSX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h4hg39D5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dwxz/1Ha; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Mar 2025 10:34:43 -0000
+Date: Mon, 17 Mar 2025 10:34:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742207684;
+	s=2020; t=1742207685;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xKiXn6hLuo5Od801UGkrpQPy/cH4FzwRlASDQJHTFrQ=;
-	b=YILW1/7QS/hMY8UFZZ6EZKlOEWbxPjbMdD5Y9TiHS02KBDigfiEdCxBt8Yl9sGHHAXdLjl
-	dX88Wz8ILhnDADKNiSIUIpxfEkAvHnFoKzVVm0PmnHn+V6EJqUo4ya1tNqzYAEf+se1P5J
-	t57bHRRxmcqoGyJFfthZC+TgNA6RLMiBFqqKOiaq2Mj+ye5JMCTcAzz5btm4+MS/YKwCml
-	ZzqZHtHmJLZVXqEgVM8866WfWA8eQhCIZd2d13Ysq2S0+7en+gTkiMt3tOP6Rwl8kABHwJ
-	CYVRflTTCPbj96VK9zGNgSeRqD33O8PGUd9I45wCG5mjcg8GPPdUpXKtjeZpzg==
+	bh=yB8Zsr8N9HUz93L+FBQ+9K1N2ZTTc5elZbIv1tmyC9A=;
+	b=h4hg39D52QD7BQUlqhz8gMY7vlYJ2kM2Iyl328fmRLzt5JoSt6YlI7hTUI8DvsL2n+EwXR
+	WjdeDl/eNgbXwH+kA1y1TbQsk2rT7jyU/elAPPVnfioykjLcOju7DWjbdoEMAjzWJBcVxn
+	zIZYwSl3MLwrS7yE6Euy8Xs1nrzcR66qtOM/DXLrU2jJrTqXR9Xoug07BZF5VWK6jKH6oO
+	pXQlujjrFop0h/ha4ifKpB9myutihaBPkJcYk0eQhXayBWYet3LmZQO7OsIAaHOnDLgAJY
+	RDZFwU8ynkmtu+/kjUVzsnbO6By4It+aQMkqEv83V4wAf3poxmao+G7t/fYy7g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742207684;
+	s=2020e; t=1742207685;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xKiXn6hLuo5Od801UGkrpQPy/cH4FzwRlASDQJHTFrQ=;
-	b=PpCfhSirgvTDy36aFiobP/iJJ1gRBfm8EHH1kZh9906VmKrWaZJFZ8tcUWhUGmVZnwNbpW
-	vR074Ro3UibDSyBA==
-From: "tip-bot2 for Juri Lelli" <tip-bot2@linutronix.de>
+	bh=yB8Zsr8N9HUz93L+FBQ+9K1N2ZTTc5elZbIv1tmyC9A=;
+	b=Dwxz/1Ha/ykroMJA8+ZXPAJ3JCXKcgkFiRIkzcmQ3WX1hf8ub7130X2f5PKT6XT4c5UZKA
+	8KSEupuJcryrz/Bw==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/deadline: Ignore special tasks when
- rebuilding domains
-Cc: Jon Hunter <jonathanh@nvidia.com>, Juri Lelli <juri.lelli@redhat.com>,
+Subject: [tip: sched/core] tracing: Use preempt_model_str()
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Valentin Schneider <vschneid@redhat.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Waiman Long <longman@redhat.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250313170011.357208-2-juri.lelli@redhat.com>
-References: <20250313170011.357208-2-juri.lelli@redhat.com>
+ "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250314160810.2373416-10-bigeasy@linutronix.de>
+References: <20250314160810.2373416-10-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174220768337.14745.8898635689115136336.tip-bot2@tip-bot2>
+Message-ID: <174220768431.14745.5641857053740015576.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,46 +82,42 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     f6147af176eaa4027b692fdbb1a0a60dfaa1e9b6
-Gitweb:        https://git.kernel.org/tip/f6147af176eaa4027b692fdbb1a0a60dfaa1e9b6
-Author:        Juri Lelli <juri.lelli@redhat.com>
-AuthorDate:    Thu, 13 Mar 2025 18:00:04 +01:00
+Commit-ID:     3bffa47a02636ed4134d558caecd35e92051e48d
+Gitweb:        https://git.kernel.org/tip/3bffa47a02636ed4134d558caecd35e92051e48d
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Fri, 14 Mar 2025 17:08:10 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 17 Mar 2025 11:23:41 +01:00
 
-sched/deadline: Ignore special tasks when rebuilding domains
+tracing: Use preempt_model_str()
 
-SCHED_DEADLINE special tasks get a fake bandwidth that is only used to
-make sure sleeping and priority inheritance 'work', but it is ignored
-for runtime enforcement and admission control.
+Use preempt_model_str() instead of manually conducting the preemption
+model.
 
-Be consistent with it also when rebuilding root domains.
-
-Fixes: 53916d5fd3c0 ("sched/deadline: Check bandwidth overflow earlier for hotplug")
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Waiman Long <longman@redhat.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Link: https://lore.kernel.org/r/20250313170011.357208-2-juri.lelli@redhat.com
+Acked-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Link: https://lore.kernel.org/r/20250314160810.2373416-10-bigeasy@linutronix.de
 ---
- kernel/sched/deadline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index ff4df16..1a041c1 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -2956,7 +2956,7 @@ void dl_add_task_root_domain(struct task_struct *p)
- 	struct dl_bw *dl_b;
- 
- 	raw_spin_lock_irqsave(&p->pi_lock, rf.flags);
--	if (!dl_task(p)) {
-+	if (!dl_task(p) || dl_entity_is_special(&p->dl)) {
- 		raw_spin_unlock_irqrestore(&p->pi_lock, rf.flags);
- 		return;
- 	}
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 0e6d517..fd3cb2b 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4100,12 +4100,7 @@ print_trace_header(struct seq_file *m, struct trace_iterator *iter)
+ 		   entries,
+ 		   total,
+ 		   buf->cpu,
+-		   preempt_model_none()      ? "server" :
+-		   preempt_model_voluntary() ? "desktop" :
+-		   preempt_model_full()      ? "preempt" :
+-		   preempt_model_lazy()	     ? "lazy"    :
+-		   preempt_model_rt()        ? "preempt_rt" :
+-		   "unknown",
++		   preempt_model_str(),
+ 		   /* These are reserved for later use */
+ 		   0, 0, 0, 0);
+ #ifdef CONFIG_SMP
 
