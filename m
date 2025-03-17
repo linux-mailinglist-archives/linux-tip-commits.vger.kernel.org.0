@@ -1,315 +1,122 @@
-Return-Path: <linux-tip-commits+bounces-4270-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4284-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF21A64A9A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:44:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2BAA64B0D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 11:53:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35C3A3A4E26
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:39:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FEC33B6D04
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711F624419B;
-	Mon, 17 Mar 2025 10:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008A4237706;
+	Mon, 17 Mar 2025 10:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u35b+bsY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ozwUEbWB"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SFg43GFk"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781582417EF;
-	Mon, 17 Mar 2025 10:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A223C375;
+	Mon, 17 Mar 2025 10:46:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742207701; cv=none; b=AtV5yxhYrkhZPUKYcEPWLEXJci04TGlzNkC1vaTz+Ziz95yINLx5b6lZULbDJTLGsfnNPmVleioReN2dZGALf2lOwsE5x+fpivs5E5X2Hho5bv8oJDQjoWVFUB+7qNCxGj9YhyZr6V8A0W6XBO/OBf+SgQt19ATNHdJp+BeM13k=
+	t=1742208400; cv=none; b=HPPaMIF/Hw59PD6cEZuh/jW2VkcAi84ZWw8ZDLMUdJFcImYIF3oOTP6FspEIkAlHOdCWlytK2kJz2Gc9MmCDFXv6Khifg1wRc7XZTuzjXvrXRapBxO+FK/mvIFHDEjjzmbCy/bz1wnsPLz7WTzyYTYApmnKNWBwFkSYJFEXX5EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742207701; c=relaxed/simple;
-	bh=PQ4m1BRysJtmQ91pV7uLzV57b8MNZUPVEtNJiCG++4o=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=C+YKOmcq24N1r39zpWbYv1qk1ICm4eqi8aKqaoJPZIIHx5ReFcDz4hAuLQBJAYannSRUMopTOgfgzDZcOTEdUNb8ZxtNmua8zJa6bwjZhK3Phf9zDqxvGxitGQ2Ws6rSttEuMoA2nePDDfDfqPSUF1y+YtCec0p31eN11K8DVe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u35b+bsY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ozwUEbWB; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Mar 2025 10:34:57 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742207697;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M+XbdGz1+FVQ/u6Y/RU8bJLvpnpYWbHXZ93xWZzLr/I=;
-	b=u35b+bsYZDFxO82YvRdFGvCCB3wJOwdfInHHFZ+q6Lir09MryFh2Zrrqc31tG03rZIkf9S
-	y2ncWsqYjIlJ5C3djt2vXpWcsFvTbokBxsdgTmXO3EQzpDloiA5TDsVXomppN8ZY6COG6q
-	GwjEMHBaGYAKeKoQzEl8Uo30b0TV3jafOc6JsSwFo3G3UNFiv56EoArimQH0mq2dnIEPvb
-	YbkFWjLCNDX4jC5m2hMmg+6z2FQ3Ez5EYi68rB2nfIy0NYG+ofI7zq+AMke3Uaq4yR5bFE
-	i5Ke4t2Z6iRZ6QRPIG2F9yMI8KF2ZqpU51rnXOElUJRYqDQAJn2f8mBVGGK44g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742207697;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M+XbdGz1+FVQ/u6Y/RU8bJLvpnpYWbHXZ93xWZzLr/I=;
-	b=ozwUEbWBVN4MfhV3jz1vJeKNUhONk1L5SGWkmiyeTa2kA6ZvczOjK9JC88RL/oBngZif/1
-	IJ4P8rg0M/bRuIBg==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched: Add a generic function to return the
- preemption string
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250314160810.2373416-2-bigeasy@linutronix.de>
-References: <20250314160810.2373416-2-bigeasy@linutronix.de>
+	s=arc-20240116; t=1742208400; c=relaxed/simple;
+	bh=g5iwVEWzCZsV0Wyd42Lx2PWjQTkIRH6PRJ+J5li/LQg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SENSvXwlKqqc7Xumm9N9LkdaK49Xx8faSnibbkLb0koxlEqrTGf0+94MijxqDQouGA9iydVJwJhPa2LYmsVORfoWEQFbm4EJ3FY6LvG39oYB8IIH5v3RQk9I7nwl5lfSrwp+XTTZovkpQz7Ms9tLpOz/HhEpIyjnHfTAJz1QULo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SFg43GFk; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2E09640E020E;
+	Mon, 17 Mar 2025 10:46:36 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id EBqrj1jMLVYU; Mon, 17 Mar 2025 10:46:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1742208392; bh=fglALhqrEpwfCpWltLAGAzAVtU0ESkSJ2dtUnmcMarI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SFg43GFk9OlLkQTLm3N6GHMEjUcL/rb3uGtoMQ8ncj5uW7FjBpISNfFpVC9X3g/WU
+	 BzLe+oqqX2Ea8oHEtgcfSiYN+ie8GpC59NG6mLWnTloCTqQiZIbhUGH1QWyjmX+ypl
+	 Mw/Bth15tALlI13dM8qy9Ea3d8Ny8mB4M6wuA+4Ue/eqGzldOxHTicmmXM/ZJ/RgZ4
+	 9QKWkmj+A87M80m/yM0AjdQPgSQsZte+iY+rw6p2RKnAMnJy9Cx25/L19vyVk4P4Wu
+	 +j+wrsu7rVZ0eOzeBAeriiVgZG14F+9QVEtNnUR2WzXEhxrw5mqe5VZPThyb9EnYlB
+	 r3VrKmTfnRyTtBzluSTwENJUwm9pDKvx7gWZyTKgVJUixijngrTtFAWZEogykR8kLU
+	 ms65LcYD8AkSk3KvwNgiYyOL5kDb6Qr27nLqrAt/wB3iVbLJRsFOXeM3yQfdAqjQ4F
+	 hYA8Kug8YFLXklkiYxkvTJA0kPKfTind350+4yg63ykOGX3TWAy9IgPdH4/9k2SpR2
+	 530oZR+LDMcVmYXhlfFVJtF1n+yY8x2rI+/2uOsJM+Q4WTVsRtGBOrcEvuGtaxPuJj
+	 Memk9/C5Ju8IpO5KViV+dNleB9u/4qaKI8URgi40iPp8nsp7PhkZzTsWBa09/yyynP
+	 f60cUrSqht+bvR2+dofLxhBE=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E9D7240E0214;
+	Mon, 17 Mar 2025 10:46:21 +0000 (UTC)
+Date: Mon, 17 Mar 2025 11:46:16 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Uros Bizjak <ubizjak@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Ingo Molnar <mingo@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: x86/fpu] x86/fpu: Use XSAVE{,OPT,C,S} and XRSTOR{,S}
+ mnemonics in xstate.h
+Message-ID: <20250317104616.GCZ9f9eF-0n0qPbWwk@fat_crate.local>
+References: <20250313130251.383204-1-ubizjak@gmail.com>
+ <174188823430.14745.17591986001259957573.tip-bot2@tip-bot2>
+ <20250317101415.GBZ9f198PAh90nMWDf@fat_crate.local>
+ <CAFULd4b-sZucEtvx19==5wcOfOCzj5fuZ2SHS7ZMboZQXdVycg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174220769709.14745.10741655509643439400.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAFULd4b-sZucEtvx19==5wcOfOCzj5fuZ2SHS7ZMboZQXdVycg@mail.gmail.com>
 
-The following commit has been merged into the sched/core branch of tip:
+On Mon, Mar 17, 2025 at 11:28:58AM +0100, Uros Bizjak wrote:
+> > > @@ -114,10 +113,10 @@ static inline int update_pkru_in_sigframe(struct xregs_state __user *buf, u64 ma
+> > >  #define XSTATE_OP(op, st, lmask, hmask, err)                         \
+> > >       asm volatile("1:" op "\n\t"                                     \
+> > >                    "xor %[err], %[err]\n"                             \
+> > > -                  "2:\n\t"                                           \
+> > > +                  "2:\n"                                             \
+> > >                    _ASM_EXTABLE_TYPE(1b, 2b, EX_TYPE_FAULT_MCE_SAFE)  \
+> > >                    : [err] "=a" (err)                                 \
+> > > -                  : "D" (st), "m" (*st), "a" (lmask), "d" (hmask)    \
+> > > +                  : [xa] "m" (*(st)), "a" (lmask), "d" (hmask)       \
+> >
+> > This [xa] needs documenting in the comment above this.
+> >
+> > What does "xa" even mean?
+> 
+> xsave area.
 
-Commit-ID:     8bdc5daaa01e3054647d394d354762210ad88f17
-Gitweb:        https://git.kernel.org/tip/8bdc5daaa01e3054647d394d354762210ad=
-88f17
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 14 Mar 2025 17:08:02 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 17 Mar 2025 11:23:38 +01:00
+That's struct xregs_state in kernel nomenclature.
 
-sched: Add a generic function to return the preemption string
+And the macro's argument is called "st".
 
-The individual architectures often add the preemption model to the begin
-of the backtrace. This is the case on X86 or ARM64 for the "die" case
-but not for regular warning. With the addition of DYNAMIC_PREEMPT for
-PREEMPT_RT we end up with CONFIG_PREEMPT and CONFIG_PREEMPT_RT set
-simultaneously. That means that everyone who tried to add that piece of
-information gets it wrong for PREEMPT_RT because PREEMPT is checked
-first.
+And when it says [xa] there, one wonders where that "xa" comes from. So please
+add a comment above the macro explaining that.
 
-Provide a generic function which returns the current scheduling model
-considering LAZY preempt and the current state of PREEMPT_DYNAMIC.
+And you can redo the whole patch - it is the topmost one in tip:x86/fpu and
+can simply be replaced.
 
-The resulting strings are:
-=E2=94=8F=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=B3=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=B3=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=B3=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=B3=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=93
-=E2=94=83   Model   =E2=94=83  -RT -DYN    =E2=94=83     +RT -DYN      =E2=94=
-=83     -RT +DYN       =E2=94=83     +RT +DYN      =E2=94=83
-=E2=94=A1=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=95=87=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=95=87=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=95=87=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=
-=81=E2=94=81=E2=95=87=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=
-=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=
-=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=81=E2=94=A9
-=E2=94=82NONE       =E2=94=82 NONE         =E2=94=82 n/a               =E2=94=
-=82 PREEMPT(none)      =E2=94=82 n/a               =E2=94=82
-=E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
-=E2=94=82VOLUNTARY  =E2=94=82 VOLUNTARY    =E2=94=82 n/a               =E2=94=
-=82 PREEMPT(voluntary) =E2=94=82 n/a               =E2=94=82
-=E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
-=E2=94=82FULL       =E2=94=82 PREEMPT      =E2=94=82 PREEMPT_RT        =E2=94=
-=82 PREEMPT(full)      =E2=94=82 PREEMPT_{RT,full} =E2=94=82
-=E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
-=E2=94=82LAZY       =E2=94=82 PREEMPT_LAZY =E2=94=82 PREEMPT_{RT,LAZY} =E2=94=
-=82 PREEMPT(lazy)      =E2=94=82 PREEMPT_{RT,lazy} =E2=94=82
-=E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+Thx.
 
-[ The dynamic building of the string can lead to an empty string if the
-  function is invoked simultaneously on two CPUs. ]
+-- 
+Regards/Gruss,
+    Boris.
 
-Co-developed-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Co-developed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Signed-off-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250314160810.2373416-2-bigeasy@linutronix.de
----
- include/linux/preempt.h |  2 ++-
- kernel/sched/core.c     | 47 ++++++++++++++++++++++++++++++++++++++++-
- kernel/sched/debug.c    | 10 +++++----
- kernel/sched/sched.h    |  1 +-
- 4 files changed, 56 insertions(+), 4 deletions(-)
-
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index ca86235..3e9808f 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -515,6 +515,8 @@ static inline bool preempt_model_rt(void)
- 	return IS_ENABLED(CONFIG_PREEMPT_RT);
- }
-=20
-+extern const char *preempt_model_str(void);
-+
- /*
-  * Does the preemption model allow non-cooperative preemption?
-  *
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 03d7b63..c734724 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7646,10 +7646,57 @@ PREEMPT_MODEL_ACCESSOR(lazy);
-=20
- #else /* !CONFIG_PREEMPT_DYNAMIC: */
-=20
-+#define preempt_dynamic_mode -1
-+
- static inline void preempt_dynamic_init(void) { }
-=20
- #endif /* CONFIG_PREEMPT_DYNAMIC */
-=20
-+const char *preempt_modes[] =3D {
-+	"none", "voluntary", "full", "lazy", NULL,
-+};
-+
-+const char *preempt_model_str(void)
-+{
-+	bool brace =3D IS_ENABLED(CONFIG_PREEMPT_RT) &&
-+		(IS_ENABLED(CONFIG_PREEMPT_DYNAMIC) ||
-+		 IS_ENABLED(CONFIG_PREEMPT_LAZY));
-+	static char buf[128];
-+
-+	if (IS_ENABLED(CONFIG_PREEMPT_BUILD)) {
-+		struct seq_buf s;
-+
-+		seq_buf_init(&s, buf, sizeof(buf));
-+		seq_buf_puts(&s, "PREEMPT");
-+
-+		if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+			seq_buf_printf(&s, "%sRT%s",
-+				       brace ? "_{" : "_",
-+				       brace ? "," : "");
-+
-+		if (IS_ENABLED(CONFIG_PREEMPT_DYNAMIC)) {
-+			seq_buf_printf(&s, "(%s)%s",
-+				       preempt_dynamic_mode > 0 ?
-+				       preempt_modes[preempt_dynamic_mode] : "undef",
-+				       brace ? "}" : "");
-+			return seq_buf_str(&s);
-+		}
-+
-+		if (IS_ENABLED(CONFIG_PREEMPT_LAZY)) {
-+			seq_buf_printf(&s, "LAZY%s",
-+				       brace ? "}" : "");
-+			return seq_buf_str(&s);
-+		}
-+
-+		return seq_buf_str(&s);
-+	}
-+
-+	if (IS_ENABLED(CONFIG_PREEMPT_VOLUNTARY_BUILD))
-+		return "VOLUNTARY";
-+
-+	return "NONE";
-+}
-+
- int io_schedule_prepare(void)
- {
- 	int old_iowait =3D current->in_iowait;
-diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
-index ef047ad..39be739 100644
---- a/kernel/sched/debug.c
-+++ b/kernel/sched/debug.c
-@@ -244,11 +244,13 @@ static ssize_t sched_dynamic_write(struct file *filp, c=
-onst char __user *ubuf,
-=20
- static int sched_dynamic_show(struct seq_file *m, void *v)
- {
--	static const char * preempt_modes[] =3D {
--		"none", "voluntary", "full", "lazy",
--	};
--	int j =3D ARRAY_SIZE(preempt_modes) - !IS_ENABLED(CONFIG_ARCH_HAS_PREEMPT_L=
-AZY);
- 	int i =3D IS_ENABLED(CONFIG_PREEMPT_RT) * 2;
-+	int j;
-+
-+	/* Count entries in NULL terminated preempt_modes */
-+	for (j =3D 0; preempt_modes[j]; j++)
-+		;
-+	j -=3D !IS_ENABLED(CONFIG_ARCH_HAS_PREEMPT_LAZY);
-=20
- 	for (; i < j; i++) {
- 		if (preempt_dynamic_mode =3D=3D i)
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 0212a0c..e8915ad 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -3633,6 +3633,7 @@ extern int preempt_dynamic_mode;
- extern int sched_dynamic_mode(const char *str);
- extern void sched_dynamic_update(int mode);
- #endif
-+extern const char *preempt_modes[];
-=20
- #ifdef CONFIG_SCHED_MM_CID
-=20
+https://people.kernel.org/tglx/notes-about-netiquette
 
