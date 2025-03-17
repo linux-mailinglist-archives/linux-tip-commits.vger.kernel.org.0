@@ -1,78 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-4239-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4240-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3911A646CA
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:15:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22ECA646D0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 10:17:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBCC13AB4EB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 09:15:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F054188F6A1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Mar 2025 09:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D019821D3EA;
-	Mon, 17 Mar 2025 09:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A35130A7D;
+	Mon, 17 Mar 2025 09:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YGFDvE/o";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mmq8naO3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KM6d9FNW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Nes5bOcI"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1271DDC12;
-	Mon, 17 Mar 2025 09:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88651B808;
+	Mon, 17 Mar 2025 09:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742202917; cv=none; b=ce7W8fNb+dOTSjOVEAY5mQ0W4EfbMw5+eSuG8c38/pUS3lzJoBjSlz0Y6S/lEAf9AnuJJVSJsATvZWFkhRzCdl6+jGUf9Lwu26E2rMWIizUNgynzMjfmIcLGnNxw6lyEUsuEHhXNJSlLJeiYOcZ0Fhagx4g5K2tX38lN0yEEgJA=
+	t=1742203035; cv=none; b=Fh/bISY7dRevY9KyKNx3JB0GfRS9VJx1XZ6pP4SS4FXGLop0hfB7jowtuLN08ZFdaJ/yIPpvyyuYy0oHzxsz1eyNXHbpyPSVyFH4bPbQdrF4VCC7MfSPwA53oQI4u2EPy1LKuzxatFqwSLrr6qeJZkKGfh/ZiXZu4vKlqXD000E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742202917; c=relaxed/simple;
-	bh=bmFDsdRxEuEX08hqKICcHO1n/Y/NDq5Gp9bPO4XXCHk=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=P2MENEP+WQ9BXieHRyyA02DG2ZC916omcFWUOEfCCRStThX4AtYx3wjyuXSHej7ZshEZC3TgSVOsl66SyzVMRgIZ6CfycQP3aR8oqkZ7LgCF4EiN/nSqgo6WPnywQZVnmApKp1ch91xhVT5ysJ59ls/EH4/A74H1plKYNcSAHGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YGFDvE/o; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mmq8naO3; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1742203035; c=relaxed/simple;
+	bh=SFdl1bbgC9NgF4BSAfhiFNIhZy+CwKcdMwOLdLeey08=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=D35qx86m7RTCjaL6Jt4g0SA94fpQWjzJzjO+7G1MkCDTE9qB2/mIzcUIh0Mx9MJTI6V4eLz9IHlSLnTjkMVP4v7hAzriDYk1qa8JmDF1lWwy70qhyzqlhqurMM9DqiiZRJfk2TW+xPrO3MuCbaxPiDGfjCEimVS9dgV+Y2lBS3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KM6d9FNW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Nes5bOcI; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Mar 2025 09:15:05 -0000
+Date: Mon, 17 Mar 2025 09:17:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742202913;
+	s=2020; t=1742203032;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l1MzOfa5K9zP0C9x07HnzDike3sOpkmqUmvePVHoEYk=;
-	b=YGFDvE/oykKTRE56wmhnq4HDa3glLJsdIRrkk3Z+G/YTj08xXxC+j3g4gYPATN6jubaq/9
-	JZV8ddqEqTX1ujAPGBL20Yh6JJc0R5QvK11dtVk+oG2ay2dE+svdj40zQcsaFn7oQeX9k4
-	jEu6LvnrkLSnZhksFG2zeVAiuO5va77rOwJaSB/a3fH+GZefwSA2NZ6a+vYwbzmrx1uT54
-	D8wGwpxIWeRldsrTyBaD6JPbLz3FHfeaX4PJ8mJjzvrkZRDmfjihuF/cveMv85ZPX6O4cY
-	wgiJdNCmxGaxz3It3ejw2j2iVNioEY7X0Ayp8C7TGx+TluWBnmiU6SeGgoallg==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=XorjkF2lYdZsdwfxsZdrnUmQrger0j3X+tR7Sab31Uc=;
+	b=KM6d9FNW9gCOQuui5foRGGoyV8b4MOPRktcFMsCyiI0xsBtyxX70eeXWNkNgvbm2wkT9xG
+	kkp3braAvpfewzQKgXdQbFFGU2BOBpm40C3cQ98mEemTDXSumjX633IDKbiS2hdwsbTqzc
+	zRAtbS1J4W+Ydh6Tk+O3PGty32jmSi7Vx7eRurzsimqD+cfCvyHYaN7vgacPhf+Qotzmvi
+	GFWntTHbWJAkRKpC/Gn/I2xtDnLKTQDhs+tW4Zvvz2hONxOc3U/vQaM6KHlBOcfs0M6WP3
+	6ef2ZQz4fRdSD0YKAKiUf7oP+1GKNSXuYz/pA5d5ErXujrYVsP0HieVeTLcnMg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742202913;
+	s=2020e; t=1742203032;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l1MzOfa5K9zP0C9x07HnzDike3sOpkmqUmvePVHoEYk=;
-	b=mmq8naO36qB11qk0IyiNKvu17ik5sld0O9HUcPenXxMYmgofcUuE80iqSx2AnGVz7sSfhs
-	7YV+NTlZYYiZksCQ==
-From: "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=XorjkF2lYdZsdwfxsZdrnUmQrger0j3X+tR7Sab31Uc=;
+	b=Nes5bOcIBvecVX59krtzzDAavT3Ga7Add4z3EkRUsrXBbHmVj68ffZ1jmE5b9WuOehSNTo
+	FA6MdpDLYbNpVOAA==
+From: "tip-bot2 for Peng Hao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/urgent] perf/x86: Check data address for IBS software filter
-Cc: Matteo Rizzo <matteorizzo@google.com>, Namhyung Kim <namhyung@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250317081058.1794729-1-namhyung@kernel.org>
-References: <20250317081058.1794729-1-namhyung@kernel.org>
+Subject: [tip: x86/sev] x86/sev: Simplify the code by removing unnecessary
+ 'else' statement
+Cc: Peng Hao <flyingpeng@tencent.com>, Ingo Molnar <mingo@kernel.org>,
+ linux-kernel@vger.kernel.org, x86@kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174220290574.14745.9132867025462242568.tip-bot2@tip-bot2>
+Message-ID: <174220303130.14745.10599780842449444153.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,53 +72,40 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/sev branch of tip:
 
-Commit-ID:     b0be17d8108bf3448a58be319d085155a128cf3a
-Gitweb:        https://git.kernel.org/tip/b0be17d8108bf3448a58be319d085155a128cf3a
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Mon, 17 Mar 2025 01:10:58 -07:00
+Commit-ID:     f0373cc0907ca7918266a507d6b3b5d75ee839ba
+Gitweb:        https://git.kernel.org/tip/f0373cc0907ca7918266a507d6b3b5d75ee839ba
+Author:        Peng Hao <flyingpeng@tencent.com>
+AuthorDate:    Fri, 14 Mar 2025 20:19:53 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 17 Mar 2025 10:04:31 +01:00
+CommitterDate: Mon, 17 Mar 2025 09:02:45 +01:00
 
-perf/x86: Check data address for IBS software filter
+x86/sev: Simplify the code by removing unnecessary 'else' statement
 
-The IBS software filter is filtering kernel samples for regular users in
-PMI handler.  It checks the instruction address in the IBS register to
-determine if it was in the kernel mode or not.
+No need for an 'else' statement after a 'return'.
 
-But it turns out that it's possible to report a kernel data address even
-if the instruction address belongs to the user space.  Matteo Rizzo
-found that when an instruction raises an exception, IBS can report some
-kernel data address like IDT while holding the faulting instruction's
-RIP.  To prevent an information leak, it should double check if the data
-address in PERF_SAMPLE_DATA is in the kernel space as well.
+[ mingo: Clarified the changelog ]
 
-Suggested-by: Matteo Rizzo <matteorizzo@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peng Hao <flyingpeng@tencent.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250317081058.1794729-1-namhyung@kernel.org
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/x86/events/amd/ibs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/coco/sev/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index e7a8b87..24985c7 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -1147,6 +1147,13 @@ fail:
- 	if (perf_ibs == &perf_ibs_op)
- 		perf_ibs_parse_ld_st_data(event->attr.sample_type, &ibs_data, &data);
- 
-+	if ((event->attr.config2 & IBS_SW_FILTER_MASK) &&
-+	    (event->attr.sample_type & PERF_SAMPLE_ADDR) &&
-+	    event->attr.exclude_kernel && !access_ok(data.addr)) {
-+		throttle = perf_event_account_interrupt(event);
-+		goto out;
-+	}
-+
- 	/*
- 	 * rip recorded by IbsOpRip will not be consistent with rsp and rbp
- 	 * recorded as part of interrupt regs. Thus we need to use rip from
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 82492ef..4e8b800 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1482,8 +1482,7 @@ static enum es_result vc_handle_msr(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+ 	case MSR_AMD64_GUEST_TSC_FREQ:
+ 		if (sev_status & MSR_AMD64_SNP_SECURE_TSC)
+ 			return __vc_handle_secure_tsc_msrs(regs, write);
+-		else
+-			break;
++		break;
+ 	default:
+ 		break;
+ 	}
 
