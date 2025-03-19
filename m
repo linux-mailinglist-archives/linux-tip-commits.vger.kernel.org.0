@@ -1,123 +1,111 @@
-Return-Path: <linux-tip-commits+bounces-4315-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4321-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA8EA67C5E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Mar 2025 19:55:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7ADA6810A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 01:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60C7423E3D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Mar 2025 18:55:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E0753B85B2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 00:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887D32144C2;
-	Tue, 18 Mar 2025 18:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35E628F5;
+	Wed, 19 Mar 2025 00:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iF3ym/J0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kMHBY3/V"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3TTk+gp"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6A0213E83;
-	Tue, 18 Mar 2025 18:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF0023A0;
+	Wed, 19 Mar 2025 00:04:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742324080; cv=none; b=iWQPF8tGPTsKz68zKGyZJTlaILdQ5J0zz7X9GKWnSnVesFqSCRxUBo+CeKLLeCw+y6/d7PQNULxz2aToUYuAuWslzNHCFIDDoN/7rqOp2DcDQ4xj7IN3vHiato+nrRIW/ws+84vpS3HwEd34HLBk6hnJuSC/C1IUx0yuAl6mRzc=
+	t=1742342673; cv=none; b=bHut0ExcEWjcefskiZkByBrnV6r2edoIgbNZpO+Zrkx9XHYnwOd2S7AgBBMLvGYdwO14xYq8rgnk1CKI1pw1iCC88+aS31k7GmFz9pDU+jGXcEq03zxW9sr36Dn0sNN5FMEG/UKZif0BKUJ0xQo8JzxGqd4IQdhQlbyFu3p7+NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742324080; c=relaxed/simple;
-	bh=RKfpRifPgZaVq7lU1uFVi5IVcVVtuoyAGQj7hLQIUIU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YRQSL3Pet471yAzSpkf4aXYGiKNuXZ8F4A0kJr9oGOIjMMEw2cFBDCj3CfMQ7/ICvxXH+01Vtm/Obp1XSmv5ZtrSRIdzuXRY+Gsdj+W+Loub0OZClNbxOxdfZxuTXFAHQaI+kjhZam9QHpcA+XyMj66o6b7mHGWTeDfFo3V0KBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iF3ym/J0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kMHBY3/V; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 18 Mar 2025 18:54:36 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742324076;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ydlw+V5tJ/DFT28B3UEoeiIuPT3DG7hIWV6mRfeV8T8=;
-	b=iF3ym/J0yhf1TsORWXnIT+ufwIml872QVM1wp3M1pt9w/K0KfzxjuYz4T8u1zbkUnh2ZE5
-	MjRohJ1phzU3JcxhuWGjbM6N3k/YNlyfTyaPNMduNiPZf6H5RzgKhpDHz3njc5RrGSSZKa
-	M5rto9acEu0WDGS5P1jeXOvrXSDXDCcH1Zxyqk+vjhYPm8FyZqyjMiYp1hO1f1eKPdWM7N
-	wBgW09bBEQxwWosjiV9uNFEhzCVMVynC7WRu9RlKx5vNkgVuPiykvjBHdD5Qk2L59slt+s
-	+BbZwzcSzGj5ihmvh+2p4fHYD+EFLX0F04tiZlc7fMrYNjEaT+lMkkLZxhPAgw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742324076;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ydlw+V5tJ/DFT28B3UEoeiIuPT3DG7hIWV6mRfeV8T8=;
-	b=kMHBY3/VFSpVKzmCBb0B+HKeCKgySOP/KvsEITR7jumANo67t1m25s5CrxUw0QPx6CLx1Y
-	iYmdUB97B1iwLpCw==
-From: "tip-bot2 for Sohil Mehta" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/apic: Fix 32-bit APIC initialization for extended
- Intel Families
-Cc: Sohil Mehta <sohil.mehta@intel.com>, Ingo Molnar <mingo@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250219184133.816753-2-sohil.mehta@intel.com>
-References: <20250219184133.816753-2-sohil.mehta@intel.com>
+	s=arc-20240116; t=1742342673; c=relaxed/simple;
+	bh=1b6q+8zv9BcRvxVqDkKhOXgzSXTBmV+bshoasyM8gwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sU+0Msw9aHfi2o7rqFB1Opz2z7711MGzw0rXUbszvrhpPPCTKuatd2FwLzDGG0yth/7pG5nbeLHrcQjo9B3z6j+fTjnnZTw0Yb2rGjCjBzWBi20XT/3yW5x4J5VovBDgs9Ny2sWiDVx7p+gouyq8+qFFnABn7x/+2qApX5cXxto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3TTk+gp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E6CC4CEDD;
+	Wed, 19 Mar 2025 00:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742342673;
+	bh=1b6q+8zv9BcRvxVqDkKhOXgzSXTBmV+bshoasyM8gwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C3TTk+gp1zMzT7kRlDhSmrL28wKR+Dg5dQQx1tx3q019Eedum3AWWsoTPhPrbMPSF
+	 sbe80icpjYLztu+7Eh12lqUCWvql0mrFJkWGTTtEY5H9B7jYM6ZQ3KhmZ80GhWJsd1
+	 9GAUgcAywChKAz8RlEfo7YO7ex83ABRX1WkpMtewOgo14wD62z7U2CubZC2Ru4XhM/
+	 cXp+ArnODA+PKZd4cjOXkxGiasPP5MmXsKkJBosKQRMptVebaI4kLZP88jZSYdMvX7
+	 RxWffEPyIJAMepQayCHg+aJGoSGpM1vAjkhgvX6QTtdZ+9BBNEdI9tQd4o+Lys1lIk
+	 cBTw80UDZB1pg==
+Date: Tue, 18 Mar 2025 17:04:27 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ramon de C Valle <rcvalle@google.com>,
+	Matthew Maurer <mmaurer@google.com>, linux-kernel@vger.kernel.org,
+	ojeda@kernel.org, linux-tip-commits@vger.kernel.org,
+	Scott Constable <scott.d.constable@intel.com>,
+	Ingo Molnar <mingo@kernel.org>, Kees Cook <kees@kernel.org>,
+	x86@kernel.org, Sami Tolvanen <samitolvanen@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [tip: x86/core] x86/ibt: Implement FineIBT-BHI mitigation
+Message-ID: <20250319000427.GA2617458@ax162>
+References: <20250224124200.820402212@infradead.org>
+ <174057447519.10177.9447726208823079202.tip-bot2@tip-bot2>
+ <20250226195308.GA29387@noisy.programming.kicks-ass.net>
+ <CANiq72=3ghFxy8E=AU9p+0imFxKr5iU3sd0hVUXed5BA+KjdNQ@mail.gmail.com>
+ <20250310160242.GH19344@noisy.programming.kicks-ass.net>
+ <CAOcBZOSPBsTvWFdpwE0-ZU76yMDGBEo3p9y614XYEu+ZSnQ6Sg@mail.gmail.com>
+ <CANiq72mcCEbeWb-RAXLcWRnJms2LA6xV=QqQ5=N3ii=3TC89fw@mail.gmail.com>
+ <CAOcBZOQnGCqKut-BTvfJNgB9Rz+f5DAANwMs9DU16Js+QDGOrw@mail.gmail.com>
+ <20250312091633.GI19424@noisy.programming.kicks-ass.net>
+ <CANiq72mi62AkrKzre254DDd_VwUsZzEMqNuXpFeY_4AjObrNVw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174232407614.14745.9291363878961520475.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72mi62AkrKzre254DDd_VwUsZzEMqNuXpFeY_4AjObrNVw@mail.gmail.com>
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Wed, Mar 12, 2025 at 12:36:42PM +0100, Miguel Ojeda wrote:
+> On Wed, Mar 12, 2025 at 10:16 AM Peter Zijlstra <peterz@infradead.org> wrote:
+> > I normally build llvm toolchains using tc-build, but it seems rust is
+> > not actually part of llvm?
+> 
+> Yeah, Rust uses LLVM but is not part of the LLVM project.
+> 
+> But I think we could have support to build Rust there easily -- I
+> discussed it with Nathan (Cc'd) in the past. Currently, for the
+> LLVM+Rust toolchains he provides in kernel.org, he just bundles the
+> upstream Rust binaries AFAIR -- and IIRC he uses tc-build to drive
+> that build, so if we do that we could also "easily" get the full chain
+> in kernel.org too ("easily" if we ignore doing the PGO dance for the
+> Rust side etc. and assuming the building time/resources makes it
+> doable, which I don't know about).
+> 
+> If that is correct, I could take a look into adding a simple Rust
+> build to tc-build (i.e. without PGO etc.).
 
-Commit-ID:     3447a2e710494fea44ba76a949b3d3afe17a7a23
-Gitweb:        https://git.kernel.org/tip/3447a2e710494fea44ba76a949b3d3afe17a7a23
-Author:        Sohil Mehta <sohil.mehta@intel.com>
-AuthorDate:    Wed, 19 Feb 2025 18:41:19 
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 18 Mar 2025 19:33:44 +01:00
+Right, tc-build is used to build the toolchain but I have another build
+wrapper around that to build the toolchain in a Debian bullseye
+userspace for compatibility with glibc 2.28 and newer:
 
-x86/apic: Fix 32-bit APIC initialization for extended Intel Families
+https://github.com/nathanchance/env/tree/c19e35f39080a961a762a6c486ca2b2077ffc4ef/python/pgo-llvm-builder
 
-APIC detection is currently limited to a few specific Families and will
-not match the upcoming Families >=18.
+That is where I had initially considered wiring it up when we last
+talked but wiring it up in tc-build would probably be better/cleaner,
+especially with the rewrite I did two years ago. I could envision
+tc_build/rust.py for example, then either integrating it into
+build-llvm.py or have a separate standalone build-rust.py, like
+binutils.
 
-Extend the check to include all Families 6 or greater. Also convert it
-to a VFM check to make it simpler.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250219184133.816753-2-sohil.mehta@intel.com
----
- arch/x86/kernel/apic/apic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index ddca8da..62584a3 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -2011,8 +2011,8 @@ static bool __init detect_init_APIC(void)
- 	case X86_VENDOR_HYGON:
- 		break;
- 	case X86_VENDOR_INTEL:
--		if (boot_cpu_data.x86 == 6 || boot_cpu_data.x86 == 15 ||
--		    (boot_cpu_data.x86 == 5 && boot_cpu_has(X86_FEATURE_APIC)))
-+		if ((boot_cpu_data.x86 == 5 && boot_cpu_has(X86_FEATURE_APIC)) ||
-+		    boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO)
- 			break;
- 		goto no_apic;
- 	default:
+Cheers,
+Nathan
 
