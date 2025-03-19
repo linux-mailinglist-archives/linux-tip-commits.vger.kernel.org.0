@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-4397-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4398-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71F1A69A47
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 21:38:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E357A69A83
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 22:03:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BEC51B61999
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 20:38:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E192F7B1EEA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 21:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD14214A8E;
-	Wed, 19 Mar 2025 20:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1372A21ADD3;
+	Wed, 19 Mar 2025 21:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jQmUXJ4F";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DGeXJokV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jJgMpks0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+NY87gwG"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5546A214225;
-	Wed, 19 Mar 2025 20:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FB621ADC4;
+	Wed, 19 Mar 2025 21:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742416690; cv=none; b=D4RY+q/OZDBJHFyGRpDm/ZxKfouK/TMhjkos9IT3PajDAM2ejl2e7YJF3rqUxoFWu3LRhRVzDVrZr5TPheefDq8UHYoEuxVC/w8EAPf5MPscPHRTlzem6JlIdpRvr7P1qsKCRHhNO/pB7YcKSLG9H4Hkv7svcernaGFcd7EQEhA=
+	t=1742418043; cv=none; b=XvyF/xZCnfZcuxMHFVFiuIwm7U5zAcyJNQq3zmtCNHdXfQHntJGisGSkGorkthZ34Ko26ida4tTZMBdSQkrJkpu4z3/YMuW0EuHO+xGW1C5BNxlb5U+8yEorBuRF9KyXH/agQAf2GXRhkuwlQZl7P/tZxo6SmLnA8inF/sjmQKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742416690; c=relaxed/simple;
-	bh=QpHaH2Y1qKiY1OkMmec3M0e1H7fqNJlS5XExYXXpuzM=;
+	s=arc-20240116; t=1742418043; c=relaxed/simple;
+	bh=X2RArXuAMmuAhauPZbKaufIB+X+wl1m4dN1NVnsFsLQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=rzaUZvKNm00rA61WtB6moWcfU1hWAWOjhRIH134YVJRg0k8wtuEtN3At7bOCHHjyQiShhBQKR1Z9F9TvkAbzgU5w0r63bag+0oK/uH1659MHmBNqUvYv0zEGYdhBMI/UzuQ1S2YtCfaiOZxmVSBJ9Qcjfl5QYH5VrJUPW2IQ/q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jQmUXJ4F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DGeXJokV; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jv2CYmUai4bdHT2WYIIJOccWfhUTkSDbaDQgY1UmDQxsbQNTfN0NrZ95X+3AHhmyZVJ2yno0uANgHzkn/uSfqbdWxXnpQeDo+jaX1Z3XkRGUEEPj7NjUVJr+d3hBeAOq7+hfJFr0M2ZaehhEwM/SXF06p07cvQsLZqf7DTA213g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jJgMpks0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+NY87gwG; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 19 Mar 2025 20:38:01 -0000
+Date: Wed, 19 Mar 2025 21:00:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742416686;
+	s=2020; t=1742418039;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7LiAwfjPWB+2zhYydM4Duvf8bn21xZ2kI459x4c4lUU=;
-	b=jQmUXJ4FDWF0ypIdRT86fRblW7kHVY9GbSNOd0+2QMmc3RTyR+nTjjhTmyiwE3WEZVQekb
-	ktJJ/l07Tp+SW91PsTWwcIZGI+i43vJ5/K6HO8g3Mp5XnOknvAkEeTDxIqkOVKCwml4Uk3
-	GFGO4A9GvjOO7m6wVKmNvF0I1dV8b6G0zX3uYeSdydNXGQQnlouzMwCbKSt5BrJyzafhff
-	j4w3CKrq0td9kuTqa0WuhsQQfjCLHHl9cVikbBqkp+r+D10niWlC5js2an21Zad5iobJua
-	h0wJRDkGajgbHAWZ9Q14/tvysOAZq2KURBbmsBwvrs+Jxzm3FuqNGRPBaENMhg==
+	bh=ir8upkND02HSXe4wSidcVis+BSlqylVxwuVikBV4220=;
+	b=jJgMpks0yY05lkgSRwRxUbV/SR+MCmvesW9eGucMO2cjKq3psUNJUT8UcnGoRFL7bogb3R
+	XQ7CWHu5kCi61GcFVRGZREGqQSMOEbNeuwjGmWa7fz0W0xbsg4/0inQ0zvP6OqTo3GHl/6
+	XON7R9v7otZkcG4X4VRdBMJVPt/sk7NnjSwYWh3tasrKcF7tL7nRdqJsTAdnbu80aRTc96
+	kG3ZnlkJTFdBCWvETp6rB2BFwY6cxAYIgF58rueNwbMvGJ7nJjXwqcKUVZZXanHMUDcpwD
+	TGXe4Jop5aRCnRYsXbmI93ABH7L4QKeaYUMJbK1YJwJvEzjpADRd05lkMHCSJA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742416686;
+	s=2020e; t=1742418039;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7LiAwfjPWB+2zhYydM4Duvf8bn21xZ2kI459x4c4lUU=;
-	b=DGeXJokVvbqAOqhjhE0YK+zCcYbJMPvQRkPf3iNhrv9KaFf7fXnVYGvpvzgLLp4DvdzB9i
-	xQSTpwtlmNZIrpDg==
-From: "tip-bot2 for Michael Jeanson" <tip-bot2@linutronix.de>
+	bh=ir8upkND02HSXe4wSidcVis+BSlqylVxwuVikBV4220=;
+	b=+NY87gwGDohKc5puH7oQ8wG3IxEepz2zOIHEixdzBqczGno75ixytyuiJLU3pi5l3GQ8Wa
+	hETYmPUJy5Dcc8BA==
+From: "tip-bot2 for Akihiro Suda" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] rseq/selftests: Fix namespace collision with rseq
- UAPI header
-Cc: Mark Brown <broonie@kernel.org>, Michael Jeanson <mjeanson@efficios.com>,
- Ingo Molnar <mingo@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/pkeys: Add quirk to disable PKU when
+ XFEATURE_PKRU is missing
+Cc: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>,
+ Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250319202144.1141542-1-mjeanson@efficios.com>
-References: <20250319202144.1141542-1-mjeanson@efficios.com>
+In-Reply-To: <20250314084818.2826-1-akihiro.suda.cz@hco.ntt.co.jp>
+References: <20250314084818.2826-1-akihiro.suda.cz@hco.ntt.co.jp>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174241668197.14745.5581057115219146862.tip-bot2@tip-bot2>
+Message-ID: <174241802871.14745.6675007869652392275.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,51 +81,69 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d047e32b8d1b29d178074b5f4312372e991d5da2
-Gitweb:        https://git.kernel.org/tip/d047e32b8d1b29d178074b5f4312372e991d5da2
-Author:        Michael Jeanson <mjeanson@efficios.com>
-AuthorDate:    Wed, 19 Mar 2025 16:21:39 -04:00
+Commit-ID:     2ae30fa4ee58535d122f79c6860fbbab87b20b06
+Gitweb:        https://git.kernel.org/tip/2ae30fa4ee58535d122f79c6860fbbab87b20b06
+Author:        Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
+AuthorDate:    Fri, 14 Mar 2025 17:48:18 +09:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 19 Mar 2025 21:26:24 +01:00
+CommitterDate: Wed, 19 Mar 2025 21:47:11 +01:00
 
-rseq/selftests: Fix namespace collision with rseq UAPI header
+x86/pkeys: Add quirk to disable PKU when XFEATURE_PKRU is missing
 
-When the rseq UAPI header is included, 'union rseq' clashes with 'struct
-rseq'. It's not the case in the rseq selftests but it does break the KVM
-selftests that also include this file.
+Even when X86_FEATURE_PKU and X86_FEATURE_OSPKE are available,
+XFEATURE_PKRU can be missing on some popular VM environments
+such as Apple Virtualization.
 
-Rename 'union rseq' to 'union rseq_tls' to fix this.
+In such a case, pkeys has to be disabled to avoid a boot time hang:
 
-Fixes: e6644c967d3c ("rseq/selftests: Ensure the rseq ABI TLS is actually 1024 bytes")
-Reported-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+  WARNING: CPU: 0 PID: 1 at arch/x86/kernel/fpu/xstate.c:1003 get_xsave_addr_user+0x28/0x40
+  (...)
+  Call Trace:
+   <TASK>
+   ? get_xsave_addr_user+0x28/0x40
+   ? __warn.cold+0x8e/0xea
+   ? get_xsave_addr_user+0x28/0x40
+   ? report_bug+0xff/0x140
+   ? handle_bug+0x3b/0x70
+   ? exc_invalid_op+0x17/0x70
+   ? asm_exc_invalid_op+0x1a/0x20
+   ? get_xsave_addr_user+0x28/0x40
+   copy_fpstate_to_sigframe+0x1be/0x380
+   ? __put_user_8+0x11/0x20
+   get_sigframe+0xf1/0x280
+   x64_setup_rt_frame+0x67/0x2c0
+   arch_do_signal_or_restart+0x1b3/0x240
+   syscall_exit_to_user_mode+0xb0/0x130
+   do_syscall_64+0xab/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Tested with MacOS 13.5.2 running on MacBook Pro 2020 with
+Intel(R) Core(TM) i7-1068NG7 CPU @ 2.30GHz.
+
+Fixes: 70044df250d0 ("x86/pkeys: Update PKRU to enable all pkeys before XSAVE")
+Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/r/20250319202144.1141542-1-mjeanson@efficios.com
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20250314084818.2826-1-akihiro.suda.cz@hco.ntt.co.jp
 ---
- tools/testing/selftests/rseq/rseq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/rseq/rseq.c b/tools/testing/selftests/rseq/rseq.c
-index 6d8997d..663a9ce 100644
---- a/tools/testing/selftests/rseq/rseq.c
-+++ b/tools/testing/selftests/rseq/rseq.c
-@@ -75,13 +75,13 @@ static int rseq_ownership;
-  * Use a union to ensure we allocate a TLS area of 1024 bytes to accomodate an
-  * rseq registration that is larger than the current rseq ABI.
-  */
--union rseq {
-+union rseq_tls {
- 	struct rseq_abi abi;
- 	char dummy[RSEQ_THREAD_AREA_ALLOC_SIZE];
- };
- 
- static
--__thread union rseq __rseq __attribute__((tls_model("initial-exec"))) = {
-+__thread union rseq_tls __rseq __attribute__((tls_model("initial-exec"))) = {
- 	.abi = {
- 		.cpu_id = RSEQ_ABI_CPU_ID_UNINITIALIZED,
- 	},
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 7cce91b..5def904 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -517,7 +517,8 @@ static bool pku_disabled;
+ static __always_inline void setup_pku(struct cpuinfo_x86 *c)
+ {
+ 	if (c == &boot_cpu_data) {
+-		if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU))
++		if (pku_disabled || !cpu_feature_enabled(X86_FEATURE_PKU) ||
++		    !cpu_has_xfeatures(XFEATURE_PKRU, NULL))
+ 			return;
+ 		/*
+ 		 * Setting CR4.PKE will cause the X86_FEATURE_OSPKE cpuid
 
