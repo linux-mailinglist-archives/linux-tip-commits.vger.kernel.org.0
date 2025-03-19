@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-4342-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4346-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58393A68AB2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 12:08:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DDAA68AAF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 12:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5CDA1B615D6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 11:05:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3459D46007E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 19 Mar 2025 11:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E79C25743C;
-	Wed, 19 Mar 2025 11:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B7E2580CE;
+	Wed, 19 Mar 2025 11:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qj3H41zv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bKylDKyX"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1tYJhHje";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/QFnUvm5"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62502566E2;
-	Wed, 19 Mar 2025 11:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB7725525D;
+	Wed, 19 Mar 2025 11:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742382223; cv=none; b=f3a9KUh9DDXoOxDsi0xfSbP17CD3GtHrEqXV26OJB8991E6qRkkNLsoZpw3k/4ZORxl86xKBd94yPpS9Ewc7AxBE9j3Z2TWKBfMMSkDefYR3NOnUP2UAjpzCeCw/n/rF15pPVWn6W8bBVlh22cEgmM2Z9BkPHeSVWNb5K0QFqDk=
+	t=1742382224; cv=none; b=Gl6d1YqpWwWZKzfFs0K4uSktAlV8MEtq7MdHkGUjJeAPyxEOoHeq0rXPJoHeClAk1yK9E85GpoUQ3ZCGt34u+fjwTMuqztyUoKsj7gn6QDX//b44WtGJcpkpws/1F3Yc4u+GZ1mHmllnKILBYcKcRMw0EnSGmD0USyqsz3JM6IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742382223; c=relaxed/simple;
-	bh=fhr+CJUgWgIPv9Px7LMc7G/AQyNLD/htbqW0NfAZcuI=;
+	s=arc-20240116; t=1742382224; c=relaxed/simple;
+	bh=LYXBrsjI+ayklBs6J6PdkBWkkECaFSPilQ4CauslOIQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=kG2eU1gjx0f+R7w37daHb9EYNYXXE7Lz7Tsbxv1ybxhUF6yBelGvvdCbKXnYvUZA5hhC0EW7UgIdct4tVFW9xVD8nnGyi0wqfV0cKtIiybdS2LhmVO9aNJ7JG7PNpjn6mLoHM3hsO1XX38Rr6wmdzWht+rs2VsgG7bdX2sWOjEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qj3H41zv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bKylDKyX; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=B3Lrz1AX331N2rQm5dN7mTapArqqwBWwKSQmTbvrDrgyE8qk+l1rFJeNHmdFmVKWNhcz8ajq8MOwrBNOGAcVVg5GFHMY7aSh+uERAPiigEeKv7rIp1gsyKanIvyB/7fELpHNjjWSsoDLc3cs2hjEBOvclrNTVTktLgMrNfiVfQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1tYJhHje; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/QFnUvm5; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 19 Mar 2025 11:03:38 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CxCVvMPy284T3UnuOHfOUWpfrG0XlyImKcW369dEVXE=;
-	b=qj3H41zvstRrpNvSuGREcax4jXztbq44NKdjJQEv05/kg/eW+QYTjh6/w5yj1iCsfssjrT
-	lTcmTmPz703gFNeUY7QHY02UhKHRDoNbD8O+0bvF+Ia0NGelRSdS9SJFqegLxUZ5SEWiOL
-	Gnjjtc+fm3v0D6LaPz7YZsVC9vJNtPTiIxQsgYasm3MGF7Jw5qnOeg2DjNKCaS6Y+4wGY1
-	PWVUQ5zF/U3p3S6Wnd4SSQ+Cn36GgGYhZUfGaFytKsMPDsrNMuVpPiHjTZcaCVN5B9vEdN
-	xy8GsIMkh+ZKb3BMrFjgRq1GIdm/WvA+wbSfxYFhPf5uuafneGanX4Nzp951bA==
+	bh=J0ELpMFZxPTVjGiKEuwFLcLIVh4IfJDWdCTgKN1FrLQ=;
+	b=1tYJhHje4QpOXS0nmpttF1PjI3aV6DyWBFH593GH+uv1H/t/lcao2ef20Lklra5U3pJF7L
+	MwqFPbXXDIzxC3zTEXdHs+lQf3OYkuuHtUzX1kPgob+zUKIRtzfm6H4gyr/jE1j9ADm2w/
+	6hOLJhMvv4WeCQ5+z2yGpqYd3We2j0LlfcKjRSPWy/P/34Ck+Cq6zUCWkjYn2er1i7Kgbg
+	RTqZ/3PLuoi9KNqDNu+HEaSOBvza3cyNEcCe35pnmZYGs+/4qdHcK8m4AEoSd24Sjcudpc
+	SzNI2fX7CwrA88J0b90mF5Hz+s9GbHJMkB7OW2fBWBFaHl+qtgbpTtDEO1LGcg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1742382219;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,29 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CxCVvMPy284T3UnuOHfOUWpfrG0XlyImKcW369dEVXE=;
-	b=bKylDKyXm9S6h/CAokn64X85G9d5LugxCNo5jJOtoP9WTsMpGw7ZmOVmvLRJJCfa7E1kEW
-	aYESDLtkoZEQSqAg==
+	bh=J0ELpMFZxPTVjGiKEuwFLcLIVh4IfJDWdCTgKN1FrLQ=;
+	b=/QFnUvm5GLUP/3/e44bWAyEZfSdeK4O89dVKrfZaQnavzM7IXQT88A1rDh8uAp9vr6pnHa
+	tJbhuF47KfOfECDw==
 From: "tip-bot2 for Sohil Mehta" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/cpu/intel: Fix fast string initialization for
- extended Families
+Subject: [tip: x86/core] x86/smpboot: Fix INIT delay assignment for extended
+ Intel Families
 Cc: Sohil Mehta <sohil.mehta@intel.com>, Ingo Molnar <mingo@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
- Juergen Gross <jgross@suse.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250219184133.816753-12-sohil.mehta@intel.com>
-References: <20250219184133.816753-12-sohil.mehta@intel.com>
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250219184133.816753-11-sohil.mehta@intel.com>
+References: <20250219184133.816753-11-sohil.mehta@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174238221831.14745.12528895945817080306.tip-bot2@tip-bot2>
+Message-ID: <174238221892.14745.2711535962153025870.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,97 +81,50 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     15b7ddcf66fb7ac371279be23b3b6008dad3e36c
-Gitweb:        https://git.kernel.org/tip/15b7ddcf66fb7ac371279be23b3b6008dad3e36c
+Commit-ID:     7a2ad752746bfb13e89a83984ecc52a48bae4969
+Gitweb:        https://git.kernel.org/tip/7a2ad752746bfb13e89a83984ecc52a48bae4969
 Author:        Sohil Mehta <sohil.mehta@intel.com>
-AuthorDate:    Wed, 19 Feb 2025 18:41:29 
+AuthorDate:    Wed, 19 Feb 2025 18:41:28 
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 19 Mar 2025 11:19:51 +01:00
+CommitterDate: Wed, 19 Mar 2025 11:19:50 +01:00
 
-x86/cpu/intel: Fix fast string initialization for extended Families
+x86/smpboot: Fix INIT delay assignment for extended Intel Families
 
-X86_FEATURE_REP_GOOD is a linux defined feature flag to track whether
-fast string operations should be used for copy_page(). It is also used
-as a second alternative for clear_page() if enhanced fast string
-operations (ERMS) are not available.
+Some old crusty CPUs need an extra delay that slows down booting. See
+the comment above 'init_udelay' for details. Newer CPUs don't need the
+delay.
 
-X86_FEATURE_ERMS is an Intel-specific hardware-defined feature flag that
-tracks hardware support for Enhanced Fast strings.  It is used to track
-whether Fast strings should be used for similar memory copy and memory
-clearing operations.
+Right now, for Intel, Family 6 and only Family 6 skips the delay. That
+leaves out both the Family 15 (Pentium 4s) and brand new Family 18/19
+models.
 
-On top of these, there is a FAST_STRING enable bit in the
-IA32_MISC_ENABLE MSR. It is typically controlled by the BIOS to provide
-a hint to the hardware and the OS on whether fast string operations are
-preferred.
+The omission of Family 15 (Pentium 4s) seems like an oversight and 18/19
+do not need the delay.
 
-Commit:
-
-  161ec53c702c ("x86, mem, intel: Initialize Enhanced REP MOVSB/STOSB")
-
-introduced a mechanism to honor the BIOS preference for fast string
-operations and clear the above feature flags if needed.
-
-Unfortunately, the current initialization code for Intel to set and
-clear these bits is confusing at best and likely incorrect.
-
-X86_FEATURE_REP_GOOD is cleared in early_init_intel() if
-MISC_ENABLE.FAST_STRING is 0. But it gets set later on unconditionally
-for all Family 6 processors in init_intel(). This not only overrides the
-BIOS preference but also contradicts the earlier check.
-
-Fix this by combining the related checks and always relying on the BIOS
-provided preference for fast string operations. This simplification
-makes sure the upcoming Intel Family 18 and 19 models are covered as
-well.
+Skip the delay on all Intel processors Family 6 and beyond.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250219184133.816753-12-sohil.mehta@intel.com
+Link: https://lore.kernel.org/r/20250219184133.816753-11-sohil.mehta@intel.com
 ---
- arch/x86/kernel/cpu/intel.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/x86/kernel/smpboot.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index ae20f45..2181304 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -289,12 +289,19 @@ static void early_init_intel(struct cpuinfo_x86 *c)
- 		clear_cpu_cap(c, X86_FEATURE_PAT);
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 5e586f5..d6cf1e2 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -656,9 +656,9 @@ static void __init smp_set_init_udelay(void)
+ 		return;
  
- 	/*
--	 * If fast string is not enabled in IA32_MISC_ENABLE for any reason,
--	 * clear the fast string and enhanced fast string CPU capabilities.
-+	 * Modern CPUs are generally expected to have a sane fast string
-+	 * implementation. However, BIOSes typically have a knob to tweak
-+	 * the architectural MISC_ENABLE.FAST_STRING enable bit.
-+	 *
-+	 * Adhere to the preference and program the Linux-defined fast
-+	 * string flag and enhanced fast string capabilities accordingly.
- 	 */
--	if (c->x86 > 6 || (c->x86 == 6 && c->x86_model >= 0xd)) {
-+	if (c->x86_vfm >= INTEL_PENTIUM_M_DOTHAN) {
- 		rdmsrl(MSR_IA32_MISC_ENABLE, misc_enable);
--		if (!(misc_enable & MSR_IA32_MISC_ENABLE_FAST_STRING)) {
-+		if (misc_enable & MSR_IA32_MISC_ENABLE_FAST_STRING) {
-+			/* X86_FEATURE_ERMS is set based on CPUID */
-+			set_cpu_cap(c, X86_FEATURE_REP_GOOD);
-+		} else {
- 			pr_info("Disabled fast string operations\n");
- 			setup_clear_cpu_cap(X86_FEATURE_REP_GOOD);
- 			setup_clear_cpu_cap(X86_FEATURE_ERMS);
-@@ -545,8 +552,6 @@ static void init_intel(struct cpuinfo_x86 *c)
- #ifdef CONFIG_X86_64
- 	if (c->x86 == 15)
- 		c->x86_cache_alignment = c->x86_clflush_size * 2;
--	if (c->x86 == 6)
--		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
- #else
- 	/*
- 	 * Names for the Pentium II/Celeron processors
+ 	/* if modern processor, use no delay */
+-	if (((boot_cpu_data.x86_vendor == X86_VENDOR_INTEL) && (boot_cpu_data.x86 == 6)) ||
+-	    ((boot_cpu_data.x86_vendor == X86_VENDOR_HYGON) && (boot_cpu_data.x86 >= 0x18)) ||
+-	    ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD) && (boot_cpu_data.x86 >= 0xF))) {
++	if ((boot_cpu_data.x86_vendor == X86_VENDOR_INTEL && boot_cpu_data.x86_vfm >= INTEL_PENTIUM_PRO) ||
++	    (boot_cpu_data.x86_vendor == X86_VENDOR_HYGON && boot_cpu_data.x86 >= 0x18) ||
++	    (boot_cpu_data.x86_vendor == X86_VENDOR_AMD   && boot_cpu_data.x86 >= 0xF)) {
+ 		init_udelay = 0;
+ 		return;
+ 	}
 
