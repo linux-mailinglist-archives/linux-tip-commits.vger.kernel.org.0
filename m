@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-4419-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4420-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53D1A6C810
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Mar 2025 08:31:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2C7A6C81C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Mar 2025 08:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A9217CAD5
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Mar 2025 07:31:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D62F17CFC4
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Mar 2025 07:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47424155326;
-	Sat, 22 Mar 2025 07:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DF518952C;
+	Sat, 22 Mar 2025 07:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GGPlXjv5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YHLjIfwl"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4itEqZW2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LZmjtscw"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8D122612;
-	Sat, 22 Mar 2025 07:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CF82868B;
+	Sat, 22 Mar 2025 07:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742628661; cv=none; b=RrQg4F0JhbLmCNO5jZY295GX8Bx9wBaTkCUezx4j05xPjMjZU5jhvF8/rsyZ8AzOVTMcOz8rOF2UMMIHGBvR7v4lCu46B0HVsf0ij2nqJ5IYGngBie4OzNbYA/ZwjrOaoFH3lCZJ5kNyS/SFWKl95d09GPZXg0p6w2Fu7SIV1N4=
+	t=1742629320; cv=none; b=MxsVxaw+Vc6AlzjU8it7lncgerCa1gGlakp5RFTjmsutREbysiveoDFNK9tAgiZ4T5ogQBRwiyvHxiqag2bzrUYKxXCSXVMMe4N7/uRzUjdkRBhUU794hDNr3JUeDm43SVwSbtaTuwPYPCd0qwAHy1H1vhIdt7F8vSX3OLfuT84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742628661; c=relaxed/simple;
-	bh=MaJZC2yara0sCKeZWwyBqH4ZWak9labAABqVHTMUd88=;
+	s=arc-20240116; t=1742629320; c=relaxed/simple;
+	bh=Uw9/gC9Zg+3dVzws4MAEK3b5DOnbroOmD/qTvzXt30E=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gMZIHRVvYXZ0m9HbzyCm/aZZwlyLaBvPKjKVr2wy3EQZBOc5o1GtBW77ycB34tKfkBT+uOJFkos1noAdM46xBarPemjABaJLHLYPaCjJmam+RB21sfK6qEeR/9I1sY6+B9MQUqi6iqF9m3Rx0Vz75HAC/QVEMyGuFJTcBXrTsYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GGPlXjv5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YHLjIfwl; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=q5r7PpCDgHVsXruwRlLAROlVZtl7t/rc/D+XLMiXEo5RIdRNXwy2kqTvpw0DTowRA7xHOrPf236FIxxN++cvQ2QwkdlDRdg4Lg2GEi6PSPxOsjGLXJmdngXablV62tDtdp0UU7Xq3NbhSWXvUYWUEvN1H09jljPTspBB4tRQTdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4itEqZW2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LZmjtscw; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 22 Mar 2025 07:30:51 -0000
+Date: Sat, 22 Mar 2025 07:41:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742628657;
+	s=2020; t=1742629316;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MduWMwHSYC5ybm3DUm6GJPv0P1176l7Z8NUijNxW8M8=;
-	b=GGPlXjv50KBlE6mR8n7OVThEgS8mESQNoQPBIGlG+rpyaWH/YSPdUfi2C33aN26CEAz2JR
-	SwK74SBJPb094gxA//1aj7XE8S4vBK/aDWc0kbDi4/LQSUK7mh1hKT3ZhUZpqXL1Jm4Gkg
-	Xr+asWqc5nFJO4DyUv65drnmLY5j0quA/zBmEUad1ZicaI17vZKyfTee7NUDCUnWpbZ0ML
-	EIyisW1LDnc5TTUp6922JDQa5dxrAP+oiJomfTl49G7DJUkqwZ5yC3DStzClpPD0nmMQCH
-	bHhSikdGqV9q7uTiToK++fWnJG5YCKrtgsPw9Ydh73h19U896KeukZyt6o0TXA==
+	bh=gdlJKnOkZ6PTszVGWvmmRWsLkA/cQ3OAOFvnDSMODBI=;
+	b=4itEqZW2H0e1uI/hpaBtg89L+pwPKre6H2AU4xG9IbgrHOw2AEkj2+uC6q3QktxauNLIXo
+	26aNIBIhyCbYl+l+dSMkQvTQorbvyliYn7GMbsMzq+9mfjpdj26O5+pFRIhfKxL4iMsvNv
+	CAMLIkCEU0lEZjoMDAerWNI3nqyPWK8M5OoqCiP0skYAePxc9X07PV8/HDARd8gf9/lPyi
+	63aZRfEcSkAsXnNuIxgTXJBAR9VnDDSRr254vsuLUAX2K1LTVrv6GWKYjwEX8DBrXZ2QDL
+	A4Hwztb8Sz3YoTmt4a36S2ktCDo9ANwAth2NIcgtJZ/Y9KnwqihN4vOWhlbvrA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742628657;
+	s=2020e; t=1742629316;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MduWMwHSYC5ybm3DUm6GJPv0P1176l7Z8NUijNxW8M8=;
-	b=YHLjIfwlH/QlL8Afg46sOJzAjdz4Ml3qbeVj+v6RJQbrzKdRbOdsNhdopDceG5GBEe3p8p
-	k13EnPO0dYQi/FDQ==
-From: "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
+	bh=gdlJKnOkZ6PTszVGWvmmRWsLkA/cQ3OAOFvnDSMODBI=;
+	b=LZmjtscwkwNJ9r6wnv18BtKonEgZ5rfDV652pr3qKaxpS7cZrBxxslUt4VUMhLJFURCQNJ
+	tZRxBn1vj9uJ87Dw==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/urgent] perf/amd/ibs: Prevent leaking sensitive data to userspace
-Cc: Matteo Rizzo <matteorizzo@google.com>, Namhyung Kim <namhyung@kernel.org>,
- Ravi Bangoria <ravi.bangoria@amd.com>, Ingo Molnar <mingo@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/core] tracing: Disable branch profiling in noinstr code
+Cc: Ingo Molnar <mingo@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250321161251.1033-1-ravi.bangoria@amd.com>
-References: <20250321161251.1033-1-ravi.bangoria@amd.com>
+In-Reply-To:
+ <fb94fc9303d48a5ed370498f54500cc4c338eb6d.1742586676.git.jpoimboe@kernel.org>
+References:
+ <fb94fc9303d48a5ed370498f54500cc4c338eb6d.1742586676.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174262865140.14745.9326438938807692123.tip-bot2@tip-bot2>
+Message-ID: <174262931532.14745.2071511367338932162.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,180 +82,252 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     50a53b60e141d7e31368a87e222e4dd5597bd4ae
-Gitweb:        https://git.kernel.org/tip/50a53b60e141d7e31368a87e222e4dd5597bd4ae
-Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Sat, 22 Mar 2025 08:13:01 +01:00
+Commit-ID:     559bd31518390f80993cd7481cc70fedbfde1c73
+Gitweb:        https://git.kernel.org/tip/559bd31518390f80993cd7481cc70fedbfde1c73
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Fri, 21 Mar 2025 12:53:32 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 22 Mar 2025 08:18:24 +01:00
+CommitterDate: Sat, 22 Mar 2025 08:31:10 +01:00
 
-perf/amd/ibs: Prevent leaking sensitive data to userspace
+tracing: Disable branch profiling in noinstr code
 
-Although IBS "swfilt" can prevent leaking samples with kernel RIP to the
-userspace, there are few subtle cases where a 'data' address and/or a
-'branch target' address can fall under kernel address range although RIP
-is from userspace. Prevent leaking kernel 'data' addresses by discarding
-such samples when {exclude_kernel=1,swfilt=1}.
+CONFIG_TRACE_BRANCH_PROFILING inserts a call to ftrace_likely_update()
+for each use of likely() or unlikely().  That breaks noinstr rules if
+the affected function is annotated as noinstr.
 
-IBS can now be invoked by unprivileged user with the introduction of
-"swfilt". However, this creates a loophole in the interface where an
-unprivileged user can get physical address of the userspace virtual
-addresses through IBS register raw dump (PERF_SAMPLE_RAW). Prevent this
-as well.
+Disable branch profiling for files with noinstr functions.  In addition
+to some individual files, this also includes the entire arch/x86
+subtree, as well as the kernel/entry, drivers/cpuidle, and drivers/idle
+directories, all of which are noinstr-heavy.
 
-This upstream commit fixed the most obvious leak:
+Due to the nature of how sched binaries are built by combining multiple
+.c files into one, branch profiling is disabled more broadly across the
+sched code than would otherwise be needed.
 
-  65a99264f5e5 perf/x86: Check data address for IBS software filter
+This fixes many warnings like the following:
 
-Follow that up with a more complete fix.
+  vmlinux.o: warning: objtool: do_syscall_64+0x40: call to ftrace_likely_update() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: __rdgsbase_inactive+0x33: call to ftrace_likely_update() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: handle_bug.isra.0+0x198: call to ftrace_likely_update() leaves .noinstr.text section
+  ...
 
-Fixes: d29e744c7167 ("perf/x86: Relax privilege filter restriction on AMD IBS")
-Suggested-by: Matteo Rizzo <matteorizzo@google.com>
-Co-developed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250321161251.1033-1-ravi.bangoria@amd.com
+Link: https://lore.kernel.org/r/fb94fc9303d48a5ed370498f54500cc4c338eb6d.1742586676.git.jpoimboe@kernel.org
 ---
- arch/x86/events/amd/ibs.c | 84 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 78 insertions(+), 6 deletions(-)
+ arch/x86/Kbuild                    | 4 ++++
+ arch/x86/coco/sev/core.c           | 2 --
+ arch/x86/kernel/head64.c           | 2 --
+ arch/x86/mm/kasan_init_64.c        | 1 -
+ arch/x86/mm/mem_encrypt_amd.c      | 2 --
+ arch/x86/mm/mem_encrypt_identity.c | 2 --
+ drivers/acpi/Makefile              | 4 ++++
+ drivers/cpuidle/Makefile           | 3 +++
+ drivers/idle/Makefile              | 5 ++++-
+ kernel/Makefile                    | 5 +++++
+ kernel/entry/Makefile              | 3 +++
+ kernel/sched/Makefile              | 5 +++++
+ kernel/time/Makefile               | 6 ++++++
+ lib/Makefile                       | 5 +++++
+ 14 files changed, 39 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index c465005..e36c9c6 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -941,6 +941,8 @@ static void perf_ibs_get_mem_lock(union ibs_op_data3 *op_data3,
- 		data_src->mem_lock = PERF_MEM_LOCK_LOCKED;
- }
+diff --git a/arch/x86/Kbuild b/arch/x86/Kbuild
+index cf0ad89..f7fb3d8 100644
+--- a/arch/x86/Kbuild
++++ b/arch/x86/Kbuild
+@@ -1,4 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
++
++# Branch profiling isn't noinstr-safe.  Disable it for arch/x86/*
++subdir-ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
++
+ obj-$(CONFIG_ARCH_HAS_CC_PLATFORM) += coco/
  
-+/* Be careful. Works only for contiguous MSRs. */
-+#define ibs_fetch_msr_idx(msr)	(msr - MSR_AMD64_IBSFETCHCTL)
- #define ibs_op_msr_idx(msr)	(msr - MSR_AMD64_IBSOPCTL)
+ obj-y += entry/
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index 96c7bc6..d14bce0 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -9,8 +9,6 @@
  
- static void perf_ibs_get_data_src(struct perf_ibs_data *ibs_data,
-@@ -1036,6 +1038,67 @@ static int perf_ibs_get_offset_max(struct perf_ibs *perf_ibs, u64 sample_type,
- 	return 1;
- }
+ #define pr_fmt(fmt)	"SEV: " fmt
  
-+static bool perf_ibs_is_kernel_data_addr(struct perf_event *event,
-+					 struct perf_ibs_data *ibs_data)
-+{
-+	u64 sample_type_mask = PERF_SAMPLE_ADDR | PERF_SAMPLE_RAW;
-+	union ibs_op_data3 op_data3;
-+	u64 dc_lin_addr;
-+
-+	op_data3.val = ibs_data->regs[ibs_op_msr_idx(MSR_AMD64_IBSOPDATA3)];
-+	dc_lin_addr = ibs_data->regs[ibs_op_msr_idx(MSR_AMD64_IBSDCLINAD)];
-+
-+	return unlikely((event->attr.sample_type & sample_type_mask) &&
-+			op_data3.dc_lin_addr_valid && kernel_ip(dc_lin_addr));
-+}
-+
-+static bool perf_ibs_is_kernel_br_target(struct perf_event *event,
-+					 struct perf_ibs_data *ibs_data,
-+					 int br_target_idx)
-+{
-+	union ibs_op_data op_data;
-+	u64 br_target;
-+
-+	op_data.val = ibs_data->regs[ibs_op_msr_idx(MSR_AMD64_IBSOPDATA)];
-+	br_target = ibs_data->regs[br_target_idx];
-+
-+	return unlikely((event->attr.sample_type & PERF_SAMPLE_RAW) &&
-+			op_data.op_brn_ret && kernel_ip(br_target));
-+}
-+
-+static bool perf_ibs_swfilt_discard(struct perf_ibs *perf_ibs, struct perf_event *event,
-+				    struct pt_regs *regs, struct perf_ibs_data *ibs_data,
-+				    int br_target_idx)
-+{
-+	if (perf_exclude_event(event, regs))
-+		return true;
-+
-+	if (perf_ibs != &perf_ibs_op || !event->attr.exclude_kernel)
-+		return false;
-+
-+	if (perf_ibs_is_kernel_data_addr(event, ibs_data))
-+		return true;
-+
-+	if (br_target_idx != -1 &&
-+	    perf_ibs_is_kernel_br_target(event, ibs_data, br_target_idx))
-+		return true;
-+
-+	return false;
-+}
-+
-+static void perf_ibs_phyaddr_clear(struct perf_ibs *perf_ibs,
-+				   struct perf_ibs_data *ibs_data)
-+{
-+	if (perf_ibs == &perf_ibs_op) {
-+		ibs_data->regs[ibs_op_msr_idx(MSR_AMD64_IBSOPDATA3)] &= ~(1ULL << 18);
-+		ibs_data->regs[ibs_op_msr_idx(MSR_AMD64_IBSDCPHYSAD)] = 0;
-+		return;
-+	}
-+
-+	ibs_data->regs[ibs_fetch_msr_idx(MSR_AMD64_IBSFETCHCTL)] &= ~(1ULL << 52);
-+	ibs_data->regs[ibs_fetch_msr_idx(MSR_AMD64_IBSFETCHPHYSAD)] = 0;
-+}
-+
- static int perf_ibs_handle_irq(struct perf_ibs *perf_ibs, struct pt_regs *iregs)
- {
- 	struct cpu_perf_ibs *pcpu = this_cpu_ptr(perf_ibs->pcpu);
-@@ -1048,6 +1111,7 @@ static int perf_ibs_handle_irq(struct perf_ibs *perf_ibs, struct pt_regs *iregs)
- 	int offset, size, check_rip, offset_max, throttle = 0;
- 	unsigned int msr;
- 	u64 *buf, *config, period, new_config = 0;
-+	int br_target_idx = -1;
- 
- 	if (!test_bit(IBS_STARTED, pcpu->state)) {
- fail:
-@@ -1102,6 +1166,7 @@ fail:
- 		if (perf_ibs == &perf_ibs_op) {
- 			if (ibs_caps & IBS_CAPS_BRNTRGT) {
- 				rdmsrl(MSR_AMD64_IBSBRTARGET, *buf++);
-+				br_target_idx = size;
- 				size++;
- 			}
- 			if (ibs_caps & IBS_CAPS_OPDATA4) {
-@@ -1128,16 +1193,20 @@ fail:
- 		regs.flags |= PERF_EFLAGS_EXACT;
- 	}
- 
--	if (perf_ibs == &perf_ibs_op)
--		perf_ibs_parse_ld_st_data(event->attr.sample_type, &ibs_data, &data);
+-#define DISABLE_BRANCH_PROFILING
 -
- 	if ((event->attr.config2 & IBS_SW_FILTER_MASK) &&
--	    (perf_exclude_event(event, &regs) ||
--	     ((data.sample_flags & PERF_SAMPLE_ADDR) &&
--	      event->attr.exclude_kernel && kernel_ip(data.addr)))) {
-+	    perf_ibs_swfilt_discard(perf_ibs, event, &regs, &ibs_data, br_target_idx)) {
- 		throttle = perf_event_account_interrupt(event);
- 		goto out;
- 	}
-+	/*
-+	 * Prevent leaking physical addresses to unprivileged users. Skip
-+	 * PERF_SAMPLE_PHYS_ADDR check since generic code prevents it for
-+	 * unprivileged users.
-+	 */
-+	if ((event->attr.sample_type & PERF_SAMPLE_RAW) &&
-+	    perf_allow_kernel(&event->attr)) {
-+		perf_ibs_phyaddr_clear(perf_ibs, &ibs_data);
-+	}
+ #include <linux/sched/debug.h>	/* For show_regs() */
+ #include <linux/percpu-defs.h>
+ #include <linux/cc_platform.h>
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 05f8b8a..fa9b633 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -5,8 +5,6 @@
+  *  Copyright (C) 2000 Andrea Arcangeli <andrea@suse.de> SuSE
+  */
  
- 	if (event->attr.sample_type & PERF_SAMPLE_RAW) {
- 		raw = (struct perf_raw_record){
-@@ -1149,6 +1218,9 @@ fail:
- 		perf_sample_save_raw_data(&data, event, &raw);
- 	}
+-#define DISABLE_BRANCH_PROFILING
+-
+ /* cpu_feature_enabled() cannot be used this early */
+ #define USE_EARLY_PGTABLE_L5
  
-+	if (perf_ibs == &perf_ibs_op)
-+		perf_ibs_parse_ld_st_data(event->attr.sample_type, &ibs_data, &data);
+diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
+index 9dddf19..0539efd 100644
+--- a/arch/x86/mm/kasan_init_64.c
++++ b/arch/x86/mm/kasan_init_64.c
+@@ -1,5 +1,4 @@
+ // SPDX-License-Identifier: GPL-2.0
+-#define DISABLE_BRANCH_PROFILING
+ #define pr_fmt(fmt) "kasan: " fmt
+ 
+ /* cpu_feature_enabled() cannot be used this early */
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index b56c5c0..7490ff6 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -7,8 +7,6 @@
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
+  */
+ 
+-#define DISABLE_BRANCH_PROFILING
+-
+ #include <linux/linkage.h>
+ #include <linux/init.h>
+ #include <linux/mm.h>
+diff --git a/arch/x86/mm/mem_encrypt_identity.c b/arch/x86/mm/mem_encrypt_identity.c
+index e6c7686..4e991de 100644
+--- a/arch/x86/mm/mem_encrypt_identity.c
++++ b/arch/x86/mm/mem_encrypt_identity.c
+@@ -7,8 +7,6 @@
+  * Author: Tom Lendacky <thomas.lendacky@amd.com>
+  */
+ 
+-#define DISABLE_BRANCH_PROFILING
+-
+ /*
+  * Since we're dealing with identity mappings, physical and virtual
+  * addresses are the same, so override these defines which are ultimately
+diff --git a/drivers/acpi/Makefile b/drivers/acpi/Makefile
+index 40208a0..797070f 100644
+--- a/drivers/acpi/Makefile
++++ b/drivers/acpi/Makefile
+@@ -5,6 +5,10 @@
+ 
+ ccflags-$(CONFIG_ACPI_DEBUG)	+= -DACPI_DEBUG_OUTPUT
+ 
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_processor_idle.o += -DDISABLE_BRANCH_PROFILING
++endif
 +
- 	/*
- 	 * rip recorded by IbsOpRip will not be consistent with rsp and rbp
- 	 * recorded as part of interrupt regs. Thus we need to use rip from
+ #
+ # ACPI Boot-Time Table Parsing
+ #
+diff --git a/drivers/cpuidle/Makefile b/drivers/cpuidle/Makefile
+index d103342..1de9e92 100644
+--- a/drivers/cpuidle/Makefile
++++ b/drivers/cpuidle/Makefile
+@@ -3,6 +3,9 @@
+ # Makefile for cpuidle.
+ #
+ 
++# Branch profiling isn't noinstr-safe
++ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
++
+ obj-y += cpuidle.o driver.o governor.o sysfs.o governors/
+ obj-$(CONFIG_ARCH_NEEDS_CPU_IDLE_COUPLED) += coupled.o
+ obj-$(CONFIG_DT_IDLE_STATES)		  += dt_idle_states.o
+diff --git a/drivers/idle/Makefile b/drivers/idle/Makefile
+index 0a3c375..a34af1b 100644
+--- a/drivers/idle/Makefile
++++ b/drivers/idle/Makefile
+@@ -1,3 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_INTEL_IDLE)			+= intel_idle.o
+ 
++# Branch profiling isn't noinstr-safe
++ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
++
++obj-$(CONFIG_INTEL_IDLE)			+= intel_idle.o
+diff --git a/kernel/Makefile b/kernel/Makefile
+index 87866b0..434929d 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -21,6 +21,11 @@ ifdef CONFIG_FUNCTION_TRACER
+ CFLAGS_REMOVE_irq_work.o = $(CC_FLAGS_FTRACE)
+ endif
+ 
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_context_tracking.o += -DDISABLE_BRANCH_PROFILING
++endif
++
+ # Prevents flicker of uninteresting __do_softirq()/__local_bh_disable_ip()
+ # in coverage traces.
+ KCOV_INSTRUMENT_softirq.o := n
+diff --git a/kernel/entry/Makefile b/kernel/entry/Makefile
+index 095c775..d4b8bd0 100644
+--- a/kernel/entry/Makefile
++++ b/kernel/entry/Makefile
+@@ -6,6 +6,9 @@ KASAN_SANITIZE := n
+ UBSAN_SANITIZE := n
+ KCOV_INSTRUMENT := n
+ 
++# Branch profiling isn't noinstr-safe
++ccflags-$(CONFIG_TRACE_BRANCH_PROFILING) += -DDISABLE_BRANCH_PROFILING
++
+ CFLAGS_REMOVE_common.o	 = -fstack-protector -fstack-protector-strong
+ CFLAGS_common.o		+= -fno-stack-protector
+ 
+diff --git a/kernel/sched/Makefile b/kernel/sched/Makefile
+index 976092b..8ae8637 100644
+--- a/kernel/sched/Makefile
++++ b/kernel/sched/Makefile
+@@ -22,6 +22,11 @@ ifneq ($(CONFIG_SCHED_OMIT_FRAME_POINTER),y)
+ CFLAGS_core.o := $(PROFILING) -fno-omit-frame-pointer
+ endif
+ 
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_build_policy.o += -DDISABLE_BRANCH_PROFILING
++CFLAGS_build_utility.o += -DDISABLE_BRANCH_PROFILING
++endif
+ #
+ # Build efficiency:
+ #
+diff --git a/kernel/time/Makefile b/kernel/time/Makefile
+index fe0ae82..e6e9b85 100644
+--- a/kernel/time/Makefile
++++ b/kernel/time/Makefile
+@@ -1,4 +1,10 @@
+ # SPDX-License-Identifier: GPL-2.0
++
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_sched_clock.o += -DDISABLE_BRANCH_PROFILING
++endif
++
+ obj-y += time.o timer.o hrtimer.o sleep_timeout.o
+ obj-y += timekeeping.o ntp.o clocksource.o jiffies.o timer_list.o
+ obj-y += timeconv.o timecounter.o alarmtimer.o
+diff --git a/lib/Makefile b/lib/Makefile
+index d5cfc7a..4f3d00a 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -5,6 +5,11 @@
+ 
+ ccflags-remove-$(CONFIG_FUNCTION_TRACER) += $(CC_FLAGS_FTRACE)
+ 
++# Branch profiling isn't noinstr-safe
++ifdef CONFIG_TRACE_BRANCH_PROFILING
++CFLAGS_smp_processor_id.o += -DDISABLE_BRANCH_PROFILING
++endif
++
+ # These files are disabled because they produce lots of non-interesting and/or
+ # flaky coverage that is not a function of syscall inputs. For example,
+ # rbtree can be global and individual rotations don't correlate with inputs.
 
