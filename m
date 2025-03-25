@@ -1,80 +1,82 @@
-Return-Path: <linux-tip-commits+bounces-4466-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4468-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A99A6EBC4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 09:38:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD448A6EBC6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 09:38:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8993D16D5D2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 08:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0761895478
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 08:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AC72580D5;
-	Tue, 25 Mar 2025 08:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783DC2586D5;
+	Tue, 25 Mar 2025 08:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HB7IG2oD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c6OzyDsE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OngWmljs";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="45c8+9Xy"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C35925743E;
-	Tue, 25 Mar 2025 08:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48632257AED;
+	Tue, 25 Mar 2025 08:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742891714; cv=none; b=tcrYAn1vToEDBX+L2UMHcehtei1lxvWY26Cms4km/pxtgf8NxGUakjOq6000WjBQ4kOtNvQRumBGI3VVw8qMcs/pH/snflriu/pC8EejTmbNE0CYzwyWHE5osPifk3ZRQC9hAwQ7Wl+1NtyWCjDgmVxryyMFe7+ngyNKN4pyEKE=
+	t=1742891715; cv=none; b=KpUYv/z3P9MxaOBW9HflVbfX7JSP6k31w8Pdp82rYaN0wO0c3AecJOOhXLz1BlBBDeL73YglTCwyg+Ht07eRZ1FEA9JdHkXpc0bakU6oO9wMeg0jj4Rt5JnOz93F7Nl5XzXBtnMFtVo6rnkXX587Bv399F3HV+ROHido9O+YMDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742891714; c=relaxed/simple;
-	bh=HMHKKhxbHkT74qaSJ/2EQbHMFK31T+JYdwQXFALm0+A=;
+	s=arc-20240116; t=1742891715; c=relaxed/simple;
+	bh=QFBPsvx6/ycXHTZo6GlwH5tOm54KuE9ZTbTS/sSRHik=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VnWY7kaa5fRA7e0TIe4uLQRgazaQSv62Z5Xv08GceiFxl58V8HnSlOmcBS3uuxvfetooSgCkWdKE+NHWTB9nXxqaIb0LoSkNIK3WCLZIkNBdvBwjRB2CKsjIbmLilkESaksLodoW9JSrn5mX87j26VKsCumfIYTqE8pQ4D3ngnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HB7IG2oD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c6OzyDsE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=sEim/isjTNiM5pf4atC2YxIVLMWvmUn9JfrUc84/SbJvh1QrU+f9Y9N7wvJMgcsZPBIPq3tZNINdJgnOYkhII9kVw42A7MuaspK5gRmRLLQyDn+S2XE/pXAfsD9OadsSQyuWhLulGi+BL85OJmSQa26xswdIALLwcX+6W2nnj3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OngWmljs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=45c8+9Xy; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Mar 2025 08:35:10 -0000
+Date: Tue, 25 Mar 2025 08:35:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742891710;
+	s=2020; t=1742891712;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w65NSURQPqlLPTKxR/K2kyZiY2P7rh2rmzQaKoqFUHk=;
-	b=HB7IG2oDTrN/r47fgDys28SLpIU3J5dNAGrB85bWHY3oRovl8Z6AnWYtS/qeevS8JWSX6X
-	ILF757LY4A6C6Yqs2m8d/VAxxM7j+kjyHlEJexLwrfySdZCvSt0sd6Lwkw0+f3HxLHYhtf
-	HrNdzmzapZPdfUQWyzKp/VPqKDLQBAOJOtjtxcUpc5OrFfHlvftQety0EJv8L6aZFp3L8R
-	A8ISUb4Xt1K8+hO3v/jRH+2J7PKW57kh0NktwOjvUbVo3ZKAeb7wxntrecQVnczcqSJRpz
-	mZ5XA/D0oKV4q8Cpig6kabMRP2VZ7PPzo6NcbXYVBMQj3QqhlP/Ub2RdVTKpow==
+	bh=utHuU1RpUfun8NDz/7xeRjJ351N6RzbQuI41jj/r2lY=;
+	b=OngWmljsZHXoG6xJnzaugq+yuShwQms4S8L5wXHM1o7fGpOsbF6Xxv4ixdQrbxfpYLXAH4
+	M3Z/9lph2ZB7L6WNZ9YFgtKMct/ZlzbEnjCE+rsboF1zlkxDQKCKLkMxcEsE5ElyyXdezV
+	8+e4g2X6X0azq3T9bAemGWgFsKap1YpJFHhhew+JLfx40DsNTm6lIHSPCVkwZxEGLe/nAH
+	HYR+CNx2LtPmKesyTDieRQ1qjmVHW9o+Nh8VSXQ2pk/9wbSuKz5ztCsY8kIM4QJujCUXfd
+	O0vbEjSfrJjZN9OBtvd3mIj9or/9aoCzvoQDUsNDh3ex8oPqY7KBft/NfvErKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742891710;
+	s=2020e; t=1742891712;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w65NSURQPqlLPTKxR/K2kyZiY2P7rh2rmzQaKoqFUHk=;
-	b=c6OzyDsEeWZumFMlbaGq+0PbWVSubEtY7y/TixSlBAFUUw+0b7NeUdEKG9JbDHARiwv1uO
-	6PczuO7+wVKRW6BQ==
+	bh=utHuU1RpUfun8NDz/7xeRjJ351N6RzbQuI41jj/r2lY=;
+	b=45c8+9XyGRT93u63hi+LXHaQdtOa7VkJ/Vz9ZijNydWyNvRFavXQx1tgXSx+SmSXnH+b80
+	U5WeTJN0fwQ5soBA==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Ignore entire functions rather than
- instructions
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: objtool/urgent] objtool: Fix detection of consecutive jump
+ tables on Clang 20
+Cc: kernel test robot <lkp@intel.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <ndesaulniers@google.com>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 In-Reply-To:
- <4af13376567f83331a9372ae2bb25e11a3d0f055.1742852846.git.jpoimboe@kernel.org>
+ <141752fff614eab962dba6bdfaa54aa67ff03bba.1742852846.git.jpoimboe@kernel.org>
 References:
- <4af13376567f83331a9372ae2bb25e11a3d0f055.1742852846.git.jpoimboe@kernel.org>
+ <141752fff614eab962dba6bdfaa54aa67ff03bba.1742852846.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174289171028.14745.16603362410029596951.tip-bot2@tip-bot2>
+Message-ID: <174289171133.14745.15063796259846197040.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,177 +86,188 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     c84301d706c5456b1460439b2987a0f0b6362a82
-Gitweb:        https://git.kernel.org/tip/c84301d706c5456b1460439b2987a0f0b6362a82
+Commit-ID:     ef753d66051ca03bee1982ce047f9eaf90f81ab4
+Gitweb:        https://git.kernel.org/tip/ef753d66051ca03bee1982ce047f9eaf90f81ab4
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 24 Mar 2025 14:55:53 -07:00
+AuthorDate:    Mon, 24 Mar 2025 14:55:51 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 25 Mar 2025 09:20:25 +01:00
 
-objtool: Ignore entire functions rather than instructions
+objtool: Fix detection of consecutive jump tables on Clang 20
 
-STACK_FRAME_NON_STANDARD applies to functions.  Use a function-specific
-ignore attribute in preparation for getting rid of insn->ignore.
+The jump table detection code assumes jump tables are in the same order
+as their corresponding indirect branches.  That's apparently not always
+true with Clang 20.
 
+Fix that by changing how multiple jump tables are detected.  In the
+first detection pass, mark the beginning of each jump table so the
+second pass can tell where one ends and the next one begins.
+
+Fixes the following warnings:
+
+  vmlinux.o: warning: objtool: SiS_GetCRT2Ptr+0x1ad: stack state mismatch: cfa1=4+8 cfa2=5+16
+  sound/core/seq/snd-seq.o: warning: objtool: cc_ev_to_ump_midi2+0x589: return with modified stack frame
+
+Fixes: be2f0b1e1264 ("objtool: Get rid of reloc->jump_table_start")
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/4af13376567f83331a9372ae2bb25e11a3d0f055.1742852846.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/141752fff614eab962dba6bdfaa54aa67ff03bba.1742852846.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/oe-kbuild-all/202503171547.LlCTJLQL-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202503200535.J3hAvcjw-lkp@intel.com/
 ---
- tools/objtool/check.c               | 35 ++++++++++++++--------------
- tools/objtool/include/objtool/elf.h |  1 +-
- 2 files changed, 19 insertions(+), 17 deletions(-)
+ tools/objtool/check.c               | 26 ++++++++------------------
+ tools/objtool/elf.c                 |  6 +++---
+ tools/objtool/include/objtool/elf.h | 27 ++++++++++++++++++++++++++-
+ 3 files changed, 37 insertions(+), 22 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index dae17ed..f465020 100644
+index ca3435a..dae17ed 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -981,7 +981,6 @@ static int create_direct_call_sections(struct objtool_file *file)
-  */
- static void add_ignores(struct objtool_file *file)
- {
--	struct instruction *insn;
- 	struct section *rsec;
- 	struct symbol *func;
- 	struct reloc *reloc;
-@@ -1008,8 +1007,7 @@ static void add_ignores(struct objtool_file *file)
- 			continue;
- 		}
- 
--		func_for_each_insn(file, func, insn)
--			insn->ignore = true;
-+		func->ignore = true;
- 	}
+@@ -1941,8 +1941,7 @@ __weak unsigned long arch_jump_table_sym_offset(struct reloc *reloc, struct relo
+ 	return reloc->sym->offset + reloc_addend(reloc);
  }
  
-@@ -1612,6 +1610,7 @@ static int add_call_destinations(struct objtool_file *file)
- 	struct reloc *reloc;
+-static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+-			  struct reloc *next_table)
++static int add_jump_table(struct objtool_file *file, struct instruction *insn)
+ {
+ 	unsigned long table_size = insn_jump_table_size(insn);
+ 	struct symbol *pfunc = insn_func(insn)->pfunc;
+@@ -1962,7 +1961,7 @@ static int add_jump_table(struct objtool_file *file, struct instruction *insn,
+ 		/* Check for the end of the table: */
+ 		if (table_size && reloc_offset(reloc) - reloc_offset(table) >= table_size)
+ 			break;
+-		if (reloc != table && reloc == next_table)
++		if (reloc != table && is_jump_table(reloc))
+ 			break;
  
- 	for_each_insn(file, insn) {
-+		struct symbol *func = insn_func(insn);
- 		if (insn->type != INSN_CALL)
+ 		/* Make sure the table entries are consecutive: */
+@@ -2053,8 +2052,10 @@ static void find_jump_table(struct objtool_file *file, struct symbol *func,
+ 		if (!dest_insn || !insn_func(dest_insn) || insn_func(dest_insn)->pfunc != func)
  			continue;
  
-@@ -1622,7 +1621,7 @@ static int add_call_destinations(struct objtool_file *file)
- 
- 			add_call_dest(file, insn, dest, false);
- 
--			if (insn->ignore)
-+			if (func && func->ignore)
- 				continue;
- 
- 			if (!insn_call_dest(insn)) {
-@@ -1630,7 +1629,7 @@ static int add_call_destinations(struct objtool_file *file)
- 				return -1;
- 			}
- 
--			if (insn_func(insn) && insn_call_dest(insn)->type != STT_FUNC) {
-+			if (func && insn_call_dest(insn)->type != STT_FUNC) {
- 				WARN_INSN(insn, "unsupported call to non-function");
- 				return -1;
- 			}
-@@ -3470,6 +3469,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 	u8 visited;
- 	int ret;
- 
-+	if (func && func->ignore)
-+		return 0;
++		set_jump_table(table_reloc);
+ 		orig_insn->_jump_table = table_reloc;
+ 		orig_insn->_jump_table_size = table_size;
 +
- 	sec = insn->sec;
- 
- 	while (1) {
-@@ -3715,7 +3717,7 @@ static int validate_unwind_hint(struct objtool_file *file,
- 				  struct instruction *insn,
- 				  struct insn_state *state)
+ 		break;
+ 	}
+ }
+@@ -2096,31 +2097,20 @@ static void mark_func_jump_tables(struct objtool_file *file,
+ static int add_func_jump_tables(struct objtool_file *file,
+ 				  struct symbol *func)
  {
--	if (insn->hint && !insn->visited && !insn->ignore) {
-+	if (insn->hint && !insn->visited) {
- 		int ret = validate_branch(file, insn_func(insn), insn, *state);
+-	struct instruction *insn, *insn_t1 = NULL, *insn_t2;
+-	int ret = 0;
++	struct instruction *insn;
++	int ret;
+ 
+ 	func_for_each_insn(file, func, insn) {
+ 		if (!insn_jump_table(insn))
+ 			continue;
+ 
+-		if (!insn_t1) {
+-			insn_t1 = insn;
+-			continue;
+-		}
+-
+-		insn_t2 = insn;
+ 
+-		ret = add_jump_table(file, insn_t1, insn_jump_table(insn_t2));
++		ret = add_jump_table(file, insn);
  		if (ret)
- 			BT_INSN(insn, "<=== (hint)");
-@@ -3929,10 +3931,11 @@ static bool is_ubsan_insn(struct instruction *insn)
- 
- static bool ignore_unreachable_insn(struct objtool_file *file, struct instruction *insn)
- {
--	int i;
-+	struct symbol *func = insn_func(insn);
- 	struct instruction *prev_insn;
-+	int i;
- 
--	if (insn->ignore || insn->type == INSN_NOP || insn->type == INSN_TRAP)
-+	if (insn->ignore || insn->type == INSN_NOP || insn->type == INSN_TRAP || (func && func->ignore))
- 		return true;
- 
- 	/*
-@@ -3951,7 +3954,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 	 * In this case we'll find a piece of code (whole function) that is not
- 	 * covered by a !section symbol. Ignore them.
- 	 */
--	if (opts.link && !insn_func(insn)) {
-+	if (opts.link && !func) {
- 		int size = find_symbol_hole_containing(insn->sec, insn->offset);
- 		unsigned long end = insn->offset + size;
- 
-@@ -3977,19 +3980,17 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 			 */
- 			if (insn->jump_dest && insn_func(insn->jump_dest) &&
- 			    strstr(insn_func(insn->jump_dest)->name, ".cold")) {
--				struct instruction *dest = insn->jump_dest;
--				func_for_each_insn(file, insn_func(dest), dest)
--					dest->ignore = true;
-+				insn_func(insn->jump_dest)->ignore = true;
- 			}
- 		}
- 
- 		return false;
+ 			return ret;
+-
+-		insn_t1 = insn_t2;
  	}
  
--	if (!insn_func(insn))
-+	if (!func)
- 		return false;
+-	if (insn_t1)
+-		ret = add_jump_table(file, insn_t1, NULL);
+-
+-	return ret;
++	return 0;
+ }
  
--	if (insn_func(insn)->static_call_tramp)
-+	if (func->static_call_tramp)
- 		return true;
+ /*
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index be4f4b6..0f38167 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -583,7 +583,7 @@ static int elf_update_sym_relocs(struct elf *elf, struct symbol *sym)
+ {
+ 	struct reloc *reloc;
  
- 	/*
-@@ -4020,7 +4021,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
+-	for (reloc = sym->relocs; reloc; reloc = reloc->sym_next_reloc)
++	for (reloc = sym->relocs; reloc; reloc = sym_next_reloc(reloc))
+ 		set_reloc_sym(elf, reloc, reloc->sym->idx);
  
- 		if (insn->type == INSN_JUMP_UNCONDITIONAL) {
- 			if (insn->jump_dest &&
--			    insn_func(insn->jump_dest) == insn_func(insn)) {
-+			    insn_func(insn->jump_dest) == func) {
- 				insn = insn->jump_dest;
- 				continue;
+ 	return 0;
+@@ -880,7 +880,7 @@ static struct reloc *elf_init_reloc(struct elf *elf, struct section *rsec,
+ 	set_reloc_addend(elf, reloc, addend);
+ 
+ 	elf_hash_add(reloc, &reloc->hash, reloc_hash(reloc));
+-	reloc->sym_next_reloc = sym->relocs;
++	set_sym_next_reloc(reloc, sym->relocs);
+ 	sym->relocs = reloc;
+ 
+ 	return reloc;
+@@ -979,7 +979,7 @@ static int read_relocs(struct elf *elf)
  			}
-@@ -4028,7 +4029,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 			break;
- 		}
  
--		if (insn->offset + insn->len >= insn_func(insn)->offset + insn_func(insn)->len)
-+		if (insn->offset + insn->len >= func->offset + func->len)
- 			break;
+ 			elf_hash_add(reloc, &reloc->hash, reloc_hash(reloc));
+-			reloc->sym_next_reloc = sym->relocs;
++			set_sym_next_reloc(reloc, sym->relocs);
+ 			sym->relocs = reloc;
  
- 		insn = next_insn_same_sec(file, insn);
-@@ -4120,7 +4121,7 @@ static int validate_symbol(struct objtool_file *file, struct section *sec,
- 		return 0;
- 
- 	insn = find_insn(file, sec, sym->offset);
--	if (!insn || insn->ignore || insn->visited)
-+	if (!insn || insn->visited)
- 		return 0;
- 
- 	state->uaccess = sym->uaccess_safe;
+ 			nr_reloc++;
 diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objtool/elf.h
-index 4edc957..eba0439 100644
+index 223ac1c..4edc957 100644
 --- a/tools/objtool/include/objtool/elf.h
 +++ b/tools/objtool/include/objtool/elf.h
-@@ -68,6 +68,7 @@ struct symbol {
- 	u8 embedded_insn     : 1;
- 	u8 local_label       : 1;
- 	u8 frame_pointer     : 1;
-+	u8 ignore	     : 1;
- 	u8 warnings	     : 2;
- 	struct list_head pv_target;
- 	struct reloc *relocs;
+@@ -77,7 +77,7 @@ struct reloc {
+ 	struct elf_hash_node hash;
+ 	struct section *sec;
+ 	struct symbol *sym;
+-	struct reloc *sym_next_reloc;
++	unsigned long _sym_next_reloc;
+ };
+ 
+ struct elf {
+@@ -297,6 +297,31 @@ static inline void set_reloc_type(struct elf *elf, struct reloc *reloc, unsigned
+ 	mark_sec_changed(elf, reloc->sec, true);
+ }
+ 
++#define RELOC_JUMP_TABLE_BIT 1UL
++
++/* Does reloc mark the beginning of a jump table? */
++static inline bool is_jump_table(struct reloc *reloc)
++{
++	return reloc->_sym_next_reloc & RELOC_JUMP_TABLE_BIT;
++}
++
++static inline void set_jump_table(struct reloc *reloc)
++{
++	reloc->_sym_next_reloc |= RELOC_JUMP_TABLE_BIT;
++}
++
++static inline struct reloc *sym_next_reloc(struct reloc *reloc)
++{
++	return (struct reloc *)(reloc->_sym_next_reloc & ~RELOC_JUMP_TABLE_BIT);
++}
++
++static inline void set_sym_next_reloc(struct reloc *reloc, struct reloc *next)
++{
++	unsigned long bit = reloc->_sym_next_reloc & RELOC_JUMP_TABLE_BIT;
++
++	reloc->_sym_next_reloc = (unsigned long)next | bit;
++}
++
+ #define for_each_sec(file, sec)						\
+ 	list_for_each_entry(sec, &file->elf->sections, list)
+ 
 
