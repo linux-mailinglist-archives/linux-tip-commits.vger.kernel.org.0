@@ -1,79 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-4463-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4464-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE98A6EBBF
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 09:37:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D22A6EBC0
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 09:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3644816BDAE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 08:37:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E321894F2F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 08:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340A5257437;
-	Tue, 25 Mar 2025 08:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C079257AEC;
+	Tue, 25 Mar 2025 08:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JUaYgVol";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AcRzNqrm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jWQFAQCN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cpK4gYNe"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4442571D6;
-	Tue, 25 Mar 2025 08:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C14E257425;
+	Tue, 25 Mar 2025 08:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742891712; cv=none; b=YHHrwmSeJHH/FFm2G73ofP52gjg8ccD56sgr5BHvZ2GoF6cZF+Rz6/nNEuiM7LWBwZ5voVDP1votNtDQCWHS3nJgaL2/8/LqyhQOkqAI7+J91gl1uAFkHxlCpU50LXRR28zR1fnA6Dt2cVRZj0ep1f1EWJAdL6L7fUqoC6VP+Ow=
+	t=1742891713; cv=none; b=otchPzWbGLnWYP3iVTkYYHgV2ISJvraVXTYKARcCB8SglAHYndOUu5vIBhPRpPn/w1jYvDeg4xxg9JeYbg6nex45FwVyDnJrXHjCLC1ZLwSd7IHzE0ZzOHBnOIeR57uS7SosrZCgV72SJUrAlhUXnE56zpaLvxm7HxwO5cn1SzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742891712; c=relaxed/simple;
-	bh=47eK5Fa7361cBjwk8jB3w3uXu8xgy+fGOxCraAukxtk=;
+	s=arc-20240116; t=1742891713; c=relaxed/simple;
+	bh=sGWgKFS19lApaaQVjKhRLjj5L+UPSlrSbkfq9RyQZAU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SuT20rsMHW9AEJZA26YtsMD2bGYlEgZrszn8eMHFTPf2Y2JuYq+w8YRTF7jfo63KeudQIsauuTo8kvgGcGMpmoGQmjEuQ3JeXzOl/uA5W4L8QnFXXsJa8rVGaC/Rc45BJg11DKsXevxnjKgICc2CyJTK7Urd6/KY0sB+4NtV5EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JUaYgVol; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AcRzNqrm; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Z20poUoPwfCEVkKbnq+5NRV4HmPVjcx7OfxBjZmVdGOnQkC2/xiJ3lI0EUHHtTrDdwNAYDbz3UYXAcu+YhTMNNc2ECzkC5s0TAcjqbhATEctsxrdoEJC0+MIVwJg4EnII/z6fGmXaQNLwRVcV/AbeMyTzYAcWRs7vtFlWaz0OHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jWQFAQCN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cpK4gYNe; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Mar 2025 08:35:07 -0000
+Date: Tue, 25 Mar 2025 08:35:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742891708;
+	s=2020; t=1742891709;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vbqtxFuBSoweHsZ/oM/e5OhmW352jmP/YEG7uf08FSk=;
-	b=JUaYgVolH2PSvtdZmYHFHCNliTqKXbB+8C+xcbceOCcRD7EaS66nMQdPXErRia2jipBTWV
-	fThqmRmXGXURnQiYmPDFRc6ebU3l3GcTQ1WTEGit8f9YBANPwohxAL/SREC7SHJDdK4TzO
-	MRDrPkIOJjSNThhXVwIIJj0w8nGMG7Gi3V9SkGpGXQ4O00iyCAVCGBSDMciDev7ZYE7wtt
-	5vwMppZ+SYijkUDOMev5ji2YYGc/dsgWc4sT/AeaoL2NKjtof5E0tVSM08EWt3DT1Jyn1f
-	9Ke4CuAbisaOu8nkATUv/KCnjOgpoP+qsfaItl1M1xJOaIgWPxYMlIT+32C90w==
+	bh=lXWdLNiFqjcJy8RDdZyi+igNyxV9zlyuc3/D+OV9ryo=;
+	b=jWQFAQCNIp135UhzIlNwR3la5vPOuPg3c0rG4ckdegIP1fr/uY2f1/e3ApcEWELi3nxtgp
+	P6VX33qF2jdnRTH7sa4szPy3JoTbrFfd6d9etqWENAn5p2X6vP0RoPVx0rXIQ5n7v3Tkj8
+	UDUToSyyW6o67NzORkk4S8Zio1varYJ7pmxRBQyGdXnCUmrf3LuYjgbEyvCrM5P53dLRP6
+	kNQXHEZRU6Wy3+Y0W1fVWKh1Yb8CgMrH6qkcaLsiIpHQc3E4fm9C72ZLhBcBf58XMYGegy
+	f95hGkRokOD0y9Ia751KZ99Hwktt2+bX4+JGOXvKmouPMDfCeXw8KU3R/jvwvA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742891708;
+	s=2020e; t=1742891709;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vbqtxFuBSoweHsZ/oM/e5OhmW352jmP/YEG7uf08FSk=;
-	b=AcRzNqrm1URgrhZEaH7siyAqpX6ruFrtfp4n6dEmagd0AF69pg3SKSbXoVd+9K6bJrhkrz
-	/iiEIt4rXn+MVSCA==
+	bh=lXWdLNiFqjcJy8RDdZyi+igNyxV9zlyuc3/D+OV9ryo=;
+	b=cpK4gYNeL1gRmBK2aGTuWNQdoSC6U+MrXBt+Xopn2tF7ecB7MWMI8tOhjp0N2mPzO2eCoz
+	PVVBdjJuN1CloeAQ==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Fix init_module() handling
+Subject:
+ [tip: objtool/urgent] objtool: Fix CONFIG_OBJTOOL_WERROR for vmlinux.o
 Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 In-Reply-To:
- <366bfdbe92736cde9fb01d5d3eb9b98e9070a1ec.1742852846.git.jpoimboe@kernel.org>
+ <4f71ab9b947ffc47b6a87dd3b9aff4bb32b36d0a.1742852846.git.jpoimboe@kernel.org>
 References:
- <366bfdbe92736cde9fb01d5d3eb9b98e9070a1ec.1742852846.git.jpoimboe@kernel.org>
+ <4f71ab9b947ffc47b6a87dd3b9aff4bb32b36d0a.1742852846.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174289170781.14745.11187264429697784200.tip-bot2@tip-bot2>
+Message-ID: <174289170883.14745.15615696058250224080.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,49 +84,53 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     4fab2d7628dd38f3fa8a5e615199350ecaeb17a8
-Gitweb:        https://git.kernel.org/tip/4fab2d7628dd38f3fa8a5e615199350ecaeb17a8
+Commit-ID:     4759670bc3e670069c055c2b33174813099fea4f
+Gitweb:        https://git.kernel.org/tip/4759670bc3e670069c055c2b33174813099fea4f
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 24 Mar 2025 14:55:56 -07:00
+AuthorDate:    Mon, 24 Mar 2025 14:55:55 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Tue, 25 Mar 2025 09:20:26 +01:00
 
-objtool: Fix init_module() handling
+objtool: Fix CONFIG_OBJTOOL_WERROR for vmlinux.o
 
-If IBT is enabled and a module uses the deprecated init_module() magic
-function name rather than module_init(fn), its ENDBR will get removed,
-causing an IBT failure during module load.
-
-Objtool does print an obscure warning, but then does nothing to either
-correct it or return an error.
-
-Improve the usefulness of the warning and return an error so it will at
-least fail the build with CONFIG_OBJTOOL_WERROR.
+With (!X86_KERNEL_IBT && !LTO_CLANG && NOINSTR_VALIDATION), objtool runs
+on both translation units and vmlinux.o.  With CONFIG_OBJTOOL_WERROR,
+the TUs get --Werror but vmlinux.o doesn't.  Fix that.
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/366bfdbe92736cde9fb01d5d3eb9b98e9070a1ec.1742852846.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/4f71ab9b947ffc47b6a87dd3b9aff4bb32b36d0a.1742852846.git.jpoimboe@kernel.org
 ---
- tools/objtool/check.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ scripts/Makefile.vmlinux_o | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index b2f6a7f..2f7aff1 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -828,8 +828,11 @@ static int create_ibt_endbr_seal_sections(struct objtool_file *file)
- 		if (opts.module && sym && sym->type == STT_FUNC &&
- 		    insn->offset == sym->offset &&
- 		    (!strcmp(sym->name, "init_module") ||
--		     !strcmp(sym->name, "cleanup_module")))
--			WARN("%s(): not an indirect call target", sym->name);
-+		     !strcmp(sym->name, "cleanup_module"))) {
-+			WARN("%s(): Magic init_module() function name is deprecated, use module_init(fn) instead",
-+			     sym->name);
-+			return -1;
-+		}
+diff --git a/scripts/Makefile.vmlinux_o b/scripts/Makefile.vmlinux_o
+index 0b6e2eb..f476f56 100644
+--- a/scripts/Makefile.vmlinux_o
++++ b/scripts/Makefile.vmlinux_o
+@@ -30,12 +30,20 @@ endif
+ # objtool for vmlinux.o
+ # ---------------------------------------------------------------------------
+ #
+-# For LTO and IBT, objtool doesn't run on individual translation units.
+-# Run everything on vmlinux instead.
++# For delay-objtool (IBT or LTO), objtool doesn't run on individual translation
++# units.  Instead it runs on vmlinux.o.
++#
++# For !delay-objtool + CONFIG_NOINSTR_VALIDATION, it runs on both translation
++# units and vmlinux.o, with the latter only used for noinstr/unret validation.
  
- 		if (!elf_init_reloc_text_sym(file->elf, sec,
- 					     idx * sizeof(int), idx,
+ objtool-enabled := $(or $(delay-objtool),$(CONFIG_NOINSTR_VALIDATION))
+ 
+-vmlinux-objtool-args-$(delay-objtool)			+= $(objtool-args-y)
++ifeq ($(delay-objtool),y)
++vmlinux-objtool-args-y					+= $(objtool-args-y)
++else
++vmlinux-objtool-args-$(CONFIG_OBJTOOL_WERROR)		+= --Werror
++endif
++
+ vmlinux-objtool-args-$(CONFIG_GCOV_KERNEL)		+= --no-unreachable
+ vmlinux-objtool-args-$(CONFIG_NOINSTR_VALIDATION)	+= --noinstr \
+ 							   $(if $(or $(CONFIG_MITIGATION_UNRET_ENTRY),$(CONFIG_MITIGATION_SRSO)), --unret)
 
