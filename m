@@ -1,113 +1,245 @@
-Return-Path: <linux-tip-commits+bounces-4424-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4425-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93F8A6D9A5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Mar 2025 13:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8380FA6EA6F
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 08:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B14E167C1E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Mar 2025 12:00:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F268416DAB8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Mar 2025 07:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E81425E46F;
-	Mon, 24 Mar 2025 12:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113BB225410;
+	Tue, 25 Mar 2025 07:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eEGA+B2y"
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uHpkvqy6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kG23MEBC"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAFE25E461;
-	Mon, 24 Mar 2025 12:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2132D38385;
+	Tue, 25 Mar 2025 07:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742817603; cv=none; b=nD1WOCyE7SUCbrK8UW3SiwhFFx9EUeY36H3nd/86r+BuveqjrLYdttD7hJNxSBtZ9IWta562UiaJHs+pCibhJC6vCwDWnvmeu22EoJx0WgGGEZFvYwJ/4uQcKlI3pgdwDJxWpSZfJ9TLjOkGR4v7zcbPjB3MAekMRaMmLB7t4Hk=
+	t=1742887540; cv=none; b=M2rHzmFVr/y5gLs+ouVsm9Poj6eKlaQEGgBk/MpTHNab6IbOFhBzAzxUCGUZSwhJ0sDipXUJZYqtdmwTQ7bqLb3Vbb5A2S0vQW6TF5kFLirlRumiU96Z/nVZtHR+Aap1QG+YYth81DRieQB/1azEuB3CVb9/kpZgQmACaL/dCFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742817603; c=relaxed/simple;
-	bh=1tO84DwuxXNsqpKrwI2DNSv+oUloblqpcZ/RmymvqO4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QSVFsv/CyBaoc/ychVDXnulwfiWxHffrBc5579J2nhz3B0yRsS3Rj/QXij+Fb4B2CpS8uR2MG8DN0LQg4jYpvMYytxHqizM5bivEzCkeA2/9CBbbwCy25CIKFRc+8PcffRNQtgnBXjUVfxVFNJt1rCUOI5THRdnlY1vJ1K6GeDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=eEGA+B2y; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HS4zdAOookLhStFwrpf/+8GcTVifRr9zTXzMZfWtDU0=; b=eEGA+B2yPtag/gbTh3vvn1jfz4
-	3imbt7QNVeweo9QVw7ocvBusprVzihnr5gyvUyJFKArMY5zA3Txz28aypWECbUysc4caTPby8k9hY
-	Ow6yvsNFeQS4RekX3Ea7uyCbIzLbAf82VPTxRUkEnV6V/J9+kD0IZ9BLVnkWmUPdMscdMXY34GUJB
-	1e3SuxBY0FQvja7UPSr4UoIiewwva84TFA9+LJm0HsoIMVnvTiYhRBzZCZne4z/8mVLNlB3iyz9aQ
-	cUIt/d5FY2gObhQOjuumQxF7JX3jReQ53kGrWVYa3DTouUJuF0+n8E8MAD656k+8MK7dZe1YvUFSh
-	oo0CzVQg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1twgTD-00000000ae8-3Kzq;
-	Mon, 24 Mar 2025 11:59:55 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 61A913004AF; Mon, 24 Mar 2025 12:59:55 +0100 (CET)
-Date: Mon, 24 Mar 2025 12:59:55 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched/debug: Change SCHED_WARN_ON() to
- WARN_ON_ONCE()
-Message-ID: <20250324115955.GF14944@noisy.programming.kicks-ass.net>
-References: <20250317104257.3496611-2-mingo@kernel.org>
- <174246120542.14745.16936293992221722909.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1742887540; c=relaxed/simple;
+	bh=NU7OtMmJEqvgQKpdQKFt5CI57ZgVV61oCeCB9Fq1xV8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=AGG3Q5kxRh3WSOCNjF/xmyDimQk+I9bbjp60F3H9uQ/g2tV4aptfLV5ZV+O4vS+FsxECIt4rgYbxfc1ivED/F/lSQNn8cgf0ee/73vCuj2kNVwY3xtopi2Nb+guAI/GQ/BV4GMe8naH66HSy9U/8nw2MODvRpbdmI7o3Ia9YCjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uHpkvqy6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kG23MEBC; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 25 Mar 2025 07:25:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1742887535;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GHG4OQsCSVdlOAAnlv8byGZNX+v3qDa7dPbyE4sYyiA=;
+	b=uHpkvqy6PHshTC7yBYdTrqNIvgEdsO/mmDkXbZN54VSVp/rdP5u+EykuFzAMbljhn3ebA0
+	Dqbk673mfhFsZzKR5+GwGwl5IpPdW2d3/KSdG/7L2NNPOBk+XKDqgiT2+UUfg0jSHIvbz/
+	KFPGRgc7xcYGPXVu2ya447ZCn2ex+i3zozghTXs4uMyidTyXb2oCwxmY3oHlKqle+v3Dxb
+	usBBCaL3eupA2JxE7jy9Pm04OgumYdu5ZIpMoaZnIopAHYhN6ddeLxnGARrfJEejBEK/2i
+	wdYPcHHYmE5erzj61zRzYwmXp68cw4vlSjMpMXezWcKHx3+mJFQ9bb6rIc7sBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1742887535;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GHG4OQsCSVdlOAAnlv8byGZNX+v3qDa7dPbyE4sYyiA=;
+	b=kG23MEBCkVr97dsTgi7Gzad0ksT/d029x7vlePFe6T616UbxP4EcQrX95kK92YyEVwAxCq
+	dqpKckRcXzqErgCg==
+From: "tip-bot2 for Eric Dumazet" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/alternatives] x86/alternatives: Improve code-patching
+ scalability by removing false sharing in poke_int3_handler()
+Cc: Eric Dumazet <edumazet@google.com>, Ingo Molnar <mingo@kernel.org>,
+ Brian Gerst <brgerst@gmail.com>, Juergen Gross <jgross@suse.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Kees Cook <keescook@chromium.org>, Peter Zijlstra <peterz@infradead.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250325043316.874518-1-edumazet@google.com>
+References: <20250325043316.874518-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174246120542.14745.16936293992221722909.tip-bot2@tip-bot2>
+Message-ID: <174288753039.14745.12919435244978493101.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Mar 20, 2025 at 09:00:05AM -0000, tip-bot2 for Ingo Molnar wrote:
-> The following commit has been merged into the sched/core branch of tip:
-> 
-> Commit-ID:     f7d2728cc032a23fccb5ecde69793a38eb30ba5c
-> Gitweb:        https://git.kernel.org/tip/f7d2728cc032a23fccb5ecde69793a38eb30ba5c
-> Author:        Ingo Molnar <mingo@kernel.org>
-> AuthorDate:    Mon, 17 Mar 2025 11:42:52 +01:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Wed, 19 Mar 2025 22:20:53 +01:00
-> 
-> sched/debug: Change SCHED_WARN_ON() to WARN_ON_ONCE()
-> 
-> The scheduler has this special SCHED_WARN() facility that
-> depends on CONFIG_SCHED_DEBUG.
-> 
-> Since CONFIG_SCHED_DEBUG is getting removed, convert
-> SCHED_WARN() to WARN_ON_ONCE().
-> 
-> Note that the warning output isn't 100% equivalent:
-> 
->    #define SCHED_WARN_ON(x)      WARN_ONCE(x, #x)
-> 
-> Because SCHED_WARN_ON() would output the 'x' condition
-> as well, while WARN_ONCE() will only show a backtrace.
-> 
-> Hopefully these are rare enough to not really matter.
-> 
-> If it does, we should probably introduce a new WARN_ON()
-> variant that outputs the condition in stringified form,
-> or improve WARN_ON() itself.
+The following commit has been merged into the x86/alternatives branch of tip:
 
-So those strings really were useful, trouble is WARN_ONCE() generates
-utter crap code compared to WARN_ON_ONCE(), but since SCHED_DEBUG that
-doesn't really matter.
+Commit-ID:     41e4ceece5913b867604a28298612f397072e1b4
+Gitweb:        https://git.kernel.org/tip/41e4ceece5913b867604a28298612f397072e1b4
+Author:        Eric Dumazet <edumazet@google.com>
+AuthorDate:    Tue, 25 Mar 2025 04:33:16 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 25 Mar 2025 08:10:30 +01:00
 
-Also, last time I measured, there was a measurable performance
-difference between SCHED_DEBUG=n and SCHED_DEBUG=y.
+x86/alternatives: Improve code-patching scalability by removing false sharing in poke_int3_handler()
+
+eBPF programs can be run 50,000,000 times per second on busy servers.
+
+Whenever /proc/sys/kernel/bpf_stats_enabled is turned off,
+hundreds of calls sites are patched from text_poke_bp_batch()
+and we see a huge loss of performance due to false sharing
+on bp_desc.refs lasting up to three seconds.
+
+   51.30%  server_bin       [kernel.kallsyms]           [k] poke_int3_handler
+            |
+            |--46.45%--poke_int3_handler
+            |          exc_int3
+            |          asm_exc_int3
+            |          |
+            |          |--24.26%--cls_bpf_classify
+            |          |          tcf_classify
+            |          |          __dev_queue_xmit
+            |          |          ip6_finish_output2
+            |          |          ip6_output
+            |          |          ip6_xmit
+            |          |          inet6_csk_xmit
+            |          |          __tcp_transmit_skb
+
+Fix this by replacing bp_desc.refs with a per-cpu bp_refs.
+
+Before the patch, on a host with 240 cores (480 threads):
+
+  $ sysctl -wq kernel.bpf_stats_enabled=0
+
+  text_poke_bp_batch(nr_entries=164) : Took 2655300 usec
+
+  $ bpftool prog | grep run_time_ns
+  ...
+  105: sched_cls  name hn_egress  tag 699fc5eea64144e3  gpl run_time_ns
+  3009063719 run_cnt 82757845 : average cost is 36 nsec per call
+
+After this patch:
+
+  $ sysctl -wq kernel.bpf_stats_enabled=0
+
+  text_poke_bp_batch(nr_entries=164) : Took 702 usec
+
+  $ bpftool prog | grep run_time_ns
+  ...
+  105: sched_cls  name hn_egress  tag 699fc5eea64144e3  gpl run_time_ns
+  1928223019 run_cnt 67682728 : average cost is 28 nsec per call
+
+Ie. text-patching performance improved 3700x: from 2.65 seconds
+to 0.0007 seconds.
+
+Since the atomic_cond_read_acquire(refs, !VAL) spin-loop was not triggered
+even once in my tests, add an unlikely() annotation, because this appears
+to be the common case.
+
+[ mingo: Improved the changelog some more. ]
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250325043316.874518-1-edumazet@google.com
+---
+ arch/x86/kernel/alternative.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index bf82c6f..85089c7 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -2474,28 +2474,29 @@ struct text_poke_loc {
+ struct bp_patching_desc {
+ 	struct text_poke_loc *vec;
+ 	int nr_entries;
+-	atomic_t refs;
+ };
+ 
++static DEFINE_PER_CPU(atomic_t, bp_refs);
++
+ static struct bp_patching_desc bp_desc;
+ 
+ static __always_inline
+ struct bp_patching_desc *try_get_desc(void)
+ {
+-	struct bp_patching_desc *desc = &bp_desc;
++	atomic_t *refs = this_cpu_ptr(&bp_refs);
+ 
+-	if (!raw_atomic_inc_not_zero(&desc->refs))
++	if (!raw_atomic_inc_not_zero(refs))
+ 		return NULL;
+ 
+-	return desc;
++	return &bp_desc;
+ }
+ 
+ static __always_inline void put_desc(void)
+ {
+-	struct bp_patching_desc *desc = &bp_desc;
++	atomic_t *refs = this_cpu_ptr(&bp_refs);
+ 
+ 	smp_mb__before_atomic();
+-	raw_atomic_dec(&desc->refs);
++	raw_atomic_dec(refs);
+ }
+ 
+ static __always_inline void *text_poke_addr(struct text_poke_loc *tp)
+@@ -2528,9 +2529,9 @@ noinstr int poke_int3_handler(struct pt_regs *regs)
+ 	 * Having observed our INT3 instruction, we now must observe
+ 	 * bp_desc with non-zero refcount:
+ 	 *
+-	 *	bp_desc.refs = 1		INT3
+-	 *	WMB				RMB
+-	 *	write INT3			if (bp_desc.refs != 0)
++	 *	bp_refs = 1		INT3
++	 *	WMB			RMB
++	 *	write INT3		if (bp_refs != 0)
+ 	 */
+ 	smp_rmb();
+ 
+@@ -2636,7 +2637,8 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	 * Corresponds to the implicit memory barrier in try_get_desc() to
+ 	 * ensure reading a non-zero refcount provides up to date bp_desc data.
+ 	 */
+-	atomic_set_release(&bp_desc.refs, 1);
++	for_each_possible_cpu(i)
++		atomic_set_release(per_cpu_ptr(&bp_refs, i), 1);
+ 
+ 	/*
+ 	 * Function tracing can enable thousands of places that need to be
+@@ -2750,8 +2752,12 @@ static void text_poke_bp_batch(struct text_poke_loc *tp, unsigned int nr_entries
+ 	/*
+ 	 * Remove and wait for refs to be zero.
+ 	 */
+-	if (!atomic_dec_and_test(&bp_desc.refs))
+-		atomic_cond_read_acquire(&bp_desc.refs, !VAL);
++	for_each_possible_cpu(i) {
++		atomic_t *refs = per_cpu_ptr(&bp_refs, i);
++
++		if (unlikely(!atomic_dec_and_test(refs)))
++			atomic_cond_read_acquire(refs, !VAL);
++	}
+ }
+ 
+ static void text_poke_loc_init(struct text_poke_loc *tp, void *addr,
 
