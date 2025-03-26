@@ -1,138 +1,142 @@
-Return-Path: <linux-tip-commits+bounces-4557-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4558-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C2EA71193
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 08:42:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3625FA711ED
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 09:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321933A5456
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 07:42:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BB567A2886
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 08:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E7919D892;
-	Wed, 26 Mar 2025 07:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E7119F10A;
+	Wed, 26 Mar 2025 08:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdrZpt62"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ytmNKZEo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EH/eiS61"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D81519D898;
-	Wed, 26 Mar 2025 07:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A351F94A;
+	Wed, 26 Mar 2025 08:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742974953; cv=none; b=IWkz0CGSyk5EJNSLbytqcyQvjReBPpYBMxXBnaXGFG3B4+MC7VZsVeZDqofF2HLlK2vrAdbSECxNdrrO8pkKlMcfa5SEQ6TYYak8piZos3MtZmi9dPi03DGoxPFcHhnL2Bi1xF9ZyOgJ1SIKrdPlZHgb/kknSY5M3hz6vhey37c=
+	t=1742976166; cv=none; b=OpU2B+GL8gcQIvjnf/37YQRmTcdV3kpXz5x5vWeZQfDA4fYmSZEfP4UGwrPSRGV+4XhnqDR3PYPKsaRw2wyvI9OHgdD9dBncqUkwXWtRH4EL9Qisi+pSn9TkdMHGGJj4z/gwOF5+i4yyjyyCMGeXUQDdWQZIF3JBr6BV7032cDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742974953; c=relaxed/simple;
-	bh=a39+hOyOBrLWeBos3bRjt0r0Ck9szc7SKc42ebq5PoM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lmaNVkDnI2GO7YklIFqBMo4y1PBBXm1ovRVv5iJvk9v/Is8E39irvG9AKMRlVhnPN6ZJYGZqAR5pZowBV92FMvkgBMKLMwPtS6mNwemJ0UhxWAegbnYaQanQEjZVMySRBKGxL7rZBihLFZlHUYvG7s4LBpcGo78t3x/RuOSuiYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdrZpt62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA28C4CEEE;
-	Wed, 26 Mar 2025 07:42:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742974953;
-	bh=a39+hOyOBrLWeBos3bRjt0r0Ck9szc7SKc42ebq5PoM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DdrZpt62vmxatBvcF50WRZeLjwuQK1aCe+C+9urExeiH7vWpYuv3xjFQhRVwqCJZ9
-	 2tB9Tzh6sAT32Ci3dDhsNnw712zwSeNykTqNKk1Oe3h/8g93cDKodhXJNGqsxUqVab
-	 2ZqsXrtQZS2q0dXn8bv97v+YxDr2omeekzpP5ae4qIlxOeEHBF8D1xVyDbqNyVt5RI
-	 qsTN95w3I8ikx95q04nmkARoHRdhsCQdVl/IMcKPUUD9SWpmaT7ZoToKmQz3RB0FpB
-	 envgh04m+n3QXDp3LrIQEkPOg9JL8F5z8486HhayWmu1Ywj2Ptv8tWX9llX7kKFjnk
-	 oO1uaXSHQCDAw==
-Date: Wed, 26 Mar 2025 08:42:27 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>, x86@kernel.org
-Subject: Re: [PATCH] bug: Add the condition string to the
- CONFIG_DEBUG_BUGVERBOSE=y output
-Message-ID: <Z-Ov478wdBKpqtmA@gmail.com>
-References: <20250317104257.3496611-2-mingo@kernel.org>
- <174246120542.14745.16936293992221722909.tip-bot2@tip-bot2>
- <20250324115955.GF14944@noisy.programming.kicks-ass.net>
- <Z-J5UEFwM3gh6VXR@gmail.com>
- <Z-KRD3ODxT9f8Yjw@gmail.com>
- <20250325123625.GM36322@noisy.programming.kicks-ass.net>
- <CAHk-=wg_BRnCs8o5vEjK_zDuc0KJ-z9bvq5845jKv+7UduS4hQ@mail.gmail.com>
- <Z-MxULQtc--KoKMW@gmail.com>
- <CAHk-=wjMu5iGZ2ifBqjzV4a993D13OnDvfbtYe6jgPP8cZnAGQ@mail.gmail.com>
+	s=arc-20240116; t=1742976166; c=relaxed/simple;
+	bh=aMozfvsJjyZP6wWsr9DBrbLjQ11jjAq6RD+FtbL7AzQ=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=BozpmtYuLrUhu4iLn+KJvM8FlHfQBERKRkdUlBiI+gjETyIX/zUwmqyfIy72maD2z1S8pSSnhsoiUA8TmugsmT0lm95/VrcDPtyusrhql3dDY8bRli8AsSvVax+7KHwPvdRAzpqmP99x04RwXAwjQNAY+HHmZX/cwSKZMMVfYAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ytmNKZEo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EH/eiS61; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 26 Mar 2025 08:02:39 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1742976163;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0dohyGZo67q9TlCDcBMsbA2FKXHdgnbP20fvoI+5vQg=;
+	b=ytmNKZEoQOuG09ZAuhhbKbRbqH/CMFECse25GPu1BU9AJzD0Xg+xNgpYvoU++94Y603HOk
+	4bzsIoLsWVVFc2Q13mbMPmB6n3WVzNhPxpOFL0n19FYdbSaxJa/xTyxH/xQ2NAnYmX4p+d
+	awWScIjyM9Kf3qjTm5/NC2SqOkxqclcvVfy/UvLJrPz723UoQ3IqtUe8feKV7c4tTQEUXe
+	sUhmuM5bo6Sk/OLQimGYTqEFRZ/mqIwnCmXtBiI7D7/MV2Y22SDT9VN2iyKS57hfc7OVwa
+	rI0J7bZZO5weeprLGXt4W7vnu6vz/q6YwyvOotti1XFzUSSqCK3oWJO7s2N9Dg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1742976163;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0dohyGZo67q9TlCDcBMsbA2FKXHdgnbP20fvoI+5vQg=;
+	b=EH/eiS61wAlBz3u8Qa/spGRMWwGmIlpNO+TCkwuBX94HM4Gey3wlA43DWWzpXTsDgCIeNN
+	kgEY5gtDdRg7W4CA==
+From: "tip-bot2 for Vishal Annapurve" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/tdx] x86/tdx: Emit warning if IRQs are enabled during HLT
+ #VE handling
+Cc: Vishal Annapurve <vannapurve@google.com>, Ingo Molnar <mingo@kernel.org>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Ryan Afranji <afranji@google.com>, Andy Lutomirski <luto@kernel.org>,
+ Brian Gerst <brgerst@gmail.com>, Juergen Gross <jgross@suse.com>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250228014416.3925664-4-vannapurve@google.com>
+References: <20250228014416.3925664-4-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wjMu5iGZ2ifBqjzV4a993D13OnDvfbtYe6jgPP8cZnAGQ@mail.gmail.com>
+Message-ID: <174297615961.14745.3991954793932889948.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the x86/tdx branch of tip:
 
-* Linus Torvalds <torvalds@linux-foundation.org> wrote:
+Commit-ID:     e8f45927ee5d99fa52f14205a2c7ac3820c64457
+Gitweb:        https://git.kernel.org/tip/e8f45927ee5d99fa52f14205a2c7ac3820c64457
+Author:        Vishal Annapurve <vannapurve@google.com>
+AuthorDate:    Fri, 28 Feb 2025 01:44:16 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Wed, 26 Mar 2025 08:52:10 +01:00
 
-> On Tue, 25 Mar 2025 at 15:42, Ingo Molnar <mingo@kernel.org> wrote:
-> >
-> > So something like the patch below?
-> > [...]
-> > After:
-> >
-> >   WARNING: CPU: 0 PID: 0 at [ptr == 0 && 1] kernel/sched/core.c:8511 sched_init+0x20/0x410
-> >                             ^^^^^^^^^^^^^^^
-> 
-> Hmm. Is that the prettiest output ever? No. But it does seem workable,
-> and the patch is simple.
-> 
-> And I think the added condition string is useful, in that I often end
-> up looking up warnings that other people report and where the line
-> numbers have changed enough that it's not immediately obvious exactly
-> which warning it is. Not only does it disambiguate which warning it
-> is, it would probably often would obviate having to look it up
-> entirely because the warning message is now more useful.
+x86/tdx: Emit warning if IRQs are enabled during HLT #VE handling
 
-Yeah, that exactly was the original motivation for SCHED_WARN_ON(): 
-core kernel code often gets backported on and changed by distributions, 
-so line numbers are fuzzy and with large functions it's sometimes 
-unclear exactly where the warning originated from.
+Direct HLT instruction execution causes #VEs for TDX VMs which is routed
+to hypervisor via TDCALL. safe_halt() routines execute HLT in STI-shadow
+so IRQs need to remain disabled until the TDCALL to ensure that pending
+IRQs are correctly treated as wake events.
 
-> So I think I like it. Let's see how it works in practice.
-> 
-> (I actually think the "CPU: 0 PID: 0" is likely the least useful part 
-> of that warning string, and maybe *that* should be moved away and 
-> make things a bit more legible, but I think that discussion might as 
-> well be part of that "Let's see how it works")
+Emit warning and fail emulation if IRQs are enabled during HLT #VE handling
+to avoid running into scenarios where IRQ wake events are lost resulting in
+indefinite HLT execution times.
 
-Okay!
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Tested-by: Ryan Afranji <afranji@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20250228014416.3925664-4-vannapurve@google.com
+---
+ arch/x86/coco/tdx/tdx.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-The CPU and PID part is particularly useless, given that it's repeated 
-in the splat a few lines later:
-
-  ------------[ cut here ]------------^M
-  WARNING: CPU: 0 PID: 0 at [ptr == 0 && 1] kernel/sched/core.c:8511 sched_init+0x20/0x410
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.14.0-01616-g94d7af2844aa #4 PREEMPT(undef)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-  RIP: 0010:sched_init+0x20/0x410
-
-So I'll just remove it, which will turn this into:
-
-  WARNING: [ptr == 0 && 1] kernel/sched/core.c:8511 sched_init+0x20/0x410
-
-Which is actually pretty nicely formatted IMHO and orders the 
-information by expected entropy: most constant, most valuable 
-information comes first.
-
-BTW., there's also another option we still have open: by using a unique 
-character separator that isn't 0 we could split up the single string 
-into cond_str and FILE_str parts, and leave formatting to 
-architectures. But I don't think it's needed if we get rid of the "CPU: 
-PID:" noise though.
-
-	Ingo
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index aa0eb40..edab6d6 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -393,6 +393,14 @@ static int handle_halt(struct ve_info *ve)
+ {
+ 	const bool irq_disabled = irqs_disabled();
+ 
++	/*
++	 * HLT with IRQs enabled is unsafe, as an IRQ that is intended to be a
++	 * wake event may be consumed before requesting HLT emulation, leaving
++	 * the vCPU blocking indefinitely.
++	 */
++	if (WARN_ONCE(!irq_disabled, "HLT emulation with IRQs enabled"))
++		return -EIO;
++
+ 	if (__halt(irq_disabled))
+ 		return -EIO;
+ 
 
