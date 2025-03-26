@@ -1,124 +1,138 @@
-Return-Path: <linux-tip-commits+bounces-4556-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4557-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0851FA71172
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 08:32:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36C2EA71193
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 08:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91B1A1731F1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 07:32:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321933A5456
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 07:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F7C198E6F;
-	Wed, 26 Mar 2025 07:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E7919D892;
+	Wed, 26 Mar 2025 07:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HfH92niy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DJ5+gQy8"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DdrZpt62"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30719189BAC;
-	Wed, 26 Mar 2025 07:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D81519D898;
+	Wed, 26 Mar 2025 07:42:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742974320; cv=none; b=b8apPPpxmuStdZE6De+9HNARqT11M1+yRIfn2Nh/qU7WKpfjDRPfVoJGMY/SBdTsQc/G5SKKqsjgTRfY67jnwDZ4k511jCidTwMVz3mVdoGQ7ZCsiFp88nMZYj1aZN+XAjivH2HCS01whMPiG/k736szw5nolYFe+4GeV9tHjBo=
+	t=1742974953; cv=none; b=IWkz0CGSyk5EJNSLbytqcyQvjReBPpYBMxXBnaXGFG3B4+MC7VZsVeZDqofF2HLlK2vrAdbSECxNdrrO8pkKlMcfa5SEQ6TYYak8piZos3MtZmi9dPi03DGoxPFcHhnL2Bi1xF9ZyOgJ1SIKrdPlZHgb/kknSY5M3hz6vhey37c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742974320; c=relaxed/simple;
-	bh=ZUyp9CN4hWSvNhvE43tBDf8XGU/txuDZnZD1KBf+XEA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lytwaPZWO+jhKUfKv8zrtmYIefEkxb9Se41iqtBq85ePb9U4s63JzCIoBihEILU1yOdUF3SRLD3LMFbR00WkdIOEUQ4dboMGqNBOghbx5g6RbKKkjXIqOqlrKETZoScb5+6RgIUFhSuih/MNjPY5OVHzTBMxAcDm/gC+Sfy9VmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HfH92niy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DJ5+gQy8; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Mar 2025 07:31:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742974316;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T/CgGRWQzD7W0+UFUzB+3N7/CvTBPElGdAC0ocRIqg4=;
-	b=HfH92niyx06xkIEx1DWHV9nh0Q6jULIB18mFVnfT5rIbDn1lH8MFYQ9vEzPVwufAo87DPw
-	maslH53vm+Uk42DMqE04ireMq4bm45AsnPTb5qs1/c0AMUvZmSQzbIukakZ5e69hilwUPA
-	y4Q4tEwzFkRFiUg9lTdqAZpK6zj+PeGaT+WbFtq2zudJJZR4nAXdpXLxGAFUu5L1JaJnHP
-	Tht1Y9elK0njoxOHOCfjWWeSqGPHmDT1052UqdNoSwQ7DTq5JppJzB9E3FC4U040cf+8Es
-	Nc2U1bPWN3oQxAdui1VTbDzhVVzcn4mUH52L03xW0giUz/+SPiOQAIFUF8/KLQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742974316;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T/CgGRWQzD7W0+UFUzB+3N7/CvTBPElGdAC0ocRIqg4=;
-	b=DJ5+gQy8X5G2fv6B669yacrEH8L9sefj/IotrJuaTga9czeG4Op16YcZ+bU+CO6Vq4n/hV
-	/ARSwHRQ/dphRbBA==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Fix NULL printf() '%s' argument in
- builtin-check.c:save_argv()
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To:
- <a814ed8b08fb410be29498a20a5fbbb26e907ecf.1742952512.git.jpoimboe@kernel.org>
-References:
- <a814ed8b08fb410be29498a20a5fbbb26e907ecf.1742952512.git.jpoimboe@kernel.org>
+	s=arc-20240116; t=1742974953; c=relaxed/simple;
+	bh=a39+hOyOBrLWeBos3bRjt0r0Ck9szc7SKc42ebq5PoM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lmaNVkDnI2GO7YklIFqBMo4y1PBBXm1ovRVv5iJvk9v/Is8E39irvG9AKMRlVhnPN6ZJYGZqAR5pZowBV92FMvkgBMKLMwPtS6mNwemJ0UhxWAegbnYaQanQEjZVMySRBKGxL7rZBihLFZlHUYvG7s4LBpcGo78t3x/RuOSuiYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DdrZpt62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA28C4CEEE;
+	Wed, 26 Mar 2025 07:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742974953;
+	bh=a39+hOyOBrLWeBos3bRjt0r0Ck9szc7SKc42ebq5PoM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DdrZpt62vmxatBvcF50WRZeLjwuQK1aCe+C+9urExeiH7vWpYuv3xjFQhRVwqCJZ9
+	 2tB9Tzh6sAT32Ci3dDhsNnw712zwSeNykTqNKk1Oe3h/8g93cDKodhXJNGqsxUqVab
+	 2ZqsXrtQZS2q0dXn8bv97v+YxDr2omeekzpP5ae4qIlxOeEHBF8D1xVyDbqNyVt5RI
+	 qsTN95w3I8ikx95q04nmkARoHRdhsCQdVl/IMcKPUUD9SWpmaT7ZoToKmQz3RB0FpB
+	 envgh04m+n3QXDp3LrIQEkPOg9JL8F5z8486HhayWmu1Ywj2Ptv8tWX9llX7kKFjnk
+	 oO1uaXSHQCDAw==
+Date: Wed, 26 Mar 2025 08:42:27 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>, x86@kernel.org
+Subject: Re: [PATCH] bug: Add the condition string to the
+ CONFIG_DEBUG_BUGVERBOSE=y output
+Message-ID: <Z-Ov478wdBKpqtmA@gmail.com>
+References: <20250317104257.3496611-2-mingo@kernel.org>
+ <174246120542.14745.16936293992221722909.tip-bot2@tip-bot2>
+ <20250324115955.GF14944@noisy.programming.kicks-ass.net>
+ <Z-J5UEFwM3gh6VXR@gmail.com>
+ <Z-KRD3ODxT9f8Yjw@gmail.com>
+ <20250325123625.GM36322@noisy.programming.kicks-ass.net>
+ <CAHk-=wg_BRnCs8o5vEjK_zDuc0KJ-z9bvq5845jKv+7UduS4hQ@mail.gmail.com>
+ <Z-MxULQtc--KoKMW@gmail.com>
+ <CAHk-=wjMu5iGZ2ifBqjzV4a993D13OnDvfbtYe6jgPP8cZnAGQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174297431194.14745.4198914327730875327.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjMu5iGZ2ifBqjzV4a993D13OnDvfbtYe6jgPP8cZnAGQ@mail.gmail.com>
 
-The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     89721c2ca8aec6f45166acf61ae32f64f2f1d2db
-Gitweb:        https://git.kernel.org/tip/89721c2ca8aec6f45166acf61ae32f64f2f1d2db
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 25 Mar 2025 18:30:37 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 26 Mar 2025 08:24:59 +01:00
+* Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-objtool: Fix NULL printf() '%s' argument in builtin-check.c:save_argv()
+> On Tue, 25 Mar 2025 at 15:42, Ingo Molnar <mingo@kernel.org> wrote:
+> >
+> > So something like the patch below?
+> > [...]
+> > After:
+> >
+> >   WARNING: CPU: 0 PID: 0 at [ptr == 0 && 1] kernel/sched/core.c:8511 sched_init+0x20/0x410
+> >                             ^^^^^^^^^^^^^^^
+> 
+> Hmm. Is that the prettiest output ever? No. But it does seem workable,
+> and the patch is simple.
+> 
+> And I think the added condition string is useful, in that I often end
+> up looking up warnings that other people report and where the line
+> numbers have changed enough that it's not immediately obvious exactly
+> which warning it is. Not only does it disambiguate which warning it
+> is, it would probably often would obviate having to look it up
+> entirely because the warning message is now more useful.
 
-It's probably not the best idea to pass a string pointer to printf()
-right after confirming said pointer is NULL.  Fix the typo and use
-argv[i] instead.
+Yeah, that exactly was the original motivation for SCHED_WARN_ON(): 
+core kernel code often gets backported on and changed by distributions, 
+so line numbers are fuzzy and with large functions it's sometimes 
+unclear exactly where the warning originated from.
 
-Fixes: c5995abe1547 ("objtool: Improve error handling")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Link: https://lore.kernel.org/r/a814ed8b08fb410be29498a20a5fbbb26e907ecf.1742952512.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/20250326103854.309e3c60@canb.auug.org.au
----
- tools/objtool/builtin-check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> So I think I like it. Let's see how it works in practice.
+> 
+> (I actually think the "CPU: 0 PID: 0" is likely the least useful part 
+> of that warning string, and maybe *that* should be moved away and 
+> make things a bit more legible, but I think that discussion might as 
+> well be part of that "Let's see how it works")
 
-diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
-index 2bdff91..e364ab6 100644
---- a/tools/objtool/builtin-check.c
-+++ b/tools/objtool/builtin-check.c
-@@ -238,7 +238,7 @@ static void save_argv(int argc, const char **argv)
- 	for (int i = 0; i < argc; i++) {
- 		orig_argv[i] = strdup(argv[i]);
- 		if (!orig_argv[i]) {
--			WARN_GLIBC("strdup(%s)", orig_argv[i]);
-+			WARN_GLIBC("strdup(%s)", argv[i]);
- 			exit(1);
- 		}
- 	};
+Okay!
+
+The CPU and PID part is particularly useless, given that it's repeated 
+in the splat a few lines later:
+
+  ------------[ cut here ]------------^M
+  WARNING: CPU: 0 PID: 0 at [ptr == 0 && 1] kernel/sched/core.c:8511 sched_init+0x20/0x410
+  Modules linked in:
+  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.14.0-01616-g94d7af2844aa #4 PREEMPT(undef)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  RIP: 0010:sched_init+0x20/0x410
+
+So I'll just remove it, which will turn this into:
+
+  WARNING: [ptr == 0 && 1] kernel/sched/core.c:8511 sched_init+0x20/0x410
+
+Which is actually pretty nicely formatted IMHO and orders the 
+information by expected entropy: most constant, most valuable 
+information comes first.
+
+BTW., there's also another option we still have open: by using a unique 
+character separator that isn't 0 we could split up the single string 
+into cond_str and FILE_str parts, and leave formatting to 
+architectures. But I don't think it's needed if we get rid of the "CPU: 
+PID:" noise though.
+
+	Ingo
 
