@@ -1,159 +1,140 @@
-Return-Path: <linux-tip-commits+bounces-4571-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4572-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF90AA72E71
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Mar 2025 12:06:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0803A73DCF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Mar 2025 19:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55731179478
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Mar 2025 11:06:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B9393AA27F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Mar 2025 18:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F65B210F6A;
-	Thu, 27 Mar 2025 11:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0290B2192F9;
+	Thu, 27 Mar 2025 18:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4G6zAMPt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DYn/x+Y/"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGVy+AEU"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3BB1C5F0C;
-	Thu, 27 Mar 2025 11:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCA7381C4;
+	Thu, 27 Mar 2025 18:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743073580; cv=none; b=iJ3cK9b1zqxsp0qvgZeKCVtmABdPS7ITGqGQ6pKMBCm4p66hmlKZRhTLQ3eZty8em2S57YteJR1n0vu4iMU1yiCLmFQcAE+zgXhKYnq6SV7OJBe77tNqIo108NstVw9kcpXxSt9bKrkwkOMBbFasSjijwerT6+e+n8alKqGe7U4=
+	t=1743099263; cv=none; b=Fbe5yPujPJB5febbRSmN6cPFZ0iPwPQLDnmuGjmBBrkXQ9Qf8OuF1RdtsANc+/arTx0usFK0qFqgrBqBKxJjGrlRb/V5JVN7j2KXCTVhD2o5V+7ZdVSMuPPtgbxanzuxoC3PiRy4jj/FufeBmczv6v8TorJ9ARrcovw0CsZAVZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743073580; c=relaxed/simple;
-	bh=8UUznqJLxUHqllIRI8qBPHeFZBZRwz7mZOFkmk1D6wg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=oWxcvaLtuXSFuZeqWpvD7B7dhs7g2Zu/rY+P/m4xht37WPUiPf7t2tfHhN1TlcbiWZx72fReGo8zw+XgMjgfyXaMTX4y2XDpSpqoY+lFAHdvomABxfVgFjITNkYPPveZ+eBo2skLyEYa7BsIHanEHDTxbtaTy5Al3j71SI9zfh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4G6zAMPt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DYn/x+Y/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Mar 2025 11:06:09 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743073573;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oi1QEh6TyWE+/E+NgsgA9xeiEXGongDXbr9Dv7hhQV0=;
-	b=4G6zAMPtvAkPSNfeSK0y64L6nWe08qW6XtnOaO2Tpq3WLxdObrRQtKK1mB8mM7+IMwm1Lr
-	sbc3Q804wpT5lB6wFiPYftMZOdzCJw4JUOwmP88tO0Pvhaur1q+33b55eCk8O0hllpn8/f
-	ho6QCjRdcwIxdwGR3g3ygoyp6ini0LWgE2qFKiE3D+8vTKUUpbeDAGNKhYzruhFtONr7hC
-	VKhNmuoF/EI8EgCw91n65Iw/y2CKkYephFkaURNcBO9U9PQDlnPQiKUXspPVm5eEUYnT4o
-	DpXdIDLLQAgwLxErsCkm1xZCQASQWY+FNQXQDhetATLfiKuEQu+Wl1pW7Lijzw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743073574;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oi1QEh6TyWE+/E+NgsgA9xeiEXGongDXbr9Dv7hhQV0=;
-	b=DYn/x+Y/h/VDJ5Cd+IK+IokRsmFWkcUaeBctXsNC8DNY1C91wT1F/wYcXSG16NZUox+nQY
-	ZyYfONY9WfT3cyAQ==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent theoretical
- divide-by-zero in pwm_mediatek_config()
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- ukleinek@kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To:
- <fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org>
-References:
- <fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org>
+	s=arc-20240116; t=1743099263; c=relaxed/simple;
+	bh=4Ft9xIPZQUU9uYzVlf33IIEpUMKVpUOzBBAyceCSDZg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T+y9aVZMUM8qdJ7ALc2uZvYS9Ze2c7ndrYaI7qM8zsO3zU+WFs62FjNWtpXWVgPnQt4ZckLkoPeV7OJLt7JATPqD9xPhOUvtXgWMYgx4MjGzPLqJP8Mq2x93kXsyYM/kClG1Qrt8g6vSJ4PJpv7eLKuv+RpDgN1jFKa8ceBTd1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGVy+AEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823A6C4CEDD;
+	Thu, 27 Mar 2025 18:14:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743099262;
+	bh=4Ft9xIPZQUU9uYzVlf33IIEpUMKVpUOzBBAyceCSDZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JGVy+AEUA02Dz2ivMK5nygcB3xIec6vKm9osG5+Na5XOIBKYLKg+vq7QxogGf8aLF
+	 mzFzL35fVkbO8xq1L+KkR+9vav+RVoWzb1jJqvDSWb92LXPnSTSeV27U01rdWZ+Ti6
+	 2/1l8CS8cgBwYOUnaPQ8bgjiaiOeToiMD7+9dsfigyo0DVbxpxLYaGwRsonRt+HDr8
+	 /KS/HnRfKTXiKDoQP+G7ZCdKLAgVQSxD//yCes7eCmpVoriYgGwR4uevzfDJpN03or
+	 xgeO66GPnu5QETjb1uEThp/zwgjYcUk8oEpN6UbbfgL7Bu7F0Z4+M5NX8TQe0hku0I
+	 ylOMpqf5UJO8g==
+Date: Thu, 27 Mar 2025 19:14:18 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, 
+	linux-tip-commits@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent
+ theoretical divide-by-zero in pwm_mediatek_config()
+Message-ID: <nzk5uzpwqqkflmdgfe7kwsnsecqnsn6vsyo4ycoaueasnud6ot@pg6cazrf6zuf>
+References: <fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org>
+ <174289169184.14745.2432058307739232322.tip-bot2@tip-bot2>
+ <m7pgkp3ueo7iqgqf74upjrihr3mpmb3sqhwegnjxxwsrgx2jsw@dnec5iqiyobh>
+ <Z-Uv60sD_S2xYVB1@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174307356945.14745.9373897017806755891.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gqyx7bjsgd2nmhyo"
+Content-Disposition: inline
+In-Reply-To: <Z-Uv60sD_S2xYVB1@gmail.com>
+
+
+--gqyx7bjsgd2nmhyo
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent
+ theoretical divide-by-zero in pwm_mediatek_config()
+MIME-Version: 1.0
 
-The following commit has been merged into the objtool/urgent branch of tip:
+Hello Ingo,
 
-Commit-ID:     4e8af314386ec3e0b842f47705321e074b1dd556
-Gitweb:        https://git.kernel.org/tip/4e8af314386ec3e0b842f47705321e074b1=
-dd556
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Mon, 24 Mar 2025 14:56:11 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 27 Mar 2025 11:57:45 +01:00
-
-objtool, pwm: mediatek: Prevent theoretical divide-by-zero in pwm_mediatek_co=
-nfig()
-
-With CONFIG_COMPILE_TEST && !CONFIG_CLK, pwm_mediatek_config() has a
-divide-by-zero in the following line:
-
-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
-
-due to the fact that the !CONFIG_CLK version of clk_get_rate() returns
-zero.
-
-This is presumably just a theoretical problem: COMPILE_TEST overrides
-the dependency on RALINK which would select COMMON_CLK.  Regardless it's
-a good idea to check for the error explicitly to avoid divide-by-zero.
-
-Fixes the following warning:
-
-  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of sect=
-ion
-
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: "Uwe Kleine-K=C3=B6nig" <ukleinek@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742=
-852847.git.jpoimboe@kernel.org
----
- drivers/pwm/pwm-mediatek.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 01dfa0f..7eaab58 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -121,21 +121,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, s=
-truct pwm_device *pwm,
- 	struct pwm_mediatek_chip *pc =3D to_pwm_mediatek_chip(chip);
- 	u32 clkdiv =3D 0, cnt_period, cnt_duty, reg_width =3D PWMDWIDTH,
- 	    reg_thres =3D PWMTHRES;
-+	unsigned long clk_rate;
- 	u64 resolution;
- 	int ret;
+On Thu, Mar 27, 2025 at 12:00:59PM +0100, Ingo Molnar wrote:
+> * Uwe Kleine-K=F6nig <ukleinek@kernel.org> wrote:
+>=20
+> > I wonder a bit about procedures here. While I like that warnings that=
 =20
- 	ret =3D pwm_mediatek_clk_enable(chip, pwm);
--
- 	if (ret < 0)
- 		return ret;
+> > pop up in drivers/pwm (and elsewhere) are cared for, I think that the=
 =20
-+	clk_rate =3D clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
-+	if (!clk_rate)
-+		return -EINVAL;
-+
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
- 		writel(0, pc->regs + PWM_CK_26M_SEL);
+> > sensible way to change warning related settings is to make it hard to=
 =20
- 	/* Using resolution in picosecond gets accuracy higher */
- 	resolution =3D (u64)NSEC_PER_SEC * 1000;
--	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
-+	do_div(resolution, clk_rate);
+> > enable them first (harder than "depends on !COMPILE_TEST" "To avoid=20
+> > breaking bots too badly") and then work on the identified problems=20
+> > before warning broadly. The way chosen here instead seems to be=20
+> > enabling the warning immediately and then post fixes to the warnings=20
+> > and merge them without respective maintainer feedback in less than 12=
 =20
- 	cnt_period =3D DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
- 	while (cnt_period > 8191) {
+> > hours.
+>=20
+> As I indicated elsewhere in this thread, it's a WIP branch, so we'll=20
+
+That sounds as if I should know that. But it's neither in the part of
+the thread that I was Cc:d, nor in the cover letter.
+
+> rebase it if/as we get feedback from maintainers: fix or skip the patch=
+=20
+> on negative feedback, adding in tags on positive feedback.
+>=20
+> Does this particular patch look good to you?
+
+I fail to see an urgency and so think this patch should better go via
+the pwm tree. Do you consider it urgent (as the branch name suggests)?
+Or is this v6.16 material?
+
+> > > Cc: "Uwe Kleine-K=F6nig" <ukleinek@kernel.org> (maintainer:PWM SUBSYS=
+TEM)
+> > > Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> > > Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3b=
+f12.1742852847.git.jpoimboe@kernel.org
+>=20
+> I've also tentatively added your Acked-by, if that's OK with you.
+
+The patch is OK. Iff you can convince me that it should go via tip, it's
+fine for me.
+
+Best regards
+Uwe
+
+--gqyx7bjsgd2nmhyo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfllXgACgkQj4D7WH0S
+/k4EiAf/evcJ6ao4tZDmEX3hn4JjXwAyqpF+dLGrNTXZm5pT6bGxE8Dqg7ES3y4c
+MpyNiStcHajzSdV3nq/Rd9C+9X29KrP3mmwLuG8pl1GzAp723fsib2U9i21fZiwN
+t8MPS3l6YhWIaYixqkRsaNjnKLGRz2m2+ZYe4Pjnr5eDIrOHp7sfjpkE+b481K5B
+DZ4ljzMKH46IHzJvOFsBUX8I39lijYDoiNavCTIeqxZ1lxrCRewMYtL4n38UI3ws
+bKWUcYySqf5aNuq4mqKXuOaK7kVDuson8HDMaH4jM09j02ybn7VSjDj2FoqxPOGo
+nAssvhkLaABByY6PVAbyObkCCVK9fw==
+=N7Za
+-----END PGP SIGNATURE-----
+
+--gqyx7bjsgd2nmhyo--
 
