@@ -1,186 +1,97 @@
-Return-Path: <linux-tip-commits+bounces-4564-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4565-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C06A718B7
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 15:40:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10506A729FC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Mar 2025 06:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65826177501
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Mar 2025 14:40:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C69217377D
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Mar 2025 05:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95401F30C0;
-	Wed, 26 Mar 2025 14:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AE41B81C1;
+	Thu, 27 Mar 2025 05:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X4jHQz57";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f9XfM/ht"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EWETa2j3"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604F61F192E;
-	Wed, 26 Mar 2025 14:39:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111B213DDAA;
+	Thu, 27 Mar 2025 05:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742999992; cv=none; b=sUWouSpWOEU66jACC0b0sr2/9JM/f2SYv0v66Diani66JmTDlUArsgW8NuAogO1zjgeqwQBSstfO/AgRTsjpUOLlETS8R/PbIDtozm+gmRSK0ZIq/WabO3g8Rq7uSnYfn2cNQsk/s/SdyOa5fHIaK7bk6qLrXrz2zAI0zoF/lJ8=
+	t=1743054247; cv=none; b=pUyj2kLMtF/spOCK80pIecHhrkfYnlTnEl0mcEnkRcL3THP2N0PIrNlboZvNnxmJla5izX1xXMCAV9h5W0H+reVWXWUvKetaxgmswVinFM69vFi3BGDCz77xSESUgKOcaZZzbWDOP4YSFhORORRYgK+/33ymUJ1GD3LTlebfCKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742999992; c=relaxed/simple;
-	bh=39aqIo2xz4Ol8cLnm6iE5OSq3M7FWInUydvY4kFRFG8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=TfFzef5tCCq7+Awkvgen2ArwSgI4NL9sR5G9/dUnElMP0/d7HNnqfvUTI5xDhedcLoJftUf3ma53WqAPhwcLQFjKnSCO3C0ifQQf47tzLCdCLAZbbAcrV94CRart8CGK6gb1/0eC09AAHSG4AgiY8rvTRZifX2Qu4/adQEqpAlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X4jHQz57; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f9XfM/ht; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Mar 2025 14:39:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1742999988;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hPyMtws/0XIqxIMQcIBSUa4peOxdCuTdOTld/TGEtWo=;
-	b=X4jHQz579ofAS6RGA/asRShN2MCPfOBd9Jo009fX4U2n0u5W7ECUSBLhwOPzsT0jsAx6DI
-	k9dBVS1XQo5gh+R3mZfMN9ZChuAiEdJE64REfPxOvl9Kg3/lu2IYEUyvTnfUtfX3rnMqiR
-	8oB8b5mUrHHR0GzaV7z1eVwUnDaIr1MIc9qOVpwQtV4mHLTJCfzi6KrW0vU4nTncllJMzP
-	fCzjSVl1j2kYlJn0tddHYZEuQCKFKgmG/LrnMGLZsAvithOSH8RqzoO7dTO+Qnt6fDvyQG
-	C7q4M5MtZCHTRL5CbWqkcQiuAX/Wbl6NQ6yYggEwYAiZchcKf76xJK+zKjAD6g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1742999988;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hPyMtws/0XIqxIMQcIBSUa4peOxdCuTdOTld/TGEtWo=;
-	b=f9XfM/ht888REuYdzwy7UKc6GddX3Fqxf1eNrwbkakspvAvnRkG1nls7JXvsqWDNKyN92s
-	nheXn01VoE4jS6Cg==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] PCI/MSI: Handle the NOMASK flag correctly for
- all PCI/MSI backends
-Cc: Daniel Gomez <da.gomez@kernel.org>, Borislav Petkov <bp@alien8.de>,
- Thomas Gleixner <tglx@linutronix.de>, Juergen Gross <jgross@suse.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <87iknwyp2o.ffs@tglx>
-References: <87iknwyp2o.ffs@tglx>
+	s=arc-20240116; t=1743054247; c=relaxed/simple;
+	bh=7doPNIBcvGM2CVSphaz6RI3B+Qyn0i0/VaXR4AUmgxw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sETmgb171naYG1cClQfuSHAVqy45+6boNvP8dIAzvHjEv9sfMB3BdT21Z3pxGFVXgQXAxydXyR51H6OD/ZrLeGz+CE3CLltBHcl+14H0rmNjb7wPxhHOM4b5LxLqWDm9Ggf5JtfMo1xpayTxlGt+YA7rMbDKiNUGnUaEeMOBiMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EWETa2j3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52C3C4CEDD;
+	Thu, 27 Mar 2025 05:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743054246;
+	bh=7doPNIBcvGM2CVSphaz6RI3B+Qyn0i0/VaXR4AUmgxw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EWETa2j3567PZ4ia0bZOYjmGOwwbxcBFY/NH7FKE4grjP1x1drO6d36mRbM8xKKfT
+	 /LiIC0cqcWA0ZR0iQPuD/qItheQHWum9CWuSySdPsunUAfwMKRZGtrr0DCFT9g/18U
+	 wFVyAtcseW1uQzrmyCGWBB6KmErqINz6ioGSMfxABVa8m6BEaxdohDq3Be40yEapFC
+	 rY0NjTjXfR1JWLi3Az6w51q03c9OlaVviKKgcGCgBMZpATte+WrC48kRf/xQ6jL9Qr
+	 skhav8ZQidpmsHGLDxuAp07Bawv2mfioFjooQB2Yk5QQGGO1WcY/uyJ0FmUealsSZ3
+	 PQ7tNNsJbUeBg==
+Date: Wed, 26 Mar 2025 22:44:04 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>, linux-tip-commits@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent
+ theoretical divide-by-zero in pwm_mediatek_config()
+Message-ID: <5i7cbgl7vza4bktquqbr7mvkrypbzmoeoys76wpzo4efmwze32@uwasrdhgsejo>
+References: <fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org>
+ <174289169184.14745.2432058307739232322.tip-bot2@tip-bot2>
+ <4avdt2nru6cpypssyw5chxiuadh74qcobfboopwsske2ycr565@qnb6utlyxuj4>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174299998368.14745.8248965655680348410.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4avdt2nru6cpypssyw5chxiuadh74qcobfboopwsske2ycr565@qnb6utlyxuj4>
 
-The following commit has been merged into the timers/urgent branch of tip:
+On Wed, Mar 26, 2025 at 11:35:28AM +0100, Uwe Kleine-König wrote:
+> I wonder a bit about procedures here. While I like that warnings that
+> pop up in drivers/pwm (and elsewhere) are cared for, I think that the
+> sensible way to change warning related settings is to make it hard to
+> enable them first (harder than "depends on !COMPILE_TEST" "To avoid
+> breaking bots too badly") and then work on the identified problems
+> before warning broadly. The way chosen here instead seems to be enabling
+> the warning immediately and then post fixes to the warnings and merge
+> them without respective maintainer feedback in less than 12 hours.
 
-Commit-ID:     3ece3e8e5976c49c3f887e5923f998eabd54ff40
-Gitweb:        https://git.kernel.org/tip/3ece3e8e5976c49c3f887e5923f998eabd54ff40
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 26 Mar 2025 13:05:35 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 26 Mar 2025 15:28:43 +01:00
+Actually, this type of warning has existed for years.  Nothing in the
+recent objtool patches enabled it.
 
-PCI/MSI: Handle the NOMASK flag correctly for all PCI/MSI backends
+I only discovered this particular one a few days ago.  I suspect it only
+exists with newer compilers.
 
-The conversion of the XEN specific global variable pci_msi_ignore_mask to a
-MSI domain flag, missed the facts that:
+> I fail to reproduce the warning here for an x86_64 build on
+> 1e26c5e28ca5. I have:
+> 
+>         $ grep -E 'CONFIG_(CLK|PWM_MEDIATEK|OBJTOOL_WERROR)\>' .config
+>         CONFIG_PWM_MEDIATEK=m
+>         CONFIG_OBJTOOL_WERROR=y
+> 
+> and the build works fine for me and there is no warning about
+> drivers/pwm/pwm-mediatek.o. What am I missing?
 
-    1) Legacy architectures do not provide a interrupt domain
-    2) Parent MSI domains do not necessarily have a domain info attached
-   
-Both cases result in an unconditional NULL pointer dereference. This was
-unfortunatly missed in review and testing revealed it late.
+Sorry, I should have given more details about that.  It was likely
+something with KCOV and/or UBSAN, though I can't seem to recreate it at
+the moment either :-/
 
-Cure this by using the existing pci_msi_domain_supports() helper, which
-handles all possible cases correctly.
-
-Fixes: c3164d2e0d18 ("PCI/MSI: Convert pci_msi_ignore_mask to per MSI domain flag")
-Reported-by: Daniel Gomez <da.gomez@kernel.org>
-Reported-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Tested-by: Borislav Petkov <bp@alien8.de>
-Tested-by: Daniel Gomez <da.gomez@kernel.org>
-Link: https://lore.kernel.org/all/87iknwyp2o.ffs@tglx
-Closes: https://lore.kernel.org/all/qn7fzggcj6qe6r6gdbwcz23pzdz2jx64aldccmsuheabhmjgrt@tawf5nfwuvw7
----
- drivers/pci/msi/msi.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index d741628..7058d59 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -285,8 +285,6 @@ static void pci_msi_set_enable(struct pci_dev *dev, int enable)
- static int msi_setup_msi_desc(struct pci_dev *dev, int nvec,
- 			      struct irq_affinity_desc *masks)
- {
--	const struct irq_domain *d = dev_get_msi_domain(&dev->dev);
--	const struct msi_domain_info *info = d->host_data;
- 	struct msi_desc desc;
- 	u16 control;
- 
-@@ -297,7 +295,7 @@ static int msi_setup_msi_desc(struct pci_dev *dev, int nvec,
- 	/* Lies, damned lies, and MSIs */
- 	if (dev->dev_flags & PCI_DEV_FLAGS_HAS_MSI_MASKING)
- 		control |= PCI_MSI_FLAGS_MASKBIT;
--	if (info->flags & MSI_FLAG_NO_MASK)
-+	if (pci_msi_domain_supports(dev, MSI_FLAG_NO_MASK, DENY_LEGACY))
- 		control &= ~PCI_MSI_FLAGS_MASKBIT;
- 
- 	desc.nvec_used			= nvec;
-@@ -604,20 +602,18 @@ static void __iomem *msix_map_region(struct pci_dev *dev,
-  */
- void msix_prepare_msi_desc(struct pci_dev *dev, struct msi_desc *desc)
- {
--	const struct irq_domain *d = dev_get_msi_domain(&dev->dev);
--	const struct msi_domain_info *info = d->host_data;
--
- 	desc->nvec_used				= 1;
- 	desc->pci.msi_attrib.is_msix		= 1;
- 	desc->pci.msi_attrib.is_64		= 1;
- 	desc->pci.msi_attrib.default_irq	= dev->irq;
- 	desc->pci.mask_base			= dev->msix_base;
--	desc->pci.msi_attrib.can_mask		= !(info->flags & MSI_FLAG_NO_MASK) &&
--						  !desc->pci.msi_attrib.is_virtual;
- 
--	if (desc->pci.msi_attrib.can_mask) {
-+
-+	if (!pci_msi_domain_supports(dev, MSI_FLAG_NO_MASK, DENY_LEGACY) &&
-+	    !desc->pci.msi_attrib.is_virtual) {
- 		void __iomem *addr = pci_msix_desc_addr(desc);
- 
-+		desc->pci.msi_attrib.can_mask = 1;
- 		desc->pci.msix_ctrl = readl(addr + PCI_MSIX_ENTRY_VECTOR_CTRL);
- 	}
- }
-@@ -715,8 +711,6 @@ static int msix_setup_interrupts(struct pci_dev *dev, struct msix_entry *entries
- static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
- 				int nvec, struct irq_affinity *affd)
- {
--	const struct irq_domain *d = dev_get_msi_domain(&dev->dev);
--	const struct msi_domain_info *info = d->host_data;
- 	int ret, tsize;
- 	u16 control;
- 
-@@ -747,7 +741,7 @@ static int msix_capability_init(struct pci_dev *dev, struct msix_entry *entries,
- 	/* Disable INTX */
- 	pci_intx_for_msi(dev, 0);
- 
--	if (!(info->flags & MSI_FLAG_NO_MASK)) {
-+	if (!pci_msi_domain_supports(dev, MSI_FLAG_NO_MASK, DENY_LEGACY)) {
- 		/*
- 		 * Ensure that all table entries are masked to prevent
- 		 * stale entries from firing in a crash kernel.
+-- 
+Josh
 
