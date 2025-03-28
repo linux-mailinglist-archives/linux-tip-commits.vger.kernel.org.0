@@ -1,86 +1,124 @@
-Return-Path: <linux-tip-commits+bounces-4576-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4577-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C85BA74BC6
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 14:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEF00A74BC9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 14:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE705179F37
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 13:51:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5936D169D2B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 13:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A110522F3B1;
-	Fri, 28 Mar 2025 13:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B85718309C;
+	Fri, 28 Mar 2025 13:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/zdq9HV"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WsP1ARtf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z/rpX2Hz"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789A122F39C;
-	Fri, 28 Mar 2025 13:45:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD76B17A311;
+	Fri, 28 Mar 2025 13:48:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743169509; cv=none; b=Lf3PvR+1rb9sA/AV+ygS4S2g8tliwWgFCY0g4LM2hhoMfAdltHdDUoRWu59fWp7NK4MZd4ebrFaq6TcGh0DUHERTgH9CPD8QwSiSKI7hsJSu1h8W6KS1PdQHfdwrr488+k8rgAZe30t+pbtjkAPvewDLGW/uRPpafx6r2cc30Go=
+	t=1743169709; cv=none; b=cgFg5Q+LGoRsIEHu1aNvg7ZAavUxrrfBjMqwRia1ua1By/aycOqEiHqymyQQSlxHTKlffa+fUkeyvSqydi9wlc2G7Hu/HqA3CrR87iaa9fGSm4J62dGTXH6ufFafX5DMnGaWPNMfb/9qITmLRYtfK9Gxhm0rU041CP4pQxSaakw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743169509; c=relaxed/simple;
-	bh=tKpHLI3sqTeiGvnB5U69bfb2v1lVnDYs4M9qy4VYEos=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C1LY4TiLxsGrl0jqMPX/G0Gowds7dbNI+/TZMeJfLmBx3z1POLEkQHb+N/NFr1ec7PYvV5Du7DJ9Rwj/uWi2OsnAvgbww7I4Gc9uzPimphBRePdtvY2L4Ac4fvxdG7t/SdSxy+Ds8EAfOwjfk4Frt/h+NqaPXBmuy54VNtHyWVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/zdq9HV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C149C4CEE4;
-	Fri, 28 Mar 2025 13:45:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743169508;
-	bh=tKpHLI3sqTeiGvnB5U69bfb2v1lVnDYs4M9qy4VYEos=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V/zdq9HVdYX0fBnh6GZPVDwX2NZ5Tik4Q7I1O28aFBqDqYvbEMOpml7/lYL/cHl0Z
-	 BaX3mdXLqdOKa01w6twdvwPC6y4t8tRoTsynK7TCWktrqNGkhdJKXVnuo/YArJ0BhJ
-	 p3AvuYdfNyv1h878jz4qRzYbcdI8hM/SeY8ulxx87iXfmvesGzXj9VgAxn08PDZIBh
-	 CWNGzPS0G2V7vQTbecBiMzH07iBEU7V7jkpQ4ZsLWYKd4RNVpSrM+Vmhq9FlZj0KDY
-	 DxSU6gubMT7GEnBeKfrEU7jsfGN1TAg+Oz6ZRcIeBLjb0rtK4yN0C2eBR7s+gJMErS
-	 gxvu6czcPhw2A==
-Date: Fri, 28 Mar 2025 14:45:04 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, linux-tip-commits@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
-Subject: Re: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent
- theoretical divide-by-zero in pwm_mediatek_config()
-Message-ID: <Z-an4KuB-OQE5ovv@gmail.com>
-References: <fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org>
- <174289169184.14745.2432058307739232322.tip-bot2@tip-bot2>
- <m7pgkp3ueo7iqgqf74upjrihr3mpmb3sqhwegnjxxwsrgx2jsw@dnec5iqiyobh>
- <Z-Uv60sD_S2xYVB1@gmail.com>
- <nzk5uzpwqqkflmdgfe7kwsnsecqnsn6vsyo4ycoaueasnud6ot@pg6cazrf6zuf>
- <Z-XBb_8f6cItnlZN@gmail.com>
- <ivss2v7kmk6ylcojffyxwucsmfcgbbe3kxiasbe3dqijvooy6m@vpkopftglx3a>
+	s=arc-20240116; t=1743169709; c=relaxed/simple;
+	bh=AQnc0q6XPBSWqp3ObnEGEfmqwiJpfcrXlUDsqPnb9sk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Zu4kS3cTkonx2LWHf+XHRX1miXdFPst0zipCT+4E7YKA1EMYrU3ExLfEYupj+c2WCyQ+ixXO3CSTT8j/FvLvqZFEh0QgzEXZBtNQIM1AqPTuRELUb7rN17zXwPb6Nml5w0LTtdsgMKV/vVTCruBQQV1osYzKrMXFvMt8IOXNYh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WsP1ARtf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z/rpX2Hz; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 28 Mar 2025 13:48:18 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1743169705;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UR2qqIKg0l9BB5UIDzBKYJaEc6hDV4BtIEufdljkeaY=;
+	b=WsP1ARtf7A+IVepz+zq/47k7ydcbbjlNXnSIy3Dy5YLVjVDNA4+PRrNK30tp8KRHjayRh1
+	D61WCrLNOEmW/sAZO/vZDkxsv6mdm3+ttktKNm9MujrRcNlpgGU1ZSuIoytt/cNOMfNQRo
+	XS5H4YfkVn6gIN7TBGlPeg40D8gASDQ/owzeRVcGtY9ss4lWzcjYy4w7W+bMGuCg0H1lK0
+	zNZC79SDla1fu/SiA6zQUJZYsGvv4V4hVC2MDwRdxAX3BKNuOdJ0+2cY5ZeNKIeC6GeYuC
+	VmVE7e49Q94SIsz7mHHH0zJA5lVSQcqTkiCiDJk7ylpB7tqJMtMugqvgsqgkcg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1743169705;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UR2qqIKg0l9BB5UIDzBKYJaEc6hDV4BtIEufdljkeaY=;
+	b=Z/rpX2HzSXkdYX9si0yrMsz2tFMrvMGWT1MGM0KN7AboC+iNq7SwWD+AhnCyWZ4iLfwOWD
+	LrIYQw1CqFnrc6Ag==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/urgent] objtool: Fix NULL printf() '%s' argument in
+ builtin-check.c:save_argv()
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To:
+ <a814ed8b08fb410be29498a20a5fbbb26e907ecf.1742952512.git.jpoimboe@kernel.org>
+References:
+ <a814ed8b08fb410be29498a20a5fbbb26e907ecf.1742952512.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ivss2v7kmk6ylcojffyxwucsmfcgbbe3kxiasbe3dqijvooy6m@vpkopftglx3a>
+Message-ID: <174316970081.14745.12219421049589784447.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the objtool/urgent branch of tip:
 
-* Uwe Kleine-König <ukleinek@kernel.org> wrote:
+Commit-ID:     d9a595c3850ea4383628115df2bb533af3b29f4f
+Gitweb:        https://git.kernel.org/tip/d9a595c3850ea4383628115df2bb533af3b29f4f
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Tue, 25 Mar 2025 18:30:37 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 28 Mar 2025 14:38:09 +01:00
 
-> > failures in a single place to not inconvenience randconfig CI 
-> > testing efforts, so in that sense it would be nice to send this via 
-> > the objtool/urgent tree, but I'll remove it if you insist.
-> 
-> I'm still in the process to determine my opinion on that.
+objtool: Fix NULL printf() '%s' argument in builtin-check.c:save_argv()
 
-Although Josh's fix looks obviously correct to me, I've removed the 
-commit from objtool/urgent, because your indecision about it is 
-blocking other fixes. Feel free to pick up the fix in your tree.
+It's probably not the best idea to pass a string pointer to printf()
+right after confirming said pointer is NULL.  Fix the typo and use
+argv[i] instead.
 
-Thanks,
+Fixes: c5995abe1547 ("objtool: Improve error handling")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Link: https://lore.kernel.org/r/a814ed8b08fb410be29498a20a5fbbb26e907ecf.1742952512.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/20250326103854.309e3c60@canb.auug.org.au
+---
+ tools/objtool/builtin-check.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	Ingo
+diff --git a/tools/objtool/builtin-check.c b/tools/objtool/builtin-check.c
+index 2bdff91..e364ab6 100644
+--- a/tools/objtool/builtin-check.c
++++ b/tools/objtool/builtin-check.c
+@@ -238,7 +238,7 @@ static void save_argv(int argc, const char **argv)
+ 	for (int i = 0; i < argc; i++) {
+ 		orig_argv[i] = strdup(argv[i]);
+ 		if (!orig_argv[i]) {
+-			WARN_GLIBC("strdup(%s)", orig_argv[i]);
++			WARN_GLIBC("strdup(%s)", argv[i]);
+ 			exit(1);
+ 		}
+ 	};
 
