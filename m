@@ -1,124 +1,125 @@
-Return-Path: <linux-tip-commits+bounces-4581-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4582-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A427A74BF1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 15:04:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F088A75045
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 19:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CBCD16AE05
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 14:00:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CC017A6686
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 28 Mar 2025 18:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B9D171092;
-	Fri, 28 Mar 2025 13:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6336B1D7994;
+	Fri, 28 Mar 2025 18:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kCvuQbAS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MFWugy7g"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rIJW3V49"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A7135972;
-	Fri, 28 Mar 2025 13:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38527286A9;
+	Fri, 28 Mar 2025 18:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743170391; cv=none; b=XT2ZwsWmxdedpDYMaZmdJpiE4heoy1nJBXNMsfZSMljdSqzhGurI5+erVpDy6eqEkIDtrBzly1JaOyTxI5gw4X30pOdv1gC3yz4KHL4hzWE112JOu/vM2NCVmcCjXaL79tDEtP0nAoj70wbEdCXhA26eQtKtEnzVMtpz01C8vVw=
+	t=1743185981; cv=none; b=rX5+ZPrmi/ce0NE7g/PWL0oeOp+WLBAQOtAT9vyx8Cg4mCHnqes6qwyicY4m3Is3ljjkyMwArhq6eh1yJVEXc8gmXY12hL4E5Bg1zvK7N9NlRcdsjoL8rmY9S3LwOUxaqn4CjJ3C/l1h7L7f2qNHbcaBvrj2wxKtFaoZQuwzXrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743170391; c=relaxed/simple;
-	bh=queargUwgwhFoLJSm0V6spQZc3Od+p+0HdswVa4qUVU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=UHaJHEJBhGZm8rWZWp9cYWR/EGkimPB95NajYg2jOhr6Gd5lYM8AYd57F0W1+2pACAbSgCckYrwGMaGnKSOIwamH5M2oit03YNvLdINvZPdwz916WgcpYTy6hxyE07X56r/CiSoN+BrzKMCGaPIJat20tXONihzmX0gqE6XEGMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kCvuQbAS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MFWugy7g; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 28 Mar 2025 13:59:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743170388;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fv2yoDSisQExJbWofZwhHnrEfc7qQm6vG6yJ0U8B1tQ=;
-	b=kCvuQbAS8TruogIQTqiujp5XRBZQ2IviyWxVoW/9u7sphlyf4jbxlQT76TfZlNruXalqZP
-	M/QubmuAAmllPwdgQjwF/dq/NpR835GZBCHjT/bDjJ3YsyZ6n4h136ecVBhBy1ZSxgkzQT
-	yg30rrBj3E8JAYoH81Klb5Zle/artqHRn8fof258w9CAIHzc259EeYQz2J6MfUqZwP4ViK
-	psGn/Hlwp/dN9JJdO5dOuVxab53flgCRVqB2fOJov3UN71tgnoH93bYCJAP8ZF5qh+OjAX
-	G99Zan2VlBqPBNcTGBM+x4IePG1VwPkuAye4unZDfR7lmqDDJKvEGUzJxaYkrA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743170388;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fv2yoDSisQExJbWofZwhHnrEfc7qQm6vG6yJ0U8B1tQ=;
-	b=MFWugy7giBbhWggZIOWEtvdoHfk8QtanbgajR8cxZeNmnvWdaTnlJQDANzh2yff9Qj6ZBp
-	yN+KZ7f+Js7Y/SBQ==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: objtool/urgent] objtool: Fix segfault in ignore_unreachable_insn()
-Cc: Arnd Bergmann <arnd@arndb.de>, Ingo Molnar <mingo@kernel.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To:
- <5df4ff89c9e4b9e788b77b0531234ffa7ba03e9e.1743136205.git.jpoimboe@kernel.org>
-References:
- <5df4ff89c9e4b9e788b77b0531234ffa7ba03e9e.1743136205.git.jpoimboe@kernel.org>
+	s=arc-20240116; t=1743185981; c=relaxed/simple;
+	bh=kuN9bj2/FuIAEYupxbfKi1EvsySiDFDN5oiqwFLqYAU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SrC+mstbAApYm+A8DrRf4nRAyQS9u0iwncWCrf3rdF/BPFGY4Hjez0xgyDT7qsQv8Xo6QVJsqAfEBLdIRYbxWqS0fqmGcsEHeI+SY5oLTMKgoj9B7ZVYh82eueASd16lAk7uPCOt/SovWdGiNFWo2h8ZM4MVJVBtxFykLfQFXsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rIJW3V49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFAEC4CEE4;
+	Fri, 28 Mar 2025 18:19:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743185980;
+	bh=kuN9bj2/FuIAEYupxbfKi1EvsySiDFDN5oiqwFLqYAU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rIJW3V49I9jLbHWMa0w4kTdMtOE1NuGq0BxD57kac4FsGfuJgdz5R18XiwpJ5IY8L
+	 WGGNpdsBG8G1TbHbFqidPFPOLG5BnL80GM/yUkmaHea1eSBsVWfyL+aWANghueq9pX
+	 bfdVldrFdJjDaSAmRUtmAs9jHgg60Mvg/N3vAADlDttzzIHPq3Nmfq9mFnz+GXDD2O
+	 H21R1IAQy+X/EnheoIS0kiB/Blquw4bgU06Jgkp94k+FT7TWvf8qF6ZKNLBCCwRUn3
+	 eInjZCGIETrO9DeVuwSxZ6uL0U5bJ401lCJMlFo72XGHDOUVgQ6HQeOOqzmZMK6lzU
+	 UQ+EyL9MdLoRg==
+Date: Fri, 28 Mar 2025 19:19:37 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, 
+	linux-tip-commits@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent
+ theoretical divide-by-zero in pwm_mediatek_config()
+Message-ID: <4swgr64qmedmlpsgaf7n4mfssfoxqkjvlveg3xhm7eogh7ae76@t4zd7fw4trxg>
+References: <fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org>
+ <174289169184.14745.2432058307739232322.tip-bot2@tip-bot2>
+ <m7pgkp3ueo7iqgqf74upjrihr3mpmb3sqhwegnjxxwsrgx2jsw@dnec5iqiyobh>
+ <Z-Uv60sD_S2xYVB1@gmail.com>
+ <nzk5uzpwqqkflmdgfe7kwsnsecqnsn6vsyo4ycoaueasnud6ot@pg6cazrf6zuf>
+ <Z-XBb_8f6cItnlZN@gmail.com>
+ <ivss2v7kmk6ylcojffyxwucsmfcgbbe3kxiasbe3dqijvooy6m@vpkopftglx3a>
+ <Z-an4KuB-OQE5ovv@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174317038796.14745.5274581486617831611.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="f3tl5ltsvr4fcv7q"
+Content-Disposition: inline
+In-Reply-To: <Z-an4KuB-OQE5ovv@gmail.com>
 
-The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     69d41d6dafff0967565b971d950bd10443e4076c
-Gitweb:        https://git.kernel.org/tip/69d41d6dafff0967565b971d950bd10443e4076c
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Thu, 27 Mar 2025 22:04:21 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 28 Mar 2025 14:47:02 +01:00
+--f3tl5ltsvr4fcv7q
+Content-Type: text/plain; protected-headers=v1; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [tip: objtool/urgent] objtool, pwm: mediatek: Prevent
+ theoretical divide-by-zero in pwm_mediatek_config()
+MIME-Version: 1.0
 
-objtool: Fix segfault in ignore_unreachable_insn()
+Hello Ingo,
 
-Check 'prev_insn' before dereferencing it.
+On Fri, Mar 28, 2025 at 02:45:04PM +0100, Ingo Molnar wrote:
+> * Uwe Kleine-K=F6nig <ukleinek@kernel.org> wrote:
+>=20
+> > > failures in a single place to not inconvenience randconfig CI=20
+> > > testing efforts, so in that sense it would be nice to send this via=
+=20
+> > > the objtool/urgent tree, but I'll remove it if you insist.
+> >=20
+> > I'm still in the process to determine my opinion on that.
+>=20
+> Although Josh's fix looks obviously correct to me, I've removed the=20
+> commit from objtool/urgent, because your indecision about it is=20
+> blocking other fixes.
 
-Fixes: bd841d6154f5 ("objtool: Fix CONFIG_UBSAN_TRAP unreachable warnings")
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/5df4ff89c9e4b9e788b77b0531234ffa7ba03e9e.1743136205.git.jpoimboe@kernel.org
+This isn't exactly the reaction that I expected, but of course you're
+entitled to do that.
 
-Closes: https://lore.kernel.org/d86b4cc6-0b97-4095-8793-a7384410b8ab@app.fastmail.com
-Closes: https://lore.kernel.org/Z-V_rruKY0-36pqA@gmail.com
----
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Feel free to pick up the fix in your tree.
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 3bf2992..29de170 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4037,7 +4037,7 @@ static bool ignore_unreachable_insn(struct objtool_file *file, struct instructio
- 	 * It may also insert a UD2 after calling a __noreturn function.
- 	 */
- 	prev_insn = prev_insn_same_sec(file, insn);
--	if (prev_insn->dead_end &&
-+	if (prev_insn && prev_insn->dead_end &&
- 	    (insn->type == INSN_BUG ||
- 	     (insn->type == INSN_JUMP_UNCONDITIONAL &&
- 	      insn->jump_dest && insn->jump_dest->type == INSN_BUG)))
+I'd like to understand if there are still more fixes needed similar to
+the pwm-mediatek one. I managed to reproduce that issue and will play
+around with that a bit to check if some more fixes are needed.
+
+Best regards
+Uwe
+
+
+--f3tl5ltsvr4fcv7q
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmfm6DcACgkQj4D7WH0S
+/k6Idwf+NHG99w3ld8/jj5dIJe41t+wqWNDukkOdVCI9fnEaA2ORiaTXqYDmK0SU
+x1Mzba4AQQxduqqYgYqAaghyNrPWG8IFICvbWETTLMn08YgQQ+L5Y3Jpy34Sgmu2
+CNTHzZf9kIar8Ku4uC/JESe9DvK7QxxYMNGaTwiN25k1J9mKDEF2HMI6/kg9gcgX
+OzSJBOARIGexC3pj5c6f16Y9nMdn1HggXSyXLJfiGLvsf4YmTB9z0GA5KE3EEdqb
+CUozcqKtFBLpQxq3NR3nvu/sbAtJTR6L9hI89s29kEvRGCC1ilgmOW9zglYcCOmy
+dJjCHXk0wk1QYDOjs/7e6McqxGgZzw==
+=zpEw
+-----END PGP SIGNATURE-----
+
+--f3tl5ltsvr4fcv7q--
 
