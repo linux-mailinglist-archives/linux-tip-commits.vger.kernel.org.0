@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-4623-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4624-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E29CA795F3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Apr 2025 21:36:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC35A7969E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Apr 2025 22:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C623B1A24
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Apr 2025 19:36:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44DD87A2A98
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Apr 2025 20:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD24B7DA6A;
-	Wed,  2 Apr 2025 19:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315D51DED49;
+	Wed,  2 Apr 2025 20:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R7e21bGM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q5pZoS6Q"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="spbhp6uK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="noLA3zNf"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659E8537FF;
-	Wed,  2 Apr 2025 19:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C771917E7;
+	Wed,  2 Apr 2025 20:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743622570; cv=none; b=UrzU0Sqjw9g7K04LiRdghejMRx6YtO6A6M/mjyUxVDXb5Aln2mu88QDXTmPCOk41HVNtefalQ8VFxmc/H5vB45hDKdyje+PaGpo3ukoBamhkUpCNnhA/mkVNjl1beBRTKdmeuA2wtdxZXDKGWzJJVBRhpR8rkR3a/wIE69TQBLE=
+	t=1743625939; cv=none; b=sDLYaG+IpvgPJGKjOzFR6w9GqhvITyq7/co86mDP8+pbPIh16z+YEaIQKMk3YtrVaUD8Jxb42vLN+R0Z3oPlqXi6WbTRGr4AvEtcPd1BxT/ngtUBw1JFmxCkDBy98Yt6OdIFGi7yFYSCBlpmvwTVDjgnr7stXuLuPLn+v+fJUu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743622570; c=relaxed/simple;
-	bh=QYxUp1y3lHcSXqBzuM7abL8xgi2CljGY8fj8TZh/lOg=;
+	s=arc-20240116; t=1743625939; c=relaxed/simple;
+	bh=2dRo5D7J98w/tYGSYFTTZePOrAnPiYEP+faP2E49lEA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=NT++CAmRXoRA682pteae2H5pPsR3VkuGLGNh89LixgkTbNA3hX0zbKgidO/hyaxsnRcbaVdIWtZYfHQ7j6Q9GcO9ykOgGg6bOCCG/+nSezGyR4zY2e4V3IOnkI9UGg9uKdgRGJVWY3J5EZ9+UPbkki2CKKKcYWtIPlX1IbyTje0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R7e21bGM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q5pZoS6Q; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=T5j3vIdyqoXAQA76Nz7253sTioQxTcfsBIlc0Aix4baaAQ/ne+tP44PXSkG+I7bDok3Vt6tBTnFa1kEl2pRUMqRRxMj0EvoP/jWvwVY5DvC588CpXcSPuJUEA4zq9v0pQvV6c6HqUyh6z4SPOzbSp2XAkPTtP8G5jnhfo8nYnns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=spbhp6uK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=noLA3zNf; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 02 Apr 2025 19:35:48 -0000
+Date: Wed, 02 Apr 2025 20:32:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743622564;
+	s=2020; t=1743625933;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bR2qg4JPikLG9Ta9Cmh0yEx+tdJ0hQfvjEOwlIlvRTA=;
-	b=R7e21bGM3PZDw9MDHrm2CKlNFjGUPSKJXkJoTfVPNzYHk7W+ynzq4BCcJtxlYmttM9xlyZ
-	S62TxL9I/75EBfxqxJF5kGdNIP2ZkxMT80tKsQDBy5CD2q59HG3MWQczOoCDcriRVwbVE1
-	P/aSIINWvXMeIqjRcT/+rO0ASdGe72U2dNOofloVy+miBkl2hq2kt9qmTHAorQAgsw8RQi
-	ptFxm4/nF+gtvRtTDO752fp8oU/pQhRyPuJrehzAEGz2bI0Ras8/vE+7bNiQAvQv1PtLAj
-	GYnaI05snL4l6PaUGt3R7yaQlKahdC20DgX8mDRf/ER27rwVEYd1oFx69sKFEw==
+	bh=z5nB0bz4zdqTRqReRbWINP3x7oYMfT4sPWF9KAvp004=;
+	b=spbhp6uKBiE3YdrXphJ1NUnwb54Gkq1tSthtslJvtwAdT0dJD+OPZetBaiHxN0rwa9ye7a
+	Jq+NWdiAFM0kGyxGJiBl5rdT4ngm3XnIUmxdF+wqpg550n3xGjvjhL4xtMLSR+5xjKdqAy
+	s5uLZQw4Tx9VXV8Xy/i4zx8pST7m8jH/hLPF0+EsTpM01OhNvWm2aISkQ7Hya69QQ4hXzd
+	R1HXbMGgHiYLvvh55aT9gFgf3QANDAUy0sUSiHOurXFG7RxcJT78N0L6P9Isj2DFbvGbc4
+	3bTVykQugWiaTTTu9ggCi4OeuvQnhTZ5n75ajve5keHUj3nWHn+Q94IV/uqCxA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743622564;
+	s=2020e; t=1743625933;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bR2qg4JPikLG9Ta9Cmh0yEx+tdJ0hQfvjEOwlIlvRTA=;
-	b=q5pZoS6QDMia24uKO3se9oNLAWxyynk+gOFxVEPf14FfdWlCRqfX0SJDpvRz/wxOI9SQ3A
-	cMHJwmixneyXfQCQ==
+	bh=z5nB0bz4zdqTRqReRbWINP3x7oYMfT4sPWF9KAvp004=;
+	b=noLA3zNfbeOdFBKJXzZoFJFKQhWJN6meDqiqGxIa1j8nNwRvXThTOUNeIwySrCnkpgI+/D
+	GkavaSZn61AWnZDA==
 From: "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -78,7 +78,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174362255303.14745.1652478957395983511.tip-bot2@tip-bot2>
+Message-ID: <174362592919.14745.5770601458169495914.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -88,12 +88,12 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     fda2d1d86abc2d83ce6163536cc75c1f9fec1d72
-Gitweb:        https://git.kernel.org/tip/fda2d1d86abc2d83ce6163536cc75c1f9fec1d72
+Commit-ID:     1f13c60d84e880df6698441026e64f84c7110c49
+Gitweb:        https://git.kernel.org/tip/1f13c60d84e880df6698441026e64f84c7110c49
 Author:        Andrew Cooper <andrew.cooper3@citrix.com>
 AuthorDate:    Wed, 02 Apr 2025 18:24:58 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 02 Apr 2025 21:27:49 +02:00
+CommitterDate: Wed, 02 Apr 2025 22:02:26 +02:00
 
 x86/idle: Remove MFENCEs for X86_BUG_CLFLUSH_MONITOR in mwait_idle_with_hints() and prefer_mwait_c1_over_halt()
 
@@ -133,8 +133,9 @@ intel.com any more) shows no mention of barriers either.
 Note: If this were a general codepath, the MFENCEs would be needed, because
       AMD CPUs of the same vintage do sport otherwise-unordered CLFLUSHs.
 
-Furthermore, use a plain alternative(), rather than static_cpu_has_bug() and/or
-no optimisation.  The workaround is a single instruction.
+Remove the unnecessary barriers. Furthermore, use a plain alternative(),
+rather than static_cpu_has_bug() and/or no optimisation.  The workaround
+is a single instruction.
 
 Use an explicit %rax pointer rather than a general memory operand, because
 MONITOR takes the pointer implicitly in the same way.
