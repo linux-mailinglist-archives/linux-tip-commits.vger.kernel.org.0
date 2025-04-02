@@ -1,77 +1,83 @@
-Return-Path: <linux-tip-commits+bounces-4619-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4621-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D72A783C3
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Apr 2025 23:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9960FA78BC1
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Apr 2025 12:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FEF018891F3
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Apr 2025 21:04:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA185188FE82
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  2 Apr 2025 10:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EEE1EA7F4;
-	Tue,  1 Apr 2025 21:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4060D2356A1;
+	Wed,  2 Apr 2025 10:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qug6wspX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ga9wTF1L"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dg7KZ+NJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LkE6X16D"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4011E47A3;
-	Tue,  1 Apr 2025 21:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E71078F;
+	Wed,  2 Apr 2025 10:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743541431; cv=none; b=CjM8uULUPoGcQ7L8M0/b9JD2FFlS/2lKNN5MO3HI4ABwhDFWvSH/Z/4+0iy0e781H685R5Csw0+184YDIECKYvZNTZyHvz/i3pdL7mAvDHo46x1v6BM8Ec7ujpt7ipyhBRKRJuyFzzmTavbLGF3VD3nxo6MLRHpVqUxrJz/t5uk=
+	t=1743588660; cv=none; b=uTl7LYSZmpv/T6CC16HPwLGgBjlGoyAiF2ZsNZbl/XNkTOReALS0tKtO7VgQXF6Tc5YuWClNEyLeMP7CBYCUIxgGfQbXxiUFiGJTRybmmnUeT348LPOKuuBnGu0FUN9B+TwG1jCPjFm6HDDUpURU0ZSmI7IMaJc6B4rTRbVgCBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743541431; c=relaxed/simple;
-	bh=9dWdtc4zXUg2PP+2Iow0OcXh1hUTtgpvb4c27FypMY4=;
+	s=arc-20240116; t=1743588660; c=relaxed/simple;
+	bh=YsQ+ZEpOBzRENvI3w2Cgx7tGcPpu8PZYXcUACDmq2tk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ic7/7RVryLO34FE/vBwqPmFaOJEo9SYjTVr2RGXFvr1QuJQx9jV/Qz1W2cRNYtz2+zgjdtHzfCvVsy5AqVEKkji6mwBOJl/P3b7qZXKLdVqmQIgKON8j+Xn7o+f6SMwuabTX7GgiRKV4Q82jsOBuBQ3tig4ezqGIzzUtO+6WwjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qug6wspX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ga9wTF1L; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Czi3apyTJZOaTMIxagoI8eaO9WoSgHOeKvoAmB2+CzE0jgqYvKT0DO4wH6iMOidkRGZVWou/EPSleCtw2poewmC+JyAQVqefHAt/JEZtzti20S6y1B8Alw+IiaYoQh1Y9c/XqpXYpyhop3e0RNyKYwVGyi+5CFBgeBL5+Kqnkcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dg7KZ+NJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LkE6X16D; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 01 Apr 2025 21:03:47 -0000
+Date: Wed, 02 Apr 2025 10:10:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743541427;
+	s=2020; t=1743588655;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2RnSvnUEqj/lY7Ix4/vg70IOY9aPOGIeQ4ZETy8Zrek=;
-	b=qug6wspXLbG41ofdJFVNM+nxSYmyN0O3cnaWUBi5ghqTZDSo9q9QHTerRfYpnVtzZra1Wz
-	1Q8rEfCUmQ5odsw/10E/Fiecqqyi1Tz7P6l9yyKSkqhRlcorDjUWhOC5eTqTTuZk+ruoPC
-	L9bAv0gTwz9UaNpM+RrVDHGV+OqGLLfP/W4511V4AojMNmzgCU4abGLW3H8UNCZWGkTxYb
-	gr7tgf9JD1fVHtTTUzyt6cNvVNo+0Sy7pZ2Bz02o9nbRAOVYeyzcrhasRIcLjqqLV+4y6Z
-	2/6DFYJXoDeWIX4eaPKk0kx+SFTM+HYxnB66u/kyVU+ypbf3b0rBiY1trtBPRA==
+	bh=fNsUG8J4yHEKunPN03eOzFpqG1kg0r7jZKB13rFKnuw=;
+	b=Dg7KZ+NJzjYUxrj8J4qCnji9/PzRF+N3J02+UTMBJHEcWERde0GUIlVPP0zWgbmnvrBTs/
+	lxPljELBPE2uRCCaBiXr9iwQVSMr9RtBZ2A8EOGtpibjACXjikqhT7SMkt/R7gEY2j8pzW
+	63VHPzNo+Bg8uNWvaBpg2wMYXssAFMp6plzKZ2ICDGf00OaSOuF+OyZyDxF9BLJFGhpyLq
+	6jDE8UIHUmiAu3fM+DyF5VupnC77BBeze96wwVMhrycFDsgfM8vYvldpBemCW0wXYtoXBG
+	JYvni5x+xlt+cP0aNJuUhPVjsUfTfCwQ0X56LyqjqP1KtJ76BseHXbwBB77CNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743541427;
+	s=2020e; t=1743588655;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2RnSvnUEqj/lY7Ix4/vg70IOY9aPOGIeQ4ZETy8Zrek=;
-	b=Ga9wTF1LNdb0zn8EfEij2bHkbMq9vG8fkSMIXcbxKIZGY2p0dL6+QX9DCwMgTQkhTHzRCM
-	+cWgZnyeESjhh5BQ==
-From: "tip-bot2 for Baoquan He" <tip-bot2@linutronix.de>
+	bh=fNsUG8J4yHEKunPN03eOzFpqG1kg0r7jZKB13rFKnuw=;
+	b=LkE6X16Dz0SQfp1+7axnkWMUZbZ++DZNCG9XsWAYnqXwg0aCWfkJh3+NEOzkDeWdt5npz3
+	TgX6qzjZKY2vkzBQ==
+From: "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Remove the arch-specific p4d_leaf() definition
-Cc: Baoquan He <bhe@redhat.com>, Ingo Molnar <mingo@kernel.org>,
- Oscar Salvador <osalvador@suse.de>, x86@kernel.org,
+Subject: [tip: x86/mm] x86/idle: Remove mb() barriers for
+ X86_BUG_CLFLUSH_MONITOR in mwait_idle_with_hints()
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>,
+ Rik van Riel <riel@surriel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
+ Juergen Gross <jgross@suse.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250331081327.256412-7-bhe@redhat.com>
-References: <20250331081327.256412-7-bhe@redhat.com>
+In-Reply-To: <20250402091017.1249019-1-andrew.cooper3@citrix.com>
+References: <20250402091017.1249019-1-andrew.cooper3@citrix.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174354142718.14745.14768504678768643905.tip-bot2@tip-bot2>
+Message-ID: <174358864842.14745.908324129810950623.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,44 +87,82 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     c083eff324edd73eb23f4bd3f40f388a3e7c2cd2
-Gitweb:        https://git.kernel.org/tip/c083eff324edd73eb23f4bd3f40f388a3e7c2cd2
-Author:        Baoquan He <bhe@redhat.com>
-AuthorDate:    Mon, 31 Mar 2025 16:13:26 +08:00
+Commit-ID:     90a22a5f841490790ecb17166633582681d44945
+Gitweb:        https://git.kernel.org/tip/90a22a5f841490790ecb17166633582681d44945
+Author:        Andrew Cooper <andrew.cooper3@citrix.com>
+AuthorDate:    Wed, 02 Apr 2025 10:10:17 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 01 Apr 2025 22:48:51 +02:00
+CommitterDate: Wed, 02 Apr 2025 11:54:51 +02:00
 
-x86/mm: Remove the arch-specific p4d_leaf() definition
+x86/idle: Remove mb() barriers for X86_BUG_CLFLUSH_MONITOR in mwait_idle_with_hints()
 
-P4D huge pages are not supported yet, let's use the generic definition
-in <linux/pgtable.h>.
+The following commit, 12 years ago:
 
-[ mingo: Cleaned up the changelog. ]
+  7e98b7192046 ("x86, idle: Use static_cpu_has() for CLFLUSH workaround, add barriers")
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
+added barriers around the CLFLUSH in mwait_idle_with_hints(), justified with:
+
+  ... and add memory barriers around it since the documentation is explicit
+  that CLFLUSH is only ordered with respect to MFENCE.
+
+The SDM currently states:
+
+  Executions of the CLFLUSH instruction are ordered with respect to each
+  other and with respect to writes, locked read-modify-write instructions,
+  and fence instructions.
+
+  https://web.archive.org/web/20090219054841/http://download.intel.com/design/xeon/specupdt/32033601.pdf
+
+With footnote 1 reading:
+
+  Earlier versions of this manual specified that executions of the CLFLUSH
+  instruction were ordered only by the MFENCE instruction.  All processors
+  implementing the CLFLUSH instruction also order it relative to the other
+  operations enumerated above.
+
+I.e. The SDM was incorrect at the time, and barriers should not have been
+inserted.  Double checking the original AAI65 errata (not available from
+intel.com any more) shows no mention of barriers either.
+
+Additionally, drop the static_cpu_has_bug() and use a plain alternative().
+The workaround is a single instruction, with identical address setup to the
+MONITOR instruction.
+
+Fixes: 7e98b7192046 ("x86, idle: Use static_cpu_has() for CLFLUSH workaround, add barriers")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Link: https://lore.kernel.org/r/20250331081327.256412-7-bhe@redhat.com
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/20250402091017.1249019-1-andrew.cooper3@citrix.com
 ---
- arch/x86/include/asm/pgtable.h | 7 -------
- 1 file changed, 7 deletions(-)
+ arch/x86/include/asm/mwait.h |  9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
-index 5f4fcc0..5ddba36 100644
---- a/arch/x86/include/asm/pgtable.h
-+++ b/arch/x86/include/asm/pgtable.h
-@@ -292,13 +292,6 @@ static inline unsigned long pgd_pfn(pgd_t pgd)
- 	return (pgd_val(pgd) & PTE_PFN_MASK) >> PAGE_SHIFT;
- }
+diff --git a/arch/x86/include/asm/mwait.h b/arch/x86/include/asm/mwait.h
+index ce857ef..54dc313 100644
+--- a/arch/x86/include/asm/mwait.h
++++ b/arch/x86/include/asm/mwait.h
+@@ -116,13 +116,10 @@ static __always_inline void __sti_mwait(unsigned long eax, unsigned long ecx)
+ static __always_inline void mwait_idle_with_hints(unsigned long eax, unsigned long ecx)
+ {
+ 	if (static_cpu_has_bug(X86_BUG_MONITOR) || !current_set_polling_and_test()) {
+-		if (static_cpu_has_bug(X86_BUG_CLFLUSH_MONITOR)) {
+-			mb();
+-			clflush((void *)&current_thread_info()->flags);
+-			mb();
+-		}
++		const void *addr = &current_thread_info()->flags;
  
--#define p4d_leaf p4d_leaf
--static inline bool p4d_leaf(p4d_t p4d)
--{
--	/* No 512 GiB pages yet */
--	return 0;
--}
--
- #define pte_page(pte)	pfn_to_page(pte_pfn(pte))
+-		__monitor((void *)&current_thread_info()->flags, 0, 0);
++		alternative_input("", "clflush (%[addr])", X86_BUG_CLFLUSH_MONITOR, [addr] "a" (addr));
++		__monitor(addr, 0, 0);
  
- #define pmd_leaf pmd_leaf
+ 		if (!need_resched()) {
+ 			if (ecx & 1) {
 
