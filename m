@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-4671-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4672-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE09A7C272
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 19:34:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9396CA7C277
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 19:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5996D3BA5C1
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 17:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD52A17AE15
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 17:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636D7215F49;
-	Fri,  4 Apr 2025 17:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91A021A952;
+	Fri,  4 Apr 2025 17:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LmarW2X5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wy8wgpQp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mFeQoMrM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mz8uWHBX"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6531C2080D2;
-	Fri,  4 Apr 2025 17:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A49215060;
+	Fri,  4 Apr 2025 17:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743788045; cv=none; b=e1379hDZc7yLVnitZJjP+1HCsFJZ1fA4vbHrC6JVMMqK0ApRpzIA2oqAccRI/Yc1VuB1ORaI1pa1a6tkwz3wUG1forkG82++daGQDhl3UDlwpN9vXp7w7BWJAkwfmU2NC6EBewCVVA/qL3cAeplVRQyCTwvNdGw+DHwsEktR+A4=
+	t=1743788046; cv=none; b=u6szvGYTFTF8q3q9hDT30NFDOUM+Iu6hB+x6FafCjAOC3qHWVsnx6x4HpAlh6olH8Oc18YR25ST6CS9RWAOmY1skw0jG3oAdlQABw2/B9S30I7fxbwFfQVZ0Bj7ifjdoDdUEm5LIIbuzCYJUglk9q54sqGMPu2ZL+29J3+UMW4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743788045; c=relaxed/simple;
-	bh=PE9KO/6xAPV+wFAKPGVST5BaHa/yodSgOWHD3dbD6As=;
+	s=arc-20240116; t=1743788046; c=relaxed/simple;
+	bh=NrV1yGDZLvueIoyyA/et2xyNi9aKMoPawBEPMJMI0Uo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=uSWrlGzOd4U/SndRvE60mZ8upC5e0X1wXgXjUz7wcm1zFTY1201mciN01AXl8DhaPpXPva4Zn0cNbns4vHQWFeD2vPkz3HGNN4gt8cUKyLwKMIqZMtfro5lm7V3JCcOiXj1733W7BSyKjgxg+8Jz3dHMpq4S1vrpAIFJ8YxKGP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LmarW2X5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wy8wgpQp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=oVuPbxN79tHNLI/1Gj9kGAIRIwvktNl0EDuJ+2oKMrp1/0NmOoCA6pJJdYkhCCkMXWN2oMvWwAyF8+qvlQQGrUDgjNID/BZbMpsn/vYsHAUGeIZsBMoWPXBgUagBZcrz4ikX8wk8ziaMZBmd+KR+xTn/I7s4Xw/MVxJFbhYjKjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mFeQoMrM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mz8uWHBX; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 04 Apr 2025 17:34:00 -0000
+Date: Fri, 04 Apr 2025 17:34:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743788041;
+	s=2020; t=1743788042;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WdckBKoE1HsT04DALX8OShAtf6Jm1rwt2LhJ4ijwvMw=;
-	b=LmarW2X5ciiZ1OfgeDpEqLZq0OqSivfSVJ+8X6MczNYMvdkkFrSNN0UqZB9chJZrMhWWqr
-	EfoLm6BbOS4SaKmlbKZPebxWFdrOzn9oTq9jVw7G7a+YjCc9i9LM9uRw+zLI1AwxpRgeRP
-	hBpYSZ8aAnxdpeXC7ues9FOZ4l36QLONhi/W3C6zrEm8pudIhuiAKRS0DfMXk/CggEeIat
-	BnFdqr682iHEoAyRl/W+k43PUr/7BeeRmoSkxMIaMQMwnJJcIcrSsQW5ZpC70uyIAZFFwH
-	kWaztkhcGHezviQ8gTRB74pXjqa8XRo5CjFNbVfm9pJHPQAqTsu0ZX675uNpIg==
+	bh=li6bHnw7AnY6qiVuse72XJsImEp5fmZZSH6MkzjlMXs=;
+	b=mFeQoMrM5VEpWJ5pku854IHt4i+i4fptwOEW7qO6fNaZQRnWWAqIlsVjDV+Wr2mfMb/amL
+	zB0MCvOQDOaKN6WP7Z7kP2FoMcSB3bT4fz/yTVFs1RTch3trFZBv6s4/SXBgoPpAqBDA2Y
+	ajI7/of3PNc1TcXd/M+WwDyW7HWm+JBJCuyW7C6BOSugVMPeJPQ34oxcTZFWPs/Uney5Po
+	GdQjOnxXREyWsORwVU+1C0iKn7A61kWA29oRjylfyI72CUqlQjwz/LHpBxm96Pevo3CGPk
+	/dTUfSwz0RCtXCaFVQKy5EnAPy/w48iV0vWU8NaMfanFvxOCM8XDgaygxM85Tw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743788041;
+	s=2020e; t=1743788042;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WdckBKoE1HsT04DALX8OShAtf6Jm1rwt2LhJ4ijwvMw=;
-	b=Wy8wgpQpIuGGlbSsVVPECjItbMRGdjLufqGnyFmczyeBlv/+M8irOjxEz9T76UleYJ7TpK
-	xfnySiI+dgUDwMCA==
+	bh=li6bHnw7AnY6qiVuse72XJsImEp5fmZZSH6MkzjlMXs=;
+	b=mz8uWHBXTp2W0EhXHZs/0M+du4V2gcWKUM0dSU3FqktzWgOntSBSOjuldXIU+KFEIF/FK5
+	ZOig4OVLSDewaPBw==
 From: "tip-bot2 for Jiri Slaby (SUSE)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/cleanups] irqdomain: Rename irq_get_default_host() to
- irq_get_default_domain()
+Subject: [tip: timers/cleanups] irqdomain: Rename irq_set_default_host() to
+ irq_set_default_domain()
 Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250319092951.37667-4-jirislaby@kernel.org>
-References: <20250319092951.37667-4-jirislaby@kernel.org>
+In-Reply-To: <20250319092951.37667-3-jirislaby@kernel.org>
+References: <20250319092951.37667-3-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174378804094.31282.7997471505390003954.tip-bot2@tip-bot2>
+Message-ID: <174378804214.31282.7738261151775428187.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,160 +82,495 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the timers/cleanups branch of tip:
 
-Commit-ID:     ae7746fbed18ce29997da5bd7ffd983ba9a96e05
-Gitweb:        https://git.kernel.org/tip/ae7746fbed18ce29997da5bd7ffd983ba9a96e05
+Commit-ID:     1a6a80a904196a7977f5d355d93f3629bfe44bb2
+Gitweb:        https://git.kernel.org/tip/1a6a80a904196a7977f5d355d93f3629bfe44bb2
 Author:        Jiri Slaby (SUSE) <jirislaby@kernel.org>
-AuthorDate:    Wed, 19 Mar 2025 10:28:56 +01:00
+AuthorDate:    Wed, 19 Mar 2025 10:28:55 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 04 Apr 2025 19:26:45 +02:00
+CommitterDate: Fri, 04 Apr 2025 19:26:44 +02:00
 
-irqdomain: Rename irq_get_default_host() to irq_get_default_domain()
+irqdomain: Rename irq_set_default_host() to irq_set_default_domain()
 
 Naming interrupt domains host is confusing at best and the irqdomain code
 uses both domain and host inconsistently.
 
-Therefore rename irq_get_default_host() to irq_get_default_domain().
+Therefore rename irq_set_default_host() to irq_set_default_domain().
 
 Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250319092951.37667-4-jirislaby@kernel.org
+Link: https://lore.kernel.org/all/20250319092951.37667-3-jirislaby@kernel.org
 
 ---
- arch/mips/pci/pci-xtalk-bridge.c          | 2 +-
- arch/powerpc/kvm/book3s_hv.c              | 2 +-
- arch/powerpc/kvm/book3s_xive.c            | 2 +-
- arch/powerpc/platforms/powernv/pci-ioda.c | 2 +-
- arch/powerpc/platforms/pseries/msi.c      | 2 +-
- drivers/irqchip/irq-armada-370-xp.c       | 4 ++--
- include/linux/irqdomain.h                 | 2 +-
- kernel/irq/irqdomain.c                    | 6 +++---
- 8 files changed, 11 insertions(+), 11 deletions(-)
+ arch/arc/kernel/intc-arcv2.c                     | 2 +-
+ arch/arc/kernel/intc-compact.c                   | 2 +-
+ arch/arm/mach-pxa/irq.c                          | 2 +-
+ arch/mips/cavium-octeon/octeon-irq.c             | 6 +++---
+ arch/mips/sgi-ip27/ip27-irq.c                    | 2 +-
+ arch/mips/sgi-ip30/ip30-irq.c                    | 2 +-
+ arch/nios2/kernel/irq.c                          | 2 +-
+ arch/powerpc/platforms/44x/uic.c                 | 2 +-
+ arch/powerpc/platforms/52xx/mpc52xx_pic.c        | 2 +-
+ arch/powerpc/platforms/amigaone/setup.c          | 2 +-
+ arch/powerpc/platforms/chrp/setup.c              | 2 +-
+ arch/powerpc/platforms/embedded6xx/flipper-pic.c | 2 +-
+ arch/powerpc/platforms/pasemi/setup.c            | 2 +-
+ arch/powerpc/platforms/powermac/pic.c            | 2 +-
+ arch/powerpc/platforms/ps3/interrupt.c           | 2 +-
+ arch/powerpc/sysdev/ehv_pic.c                    | 2 +-
+ arch/powerpc/sysdev/ipic.c                       | 2 +-
+ arch/powerpc/sysdev/mpic.c                       | 2 +-
+ arch/powerpc/sysdev/xics/xics-common.c           | 2 +-
+ arch/powerpc/sysdev/xive/common.c                | 2 +-
+ arch/x86/kernel/apic/vector.c                    | 2 +-
+ drivers/irqchip/irq-armada-370-xp.c              | 2 +-
+ drivers/irqchip/irq-clps711x.c                   | 2 +-
+ drivers/irqchip/irq-imx-gpcv2.c                  | 2 +-
+ drivers/irqchip/irq-pic32-evic.c                 | 2 +-
+ drivers/irqchip/irq-xilinx-intc.c                | 2 +-
+ drivers/irqchip/irq-xtensa-mx.c                  | 2 +-
+ drivers/irqchip/irq-xtensa-pic.c                 | 4 ++--
+ include/linux/irqdomain.h                        | 2 +-
+ kernel/irq/irqdomain.c                           | 8 ++++----
+ 30 files changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/arch/mips/pci/pci-xtalk-bridge.c b/arch/mips/pci/pci-xtalk-bridge.c
-index dae856f..e00c386 100644
---- a/arch/mips/pci/pci-xtalk-bridge.c
-+++ b/arch/mips/pci/pci-xtalk-bridge.c
-@@ -620,7 +620,7 @@ static int bridge_probe(struct platform_device *pdev)
- 	if (bridge_get_partnum(virt_to_phys((void *)bd->bridge_addr), partnum))
- 		return -EPROBE_DEFER; /* not available yet */
- 
--	parent = irq_get_default_host();
-+	parent = irq_get_default_domain();
- 	if (!parent)
- 		return -ENODEV;
- 	fn = irq_domain_alloc_named_fwnode("BRIDGE");
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index 86bff15..19f4d29 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -6041,7 +6041,7 @@ static int kvmppc_set_passthru_irq(struct kvm *kvm, int host_irq, int guest_gsi)
- 	 * the underlying calls, which will EOI the interrupt in real
- 	 * mode, need an HW IRQ number mapped in the XICS IRQ domain.
+diff --git a/arch/arc/kernel/intc-arcv2.c b/arch/arc/kernel/intc-arcv2.c
+index f324f0e..fea29d9 100644
+--- a/arch/arc/kernel/intc-arcv2.c
++++ b/arch/arc/kernel/intc-arcv2.c
+@@ -178,7 +178,7 @@ init_onchip_IRQ(struct device_node *intc, struct device_node *parent)
+ 	 * Needed for primary domain lookup to succeed
+ 	 * This is a primary irqchip, and can never have a parent
  	 */
--	host_data = irq_domain_get_irq_data(irq_get_default_host(), host_irq);
-+	host_data = irq_domain_get_irq_data(irq_get_default_domain(), host_irq);
- 	irq_map->r_hwirq = (unsigned int)irqd_to_hwirq(host_data);
+-	irq_set_default_host(root_domain);
++	irq_set_default_domain(root_domain);
  
- 	if (i == pimap->n_mapped)
-diff --git a/arch/powerpc/kvm/book3s_xive.c b/arch/powerpc/kvm/book3s_xive.c
-index 1362c67..1302b5a 100644
---- a/arch/powerpc/kvm/book3s_xive.c
-+++ b/arch/powerpc/kvm/book3s_xive.c
-@@ -1555,7 +1555,7 @@ int kvmppc_xive_set_mapped(struct kvm *kvm, unsigned long guest_irq,
- 	struct kvmppc_xive_src_block *sb;
- 	struct kvmppc_xive_irq_state *state;
- 	struct irq_data *host_data =
--		irq_domain_get_irq_data(irq_get_default_host(), host_irq);
-+		irq_domain_get_irq_data(irq_get_default_domain(), host_irq);
- 	unsigned int hw_irq = (unsigned int)irqd_to_hwirq(host_data);
- 	u16 idx;
- 	u8 prio;
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index d2a8e02..ae4b549 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -1881,7 +1881,7 @@ static const struct irq_domain_ops pnv_irq_domain_ops = {
- static int __init pnv_msi_allocate_domains(struct pci_controller *hose, unsigned int count)
- {
- 	struct pnv_phb *phb = hose->private_data;
--	struct irq_domain *parent = irq_get_default_host();
-+	struct irq_domain *parent = irq_get_default_domain();
+ #ifdef CONFIG_SMP
+ 	irq_create_mapping(root_domain, IPI_IRQ);
+diff --git a/arch/arc/kernel/intc-compact.c b/arch/arc/kernel/intc-compact.c
+index 6885e42..1d2ff1c 100644
+--- a/arch/arc/kernel/intc-compact.c
++++ b/arch/arc/kernel/intc-compact.c
+@@ -121,7 +121,7 @@ init_onchip_IRQ(struct device_node *intc, struct device_node *parent)
+ 	 * Needed for primary domain lookup to succeed
+ 	 * This is a primary irqchip, and can never have a parent
+ 	 */
+-	irq_set_default_host(root_domain);
++	irq_set_default_domain(root_domain);
  
- 	hose->fwnode = irq_domain_alloc_named_id_fwnode("PNV-MSI", phb->opal_id);
- 	if (!hose->fwnode)
-diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
-index fdc2f7f..f9d8011 100644
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -611,7 +611,7 @@ static const struct irq_domain_ops pseries_irq_domain_ops = {
- static int __pseries_msi_allocate_domains(struct pci_controller *phb,
- 					  unsigned int count)
- {
--	struct irq_domain *parent = irq_get_default_host();
-+	struct irq_domain *parent = irq_get_default_domain();
+ 	return 0;
+ }
+diff --git a/arch/arm/mach-pxa/irq.c b/arch/arm/mach-pxa/irq.c
+index a9ef710..d9cadd9 100644
+--- a/arch/arm/mach-pxa/irq.c
++++ b/arch/arm/mach-pxa/irq.c
+@@ -152,7 +152,7 @@ pxa_init_irq_common(struct device_node *node, int irq_nr,
+ 					       &pxa_irq_ops, NULL);
+ 	if (!pxa_irq_domain)
+ 		panic("Unable to add PXA IRQ domain\n");
+-	irq_set_default_host(pxa_irq_domain);
++	irq_set_default_domain(pxa_irq_domain);
  
- 	phb->fwnode = irq_domain_alloc_named_id_fwnode("pSeries-MSI",
- 						       phb->global_number);
+ 	for (n = 0; n < irq_nr; n += 32) {
+ 		void __iomem *base = irq_base(n >> 5);
+diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
+index 8425a6b..e6b4d9c 100644
+--- a/arch/mips/cavium-octeon/octeon-irq.c
++++ b/arch/mips/cavium-octeon/octeon-irq.c
+@@ -1505,7 +1505,7 @@ static int __init octeon_irq_init_ciu(
+ 
+ 	ciu_domain = irq_domain_add_tree(
+ 		ciu_node, &octeon_irq_domain_ciu_ops, dd);
+-	irq_set_default_host(ciu_domain);
++	irq_set_default_domain(ciu_domain);
+ 
+ 	/* CIU_0 */
+ 	for (i = 0; i < 16; i++) {
+@@ -2076,7 +2076,7 @@ static int __init octeon_irq_init_ciu2(
+ 
+ 	ciu_domain = irq_domain_add_tree(
+ 		ciu_node, &octeon_irq_domain_ciu2_ops, NULL);
+-	irq_set_default_host(ciu_domain);
++	irq_set_default_domain(ciu_domain);
+ 
+ 	/* CUI2 */
+ 	for (i = 0; i < 64; i++) {
+@@ -2929,7 +2929,7 @@ static int __init octeon_irq_init_ciu3(struct device_node *ciu_node,
+ 		/* Only do per CPU things if it is the CIU of the boot node. */
+ 		octeon_irq_ciu3_alloc_resources(ciu3_info);
+ 		if (node == 0)
+-			irq_set_default_host(domain);
++			irq_set_default_domain(domain);
+ 
+ 		octeon_irq_use_ip4 = false;
+ 		/* Enable the CIU lines */
+diff --git a/arch/mips/sgi-ip27/ip27-irq.c b/arch/mips/sgi-ip27/ip27-irq.c
+index 00e63e9..288d4d1 100644
+--- a/arch/mips/sgi-ip27/ip27-irq.c
++++ b/arch/mips/sgi-ip27/ip27-irq.c
+@@ -297,7 +297,7 @@ void __init arch_init_irq(void)
+ 	if (WARN_ON(domain == NULL))
+ 		return;
+ 
+-	irq_set_default_host(domain);
++	irq_set_default_domain(domain);
+ 
+ 	irq_set_percpu_devid(IP27_HUB_PEND0_IRQ);
+ 	irq_set_chained_handler_and_data(IP27_HUB_PEND0_IRQ, ip27_do_irq_mask0,
+diff --git a/arch/mips/sgi-ip30/ip30-irq.c b/arch/mips/sgi-ip30/ip30-irq.c
+index 423c32c..9fb905e 100644
+--- a/arch/mips/sgi-ip30/ip30-irq.c
++++ b/arch/mips/sgi-ip30/ip30-irq.c
+@@ -313,7 +313,7 @@ void __init arch_init_irq(void)
+ 	if (!domain)
+ 		return;
+ 
+-	irq_set_default_host(domain);
++	irq_set_default_domain(domain);
+ 
+ 	irq_set_percpu_devid(IP30_HEART_L0_IRQ);
+ 	irq_set_chained_handler_and_data(IP30_HEART_L0_IRQ, ip30_normal_irq,
+diff --git a/arch/nios2/kernel/irq.c b/arch/nios2/kernel/irq.c
+index 6b7890e..8fa2806 100644
+--- a/arch/nios2/kernel/irq.c
++++ b/arch/nios2/kernel/irq.c
+@@ -72,7 +72,7 @@ void __init init_IRQ(void)
+ 	domain = irq_domain_add_linear(node, NIOS2_CPU_NR_IRQS, &irq_ops, NULL);
+ 	BUG_ON(!domain);
+ 
+-	irq_set_default_host(domain);
++	irq_set_default_domain(domain);
+ 	of_node_put(node);
+ 	/* Load the initial ienable value */
+ 	ienable = RDCTL(CTL_IENABLE);
+diff --git a/arch/powerpc/platforms/44x/uic.c b/arch/powerpc/platforms/44x/uic.c
+index 8b03ae4..31f760c 100644
+--- a/arch/powerpc/platforms/44x/uic.c
++++ b/arch/powerpc/platforms/44x/uic.c
+@@ -291,7 +291,7 @@ void __init uic_init_tree(void)
+ 	if (!primary_uic)
+ 		panic("Unable to initialize primary UIC %pOF\n", np);
+ 
+-	irq_set_default_host(primary_uic->irqhost);
++	irq_set_default_domain(primary_uic->irqhost);
+ 	of_node_put(np);
+ 
+ 	/* The scan again for cascaded UICs */
+diff --git a/arch/powerpc/platforms/52xx/mpc52xx_pic.c b/arch/powerpc/platforms/52xx/mpc52xx_pic.c
+index 1e0a5e9..43c881d 100644
+--- a/arch/powerpc/platforms/52xx/mpc52xx_pic.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_pic.c
+@@ -453,7 +453,7 @@ void __init mpc52xx_init_irq(void)
+ 	if (!mpc52xx_irqhost)
+ 		panic(__FILE__ ": Cannot allocate the IRQ host\n");
+ 
+-	irq_set_default_host(mpc52xx_irqhost);
++	irq_set_default_domain(mpc52xx_irqhost);
+ 
+ 	pr_info("MPC52xx PIC is up and running!\n");
+ }
+diff --git a/arch/powerpc/platforms/amigaone/setup.c b/arch/powerpc/platforms/amigaone/setup.c
+index 2c8dc08..33f852a 100644
+--- a/arch/powerpc/platforms/amigaone/setup.c
++++ b/arch/powerpc/platforms/amigaone/setup.c
+@@ -109,7 +109,7 @@ static void __init amigaone_init_IRQ(void)
+ 
+ 	i8259_init(pic, int_ack);
+ 	ppc_md.get_irq = i8259_irq;
+-	irq_set_default_host(i8259_get_host());
++	irq_set_default_domain(i8259_get_host());
+ }
+ 
+ static int __init request_isa_regions(void)
+diff --git a/arch/powerpc/platforms/chrp/setup.c b/arch/powerpc/platforms/chrp/setup.c
+index 36ee3a5..c1bfa4c 100644
+--- a/arch/powerpc/platforms/chrp/setup.c
++++ b/arch/powerpc/platforms/chrp/setup.c
+@@ -486,7 +486,7 @@ static void __init chrp_find_8259(void)
+ 	i8259_init(pic, chrp_int_ack);
+ 	if (ppc_md.get_irq == NULL) {
+ 		ppc_md.get_irq = i8259_irq;
+-		irq_set_default_host(i8259_get_host());
++		irq_set_default_domain(i8259_get_host());
+ 	}
+ 	if (chrp_mpic != NULL) {
+ 		cascade_irq = irq_of_parse_and_map(pic, 0);
+diff --git a/arch/powerpc/platforms/embedded6xx/flipper-pic.c b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+index 4d9200b..013d663 100644
+--- a/arch/powerpc/platforms/embedded6xx/flipper-pic.c
++++ b/arch/powerpc/platforms/embedded6xx/flipper-pic.c
+@@ -190,7 +190,7 @@ void __init flipper_pic_probe(void)
+ 	flipper_irq_host = flipper_pic_init(np);
+ 	BUG_ON(!flipper_irq_host);
+ 
+-	irq_set_default_host(flipper_irq_host);
++	irq_set_default_domain(flipper_irq_host);
+ 
+ 	of_node_put(np);
+ }
+diff --git a/arch/powerpc/platforms/pasemi/setup.c b/arch/powerpc/platforms/pasemi/setup.c
+index 0761d98..d03b413 100644
+--- a/arch/powerpc/platforms/pasemi/setup.c
++++ b/arch/powerpc/platforms/pasemi/setup.c
+@@ -228,7 +228,7 @@ static void __init nemo_init_IRQ(struct mpic *mpic)
+ 	irq_set_chained_handler(gpio_virq, sb600_8259_cascade);
+ 	mpic_unmask_irq(irq_get_irq_data(gpio_virq));
+ 
+-	irq_set_default_host(mpic->irqhost);
++	irq_set_default_domain(mpic->irqhost);
+ }
+ 
+ #else
+diff --git a/arch/powerpc/platforms/powermac/pic.c b/arch/powerpc/platforms/powermac/pic.c
+index 2202bf7..03a7c51 100644
+--- a/arch/powerpc/platforms/powermac/pic.c
++++ b/arch/powerpc/platforms/powermac/pic.c
+@@ -330,7 +330,7 @@ static void __init pmac_pic_probe_oldstyle(void)
+ 	pmac_pic_host = irq_domain_add_linear(master, max_irqs,
+ 					      &pmac_pic_host_ops, NULL);
+ 	BUG_ON(pmac_pic_host == NULL);
+-	irq_set_default_host(pmac_pic_host);
++	irq_set_default_domain(pmac_pic_host);
+ 
+ 	/* Get addresses of first controller if we have a node for it */
+ 	BUG_ON(of_address_to_resource(master, 0, &r));
+diff --git a/arch/powerpc/platforms/ps3/interrupt.c b/arch/powerpc/platforms/ps3/interrupt.c
+index af3fe9f..95e96bd 100644
+--- a/arch/powerpc/platforms/ps3/interrupt.c
++++ b/arch/powerpc/platforms/ps3/interrupt.c
+@@ -744,7 +744,7 @@ void __init ps3_init_IRQ(void)
+ 	struct irq_domain *host;
+ 
+ 	host = irq_domain_add_nomap(NULL, PS3_PLUG_MAX + 1, &ps3_host_ops, NULL);
+-	irq_set_default_host(host);
++	irq_set_default_domain(host);
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		struct ps3_private *pd = &per_cpu(ps3_private, cpu);
+diff --git a/arch/powerpc/sysdev/ehv_pic.c b/arch/powerpc/sysdev/ehv_pic.c
+index 0408276..fb502b7 100644
+--- a/arch/powerpc/sysdev/ehv_pic.c
++++ b/arch/powerpc/sysdev/ehv_pic.c
+@@ -291,5 +291,5 @@ void __init ehv_pic_init(void)
+ 	ehv_pic->coreint_flag = of_property_read_bool(np, "has-external-proxy");
+ 
+ 	global_ehv_pic = ehv_pic;
+-	irq_set_default_host(global_ehv_pic->irqhost);
++	irq_set_default_domain(global_ehv_pic->irqhost);
+ }
+diff --git a/arch/powerpc/sysdev/ipic.c b/arch/powerpc/sysdev/ipic.c
+index 037b04b..a35be02 100644
+--- a/arch/powerpc/sysdev/ipic.c
++++ b/arch/powerpc/sysdev/ipic.c
+@@ -757,7 +757,7 @@ struct ipic * __init ipic_init(struct device_node *node, unsigned int flags)
+ 	ipic_write(ipic->regs, IPIC_SEMSR, temp);
+ 
+ 	primary_ipic = ipic;
+-	irq_set_default_host(primary_ipic->irqhost);
++	irq_set_default_domain(primary_ipic->irqhost);
+ 
+ 	ipic_write(ipic->regs, IPIC_SIMSR_H, 0);
+ 	ipic_write(ipic->regs, IPIC_SIMSR_L, 0);
+diff --git a/arch/powerpc/sysdev/mpic.c b/arch/powerpc/sysdev/mpic.c
+index d94cf36..4afbab8 100644
+--- a/arch/powerpc/sysdev/mpic.c
++++ b/arch/powerpc/sysdev/mpic.c
+@@ -1520,7 +1520,7 @@ struct mpic * __init mpic_alloc(struct device_node *node,
+ 
+ 	if (!(mpic->flags & MPIC_SECONDARY)) {
+ 		mpic_primary = mpic;
+-		irq_set_default_host(mpic->irqhost);
++		irq_set_default_domain(mpic->irqhost);
+ 	}
+ 
+ 	return mpic;
+diff --git a/arch/powerpc/sysdev/xics/xics-common.c b/arch/powerpc/sysdev/xics/xics-common.c
+index d3a4156..c3fa539 100644
+--- a/arch/powerpc/sysdev/xics/xics-common.c
++++ b/arch/powerpc/sysdev/xics/xics-common.c
+@@ -472,7 +472,7 @@ static int __init xics_allocate_domain(void)
+ 		return -ENOMEM;
+ 	}
+ 
+-	irq_set_default_host(xics_host);
++	irq_set_default_domain(xics_host);
+ 	return 0;
+ }
+ 
+diff --git a/arch/powerpc/sysdev/xive/common.c b/arch/powerpc/sysdev/xive/common.c
+index a6c388b..dc2e618 100644
+--- a/arch/powerpc/sysdev/xive/common.c
++++ b/arch/powerpc/sysdev/xive/common.c
+@@ -1467,7 +1467,7 @@ static void __init xive_init_host(struct device_node *np)
+ 	xive_irq_domain = irq_domain_add_tree(np, &xive_irq_domain_ops, NULL);
+ 	if (WARN_ON(xive_irq_domain == NULL))
+ 		return;
+-	irq_set_default_host(xive_irq_domain);
++	irq_set_default_domain(xive_irq_domain);
+ }
+ 
+ static void xive_cleanup_cpu_queues(unsigned int cpu, struct xive_cpu *xc)
+diff --git a/arch/x86/kernel/apic/vector.c b/arch/x86/kernel/apic/vector.c
+index 72fa4bb..fee42a7 100644
+--- a/arch/x86/kernel/apic/vector.c
++++ b/arch/x86/kernel/apic/vector.c
+@@ -799,7 +799,7 @@ int __init arch_early_irq_init(void)
+ 	x86_vector_domain = irq_domain_create_tree(fn, &x86_vector_domain_ops,
+ 						   NULL);
+ 	BUG_ON(x86_vector_domain == NULL);
+-	irq_set_default_host(x86_vector_domain);
++	irq_set_default_domain(x86_vector_domain);
+ 
+ 	BUG_ON(!alloc_cpumask_var(&vector_searchmask, GFP_KERNEL));
+ 
 diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
-index 6218e5d..2aa6a51 100644
+index d7c5ef2..6218e5d 100644
 --- a/drivers/irqchip/irq-armada-370-xp.c
 +++ b/drivers/irqchip/irq-armada-370-xp.c
-@@ -564,7 +564,7 @@ static void mpic_reenable_percpu(struct mpic *mpic)
+@@ -880,7 +880,7 @@ static int __init mpic_of_init(struct device_node *node, struct device_node *par
+ 	}
  
- static int mpic_starting_cpu(unsigned int cpu)
+ 	if (mpic_is_ipi_available(mpic)) {
+-		irq_set_default_host(mpic->domain);
++		irq_set_default_domain(mpic->domain);
+ 		set_handle_irq(mpic_handle_irq);
+ #ifdef CONFIG_SMP
+ 		err = mpic_ipi_init(mpic, node);
+diff --git a/drivers/irqchip/irq-clps711x.c b/drivers/irqchip/irq-clps711x.c
+index 806ebb1..48c73c9 100644
+--- a/drivers/irqchip/irq-clps711x.c
++++ b/drivers/irqchip/irq-clps711x.c
+@@ -191,7 +191,7 @@ static int __init _clps711x_intc_init(struct device_node *np,
+ 		goto out_irqfree;
+ 	}
+ 
+-	irq_set_default_host(clps711x_intc->domain);
++	irq_set_default_domain(clps711x_intc->domain);
+ 	set_handle_irq(clps711x_irqh);
+ 
+ #ifdef CONFIG_FIQ
+diff --git a/drivers/irqchip/irq-imx-gpcv2.c b/drivers/irqchip/irq-imx-gpcv2.c
+index 8a0e820..095ae8e 100644
+--- a/drivers/irqchip/irq-imx-gpcv2.c
++++ b/drivers/irqchip/irq-imx-gpcv2.c
+@@ -247,7 +247,7 @@ static int __init imx_gpcv2_irqchip_init(struct device_node *node,
+ 		kfree(cd);
+ 		return -ENOMEM;
+ 	}
+-	irq_set_default_host(domain);
++	irq_set_default_domain(domain);
+ 
+ 	/* Initially mask all interrupts */
+ 	for (i = 0; i < IMR_NUM; i++) {
+diff --git a/drivers/irqchip/irq-pic32-evic.c b/drivers/irqchip/irq-pic32-evic.c
+index eb6ca51..b546b10 100644
+--- a/drivers/irqchip/irq-pic32-evic.c
++++ b/drivers/irqchip/irq-pic32-evic.c
+@@ -291,7 +291,7 @@ static int __init pic32_of_init(struct device_node *node,
+ 		gc->private = &priv[i];
+ 	}
+ 
+-	irq_set_default_host(evic_irq_domain);
++	irq_set_default_domain(evic_irq_domain);
+ 
+ 	/*
+ 	 * External interrupts have software configurable edge polarity. These
+diff --git a/drivers/irqchip/irq-xilinx-intc.c b/drivers/irqchip/irq-xilinx-intc.c
+index 7e08714..38727e9 100644
+--- a/drivers/irqchip/irq-xilinx-intc.c
++++ b/drivers/irqchip/irq-xilinx-intc.c
+@@ -233,7 +233,7 @@ static int __init xilinx_intc_of_init(struct device_node *intc,
+ 		}
+ 	} else {
+ 		primary_intc = irqc;
+-		irq_set_default_host(primary_intc->root_domain);
++		irq_set_default_domain(primary_intc->root_domain);
+ 		set_handle_irq(xil_intc_handle_irq);
+ 	}
+ 
+diff --git a/drivers/irqchip/irq-xtensa-mx.c b/drivers/irqchip/irq-xtensa-mx.c
+index 7f314e5..9b441d1 100644
+--- a/drivers/irqchip/irq-xtensa-mx.c
++++ b/drivers/irqchip/irq-xtensa-mx.c
+@@ -156,7 +156,7 @@ static void __init xtensa_mx_init_common(struct irq_domain *root_domain)
  {
--	struct mpic *mpic = irq_get_default_host()->host_data;
-+	struct mpic *mpic = irq_get_default_domain()->host_data;
+ 	unsigned int i;
  
- 	mpic_perf_init(mpic);
- 	mpic_smp_cpu_init(mpic);
-@@ -700,7 +700,7 @@ static void mpic_handle_cascade_irq(struct irq_desc *desc)
+-	irq_set_default_host(root_domain);
++	irq_set_default_domain(root_domain);
+ 	secondary_init_irq();
  
- static void __exception_irq_entry mpic_handle_irq(struct pt_regs *regs)
- {
--	struct mpic *mpic = irq_get_default_host()->host_data;
-+	struct mpic *mpic = irq_get_default_domain()->host_data;
- 	irq_hw_number_t i;
- 	u32 irqstat;
+ 	/* Initialize default IRQ routing to CPU 0 */
+diff --git a/drivers/irqchip/irq-xtensa-pic.c b/drivers/irqchip/irq-xtensa-pic.c
+index f9d6fce..9be7b7c 100644
+--- a/drivers/irqchip/irq-xtensa-pic.c
++++ b/drivers/irqchip/irq-xtensa-pic.c
+@@ -87,7 +87,7 @@ int __init xtensa_pic_init_legacy(struct device_node *interrupt_parent)
+ 	struct irq_domain *root_domain =
+ 		irq_domain_add_legacy(NULL, NR_IRQS - 1, 1, 0,
+ 				&xtensa_irq_domain_ops, &xtensa_irq_chip);
+-	irq_set_default_host(root_domain);
++	irq_set_default_domain(root_domain);
+ 	return 0;
+ }
  
+@@ -97,7 +97,7 @@ static int __init xtensa_pic_init(struct device_node *np,
+ 	struct irq_domain *root_domain =
+ 		irq_domain_add_linear(np, NR_IRQS, &xtensa_irq_domain_ops,
+ 				&xtensa_irq_chip);
+-	irq_set_default_host(root_domain);
++	irq_set_default_domain(root_domain);
+ 	return 0;
+ }
+ IRQCHIP_DECLARE(xtensa_irq_chip, "cdns,xtensa-pic", xtensa_pic_init);
 diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 4b5c495..e9ab95f 100644
+index 33ff41e..4b5c495 100644
 --- a/include/linux/irqdomain.h
 +++ b/include/linux/irqdomain.h
-@@ -353,7 +353,7 @@ struct irq_domain *irq_domain_create_legacy(struct fwnode_handle *fwnode,
+@@ -352,7 +352,7 @@ struct irq_domain *irq_domain_create_legacy(struct fwnode_handle *fwnode,
+ 					    void *host_data);
  struct irq_domain *irq_find_matching_fwspec(struct irq_fwspec *fwspec,
  					    enum irq_domain_bus_token bus_token);
- void irq_set_default_domain(struct irq_domain *domain);
--struct irq_domain *irq_get_default_host(void);
-+struct irq_domain *irq_get_default_domain(void);
+-void irq_set_default_host(struct irq_domain *host);
++void irq_set_default_domain(struct irq_domain *domain);
+ struct irq_domain *irq_get_default_host(void);
  int irq_domain_alloc_descs(int virq, unsigned int nr_irqs,
  			   irq_hw_number_t hwirq, int node,
- 			   const struct irq_affinity_desc *affinity);
 diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 480fdc9..9d5c865 100644
+index 2861f89..480fdc9 100644
 --- a/kernel/irq/irqdomain.c
 +++ b/kernel/irq/irqdomain.c
-@@ -590,7 +590,7 @@ void irq_set_default_domain(struct irq_domain *domain)
- EXPORT_SYMBOL_GPL(irq_set_default_domain);
+@@ -398,7 +398,7 @@ void irq_domain_remove(struct irq_domain *domain)
+ 	 * If the going away domain is the default one, reset it.
+ 	 */
+ 	if (unlikely(irq_default_domain == domain))
+-		irq_set_default_host(NULL);
++		irq_set_default_domain(NULL);
+ 
+ 	mutex_unlock(&irq_domain_mutex);
+ 
+@@ -573,7 +573,7 @@ struct irq_domain *irq_find_matching_fwspec(struct irq_fwspec *fwspec,
+ EXPORT_SYMBOL_GPL(irq_find_matching_fwspec);
  
  /**
-- * irq_get_default_host() - Retrieve the "default" irq domain
-+ * irq_get_default_domain() - Retrieve the "default" irq domain
+- * irq_set_default_host() - Set a "default" irq domain
++ * irq_set_default_domain() - Set a "default" irq domain
+  * @domain: default domain pointer
   *
-  * Returns: the default domain, if any.
-  *
-@@ -598,11 +598,11 @@ EXPORT_SYMBOL_GPL(irq_set_default_domain);
-  * systems that cannot implement a firmware->fwnode mapping (which
-  * both DT and ACPI provide).
+  * For convenience, it's possible to set a "default" domain that will be used
+@@ -581,13 +581,13 @@ EXPORT_SYMBOL_GPL(irq_find_matching_fwspec);
+  * platforms that want to manipulate a few hard coded interrupt numbers that
+  * aren't properly represented in the device-tree.
   */
--struct irq_domain *irq_get_default_host(void)
-+struct irq_domain *irq_get_default_domain(void)
+-void irq_set_default_host(struct irq_domain *domain)
++void irq_set_default_domain(struct irq_domain *domain)
  {
- 	return irq_default_domain;
- }
--EXPORT_SYMBOL_GPL(irq_get_default_host);
-+EXPORT_SYMBOL_GPL(irq_get_default_domain);
+ 	pr_debug("Default domain set to @0x%p\n", domain);
  
- static bool irq_domain_is_nomap(struct irq_domain *domain)
- {
+ 	irq_default_domain = domain;
+ }
+-EXPORT_SYMBOL_GPL(irq_set_default_host);
++EXPORT_SYMBOL_GPL(irq_set_default_domain);
+ 
+ /**
+  * irq_get_default_host() - Retrieve the "default" irq domain
 
