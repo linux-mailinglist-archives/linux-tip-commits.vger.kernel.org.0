@@ -1,224 +1,265 @@
-Return-Path: <linux-tip-commits+bounces-4668-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4669-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F3AA7C0EF
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 17:50:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 636D4A7C259
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 19:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD857189F2A9
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 15:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9265F3B1102
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 17:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6886A1E5B74;
-	Fri,  4 Apr 2025 15:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417D1215075;
+	Fri,  4 Apr 2025 17:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j74AMQRg"
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a/QOmTTA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Tt786yWI"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63451DF962;
-	Fri,  4 Apr 2025 15:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A8F2147EF;
+	Fri,  4 Apr 2025 17:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743781795; cv=none; b=MoWxjE1QeGhfBmefxWkfVX25q94PxC6zk7FUMXfJuOcIJx9OrBLPVqGSKc86DDqbTPqKtwBF6d+NScziZIg+6fFoQCXH5WARYo5P8y0pP8rD30DNhtlW/nSr4PrmnH5Spvua0SZ2d4IVkCWg5n5u+k/p8t0KR+koqBIULabKMv8=
+	t=1743787354; cv=none; b=gSgjuWKcYn5VRqccJnXY3S1fhwkiQkVE6H9VbynOOK8sNq4HQx3+xUdclm9DNQ5jH93+s3NFGBFXSLaAEWiCcGpnJl4fiN8cnNx4Hv3tGt4IqF7sI5EbO7buCZPdAHEUUs9oOvULk6O/cWk0gVoutOmYYJWOlGg20gHX5tO7WRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743781795; c=relaxed/simple;
-	bh=m4LCpakrwz86U21T1J3A9DSHDf8q+L/BJbl7HOX/PI8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R9KOO3czw43iedvaLYKVKQkwmIFRnwFw9i7aqB2d0oCa2Bwo/MZp9BaxXo3ZdH6G0OLQFFVzk5uYm60x0kr0aslgrrDxDqY0pJ4LpplrQcqfPz97xJC0sXtzx+qmP21Hfh/AgkJkP36KSkqgVOYpBmSuBH5x1FoyQNas2jJYz20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j74AMQRg; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-736c1138ae5so2146389b3a.3;
-        Fri, 04 Apr 2025 08:49:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743781792; x=1744386592; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yP84vi9S/CO3pARMt8AsumexblRaEcsvg6qxFTYHyzU=;
-        b=j74AMQRgDit1YzGweT2uu4vHM7tHkKbbDV0lrYL22t1VNgE0dNGtApHGs+sr9MKAMo
-         uNXPV9PFEXtWQux+ZmsO+ECUoQG+odf/Y0+s/VsLYyOKGiBAXM92sZgbjW4kCF+zi7AO
-         eS7Jnw5lJAo3Z9ib38Y2IKPjd2B5GfzPWH8A0aiq1CSiW050gGdrE1xGPZs8GDRYG8E2
-         gIuvQmmlqr/mkZg+D4Tqw9a94mZ81ETrfJwW2eGaZhg3K6aTwqqnPYW0KY/Yh3xImQNt
-         Vw5jkQ1X8LnaxPm4N51tXVCgePw+V1hWREkb3/tX5vANgXSN61BuJxBaFS5uu90efOXw
-         rtUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743781792; x=1744386592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yP84vi9S/CO3pARMt8AsumexblRaEcsvg6qxFTYHyzU=;
-        b=s9lRUW1CLb+8EG1Xpd/PjykkP8Rk7PJeTIwm0+kfk+fFslbeDKSFqTDE9sQxr1ZoZQ
-         WbVxx+OE2JymDKHz4Tr3J29RPrAtJzctLAshJO+i1qkGpdweBTT/h++DjByvc1o6ETg4
-         X+u6k1UstNv1qMCf/MTTwExQAdxt6KfEvRPm0Ah0Sp7OhBB3/3Q1IxiczGk6gqMmN8O8
-         8ueDi7MZV0UPOE9MWPyGT2qCHfq5IkYTXXbFhS5besSx1llcNInywXY5b+KAIawM9Cwm
-         rge7b9Fl4cvkY2B2jPbAmRAhtYJpUNBnMc1ihOnu9xPECt2HqP7pVpFy/ExpKP4UbBp4
-         M2jA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1gTJBqxdqkJSuo1CJT+NDXnOVWxtzzVjKqeyDBXQw5xWfj1LOuHRKFNMpnRfAQ6HQKifUJA/GjzRthCM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/kXSHJMhyam/6ZyXwOpmCqaPmsG4CaTMMpIRK3UV5ph0CerO3
-	h1qPsSVEzmk0NLRuHmzf/Nuz2iznPqKKDnzPPModCQ03vcI/G8y+GgO11iE7GCLknAJBpTyDJ+Y
-	AfGrBKz90+0gxvS3WFX0A4qKnFlY=
-X-Gm-Gg: ASbGncvaPdCrnc6qbk5BerZiwtPy+at6yrCuNAuXPF0Pv+kiFs24nF7XxNX0M4spoxO
-	tjOOG4U8XLbyTBVQ96SdkyecchG9mojlWugpaFhqbUoFStBYY4rckC7RzJ55WwTVW29nK7UaWct
-	BGJql0osIRuFqVZOkH4DMnzISiDmS3q4x6NNrKDTKLTrY3MKFRiHmS
-X-Google-Smtp-Source: AGHT+IEGSKaLUOWXoq7rVkkc1aMtN18O+AIOmTA0joIqPgtrP+lM3ynTb5VE7B3UzbDJr+PTPdU76v/awPgbgUIVPA0=
-X-Received: by 2002:a05:6a00:a89:b0:737:e73:f64b with SMTP id
- d2e1a72fcca58-739e48c6f91mr4748744b3a.1.1743781791914; Fri, 04 Apr 2025
- 08:49:51 -0700 (PDT)
+	s=arc-20240116; t=1743787354; c=relaxed/simple;
+	bh=acrvq7csjOcv/SlifOw2NxUWeB2+KQdjhzVOsZ9Ryqs=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=CIVipyBZwCCDCW4X6RZGHbrJ12HD+lwSEWqLYQSNETmtHDtkWichgfqiKOi3gtTXls3s84CUkx57rzYUUEwfC3JMjgmrF2J3hhndQv9DbFugBMgaRUDdUBa24rAgjjElLLITV1zwFk9R/0Q6xTWG0jgBH3cugSIvt0jjJbWnH9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a/QOmTTA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Tt786yWI; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 04 Apr 2025 17:22:25 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1743787350;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RyxCxICuuHokyfU8AQ5uloO0o8334aXk+EI129fJyMY=;
+	b=a/QOmTTAR20XjCKaEAUrY/e4c4jnagew5oGEdqinyViYRlA96mgPKUxH8DtuxKCrjNJqYH
+	xcC8Ct0LvKoX5M7U1J8/wE3e+vCZBzpYzA4bkxQl35xsnP3OozCIsryULGM9+gCs4kFf+L
+	jp06G5HzpKzUAAqsguU/b0IVuk3MrldJ1g049N74q6hfn84+QGhd1ngo34Iqa0MCSxgA8D
+	WOyQsNqCwpnAznLkZrPXl3EuFiDNxRDe74NNSb+5ZewoIBbEVkd40NKsFCVa53744fKQum
+	AuoIteE/B6g2GaGHQ1WIIF4hJQDMhL1/0MIQRQ7JCFdiQ4HNpLDkz3or4dzpQw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1743787350;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RyxCxICuuHokyfU8AQ5uloO0o8334aXk+EI129fJyMY=;
+	b=Tt786yWIn31ATZcY+4RCT4LivtrxU3bPSddUIqytmGaD3DoC3JIJrA1w/7dU0N4uAzifh5
+	FMVGxuwRs8s3HUCw==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] Revert "timekeeping: Fix possible
+ inconsistencies in _COARSE clockids"
+Cc: Miroslav Lichvar <mlichvar@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <Z-qsg6iDGlcIJulJ@localhost>
+References: <Z-qsg6iDGlcIJulJ@localhost>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250402180925.90914-1-andrii@kernel.org> <174375584977.31282.8985910498663747932.tip-bot2@tip-bot2>
-In-Reply-To: <174375584977.31282.8985910498663747932.tip-bot2@tip-bot2>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 4 Apr 2025 08:49:39 -0700
-X-Gm-Features: AQ5f1Jqfd2hG6YA6tRwgUlmaICWmxlM7J06z-rwLADpQzMcIV0kKb2AsCOqMnwI
-Message-ID: <CAEf4BzavW0GpSU4aT_kXF_rjyrEAoYfW8Ld8LzsL1boGo=xa5g@mail.gmail.com>
-Subject: Re: [tip: sched/core] sched/tracepoints: Move and extend the
- sched_process_exit() tracepoint
-To: Ingo Molnar <mingo@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-tip-commits@vger.kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <174378734570.31282.1517542045196187546.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 4, 2025 at 1:37=E2=80=AFAM tip-bot2 for Andrii Nakryiko
-<tip-bot2@linutronix.de> wrote:
->
-> The following commit has been merged into the sched/core branch of tip:
->
-> Commit-ID:     3e816361e94a0e79b1aabf44abec552e9698b196
-> Gitweb:        https://git.kernel.org/tip/3e816361e94a0e79b1aabf44abec552=
-e9698b196
-> Author:        Andrii Nakryiko <andrii@kernel.org>
-> AuthorDate:    Wed, 02 Apr 2025 11:09:25 -07:00
-> Committer:     Ingo Molnar <mingo@kernel.org>
-> CommitterDate: Fri, 04 Apr 2025 10:30:19 +02:00
->
-> sched/tracepoints: Move and extend the sched_process_exit() tracepoint
->
-> It is useful to be able to access current->mm at task exit to, say,
-> record a bunch of VMA information right before the task exits (e.g., for
-> stack symbolization reasons when dealing with short-lived processes that
-> exit in the middle of profiling session). Currently,
-> trace_sched_process_exit() is triggered after exit_mm() which resets
-> current->mm to NULL making this tracepoint unsuitable for inspecting
-> and recording task's mm_struct-related data when tracing process
-> lifetimes.
->
-> There is a particularly suitable place, though, right after
-> taskstats_exit() is called, but before we do exit_mm() and other
-> exit_*() resource teardowns. taskstats performs a similar kind of
-> accounting that some applications do with BPF, and so co-locating them
-> seems like a good fit. So that's where trace_sched_process_exit() is
-> moved with this patch.
->
-> Also, existing trace_sched_process_exit() tracepoint is notoriously
-> missing `group_dead` flag that is certainly useful in practice and some
-> of our production applications have to work around this. So plumb
-> `group_dead` through while at it, to have a richer and more complete
-> tracepoint.
->
-> Note that we can't use sched_process_template anymore, and so we use
-> TRACE_EVENT()-based tracepoint definition. But all the field names and
-> order, as well as assign and output logic remain intact. We just add one
-> extra field at the end in backwards-compatible way.
->
-> Document the dependency to sched_process_template anyway.
->
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+The following commit has been merged into the timers/urgent branch of tip:
 
-Adding Andrew.
+Commit-ID:     324a2219ba38b00ab0e53bd535782771ba9614b2
+Gitweb:        https://git.kernel.org/tip/324a2219ba38b00ab0e53bd535782771ba9614b2
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 04 Apr 2025 17:10:52 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 04 Apr 2025 19:10:00 +02:00
 
-Seems like my patch was applied both by Andrew ([0], [1]) and Ingo.
-Andew, would it be possible to drop those from your tree and keep the
-one in Ingo's tip/sched/core? Thanks!
+Revert "timekeeping: Fix possible inconsistencies in _COARSE clockids"
 
-  [0] https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/=
-patches/exit-move-and-extend-sched_process_exit-tracepoint.patch
-  [1] https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/=
-patches/exit-move-and-extend-sched_process_exit-tracepoint-fix.patch
+This reverts commit 757b000f7b936edf79311ab0971fe465bbda75ea.
 
-> Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> Acked-by: Oleg Nesterov <oleg@redhat.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Link: https://lore.kernel.org/r/20250402180925.90914-1-andrii@kernel.org
-> ---
->  include/trace/events/sched.h | 34 ++++++++++++++++++++++++++++++----
->  kernel/exit.c                |  2 +-
->  2 files changed, 31 insertions(+), 5 deletions(-)
->
-> diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-> index 8994e97..3bec9fb 100644
-> --- a/include/trace/events/sched.h
-> +++ b/include/trace/events/sched.h
-> @@ -326,11 +326,37 @@ DEFINE_EVENT(sched_process_template, sched_process_=
-free,
->              TP_ARGS(p));
->
->  /*
-> - * Tracepoint for a task exiting:
-> + * Tracepoint for a task exiting.
-> + * Note, it's a superset of sched_process_template and should be kept
-> + * compatible as much as possible. sched_process_exits has an extra
-> + * `group_dead` argument, so sched_process_template can't be used,
-> + * unfortunately, just like sched_migrate_task above.
->   */
-> -DEFINE_EVENT(sched_process_template, sched_process_exit,
-> -            TP_PROTO(struct task_struct *p),
-> -            TP_ARGS(p));
-> +TRACE_EVENT(sched_process_exit,
-> +
-> +       TP_PROTO(struct task_struct *p, bool group_dead),
-> +
-> +       TP_ARGS(p, group_dead),
-> +
-> +       TP_STRUCT__entry(
-> +               __array(        char,   comm,   TASK_COMM_LEN   )
-> +               __field(        pid_t,  pid                     )
-> +               __field(        int,    prio                    )
-> +               __field(        bool,   group_dead              )
-> +       ),
-> +
-> +       TP_fast_assign(
-> +               memcpy(__entry->comm, p->comm, TASK_COMM_LEN);
-> +               __entry->pid            =3D p->pid;
-> +               __entry->prio           =3D p->prio; /* XXX SCHED_DEADLIN=
-E */
-> +               __entry->group_dead     =3D group_dead;
-> +       ),
-> +
-> +       TP_printk("comm=3D%s pid=3D%d prio=3D%d group_dead=3D%s",
-> +                 __entry->comm, __entry->pid, __entry->prio,
-> +                 __entry->group_dead ? "true" : "false"
-> +       )
-> +);
->
->  /*
->   * Tracepoint for waiting on task to unschedule:
-> diff --git a/kernel/exit.c b/kernel/exit.c
-> index 1b51dc0..f1db86d 100644
-> --- a/kernel/exit.c
-> +++ b/kernel/exit.c
-> @@ -936,12 +936,12 @@ void __noreturn do_exit(long code)
->
->         tsk->exit_code =3D code;
->         taskstats_exit(tsk, group_dead);
-> +       trace_sched_process_exit(tsk, group_dead);
->
->         exit_mm();
->
->         if (group_dead)
->                 acct_process();
-> -       trace_sched_process_exit(tsk);
->
->         exit_sem(tsk);
->         exit_shm(tsk);
+Miroslav reported that the changes for handling the inconsistencies in the
+coarse time getters result in a regression on the adjtimex() side.
+
+There are two issues:
+
+  1) The forwarding of the base time moves the update out of the original
+     period and establishes a new one.
+
+  2) The clearing of the accumulated NTP error is changing the behaviour as
+     well.
+
+Userspace expects that multiplier/frequency updates are in effect, when the
+syscall returns, so delaying the update to the next tick is not solving the
+problem either.
+
+Revert the change, so that the established expectations of user space
+implementations (ntpd, chronyd) are restored. The re-introduced
+inconsistency of the coarse time getters will be addressed in a subsequent
+fix.
+
+Fixes: 757b000f7b93 ("timekeeping: Fix possible inconsistencies in _COARSE clockids")
+Reported-by: Miroslav Lichvar <mlichvar@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/Z-qsg6iDGlcIJulJ@localhost
+---
+ kernel/time/timekeeping.c | 94 ++++++++++----------------------------
+ 1 file changed, 25 insertions(+), 69 deletions(-)
+
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 929846b..1e67d07 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -682,19 +682,20 @@ static void timekeeping_update_from_shadow(struct tk_data *tkd, unsigned int act
+ }
+ 
+ /**
+- * timekeeping_forward - update clock to given cycle now value
++ * timekeeping_forward_now - update clock to the current time
+  * @tk:		Pointer to the timekeeper to update
+- * @cycle_now:  Current clocksource read value
+  *
+  * Forward the current clock to update its state since the last call to
+  * update_wall_time(). This is useful before significant clock changes,
+  * as it avoids having to deal with this time offset explicitly.
+  */
+-static void timekeeping_forward(struct timekeeper *tk, u64 cycle_now)
++static void timekeeping_forward_now(struct timekeeper *tk)
+ {
+-	u64 delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
+-				      tk->tkr_mono.clock->max_raw_delta);
++	u64 cycle_now, delta;
+ 
++	cycle_now = tk_clock_read(&tk->tkr_mono);
++	delta = clocksource_delta(cycle_now, tk->tkr_mono.cycle_last, tk->tkr_mono.mask,
++				  tk->tkr_mono.clock->max_raw_delta);
+ 	tk->tkr_mono.cycle_last = cycle_now;
+ 	tk->tkr_raw.cycle_last  = cycle_now;
+ 
+@@ -710,21 +711,6 @@ static void timekeeping_forward(struct timekeeper *tk, u64 cycle_now)
+ }
+ 
+ /**
+- * timekeeping_forward_now - update clock to the current time
+- * @tk:		Pointer to the timekeeper to update
+- *
+- * Forward the current clock to update its state since the last call to
+- * update_wall_time(). This is useful before significant clock changes,
+- * as it avoids having to deal with this time offset explicitly.
+- */
+-static void timekeeping_forward_now(struct timekeeper *tk)
+-{
+-	u64 cycle_now = tk_clock_read(&tk->tkr_mono);
+-
+-	timekeeping_forward(tk, cycle_now);
+-}
+-
+-/**
+  * ktime_get_real_ts64 - Returns the time of day in a timespec64.
+  * @ts:		pointer to the timespec to be set
+  *
+@@ -2165,54 +2151,6 @@ static u64 logarithmic_accumulation(struct timekeeper *tk, u64 offset,
+ 	return offset;
+ }
+ 
+-static u64 timekeeping_accumulate(struct timekeeper *tk, u64 offset,
+-				  enum timekeeping_adv_mode mode,
+-				  unsigned int *clock_set)
+-{
+-	int shift = 0, maxshift;
+-
+-	/*
+-	 * TK_ADV_FREQ indicates that adjtimex(2) directly set the
+-	 * frequency or the tick length.
+-	 *
+-	 * Accumulate the offset, so that the new multiplier starts from
+-	 * now. This is required as otherwise for offsets, which are
+-	 * smaller than tk::cycle_interval, timekeeping_adjust() could set
+-	 * xtime_nsec backwards, which subsequently causes time going
+-	 * backwards in the coarse time getters. But even for the case
+-	 * where offset is greater than tk::cycle_interval the periodic
+-	 * accumulation does not have much value.
+-	 *
+-	 * Also reset tk::ntp_error as it does not make sense to keep the
+-	 * old accumulated error around in this case.
+-	 */
+-	if (mode == TK_ADV_FREQ) {
+-		timekeeping_forward(tk, tk->tkr_mono.cycle_last + offset);
+-		tk->ntp_error = 0;
+-		return 0;
+-	}
+-
+-	/*
+-	 * With NO_HZ we may have to accumulate many cycle_intervals
+-	 * (think "ticks") worth of time at once. To do this efficiently,
+-	 * we calculate the largest doubling multiple of cycle_intervals
+-	 * that is smaller than the offset.  We then accumulate that
+-	 * chunk in one go, and then try to consume the next smaller
+-	 * doubled multiple.
+-	 */
+-	shift = ilog2(offset) - ilog2(tk->cycle_interval);
+-	shift = max(0, shift);
+-	/* Bound shift to one less than what overflows tick_length */
+-	maxshift = (64 - (ilog2(ntp_tick_length()) + 1)) - 1;
+-	shift = min(shift, maxshift);
+-	while (offset >= tk->cycle_interval) {
+-		offset = logarithmic_accumulation(tk, offset, shift, clock_set);
+-		if (offset < tk->cycle_interval << shift)
+-			shift--;
+-	}
+-	return offset;
+-}
+-
+ /*
+  * timekeeping_advance - Updates the timekeeper to the current time and
+  * current NTP tick length
+@@ -2222,6 +2160,7 @@ static bool timekeeping_advance(enum timekeeping_adv_mode mode)
+ 	struct timekeeper *tk = &tk_core.shadow_timekeeper;
+ 	struct timekeeper *real_tk = &tk_core.timekeeper;
+ 	unsigned int clock_set = 0;
++	int shift = 0, maxshift;
+ 	u64 offset;
+ 
+ 	guard(raw_spinlock_irqsave)(&tk_core.lock);
+@@ -2238,7 +2177,24 @@ static bool timekeeping_advance(enum timekeeping_adv_mode mode)
+ 	if (offset < real_tk->cycle_interval && mode == TK_ADV_TICK)
+ 		return false;
+ 
+-	offset = timekeeping_accumulate(tk, offset, mode, &clock_set);
++	/*
++	 * With NO_HZ we may have to accumulate many cycle_intervals
++	 * (think "ticks") worth of time at once. To do this efficiently,
++	 * we calculate the largest doubling multiple of cycle_intervals
++	 * that is smaller than the offset.  We then accumulate that
++	 * chunk in one go, and then try to consume the next smaller
++	 * doubled multiple.
++	 */
++	shift = ilog2(offset) - ilog2(tk->cycle_interval);
++	shift = max(0, shift);
++	/* Bound shift to one less than what overflows tick_length */
++	maxshift = (64 - (ilog2(ntp_tick_length())+1)) - 1;
++	shift = min(shift, maxshift);
++	while (offset >= tk->cycle_interval) {
++		offset = logarithmic_accumulation(tk, offset, shift, &clock_set);
++		if (offset < tk->cycle_interval<<shift)
++			shift--;
++	}
+ 
+ 	/* Adjust the multiplier to correct NTP error */
+ 	timekeeping_adjust(tk, offset);
 
