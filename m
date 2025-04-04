@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-4664-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4665-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A78A7C059
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 17:14:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7606AA7C05F
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 17:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47170189B3C5
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 15:14:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9B6E7A83DE
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Apr 2025 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55741EFF9D;
-	Fri,  4 Apr 2025 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E881F463E;
+	Fri,  4 Apr 2025 15:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Sq4TDEFV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IohlGRpv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MXdEYIqL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H+bGnuBp"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5021EF0AD;
-	Fri,  4 Apr 2025 15:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F762E62CB;
+	Fri,  4 Apr 2025 15:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743779663; cv=none; b=EJ7LJnZXV87nopS4wqUPKHrORDKUswMhesplutNQ8kgJbDvxIhelJUOw3DU+f8P0KzTwVKvN+hJA5OgARyRGOHgx6h2Di2WldE2taI1eXD+0AXY/iEKRF+clMSy0Jys9FWuPCuDx0xqS+KItRGCyRH/f71v0JYL7BV6ffbDekX4=
+	t=1743779664; cv=none; b=lfVNb4BDKEdyE148ocZ9y/8rQmbBqQzcARCF8hRxQzuc3nWbpiMgPqQ4ntbf2s7zPqoK4tyCNcqER2NDbeY/efeo2vYUozLRcIM+j689EC0f4IJqzkmdR3KlFRsgtpEp1QdditDouhiKcNuCbjfyVe2JqdIBxVrLgu6b+fHg97E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743779663; c=relaxed/simple;
-	bh=evAovIBbD/uzBeMvoHDbt24jYAMqbvFBAa/ChPerOfs=;
+	s=arc-20240116; t=1743779664; c=relaxed/simple;
+	bh=sZzFKHTjyenPgnhwZMQlkl8ZJAEUYeMZshprXvkFrPU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WN8E7CYxXrzZ1nj4lK98AKz66JW8NiRcYqIZdk9J7Wol1sA8lOCRbq4zLNelp2hbsOp+NxDzl9byukCYCZGQ9k7aucCn8nyAZdcMBX6BEeUJKrRailAAr3EEbYFgFtTCLV4JuJ0PdrAzVImFGbnymyU1t1ObTY5ntcXqNDXvYo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Sq4TDEFV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IohlGRpv; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=PggZt2T89Hirb3rxezP51Azg5aV984CvtWd6Q83B+Qs3ArFaO97ThqndjjyD1+pOnWQIi1sFhE3ouSxMWbXliPtu1sKeMpzwkCy6VHgGJtiyFMUaBqzeWG8jOWH8CeyVcFFPqYLzl4ziRCe+SI1RAfuis46A6Q2W/wqTGCae/6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MXdEYIqL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H+bGnuBp; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 04 Apr 2025 15:14:17 -0000
+Date: Fri, 04 Apr 2025 15:14:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743779660;
+	s=2020; t=1743779661;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5zG4YgNteA6hLvHRqyJ6K8KbsFLMnLYKMqLhkRxS8f0=;
-	b=Sq4TDEFVIaOtZ2v1+coTXeLJ6z/5lWOb7KgB8QxFnl6s4CPPPGxy1w7oplhfvrX2Dheo7r
-	JJUT8p/dLXcO0r22Eh8l84Jniy+meb7T91EV2UXE4cVo0ORvLkBP7fzI5Oum5r4OzzGcmX
-	nsF1gHdXJ+3B3DYzG8yr/B9cI6dCXBefmdsS4PfPCl+TXFhHHJ8vyDL2nrxZzlXZOEHDcl
-	INtEVZCb8KmPxba8ko7hiVMvRh7YwFJjnjBfX+/1a0KGBbhhZBD/5TxFsicCZGPl/jaFFi
-	NICtvFjSoP2RVe+4zyVJQ1uB0bhpRM0TA+78qMpI9XTapwVfVmTH/QuH1BHcig==
+	bh=T1zBsmZpUgznM3jShQ4ERyiQLZwqIkTXpIbSW3Nc9w8=;
+	b=MXdEYIqL/Fhid7JA6gKsHDANc2MsF3jKDbuNcNHYu3nfniJoOY7dGoezXAJRVpykLSG+FL
+	7ntdo0FNB1SgzoTdowwV7r3qYnnzAvVFiY8ew2v3J2slhQbX0Y9Wq4QU8ISoFqXrZhRftV
+	VyHU2AIRIypd/2EUl86tbmlcephwiwMnLQSCVySPTNkJJICSL6BCaqp/h0YnkhMVbM+3ey
+	qj4z4PQQYC/bsUvoYrV3ITB68orMDXH9WiClr6rRIS/osH5HdMKmHVnA2C3ZDXWEa1cR+B
+	6EagCuFCBiiA8MfeH1nihugNyLQ2MsSn7qZBuoZeNzdkJ2r7fpJAv6HIoq43cQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743779660;
+	s=2020e; t=1743779661;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5zG4YgNteA6hLvHRqyJ6K8KbsFLMnLYKMqLhkRxS8f0=;
-	b=IohlGRpv+E9qEUZ867Jod95nR4YUdeAh7LC+EqoB8nbGrjDw9SdvNulMrHXaCcIA93Rlg2
-	AGRmicIp/ffjquAA==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=T1zBsmZpUgznM3jShQ4ERyiQLZwqIkTXpIbSW3Nc9w8=;
+	b=H+bGnuBpd6wfpjBxXmBXksPZQzawDpgWDuSpNlRipMwNXAqOJCkFKLCG0IzLoxX8EOG8Ch
+	rxeXP2ylBrupfXAg==
+From: "tip-bot2 for Jiri Slaby (SUSE)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] genirq/migration: Use irqd_get_parent_data() in
- irq_force_complete_move()
-Cc: Frank Scheiner <frank.scheiner@web.de>,
+Subject: [tip: irq/urgent] irqdomain: Stop using 'host' for domain
+Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <87h634ugig.ffs@tglx>
-References: <87h634ugig.ffs@tglx>
+In-Reply-To: <20250319092951.37667-5-jirislaby@kernel.org>
+References: <20250319092951.37667-5-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174377965732.31282.158574464632397701.tip-bot2@tip-bot2>
+Message-ID: <174377966046.31282.18073290840304229720.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,51 +81,76 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     9b305678c55dd45044aa565fee04f8d88382bc4d
-Gitweb:        https://git.kernel.org/tip/9b305678c55dd45044aa565fee04f8d88382bc4d
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 04 Apr 2025 16:51:19 +02:00
+Commit-ID:     d2705d33885e3a19f727dff2521fb7d5b1fc5cda
+Gitweb:        https://git.kernel.org/tip/d2705d33885e3a19f727dff2521fb7d5b1fc5cda
+Author:        Jiri Slaby (SUSE) <jirislaby@kernel.org>
+AuthorDate:    Wed, 19 Mar 2025 10:28:57 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 04 Apr 2025 17:08:36 +02:00
+CommitterDate: Fri, 04 Apr 2025 16:39:11 +02:00
 
-genirq/migration: Use irqd_get_parent_data() in irq_force_complete_move()
+irqdomain: Stop using 'host' for domain
 
-Frank reported, that the common irq_force_complete_move() breaks the out of
-tree build of ia64. The reason is that ia64 uses the migration code, but
-does not have hierarchical interrupt domains enabled.
+It is confusing to see 'host' and 'domain' to be used as 'domain'. Given
+this header is all about domains, switch the remaining 'host' uses to
+'domain'.
 
-This went unnoticed in mainline as both x86 and RISC-V have hierarchical
-domains enabled. Not that it matters for mainline, but it's still
-inconsistent.
-
-Use irqd_get_parent_data() instead of accessing the parent_data field
-directly. The helper returns NULL when hierarchical domains are disabled
-otherwise it accesses the parent_data field of the domain.
-
-No functional change.
-
-Fixes: 751dc837dabd ("genirq: Introduce common irq_force_complete_move() implementation")
-Reported-by: Frank Scheiner <frank.scheiner@web.de>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Frank Scheiner <frank.scheiner@web.de>
-Link: https://lore.kernel.org/all/87h634ugig.ffs@tglx
-
+Link: https://lore.kernel.org/all/20250319092951.37667-5-jirislaby@kernel.org
 
 ---
- kernel/irq/migration.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/irqdomain.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/irq/migration.c b/kernel/irq/migration.c
-index 147cabb..f2b2929 100644
---- a/kernel/irq/migration.c
-+++ b/kernel/irq/migration.c
-@@ -37,7 +37,7 @@ bool irq_fixup_move_pending(struct irq_desc *desc, bool force_clear)
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index e9ab95f..bb71111 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -72,7 +72,7 @@ void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
  
- void irq_force_complete_move(struct irq_desc *desc)
+ /**
+  * struct irq_domain_ops - Methods for irq_domain objects
+- * @match: Match an interrupt controller device node to a host, returns
++ * @match: Match an interrupt controller device node to a domain, returns
+  *         1 on a match
+  * @select: Match an interrupt controller fw specification. It is more generic
+  *	    than @match as it receives a complete struct irq_fwspec. Therefore,
+@@ -454,7 +454,7 @@ static inline struct irq_domain *irq_domain_add_nomap(struct device_node *of_nod
+ 	return IS_ERR(d) ? NULL : d;
+ }
+ 
+-unsigned int irq_create_direct_mapping(struct irq_domain *host);
++unsigned int irq_create_direct_mapping(struct irq_domain *domain);
+ #endif
+ 
+ static inline struct irq_domain *irq_domain_add_tree(struct device_node *of_node,
+@@ -507,7 +507,7 @@ static inline struct irq_domain *irq_domain_create_tree(struct fwnode_handle *fw
+ 	return IS_ERR(d) ? NULL : d;
+ }
+ 
+-void irq_domain_remove(struct irq_domain *host);
++void irq_domain_remove(struct irq_domain *domain);
+ 
+ int irq_domain_associate(struct irq_domain *domain, unsigned int irq,
+ 			 irq_hw_number_t hwirq);
+@@ -515,16 +515,16 @@ void irq_domain_associate_many(struct irq_domain *domain,
+ 			       unsigned int irq_base,
+ 			       irq_hw_number_t hwirq_base, int count);
+ 
+-unsigned int irq_create_mapping_affinity(struct irq_domain *host,
++unsigned int irq_create_mapping_affinity(struct irq_domain *domain,
+ 					 irq_hw_number_t hwirq,
+ 					 const struct irq_affinity_desc *affinity);
+ unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec);
+ void irq_dispose_mapping(unsigned int virq);
+ 
+-static inline unsigned int irq_create_mapping(struct irq_domain *host,
++static inline unsigned int irq_create_mapping(struct irq_domain *domain,
+ 					      irq_hw_number_t hwirq)
  {
--	for (struct irq_data *d = irq_desc_get_irq_data(desc); d; d = d->parent_data) {
-+	for (struct irq_data *d = irq_desc_get_irq_data(desc); d; d = irqd_get_parent_data(d)) {
- 		if (d->chip && d->chip->irq_force_complete_move) {
- 			d->chip->irq_force_complete_move(d);
- 			return;
+-	return irq_create_mapping_affinity(host, hwirq, NULL);
++	return irq_create_mapping_affinity(domain, hwirq, NULL);
+ }
+ 
+ struct irq_desc *__irq_resolve_mapping(struct irq_domain *domain,
 
