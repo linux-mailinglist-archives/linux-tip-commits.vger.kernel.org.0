@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-4708-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4709-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5208A7CFA0
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Apr 2025 20:33:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC1CA7CF9E
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Apr 2025 20:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 362D43AA337
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Apr 2025 18:32:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78B841656EA
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  6 Apr 2025 18:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B442A19067C;
-	Sun,  6 Apr 2025 18:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF1C1A08BC;
+	Sun,  6 Apr 2025 18:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZAJeNn8f";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="545mBrFz"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4rczCELy";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Rafsjn5M"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A846C482F2;
-	Sun,  6 Apr 2025 18:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A776851C5A;
+	Sun,  6 Apr 2025 18:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743964384; cv=none; b=RlpCh76wrcG+jqakCiskKHQBJsGN+qVkW/enmM3a8FHozz8CpKdYR4T8RkLIsTI5y4BSeyTLLS8tgWWPX7ggOwA7gltZMh7Mhm2/gNYW+HCh/Zixu1p879pfuxkJ+pS0u7Lo+Q7aUkZt+8P2JcboU0zcQY623FEb4u0zZNoEhN4=
+	t=1743964386; cv=none; b=V0FzEQSlGE5f3v+94pugEX0uLuKWhceb6vmkO2nXgOocbS71pGPiU9AjsiKmdLwrvewJHEmGAnGFPYD52vzrkx7md1b42/VDLBWcT02ixwoB/WHuiWfEXGcKBXulGgKXfw1NVEaYxuctfSXsEQ75CvcjGnYLoNHEIyw5jivzGzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743964384; c=relaxed/simple;
-	bh=x6Ayw8L8ZP60aZPv5QH8Khfcj66Lmwhfo0ItobWxbdk=;
+	s=arc-20240116; t=1743964386; c=relaxed/simple;
+	bh=LoukVe85IChN1j67HpCL5pFFjUj+SXLNYllT3iwkSrE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=cOo6WfDbEdlZ3sjNvXdTpM4pUb4jPd+VE4QgVSJF1ue3+iMKp3t3ewrEnQZyHmRed6WKWhl6nQIucxxx0/eFYezp7puZYZ75gAXQt82Id3Ly1AkB6vVDSYUnkv8Ut9JqfdDJcbNW4qGro3FY5j1o/viCcl2eY41V3wgHN/P4Qvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZAJeNn8f; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=545mBrFz; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=I2ws44I4mzk+81dLCaOrGPQxF+9wfesz82HiAIYPY8OFI73mEowb+9u8RY/pDhV5+ZzkBFlR7Ssb66o+3SItehWrJ8zlWuSBV1GhluQHyTJceEveqLHsaykpf9Ur2pTWPy6nlKmlx1NIHGkySDBqCMRkNRuZkQyM9zVSAYGpjJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4rczCELy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Rafsjn5M; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 06 Apr 2025 18:33:00 -0000
+Date: Sun, 06 Apr 2025 18:33:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1743964380;
+	s=2020; t=1743964381;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tyz2uYt2pM28Tu4JsFFpPTG9zEJEPw/Qlsjh1Do73js=;
-	b=ZAJeNn8f2xvuoPIC2j5MgUP68bl8VA+b8Gy05XN8kfvt1w4Ryv2sW/vVvROvUl68bWfASE
-	SEeeAQd3S5ZX2fF+z8KxPwL4eMlxcPu7sKGlG0vyJm1MLZxEfu+J+wDj0U+mBVkMZyXXX7
-	GyHXUXg/Bcwov5TOWHMW0SQaCFJvuKeScQsWA/uUOq3jlMj7WtuS30Z/8eTTFOCiHf4gz+
-	ztqvryDzovXXfv9n+3d4eswjFnwhCQIWVUEVzFV+EaNj7eU42qWh0c5NIZsDVE+aJkATDc
-	+g57qNEyw7eXtiTtO5TqaoWsf3ta4iMif99QN/e4ZTrDSWi3DsYAZVJY74ISXg==
+	bh=cCPTo2nXJmAC2PS9ibj0u2zrR/Pqlc5a3/+W5x6xhJw=;
+	b=4rczCELywP0xX89JezwC2mk6T9VEDgKeiuwFBPfVm2eFjefWEnf2lf+ImndE9CkCTeKBAM
+	2crsfAYSpXvC2UDantXrwxTK77o63MPhZERaPkmltC/iqdwwOBlUsdxEvrdnLJZTV+sNl/
+	Eynk51VcwZwUQkc2W7PZlG+XpEHGCeV1XsfOOO6zDC543Ata0XAteLpFpQBCT2iS9a8D/D
+	4yjvOJMl7YtjqLzJXFJMpMGBgodpU7SuLj37WG8d+tGvx0HCccI3c+wNsRkhenBsrC5d39
+	tyIWTfHGZcPBzqwSA5genvNyoi4pqm5/UzrvgdL9T1yGA7+9XErDtEg/7pqRSA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1743964380;
+	s=2020e; t=1743964381;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tyz2uYt2pM28Tu4JsFFpPTG9zEJEPw/Qlsjh1Do73js=;
-	b=545mBrFzsYzHeqna36niRQLJWgow84CGDAqJhdjg/i2VsEbAsKp5VbQqAACChmB00QFCrO
-	EREKW4KnTRoH2IDg==
+	bh=cCPTo2nXJmAC2PS9ibj0u2zrR/Pqlc5a3/+W5x6xhJw=;
+	b=Rafsjn5M5dCn5wEmhOJjO2bHQpqu6eb0SoNWuPhGJHcnc0fuJKc9Y4NFVaw4c/l2OuKFA+
+	mOCqnUZxS5nN9KDw==
 From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/boot] x86/boot: Move the early GDT/IDT setup code into startup/
-Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+Subject: [tip: x86/boot] x86/boot: Move the EFI mixed mode startup code back
+ under arch/x86, into startup/
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  David Woodhouse <dwmw@amazon.co.uk>, "H. Peter Anvin" <hpa@zytor.com>,
- Kees Cook <keescook@chromium.org>,
- Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
+ Kees Cook <keescook@chromium.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250401133416.1436741-12-ardb+git@google.com>
-References: <20250401133416.1436741-12-ardb+git@google.com>
+In-Reply-To: <20250401133416.1436741-11-ardb+git@google.com>
+References: <20250401133416.1436741-11-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174396438008.31282.5734460975851851027.tip-bot2@tip-bot2>
+Message-ID: <174396438105.31282.2243827952440371468.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,249 +84,577 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     cc34e658c6db493c1524077e95b42d478de58f2b
-Gitweb:        https://git.kernel.org/tip/cc34e658c6db493c1524077e95b42d478de58f2b
+Commit-ID:     4f2d1bbc2c92a32fd612e6c3b51832d5c1c3678e
+Gitweb:        https://git.kernel.org/tip/4f2d1bbc2c92a32fd612e6c3b51832d5c1c3678e
 Author:        Ard Biesheuvel <ardb@kernel.org>
-AuthorDate:    Tue, 01 Apr 2025 15:34:21 +02:00
+AuthorDate:    Tue, 01 Apr 2025 15:34:20 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sun, 06 Apr 2025 20:15:14 +02:00
 
-x86/boot: Move the early GDT/IDT setup code into startup/
+x86/boot: Move the EFI mixed mode startup code back under arch/x86, into startup/
 
-Move the early GDT/IDT setup code that runs long before the kernel
-virtual mapping is up into arch/x86/boot/startup/, and build it in a way
-that ensures that the code tolerates being called from the 1:1 mapping
-of memory.
+Linus expressed a strong preference for arch-specific asm code (i.e.,
+virtually all of it) to reside under arch/ rather than anywhere else.
 
-This allows the RIP_REL_REF() macro uses to be dropped, and removes the
-need for emitting the code into the special .head.text section.
+So move the EFI mixed mode startup code back, and put it under
+arch/x86/boot/startup/ where all shared x86 startup code is going to
+live.
 
-Also tweak the sed symbol matching pattern in the decompressor to match
-on lower case 't' or 'b', as these will be emitted by Clang for symbols
-with hidden linkage.
-
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: David Woodhouse <dwmw@amazon.co.uk>
 Cc: H. Peter Anvin <hpa@zytor.com>
 Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250401133416.1436741-12-ardb+git@google.com
+Link: https://lore.kernel.org/r/20250401133416.1436741-11-ardb+git@google.com
 ---
- arch/x86/boot/compressed/Makefile |  2 +-
- arch/x86/boot/startup/Makefile    | 15 +++++-
- arch/x86/boot/startup/gdt_idt.c   | 82 ++++++++++++++++++++++++++++++-
- arch/x86/kernel/head64.c          | 74 +---------------------------
- 4 files changed, 98 insertions(+), 75 deletions(-)
- create mode 100644 arch/x86/boot/startup/gdt_idt.c
+ arch/x86/boot/startup/Makefile           |   3 +-
+ arch/x86/boot/startup/efi-mixed.S        | 253 ++++++++++++++++++++++-
+ drivers/firmware/efi/libstub/Makefile    |   1 +-
+ drivers/firmware/efi/libstub/x86-mixed.S | 253 +----------------------
+ 4 files changed, 256 insertions(+), 254 deletions(-)
+ create mode 100644 arch/x86/boot/startup/efi-mixed.S
+ delete mode 100644 drivers/firmware/efi/libstub/x86-mixed.S
 
-diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-index 37b85ce..0fcad7b 100644
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -73,7 +73,7 @@ LDFLAGS_vmlinux += -T
- hostprogs	:= mkpiggy
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include
- 
--sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABCDGRSTVW] \(_text\|__start_rodata\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
-+sed-voffset := -e 's/^\([0-9a-fA-F]*\) [ABbCDGRSTtVW] \(_text\|__start_rodata\|__bss_start\|_end\)$$/\#define VO_\2 _AC(0x\1,UL)/p'
- 
- quiet_cmd_voffset = VOFFSET $@
-       cmd_voffset = $(NM) $< | sed -n $(sed-voffset) > $@
 diff --git a/arch/x86/boot/startup/Makefile b/arch/x86/boot/startup/Makefile
-index 73946a3..34b324c 100644
+index 03519ef..73946a3 100644
 --- a/arch/x86/boot/startup/Makefile
 +++ b/arch/x86/boot/startup/Makefile
-@@ -1,6 +1,21 @@
+@@ -1,3 +1,6 @@
  # SPDX-License-Identifier: GPL-2.0
  
- KBUILD_AFLAGS		+= -D__DISABLE_EXPORTS
-+KBUILD_CFLAGS		+= -D__DISABLE_EXPORTS -mcmodel=small -fPIC \
-+			   -Os -DDISABLE_BRANCH_PROFILING \
-+			   $(DISABLE_STACKLEAK_PLUGIN) \
-+			   -fno-stack-protector -D__NO_FORTIFY \
-+			   -include $(srctree)/include/linux/hidden.h
++KBUILD_AFLAGS		+= -D__DISABLE_EXPORTS
 +
-+# disable ftrace hooks
-+KBUILD_CFLAGS	:= $(subst $(CC_FLAGS_FTRACE),,$(KBUILD_CFLAGS))
-+KASAN_SANITIZE	:= n
-+KCSAN_SANITIZE	:= n
-+KMSAN_SANITIZE	:= n
-+UBSAN_SANITIZE	:= n
-+KCOV_INSTRUMENT	:= n
-+
-+obj-$(CONFIG_X86_64)		+= gdt_idt.o
- 
  lib-$(CONFIG_X86_64)		+= la57toggle.o
- lib-$(CONFIG_EFI_MIXED)		+= efi-mixed.o
-diff --git a/arch/x86/boot/startup/gdt_idt.c b/arch/x86/boot/startup/gdt_idt.c
++lib-$(CONFIG_EFI_MIXED)		+= efi-mixed.o
+diff --git a/arch/x86/boot/startup/efi-mixed.S b/arch/x86/boot/startup/efi-mixed.S
 new file mode 100644
-index 0000000..b382d5d
+index 0000000..e04ed99
 --- /dev/null
-+++ b/arch/x86/boot/startup/gdt_idt.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/arch/x86/boot/startup/efi-mixed.S
+@@ -0,0 +1,253 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2014, 2015 Intel Corporation; author Matt Fleming
++ *
++ * Early support for invoking 32-bit EFI services from a 64-bit kernel.
++ *
++ * Because this thunking occurs before ExitBootServices() we have to
++ * restore the firmware's 32-bit GDT and IDT before we make EFI service
++ * calls.
++ *
++ * On the plus side, we don't have to worry about mangling 64-bit
++ * addresses into 32-bits because we're executing with an identity
++ * mapped pagetable and haven't transitioned to 64-bit virtual addresses
++ * yet.
++ */
 +
 +#include <linux/linkage.h>
-+#include <linux/types.h>
++#include <asm/desc_defs.h>
++#include <asm/msr.h>
++#include <asm/page_types.h>
++#include <asm/pgtable_types.h>
++#include <asm/processor-flags.h>
++#include <asm/segment.h>
 +
-+#include <asm/desc.h>
-+#include <asm/setup.h>
-+#include <asm/sev.h>
-+#include <asm/trapnr.h>
++	.text
++	.code32
++#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
++SYM_FUNC_START(efi32_stub_entry)
++	call	1f
++1:	popl	%ecx
++
++	/* Clear BSS */
++	xorl	%eax, %eax
++	leal	(_bss - 1b)(%ecx), %edi
++	leal	(_ebss - 1b)(%ecx), %ecx
++	subl	%edi, %ecx
++	shrl	$2, %ecx
++	cld
++	rep	stosl
++
++	add	$0x4, %esp		/* Discard return address */
++	movl	8(%esp), %ebx		/* struct boot_params pointer */
++	jmp	efi32_startup
++SYM_FUNC_END(efi32_stub_entry)
++#endif
 +
 +/*
-+ * Data structures and code used for IDT setup in head_64.S. The bringup-IDT is
-+ * used until the idt_table takes over. On the boot CPU this happens in
-+ * x86_64_start_kernel(), on secondary CPUs in start_secondary(). In both cases
-+ * this happens in the functions called from head_64.S.
++ * Called using a far call from __efi64_thunk() below, using the x86_64 SysV
++ * ABI (except for R8/R9 which are inaccessible to 32-bit code - EAX/EBX are
++ * used instead).  EBP+16 points to the arguments passed via the stack.
 + *
-+ * The idt_table can't be used that early because all the code modifying it is
-+ * in idt.c and can be instrumented by tracing or KASAN, which both don't work
-+ * during early CPU bringup. Also the idt_table has the runtime vectors
-+ * configured which require certain CPU state to be setup already (like TSS),
-+ * which also hasn't happened yet in early CPU bringup.
++ * The first argument (EDI) is a pointer to the boot service or protocol, to
++ * which the remaining arguments are passed, each truncated to 32 bits.
 + */
-+static gate_desc bringup_idt_table[NUM_EXCEPTION_VECTORS] __page_aligned_data;
++SYM_FUNC_START_LOCAL(efi_enter32)
++	/*
++	 * Convert x86-64 SysV ABI params to i386 ABI
++	 */
++	pushl	32(%ebp)	/* Up to 3 args passed via the stack */
++	pushl	24(%ebp)
++	pushl	16(%ebp)
++	pushl	%ebx		/* R9 */
++	pushl	%eax		/* R8 */
++	pushl	%ecx
++	pushl	%edx
++	pushl	%esi
 +
-+/* This may run while still in the direct mapping */
-+static void startup_64_load_idt(void *vc_handler)
-+{
-+	struct desc_ptr desc = {
-+		.address = (unsigned long)bringup_idt_table,
-+		.size    = sizeof(bringup_idt_table) - 1,
-+	};
-+	struct idt_data data;
-+	gate_desc idt_desc;
++	/* Disable paging */
++	movl	%cr0, %eax
++	btrl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
 +
-+	/* @vc_handler is set only for a VMM Communication Exception */
-+	if (vc_handler) {
-+		init_idt_data(&data, X86_TRAP_VC, vc_handler);
-+		idt_init_desc(&idt_desc, &data);
-+		native_write_idt_entry((gate_desc *)desc.address, X86_TRAP_VC, &idt_desc);
-+	}
++	/* Disable long mode via EFER */
++	movl	$MSR_EFER, %ecx
++	rdmsr
++	btrl	$_EFER_LME, %eax
++	wrmsr
 +
-+	native_load_idt(&desc);
-+}
++	call	*%edi
 +
-+/* This is used when running on kernel addresses */
-+void early_setup_idt(void)
-+{
-+	void *handler = NULL;
++	/* We must preserve return value */
++	movl	%eax, %edi
 +
-+	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
-+		setup_ghcb();
-+		handler = vc_boot_ghcb;
-+	}
++	call	efi32_enable_long_mode
 +
-+	startup_64_load_idt(handler);
-+}
++	addl	$32, %esp
++	movl	%edi, %eax
++	lret
++SYM_FUNC_END(efi_enter32)
++
++	.code64
++SYM_FUNC_START(__efi64_thunk)
++	push	%rbp
++	movl	%esp, %ebp
++	push	%rbx
++
++	/* Move args #5 and #6 into 32-bit accessible registers */
++	movl	%r8d, %eax
++	movl	%r9d, %ebx
++
++	lcalll	*efi32_call(%rip)
++
++	pop	%rbx
++	pop	%rbp
++	RET
++SYM_FUNC_END(__efi64_thunk)
++
++	.code32
++SYM_FUNC_START_LOCAL(efi32_enable_long_mode)
++	movl	%cr4, %eax
++	btsl	$(X86_CR4_PAE_BIT), %eax
++	movl	%eax, %cr4
++
++	movl	$MSR_EFER, %ecx
++	rdmsr
++	btsl	$_EFER_LME, %eax
++	wrmsr
++
++	/* Disable interrupts - the firmware's IDT does not work in long mode */
++	cli
++
++	/* Enable paging */
++	movl	%cr0, %eax
++	btsl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
++	ret
++SYM_FUNC_END(efi32_enable_long_mode)
 +
 +/*
-+ * Setup boot CPU state needed before kernel switches to virtual addresses.
++ * This is the common EFI stub entry point for mixed mode. It sets up the GDT
++ * and page tables needed for 64-bit execution, after which it calls the
++ * common 64-bit EFI entrypoint efi_stub_entry().
++ *
++ * Arguments:	0(%esp)	image handle
++ * 		4(%esp)	EFI system table pointer
++ *		%ebx	struct boot_params pointer (or NULL)
++ *
++ * Since this is the point of no return for ordinary execution, no registers
++ * are considered live except for the function parameters. [Note that the EFI
++ * stub may still exit and return to the firmware using the Exit() EFI boot
++ * service.]
 + */
-+void __init startup_64_setup_gdt_idt(void)
-+{
-+	void *handler = NULL;
++SYM_FUNC_START_LOCAL(efi32_startup)
++	movl	%esp, %ebp
 +
-+	struct desc_ptr startup_gdt_descr = {
-+		.address = (__force unsigned long)gdt_page.gdt,
-+		.size    = GDT_SIZE - 1,
-+	};
++	subl	$8, %esp
++	sgdtl	(%esp)			/* Save GDT descriptor to the stack */
++	movl	2(%esp), %esi		/* Existing GDT pointer */
++	movzwl	(%esp), %ecx		/* Existing GDT limit */
++	inc	%ecx			/* Existing GDT size */
++	andl	$~7, %ecx		/* Ensure size is multiple of 8 */
 +
-+	/* Load GDT */
-+	native_load_gdt(&startup_gdt_descr);
++	subl	%ecx, %esp		/* Allocate new GDT */
++	andl	$~15, %esp		/* Realign the stack */
++	movl	%esp, %edi		/* New GDT address */
++	leal	7(%ecx), %eax		/* New GDT limit */
++	pushw	%cx			/* Push 64-bit CS (for LJMP below) */
++	pushl	%edi			/* Push new GDT address */
++	pushw	%ax			/* Push new GDT limit */
 +
-+	/* New GDT is live - reload data segment registers */
-+	asm volatile("movl %%eax, %%ds\n"
-+		     "movl %%eax, %%ss\n"
-+		     "movl %%eax, %%es\n" : : "a"(__KERNEL_DS) : "memory");
++	/* Copy GDT to the stack and add a 64-bit code segment at the end */
++	movl	$GDT_ENTRY(DESC_CODE64, 0, 0xfffff) & 0xffffffff, (%edi,%ecx)
++	movl	$GDT_ENTRY(DESC_CODE64, 0, 0xfffff) >> 32, 4(%edi,%ecx)
++	shrl	$2, %ecx
++	cld
++	rep	movsl			/* Copy the firmware GDT */
++	lgdtl	(%esp)			/* Switch to the new GDT */
 +
-+	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
-+		handler = vc_no_ghcb;
++	call	1f
++1:	pop	%edi
 +
-+	startup_64_load_idt(handler);
-+}
-diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
-index fa9b633..5b993b5 100644
---- a/arch/x86/kernel/head64.c
-+++ b/arch/x86/kernel/head64.c
-@@ -512,77 +512,3 @@ void __init __noreturn x86_64_start_reservations(char *real_mode_data)
- 
- 	start_kernel();
- }
--
++	/* Record mixed mode entry */
++	movb	$0x0, (efi_is64 - 1b)(%edi)
++
++	/* Set up indirect far call to re-enter 32-bit mode */
++	leal	(efi32_call - 1b)(%edi), %eax
++	addl	%eax, (%eax)
++	movw	%cs, 4(%eax)
++
++	/* Disable paging */
++	movl	%cr0, %eax
++	btrl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
++
++	/* Set up 1:1 mapping */
++	leal	(pte - 1b)(%edi), %eax
++	movl	$_PAGE_PRESENT | _PAGE_RW | _PAGE_PSE, %ecx
++	leal	(_PAGE_PRESENT | _PAGE_RW)(%eax), %edx
++2:	movl	%ecx, (%eax)
++	addl	$8, %eax
++	addl	$PMD_SIZE, %ecx
++	jnc	2b
++
++	movl	$PAGE_SIZE, %ecx
++	.irpc	l, 0123
++	movl	%edx, \l * 8(%eax)
++	addl	%ecx, %edx
++	.endr
++	addl	%ecx, %eax
++	movl	%edx, (%eax)
++	movl	%eax, %cr3
++
++	call	efi32_enable_long_mode
++
++	/* Set up far jump to 64-bit mode (CS is already on the stack) */
++	leal	(efi_stub_entry - 1b)(%edi), %eax
++	movl	%eax, 2(%esp)
++
++	movl	0(%ebp), %edi
++	movl	4(%ebp), %esi
++	movl	%ebx, %edx
++	ljmpl	*2(%esp)
++SYM_FUNC_END(efi32_startup)
++
++/*
++ * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
++ *			       efi_system_table_32_t *sys_table)
++ */
++SYM_FUNC_START(efi32_pe_entry)
++	pushl	%ebx				// save callee-save registers
++
++	/* Check whether the CPU supports long mode */
++	movl	$0x80000001, %eax		// assume extended info support
++	cpuid
++	btl	$29, %edx			// check long mode bit
++	jnc	1f
++	leal	8(%esp), %esp			// preserve stack alignment
++	xor	%ebx, %ebx			// no struct boot_params pointer
++	jmp	efi32_startup			// only ESP and EBX remain live
++1:	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
++	popl	%ebx
++	RET
++SYM_FUNC_END(efi32_pe_entry)
++
++#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
++	.org	efi32_stub_entry + 0x200
++	.code64
++SYM_FUNC_START_NOALIGN(efi64_stub_entry)
++	jmp	efi_handover_entry
++SYM_FUNC_END(efi64_stub_entry)
++#endif
++
++	.data
++	.balign	8
++SYM_DATA_START_LOCAL(efi32_call)
++	.long	efi_enter32 - .
++	.word	0x0
++SYM_DATA_END(efi32_call)
++SYM_DATA(efi_is64, .byte 1)
++
++	.bss
++	.balign PAGE_SIZE
++SYM_DATA_LOCAL(pte, .fill 6 * PAGE_SIZE, 1, 0)
+diff --git a/drivers/firmware/efi/libstub/Makefile b/drivers/firmware/efi/libstub/Makefile
+index d23a1b9..2f17339 100644
+--- a/drivers/firmware/efi/libstub/Makefile
++++ b/drivers/firmware/efi/libstub/Makefile
+@@ -85,7 +85,6 @@ lib-$(CONFIG_EFI_GENERIC_STUB)	+= efi-stub.o string.o intrinsics.o systable.o \
+ lib-$(CONFIG_ARM)		+= arm32-stub.o
+ lib-$(CONFIG_ARM64)		+= kaslr.o arm64.o arm64-stub.o smbios.o
+ lib-$(CONFIG_X86)		+= x86-stub.o smbios.o
+-lib-$(CONFIG_EFI_MIXED)		+= x86-mixed.o
+ lib-$(CONFIG_X86_64)		+= x86-5lvl.o
+ lib-$(CONFIG_RISCV)		+= kaslr.o riscv.o riscv-stub.o
+ lib-$(CONFIG_LOONGARCH)		+= loongarch.o loongarch-stub.o
+diff --git a/drivers/firmware/efi/libstub/x86-mixed.S b/drivers/firmware/efi/libstub/x86-mixed.S
+deleted file mode 100644
+index e04ed99..0000000
+--- a/drivers/firmware/efi/libstub/x86-mixed.S
++++ /dev/null
+@@ -1,253 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
 -/*
-- * Data structures and code used for IDT setup in head_64.S. The bringup-IDT is
-- * used until the idt_table takes over. On the boot CPU this happens in
-- * x86_64_start_kernel(), on secondary CPUs in start_secondary(). In both cases
-- * this happens in the functions called from head_64.S.
+- * Copyright (C) 2014, 2015 Intel Corporation; author Matt Fleming
 - *
-- * The idt_table can't be used that early because all the code modifying it is
-- * in idt.c and can be instrumented by tracing or KASAN, which both don't work
-- * during early CPU bringup. Also the idt_table has the runtime vectors
-- * configured which require certain CPU state to be setup already (like TSS),
-- * which also hasn't happened yet in early CPU bringup.
+- * Early support for invoking 32-bit EFI services from a 64-bit kernel.
+- *
+- * Because this thunking occurs before ExitBootServices() we have to
+- * restore the firmware's 32-bit GDT and IDT before we make EFI service
+- * calls.
+- *
+- * On the plus side, we don't have to worry about mangling 64-bit
+- * addresses into 32-bits because we're executing with an identity
+- * mapped pagetable and haven't transitioned to 64-bit virtual addresses
+- * yet.
 - */
--static gate_desc bringup_idt_table[NUM_EXCEPTION_VECTORS] __page_aligned_data;
 -
--/* This may run while still in the direct mapping */
--static void __head startup_64_load_idt(void *vc_handler)
--{
--	struct desc_ptr desc = {
--		.address = (unsigned long)&RIP_REL_REF(bringup_idt_table),
--		.size    = sizeof(bringup_idt_table) - 1,
--	};
--	struct idt_data data;
--	gate_desc idt_desc;
+-#include <linux/linkage.h>
+-#include <asm/desc_defs.h>
+-#include <asm/msr.h>
+-#include <asm/page_types.h>
+-#include <asm/pgtable_types.h>
+-#include <asm/processor-flags.h>
+-#include <asm/segment.h>
 -
--	/* @vc_handler is set only for a VMM Communication Exception */
--	if (vc_handler) {
--		init_idt_data(&data, X86_TRAP_VC, vc_handler);
--		idt_init_desc(&idt_desc, &data);
--		native_write_idt_entry((gate_desc *)desc.address, X86_TRAP_VC, &idt_desc);
--	}
+-	.text
+-	.code32
+-#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+-SYM_FUNC_START(efi32_stub_entry)
+-	call	1f
+-1:	popl	%ecx
 -
--	native_load_idt(&desc);
--}
+-	/* Clear BSS */
+-	xorl	%eax, %eax
+-	leal	(_bss - 1b)(%ecx), %edi
+-	leal	(_ebss - 1b)(%ecx), %ecx
+-	subl	%edi, %ecx
+-	shrl	$2, %ecx
+-	cld
+-	rep	stosl
 -
--/* This is used when running on kernel addresses */
--void early_setup_idt(void)
--{
--	void *handler = NULL;
--
--	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT)) {
--		setup_ghcb();
--		handler = vc_boot_ghcb;
--	}
--
--	startup_64_load_idt(handler);
--}
+-	add	$0x4, %esp		/* Discard return address */
+-	movl	8(%esp), %ebx		/* struct boot_params pointer */
+-	jmp	efi32_startup
+-SYM_FUNC_END(efi32_stub_entry)
+-#endif
 -
 -/*
-- * Setup boot CPU state needed before kernel switches to virtual addresses.
+- * Called using a far call from __efi64_thunk() below, using the x86_64 SysV
+- * ABI (except for R8/R9 which are inaccessible to 32-bit code - EAX/EBX are
+- * used instead).  EBP+16 points to the arguments passed via the stack.
+- *
+- * The first argument (EDI) is a pointer to the boot service or protocol, to
+- * which the remaining arguments are passed, each truncated to 32 bits.
 - */
--void __head startup_64_setup_gdt_idt(void)
--{
--	struct desc_struct *gdt = (void *)(__force unsigned long)gdt_page.gdt;
--	void *handler = NULL;
+-SYM_FUNC_START_LOCAL(efi_enter32)
+-	/*
+-	 * Convert x86-64 SysV ABI params to i386 ABI
+-	 */
+-	pushl	32(%ebp)	/* Up to 3 args passed via the stack */
+-	pushl	24(%ebp)
+-	pushl	16(%ebp)
+-	pushl	%ebx		/* R9 */
+-	pushl	%eax		/* R8 */
+-	pushl	%ecx
+-	pushl	%edx
+-	pushl	%esi
 -
--	struct desc_ptr startup_gdt_descr = {
--		.address = (unsigned long)&RIP_REL_REF(*gdt),
--		.size    = GDT_SIZE - 1,
--	};
+-	/* Disable paging */
+-	movl	%cr0, %eax
+-	btrl	$X86_CR0_PG_BIT, %eax
+-	movl	%eax, %cr0
 -
--	/* Load GDT */
--	native_load_gdt(&startup_gdt_descr);
+-	/* Disable long mode via EFER */
+-	movl	$MSR_EFER, %ecx
+-	rdmsr
+-	btrl	$_EFER_LME, %eax
+-	wrmsr
 -
--	/* New GDT is live - reload data segment registers */
--	asm volatile("movl %%eax, %%ds\n"
--		     "movl %%eax, %%ss\n"
--		     "movl %%eax, %%es\n" : : "a"(__KERNEL_DS) : "memory");
+-	call	*%edi
 -
--	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))
--		handler = &RIP_REL_REF(vc_no_ghcb);
+-	/* We must preserve return value */
+-	movl	%eax, %edi
 -
--	startup_64_load_idt(handler);
--}
+-	call	efi32_enable_long_mode
+-
+-	addl	$32, %esp
+-	movl	%edi, %eax
+-	lret
+-SYM_FUNC_END(efi_enter32)
+-
+-	.code64
+-SYM_FUNC_START(__efi64_thunk)
+-	push	%rbp
+-	movl	%esp, %ebp
+-	push	%rbx
+-
+-	/* Move args #5 and #6 into 32-bit accessible registers */
+-	movl	%r8d, %eax
+-	movl	%r9d, %ebx
+-
+-	lcalll	*efi32_call(%rip)
+-
+-	pop	%rbx
+-	pop	%rbp
+-	RET
+-SYM_FUNC_END(__efi64_thunk)
+-
+-	.code32
+-SYM_FUNC_START_LOCAL(efi32_enable_long_mode)
+-	movl	%cr4, %eax
+-	btsl	$(X86_CR4_PAE_BIT), %eax
+-	movl	%eax, %cr4
+-
+-	movl	$MSR_EFER, %ecx
+-	rdmsr
+-	btsl	$_EFER_LME, %eax
+-	wrmsr
+-
+-	/* Disable interrupts - the firmware's IDT does not work in long mode */
+-	cli
+-
+-	/* Enable paging */
+-	movl	%cr0, %eax
+-	btsl	$X86_CR0_PG_BIT, %eax
+-	movl	%eax, %cr0
+-	ret
+-SYM_FUNC_END(efi32_enable_long_mode)
+-
+-/*
+- * This is the common EFI stub entry point for mixed mode. It sets up the GDT
+- * and page tables needed for 64-bit execution, after which it calls the
+- * common 64-bit EFI entrypoint efi_stub_entry().
+- *
+- * Arguments:	0(%esp)	image handle
+- * 		4(%esp)	EFI system table pointer
+- *		%ebx	struct boot_params pointer (or NULL)
+- *
+- * Since this is the point of no return for ordinary execution, no registers
+- * are considered live except for the function parameters. [Note that the EFI
+- * stub may still exit and return to the firmware using the Exit() EFI boot
+- * service.]
+- */
+-SYM_FUNC_START_LOCAL(efi32_startup)
+-	movl	%esp, %ebp
+-
+-	subl	$8, %esp
+-	sgdtl	(%esp)			/* Save GDT descriptor to the stack */
+-	movl	2(%esp), %esi		/* Existing GDT pointer */
+-	movzwl	(%esp), %ecx		/* Existing GDT limit */
+-	inc	%ecx			/* Existing GDT size */
+-	andl	$~7, %ecx		/* Ensure size is multiple of 8 */
+-
+-	subl	%ecx, %esp		/* Allocate new GDT */
+-	andl	$~15, %esp		/* Realign the stack */
+-	movl	%esp, %edi		/* New GDT address */
+-	leal	7(%ecx), %eax		/* New GDT limit */
+-	pushw	%cx			/* Push 64-bit CS (for LJMP below) */
+-	pushl	%edi			/* Push new GDT address */
+-	pushw	%ax			/* Push new GDT limit */
+-
+-	/* Copy GDT to the stack and add a 64-bit code segment at the end */
+-	movl	$GDT_ENTRY(DESC_CODE64, 0, 0xfffff) & 0xffffffff, (%edi,%ecx)
+-	movl	$GDT_ENTRY(DESC_CODE64, 0, 0xfffff) >> 32, 4(%edi,%ecx)
+-	shrl	$2, %ecx
+-	cld
+-	rep	movsl			/* Copy the firmware GDT */
+-	lgdtl	(%esp)			/* Switch to the new GDT */
+-
+-	call	1f
+-1:	pop	%edi
+-
+-	/* Record mixed mode entry */
+-	movb	$0x0, (efi_is64 - 1b)(%edi)
+-
+-	/* Set up indirect far call to re-enter 32-bit mode */
+-	leal	(efi32_call - 1b)(%edi), %eax
+-	addl	%eax, (%eax)
+-	movw	%cs, 4(%eax)
+-
+-	/* Disable paging */
+-	movl	%cr0, %eax
+-	btrl	$X86_CR0_PG_BIT, %eax
+-	movl	%eax, %cr0
+-
+-	/* Set up 1:1 mapping */
+-	leal	(pte - 1b)(%edi), %eax
+-	movl	$_PAGE_PRESENT | _PAGE_RW | _PAGE_PSE, %ecx
+-	leal	(_PAGE_PRESENT | _PAGE_RW)(%eax), %edx
+-2:	movl	%ecx, (%eax)
+-	addl	$8, %eax
+-	addl	$PMD_SIZE, %ecx
+-	jnc	2b
+-
+-	movl	$PAGE_SIZE, %ecx
+-	.irpc	l, 0123
+-	movl	%edx, \l * 8(%eax)
+-	addl	%ecx, %edx
+-	.endr
+-	addl	%ecx, %eax
+-	movl	%edx, (%eax)
+-	movl	%eax, %cr3
+-
+-	call	efi32_enable_long_mode
+-
+-	/* Set up far jump to 64-bit mode (CS is already on the stack) */
+-	leal	(efi_stub_entry - 1b)(%edi), %eax
+-	movl	%eax, 2(%esp)
+-
+-	movl	0(%ebp), %edi
+-	movl	4(%ebp), %esi
+-	movl	%ebx, %edx
+-	ljmpl	*2(%esp)
+-SYM_FUNC_END(efi32_startup)
+-
+-/*
+- * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
+- *			       efi_system_table_32_t *sys_table)
+- */
+-SYM_FUNC_START(efi32_pe_entry)
+-	pushl	%ebx				// save callee-save registers
+-
+-	/* Check whether the CPU supports long mode */
+-	movl	$0x80000001, %eax		// assume extended info support
+-	cpuid
+-	btl	$29, %edx			// check long mode bit
+-	jnc	1f
+-	leal	8(%esp), %esp			// preserve stack alignment
+-	xor	%ebx, %ebx			// no struct boot_params pointer
+-	jmp	efi32_startup			// only ESP and EBX remain live
+-1:	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
+-	popl	%ebx
+-	RET
+-SYM_FUNC_END(efi32_pe_entry)
+-
+-#ifdef CONFIG_EFI_HANDOVER_PROTOCOL
+-	.org	efi32_stub_entry + 0x200
+-	.code64
+-SYM_FUNC_START_NOALIGN(efi64_stub_entry)
+-	jmp	efi_handover_entry
+-SYM_FUNC_END(efi64_stub_entry)
+-#endif
+-
+-	.data
+-	.balign	8
+-SYM_DATA_START_LOCAL(efi32_call)
+-	.long	efi_enter32 - .
+-	.word	0x0
+-SYM_DATA_END(efi32_call)
+-SYM_DATA(efi_is64, .byte 1)
+-
+-	.bss
+-	.balign PAGE_SIZE
+-SYM_DATA_LOCAL(pte, .fill 6 * PAGE_SIZE, 1, 0)
 
