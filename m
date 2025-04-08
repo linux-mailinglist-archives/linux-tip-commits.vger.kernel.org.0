@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-4776-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4777-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A00A81714
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Apr 2025 22:46:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02ED6A81749
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Apr 2025 22:57:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11FDB4E20E6
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Apr 2025 20:46:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC7C888DC5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  8 Apr 2025 20:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D854A188A0E;
-	Tue,  8 Apr 2025 20:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4F425485B;
+	Tue,  8 Apr 2025 20:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dHjqO6Pm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9UGv4goT"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M0+obKGn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/62W3yPo"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438A32AE86;
-	Tue,  8 Apr 2025 20:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A70C244EA1;
+	Tue,  8 Apr 2025 20:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744145166; cv=none; b=tMCIdqFagF4Tna0kMuUyTNSoLAuEGInC9iKArVom8zwxE9uQu7LZ2xhTY+yRF2scXy/FJYh8yRXL2yfZ8WMJHq8Q/YXHGN/N0uw+sEebfhuujOa9v04LNOL1YY6/F33VOyInxAvrXXcYqbYKkB+ovR4/r2+Ztl5e7j8Wd6+geKQ=
+	t=1744145749; cv=none; b=F0uTID6OuKlAMU1FyWmjxgAluscv3luqb8rqoxuGLqOJwjhbvREhA4gUvnZ7DD8rrjlM+oBQy96M1k5wtGVbKFdDLAtEJEMYZSRPQZB+Fw+gufXMMIrnNSXOQUj877NxVakMsJ8QWhyfvTcldNl1Ok0eQdno/TkID4ZYxMNUdHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744145166; c=relaxed/simple;
-	bh=BGn19BNZNaod4cVdTZOMUKKliOPbXHKLsOjaavarhzI=;
+	s=arc-20240116; t=1744145749; c=relaxed/simple;
+	bh=J5qQaP4IGKiB45yKzlSZw0CAc2eUB8Kdf065jJzXhtE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=maLryQnWduFCNHrZEAYne6j7Y4utepwoLsLUapYMlAjLBAZr9SKzHTwc2iALd5otBRYrhu9WWxPay1K/ky01uNzaF3JggLe/Qx1AEyxjqRQj7tDVuzmlt3P1X6ujAe+u4AelILKVPocKZbPfqjsGglqnxpwYmP6qYdh+0jp1y9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dHjqO6Pm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9UGv4goT; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=F9x85byO8hHWjgVoWahcaIiS/9VCEyHkgbPG9Oa2Jm4nBT0qce/+bAcdblUxwNy5Cty2Lr0cTCN9rMd1kAr/4jqcA4Oip9LQCkFsYBCkydom/a5/i7fr74hP044WkGCKKO/OpmGxJKdGPVWaA+7uojsdzfMhByMujGWBHbynIhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M0+obKGn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/62W3yPo; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 08 Apr 2025 20:45:51 -0000
+Date: Tue, 08 Apr 2025 20:55:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744145160;
+	s=2020; t=1744145743;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jOlUqtV6zzR2sS24S2cBRoEY5VIl1D1KZLAfo9l7wa4=;
-	b=dHjqO6PmXUv3qulFTJL6ZbKHi2jZI5yyS52P7jx5IkE8EOGV0jZxegrGPw9K5JQ7L3hPE9
-	D7GDBVaM6MFmvwPNWD4xoHT0PJ3L/UJPNW3iF/8KctpPH60gHieJYCqm5mHAn05KtSNg1U
-	4f7te9G5WtQjf5anXpf2Y97JSb3tm8ye/k3a3Z6Od7xIi7YAkoQLmYjlM8zOwWUh3FlVyA
-	YRSavJCKduLuV/rwm2IL31tkxN68G1R1bZhHnE3A+9CZI7rq+0nXK2XNfz2WcHpCJk1EqZ
-	fnL45Rv3DYM/ofuDd+YeFNSz0saqnVM6EKGzAl/BRPzm8M0obJgK3I7e5hb/Ew==
+	bh=Zyl+bPHErcWjxeLYNOEUamNFFcousmJp0wSNVnNNkWk=;
+	b=M0+obKGnzuKSw+jQDtux2bEjx61ZnKzoqvVE/0nPhIcQQXWmW6JwIAVcukR1Ld9IUCM5vr
+	JYf+KuSJxcrK8IkDjOR4bQTYgsIgHrIqRSB2bkHyT+mLUQEpbCvJCl0DpCsQnR/Cs6ZGRg
+	bKYLg7W6sTyTAL25dQ+7N2CYtT2ETL4jAfrI6sqTDbcE0FwkNwLN6bXtAlSE+oEgDTh2FN
+	oJtJ81mKyqOlC9Pi3bsHmda851B2Ss2nJUYev7pjNevNdoL1tISW09MPAzNThxgiN13KQB
+	pzV+3GgryX9rQ+OD4Ps46cjQ5laZvRn1t+15SJUgTprMGGFhmKF3UGoRGKUsNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744145160;
+	s=2020e; t=1744145743;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jOlUqtV6zzR2sS24S2cBRoEY5VIl1D1KZLAfo9l7wa4=;
-	b=9UGv4goTb4B2cnubmIqzRUwbGFEjUkK698vAfO7xdnVcu27i1QoAxoZnhVG/PTT96blopb
-	UW2yu1lmosEuOTDg==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+	bh=Zyl+bPHErcWjxeLYNOEUamNFFcousmJp0wSNVnNNkWk=;
+	b=/62W3yPovEmk82z0GuqO5HtcpvYy5xkHFbNqw31SJA+uv/+rvCJNWZ2h/SYMW2MvCMe08v
+	rnQXpN/bZen25EBA==
+From: "tip-bot2 for Geert Uytterhoeven" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Remove ANNOTATE_IGNORE_ALTERNATIVE
- from CLAC/STAC
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To:
- <fc972ba4995d826fcfb8d02733a14be8d670900b.1744098446.git.jpoimboe@kernel.org>
-References:
- <fc972ba4995d826fcfb8d02733a14be8d670900b.1744098446.git.jpoimboe@kernel.org>
+Subject:
+ [tip: irq/drivers] genirq/generic-chip: Fix incorrect lock guard conversions
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3C514f94c5891c61ac0a4a7fdad113e75db1eea367=2E17441?=
+ =?utf-8?q?35467=2Egit=2Egeert+renesas=40glider=2Ebe=3E?=
+References: =?utf-8?q?=3C514f94c5891c61ac0a4a7fdad113e75db1eea367=2E174413?=
+ =?utf-8?q?5467=2Egit=2Egeert+renesas=40glider=2Ebe=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174414515158.31282.6804487200090840468.tip-bot2@tip-bot2>
+Message-ID: <174414573357.31282.17815254049625566388.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,127 +82,96 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     2d12c6fb78753925f494ca9079e2383529e8ae0e
-Gitweb:        https://git.kernel.org/tip/2d12c6fb78753925f494ca9079e2383529e8ae0e
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 08 Apr 2025 01:21:14 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 08 Apr 2025 22:03:51 +02:00
+Commit-ID:     771487050f83b030090079133b192de6e3cf5909
+Gitweb:        https://git.kernel.org/tip/771487050f83b030090079133b192de6e3cf5909
+Author:        Geert Uytterhoeven <geert+renesas@glider.be>
+AuthorDate:    Tue, 08 Apr 2025 20:07:02 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 08 Apr 2025 22:49:02 +02:00
 
-objtool: Remove ANNOTATE_IGNORE_ALTERNATIVE from CLAC/STAC
+genirq/generic-chip: Fix incorrect lock guard conversions
 
-ANNOTATE_IGNORE_ALTERNATIVE adds additional noise to the code generated
-by CLAC/STAC alternatives, hurting readability for those whose read
-uaccess-related code generation on a regular basis.
+When booting BeagleBone Black:
 
-Remove the annotation specifically for the "NOP patched with CLAC/STAC"
-case in favor of a manual check.
+    ------------[ cut here ]------------
+    WARNING: CPU: 0 PID: 0 at kernel/locking/lockdep.c:4398 lockdep_hardirqs_on_prepare+0x23c/0x280
+    DEBUG_LOCKS_WARN_ON(early_boot_irqs_disabled)
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.15.0-rc1-boneblack-00004-g195298c3b116 #209 NONE
+    Hardware name: Generic AM33XX (Flattened Device Tree)
+    Call trace:
+     _raw_spin_unlock_irq from irq_map_generic_chip+0x144/0x190
+     irq_map_generic_chip from irq_domain_associate_locked+0x68/0x164
+     irq_domain_associate_locked from irq_create_fwspec_mapping+0x34c/0x43c
+     irq_create_fwspec_mapping from irq_create_of_mapping+0x64/0x8c
+     irq_create_of_mapping from irq_of_parse_and_map+0x54/0x7c
+     irq_of_parse_and_map from dmtimer_clkevt_init_common+0x54/0x15c
+     dmtimer_clkevt_init_common from dmtimer_systimer_init+0x41c/0x5b8
+     dmtimer_systimer_init from timer_probe+0x68/0xf0
+     timer_probe from start_kernel+0x4a4/0x6bc
+     start_kernel from 0x0
+    irq event stamp: 0
+    hardirqs last  enabled at (0): [<00000000>] 0x0
+    hardirqs last disabled at (0): [<00000000>] 0x0
+    softirqs last  enabled at (0): [<00000000>] 0x0
+    softirqs last disabled at (0): [<00000000>] 0x0
+    ---[ end trace 0000000000000000 ]---
 
-Leave the other uses of that annotation in place as they're less common
-and more difficult to detect.
+and:
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/fc972ba4995d826fcfb8d02733a14be8d670900b.1744098446.git.jpoimboe@kernel.org
+    ------------[ cut here ]------------
+    WARNING: CPU: 0 PID: 0 at init/main.c:1022 start_kernel+0x4e8/0x6bc
+    Interrupts were enabled early
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G        W           6.15.0-rc1-boneblack-00004-g195298c3b116 #209 NONE
+    Tainted: [W]=WARN
+    Hardware name: Generic AM33XX (Flattened Device Tree)
+    Call trace:
+     unwind_backtrace from show_stack+0x10/0x14
+     show_stack from dump_stack_lvl+0x6c/0x90
+     dump_stack_lvl from __warn+0x70/0x1b0
+     __warn from warn_slowpath_fmt+0x1d4/0x1ec
+     warn_slowpath_fmt from start_kernel+0x4e8/0x6bc
+     start_kernel from 0x0
+    irq event stamp: 0
+    hardirqs last  enabled at (0): [<00000000>] 0x0
+    hardirqs last disabled at (0): [<00000000>] 0x0
+    softirqs last  enabled at (0): [<00000000>] 0x0
+    softirqs last disabled at (0): [<00000000>] 0x0
+    ---[ end trace 0000000000000000 ]---
+
+Fix this by correcting two misconversions of
+raw_spin_{,un}lock_irq{save,restore}() to lock guards.
+
+Fixes: 195298c3b11628a6 ("genirq/generic-chip: Convert core code to lock guards")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/514f94c5891c61ac0a4a7fdad113e75db1eea367.1744135467.git.geert+renesas@glider.be
+
 ---
- arch/x86/include/asm/smap.h | 12 ++++++------
- tools/objtool/check.c       | 30 +++++++++++++++++++++++++++++-
- 2 files changed, 35 insertions(+), 7 deletions(-)
+ kernel/irq/generic-chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/smap.h b/arch/x86/include/asm/smap.h
-index 55a5e65..4f84d42 100644
---- a/arch/x86/include/asm/smap.h
-+++ b/arch/x86/include/asm/smap.h
-@@ -16,23 +16,23 @@
- #ifdef __ASSEMBLER__
- 
- #define ASM_CLAC \
--	ALTERNATIVE __stringify(ANNOTATE_IGNORE_ALTERNATIVE), "clac", X86_FEATURE_SMAP
-+	ALTERNATIVE "", "clac", X86_FEATURE_SMAP
- 
- #define ASM_STAC \
--	ALTERNATIVE __stringify(ANNOTATE_IGNORE_ALTERNATIVE), "stac", X86_FEATURE_SMAP
-+	ALTERNATIVE "", "stac", X86_FEATURE_SMAP
- 
- #else /* __ASSEMBLER__ */
- 
- static __always_inline void clac(void)
- {
- 	/* Note: a barrier is implicit in alternative() */
--	alternative(ANNOTATE_IGNORE_ALTERNATIVE "", "clac", X86_FEATURE_SMAP);
-+	alternative("", "clac", X86_FEATURE_SMAP);
- }
- 
- static __always_inline void stac(void)
- {
- 	/* Note: a barrier is implicit in alternative() */
--	alternative(ANNOTATE_IGNORE_ALTERNATIVE "", "stac", X86_FEATURE_SMAP);
-+	alternative("", "stac", X86_FEATURE_SMAP);
- }
- 
- static __always_inline unsigned long smap_save(void)
-@@ -59,9 +59,9 @@ static __always_inline void smap_restore(unsigned long flags)
- 
- /* These macros can be used in asm() statements */
- #define ASM_CLAC \
--	ALTERNATIVE(ANNOTATE_IGNORE_ALTERNATIVE "", "clac", X86_FEATURE_SMAP)
-+	ALTERNATIVE("", "clac", X86_FEATURE_SMAP)
- #define ASM_STAC \
--	ALTERNATIVE(ANNOTATE_IGNORE_ALTERNATIVE "", "stac", X86_FEATURE_SMAP)
-+	ALTERNATIVE("", "stac", X86_FEATURE_SMAP)
- 
- #define ASM_CLAC_UNSAFE \
- 	ALTERNATIVE("", ANNOTATE_IGNORE_ALTERNATIVE "clac", X86_FEATURE_SMAP)
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 69f94bc..b649049 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3505,6 +3505,34 @@ next_orig:
- 	return next_insn_same_sec(file, alt_group->orig_group->last_insn);
- }
- 
-+static bool skip_alt_group(struct instruction *insn)
-+{
-+	struct instruction *alt_insn = insn->alts ? insn->alts->insn : NULL;
-+
-+	/* ANNOTATE_IGNORE_ALTERNATIVE */
-+	if (insn->alt_group && insn->alt_group->ignore)
-+		return true;
-+
-+	/*
-+	 * For NOP patched with CLAC/STAC, only follow the latter to avoid
-+	 * impossible code paths combining patched CLAC with unpatched STAC
-+	 * or vice versa.
-+	 *
-+	 * ANNOTATE_IGNORE_ALTERNATIVE could have been used here, but Linus
-+	 * requested not to do that to avoid hurting .s file readability
-+	 * around CLAC/STAC alternative sites.
-+	 */
-+
-+	if (!alt_insn)
-+		return false;
-+
-+	/* Don't override ASM_{CLAC,STAC}_UNSAFE */
-+	if (alt_insn->alt_group && alt_insn->alt_group->ignore)
-+		return false;
-+
-+	return alt_insn->type == INSN_CLAC || alt_insn->type == INSN_STAC;
-+}
-+
- /*
-  * Follow the branch starting at the given instruction, and recursively follow
-  * any other branches (jumps).  Meanwhile, track the frame pointer state at
-@@ -3625,7 +3653,7 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			}
+diff --git a/kernel/irq/generic-chip.c b/kernel/irq/generic-chip.c
+index 8014bfe..bf59e37 100644
+--- a/kernel/irq/generic-chip.c
++++ b/kernel/irq/generic-chip.c
+@@ -330,7 +330,7 @@ int irq_domain_alloc_generic_chips(struct irq_domain *d,
+ 				goto err;
  		}
  
--		if (insn->alt_group && insn->alt_group->ignore)
-+		if (skip_alt_group(insn))
- 			return 0;
+-		scoped_guard (raw_spinlock, &gc_lock)
++		scoped_guard (raw_spinlock_irqsave, &gc_lock)
+ 			list_add_tail(&gc->list, &gc_list);
+ 		/* Calc pointer to the next generic chip */
+ 		tmp += gc_sz;
+@@ -467,7 +467,7 @@ int irq_map_generic_chip(struct irq_domain *d, unsigned int virq,
  
- 		if (handle_insn_ops(insn, next_insn, &state))
+ 	/* We only init the cache for the first mapping of a generic chip */
+ 	if (!gc->installed) {
+-		guard(raw_spinlock_irq)(&gc->lock);
++		guard(raw_spinlock_irqsave)(&gc->lock);
+ 		irq_gc_init_mask_cache(gc, dgc->gc_flags);
+ 	}
+ 
 
