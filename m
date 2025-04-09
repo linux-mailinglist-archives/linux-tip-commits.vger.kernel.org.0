@@ -1,182 +1,148 @@
-Return-Path: <linux-tip-commits+bounces-4794-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4795-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65906A82582
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 15:01:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20F6A8272C
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 16:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82A8817CA75
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 13:01:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E09863A7A94
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 14:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF2E2620E4;
-	Wed,  9 Apr 2025 13:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2251C265629;
+	Wed,  9 Apr 2025 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZbqHRk+N"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="q7JuOWiq"
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CF725FA04;
-	Wed,  9 Apr 2025 13:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1E1264FA5;
+	Wed,  9 Apr 2025 14:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744203676; cv=none; b=gvy2T+w2TEpGKn9Uf/LIEcVDqfTVDAcdCykEF6npIeHInQ3VKKqfXZPrnxcL95kLSz5K7ij99TngNWiH9pptjhsdA/RQFCDMW6gYyh9QYrQQfo72Vf1s3LGRtvl8okJjRVMOhpcWQfDnQgqALzYgJqvq0UAGpcJ5JECseu0uSIQ=
+	t=1744207631; cv=none; b=L0kpsGOL4cmsrBmslDgX8IQjtvIEUYAJBaZzFT3vjaKQm5ETD8E8x8mahwPxpBmI5ebuhwTdR33aibwVz/a0BmncpIgNfpFHoGRV8/8iLET91bC9BSCZ+Bs7eBmUYEXExQEtO3bPNZE3Kdjq4NNhbaKeK7/9aomDBIbsIoaRjBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744203676; c=relaxed/simple;
-	bh=MsbS4f7Hb1zUHxQM/mOHTpkY+BaQei6vKE6vPuwSZEo=;
+	s=arc-20240116; t=1744207631; c=relaxed/simple;
+	bh=UgktLFzb+e+eJV8h1xhP+4y4L19Zt2j1W5TFzLZ3fAk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=phe/UC/ndcQSSHlo8Px+pXBxjqgUIQqFrRyqzqpY8k3S1P959gIZkjiAlA2fEdUKnfFAz5LlPeOeqwDoJBYDVtAChFBOZ6APaWirSLNtT1TWuWklDDMxbHjaYFlFTrI2IJq6fXb8hB+Ci5nplt4IE5hQ7a8x98toj/mpgUc9yCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZbqHRk+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6788CC4CEE7;
-	Wed,  9 Apr 2025 13:01:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744203676;
-	bh=MsbS4f7Hb1zUHxQM/mOHTpkY+BaQei6vKE6vPuwSZEo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZbqHRk+NproQgqP23Ff7dk3ZdNXQyGqeLZ2l4RLjE7Z/CDvntCPO4XJND2fZ8BlrT
-	 j1Z8haZ56AI/4LVHQGNM2DT7/gQqSRzIO9vkH5JlzftYzQxM3KcBb+vwkdnewvcr0D
-	 6R9VN6dlPOdCeqxD/KtULJRqLeAf7CNxxrj3aZBSaM/l+D7hsZZ6Yr9jHIyXzYXoKC
-	 4ADTr7eTEi5j11bJL79N4nHFfHSCKQu9dulb/gBdMs3hgUlTjl6Czmvzm7N01KL7Ag
-	 i6yfpqmY8CCPev/LHwYA/NPzbgYIrMTG/TvtPenkKGVZsVXP+gwlxHVD9AwO+ClcaN
-	 M1qoc9fvjoI9w==
-Date: Wed, 9 Apr 2025 15:01:12 +0200
-From: Frederic Weisbecker <frederic@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BqG5KAYvYdL7EUovdutqz4bs00+MTb0jIZqBFu8CyD/ihmlyOD77b5IRZJuuJNgKnStP25AbtRBkNoKzSJLnbkitwAqp3r4LmpobLrQTs+CsoB3/V9U5LcavwQ9Ok3AjOqVNDx/eu/BOcL9dStiqAWjMSpV9qADyBevO2nBIH0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=q7JuOWiq; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3Ro2fPi/15BsTrXL3Ti3RuIwgl6WKvf6SctPhYlhK8k=; b=q7JuOWiqNBR44LFThNc7ttAMJA
+	dqNFuO3RvQssM9X5n3aWR6EV7Y5ue9p2Yg79PwTq6LxMN98dZMpvSKVqib9omN94DtUk3hgZajiXc
+	OItud1HbcwWnIvviDf1AvjOD5pcEEC6i3F2nCiwxwKC2ZmlmbnLVwLq0ZvE6ugE+jYl6iloVBbjba
+	P9H/U1ScMwugRgj91aiKazNHeH/keaHYvLK6d8+HRtnH8LdwVxFY05d7qQU+APvzEIrc9qDODUQ3t
+	Y8pruiEOPJSq7uSl1CLn1gnNmfG8hphtHv33WlWK9xcY4bNMBj7i3jd5YeJ91eljLTh0sKseX4ify
+	S/dXoX8Q==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1u2W52-00000001YbP-05FQ;
+	Wed, 09 Apr 2025 14:07:04 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 9A4F33003FA; Wed,  9 Apr 2025 16:07:03 +0200 (CEST)
+Date: Wed, 9 Apr 2025 16:07:03 +0200
+From: Peter Zijlstra <peterz@infradead.org>
 To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>, x86@kernel.org
-Subject: Re: [tip: perf/core] perf: Simplify perf_event_free_task() wait
-Message-ID: <Z_ZvmEhjkAhplCBE@localhost.localdomain>
-References: <20250307193723.044499344@infradead.org>
- <174413910413.31282.5179470093314736126.tip-bot2@tip-bot2>
+Cc: linux-tip-commits@vger.kernel.org, Jiri Olsa <jolsa@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>, Brian Gerst <brgerst@gmail.com>,
+	Juergen Gross <jgross@suse.com>, "H. Peter Anvin" <hpa@zytor.com>,
+	Josh Poimboeuf <jpoimboe@redhat.com>, x86@kernel.org
+Subject: Re: [tip: perf/core] uprobes/x86: Add support to emulate NOP5
+ instruction
+Message-ID: <20250409140703.GB9833@noisy.programming.kicks-ass.net>
+References: <20250408211310.51491-1-jolsa@kernel.org>
+ <174419899905.31282.16125441491898382603.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <174413910413.31282.5179470093314736126.tip-bot2@tip-bot2>
+In-Reply-To: <174419899905.31282.16125441491898382603.tip-bot2@tip-bot2>
 
-Le Tue, Apr 08, 2025 at 07:05:04PM -0000, tip-bot2 for Peter Zijlstra a écrit :
+On Wed, Apr 09, 2025 at 11:43:19AM -0000, tip-bot2 for Jiri Olsa wrote:
 > The following commit has been merged into the perf/core branch of tip:
 > 
-> Commit-ID:     59f3aa4a3ee27e96132e16d2d2bdc3acadb4bf79
-> Gitweb:        https://git.kernel.org/tip/59f3aa4a3ee27e96132e16d2d2bdc3acadb4bf79
-> Author:        Peter Zijlstra <peterz@infradead.org>
-> AuthorDate:    Fri, 17 Jan 2025 15:27:07 +01:00
-> Committer:     Peter Zijlstra <peterz@infradead.org>
-> CommitterDate: Tue, 08 Apr 2025 20:55:46 +02:00
+> Commit-ID:     38440aebd4acc7bb3721eea77829bdb724d2551a
+> Gitweb:        https://git.kernel.org/tip/38440aebd4acc7bb3721eea77829bdb724d2551a
+> Author:        Jiri Olsa <jolsa@kernel.org>
+> AuthorDate:    Tue, 08 Apr 2025 23:13:09 +02:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Wed, 09 Apr 2025 12:35:17 +02:00
 > 
-> perf: Simplify perf_event_free_task() wait
+> uprobes/x86: Add support to emulate NOP5 instruction
 > 
-> Simplify the code by moving the duplicated wakeup condition into
-> put_ctx().
+> Adding support to emulate NOP5 as the original uprobe instruction.
 > 
-> Notably, wait_var_event() is in perf_event_free_task() and will have
-> set ctx->task = TASK_TOMBSTONE.
+> This change speeds up uprobe on top of NOP5 and is a preparation for
+> usdt probe optimization, that will be done on top of NOP5 instruction.
 > 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
-> Link: https://lkml.kernel.org/r/20250307193723.044499344@infradead.org
+> With this change the usdt probe on top of NOP5 won't take the performance
+> hit compared to usdt probe on top of standard NOP instruction.
+> 
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Brian Gerst <brgerst@gmail.com>
+> Cc: Juergen Gross <jgross@suse.com>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+> Link: https://lore.kernel.org/r/20250408211310.51491-1-jolsa@kernel.org
 > ---
->  kernel/events/core.c | 25 +++----------------------
->  1 file changed, 3 insertions(+), 22 deletions(-)
+>  arch/x86/kernel/uprobes.c | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
 > 
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 3c92b75..fa6dab0 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -1270,6 +1270,9 @@ static void put_ctx(struct perf_event_context *ctx)
->  		if (ctx->task && ctx->task != TASK_TOMBSTONE)
->  			put_task_struct(ctx->task);
->  		call_rcu(&ctx->rcu_head, free_ctx);
-> +	} else if (ctx->task == TASK_TOMBSTONE) {
-> +		smp_mb(); /* pairs with wait_var_event() */
-> +		wake_up_var(&ctx->refcount);
+> diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+> index 9194695..63cc68e 100644
+> --- a/arch/x86/kernel/uprobes.c
+> +++ b/arch/x86/kernel/uprobes.c
+> @@ -608,6 +608,16 @@ static void riprel_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+>  		*sr = utask->autask.saved_scratch_register;
+>  	}
+>  }
+> +
+> +static int is_nop5_insn(uprobe_opcode_t *insn)
+> +{
+> +	return !memcmp(insn, x86_nops[5], 5);
+> +}
+> +
+> +static bool emulate_nop5_insn(struct arch_uprobe *auprobe)
+> +{
+> +	return is_nop5_insn((uprobe_opcode_t *) &auprobe->insn);
+> +}
+>  #else /* 32-bit: */
+>  /*
+>   * No RIP-relative addressing on 32-bit
+> @@ -621,6 +631,10 @@ static void riprel_pre_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+>  static void riprel_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
+>  {
+>  }
+> +static bool emulate_nop5_insn(struct arch_uprobe *auprobe)
+> +{
+> +	return false;
+> +}
+>  #endif /* CONFIG_X86_64 */
+>  
+>  struct uprobe_xol_ops {
+> @@ -852,6 +866,8 @@ static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
+>  		break;
+>  
+>  	case 0x0f:
+> +		if (emulate_nop5_insn(auprobe))
+> +			goto setup;
+>  		if (insn->opcode.nbytes != 2)
+>  			return -ENOSYS;
+>  		/*
 
-So there are three situations:
+This is still very weird code. See the comment here:
 
-* If perf_event_free_task() has removed all the children from the parent list
-  before perf_event_release_kernel() got a chance to even iterate them, then
-  it's all good as there is no get_ctx() pending.
-
-* If perf_event_release_kernel() iterates a child event, but it gets freed
-  meanwhile by perf_event_free_task() while the mutexes are temporarily
-  unlocked, it's all good because while locking again the ctx mutex,
-  perf_event_release_kernel() observes TASK_TOMBSTONE.
-
-* But if perf_event_release_kernel() frees the child event before
-  perf_event_free_task() got a chance, we may face this scenario:
-
-    perf_event_release_kernel()                                  perf_event_free_task()
-    --------------------------                                   ------------------------
-    mutex_lock(&event->child_mutex)
-    get_ctx(child->ctx)
-    mutex_unlock(&event->child_mutex)
-
-    mutex_lock(ctx->mutex)
-    mutex_lock(&event->child_mutex)
-    perf_remove_from_context(child)
-    mutex_unlock(&event->child_mutex)
-    mutex_unlock(ctx->mutex)
-
-                                                                 // This lock acquires ctx->refcount == 2
-                                                                 // visibility
-                                                                 mutex_lock(ctx->mutex)
-                                                                 ctx->task = TASK_TOMBSTONE
-                                                                 mutex_unlock(ctx->mutex)
-                                                                 
-                                                                 wait_var_event()
-                                                                     // enters prepare_to_wait() since
-                                                                     // ctx->refcount == 2
-                                                                     // is guaranteed to be seen
-                                                                     set_current_state(TASK_INTERRUPTIBLE)
-                                                                     smp_mb()
-                                                                     if (ctx->refcount != 1)
-                                                                         schedule()
-    put_ctx()
-       // NOT fully ordered! Only RELEASE semantics
-       refcount_dec_and_test()
-           atomic_fetch_sub_release()
-       // So TASK_TOMBSTONE is not guaranteed to be seen
-       if (ctx->task == TASK_TOMBSTONE)
-           wake_up_var()
-
-Basically it's a broken store buffer:
-
-    perf_event_release_kernel()                                  perf_event_free_task()
-    --------------------------                                   ------------------------
-    ctx->task = TASK_TOMBSTONE                                   smp_store_release(&ctx->refcount, ctx->refcount - 1)
-    smp_mb()
-    READ_ONCE(ctx->refcount)                                     READ_ONCE(ctx->task)
-
-
-So you need this:
-
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index fa6dab08be47..c4fbbe25361a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1270,9 +1270,10 @@ static void put_ctx(struct perf_event_context *ctx)
- 		if (ctx->task && ctx->task != TASK_TOMBSTONE)
- 			put_task_struct(ctx->task);
- 		call_rcu(&ctx->rcu_head, free_ctx);
--	} else if (ctx->task == TASK_TOMBSTONE) {
-+	} else {
- 		smp_mb(); /* pairs with wait_var_event() */
--		wake_up_var(&ctx->refcount);
-+		if (ctx->task == TASK_TOMBSTONE)
-+			wake_up_var(&ctx->refcount);
- 	}
- }
- 
-
-
--- 
-Frederic Weisbecker
-SUSE Labs
+https://lkml.kernel.org/r/20241213104536.GZ35539@noisy.programming.kicks-ass.net
 
