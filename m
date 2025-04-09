@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-4785-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4786-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FD4A823E4
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 13:46:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C29A823D9
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 13:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C48FC7B7FD2
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 11:43:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89CA8C351E
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 11:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A4925E801;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21B025E807;
 	Wed,  9 Apr 2025 11:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iOgmhZl9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5KP4/Adh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y232yHbM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vAAqV43m"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C398225E463;
-	Wed,  9 Apr 2025 11:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310C825E46F;
+	Wed,  9 Apr 2025 11:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744199067; cv=none; b=GZjQpg+KrD39zzyK0dCjvHLJIWg9MvlfOz7yq7Z/hiTH1bkxlq9PgArg+FW6s0b/IYVzWNZa8DjkFtAisJ/6axkQrsLN0ntY/MKvTEBHlyLUHXxNb0x1r5md/4Lyd6OSBnSRpZKuUkmZ+wSEMOCUc6LB0P04ZcDFLU6dvOkA88Y=
+	t=1744199067; cv=none; b=ttT0Wv5JyzdwtLJ4Je/kvGLt9M+z5uFd6TMtABS0/+7+tEIxh5eayqmT31V1SComww0q4rq32xUuQrLNXZyd1i2o6xSKMELtCSEU12UxDUUARjEyp+CXSxp1acUK2dEBqyA54cyrsHluIC1/6eQvxOUF6VMaGA/d2aMifiPBr1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744199067; c=relaxed/simple;
-	bh=esQfNDGd1krvxpEW5+SaP0qAE/IEbNiz2Sp/mJOApjI=;
+	bh=1zuuKfq8Fb2gUxCOT5nm7PjF4ClnVz1Kne9wx5wdnT0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qBJVdY5MqV7+qK2qIM9xCB5tBhaYfm37kdYrvok5RyavtF1eYicDamx7aLVzE3P5Ctr8kCpjGHPjsDd0HP7Q2JpWpwUf44MYsLbEj6F05XfWwAXewfoLNDqvibFvDaUQpKLrZ3I38+UpZI2F6F5U1Z3idZ3DaoENPmNu0aovU5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iOgmhZl9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5KP4/Adh; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=udYVg2zSoK+q9h+IQk6vfMb+c/W4ZB2IfbtPVYQ/t2erHMxglPAaV5M9tECdb3v/uIVkwiGhjcVI/CFf0LjH63dsevKVL0P0Otqe//G/kUUlWeYWchg9gqmqVs6eyJhl24Jzezzn2Y5ivOa77NXTN+JyxlTkJ/jrTp0LReMblPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y232yHbM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vAAqV43m; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 09 Apr 2025 11:44:23 -0000
+Date: Wed, 09 Apr 2025 11:44:24 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1744199064;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PhGfEUEzXyDvud9yA+VM+gSjO2XWQCcU7AYQXzGyn78=;
-	b=iOgmhZl9LLfIBgL8CkmdON+AF8SAhLRUJjZM6voDlRrTpPkv60BobSINzRTUR/1UmNkK8p
-	WNIOTmdLOKp9jnPzSfKhLfWe/iNYnIwCGeliFz8GHe8U+T3BQa+ys8nCK/IDcf5cTxBhjt
-	r8KRmnVVmgUHdnikCXeIS4RYyS8HnM5THgCEO9sHmb3UDL/bF9Io2g/uBn8EppZa5/0uH7
-	59tJzwSakeAMHeLPfpa16Fixxx1uzqkQvkG/7KTgW5FQ55wbO3S7aeenx2cFY8DuLrDN4u
-	fZ0fYZ0T57hZyEDCtgkKsLviK85nBS/0x6LXiJvSFTAzvNEw1Bf48TN7WJ6NUw==
+	bh=aNLd30xIMik6LI+ehTepOf+SXmSqYObNycz8f+vXaSs=;
+	b=Y232yHbM85VIXm1W2J/wuLZVh7K+mXVEW0jNxFbzU6rJ/B3F2xc4P0dPbOwkVllcsKD0Rq
+	Rk1SbwTULgfoBwHQsH8lCaI6TtZLTMDEqUGDW/+sn/3ehTuwjR4JHU9ojBEeYF1yY2woE9
+	sHgbNJQcRpaVgFBV2KUjKrMHkEhC5EdZTtNr3Y0iBGHrmEOuIQXpFOL6tBK6ftujYoo3Vd
+	By11TEP1IcRAjDEF7jkxO9SzX9lkv8qoKq5nQGiHGHYSjfbLk59dQa7bJIYIeEVW4lQjgk
+	tJdxPW35wYoQOe01x+ucgP1pMdkdqCFAlWYIhnSbeQsOfklnGjIxwOpUF+Fa+Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1744199064;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,30 +52,33 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PhGfEUEzXyDvud9yA+VM+gSjO2XWQCcU7AYQXzGyn78=;
-	b=5KP4/AdhUE4E7lg35qE0+D6ItvJvtUk7gkNNwslORlBXvHrMhSWotZ8Kg9rlUSGpHlWGmR
-	1X+BY4RB5fpz06CQ==
+	bh=aNLd30xIMik6LI+ehTepOf+SXmSqYObNycz8f+vXaSs=;
+	b=vAAqV43mrKlQPRdNS43ODnevcrAKb+oq8Biy6PHdWmiyDukNqnPJDB6jL0oFekzdbbZJn4
+	Bx4ZQ4Iae8y6C/AQ==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/urgent] x86/bugs: Don't fill RSB on context switch with eIBRS
+ [tip: x86/urgent] x86/bugs: Don't fill RSB on VMEXIT with eIBRS+retpoline
 Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
  Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  Amit Shah <amit.shah@amd.com>, Nikolay Borisov <nik.borisov@suse.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+ Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Sean Christopherson <seanjc@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 In-Reply-To:
- <98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org>
+ <84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org>
 References:
- <98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org>
+ <84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174419906345.31282.9474588057565981469.tip-bot2@tip-bot2>
+Message-ID: <174419906403.31282.6211937821580800684.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,23 +88,21 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     27ce8299bc1ec6df8306073785ff82b30b3cc5ee
-Gitweb:        https://git.kernel.org/tip/27ce8299bc1ec6df8306073785ff82b30b3cc5ee
+Commit-ID:     18bae0dfec15b24ec14ca17dc18603372f5f254f
+Gitweb:        https://git.kernel.org/tip/18bae0dfec15b24ec14ca17dc18603372f5f254f
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Tue, 08 Apr 2025 14:47:34 -07:00
+AuthorDate:    Tue, 08 Apr 2025 14:47:33 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Apr 2025 12:42:09 +02:00
+CommitterDate: Wed, 09 Apr 2025 12:41:55 +02:00
 
-x86/bugs: Don't fill RSB on context switch with eIBRS
+x86/bugs: Don't fill RSB on VMEXIT with eIBRS+retpoline
 
-User->user Spectre v2 attacks (including RSB) across context switches
-are already mitigated by IBPB in cond_mitigation(), if enabled globally
-or if either the prev or the next task has opted in to protection.  RSB
-filling without IBPB serves no purpose for protecting user space, as
-indirect branches are still vulnerable.
+eIBRS protects against guest->host RSB underflow/poisoning attacks.
+Adding retpoline to the mix doesn't change that.  Retpoline has a
+balanced CALL/RET anyway.
 
-User->kernel RSB attacks are mitigated by eIBRS.  In which case the RSB
-filling on context switch isn't needed, so remove it.
+So the current full RSB filling on VMEXIT with eIBRS+retpoline is
+overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
 
 Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
@@ -109,89 +110,42 @@ Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Reviewed-by: Amit Shah <amit.shah@amd.com>
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
 ---
- arch/x86/kernel/cpu/bugs.c | 24 ++++++++++++------------
- arch/x86/mm/tlb.c          |  6 +++---
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index a10b37b..e2a672f 100644
+index 9926509..a10b37b 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1591,7 +1591,7 @@ static void __init spec_ctrl_disable_kernel_rrsba(void)
- 	rrsba_disabled = true;
- }
- 
--static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_mitigation mode)
-+static void __init spectre_v2_select_rsb_mitigation(enum spectre_v2_mitigation mode)
- {
- 	/*
- 	 * Similar to context switches, there are two types of RSB attacks
-@@ -1615,7 +1615,7 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	 */
- 	switch (mode) {
+@@ -1617,20 +1617,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
  	case SPECTRE_V2_NONE:
--		return;
-+		break;
+ 		return;
  
+-	case SPECTRE_V2_EIBRS_LFENCE:
  	case SPECTRE_V2_EIBRS:
- 	case SPECTRE_V2_EIBRS_LFENCE:
-@@ -1624,18 +1624,21 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
++	case SPECTRE_V2_EIBRS_LFENCE:
++	case SPECTRE_V2_EIBRS_RETPOLINE:
+ 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
+-			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
  			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
- 			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
++			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
  		}
--		return;
-+		break;
+ 		return;
  
+-	case SPECTRE_V2_EIBRS_RETPOLINE:
  	case SPECTRE_V2_RETPOLINE:
  	case SPECTRE_V2_LFENCE:
  	case SPECTRE_V2_IBRS:
--		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		pr_info("Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
- 		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
--		return;
--	}
-+		break;
+-		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+ 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
++		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
+ 		return;
+ 	}
  
--	pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation at VM exit");
--	dump_stack();
-+	default:
-+		pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation\n");
-+		dump_stack();
-+		break;
-+	}
- }
- 
- /*
-@@ -1867,10 +1870,7 @@ static void __init spectre_v2_select_mitigation(void)
- 	 *
- 	 * FIXME: Is this pointless for retbleed-affected AMD?
- 	 */
--	setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
--	pr_info("Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch\n");
--
--	spectre_v2_determine_rsb_fill_type_at_vmexit(mode);
-+	spectre_v2_select_rsb_mitigation(mode);
- 
- 	/*
- 	 * Retpoline protects the kernel, but doesn't protect firmware.  IBRS
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index e459d97..eb83348 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -667,9 +667,9 @@ static void cond_mitigation(struct task_struct *next)
- 	prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_spec);
- 
- 	/*
--	 * Avoid user/user BTB poisoning by flushing the branch predictor
--	 * when switching between processes. This stops one process from
--	 * doing Spectre-v2 attacks on another.
-+	 * Avoid user->user BTB/RSB poisoning by flushing them when switching
-+	 * between processes. This stops one process from doing Spectre-v2
-+	 * attacks on another.
- 	 *
- 	 * Both, the conditional and the always IBPB mode use the mm
- 	 * pointer to avoid the IBPB when switching between tasks of the
 
