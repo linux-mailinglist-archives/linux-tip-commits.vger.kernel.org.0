@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-4783-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4784-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12288A823D4
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 13:45:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54944A823D2
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 13:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4A907B281B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 11:42:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3FD1B876AC
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Apr 2025 11:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA2925E830;
-	Wed,  9 Apr 2025 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F6D25E800;
+	Wed,  9 Apr 2025 11:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IiKShlDg";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="35t3sIXB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qmsXxLhI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dMk6T9hX"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1870325E478;
-	Wed,  9 Apr 2025 11:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C5C25E467;
+	Wed,  9 Apr 2025 11:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744199005; cv=none; b=nbH7V8HJO1cirV1uBkumAgkNE/q4YbjLBNLz2TiIbCL3/TM8ZyWAI+3iVVP0H2fI39cqdQ+GPxB1D7LiXK4cXbBLX99jnsYe+6OwSS6Q88QwmnUbmJIub3PFuoaGmLav6250WNT8bC637+CtXOMztCVwTayOPv/fB3fFm4Z2m/4=
+	t=1744199067; cv=none; b=Zibc0mvnPzIa+78jGWJ5qV7oIop43bQq9IOfp1ikWTAmzXEn7gAGRwDSQES3QBqw3sDwgq9DK8obmy1E3s11m0E8MvolOk39W5Rb0dKg+uBhTqzB0qb4t8W30ayZLlx6dRYFtx4i8IPlmX7hcYSHjVwEAiZhfPiHF6NDguqzCv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744199005; c=relaxed/simple;
-	bh=/V0I7lLNlMi+92c7T6c7o8VsNKT0GQISIaxzmmToENs=;
+	s=arc-20240116; t=1744199067; c=relaxed/simple;
+	bh=2v/zXr4u3XD1visyYb5kUU1vTtQPaAMN1xEErsNWHp0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aC4RixjrI2y9JxdBPgdcDy2s1nNf6M0scBat4MsKu/e1wGrHhpVa/hiL7TzpAKq3uP89RI01nDkRaHeUrdfYoAlNoColII21VmtMnauhKbLNfv6Rw4GGh6KfRscO6ebd93t9dbmRshFM6Z5aUcXaV4A2JYhZHXWNuKszvBlkdYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IiKShlDg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=35t3sIXB; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ub6NZqGFC//swAfdwP9SiBWdgImiilBpTvQTHsj3Jjj4J0MmfLE0tm1vjNNGwae/RZbnQlLZpkwe9+X50bW1+eA/asTwvtNERRPGmIkFoYtZVkJww8U/ZBhMRVUTkaHTvb6y+Ov6ApXHzVlauaFhzSVSq9H1ZFgNn0m3F102W90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qmsXxLhI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dMk6T9hX; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 09 Apr 2025 11:43:20 -0000
+Date: Wed, 09 Apr 2025 11:44:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744199001;
+	s=2020; t=1744199063;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jIccNpuOIQIuV9oJJuxIH93Si+Aqz0bKljk/ZhYoClw=;
-	b=IiKShlDgLqrt9r/1zOGd2dNAQ0RxI7hb1HBes3fXl51Pb0UVbkso9I4dwHs5xRN6Akd7+a
-	FGZ34GsPDAWg1m0ZQTLFNvS2KWJCmWU2IfDaQhrypT0/XYxWArDRZ9FtdlikBWzeuqmvNs
-	vx4eAbH01PdLV9IFL8fB923R7sbN1tTS3nRN4T6sD1VDr7BH4fM15270cVuuTz8Md0sOTg
-	d7DzWM3hOPcgNWbbdyV7OVPYhZk4maTQE3d4SNq6m1Ev8+ulBUDpCFuR/b58gopuhV+f4Q
-	AD0Ow78U2xehnO1apFllcx/k7WYRow00c95ydqljtRDcMwy2Sacgwr2CAGBeqA==
+	bh=my1iciepGPjxtLMGwGDEpExirZA0BKwwPxgX7kOe2nA=;
+	b=qmsXxLhI6XD9Olk9le8HulPeIPbQmAkeXxhUiA7vr/Mzpjac+3zsaNhcmofEmKPjzMJui8
+	nSpmxVfDHJQDKx+2d6s10x0n9fg994Vj5sCw0Qzeol4XNP/czv6j17YyTgYStB+iIp+Ayv
+	Fz39oRM8Pu7TGvE4HWoNPChA+lfo3y9BGneYGfjnkXh0TaagJVqkH099BdQNbhfkYOzXqE
+	EGdVc7VqSpkKzfMmV9X2/Qq5zKunN4JxRR+sPYsXnr6/D0KVOXzfa7DJsIwWLRlHAr1TKH
+	v/NQfbaJSvZyhboGNccKsupBzxsogXRG4LgFcddw5PXui49pCwghGf87LAUI6g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744199001;
+	s=2020e; t=1744199063;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jIccNpuOIQIuV9oJJuxIH93Si+Aqz0bKljk/ZhYoClw=;
-	b=35t3sIXBdW/T9ecxVoqKHr05GPu+edFBD87WR2NaMpa5al67P/sytE/TWdyyt4H6CrS1Ey
-	FQJuP/+UPJ6wRpBA==
-From: "tip-bot2 for Thorsten Blum" <tip-bot2@linutronix.de>
+	bh=my1iciepGPjxtLMGwGDEpExirZA0BKwwPxgX7kOe2nA=;
+	b=dMk6T9hXMDLdLMmGtyWie2YE7i0YjFWaiGVyJ7eLdS7rifLyVJeYKyI91/hq/eHPBoV315
+	8E43yv5qRJuT1dAw==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel/bts: Rename local bts_buffer
- variables for clarity
-Cc: Ingo Molnar <mingo@kernel.org>, Thorsten Blum <thorsten.blum@linux.dev>,
+Subject: [tip: x86/urgent] x86/bugs: Add RSB mitigation document
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250407085253.742834-2-thorsten.blum@linux.dev>
-References: <20250407085253.742834-2-thorsten.blum@linux.dev>
+In-Reply-To:
+ <ab73f4659ba697a974759f07befd41ae605e33dd.1744148254.git.jpoimboe@kernel.org>
+References:
+ <ab73f4659ba697a974759f07befd41ae605e33dd.1744148254.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174419900044.31282.10616923601758392137.tip-bot2@tip-bot2>
+Message-ID: <174419905819.31282.12603333394926727490.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,383 +80,400 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3256a83335a40b435cc2ea3aed159608879f6ed8
-Gitweb:        https://git.kernel.org/tip/3256a83335a40b435cc2ea3aed159608879f6ed8
-Author:        Thorsten Blum <thorsten.blum@linux.dev>
-AuthorDate:    Mon, 07 Apr 2025 10:52:53 +02:00
+Commit-ID:     83f6665a49c3d44ad0c08f837d352dd290f5d10b
+Gitweb:        https://git.kernel.org/tip/83f6665a49c3d44ad0c08f837d352dd290f5d10b
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Tue, 08 Apr 2025 14:47:35 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 09 Apr 2025 12:14:14 +02:00
+CommitterDate: Wed, 09 Apr 2025 12:42:09 +02:00
 
-perf/x86/intel/bts: Rename local bts_buffer variables for clarity
+x86/bugs: Add RSB mitigation document
 
-Rename struct bts_buffer objects from 'buf' to 'bb' to improve the
-readability when accessing the structure's 'buf' member. For example,
-'buf->buf[]' becomes 'bb->buf[]'.
+Create a document to summarize hard-earned knowledge about RSB-related
+mitigations, with references, and replace the overly verbose yet
+incomplete comments with a reference to the document.
 
-Indent line 327 using tabs to silence a checkpatch warning.
-
-No functional changes intended.
-
-Suggested-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250407085253.742834-2-thorsten.blum@linux.dev
+Link: https://lore.kernel.org/r/ab73f4659ba697a974759f07befd41ae605e33dd.1744148254.git.jpoimboe@kernel.org
 ---
- arch/x86/events/intel/bts.c | 144 +++++++++++++++++------------------
- 1 file changed, 72 insertions(+), 72 deletions(-)
+ Documentation/admin-guide/hw-vuln/index.rst |   1 +-
+ Documentation/admin-guide/hw-vuln/rsb.rst   | 268 +++++++++++++++++++-
+ arch/x86/kernel/cpu/bugs.c                  |  64 +----
+ 3 files changed, 282 insertions(+), 51 deletions(-)
+ create mode 100644 Documentation/admin-guide/hw-vuln/rsb.rst
 
-diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
-index a95e6c9..da03f53 100644
---- a/arch/x86/events/intel/bts.c
-+++ b/arch/x86/events/intel/bts.c
-@@ -80,54 +80,54 @@ static void *
- bts_buffer_setup_aux(struct perf_event *event, void **pages,
- 		     int nr_pages, bool overwrite)
+diff --git a/Documentation/admin-guide/hw-vuln/index.rst b/Documentation/admin-guide/hw-vuln/index.rst
+index ff0b440..451874b 100644
+--- a/Documentation/admin-guide/hw-vuln/index.rst
++++ b/Documentation/admin-guide/hw-vuln/index.rst
+@@ -22,3 +22,4 @@ are configurable at compile, boot or run time.
+    srso
+    gather_data_sampling
+    reg-file-data-sampling
++   rsb
+diff --git a/Documentation/admin-guide/hw-vuln/rsb.rst b/Documentation/admin-guide/hw-vuln/rsb.rst
+new file mode 100644
+index 0000000..21dbf9c
+--- /dev/null
++++ b/Documentation/admin-guide/hw-vuln/rsb.rst
+@@ -0,0 +1,268 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=======================
++RSB-related mitigations
++=======================
++
++.. warning::
++   Please keep this document up-to-date, otherwise you will be
++   volunteered to update it and convert it to a very long comment in
++   bugs.c!
++
++Since 2018 there have been many Spectre CVEs related to the Return Stack
++Buffer (RSB) (sometimes referred to as the Return Address Stack (RAS) or
++Return Address Predictor (RAP) on AMD).
++
++Information about these CVEs and how to mitigate them is scattered
++amongst a myriad of microarchitecture-specific documents.
++
++This document attempts to consolidate all the relevant information in
++once place and clarify the reasoning behind the current RSB-related
++mitigations.  It's meant to be as concise as possible, focused only on
++the current kernel mitigations: what are the RSB-related attack vectors
++and how are they currently being mitigated?
++
++It's *not* meant to describe how the RSB mechanism operates or how the
++exploits work.  More details about those can be found in the references
++below.
++
++Rather, this is basically a glorified comment, but too long to actually
++be one.  So when the next CVE comes along, a kernel developer can
++quickly refer to this as a refresher to see what we're actually doing
++and why.
++
++At a high level, there are two classes of RSB attacks: RSB poisoning
++(Intel and AMD) and RSB underflow (Intel only).  They must each be
++considered individually for each attack vector (and microarchitecture
++where applicable).
++
++----
++
++RSB poisoning (Intel and AMD)
++=============================
++
++SpectreRSB
++~~~~~~~~~~
++
++RSB poisoning is a technique used by SpectreRSB [#spectre-rsb]_ where
++an attacker poisons an RSB entry to cause a victim's return instruction
++to speculate to an attacker-controlled address.  This can happen when
++there are unbalanced CALLs/RETs after a context switch or VMEXIT.
++
++* All attack vectors can potentially be mitigated by flushing out any
++  poisoned RSB entries using an RSB filling sequence
++  [#intel-rsb-filling]_ [#amd-rsb-filling]_ when transitioning between
++  untrusted and trusted domains.  But this has a performance impact and
++  should be avoided whenever possible.
++
++  .. DANGER::
++     **FIXME**: Currently we're flushing 32 entries.  However, some CPU
++     models have more than 32 entries.  The loop count needs to be
++     increased for those.  More detailed information is needed about RSB
++     sizes.
++
++* On context switch, the user->user mitigation requires ensuring the
++  RSB gets filled or cleared whenever IBPB gets written [#cond-ibpb]_
++  during a context switch:
++
++  * AMD:
++	On Zen 4+, IBPB (or SBPB [#amd-sbpb]_ if used) clears the RSB.
++	This is indicated by IBPB_RET in CPUID [#amd-ibpb-rsb]_.
++
++	On Zen < 4, the RSB filling sequence [#amd-rsb-filling]_ must be
++	always be done in addition to IBPB [#amd-ibpb-no-rsb]_.  This is
++	indicated by X86_BUG_IBPB_NO_RET.
++
++  * Intel:
++	IBPB always clears the RSB:
++
++	"Software that executed before the IBPB command cannot control
++	the predicted targets of indirect branches executed after the
++	command on the same logical processor. The term indirect branch
++	in this context includes near return instructions, so these
++	predicted targets may come from the RSB." [#intel-ibpb-rsb]_
++
++* On context switch, user->kernel attacks are prevented by SMEP.  User
++  space can only insert user space addresses into the RSB.  Even
++  non-canonical addresses can't be inserted due to the page gap at the
++  end of the user canonical address space reserved by TASK_SIZE_MAX.
++  A SMEP #PF at instruction fetch prevents the kernel from speculatively
++  executing user space.
++
++  * AMD:
++	"Finally, branches that are predicted as 'ret' instructions get
++	their predicted targets from the Return Address Predictor (RAP).
++	AMD recommends software use a RAP stuffing sequence (mitigation
++	V2-3 in [2]) and/or Supervisor Mode Execution Protection (SMEP)
++	to ensure that the addresses in the RAP are safe for
++	speculation. Collectively, we refer to these mitigations as "RAP
++	Protection"." [#amd-smep-rsb]_
++
++  * Intel:
++	"On processors with enhanced IBRS, an RSB overwrite sequence may
++	not suffice to prevent the predicted target of a near return
++	from using an RSB entry created in a less privileged predictor
++	mode.  Software can prevent this by enabling SMEP (for
++	transitions from user mode to supervisor mode) and by having
++	IA32_SPEC_CTRL.IBRS set during VM exits." [#intel-smep-rsb]_
++
++* On VMEXIT, guest->host attacks are mitigated by eIBRS (and PBRSB
++  mitigation if needed):
++
++  * AMD:
++	"When Automatic IBRS is enabled, the internal return address
++	stack used for return address predictions is cleared on VMEXIT."
++	[#amd-eibrs-vmexit]_
++
++  * Intel:
++	"On processors with enhanced IBRS, an RSB overwrite sequence may
++	not suffice to prevent the predicted target of a near return
++	from using an RSB entry created in a less privileged predictor
++	mode.  Software can prevent this by enabling SMEP (for
++	transitions from user mode to supervisor mode) and by having
++	IA32_SPEC_CTRL.IBRS set during VM exits. Processors with
++	enhanced IBRS still support the usage model where IBRS is set
++	only in the OS/VMM for OSes that enable SMEP. To do this, such
++	processors will ensure that guest behavior cannot control the
++	RSB after a VM exit once IBRS is set, even if IBRS was not set
++	at the time of the VM exit." [#intel-eibrs-vmexit]_
++
++    Note that some Intel CPUs are susceptible to Post-barrier Return
++    Stack Buffer Predictions (PBRSB) [#intel-pbrsb]_, where the last
++    CALL from the guest can be used to predict the first unbalanced RET.
++    In this case the PBRSB mitigation is needed in addition to eIBRS.
++
++AMD RETBleed / SRSO / Branch Type Confusion
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++On AMD, poisoned RSB entries can also be created by the AMD RETBleed
++variant [#retbleed-paper]_ [#amd-btc]_ or by Speculative Return Stack
++Overflow [#amd-srso]_ (Inception [#inception-paper]_).  The kernel
++protects itself by replacing every RET in the kernel with a branch to a
++single safe RET.
++
++----
++
++RSB underflow (Intel only)
++==========================
++
++RSB Alternate (RSBA) ("Intel Retbleed")
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Some Intel Skylake-generation CPUs are susceptible to the Intel variant
++of RETBleed [#retbleed-paper]_ (Return Stack Buffer Underflow
++[#intel-rsbu]_).  If a RET is executed when the RSB buffer is empty due
++to mismatched CALLs/RETs or returning from a deep call stack, the branch
++predictor can fall back to using the Branch Target Buffer (BTB).  If a
++user forces a BTB collision then the RET can speculatively branch to a
++user-controlled address.
++
++* Note that RSB filling doesn't fully mitigate this issue.  If there
++  are enough unbalanced RETs, the RSB may still underflow and fall back
++  to using a poisoned BTB entry.
++
++* On context switch, user->user underflow attacks are mitigated by the
++  conditional IBPB [#cond-ibpb]_ on context switch which effectively
++  clears the BTB:
++
++  * "The indirect branch predictor barrier (IBPB) is an indirect branch
++    control mechanism that establishes a barrier, preventing software
++    that executed before the barrier from controlling the predicted
++    targets of indirect branches executed after the barrier on the same
++    logical processor." [#intel-ibpb-btb]_
++
++* On context switch and VMEXIT, user->kernel and guest->host RSB
++  underflows are mitigated by IBRS or eIBRS:
++
++  * "Enabling IBRS (including enhanced IBRS) will mitigate the "RSBU"
++    attack demonstrated by the researchers. As previously documented,
++    Intel recommends the use of enhanced IBRS, where supported. This
++    includes any processor that enumerates RRSBA but not RRSBA_DIS_S."
++    [#intel-rsbu]_
++
++  However, note that eIBRS and IBRS do not mitigate intra-mode attacks.
++  Like RRSBA below, this is mitigated by clearing the BHB on kernel
++  entry.
++
++  As an alternative to classic IBRS, call depth tracking (combined with
++  retpolines) can be used to track kernel returns and fill the RSB when
++  it gets close to being empty.
++
++Restricted RSB Alternate (RRSBA)
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Some newer Intel CPUs have Restricted RSB Alternate (RRSBA) behavior,
++which, similar to RSBA described above, also falls back to using the BTB
++on RSB underflow.  The only difference is that the predicted targets are
++restricted to the current domain when eIBRS is enabled:
++
++* "Restricted RSB Alternate (RRSBA) behavior allows alternate branch
++  predictors to be used by near RET instructions when the RSB is
++  empty.  When eIBRS is enabled, the predicted targets of these
++  alternate predictors are restricted to those belonging to the
++  indirect branch predictor entries of the current prediction domain.
++  [#intel-eibrs-rrsba]_
++
++When a CPU with RRSBA is vulnerable to Branch History Injection
++[#bhi-paper]_ [#intel-bhi]_, an RSB underflow could be used for an
++intra-mode BTI attack.  This is mitigated by clearing the BHB on
++kernel entry.
++
++However if the kernel uses retpolines instead of eIBRS, it needs to
++disable RRSBA:
++
++* "Where software is using retpoline as a mitigation for BHI or
++  intra-mode BTI, and the processor both enumerates RRSBA and
++  enumerates RRSBA_DIS controls, it should disable this behavior."
++  [#intel-retpoline-rrsba]_
++
++----
++
++References
++==========
++
++.. [#spectre-rsb] `Spectre Returns! Speculation Attacks using the Return Stack Buffer <https://arxiv.org/pdf/1807.07940.pdf>`_
++
++.. [#intel-rsb-filling] "Empty RSB Mitigation on Skylake-generation" in `Retpoline: A Branch Target Injection Mitigation <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/retpoline-branch-target-injection-mitigation.html#inpage-nav-5-1>`_
++
++.. [#amd-rsb-filling] "Mitigation V2-3" in `Software Techniques for Managing Speculation <https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/software-techniques-for-managing-speculation.pdf>`_
++
++.. [#cond-ibpb] Whether IBPB is written depends on whether the prev and/or next task is protected from Spectre attacks.  It typically requires opting in per task or system-wide.  For more details see the documentation for the ``spectre_v2_user`` cmdline option in Documentation/admin-guide/kernel-parameters.txt.
++
++.. [#amd-sbpb] IBPB without flushing of branch type predictions.  Only exists for AMD.
++
++.. [#amd-ibpb-rsb] "Function 8000_0008h -- Processor Capacity Parameters and Extended Feature Identification" in `AMD64 Architecture Programmer's Manual Volume 3: General-Purpose and System Instructions <https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24594.pdf>`_.  SBPB behaves the same way according to `this email <https://lore.kernel.org/5175b163a3736ca5fd01cedf406735636c99a>`_.
++
++.. [#amd-ibpb-no-rsb] `Spectre Attacks: Exploiting Speculative Execution <https://comsec.ethz.ch/wp-content/files/ibpb_sp25.pdf>`_
++
++.. [#intel-ibpb-rsb] "Introduction" in `Post-barrier Return Stack Buffer Predictions / CVE-2022-26373 / INTEL-SA-00706 <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/advisory-guidance/post-barrier-return-stack-buffer-predictions.html>`_
++
++.. [#amd-smep-rsb] "Existing Mitigations" in `Technical Guidance for Mitigating Branch Type Confusion <https://www.amd.com/content/dam/amd/en/documents/resources/technical-guidance-for-mitigating-branch-type-confusion.pdf>`_
++
++.. [#intel-smep-rsb] "Enhanced IBRS" in `Indirect Branch Restricted Speculation <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/indirect-branch-restricted-speculation.html>`_
++
++.. [#amd-eibrs-vmexit] "Extended Feature Enable Register (EFER)" in `AMD64 Architecture Programmer's Manual Volume 2: System Programming <https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf>`_
++
++.. [#intel-eibrs-vmexit] "Enhanced IBRS" in `Indirect Branch Restricted Speculation <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/indirect-branch-restricted-speculation.html>`_
++
++.. [#intel-pbrsb] `Post-barrier Return Stack Buffer Predictions / CVE-2022-26373 / INTEL-SA-00706 <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/advisory-guidance/post-barrier-return-stack-buffer-predictions.html>`_
++
++.. [#retbleed-paper] `RETBleed: Arbitrary Speculative Code Execution with Return Instruction <https://comsec.ethz.ch/wp-content/files/retbleed_sec22.pdf>`_
++
++.. [#amd-btc] `Technical Guidance for Mitigating Branch Type Confusion <https://www.amd.com/content/dam/amd/en/documents/resources/technical-guidance-for-mitigating-branch-type-confusion.pdf>`_
++
++.. [#amd-srso] `Technical Update Regarding Speculative Return Stack Overflow <https://www.amd.com/content/dam/amd/en/documents/corporate/cr/speculative-return-stack-overflow-whitepaper.pdf>`_
++
++.. [#inception-paper] `Inception: Exposing New Attack Surfaces with Training in Transient Execution <https://comsec.ethz.ch/wp-content/files/inception_sec23.pdf>`_
++
++.. [#intel-rsbu] `Return Stack Buffer Underflow / Return Stack Buffer Underflow / CVE-2022-29901, CVE-2022-28693 / INTEL-SA-00702 <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/advisory-guidance/return-stack-buffer-underflow.html>`_
++
++.. [#intel-ibpb-btb] `Indirect Branch Predictor Barrier' <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/indirect-branch-predictor-barrier.html>`_
++
++.. [#intel-eibrs-rrsba] "Guidance for RSBU" in `Return Stack Buffer Underflow / Return Stack Buffer Underflow / CVE-2022-29901, CVE-2022-28693 / INTEL-SA-00702 <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/advisory-guidance/return-stack-buffer-underflow.html>`_
++
++.. [#bhi-paper] `Branch History Injection: On the Effectiveness of Hardware Mitigations Against Cross-Privilege Spectre-v2 Attacks <http://download.vusec.net/papers/bhi-spectre-bhb_sec22.pdf>`_
++
++.. [#intel-bhi] `Branch History Injection and Intra-mode Branch Target Injection / CVE-2022-0001, CVE-2022-0002 / INTEL-SA-00598 <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/branch-history-injection.html>`_
++
++.. [#intel-retpoline-rrsba] "Retpoline" in `Branch History Injection and Intra-mode Branch Target Injection / CVE-2022-0001, CVE-2022-0002 / INTEL-SA-00598 <https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/branch-history-injection.html>`_
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index e2a672f..362602b 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1594,25 +1594,25 @@ static void __init spec_ctrl_disable_kernel_rrsba(void)
+ static void __init spectre_v2_select_rsb_mitigation(enum spectre_v2_mitigation mode)
  {
--	struct bts_buffer *buf;
-+	struct bts_buffer *bb;
- 	struct page *page;
- 	int cpu = event->cpu;
- 	int node = (cpu == -1) ? cpu : cpu_to_node(cpu);
- 	unsigned long offset;
- 	size_t size = nr_pages << PAGE_SHIFT;
--	int pg, nbuf, pad;
-+	int pg, nr_buf, pad;
- 
- 	/* count all the high order buffers */
--	for (pg = 0, nbuf = 0; pg < nr_pages;) {
-+	for (pg = 0, nr_buf = 0; pg < nr_pages;) {
- 		page = virt_to_page(pages[pg]);
- 		pg += buf_nr_pages(page);
--		nbuf++;
-+		nr_buf++;
- 	}
- 
  	/*
- 	 * to avoid interrupts in overwrite mode, only allow one physical
+-	 * Similar to context switches, there are two types of RSB attacks
+-	 * after VM exit:
++	 * WARNING! There are many subtleties to consider when changing *any*
++	 * code related to RSB-related mitigations.  Before doing so, carefully
++	 * read the following document, and update if necessary:
+ 	 *
+-	 * 1) RSB underflow
++	 *   Documentation/admin-guide/hw-vuln/rsb.rst
+ 	 *
+-	 * 2) Poisoned RSB entry
++	 * In an overly simplified nutshell:
+ 	 *
+-	 * When retpoline is enabled, both are mitigated by filling/clearing
+-	 * the RSB.
++	 *   - User->user RSB attacks are conditionally mitigated during
++	 *     context switches by cond_mitigation -> write_ibpb().
+ 	 *
+-	 * When IBRS is enabled, while #1 would be mitigated by the IBRS branch
+-	 * prediction isolation protections, RSB still needs to be cleared
+-	 * because of #2.  Note that SMEP provides no protection here, unlike
+-	 * user-space-poisoned RSB entries.
++	 *   - User->kernel and guest->host attacks are mitigated by eIBRS or
++	 *     RSB filling.
+ 	 *
+-	 * eIBRS should protect against RSB poisoning, but if the EIBRS_PBRSB
+-	 * bug is present then a LITE version of RSB protection is required,
+-	 * just a single call needs to retire before a RET is executed.
++	 *     Though, depending on config, note that other alternative
++	 *     mitigations may end up getting used instead, e.g., IBPB on
++	 *     entry/vmexit, call depth tracking, or return thunks.
  	 */
--	if (overwrite && nbuf > 1)
-+	if (overwrite && nr_buf > 1)
- 		return NULL;
++
+ 	switch (mode) {
+ 	case SPECTRE_V2_NONE:
+ 		break;
+@@ -1832,44 +1832,6 @@ static void __init spectre_v2_select_mitigation(void)
+ 	spectre_v2_enabled = mode;
+ 	pr_info("%s\n", spectre_v2_strings[mode]);
  
--	buf = kzalloc_node(offsetof(struct bts_buffer, buf[nbuf]), GFP_KERNEL, node);
--	if (!buf)
-+	bb = kzalloc_node(offsetof(struct bts_buffer, buf[nr_buf]), GFP_KERNEL, node);
-+	if (!bb)
- 		return NULL;
- 
--	buf->nr_pages = nr_pages;
--	buf->nr_bufs = nbuf;
--	buf->snapshot = overwrite;
--	buf->data_pages = pages;
--	buf->real_size = size - size % BTS_RECORD_SIZE;
-+	bb->nr_pages = nr_pages;
-+	bb->nr_bufs = nr_buf;
-+	bb->snapshot = overwrite;
-+	bb->data_pages = pages;
-+	bb->real_size = size - size % BTS_RECORD_SIZE;
- 
--	for (pg = 0, nbuf = 0, offset = 0, pad = 0; nbuf < buf->nr_bufs; nbuf++) {
-+	for (pg = 0, nr_buf = 0, offset = 0, pad = 0; nr_buf < bb->nr_bufs; nr_buf++) {
- 		unsigned int __nr_pages;
- 
- 		page = virt_to_page(pages[pg]);
- 		__nr_pages = buf_nr_pages(page);
--		buf->buf[nbuf].page = page;
--		buf->buf[nbuf].offset = offset;
--		buf->buf[nbuf].displacement = (pad ? BTS_RECORD_SIZE - pad : 0);
--		buf->buf[nbuf].size = buf_size(page) - buf->buf[nbuf].displacement;
--		pad = buf->buf[nbuf].size % BTS_RECORD_SIZE;
--		buf->buf[nbuf].size -= pad;
-+		bb->buf[nr_buf].page = page;
-+		bb->buf[nr_buf].offset = offset;
-+		bb->buf[nr_buf].displacement = (pad ? BTS_RECORD_SIZE - pad : 0);
-+		bb->buf[nr_buf].size = buf_size(page) - bb->buf[nr_buf].displacement;
-+		pad = bb->buf[nr_buf].size % BTS_RECORD_SIZE;
-+		bb->buf[nr_buf].size -= pad;
- 
- 		pg += __nr_pages;
- 		offset += __nr_pages << PAGE_SHIFT;
- 	}
- 
--	return buf;
-+	return bb;
- }
- 
- static void bts_buffer_free_aux(void *data)
-@@ -135,25 +135,25 @@ static void bts_buffer_free_aux(void *data)
- 	kfree(data);
- }
- 
--static unsigned long bts_buffer_offset(struct bts_buffer *buf, unsigned int idx)
-+static unsigned long bts_buffer_offset(struct bts_buffer *bb, unsigned int idx)
- {
--	return buf->buf[idx].offset + buf->buf[idx].displacement;
-+	return bb->buf[idx].offset + bb->buf[idx].displacement;
- }
- 
- static void
--bts_config_buffer(struct bts_buffer *buf)
-+bts_config_buffer(struct bts_buffer *bb)
- {
- 	int cpu = raw_smp_processor_id();
- 	struct debug_store *ds = per_cpu(cpu_hw_events, cpu).ds;
--	struct bts_phys *phys = &buf->buf[buf->cur_buf];
-+	struct bts_phys *phys = &bb->buf[bb->cur_buf];
- 	unsigned long index, thresh = 0, end = phys->size;
- 	struct page *page = phys->page;
- 
--	index = local_read(&buf->head);
-+	index = local_read(&bb->head);
- 
--	if (!buf->snapshot) {
--		if (buf->end < phys->offset + buf_size(page))
--			end = buf->end - phys->offset - phys->displacement;
-+	if (!bb->snapshot) {
-+		if (bb->end < phys->offset + buf_size(page))
-+			end = bb->end - phys->offset - phys->displacement;
- 
- 		index -= phys->offset + phys->displacement;
- 
-@@ -168,7 +168,7 @@ bts_config_buffer(struct bts_buffer *buf)
- 	ds->bts_buffer_base = (u64)(long)page_address(page) + phys->displacement;
- 	ds->bts_index = ds->bts_buffer_base + index;
- 	ds->bts_absolute_maximum = ds->bts_buffer_base + end;
--	ds->bts_interrupt_threshold = !buf->snapshot
-+	ds->bts_interrupt_threshold = !bb->snapshot
- 		? ds->bts_buffer_base + thresh
- 		: ds->bts_absolute_maximum + BTS_RECORD_SIZE;
- }
-@@ -184,16 +184,16 @@ static void bts_update(struct bts_ctx *bts)
- {
- 	int cpu = raw_smp_processor_id();
- 	struct debug_store *ds = per_cpu(cpu_hw_events, cpu).ds;
--	struct bts_buffer *buf = perf_get_aux(&bts->handle);
-+	struct bts_buffer *bb = perf_get_aux(&bts->handle);
- 	unsigned long index = ds->bts_index - ds->bts_buffer_base, old, head;
- 
--	if (!buf)
-+	if (!bb)
- 		return;
- 
--	head = index + bts_buffer_offset(buf, buf->cur_buf);
--	old = local_xchg(&buf->head, head);
-+	head = index + bts_buffer_offset(bb, bb->cur_buf);
-+	old = local_xchg(&bb->head, head);
- 
--	if (!buf->snapshot) {
-+	if (!bb->snapshot) {
- 		if (old == head)
- 			return;
- 
-@@ -205,9 +205,9 @@ static void bts_update(struct bts_ctx *bts)
- 		 * old and head are always in the same physical buffer, so we
- 		 * can subtract them to get the data size.
- 		 */
--		local_add(head - old, &buf->data_size);
-+		local_add(head - old, &bb->data_size);
- 	} else {
--		local_set(&buf->data_size, head);
-+		local_set(&bb->data_size, head);
- 	}
+-	/*
+-	 * If Spectre v2 protection has been enabled, fill the RSB during a
+-	 * context switch.  In general there are two types of RSB attacks
+-	 * across context switches, for which the CALLs/RETs may be unbalanced.
+-	 *
+-	 * 1) RSB underflow
+-	 *
+-	 *    Some Intel parts have "bottomless RSB".  When the RSB is empty,
+-	 *    speculated return targets may come from the branch predictor,
+-	 *    which could have a user-poisoned BTB or BHB entry.
+-	 *
+-	 *    AMD has it even worse: *all* returns are speculated from the BTB,
+-	 *    regardless of the state of the RSB.
+-	 *
+-	 *    When IBRS or eIBRS is enabled, the "user -> kernel" attack
+-	 *    scenario is mitigated by the IBRS branch prediction isolation
+-	 *    properties, so the RSB buffer filling wouldn't be necessary to
+-	 *    protect against this type of attack.
+-	 *
+-	 *    The "user -> user" attack scenario is mitigated by RSB filling.
+-	 *
+-	 * 2) Poisoned RSB entry
+-	 *
+-	 *    If the 'next' in-kernel return stack is shorter than 'prev',
+-	 *    'next' could be tricked into speculating with a user-poisoned RSB
+-	 *    entry.
+-	 *
+-	 *    The "user -> kernel" attack scenario is mitigated by SMEP and
+-	 *    eIBRS.
+-	 *
+-	 *    The "user -> user" scenario, also known as SpectreBHB, requires
+-	 *    RSB clearing.
+-	 *
+-	 * So to mitigate all cases, unconditionally fill RSB on context
+-	 * switches.
+-	 *
+-	 * FIXME: Is this pointless for retbleed-affected AMD?
+-	 */
+ 	spectre_v2_select_rsb_mitigation(mode);
  
  	/*
-@@ -218,7 +218,7 @@ static void bts_update(struct bts_ctx *bts)
- }
- 
- static int
--bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle);
-+bts_buffer_reset(struct bts_buffer *bb, struct perf_output_handle *handle);
- 
- /*
-  * Ordering PMU callbacks wrt themselves and the PMI is done by means
-@@ -232,17 +232,17 @@ bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle);
- static void __bts_event_start(struct perf_event *event)
- {
- 	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
--	struct bts_buffer *buf = perf_get_aux(&bts->handle);
-+	struct bts_buffer *bb = perf_get_aux(&bts->handle);
- 	u64 config = 0;
- 
--	if (!buf->snapshot)
-+	if (!bb->snapshot)
- 		config |= ARCH_PERFMON_EVENTSEL_INT;
- 	if (!event->attr.exclude_kernel)
- 		config |= ARCH_PERFMON_EVENTSEL_OS;
- 	if (!event->attr.exclude_user)
- 		config |= ARCH_PERFMON_EVENTSEL_USR;
- 
--	bts_config_buffer(buf);
-+	bts_config_buffer(bb);
- 
- 	/*
- 	 * local barrier to make sure that ds configuration made it
-@@ -261,13 +261,13 @@ static void bts_event_start(struct perf_event *event, int flags)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
--	struct bts_buffer *buf;
-+	struct bts_buffer *bb;
- 
--	buf = perf_aux_output_begin(&bts->handle, event);
--	if (!buf)
-+	bb = perf_aux_output_begin(&bts->handle, event);
-+	if (!bb)
- 		goto fail_stop;
- 
--	if (bts_buffer_reset(buf, &bts->handle))
-+	if (bts_buffer_reset(bb, &bts->handle))
- 		goto fail_end_stop;
- 
- 	bts->ds_back.bts_buffer_base = cpuc->ds->bts_buffer_base;
-@@ -306,27 +306,27 @@ static void bts_event_stop(struct perf_event *event, int flags)
- {
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	struct bts_ctx *bts = this_cpu_ptr(bts_ctx);
--	struct bts_buffer *buf = NULL;
-+	struct bts_buffer *bb = NULL;
- 	int state = READ_ONCE(bts->state);
- 
- 	if (state == BTS_STATE_ACTIVE)
- 		__bts_event_stop(event, BTS_STATE_STOPPED);
- 
- 	if (state != BTS_STATE_STOPPED)
--		buf = perf_get_aux(&bts->handle);
-+		bb = perf_get_aux(&bts->handle);
- 
- 	event->hw.state |= PERF_HES_STOPPED;
- 
- 	if (flags & PERF_EF_UPDATE) {
- 		bts_update(bts);
- 
--		if (buf) {
--			if (buf->snapshot)
-+		if (bb) {
-+			if (bb->snapshot)
- 				bts->handle.head =
--					local_xchg(&buf->data_size,
--						   buf->nr_pages << PAGE_SHIFT);
-+					local_xchg(&bb->data_size,
-+						   bb->nr_pages << PAGE_SHIFT);
- 			perf_aux_output_end(&bts->handle,
--			                    local_xchg(&buf->data_size, 0));
-+					    local_xchg(&bb->data_size, 0));
- 		}
- 
- 		cpuc->ds->bts_index = bts->ds_back.bts_buffer_base;
-@@ -382,19 +382,19 @@ void intel_bts_disable_local(void)
- }
- 
- static int
--bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle)
-+bts_buffer_reset(struct bts_buffer *bb, struct perf_output_handle *handle)
- {
- 	unsigned long head, space, next_space, pad, gap, skip, wakeup;
- 	unsigned int next_buf;
- 	struct bts_phys *phys, *next_phys;
- 	int ret;
- 
--	if (buf->snapshot)
-+	if (bb->snapshot)
- 		return 0;
- 
--	head = handle->head & ((buf->nr_pages << PAGE_SHIFT) - 1);
-+	head = handle->head & ((bb->nr_pages << PAGE_SHIFT) - 1);
- 
--	phys = &buf->buf[buf->cur_buf];
-+	phys = &bb->buf[bb->cur_buf];
- 	space = phys->offset + phys->displacement + phys->size - head;
- 	pad = space;
- 	if (space > handle->size) {
-@@ -403,10 +403,10 @@ bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle)
- 	}
- 	if (space <= BTS_SAFETY_MARGIN) {
- 		/* See if next phys buffer has more space */
--		next_buf = buf->cur_buf + 1;
--		if (next_buf >= buf->nr_bufs)
-+		next_buf = bb->cur_buf + 1;
-+		if (next_buf >= bb->nr_bufs)
- 			next_buf = 0;
--		next_phys = &buf->buf[next_buf];
-+		next_phys = &bb->buf[next_buf];
- 		gap = buf_size(phys->page) - phys->displacement - phys->size +
- 		      next_phys->displacement;
- 		skip = pad + gap;
-@@ -431,8 +431,8 @@ bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle)
- 				 * anymore, so we must not be racing with
- 				 * bts_update().
- 				 */
--				buf->cur_buf = next_buf;
--				local_set(&buf->head, head);
-+				bb->cur_buf = next_buf;
-+				local_set(&bb->head, head);
- 			}
- 		}
- 	}
-@@ -445,7 +445,7 @@ bts_buffer_reset(struct bts_buffer *buf, struct perf_output_handle *handle)
- 		space -= space % BTS_RECORD_SIZE;
- 	}
- 
--	buf->end = head + space;
-+	bb->end = head + space;
- 
- 	/*
- 	 * If we have no space, the lost notification would have been sent when
-@@ -462,7 +462,7 @@ int intel_bts_interrupt(void)
- 	struct debug_store *ds = this_cpu_ptr(&cpu_hw_events)->ds;
- 	struct bts_ctx *bts;
- 	struct perf_event *event;
--	struct bts_buffer *buf;
-+	struct bts_buffer *bb;
- 	s64 old_head;
- 	int err = -ENOSPC, handled = 0;
- 
-@@ -485,8 +485,8 @@ int intel_bts_interrupt(void)
- 	if (READ_ONCE(bts->state) == BTS_STATE_STOPPED)
- 		return handled;
- 
--	buf = perf_get_aux(&bts->handle);
--	if (!buf)
-+	bb = perf_get_aux(&bts->handle);
-+	if (!bb)
- 		return handled;
- 
- 	/*
-@@ -494,26 +494,26 @@ int intel_bts_interrupt(void)
- 	 * there's no other way of telling, because the pointer will
- 	 * keep moving
- 	 */
--	if (buf->snapshot)
-+	if (bb->snapshot)
- 		return 0;
- 
--	old_head = local_read(&buf->head);
-+	old_head = local_read(&bb->head);
- 	bts_update(bts);
- 
- 	/* no new data */
--	if (old_head == local_read(&buf->head))
-+	if (old_head == local_read(&bb->head))
- 		return handled;
- 
--	perf_aux_output_end(&bts->handle, local_xchg(&buf->data_size, 0));
-+	perf_aux_output_end(&bts->handle, local_xchg(&bb->data_size, 0));
- 
--	buf = perf_aux_output_begin(&bts->handle, event);
--	if (buf)
--		err = bts_buffer_reset(buf, &bts->handle);
-+	bb = perf_aux_output_begin(&bts->handle, event);
-+	if (bb)
-+		err = bts_buffer_reset(bb, &bts->handle);
- 
- 	if (err) {
- 		WRITE_ONCE(bts->state, BTS_STATE_STOPPED);
- 
--		if (buf) {
-+		if (bb) {
- 			/*
- 			 * BTS_STATE_STOPPED should be visible before
- 			 * cleared handle::event
 
