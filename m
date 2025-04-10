@@ -1,108 +1,125 @@
-Return-Path: <linux-tip-commits+bounces-4832-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4833-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCE4A84EDF
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Apr 2025 22:57:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C36A84EFD
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Apr 2025 23:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BC903BC270
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Apr 2025 20:55:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 814F49A01A0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Apr 2025 21:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AD928FFFA;
-	Thu, 10 Apr 2025 20:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A63C6EB79;
+	Thu, 10 Apr 2025 21:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itUzQq6w"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BsOsWgZW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ozW3Yx1c"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF25328FFD6;
-	Thu, 10 Apr 2025 20:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04441C5D63;
+	Thu, 10 Apr 2025 21:04:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744318559; cv=none; b=mzqZxvLgjMHa1+UqEp8oThKxNSklgqg6miiclmqq2P8hktYIBHW2wzdmtBXTFUP9LlqBOk5evb1MMdSR3ZiF5QHrg7jufLh9wUIIO1l6G/W2KKqjcWgBbevJAVvLf++IX5FtNEROqIk3Z4kpBUdnaqiqfqGkFEFeMxwsErpmHkA=
+	t=1744319101; cv=none; b=LkUoxBMfpzzsVrj97le7W2SMUXPqV4HKMCqJfmH6hvXjTnEal/VNSMXmx/055MbLFTxLIeM7dKWUPjSQuPGr5TV0MHV0y+BM1u3P2Q8qjgoChYKB7kJ2JhsrAilEZMuW6s3946sTPwI9tEdviFjvmTwB4XHtNK9kLpg7JTFomEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744318559; c=relaxed/simple;
-	bh=sIP4LMNjW981G+7sUprk0fjwVK1ccUGInZpZiAoDh+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lipWWItFSGPcWVbrEte8leyqMjTr5sFuEhLG5Rk8Z/KTjIURkPUe3GdQJ7aQeg4B1T0a1Cr+Mi6F5qrmu832NBZ2IW8u6q1UgT3RdXwHEBIfEFjdv7RrfANIiyo/KEgxRNYbmM4tyeJgA8i73pjlZKqFl4MvArK9mV3hK5d04V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itUzQq6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E61C4CEE7;
-	Thu, 10 Apr 2025 20:55:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744318558;
-	bh=sIP4LMNjW981G+7sUprk0fjwVK1ccUGInZpZiAoDh+c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=itUzQq6wRMVynRgOnqug4Eex6T3g3sgv8o2V0EH+ylqu0VsjfDK+svYy3v0n3IE8y
-	 kRItzCdpjnWkTot3qoPXzNi1PrqUr4EpZCrNtkXLvGOuNhjHE7oopxIzSG1quEqFKV
-	 mlVJ9M7hmvEdFPtyH3267R+Y6PRLX006c+TuGYNDha5xzlx1c7uKC56Uavzv5uIIVH
-	 x6enznqtFnAUj2Hdw2QDtX67y/d+P7TScQU/sg+8t8Z9S1ZKip4u5iHhzG/xycagxX
-	 14hU1iBmcmbG918YfE8RPGHuLLpCloRXWO3dXdr5C5cejU70DOV198ebORMmoMKZ4f
-	 Urat8QlSAZm6w==
-Date: Thu, 10 Apr 2025 22:55:54 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: tip-bot2 for Josh Poimboeuf <tip-bot2@linutronix.de>,
-	linux-tip-commits@vger.kernel.org,
-	kernel test robot <lkp@intel.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [tip: objtool/urgent] objtool: Fix false-positive "ignoring
+	s=arc-20240116; t=1744319101; c=relaxed/simple;
+	bh=yzmFfgSb6xct0UVBNlIPbqnCeOW2Oii6tsLkiXI/GlA=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=YlXj/9AOQ7DNqlqz9lsfOOBJ+YOVWqeaqtkRI/xvwT96JTQzZiqFFEOE5ghhOG4AhJ0meXlsHNgA3dDyFXOsG94oxnjkvN96vzw7kkoKIQ/t2rJ7R4wA2+RYtYco5esCIpvreX9lVLMx0WdS2EVtxnlT0i8eUY6X0c7+3j0dZQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BsOsWgZW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ozW3Yx1c; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 10 Apr 2025 21:04:45 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744319091;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wSMrn6LW5x02/8PXlrgGfoFJUwuSquEFU0IkIcpUo4=;
+	b=BsOsWgZW2mKQzJbTbXWc9JT1TEmunbcelPdd9VpJJx6SYmWjpelFRupQe+wn5mLunNaHm/
+	P+41xVUU0qC6uDZHGAGfnruHgdW1mZVnWU+8EBWFAMdTInC5tKRlk1TKyR1UlNA/w66S33
+	K09ZdvdyjbPAOdQNlW4H6k8H7VSXe3BM0JIpr9URG4O7F8NuVMNtbwiKm+qt7d1Crl0r57
+	TtqibXYTLzpzduDcO1IpcKJm0eoBI4SE31A2BvD12HhxA5G1wGWZ6ebh9BHYQuE1b/fWIC
+	WNDl9F5q4KjM1FMhGIDW8fDkRRCo0t+U623VZmB1BnZk28v3LOUluT8jOmwbRw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744319091;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3wSMrn6LW5x02/8PXlrgGfoFJUwuSquEFU0IkIcpUo4=;
+	b=ozW3Yx1cS6i4hgqG17dooZ51Ho7/yElf8jxnL+zWW2EQ19Qr1U6e4pk/4dx2djDePQKWrZ
+	+nunC3SIaq8pSmBA==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/urgent] objtool: Fix false-positive "ignoring
  unreachables" warning
-Message-ID: <Z_gwWnvENF6DY6h-@gmail.com>
-References: <5eb28eeb6a724b7d945a961cfdcf8d41e6edf3dc.1744238814.git.jpoimboe@kernel.org>
- <174426568347.31282.17971680226674649784.tip-bot2@tip-bot2>
- <jd2rsmxvbvawlwwaatx323pzh5on3tjt5cxx5m7icf3sgj6vao@kjmjgb252u3x>
+Cc: kernel test robot <lkp@intel.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To:
+ <5eb28eeb6a724b7d945a961cfdcf8d41e6edf3dc.1744238814.git.jpoimboe@kernel.org>
+References:
+ <5eb28eeb6a724b7d945a961cfdcf8d41e6edf3dc.1744238814.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jd2rsmxvbvawlwwaatx323pzh5on3tjt5cxx5m7icf3sgj6vao@kjmjgb252u3x>
+Message-ID: <174431908613.31282.16929702486246710776.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the objtool/urgent branch of tip:
 
-* Josh Poimboeuf <jpoimboe@kernel.org> wrote:
+Commit-ID:     87cb582d2f55d379ce95b5bcc4ec596e29b0a65e
+Gitweb:        https://git.kernel.org/tip/87cb582d2f55d379ce95b5bcc4ec596e29b0a65e
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 09 Apr 2025 15:49:36 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 10 Apr 2025 22:55:00 +02:00
 
-> On Thu, Apr 10, 2025 at 06:14:43AM +0000, tip-bot2 for Josh Poimboeuf wrote:
-> > The following commit has been merged into the objtool/urgent branch of tip:
-> > 
-> > Commit-ID:     8af6f0fe9c4340ed97f0ba4f3f6cc7bb16558e87
-> > Gitweb:        https://git.kernel.org/tip/8af6f0fe9c4340ed97f0ba4f3f6cc7bb16558e87
-> > Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-> > AuthorDate:    Wed, 09 Apr 2025 15:49:36 -07:00
-> > Committer:     Ingo Molnar <mingo@kernel.org>
-> > CommitterDate: Thu, 10 Apr 2025 08:03:05 +02:00
-> > 
-> > objtool: Fix false-positive "ignoring unreachables" warning
-> > 
-> > There's no need to try to automatically disable unreachable warnings if
-> > they've already been manually disabled due to CONFIG_KCOV quirks.
-> > 
-> > This avoids a spurious warning with a KCOV kernel:
-> > 
-> >   fs/smb/client/cifs_unicode.o: warning: objtool: cifsConvertToUTF16.part.0+0xce5: ignoring unreachables due to jump table quirk
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
-> > Link: https://lore.kernel.org/r/5eb28eeb6a724b7d945a961cfdcf8d41e6edf3dc.1744238814.git.jpoimboe@kernel.org
-> > 
-> > Closes: https://lore.kernel.org/r/202504090910.QkvTAR36-lkp@intel.com/
-> 
-> Superfluous newline there.
+objtool: Fix false-positive "ignoring unreachables" warning
 
-Fixed. Not sure what happened there.
+There's no need to try to automatically disable unreachable warnings if
+they've already been manually disabled due to CONFIG_KCOV quirks.
 
-> Also, this probably could use a fixes tag:
-> 
-> Fixes: eeff7ac61526 ("objtool: Warn when disabling unreachable warnings")
+This avoids a spurious warning with a KCOV kernel:
 
-Added that one too.
+  fs/smb/client/cifs_unicode.o: warning: objtool: cifsConvertToUTF16.part.0+0xce5: ignoring unreachables due to jump table quirk
 
-Thanks!
+Fixes: eeff7ac61526 ("objtool: Warn when disabling unreachable warnings")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/5eb28eeb6a724b7d945a961cfdcf8d41e6edf3dc.1744238814.git.jpoimboe@kernel.org
+Closes: https://lore.kernel.org/r/202504090910.QkvTAR36-lkp@intel.com/
+---
+ tools/objtool/arch/x86/special.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	Ingo
+diff --git a/tools/objtool/arch/x86/special.c b/tools/objtool/arch/x86/special.c
+index 403e587..06ca4a2 100644
+--- a/tools/objtool/arch/x86/special.c
++++ b/tools/objtool/arch/x86/special.c
+@@ -126,7 +126,7 @@ struct reloc *arch_find_switch_table(struct objtool_file *file,
+ 	 * indicates a rare GCC quirk/bug which can leave dead
+ 	 * code behind.
+ 	 */
+-	if (reloc_type(text_reloc) == R_X86_64_PC32) {
++	if (!file->ignore_unreachables && reloc_type(text_reloc) == R_X86_64_PC32) {
+ 		WARN_INSN(insn, "ignoring unreachables due to jump table quirk");
+ 		file->ignore_unreachables = true;
+ 	}
 
