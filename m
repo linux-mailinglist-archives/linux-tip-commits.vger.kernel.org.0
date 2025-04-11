@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-4834-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4835-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8026A853B3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 07:57:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA300A858AA
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 12:01:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4981B6288C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 05:53:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAE311706B7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 10:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C81227CCFF;
-	Fri, 11 Apr 2025 05:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70B027CCE2;
+	Fri, 11 Apr 2025 10:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kL59YxhU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VgkR+Q2Z"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0frQemnY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v+geXJgn"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D709B27CCD6;
-	Fri, 11 Apr 2025 05:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F01B27EC9D;
+	Fri, 11 Apr 2025 10:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744350292; cv=none; b=QVHFt5Vy7gr1KGqVK8ciX1xCi8YfkudNHedjcKyHfX+MAkyr2xEUKYR/q+OG4DpJp1P9vQfMRO3Ig91bB+aE45HE+3dDJe27FCEZcVScf8XynvxlAZoqV6Cdb4zosvGWot4UhBjMuI29LmR0IOR8I2NAcbnGjtNjETEpuVskBDc=
+	t=1744365700; cv=none; b=huFnh/otXHs6dTSnzYH9EwoYIDgbcAnoA3ssJdlaGkpSIvUhX2kyifwa9aBPcpI3bUtXWahM+acIdGWTjC6p5FCLpaQMSYzw3e4lAOC4xiOf8G77gLMee+VbGkLtwVx/pSMN5zcmpJBAN8P29XtIf31nzvlP/p+aH3haLu1CgcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744350292; c=relaxed/simple;
-	bh=xebDiIQQ2wgC0/HnVBr0UvIfwklyg6b7Z4k06Voi9eM=;
+	s=arc-20240116; t=1744365700; c=relaxed/simple;
+	bh=AFWwU6GMA/FhynWz2a1qsT5hZ1mmzT+E258eTGU783Y=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=B76KoDSgc0BZerxzAotuzlHvAPZS6Z38P5n8cC49lZbyOp7zV2cAFkDY6GVj6+mNXX88Y392zf3LK19Zkx7sVDR2QZoj1r9apCfwWWcH6q/ZUEVyXz+9l31p6pBH03pcSslTgu89yKFVG3nyDBXTCqv4taa3m9asNKqSRx1E+sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kL59YxhU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VgkR+Q2Z; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bezDgF+2VuRtcebdh1nFLuUAKUQHNyLZ+flFpAn++NVjGTc8LkTy3tV1TeAzCqy4noV8SMNnwFwPKG+78v4aCO99hwS8yfjFbw5OLuCgzTkRlv3LhhRNS1rdFTJCrtBjW+uNQfGmPhzebll6Brdwtv4G8uh06J2H1ee0fzR4CGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0frQemnY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v+geXJgn; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 11 Apr 2025 05:44:41 -0000
+Date: Fri, 11 Apr 2025 10:01:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744350288;
+	s=2020; t=1744365696;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i4/+ndLmoMJWpHExxOrgWYAe7YeA2D7nUdx6OURcDfY=;
-	b=kL59YxhUSoIm4CPSlz0vymAGN4YML91TffYqhUOCJVNQRoPc53UTxUmP2WhHe4V83vOd6B
-	2+hQEVu0gzgiR3Kn/ahZJgU2li17voNPby1NNA8A3YNnQh7A9O+PoauVjXr/p2bfPWhwM2
-	UsjyOIoOq9IzeoLbngqUO2wmCI+7xtMamEMk5c6d9x9NLzSeaOEH0iWICOFSUXA02nviNg
-	0CzRniXmQylGxjWHNV0KIhSXUDbN3Ml8T7oookdisg01l1CPaNlMgp986eCrLTRupyjLcU
-	hBEFAm8YHFAf5Y7a/0dU6iyXWXeEbnem0Aqqgxhl5/2MFsfdlIX8V3LLfULWHA==
+	bh=IskIfgBsXhU9raEgO4D2090Hvm2Ob2DcGjUjeSmVsWI=;
+	b=0frQemnYrjssBy5on6YcyEPiyDTvSp6BF/tq07FXSdjWx4AXGgM7PQwPAJeJEcB6MzN+T7
+	VPh5xxjf1KJefhSSFK/RbcU9KxuqTB7UTUch5UkkMy7LSZ1COggOMINczYY7ZeWgEpBXcE
+	CP6mairehB9144g2BMIyrsKrq4IYP+/j3DK7tteOFdXpbhBDtFSMxl4LeTJbL3x6WU87D5
+	o+kDUgK7vN392AEP8jsy645v86uOs7xLkDC3XTe7oDUmMMALA6GVfZPd9W385bZn1x8LQ7
+	OUNtAbiwqAgz7zQpKZCyG1YApa728aw4Cw8XAWVtII9AX8pVv3HSkmrmpvFF3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744350288;
+	s=2020e; t=1744365696;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i4/+ndLmoMJWpHExxOrgWYAe7YeA2D7nUdx6OURcDfY=;
-	b=VgkR+Q2ZfZl0pqQN+iHciMjrX3RUDYqKnnqGqxaWXtsnrNY5XckQTOEg7Umx0TnH2C+p+w
-	f/snmTrBUgWCcyDA==
-From: "tip-bot2 for Fernando Fernandez Mancera" <tip-bot2@linutronix.de>
+	bh=IskIfgBsXhU9raEgO4D2090Hvm2Ob2DcGjUjeSmVsWI=;
+	b=v+geXJgnJrPNQZNsJb4FdycHccnip/a1Gl0DpGM0ahDDY8t81sybyxE6TyMKzlrhf89h7D
+	1PpQVpw+wQyqupBQ==
+From: "tip-bot2 for Jason Andryuk" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] x86/i8253: Call clockevent_i8253_disable() with
- interrupts disabled
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Fernando Fernandez Mancera <ffmancera@riseup.net>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <Z-uwd4Bnn7FcCShX@gmail.com>
-References: <Z-uwd4Bnn7FcCShX@gmail.com>
+Subject: [tip: x86/urgent] x86/xen: Fix __xen_hypercall_setfunc()
+Cc: Juergen Gross <jgross@suse.com>, Jason Andryuk <jason.andryuk@amd.com>,
+ Ingo Molnar <mingo@kernel.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, "Xin Li (Intel)" <xin@zytor.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250410193106.16353-1-jason.andryuk@amd.com>
+References: <20250410193106.16353-1-jason.andryuk@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174435028421.31282.9864723186814628549.tip-bot2@tip-bot2>
+Message-ID: <174436567811.31282.12400498126986636858.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,75 +80,66 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3940f5349b476197fb079c5aa19c9a988de64efb
-Gitweb:        https://git.kernel.org/tip/3940f5349b476197fb079c5aa19c9a988de64efb
-Author:        Fernando Fernandez Mancera <ffmancera@riseup.net>
-AuthorDate:    Tue, 01 Apr 2025 11:23:03 +02:00
+Commit-ID:     164a9f712fa53e4c92b2a435bb071a5be0c31dbc
+Gitweb:        https://git.kernel.org/tip/164a9f712fa53e4c92b2a435bb071a5be0c31dbc
+Author:        Jason Andryuk <jason.andryuk@amd.com>
+AuthorDate:    Thu, 10 Apr 2025 15:31:05 -04:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 11 Apr 2025 07:28:20 +02:00
+CommitterDate: Fri, 11 Apr 2025 11:39:50 +02:00
 
-x86/i8253: Call clockevent_i8253_disable() with interrupts disabled
+x86/xen: Fix __xen_hypercall_setfunc()
 
-There's a lockdep false positive warning related to i8253_lock:
+Hypercall detection is failing with xen_hypercall_intel() chosen even on
+an AMD processor.  Looking at the disassembly, the call to
+xen_get_vendor() was removed.
 
-  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
-  ...
-  systemd-sleep/3324 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-  ffffffffb2c23398 (i8253_lock){+.+.}-{2:2}, at: pcspkr_event+0x3f/0xe0 [pcspkr]
+The check for boot_cpu_has(X86_FEATURE_CPUID) was used as a proxy for
+the x86_vendor having been set.
 
-  ...
-  ... which became HARDIRQ-irq-unsafe at:
-  ...
-    lock_acquire+0xd0/0x2f0
-    _raw_spin_lock+0x30/0x40
-    clockevent_i8253_disable+0x1c/0x60
-    pit_timer_init+0x25/0x50
-    hpet_time_init+0x46/0x50
-    x86_late_time_init+0x1b/0x40
-    start_kernel+0x962/0xa00
-    x86_64_start_reservations+0x24/0x30
-    x86_64_start_kernel+0xed/0xf0
-    common_startup_64+0x13e/0x141
-  ...
+When CONFIG_X86_REQUIRED_FEATURE_CPUID=y (the default value), DCE eliminates
+the call to xen_get_vendor().  An uninitialized value 0 means
+X86_VENDOR_INTEL, so the Intel function is always returned.
 
-Lockdep complains due pit_timer_init() using the lock in an IRQ-unsafe
-fashion, but it's a false positive, because there is no deadlock
-possible at that point due to init ordering: at the point where
-pit_timer_init() is called there is no other possible usage of
-i8253_lock because the system is still in the very early boot stage
-with no interrupts.
+Remove the if and always call xen_get_vendor() to avoid this issue.
 
-But in any case, pit_timer_init() should disable interrupts before
-calling clockevent_i8253_disable() out of general principle, and to
-keep lockdep working even in this scenario.
-
-Use scoped_guard() for that, as suggested by Thomas Gleixner.
-
-[ mingo: Cleaned up the changelog. ]
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Fixes: 3d37d9396eb3 ("x86/cpufeatures: Add {REQUIRED,DISABLED} feature configs")
+Suggested-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/Z-uwd4Bnn7FcCShX@gmail.com
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Xin Li (Intel)" <xin@zytor.com>
+Link: https://lore.kernel.org/r/20250410193106.16353-1-jason.andryuk@amd.com
 ---
- arch/x86/kernel/i8253.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/xen/enlighten.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
-index 80e262b..cb9852a 100644
---- a/arch/x86/kernel/i8253.c
-+++ b/arch/x86/kernel/i8253.c
-@@ -46,7 +46,8 @@ bool __init pit_timer_init(void)
- 		 * VMMs otherwise steal CPU time just to pointlessly waggle
- 		 * the (masked) IRQ.
- 		 */
--		clockevent_i8253_disable();
-+		scoped_guard(irq)
-+			clockevent_i8253_disable();
- 		return false;
- 	}
- 	clockevent_i8253_init(true);
+diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+index 1b7710b..53282dc 100644
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -103,10 +103,6 @@ noinstr void *__xen_hypercall_setfunc(void)
+ 	void (*func)(void);
+ 
+ 	/*
+-	 * Xen is supported only on CPUs with CPUID, so testing for
+-	 * X86_FEATURE_CPUID is a test for early_cpu_init() having been
+-	 * run.
+-	 *
+ 	 * Note that __xen_hypercall_setfunc() is noinstr only due to a nasty
+ 	 * dependency chain: it is being called via the xen_hypercall static
+ 	 * call when running as a PVH or HVM guest. Hypercalls need to be
+@@ -118,8 +114,7 @@ noinstr void *__xen_hypercall_setfunc(void)
+ 	 */
+ 	instrumentation_begin();
+ 
+-	if (!boot_cpu_has(X86_FEATURE_CPUID))
+-		xen_get_vendor();
++	xen_get_vendor();
+ 
+ 	if ((boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
+ 	     boot_cpu_data.x86_vendor == X86_VENDOR_HYGON))
 
