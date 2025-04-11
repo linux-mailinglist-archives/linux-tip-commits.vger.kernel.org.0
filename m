@@ -1,234 +1,153 @@
-Return-Path: <linux-tip-commits+bounces-4891-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4893-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB5BA8593A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 12:16:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B37A86676
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 21:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE73F1890A6B
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 10:16:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6D54A52F3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 19:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CD3221289;
-	Fri, 11 Apr 2025 10:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9127F4D6;
+	Fri, 11 Apr 2025 19:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uX7vGStJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7z1aeg2M"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NoqPrLxj"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09087204840;
-	Fri, 11 Apr 2025 10:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43DA27F4C8;
+	Fri, 11 Apr 2025 19:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744366547; cv=none; b=OEZ5ise+mb5/JooO5vY8t1/p4Ors6o9eDQCFWu/gcIAVS548dYBbqTfOmq5oI268XsYFPGJ4cJx2yw3IrI5e5KMYMKxKrpa3XLmUhrGkmuHU/A8Dh3JuHic51ShKBtriPR0r94Re3YNfBfyQGeyxvk23thu11D5OE7A79py4Kho=
+	t=1744400036; cv=none; b=Pfg4uYGfhw8kva8gyCBf35iRgAL2D30yOM1jsTLksUXZWRq53Am4YuMdAJime3GWmKZB9B9PENrmTnb+x0cfX+Jqp/fmYHwaWNoK0I2yqL5t931huG94RTshlpiBi7i52BAf4G9trWfIT1+gVQ4tH917outhBKtDsD8e1kfYbCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744366547; c=relaxed/simple;
-	bh=L00IjLlZ2rWkQaW1//YsBvypWiWceXUt03CVZefdY9w=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ed83YZHQSkCS3mdfI9RvLgnFEnYK51qeOFhGv7xBqARlKJ37Y6LNJFLWepxOao3xGeo+fb4FQXFxun2X77DTAx9iTAKp8NeJK06A56YKNKtURXRUu9Vi5F74ngsY2kDNJaMLAAMRWgZfkHAEoyWi3e6Yf4+AvftfX2eAUGu9/Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uX7vGStJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7z1aeg2M; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 11 Apr 2025 10:15:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744366544;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s4GniOxpV0OBM6kwuRup1fM/XRNRpCGpV3hqZTqy/Ow=;
-	b=uX7vGStJZqRF4YVMbyFFf7RC3pB71UAovUxuorDPhoSuhck5a4xeDGj5SoXx+LDIBMUbci
-	rQlVfWmzD9fujaMSm1fnrpDGNjd4DDZfH720uGU9m9MquzHNRW9NWtNg9r6w1eVnxn3rDt
-	o0K6S/4WeNteUkekEeAGeW7x1Fy5KeBl45+O3yhsIGMBzPUgTdN2ImxD3O0/Mugi9NWEOl
-	qGHm6e0qnURGBNOlchDyNjLpPK3O4MtXPP721ODUSBgOoCFMgYtw6/8xwUse2Vis+hxBx5
-	6nNG7HV611fm0iwabn5LiCb8RKDr17rxFd2u7xVQyZ9DEN3+9gAWe1Et+X8B2w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744366544;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s4GniOxpV0OBM6kwuRup1fM/XRNRpCGpV3hqZTqy/Ow=;
-	b=7z1aeg2MJMyhFf7fbqBfVhHllum54U3c4Twen1J+NnLc5nucT0epnBBYEzyoOXNlWfHEkJ
-	KKnLxli6BPKa0uDw==
-From: "tip-bot2 for Stefano Garzarella" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sev] x86/sev: Add SVSM vTPM probe/send_command functions
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
- Claudio Carvalho <cclaudio@linux.ibm.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, Jarkko Sakkinen <jarkko@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250403100943.120738-2-sgarzare@redhat.com>
-References: <20250403100943.120738-2-sgarzare@redhat.com>
+	s=arc-20240116; t=1744400036; c=relaxed/simple;
+	bh=SrT6rgnxdHfJzhh2SqWlmgTwglXLTpyms5quPAeP0UQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UbOe3j0A6RBEYgAwcMY2uZAWzqLGiWyaLe56/+rWTR8dd42XtBrHkbmZLvRfGzH8YYLJDAjPcwUc+GEKJFGfwPguxxl4iL6/nBu5+qvqYCWoz096wc7uIxGklDHM03uXVjcI2C/qDXzCU/uez8uKeZWPR0p42SYSs1vReOgob4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NoqPrLxj; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744400035; x=1775936035;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SrT6rgnxdHfJzhh2SqWlmgTwglXLTpyms5quPAeP0UQ=;
+  b=NoqPrLxj7XnJJNIlIaieagDggZOksSvNBDAxQwCpF39lMcvuZ/3TGh+8
+   XswTv7x8yRHyo4hYmGQB3zuB7Lu3JDm8IfTl6ZQzba9oUm/ZAV93zZEQu
+   hQHJOkLYMblbaK4rbi3F4y8bs7GKf9XlQFbcvSBMlWadZu7RLLC2wR32F
+   Knb2QJVOGhszlKwItn2iykusF6o9pl5ONTWkSmV5F2TXNyRB2hMNcL4cp
+   wTEOV76WWDoeM0Ep79sE5z094d/SKvKaKprOwLuvj0ru+yJvoro76c/2J
+   wv+xTMaUv+jpfFW2liaViMKuBKJhnyYltVjUX/vZTl2fSTUUm3XOHP4s+
+   w==;
+X-CSE-ConnectionGUID: wrXHpTfcR+Oo0QpYL1l9mg==
+X-CSE-MsgGUID: S894KPe7SbaCpVnPKgYSgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11401"; a="45847001"
+X-IronPort-AV: E=Sophos;i="6.15,206,1739865600"; 
+   d="scan'208";a="45847001"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 12:33:50 -0700
+X-CSE-ConnectionGUID: l38zGMh2Sf2CeVBpLvCA1A==
+X-CSE-MsgGUID: 9baDhnPqS+WCte5KodWmYQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,206,1739865600"; 
+   d="scan'208";a="134261368"
+Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.124.221.159]) ([10.124.221.159])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 12:33:50 -0700
+Message-ID: <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com>
+Date: Fri, 11 Apr 2025 12:33:47 -0700
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174436654323.31282.652380775473462628.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: x86/build] x86/boot: Drop CRC-32 checksum and the build
+ tool that generates it
+To: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ian Campbell <ijc@hellion.org.uk>,
+ Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+References: <20250307164801.885261-2-ardb+git@google.com>
+ <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/sev branch of tip:
+On 3/7/25 15:11, tip-bot2 for Ard Biesheuvel wrote:
+> x86/boot: Drop CRC-32 checksum and the build tool that generates it
 
-Commit-ID:     770de678bc281f6b0be339c29c1ad74dfb0e9325
-Gitweb:        https://git.kernel.org/tip/770de678bc281f6b0be339c29c1ad74dfb0=
-e9325
-Author:        Stefano Garzarella <sgarzare@redhat.com>
-AuthorDate:    Thu, 03 Apr 2025 12:09:39 +02:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 10 Apr 2025 16:15:41 +02:00
+This is breaking really early boot for me across a whole bunch of i386
+and 64-bit builds. I had to bisect it because this does not seem like
+the kind of thing that would break the boot. It's either hanging the
+kernel *really* early, or making KVM angry:
 
-x86/sev: Add SVSM vTPM probe/send_command functions
+KVM internal error. Suberror: 1
+extra data[0]: 0x0000000000000000
+extra data[1]: 0x0000000000000030
+extra data[2]: 0x0000000000000784
+extra data[3]: 0x0000000000000000
+extra data[4]: 0x0000000000000000
+extra data[5]: 0x0000000000000000
+emulation failure
+EAX=00000000 EBX=00000000 ECX=00000000 EDX=00083238
+ESI=00000000 EDI=00000000 EBP=00000000 ESP=0000fff5
+EIP=00008300 EFL=00010002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+...
 
-Add two new functions to probe and send commands to the SVSM vTPM. They
-leverage the two calls defined by the AMD SVSM specification [1] for the vTPM
-protocol: SVSM_VTPM_QUERY and SVSM_VTPM_CMD.
+I'm going to go start backing out individual hunks like the
+arch/x86/boot/compressed/vmlinux.lds.S changes, but I figured I'd see if
+anyone else is having problems or has more of a clue than I do.
 
-Expose snp_svsm_vtpm_send_command() to be used by a TPM driver.
-
-  [1] "Secure VM Service Module for SEV-SNP Guests"
-      Publication # 58019 Revision: 1.00
-
-  [ bp: Some doc touchups. ]
-
-Co-developed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-Co-developed-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-Signed-off-by: Claudio Carvalho <cclaudio@linux.ibm.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/r/20250403100943.120738-2-sgarzare@redhat.com
----
- arch/x86/coco/sev/core.c   | 58 +++++++++++++++++++++++++++++++++++++-
- arch/x86/include/asm/sev.h |  7 ++++-
- 2 files changed, 65 insertions(+)
-
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b0c1a7a..ecd09da 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -2625,6 +2625,64 @@ e_restore_irq:
- 	return ret;
- }
-=20
-+/**
-+ * snp_svsm_vtpm_probe() - Probe if SVSM provides a vTPM device
-+ *
-+ * Check that there is SVSM and that it supports at least TPM_SEND_COMMAND
-+ * which is the only request used so far.
-+ *
-+ * Return: true if the platform provides a vTPM SVSM device, false otherwise.
-+ */
-+static bool snp_svsm_vtpm_probe(void)
-+{
-+	struct svsm_call call =3D {};
-+
-+	/* The vTPM device is available only if a SVSM is present */
-+	if (!snp_vmpl)
-+		return false;
-+
-+	call.caa =3D svsm_get_caa();
-+	call.rax =3D SVSM_VTPM_CALL(SVSM_VTPM_QUERY);
-+
-+	if (svsm_perform_call_protocol(&call))
-+		return false;
-+
-+	/* Check platform commands contains TPM_SEND_COMMAND - platform command 8 */
-+	return call.rcx_out & BIT_ULL(8);
-+}
-+
-+/**
-+ * snp_svsm_vtpm_send_command() - Execute a vTPM operation on SVSM
-+ * @buffer: A buffer used to both send the command and receive the response.
-+ *
-+ * Execute a SVSM_VTPM_CMD call as defined by
-+ * "Secure VM Service Module for SEV-SNP Guests" Publication # 58019 Revisio=
-n: 1.00
-+ *
-+ * All command request/response buffers have a common structure as specified=
- by
-+ * the following table:
-+ *     Byte      Size   =C2=A0=C2=A0 =C2=A0In/Out=C2=A0=C2=A0=C2=A0=C2=A0Des=
-cription
-+ *     Offset=C2=A0=C2=A0=C2=A0=C2=A0(Bytes)
-+ *     0x000=C2=A0=C2=A0=C2=A0=C2=A0=C2=A04=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0In=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-Platform command
-+=C2=A0*=C2=A0=C2=A0=C2=A0  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0Out=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Platform command response size
-+ *
-+ * Each command can build upon this common request/response structure to cre=
-ate
-+ * a structure specific to the command. See include/linux/tpm_svsm.h for more
-+ * details.
-+ *
-+ * Return: 0 on success, -errno on failure
-+ */
-+int snp_svsm_vtpm_send_command(u8 *buffer)
-+{
-+	struct svsm_call call =3D {};
-+
-+	call.caa =3D svsm_get_caa();
-+	call.rax =3D SVSM_VTPM_CALL(SVSM_VTPM_CMD);
-+	call.rcx =3D __pa(buffer);
-+
-+	return svsm_perform_call_protocol(&call);
-+}
-+EXPORT_SYMBOL_GPL(snp_svsm_vtpm_send_command);
-+
- static struct platform_device sev_guest_device =3D {
- 	.name		=3D "sev-guest",
- 	.id		=3D -1,
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index ba7999f..d9ba035 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -384,6 +384,10 @@ struct svsm_call {
- #define SVSM_ATTEST_SERVICES		0
- #define SVSM_ATTEST_SINGLE_SERVICE	1
-=20
-+#define SVSM_VTPM_CALL(x)		((2ULL << 32) | (x))
-+#define SVSM_VTPM_QUERY			0
-+#define SVSM_VTPM_CMD			1
-+
- #ifdef CONFIG_AMD_MEM_ENCRYPT
-=20
- extern u8 snp_vmpl;
-@@ -481,6 +485,8 @@ void snp_msg_free(struct snp_msg_desc *mdesc);
- int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req =
-*req,
- 			   struct snp_guest_request_ioctl *rio);
-=20
-+int snp_svsm_vtpm_send_command(u8 *buffer);
-+
- void __init snp_secure_tsc_prepare(void);
- void __init snp_secure_tsc_init(void);
-=20
-@@ -524,6 +530,7 @@ static inline struct snp_msg_desc *snp_msg_alloc(void) { =
-return NULL; }
- static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
- static inline int snp_send_guest_request(struct snp_msg_desc *mdesc, struct =
-snp_guest_req *req,
- 					 struct snp_guest_request_ioctl *rio) { return -ENODEV; }
-+static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
- static inline void __init snp_secure_tsc_prepare(void) { }
- static inline void __init snp_secure_tsc_init(void) { }
-=20
+The only weird thing I'm doing is booting the kernel with qemu's -kernel
+argument.
 
