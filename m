@@ -1,64 +1,64 @@
-Return-Path: <linux-tip-commits+bounces-4893-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4894-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B37A86676
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 21:34:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 415BAA866AC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 21:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6D54A52F3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 19:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6F44A3E4C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Apr 2025 19:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9127F4D6;
-	Fri, 11 Apr 2025 19:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04E32356DC;
+	Fri, 11 Apr 2025 19:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NoqPrLxj"
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="koZ2a4wC"
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43DA27F4C8;
-	Fri, 11 Apr 2025 19:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9B6367;
+	Fri, 11 Apr 2025 19:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744400036; cv=none; b=Pfg4uYGfhw8kva8gyCBf35iRgAL2D30yOM1jsTLksUXZWRq53Am4YuMdAJime3GWmKZB9B9PENrmTnb+x0cfX+Jqp/fmYHwaWNoK0I2yqL5t931huG94RTshlpiBi7i52BAf4G9trWfIT1+gVQ4tH917outhBKtDsD8e1kfYbCk=
+	t=1744401174; cv=none; b=Hfkapw6y/oQ6tZtQSMHLosCVLynoyTHjvL7T4jcuLf78EfBHMBT90fwEySTHaCa8S3GKRfYne0pmMb9/xxryvZ7YeS4FiQbqfimhYdZ1jcVnaMxIsZvdgzCfHfMdEOjR3Zf84vP3pbXR6RdnCW9bsdvJguAminh/t/LtjEmUcCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744400036; c=relaxed/simple;
-	bh=SrT6rgnxdHfJzhh2SqWlmgTwglXLTpyms5quPAeP0UQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UbOe3j0A6RBEYgAwcMY2uZAWzqLGiWyaLe56/+rWTR8dd42XtBrHkbmZLvRfGzH8YYLJDAjPcwUc+GEKJFGfwPguxxl4iL6/nBu5+qvqYCWoz096wc7uIxGklDHM03uXVjcI2C/qDXzCU/uez8uKeZWPR0p42SYSs1vReOgob4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NoqPrLxj; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1744401174; c=relaxed/simple;
+	bh=AFYr5ZYmC1AhGNCupYpXVF135ymHBFMVl61WRb/Yx4s=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Y+F+t3lT10bFhxjMSaqKmjsqhxPp49co6J7aJrQj3iAFpEREyO5hkFMLUXcZvzvpk92r68Ac4X52s4SksMhpglzlbuWS8zB4i/mA5Hl18jEczDPfbcFwTTEIraWD6XI3DmfI+aJQ2//0U3iH5V+Xzg/AtBgz9A3+KXdKe8Cc4dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=koZ2a4wC; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744400035; x=1775936035;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SrT6rgnxdHfJzhh2SqWlmgTwglXLTpyms5quPAeP0UQ=;
-  b=NoqPrLxj7XnJJNIlIaieagDggZOksSvNBDAxQwCpF39lMcvuZ/3TGh+8
-   XswTv7x8yRHyo4hYmGQB3zuB7Lu3JDm8IfTl6ZQzba9oUm/ZAV93zZEQu
-   hQHJOkLYMblbaK4rbi3F4y8bs7GKf9XlQFbcvSBMlWadZu7RLLC2wR32F
-   Knb2QJVOGhszlKwItn2iykusF6o9pl5ONTWkSmV5F2TXNyRB2hMNcL4cp
-   wTEOV76WWDoeM0Ep79sE5z094d/SKvKaKprOwLuvj0ru+yJvoro76c/2J
-   wv+xTMaUv+jpfFW2liaViMKuBKJhnyYltVjUX/vZTl2fSTUUm3XOHP4s+
-   w==;
-X-CSE-ConnectionGUID: wrXHpTfcR+Oo0QpYL1l9mg==
-X-CSE-MsgGUID: S894KPe7SbaCpVnPKgYSgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11401"; a="45847001"
+  t=1744401173; x=1775937173;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=AFYr5ZYmC1AhGNCupYpXVF135ymHBFMVl61WRb/Yx4s=;
+  b=koZ2a4wCiwIlhYjo8AMqVqsb0pWsNQ2f+AjhVdTDciASbO11q4aymzYA
+   YtcXq08JXd6/TLw2/xy+l67oP3Lfi+ZcIPEliqbmnBzCuzC16nrzEOqNo
+   SGGWZgjtqRxNGntJTEqyPXS7mBx+Icv37iiaRGX9Y0rYvvdtUXHyZ5hcC
+   a+4n8d74aw+E/lIimaMUCrn96cARzSpOQ3w287glXAl/GgcQEkWe6IIvC
+   eIeZ3sPgFdSg0WvKl6o9hMfH12lu3veNFZ+vVOXlCFNEJA7rP0Kh1SU3u
+   n64+EZDz7z2aCecZgtUa+hjXIcUynOQQm6DhuHUW9QDniquf32mf5L61N
+   g==;
+X-CSE-ConnectionGUID: 2KrvbA0NSEeJRod77xdg5Q==
+X-CSE-MsgGUID: wkYOX0SNR9+Ay2aWBRK0VQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11401"; a="45974928"
 X-IronPort-AV: E=Sophos;i="6.15,206,1739865600"; 
-   d="scan'208";a="45847001"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 12:33:50 -0700
-X-CSE-ConnectionGUID: l38zGMh2Sf2CeVBpLvCA1A==
-X-CSE-MsgGUID: 9baDhnPqS+WCte5KodWmYQ==
+   d="scan'208";a="45974928"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 12:52:52 -0700
+X-CSE-ConnectionGUID: t/g8eljpTEGgb0My6bgHNQ==
+X-CSE-MsgGUID: lTB+igpnRqmFR7a8Ub1Lfw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,206,1739865600"; 
-   d="scan'208";a="134261368"
+   d="scan'208";a="129136788"
 Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.124.221.159]) ([10.124.221.159])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 12:33:50 -0700
-Message-ID: <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com>
-Date: Fri, 11 Apr 2025 12:33:47 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Apr 2025 12:52:52 -0700
+Message-ID: <2fddc2e9-8c97-48de-bcc3-29645d58f0f1@intel.com>
+Date: Fri, 11 Apr 2025 12:52:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
@@ -68,13 +68,14 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [tip: x86/build] x86/boot: Drop CRC-32 checksum and the build
  tool that generates it
+From: Dave Hansen <dave.hansen@intel.com>
 To: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, Ingo Molnar <mingo@kernel.org>,
  "H. Peter Anvin" <hpa@zytor.com>, Ian Campbell <ijc@hellion.org.uk>,
  Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
 References: <20250307164801.885261-2-ardb+git@google.com>
  <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
-From: Dave Hansen <dave.hansen@intel.com>
+ <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -119,35 +120,29 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
+In-Reply-To: <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3/7/25 15:11, tip-bot2 for Ard Biesheuvel wrote:
-> x86/boot: Drop CRC-32 checksum and the build tool that generates it
-
-This is breaking really early boot for me across a whole bunch of i386
-and 64-bit builds. I had to bisect it because this does not seem like
-the kind of thing that would break the boot. It's either hanging the
-kernel *really* early, or making KVM angry:
-
-KVM internal error. Suberror: 1
-extra data[0]: 0x0000000000000000
-extra data[1]: 0x0000000000000030
-extra data[2]: 0x0000000000000784
-extra data[3]: 0x0000000000000000
-extra data[4]: 0x0000000000000000
-extra data[5]: 0x0000000000000000
-emulation failure
-EAX=00000000 EBX=00000000 ECX=00000000 EDX=00083238
-ESI=00000000 EDI=00000000 EBP=00000000 ESP=0000fff5
-EIP=00008300 EFL=00010002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
+On 4/11/25 12:33, Dave Hansen wrote:
 ...
+> The only weird thing I'm doing is booting the kernel with qemu's -kernel
+> argument.
 
-I'm going to go start backing out individual hunks like the
-arch/x86/boot/compressed/vmlinux.lds.S changes, but I figured I'd see if
-anyone else is having problems or has more of a clue than I do.
+I lied. I'm doing other weird things. I have a local script named
+"truncate" that's not the same thing as /usr/bin/truncate. Guess what
+this patch started doing:
 
-The only weird thing I'm doing is booting the kernel with qemu's -kernel
-argument.
+>  quiet_cmd_image = BUILD   $@
+> -silent_redirect_image = >/dev/null
+> -cmd_image = $(obj)/tools/build $(obj)/setup.bin $(obj)/vmlinux.bin \
+> -			       $(obj)/zoffset.h $@ $($(quiet)redirect_image)
+> +      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
+
+				 ^ right there
+
+I'm an idiot. That was a poorly named script and it cost me a kernel
+bisect and poking at the patch for an hour. <sigh>
+
+Sorry for the noise.
 
