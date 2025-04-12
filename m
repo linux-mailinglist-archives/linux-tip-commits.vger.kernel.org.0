@@ -1,59 +1,58 @@
-Return-Path: <linux-tip-commits+bounces-4897-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4898-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F23A86BDE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Apr 2025 10:48:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1906DA86BE1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Apr 2025 10:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E763BCAC1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Apr 2025 08:48:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D5E1B81281
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Apr 2025 08:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF8C18DF89;
-	Sat, 12 Apr 2025 08:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B63149C6F;
+	Sat, 12 Apr 2025 08:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i14Kc2mJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LywybWXZ"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326DFDDAB;
-	Sat, 12 Apr 2025 08:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC20DDAB;
+	Sat, 12 Apr 2025 08:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744447715; cv=none; b=exft89HUeL25hKpIrJS3odPkoMCCKUoxt5n4ctjmNIRgE50i94pZYYel3UKDHvEN4RndyZEy2SjNe5a8dhPhYM4SE7dNty4RfjfftriNP23SoG2mo85d68oyb0pgtEXabvvYFGhPlnGEGYeYihGhKUq5KngQGn0JL9mg7ks3I6M=
+	t=1744448111; cv=none; b=L9LdSz/zfaUnhk/M/peOnXzDEJdHpaau+kEpma49rVlDmDfY9+SlHc658zoIjeIvnzraAvhNleoLlUolNYct2GtQ18GN9kDcshsC+t2Fy3BvN8Avrspr88oEDYEU0VY/vOX0X35RVOesu4x/wwXKKx3rNoXqUF76GCCZEOeI8uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744447715; c=relaxed/simple;
-	bh=P8agLbyOVO9R4ksorEp2VdapP/p5K5Aa1B1D+nHspq8=;
+	s=arc-20240116; t=1744448111; c=relaxed/simple;
+	bh=x+okFSocuEcsftPwwGN0qvjDwDxvA6N9/ElnIA7nEP0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M2ZyGpgMUB1ure2cRLzYJrrBC+mC+YWtZ7zai6bJCLgQXOIH5PV8qKaGh2xOUFSERAQlGjW+wDY6jeD9UAFa/Vv1KIP1BzpmLiZlQM9PlRiopnyCWG9UbfmmqRaT88gNiChlYHyu9hVNzW4Z2keKtXgO7YOBK3fh5362URthBXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i14Kc2mJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80081C4CEE3;
-	Sat, 12 Apr 2025 08:48:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fNg2aF6IqOOS+cwofOXKvY6r3E/gUXxqoqGUg3pgVUqmcnig2XBVMaDek8vc8NRUsaMt5Fy6lm3KG84JPjHQBGhLE3e7DKbC40yQh20KbrjmJhyq3ASRaSXGUMpFQ2IFOk9WB3fSkEPAc7RA55rtIFkLBkpZDDvHu12Snktez4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LywybWXZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1555EC4CEE3;
+	Sat, 12 Apr 2025 08:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744447714;
-	bh=P8agLbyOVO9R4ksorEp2VdapP/p5K5Aa1B1D+nHspq8=;
+	s=k20201202; t=1744448110;
+	bh=x+okFSocuEcsftPwwGN0qvjDwDxvA6N9/ElnIA7nEP0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i14Kc2mJg0baH2J7LARXNVJZNAJuBVYHVCst3UVhE/LHyHgst65AAsRppVMlrqdRk
-	 0tmdrPFP/2ed+pi9rawaoesrAcslG4FjJXPNoyjYEojiZ/tiDKsZ3/UreEcwfjTsQJ
-	 zW/s8IZzcjVihgWcnODU10EeLnopUR61uXSfaPMMj3iP1zoMhuUurawS06m/lqwGIf
-	 Um+oB9q2Sz7SvDRKL8oag6leDg4HT6mSJoQcCyf8a+AF5ZE86wsQ0ydcZe+tkROGz6
-	 f3T/yf0eo++zzcrANhJEtKz5Ol9qvQ/dq4PQ1+OBO7j7JgEHYQm5NoHNR7+OcI0Z2Q
-	 G9r3k5PXAJ3Yg==
-Date: Sat, 12 Apr 2025 10:48:29 +0200
+	b=LywybWXZLylHKzUqYF01W3h8N5jmcf6IdGDfzOf1tQ28wxGOVI9DLyjf59ZAuLwaN
+	 j7EEqzSUeULWfKhC667GxHSZuETgo2NPOl0I//dXnapixqDJzvLpmLGnoARXUI0dQZ
+	 2Yeok9lu8NzbXZJDkRSQRwaB8aM+2ikdsLAoopYulWMT4tLaOSQW7kZIU6K+1M1LG2
+	 PtMrCbzzaZJGpnbAAKDxOHCIf1Od2kHRwEeoMuNRxEz5VIh5iGBW3l2a8KWoG+1JQd
+	 AvDOLTEVsOCasb9iLYsVfRszeVtd+YowiFHy1x+kMGpk5Kvt9SjfR6h6tN4kBeIT/Q
+	 olGoktz/ZlBfA==
+Date: Sat, 12 Apr 2025 10:55:06 +0200
 From: Ingo Molnar <mingo@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
+To: Borislav Petkov <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-	Ian Campbell <ijc@hellion.org.uk>,
-	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
-Subject: Re: [tip: x86/build] x86/boot: Drop CRC-32 checksum and the build
- tool that generates it
-Message-ID: <Z_oo3eBywzj6s8Eg@gmail.com>
-References: <20250307164801.885261-2-ardb+git@google.com>
- <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
- <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com>
- <2fddc2e9-8c97-48de-bcc3-29645d58f0f1@intel.com>
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Uros Bizjak <ubizjak@gmail.com>, x86@kernel.org
+Subject: Re: [tip: core/urgent] compiler.h: Avoid the usage of
+ __typeof_unqual__() when __GENKSYMS__ is defined
+Message-ID: <Z_oqalk92C4G6Rqt@gmail.com>
+References: <20250404102535.705090-1-ubizjak@gmail.com>
+ <174428272631.31282.1484467383146370221.tip-bot2@tip-bot2>
+ <20250411210815.GAZ_mEv8riLWzvERYY@renoirsky.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
@@ -62,39 +61,70 @@ List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2fddc2e9-8c97-48de-bcc3-29645d58f0f1@intel.com>
+In-Reply-To: <20250411210815.GAZ_mEv8riLWzvERYY@renoirsky.local>
 
 
-* Dave Hansen <dave.hansen@intel.com> wrote:
+* Borislav Petkov <bp@alien8.de> wrote:
 
-> On 4/11/25 12:33, Dave Hansen wrote:
-> ...
-> > The only weird thing I'm doing is booting the kernel with qemu's -kernel
-> > argument.
+> On Thu, Apr 10, 2025 at 10:58:46AM -0000, tip-bot2 for Uros Bizjak wrote:
+> > The following commit has been merged into the core/urgent branch of tip:
+> > 
+> > Commit-ID:     e696e5a114b59035f5a889d5484fedec4f40c1f3
+> > Gitweb:        https://git.kernel.org/tip/e696e5a114b59035f5a889d5484fedec4f40c1f3
+> > Author:        Uros Bizjak <ubizjak@gmail.com>
+> > AuthorDate:    Fri, 04 Apr 2025 12:24:37 +02:00
+> > Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+> > CommitterDate: Thu, 10 Apr 2025 12:44:27 +02:00
+> > 
+> > compiler.h: Avoid the usage of __typeof_unqual__() when __GENKSYMS__ is defined
+> > 
+> > Current version of genksyms doesn't know anything about __typeof_unqual__()
+> > operator.  Avoid the usage of __typeof_unqual__() with genksyms to prevent
+> > errors when symbols are versioned.
+> > 
+> > There were no problems with gendwarfksyms.
+> > 
+> > Fixes: ac053946f5c40 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
+> > Closes: https://lore.kernel.org/lkml/81a25a60-de78-43fb-b56a-131151e1c035@molgen.mpg.de/
+> > Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> > Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+> > Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> > Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> > Link: https://lore.kernel.org/r/20250404102535.705090-1-ubizjak@gmail.com
+> > ---
+> >  include/linux/compiler.h | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+> > index 27725f1..98057f9 100644
+> > --- a/include/linux/compiler.h
+> > +++ b/include/linux/compiler.h
+> > @@ -229,10 +229,10 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+> >  /*
+> >   * Use __typeof_unqual__() when available.
+> >   *
+> > - * XXX: Remove test for __CHECKER__ once
+> > - * sparse learns about __typeof_unqual__().
+> > + * XXX: Remove test for __GENKSYMS__ once "genksyms" handles
+> > + * __typeof_unqual__(), and test for __CHECKER__ once "sparse" handles it.
+> >   */
+> > -#if CC_HAS_TYPEOF_UNQUAL && !defined(__CHECKER__)
+> > +#if CC_HAS_TYPEOF_UNQUAL && !defined(__GENKSYMS__) && !defined(__CHECKER__)
+> >  # define USE_TYPEOF_UNQUAL 1
+> >  #endif
 > 
-> I lied. I'm doing other weird things. I have a local script named
-> "truncate" that's not the same thing as /usr/bin/truncate. Guess what
-> this patch started doing:
-> 
-> >  quiet_cmd_image = BUILD   $@
-> > -silent_redirect_image = >/dev/null
-> > -cmd_image = $(obj)/tools/build $(obj)/setup.bin $(obj)/vmlinux.bin \
-> > -			       $(obj)/zoffset.h $@ $($(quiet)redirect_image)
-> > +      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
-> 
-> 				 ^ right there
+> So mingo is right - this is not really a fix but a brown-paper bag of
+> sorts.
 
-Oh that sucks ...
+Yeah, agreed, I've removed this workaround from tip:core/urgent for the 
+time being - it's not like genksyms is some magic external entity we 
+have to work around, it's an in-kernel tool that can be fixed/enhanced 
+in scripts/genksyms/.
 
-> I'm an idiot. That was a poorly named script and it cost me a kernel
-> bisect and poking at the patch for an hour. <sigh>
-> 
-> Sorry for the noise.
+Maybe akpm can merge this or some other fix and sort it out? AFAICS the 
+bug came in via the -mm tree in January, via:
 
-I feel your pain, I too once overlaid a well-known utility with my own 
-script in ~/bin/. After that incident I started adding the .sh postfix 
-to my own scripts, that way there's a much lower chance of namespace 
-collisions.
+  ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
 
 Thanks,
 
