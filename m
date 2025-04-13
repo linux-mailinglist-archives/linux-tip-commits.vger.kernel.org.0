@@ -1,177 +1,119 @@
-Return-Path: <linux-tip-commits+bounces-4947-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4948-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357C7A8737C
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 21:15:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE6AA8737E
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 21:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 279C216E363
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 19:15:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D69F73B5BE8
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 19:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D97E1F37D4;
-	Sun, 13 Apr 2025 19:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A11033993;
+	Sun, 13 Apr 2025 19:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IjU4m2lg"
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NZBan11J";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gebvaPU4"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4680413B797;
-	Sun, 13 Apr 2025 19:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDC6EEBB;
+	Sun, 13 Apr 2025 19:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744571707; cv=none; b=ru/zU4/GZXK0HKA5JAFgDP4M8KouOQaM3McY8h8Bf86eyK1L4saX88CINrNCFl+LL+Ap29Pp5l3OBpW0E6pHSiEaDGHI9Tw+yFMGxbc6VqOk76UuNB88OWJn+yEC1wV8/Br2QidYO+/Jb4g41Ks+kW+a8lPvNyBdtfovw8veATA=
+	t=1744571759; cv=none; b=EcPx+t98pX+fi1WMpH/JdHytLSklLqqz33wDCJzlFv/yzufZb6gBdZk4KaCgPSCF7sQvvvfczAtJt0eJ1A8zHCX5nrwTRmP9L+2JHZoIlB29eO6bm1gzUq/TLMfZPNvqeXUGB4BlOjLj3/kB7zzWygkdwbO0lzdlClF8+Sj1QhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744571707; c=relaxed/simple;
-	bh=KjjMpi6J03nK1WjILmY3OQ3wjSjjqoByRSWubExX/UI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jL2QdkaYsXu0FjGAyu9/9XmFOM+l+4AxEhCgeFSgJ4mFGQOxnOwUvvHSB+HFnzLesAB7dFu8wFBxRkWIJJj9LcplNiEVOFTYdk2slujEcbMDaJ7VmAqpzyJFuYnN++dniO8f3plvpDxJ88PSn9kqf+A7JGJyl+kS+aOtRMczPzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IjU4m2lg; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30beedb99c9so32376351fa.3;
-        Sun, 13 Apr 2025 12:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744571703; x=1745176503; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vmKq3xpHPXNUFt7rqGHQXR/B6BEh35GMMQihkbDJYrs=;
-        b=IjU4m2lgZzPUkaARgINHHSZVGGJY/KKI3KylCNq1msFrLHvfSnjI0vgJmD3ACZP/md
-         FRsb7U0KU5Bx0J06m8MNtO5VcOlQsrMrPgE8SJ0UmrpB/C5BJLRukxnHvXGMVxKeRs21
-         V966oh9+DJj6sE1cA4uuXvVWA22IO8J8jme8gn6BM/l1kFyGY0eVBJwEw7Ll4pT+8c2W
-         a3aMFdo+KUMyhor8+04KZv4Z3NC2ASmaDuTTfRmHEjYAhQLXMTOcgkYutK/OsNnUH7YN
-         MxWiethzsJLLfbWR50WIX++q1P7nQPSyxehiTmLZPwTDy8d1OHjkjUJO15cBR+ecoSka
-         d/XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744571703; x=1745176503;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vmKq3xpHPXNUFt7rqGHQXR/B6BEh35GMMQihkbDJYrs=;
-        b=llwmskZoKRIT/HBNsLvQjIL61TxSZ9d/v1kKN+TvL5EV9mBRGuB1mRO7Z/OP2m+HVQ
-         bqxtKyCd9kjxYQn4nFtpng1WD6/BMEdRLkGCyVtxQ22o611SvBf/kxKfxOwBVghGWawm
-         XNoqYFqVGzxP6OGg44RWxE6k3Xm68b2z+CD3IuczkndoYJWj9yEsThKcsXjMFvPhl5cb
-         t5ZUupGZ8LKW/HXeAcR5NFfCIv2IezDmrJ7iRU2dVTgkieJZdVUD2e1qHqXrOlqMT5e0
-         pbtRouwP408NQWpnBMDhZqC/m7k70HeM4tP/79ize38zcV5VpLN59xrYltTJ6H6VErzE
-         mR0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWPh6URVZ5R4t4RkADVCDbZIl+zkZZAXT0i+XULEouJBKgASctT0GC6lunyXB9b3s6n9UecCc5rkGycO5I=@vger.kernel.org, AJvYcCWpeuDy398bjyqTPwb+mEAbRcAZJB+MHdqFeEE7Cs3eYvGPhYqE67gzAkM4+UpcZRpvvK5ivLqjkQujBzMv8k8WvSU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/7odFLmIsATU1oISaf5pjrqlf+uqr+pKljOyW5pWQd9TCwmGl
-	KekZrYAqXRfhJl+WPPyfBnuuLCRJxIaq8kXqUY8mvYau5C1fnrtH2oGVTVYwUlidS4FTUX7QVpe
-	nqvobFQ9c4SEzHVgJVPKvzi6w2Ck=
-X-Gm-Gg: ASbGnctUYFip93FD0TIedMS2EHqLBdbyliKXBhz48CbInB4OAMYQH3bYtBlUDdzYVPC
-	uf7+O7UJRQhEL3LwK8H9c4AVh0PRhfJKam9AWsvjuXV4CoXS2wUP1aHg8lX4Nw967al3k5/xrza
-	2inhvHWZwr51xhnyXfYWZkCw==
-X-Google-Smtp-Source: AGHT+IFr3TeqkzVWuRiZtu9xjYpcTJEdaa+lZx+GFRfKPeYh40Cp+avV8LYZthRUallYwiIjIVVj9HC6L9IQ1mSDdV8=
-X-Received: by 2002:a05:651c:1545:b0:30b:c3ce:ea1f with SMTP id
- 38308e7fff4ca-310499fbc07mr25452381fa.15.1744571703056; Sun, 13 Apr 2025
- 12:15:03 -0700 (PDT)
+	s=arc-20240116; t=1744571759; c=relaxed/simple;
+	bh=874sJx7dildgIqgEl7Uso2cFBptZ1GFkl3SGFZ0+Zrw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ASMpr/Q92BVlY0+jt/A3Rd7e/HONCivRls4AUAS06HCNPB36Bfyb2xx0o/4vK2tCeD/LY3U+5cVtZLC0InQh6rTLG4ivXRO5ZmAr8jAFtGErxUVjv+U+kr52UqSv+e5hW6dM5aMx+yFlJHESheVuT3JfN4rVLzayOO69XyhW6FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NZBan11J; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gebvaPU4; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 13 Apr 2025 19:15:50 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744571754;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=svoHC3sZPS91BuIJ2nCOq2diPn+s+JbSp4K0OZ41vyU=;
+	b=NZBan11JVBQJ4ZCGuIxw2guMr5eOwB880oaNpWHihetrdUo9sJmdOCiEzQjfWAGlqdjOgm
+	owqlhUw+OBb0OBxI0seNVjx/FdEyOvdzb2LOgvlq23uctj0DJcLhx0BACJFXVEM0eNgrPO
+	Zhz2uSdku94VDXnV/Lidn3vdGJhmmoSt+pHaFicjqJrP/N9aeup1uKr/m/SSmYxNevcjlQ
+	/1chfADiNrVifG1PydajbG9z7PxzvNbnC1RxmydyBEln12xmx7DLdhuP0MTpmuhrGYcBLz
+	MM+b+hYyyyIof+hcyWrBYdEaPpVYCZaPOt3b+my0GkHXRI4AEVkvqTs3DCuz8Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744571754;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=svoHC3sZPS91BuIJ2nCOq2diPn+s+JbSp4K0OZ41vyU=;
+	b=gebvaPU4eCtDu/HGO2l6ntlmgK64WlFnDt2uDbWjHf4ikFvv1L9UNHVMp9DIQXX5GFgequ
+	97oXbLK5rrATxdBw==
+From: "tip-bot2 for Thorsten Blum" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: perf/core] perf/x86/intel/bts: Replace offsetof() with struct_size()
+Cc: Thorsten Blum <thorsten.blum@linux.dev>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250413104108.49142-2-thorsten.blum@linux.dev>
+References: <20250413104108.49142-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404102535.705090-1-ubizjak@gmail.com> <174428272631.31282.1484467383146370221.tip-bot2@tip-bot2>
- <20250411210815.GAZ_mEv8riLWzvERYY@renoirsky.local> <Z_oqalk92C4G6Rqt@gmail.com>
- <CAFULd4bTd6GMftLBX7Nu0xftini00o4v7=1XfuoDC8ydUr9Ueg@mail.gmail.com>
- <Z_t7_brzSoboOsen@gmail.com> <CAFULd4ZBbAG4ndn+rzjjqF+pmtGa3UbyDOWfEXww0XhExJByVA@mail.gmail.com>
- <Z_wI0uNoG2G2TQMC@gmail.com>
-In-Reply-To: <Z_wI0uNoG2G2TQMC@gmail.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Sun, 13 Apr 2025 21:14:51 +0200
-X-Gm-Features: ATxdqUH6GkkG2QNWIiBcMACJGEzQp-J92_Zv1yKOb6xNPUgXURNSmQpqDR3N3WY
-Message-ID: <CAFULd4b2afcu5PnxhqwwepwWMSA7mvYNyPnMtkCjjT84VG8VXA@mail.gmail.com>
-Subject: Re: [tip: core/urgent] compiler.h: Avoid the usage of
- __typeof_unqual__() when __GENKSYMS__ is defined
-To: Ingo Molnar <mingo@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	linux-tip-commits@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <174457175036.31282.16922756285239318022.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Sun, Apr 13, 2025 at 8:56=E2=80=AFPM Ingo Molnar <mingo@kernel.org> wrot=
-e:
->
->
-> * Uros Bizjak <ubizjak@gmail.com> wrote:
->
-> > On Sun, Apr 13, 2025 at 10:55=E2=80=AFAM Ingo Molnar <mingo@kernel.org>=
- wrote:
-> > >
-> > >
-> > > * Uros Bizjak <ubizjak@gmail.com> wrote:
-> > >
-> > > > > Yeah, agreed, I've removed this workaround from tip:core/urgent f=
-or
-> > > > > the time being - it's not like genksyms is some magic external
-> > > > > entity we have to work around, it's an in-kernel tool that can be
-> > > > > fixed/enhanced in scripts/genksyms/.
-> > > >
-> > > > Please note that you will disable a check that is finally able to
-> > > > fail the build for a whole class of very subtle percpu bugs.
-> > >
-> > > I simply zapped a commit that was applied two days ago and asked akpm
-> > > to resolve a regression that was introduced upstream via his tree
-> > > through this commit, in this merge window:
-> > >
-> > >   ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
-> > >
-> > > What 'disabled checks' are you talking about?
-> >
-> > Percpu checks require TYPEOF_UNQUAL() macro, so removing
-> > USE_TYPEOF_UNQUAL definition
->
-> I did nothing to remove the USE_TYPEOF_UNQUAL definition, did I?
+The following commit has been merged into the perf/core branch of tip:
 
-So ... let's slow the ball down a bit. The patch I'm worried about is [1]:
+Commit-ID:     5c3627b6f0595f1ec27e6f5df903bd072e9b9136
+Gitweb:        https://git.kernel.org/tip/5c3627b6f0595f1ec27e6f5df903bd072e9b9136
+Author:        Thorsten Blum <thorsten.blum@linux.dev>
+AuthorDate:    Sun, 13 Apr 2025 12:41:09 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 13 Apr 2025 21:05:50 +02:00
 
--#if CC_HAS_TYPEOF_UNQUAL && !defined(__CHECKER__)
--# define USE_TYPEOF_UNQUAL 1
--#endif
-+#undef USE_TYPEOF_UNQUAL
+perf/x86/intel/bts: Replace offsetof() with struct_size()
 
-[1] https://lore.kernel.org/lkml/20250411210815.GAZ_mEv8riLWzvERYY@renoirsk=
-y.local/
+Use struct_size() to calculate the number of bytes to allocate for a new
+bts_buffer. Compared to offsetof(), struct_size() provides additional
+compile-time checks (e.g., __must_be_array()).
 
-and in [2] my proposed patch is commented as:
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250413104108.49142-2-thorsten.blum@linux.dev
+---
+ arch/x86/events/intel/bts.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---q--
-> So mingo is right - this is not really a fix but a brown-paper bag of
-> sorts.
-
-Yeah, agreed, I've removed this workaround from tip:core/urgent for the
-time being - it's not like genksyms is some magic external entity we
-have to work around, it's an in-kernel tool that can be fixed/enhanced
-in scripts/genksyms/.
-
-Maybe akpm can merge this or some other fix and sort it out? AFAICS the
-bug came in via the -mm tree in January, via:
-
-  ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
---/q--
-
-[2] https://lore.kernel.org/lkml/Z_oqalk92C4G6Rqt@gmail.com/
-
-> > [...] will skip the definition of __percpu_qual in
-> > arch/x86/include/asm/percpu.h (please see
-> > 6a367577153acd9b432a5340fb10891eeb7e10f1), and consequently __percpu
-> > macro won't be defined with __seg_gs (please see
-> > 6cea5ae714ba47ea4807d15903baca9857a450e6).
-> >
-> > If this commit is removed, [...]
->
-> I did not remove commit ac053946f5c4, it's already upstream. Nor did I
-> advocate for it to be reverted - I'd like it to be fixed. So you are
-> barking up the wrong tree.
-
-If the intention is to pass my proposed workaround via Andrew's tree,
-then I'm happy to bark up the wrong tree, but from the referred
-message trail, I didn't get the clear decision about the patch, and
-neither am sure which patch "brown paper bag bug" refers to.
-
-Thanks,
-Uros.
+diff --git a/arch/x86/events/intel/bts.c b/arch/x86/events/intel/bts.c
+index da03f53..16bc89c 100644
+--- a/arch/x86/events/intel/bts.c
++++ b/arch/x86/events/intel/bts.c
+@@ -101,7 +101,7 @@ bts_buffer_setup_aux(struct perf_event *event, void **pages,
+ 	if (overwrite && nr_buf > 1)
+ 		return NULL;
+ 
+-	bb = kzalloc_node(offsetof(struct bts_buffer, buf[nr_buf]), GFP_KERNEL, node);
++	bb = kzalloc_node(struct_size(bb, buf, nr_buf), GFP_KERNEL, node);
+ 	if (!bb)
+ 		return NULL;
+ 
 
