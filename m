@@ -1,97 +1,174 @@
-Return-Path: <linux-tip-commits+bounces-4917-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4918-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D01A86FB0
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Apr 2025 22:51:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8A4A870F9
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 10:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B3B47AF697
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 12 Apr 2025 20:49:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3641893A2B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 08:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE9C202F70;
-	Sat, 12 Apr 2025 20:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0538C146A60;
+	Sun, 13 Apr 2025 08:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lBP5ObJR"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Uo351E8i";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oKmUkAn6"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F1019CC39;
-	Sat, 12 Apr 2025 20:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A564A18;
+	Sun, 13 Apr 2025 08:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744491060; cv=none; b=PRc/78GBXQ8jZWzwV35t4DUSzlIXZrqphxzJMb8QRzNcbIJyJ+hjnM03ckbUUYuZ/r132P6P6JPU3zkCg+1dkBZZvrUU8u0rvdPV8rdDD0+XQja1/jEjWrkwv24XDU0MJiJiPPb9ezKX/YKBLkxGfsGMg6MoWiY8AdQfs+r272A=
+	t=1744531334; cv=none; b=GTS/DrBOLHi90/bXF0MU0Dg7yT/QDdDH2HWXHm3WTUJc+YvNGvFrdu2GB40xl28bFW0N7Um+DDfSUHZG2U7uKMhvpUwfdNPdmkh810QZNWQX7pizKaPZsHFn7BxyeDppc75i5SUcyjWjKewfORvhXZrUOFtEm/vyWW2Hmm4vWDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744491060; c=relaxed/simple;
-	bh=0MT26XVZZQ4V4BA9jaSO3dCuTt5CB8MV/Du+VKgZpR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A9szakATsTSXjsXa8/t3jwMLN8i/+p2oUlHyfBqbsobwjiwUY7kDnpaw9atQBHT510tbfXHo4U9tqS5nZuJa4S+mKZBxPvKEGe2ZtXXoh3zhQINgWtj2nDYi/8E4jj1GLBxRvuGkvDYgOFmyhV5pE0EhIjWD0Mg2YR+6Hb8Dt5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lBP5ObJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2CEC4CEE9;
-	Sat, 12 Apr 2025 20:50:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744491059;
-	bh=0MT26XVZZQ4V4BA9jaSO3dCuTt5CB8MV/Du+VKgZpR0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lBP5ObJR39kc1p4+HWCfTRiz+hz9aC6QSm8+Zc775CvsiEwU1IutDY+wL8YKnAqR8
-	 IZBl+6GQoiLizHRU9z/zdNMRG2IQB5fMj1I7fM+PeBEvWOoJN9NixY0jHl0eM48fAD
-	 5gFQw8FDVSQ5tXVUVs45h/M0ruVITgaZmCEiBVGWUjsHXngmwonaXGGa2xF+FXibLh
-	 LSLQQcHyIQ9OALFahW1raV28Ceag+LZqWZ+sAfVzdcG8c9CEQ/bFZbrcLLZ7/JFFBP
-	 fVvntgBfIl+RWegtAaT1AdlIaYrEvoxhMbvFxF9TF1Z3JFP22P7+Yp7/F81yqvq+Di
-	 geh3kVwodXx+w==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-30bfc8faef9so29312691fa.1;
-        Sat, 12 Apr 2025 13:50:59 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCURB5yBWXitb633XV6JNWedHDHb5tVCcqSKTGMB2SM1HR6WnVbgT/TASyn5A87ijuDi6p3/11ww1bE=@vger.kernel.org, AJvYcCVBfH4nggCu+SQQJLO4wTwq0DA87Hn2U9c6Z4Rk18QNSJP5E5qHjx/RLrU+OlKYwVhLetVLVh94XArrIuAqPR4r6/A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1KKqbPj0PPDzdfLCNcv6fjmQGyNxfaOUWBnmPVbpzGWn1vZst
-	ptTj/X3QId95+ugTo/E5J1+lAUdLWCbR9r6mbM7SUk2NZujRRlpyV/V6cygBnVmVrvddONVgme9
-	3M8i1tshTf+tRA3QbJq7E2YzcQ9w=
-X-Google-Smtp-Source: AGHT+IFmOu5EggYdezT8rGeNdNJWVzW7cdkm6iqOJnDsQBdc+NPBO4rWd1rczoel/xAsi/eQD7Z1wZkkUJC6IbSP1lU=
-X-Received: by 2002:a05:651c:1b06:b0:30d:62c1:3bdd with SMTP id
- 38308e7fff4ca-31049a20b86mr24205451fa.23.1744491058072; Sat, 12 Apr 2025
- 13:50:58 -0700 (PDT)
+	s=arc-20240116; t=1744531334; c=relaxed/simple;
+	bh=7LSnlRHg5ilP9y2wAV0fO+ZSSRH03VV0jIQxfm2QR+4=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=o50xXhtIBxbMwyIK1HjWMMPnoIPn4sNPotn8FzoMmYbMTGuPrPfknsmHiaRl7Jilkp3Jph+PGQw+hS7+DKvw9vNZK/eb4O384Lwsy39oAaH1jNEhK1gCuKZvyHZWJwAQGONjZAMigg1m+tFU1u0WqkYXm27+A6640JQqbFAbMbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Uo351E8i; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oKmUkAn6; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 13 Apr 2025 08:01:57 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744531330;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eI8ndGTtErzBmqW0KvWPNzrVknbj7V9KlNoGoRqbe+s=;
+	b=Uo351E8iWOSvnqBp8y4vQSpx1nU9EhCmdCi/XoCgIdV+zBU+GkJkrelB5PNymjmBglE1OB
+	fZMe/PoiMzlP89gZHDOAxEikg6MkcGEUormDUi9gk44rDmGRr/RIg+0GQ/pOfKyLVWruoL
+	7BxnA40pC8z3JlHeAPoloNZWGB2b+Oe8dUsMwn+KSrgeH0UdN2nWJAD0id5+SFOt7qBvSS
+	JdK/VRDAptoenxwHTX8A1ZP6albfoUJqqSNPpwbAxfjwFcKB722n6M/7C0FxdTY4MX/T9a
+	qH1muu1LOxPbbNVPESRbfza8MTVb1eZ4FewCI3vr8eQLNrmLWCiY6CkD1iJdSQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744531330;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eI8ndGTtErzBmqW0KvWPNzrVknbj7V9KlNoGoRqbe+s=;
+	b=oKmUkAn62wiy18oJjzZSJsGiSTI+AgZwyaMuXv7GjDruD+5b69NIKy2LDIbP7qB4w2YEaV
+	HbVl+VtdDaz2ZCBQ==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/asm] x86/percpu: Refer __percpu_prefix to __force_percpu_prefix
+Cc: Uros Bizjak <ubizjak@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250411093130.81389-1-ubizjak@gmail.com>
+References: <20250411093130.81389-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410132850.3708703-2-ardb+git@google.com> <174448976513.31282.4012948519562214371.tip-bot2@tip-bot2>
- <CAMj1kXFEXZ8cGMwz6N_ToYp0Wf5Vr9UBFRueWx_MtrwbDLq+LQ@mail.gmail.com> <Z_rQ4eu4LYh6jGzY@gmail.com>
-In-Reply-To: <Z_rQ4eu4LYh6jGzY@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Sat, 12 Apr 2025 22:50:46 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXH+foh4gNwJopVvAspmO9AGQH5O3ZHctQ_cJ5gAvPWz6Q@mail.gmail.com>
-X-Gm-Features: ATxdqUHFChk_vtwsDoiG793aEMtwTh-HX3XvlLHt7hBcyzvxQGZnsOFY2vadIbs
-Message-ID: <CAMj1kXH+foh4gNwJopVvAspmO9AGQH5O3ZHctQ_cJ5gAvPWz6Q@mail.gmail.com>
-Subject: Re: [tip: x86/boot] x86/boot/sev: Avoid shared GHCB page for early
- memory acceptance
-To: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-efi@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <174453131877.31282.11281370109325866576.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Sat, 12 Apr 2025 at 22:45, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> > On Sat, 12 Apr 2025 at 22:29, tip-bot2 for Ard Biesheuvel
-> > <tip-bot2@linutronix.de> wrote:
-> > >
-> > > The following commit has been merged into the x86/boot branch of tip:
-> > >
-> >
-> > This may be slightly premature. I took some of Tom's code, hence the
-> > co-developed-by, but the should really confirm that what I did is
-> > correct before we queue this up.
->
-> OK, I've zapped it again, especially as the rest of the series wasn't
-> ready either, please include the latest version of this patch as part
-> of the boot/setup/ series, which hard-relies upon it.
->
+The following commit has been merged into the x86/asm branch of tip:
 
-OK
+Commit-ID:     d51faee4bd63b3b02fa6f56210ec0d84c5ccb680
+Gitweb:        https://git.kernel.org/tip/d51faee4bd63b3b02fa6f56210ec0d84c5ccb680
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Fri, 11 Apr 2025 11:31:17 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 13 Apr 2025 09:48:24 +02:00
+
+x86/percpu: Refer __percpu_prefix to __force_percpu_prefix
+
+Refer __percpu_prefix to __force_percpu_prefix to avoid duplicate
+definition. While there, slightly reorder definitions to a more
+logical sequence, remove unneeded double quotes and move misplaced
+comment to the right place.
+
+No functional changes intended.
+
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20250411093130.81389-1-ubizjak@gmail.com
+---
+ arch/x86/include/asm/percpu.h | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
+
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 5fe314a..b0d03b6 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -29,6 +29,8 @@
+ 
+ #ifdef CONFIG_SMP
+ 
++#define __force_percpu_prefix	"%%"__stringify(__percpu_seg)":"
++
+ #ifdef CONFIG_CC_HAS_NAMED_AS
+ 
+ #ifdef __CHECKER__
+@@ -36,23 +38,23 @@
+ # define __seg_fs		__attribute__((address_space(__seg_fs)))
+ #endif
+ 
++#define __percpu_prefix
+ #define __percpu_seg_override	CONCATENATE(__seg_, __percpu_seg)
+-#define __percpu_prefix		""
+ 
+ #else /* !CONFIG_CC_HAS_NAMED_AS: */
+ 
++#define __percpu_prefix		__force_percpu_prefix
+ #define __percpu_seg_override
+-#define __percpu_prefix		"%%"__stringify(__percpu_seg)":"
+ 
+ #endif /* CONFIG_CC_HAS_NAMED_AS */
+ 
+-#define __force_percpu_prefix	"%%"__stringify(__percpu_seg)":"
+-#define __my_cpu_offset		this_cpu_read(this_cpu_off)
+-
+ /*
+  * Compared to the generic __my_cpu_offset version, the following
+  * saves one instruction and avoids clobbering a temp register.
+- *
++ */
++#define __my_cpu_offset		this_cpu_read(this_cpu_off)
++
++/*
+  * arch_raw_cpu_ptr should not be used in 32-bit VDSO for a 64-bit
+  * kernel, because games are played with CONFIG_X86_64 there and
+  * sizeof(this_cpu_off) becames 4.
+@@ -77,9 +79,9 @@
+ 
+ #else /* !CONFIG_SMP: */
+ 
++#define __force_percpu_prefix
++#define __percpu_prefix
+ #define __percpu_seg_override
+-#define __percpu_prefix		""
+-#define __force_percpu_prefix	""
+ 
+ #define PER_CPU_VAR(var)	(var)__percpu_rel
+ 
+@@ -97,8 +99,8 @@
+ # define __my_cpu_var(var)	(*__my_cpu_ptr(&(var)))
+ #endif
+ 
+-#define __percpu_arg(x)		__percpu_prefix "%" #x
+ #define __force_percpu_arg(x)	__force_percpu_prefix "%" #x
++#define __percpu_arg(x)		__percpu_prefix "%" #x
+ 
+ /*
+  * For arch-specific code, we can use direct single-insn ops (they
 
