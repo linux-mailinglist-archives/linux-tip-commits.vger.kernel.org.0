@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-4926-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4927-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B18B9A87336
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 20:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F373A87338
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 20:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9B016ED34
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 18:56:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 177DD16ED5A
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 18:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521AC1F37D4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A6F1F3B9E;
 	Sun, 13 Apr 2025 18:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i/3uxFjr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i0AOr0wI"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jjCjVCel";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F+AsLJrO"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CDC17A586;
-	Sun, 13 Apr 2025 18:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2111EEA59;
+	Sun, 13 Apr 2025 18:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744570573; cv=none; b=DAVay7mrYqmPwZBD+qPPjZOognr/ukUaSEen41qlzkyEhZjVgzBQXDF8bwrdl7n+WkFzlHfiTei41o8pJL/F0NqhDVa541hk3fQG7aqgB8iF0DeXOVvKU5lUzGZ+vggyqVUrxYB4pIXoxo3Ryxzl9NqzruGlBMgJbx9vg+/3L2Y=
+	t=1744570573; cv=none; b=EbMsKEcVRbG4pl8LP7eK+KhVCl4tcRtyW7ZKlfh181ucbBXlHoaPDpm5AtrjWeAmdKnIzm5jCtTmgsnpaHu8Cj5MSndGM8ReAzTrOPDfucE5pUMRAN1gVsNCYpCIC9juLQzChuHQzwYoOa9rCy/OlcqICjA1GkZiRkFMGtHrkr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1744570573; c=relaxed/simple;
-	bh=7p+jz5ryNwp+alh3S2bdI5FiC+q0DlVOT7aLC+AEnT0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Xgfxbje+WGelkXvoQh/mDf9bIuM5fdirqGFd7kNXYrWqWjdNWKHKk9xaQ5PpEc/a/M73YBTrAsJiyZchdpSw2EG6BW00fP8S6htBnDyaCKfUv+hYNHXd//YCsJi8aqaIS3mKtymcOq8B31qLkHNhg8JTpYq6z13DOanmnV9XXW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i/3uxFjr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i0AOr0wI; arc=none smtp.client-ip=193.142.43.55
+	bh=ku4fomBzYVRwuuZtL0h4HQ0eLiQzPRZl+A8pD3091eU=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=CuF9EtkheXFAPOro80++On3XdeRorRKqHDT4FiUeAlrbQnrFeceeqc8LCqJwzRFb6umAQG3A7xah8C22Q0P3v+9B2iqxK8uO6fzMo76mz3alhYi9N9kcF/zqSfUgsAXKnIJ2blbQk02ACwgRnQZYtwfJ0/Ki/5IzMs6HUF1PjCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jjCjVCel; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F+AsLJrO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 13 Apr 2025 18:56:07 -0000
+Date: Sun, 13 Apr 2025 18:56:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744570569;
+	s=2020; t=1744570570;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=cImakpOJSQ2GuQCxTiXUPOAllsdodofyb8JNgFfbkDk=;
-	b=i/3uxFjrcvVihXh4cWaHTFn6qVWg3X7ok46akMOmoszQZbCWdUIsa+Fmx+clUT9VVB7nvS
-	nb+nr9LEiMs3SfFysLMdDsQxhgeBka5cOT98TLclN5s2yROlTMJZkwo4QovEY66S4VbAXs
-	zAo6AGzNGkyWWYrJQUvu38yC3E/bv+aTv0D/CrEZ1IHgWEFvcwPwnSsBA3JSTABfMlniNP
-	s1Qe/hcEIPuqFNhwM5qMzzlzB9jW+4OLbprxNc3h2hHRl/eFPKITLmqAUZm+hR5cvNRXrq
-	7SpDJPx3oMxH2UfBtsUXuo0NwkrI2RUhSrMu7b5cvRc/2YL1P7UJtST+jqVFkQ==
+	bh=94qQz+G3TswotxZs+At17Vha7rXM1dgV6TGSnSLyrzM=;
+	b=jjCjVCelACFEWmCo5AteI8qu4eNE7Zl0T3KpKX7OpeFpBePUdGPrZM3tJfdrzktYcVEeVA
+	5Gf+BhoqvKQeXahF9BlOZ4lypRh8JXi9TGXxFmSblSy7x4gycDj4saa9d4uC2R/KnLG8UM
+	h/oqG2x2SYDu5HJPGbgteewF5776n6p124AnS0HCdq8bvUh+iFU/UKC35pM6JZp3n9Daxo
+	WmC4tu+gs25D4OzhPlNWaA3ZzrGi5vB9EXMSLRACxbREZwkt0PIWqzbFu1i8joEszcU3zs
+	++hWqTo5Up1cUOFZncWHdrBJKmfvlPBKQm7HeYSCEUfoVNtJryOmrWi5XyIUSw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744570569;
+	s=2020e; t=1744570570;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=cImakpOJSQ2GuQCxTiXUPOAllsdodofyb8JNgFfbkDk=;
-	b=i0AOr0wIhMTDqESV8LzCERsmO1FODA5UhdQO/m+1nLM06RzCXN9ITHszR/FE9kNATpw5h2
-	WSaFLRc2BdjNMrDQ==
+	bh=94qQz+G3TswotxZs+At17Vha7rXM1dgV6TGSnSLyrzM=;
+	b=F+AsLJrOyg6g8dv4Zo7OF0mqVB1+iNqsQAMsgAZdz9xdSU5ei+m7DhUSMEztZrz7i+A9hD
+	/evSZ0bw0FXoLSDA==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/msr] x86/msr: Rename 'wrmsrl_cstar()' to 'wrmsrq_cstar()'
+Subject: [tip: x86/msr] x86/msr: Rename 'native_wrmsrl()' to 'native_wrmsrq()'
 Cc: "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Juergen Gross <jgross@suse.com>, Dave Hansen <dave.hansen@intel.com>,
@@ -66,7 +66,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174457056761.31282.2847437139703436581.tip-bot2@tip-bot2>
+Message-ID: <174457056937.31282.5055011506752254958.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -76,14 +76,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/msr branch of tip:
 
-Commit-ID:     eef476f15c8350078efb48bd9b9f3ff50ae1bbbb
-Gitweb:        https://git.kernel.org/tip/eef476f15c8350078efb48bd9b9f3ff50ae1bbbb
+Commit-ID:     7cbc2ba7c107a1a537524ae505e192f4f88cc209
+Gitweb:        https://git.kernel.org/tip/7cbc2ba7c107a1a537524ae505e192f4f88cc209
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 09 Apr 2025 22:29:07 +02:00
+AuthorDate:    Wed, 09 Apr 2025 22:29:06 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 10 Apr 2025 11:59:37 +02:00
+CommitterDate: Thu, 10 Apr 2025 11:59:28 +02:00
 
-x86/msr: Rename 'wrmsrl_cstar()' to 'wrmsrq_cstar()'
+x86/msr: Rename 'native_wrmsrl()' to 'native_wrmsrq()'
 
 Suggested-by: "H. Peter Anvin" <hpa@zytor.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
@@ -93,38 +93,131 @@ Cc: Dave Hansen <dave.hansen@intel.com>
 Cc: Xin Li <xin@zytor.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 ---
- arch/x86/kernel/cpu/common.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/hyperv/ivm.c                 | 2 +-
+ arch/x86/include/asm/microcode.h      | 2 +-
+ arch/x86/include/asm/msr.h            | 2 +-
+ arch/x86/include/asm/spec-ctrl.h      | 2 +-
+ arch/x86/kernel/cpu/microcode/amd.c   | 2 +-
+ arch/x86/kernel/cpu/microcode/intel.c | 2 +-
+ arch/x86/kvm/vmx/vmx.c                | 8 ++++----
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index bb986ba..079ded4 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2091,7 +2091,7 @@ DEFINE_PER_CPU_CACHE_HOT(unsigned long, cpu_current_top_of_stack) = TOP_OF_INIT_
- DEFINE_PER_CPU_CACHE_HOT(u64, __x86_call_depth);
- EXPORT_PER_CPU_SYMBOL(__x86_call_depth);
+diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
+index 77bf05f..1b8a241 100644
+--- a/arch/x86/hyperv/ivm.c
++++ b/arch/x86/hyperv/ivm.c
+@@ -115,7 +115,7 @@ static inline u64 rd_ghcb_msr(void)
  
--static void wrmsrl_cstar(unsigned long val)
-+static void wrmsrq_cstar(unsigned long val)
+ static inline void wr_ghcb_msr(u64 val)
  {
- 	/*
- 	 * Intel CPUs do not support 32-bit SYSCALL. Writing to MSR_CSTAR
-@@ -2107,7 +2107,7 @@ static inline void idt_syscall_init(void)
- 	wrmsrq(MSR_LSTAR, (unsigned long)entry_SYSCALL_64);
+-	native_wrmsrl(MSR_AMD64_SEV_ES_GHCB, val);
++	native_wrmsrq(MSR_AMD64_SEV_ES_GHCB, val);
+ }
  
- 	if (ia32_enabled()) {
--		wrmsrl_cstar((unsigned long)entry_SYSCALL_compat);
-+		wrmsrq_cstar((unsigned long)entry_SYSCALL_compat);
- 		/*
- 		 * This only works on Intel CPUs.
- 		 * On AMD CPUs these MSRs are 32-bit, CPU truncates MSR_IA32_SYSENTER_EIP.
-@@ -2119,7 +2119,7 @@ static inline void idt_syscall_init(void)
- 			    (unsigned long)(cpu_entry_stack(smp_processor_id()) + 1));
- 		wrmsrq_safe(MSR_IA32_SYSENTER_EIP, (u64)entry_SYSENTER_compat);
- 	} else {
--		wrmsrl_cstar((unsigned long)entry_SYSCALL32_ignore);
-+		wrmsrq_cstar((unsigned long)entry_SYSCALL32_ignore);
- 		wrmsrq_safe(MSR_IA32_SYSENTER_CS, (u64)GDT_ENTRY_INVALID_SEG);
- 		wrmsrq_safe(MSR_IA32_SYSENTER_ESP, 0ULL);
- 		wrmsrq_safe(MSR_IA32_SYSENTER_EIP, 0ULL);
+ static enum es_result hv_ghcb_hv_call(struct ghcb *ghcb, u64 exit_code,
+diff --git a/arch/x86/include/asm/microcode.h b/arch/x86/include/asm/microcode.h
+index 695e569..263ea3d 100644
+--- a/arch/x86/include/asm/microcode.h
++++ b/arch/x86/include/asm/microcode.h
+@@ -61,7 +61,7 @@ static inline u32 intel_get_microcode_revision(void)
+ {
+ 	u32 rev, dummy;
+ 
+-	native_wrmsrl(MSR_IA32_UCODE_REV, 0);
++	native_wrmsrq(MSR_IA32_UCODE_REV, 0);
+ 
+ 	/* As documented in the SDM: Do a CPUID 1 here */
+ 	native_cpuid_eax(1);
+diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
+index 4335f91..20deb58 100644
+--- a/arch/x86/include/asm/msr.h
++++ b/arch/x86/include/asm/msr.h
+@@ -109,7 +109,7 @@ do {							\
+ #define native_wrmsr(msr, low, high)			\
+ 	__wrmsr(msr, low, high)
+ 
+-#define native_wrmsrl(msr, val)				\
++#define native_wrmsrq(msr, val)				\
+ 	__wrmsr((msr), (u32)((u64)(val)),		\
+ 		       (u32)((u64)(val) >> 32))
+ 
+diff --git a/arch/x86/include/asm/spec-ctrl.h b/arch/x86/include/asm/spec-ctrl.h
+index 658b690..00b7e03 100644
+--- a/arch/x86/include/asm/spec-ctrl.h
++++ b/arch/x86/include/asm/spec-ctrl.h
+@@ -84,7 +84,7 @@ static inline u64 ssbd_tif_to_amd_ls_cfg(u64 tifn)
+ static __always_inline void __update_spec_ctrl(u64 val)
+ {
+ 	__this_cpu_write(x86_spec_ctrl_current, val);
+-	native_wrmsrl(MSR_IA32_SPEC_CTRL, val);
++	native_wrmsrq(MSR_IA32_SPEC_CTRL, val);
+ }
+ 
+ #ifdef CONFIG_SMP
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index b61028c..041dae0 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -602,7 +602,7 @@ static bool __apply_microcode_amd(struct microcode_amd *mc, u32 *cur_rev,
+ 	if (!verify_sha256_digest(mc->hdr.patch_id, *cur_rev, (const u8 *)p_addr, psize))
+ 		return false;
+ 
+-	native_wrmsrl(MSR_AMD64_PATCH_LOADER, p_addr);
++	native_wrmsrq(MSR_AMD64_PATCH_LOADER, p_addr);
+ 
+ 	if (x86_family(bsp_cpuid_1_eax) == 0x17) {
+ 		unsigned long p_addr_end = p_addr + psize - 1;
+diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+index 819199b..86e1047 100644
+--- a/arch/x86/kernel/cpu/microcode/intel.c
++++ b/arch/x86/kernel/cpu/microcode/intel.c
+@@ -320,7 +320,7 @@ static enum ucode_state __apply_microcode(struct ucode_cpu_info *uci,
+ 	}
+ 
+ 	/* write microcode via MSR 0x79 */
+-	native_wrmsrl(MSR_IA32_UCODE_WRITE, (unsigned long)mc->bits);
++	native_wrmsrq(MSR_IA32_UCODE_WRITE, (unsigned long)mc->bits);
+ 
+ 	rev = intel_get_microcode_revision();
+ 	if (rev != mc->hdr.rev)
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 9b221bd..cd0d6c1 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -382,7 +382,7 @@ static __always_inline void vmx_disable_fb_clear(struct vcpu_vmx *vmx)
+ 
+ 	msr = __rdmsr(MSR_IA32_MCU_OPT_CTRL);
+ 	msr |= FB_CLEAR_DIS;
+-	native_wrmsrl(MSR_IA32_MCU_OPT_CTRL, msr);
++	native_wrmsrq(MSR_IA32_MCU_OPT_CTRL, msr);
+ 	/* Cache the MSR value to avoid reading it later */
+ 	vmx->msr_ia32_mcu_opt_ctrl = msr;
+ }
+@@ -393,7 +393,7 @@ static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx)
+ 		return;
+ 
+ 	vmx->msr_ia32_mcu_opt_ctrl &= ~FB_CLEAR_DIS;
+-	native_wrmsrl(MSR_IA32_MCU_OPT_CTRL, vmx->msr_ia32_mcu_opt_ctrl);
++	native_wrmsrq(MSR_IA32_MCU_OPT_CTRL, vmx->msr_ia32_mcu_opt_ctrl);
+ }
+ 
+ static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
+@@ -6745,7 +6745,7 @@ static noinstr void vmx_l1d_flush(struct kvm_vcpu *vcpu)
+ 	vcpu->stat.l1d_flush++;
+ 
+ 	if (static_cpu_has(X86_FEATURE_FLUSH_L1D)) {
+-		native_wrmsrl(MSR_IA32_FLUSH_CMD, L1D_FLUSH);
++		native_wrmsrq(MSR_IA32_FLUSH_CMD, L1D_FLUSH);
+ 		return;
+ 	}
+ 
+@@ -7318,7 +7318,7 @@ void noinstr vmx_spec_ctrl_restore_host(struct vcpu_vmx *vmx,
+ 	 */
+ 	if (cpu_feature_enabled(X86_FEATURE_KERNEL_IBRS) ||
+ 	    vmx->spec_ctrl != hostval)
+-		native_wrmsrl(MSR_IA32_SPEC_CTRL, hostval);
++		native_wrmsrq(MSR_IA32_SPEC_CTRL, hostval);
+ 
+ 	barrier_nospec();
+ }
 
