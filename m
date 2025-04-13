@@ -1,176 +1,142 @@
-Return-Path: <linux-tip-commits+bounces-4923-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4924-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58FDA87136
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 11:23:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14820A871B5
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 13:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95306178CD4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 09:23:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8056174A55
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 11:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF7F178372;
-	Sun, 13 Apr 2025 09:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD29178372;
+	Sun, 13 Apr 2025 11:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3TkzMdtu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zg7jf2gk"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YsyT8YFx"
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 471C5AD51;
-	Sun, 13 Apr 2025 09:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746B23D984;
+	Sun, 13 Apr 2025 11:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744536213; cv=none; b=GlvI7JKdb15aoAQ3AC8/ygIKQo8yze1YM40dRgB+c5gJ0MWzMtY+BpwYiu88S86ouTQ5JZLLxZYlAsRmkIcAAwmAWbX10/0AItc2JEM1CtwecmpjBI5ojY78pUUTJlZmgebvg5maChnN9yCfl1BiUAFg00fBCCouT8fiLEJ5/rE=
+	t=1744542347; cv=none; b=JQonkhpAN5cmW90RQMxpLSVfqhG80X3vB7rrEqT4i+1yLvl/A6BSDHPbnlJH31qe8CHM9d9h1chn05vlnldakFaMlzkfL5IZ0AKsK51DSV+0WcCVb2Bl3lYAYG0U59AfjnvlsXCq9LhBa3YlDwKNQe6CTtTVPtTdRa1gQ4UrcbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744536213; c=relaxed/simple;
-	bh=yf676E/gQZ3toPal9eBfEKUBovP3MaSTUqSQmtVon30=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=GRrfeYIVA//VA5TwdX7UMC/buqPVkv/EgIesvRHeCCV2bnp0KL9HSi91P53MbjQ4ux7vVICcIkkcj0cfaN3We8NWCBlk8Dlkl6Q2CquP7WS0xpPrpcBgI8NmI5qW9fNvLtmDlVAkeQsCt2oEUgYVE8jJkFxhJv8DwsklIhBBM70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3TkzMdtu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zg7jf2gk; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 13 Apr 2025 09:23:24 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744536209;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ucnrpy2NvzE8s629t63JajaFbp5wyeNnqldVUdd1vzg=;
-	b=3TkzMdtuD97PL8jAK+5YHdpwQM883nL8ZTMJK4cQLz833JpNOk7+gyzUCGidHPeaMhClEN
-	ZbuECKMUCFEN2tpucR6LpBHMtGXJiliBVNaoRVCKrPtE7O+T1HHkaMZi+MZfoYL0KEsPmb
-	KfmYMs2PsbRk19eHZcnoXXUbfamiviNbmY2CcR/Ex2mmD6QzmocR+KJuvPSztja0iO1vpN
-	U/35rD2mM3nQmskr7PiAS3NWr/Wj7CkwCjTV+0XDxYt52C5+qlwNOcAXwfxN39np567tS5
-	EoXANhKZ+ZILmmIADtAtv9/ojv0Mn/Y1sBPDNz4lOzHiMfowZ4rx9T86QvGOSA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744536209;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ucnrpy2NvzE8s629t63JajaFbp5wyeNnqldVUdd1vzg=;
-	b=zg7jf2gkbUWm6Ffn91qiqqw9fp+6/GPHXahLHDCOmoaIWRR2qA0TyAA95D2Syh9iT1zumE
-	zV9vdNB3+6TkXaBQ==
-From: "tip-bot2 for Mike Rapoport (Microsoft)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/e820: Discard high memory that can't be
- addressed by 32-bit systems
-Cc: Dave Hansen <dave.hansen@intel.com>, Arnd Bergmann <arnd@kernel.org>,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Andy Shevchenko <andy@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
- Davide Ciminaghi <ciminaghi@gnudd.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250413080858.743221-1-rppt@kernel.org>
-References: <20250413080858.743221-1-rppt@kernel.org>
+	s=arc-20240116; t=1744542347; c=relaxed/simple;
+	bh=EV9bLyLiQgj0zexCh0MFMFqodFrGWYJwodYnlnMhZLs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GKlGsKkwQnUuKWMWXP/PStLd0RrabJ4fyAhFD0wgoFLZgzE8norfH7czdNSogkORsLd7c/lx1w4ZaXwAdSewhX5wPHd3kRZFFU4n/5+sq0tY+tzm6jx9Y/rk4Eu99QbkJXHgFGluSNyCBKGMcvYp3D4WV8lsPhJtLQ6uGPIFChU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YsyT8YFx; arc=none smtp.client-ip=209.85.208.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-30c416cdcc0so30371241fa.2;
+        Sun, 13 Apr 2025 04:05:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744542341; x=1745147141; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xkvNYBoz6k2ClpzWrXDmwkMOqKn26OBPjmJazQv/740=;
+        b=YsyT8YFx2arzi69xg3UhB9TFuUHQkwjHtSNYGjNhsGimSN/aNjmd8ZgLOA6i3sZz0q
+         Gwc9o09ctjByVWS76rYKPcuunQJL+pi7+EqLAyKdrWBzh/CibvGlgJdVbIeNnEYMBN5Z
+         0fYCrKMpJt0AqFcDh6HhxP5K/34VNoQUAStMFR+Y72+SlniJ2y3NLm3/qrXMJ8wtt4vP
+         GN+e6ebzWnHXyF5JoIuD43M59VSW/N4lWWJPe9BixvDrCUZcxhjkl3T/NjEynqwmS5wD
+         GImn67N2Ue8AATpFQUDpq1plBkAU0UkYICr9bGp/kVbLlGQDND/Qlpoq1ct/RWZviQNe
+         Lv2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744542341; x=1745147141;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xkvNYBoz6k2ClpzWrXDmwkMOqKn26OBPjmJazQv/740=;
+        b=EaDskyMaONe0Ez3iaYt/qVgt268J3eVMCMHIhurPxtFc+dsiycOD//C1TtqkGxSkKr
+         XeF/EZCCyAqCVcdcfQc4cya/e9hMQHlSVsiBddEns7q8inzAcoehxSXJ8HNFUgJMoQDE
+         vN8gXmF9b/kVvnMCJz1zgXQ6+wOBesFTtHOjBNEd90jmcCNb14p3n5PE711sK0FFL2L3
+         kmstZ6vmM+bsMn3UOl5DigKaExWJFLI3zZbDgiXIMqRfzo8PV2jvAZo0ujGKruAjUFEG
+         dpHV9yBQ++dWsGGxdPsXUeCvW//kib8Fy62sN4xbifFRiZSxOJ7aFUuhb2AtZWTIGKmw
+         Kz2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUIki6Uxz0ZFUzfD1rFI3d30xu7n5074iJ1SJE9eXWIfNNl1SNP/n8KUluPH2wZ3HFYTj2l7dgELNEKxkPDqGHKvwQ=@vger.kernel.org, AJvYcCVJ9vZwZAJqod387fdoMYCvVP/MhliCZPb/J9ILylvDgIdoJB0LATYM7f6FWhEZSR3zmOzJvsq8xHFIAUo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoRQDmFHM5j+YpmjfP7uYqhfMnGIlfGvJoiRBRxKDSv++PntRF
+	LbsFcwjCjqoWpyp+gdOsO9p9355WacdCmvtl2k2kIQrqOyL501tH7CKObu75Vmvc//dMbIY0Eyf
+	OnaU9eWapzpkC8U/1VNAmnM17a34=
+X-Gm-Gg: ASbGncvNVhXpwVi3BWxtLRFEKMtfGczrNNY3wPqa9ac4khKwE1Ub+5MlTwWqKShAiVB
+	g6GK/G+KZEZWuyF3WL1q0U5OxGNg5SXNIsR1p2SXj7F5OANI97+xi0qTtNnBDlbNuprvSo5vWVA
+	w6p/81ZhRbCG2aZ7WFJJmIEA==
+X-Google-Smtp-Source: AGHT+IE+3xZedj/wAdEhMdffMJOiAt1C8sFv/sZjpWcXyGPZaEtX1HJiJGzPumy5i74aYPSbEbYeiSEBJlak0KH3eL0=
+X-Received: by 2002:a2e:bccc:0:b0:2ff:56a6:2992 with SMTP id
+ 38308e7fff4ca-31049aae557mr28609261fa.37.1744542341186; Sun, 13 Apr 2025
+ 04:05:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174453620439.31282.5525507256376485910.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20250404102535.705090-1-ubizjak@gmail.com> <174428272631.31282.1484467383146370221.tip-bot2@tip-bot2>
+ <20250411210815.GAZ_mEv8riLWzvERYY@renoirsky.local> <Z_oqalk92C4G6Rqt@gmail.com>
+ <CAFULd4bTd6GMftLBX7Nu0xftini00o4v7=1XfuoDC8ydUr9Ueg@mail.gmail.com> <Z_t7_brzSoboOsen@gmail.com>
+In-Reply-To: <Z_t7_brzSoboOsen@gmail.com>
+From: Uros Bizjak <ubizjak@gmail.com>
+Date: Sun, 13 Apr 2025 13:05:35 +0200
+X-Gm-Features: ATxdqUGWXrSVpNoq4j9UTjdP7mOIN50cyDABESN7VeGqLifRCKOOVVt6I2mcImQ
+Message-ID: <CAFULd4ZBbAG4ndn+rzjjqF+pmtGa3UbyDOWfEXww0XhExJByVA@mail.gmail.com>
+Subject: Re: [tip: core/urgent] compiler.h: Avoid the usage of
+ __typeof_unqual__() when __GENKSYMS__ is defined
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Linus Torvalds <torvalds@linux-foundation.org>, 
+	Borislav Petkov <bp@alien8.de>, Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	linux-tip-commits@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Sun, Apr 13, 2025 at 10:55=E2=80=AFAM Ingo Molnar <mingo@kernel.org> wro=
+te:
+>
+>
+> * Uros Bizjak <ubizjak@gmail.com> wrote:
+>
+> > > Yeah, agreed, I've removed this workaround from tip:core/urgent for
+> > > the time being - it's not like genksyms is some magic external
+> > > entity we have to work around, it's an in-kernel tool that can be
+> > > fixed/enhanced in scripts/genksyms/.
+> >
+> > Please note that you will disable a check that is finally able to
+> > fail the build for a whole class of very subtle percpu bugs.
+>
+> I simply zapped a commit that was applied two days ago and asked akpm
+> to resolve a regression that was introduced upstream via his tree
+> through this commit, in this merge window:
+>
+>   ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
+>
+> What 'disabled checks' are you talking about?
 
-Commit-ID:     3f0036c0b5f850d1200dbfa7365ed24197a0f157
-Gitweb:        https://git.kernel.org/tip/3f0036c0b5f850d1200dbfa7365ed24197a0f157
-Author:        Mike Rapoport (Microsoft) <rppt@kernel.org>
-AuthorDate:    Sun, 13 Apr 2025 11:08:58 +03:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 13 Apr 2025 11:09:39 +02:00
+Percpu checks require TYPEOF_UNQUAL() macro, so removing
+USE_TYPEOF_UNQUAL definition will skip the definition of __percpu_qual
+in arch/x86/include/asm/percpu.h (please  see
+6a367577153acd9b432a5340fb10891eeb7e10f1), and consequently __percpu
+macro won't be defined with __seg_gs (please see
+6cea5ae714ba47ea4807d15903baca9857a450e6).
 
-x86/e820: Discard high memory that can't be addressed by 32-bit systems
+If this commit is removed, then the compiler will fallback to old
+declarations of percpu variables and won't perform percpu checks
+anymore. This new functionality is implemented in such a way that can
+be fully disabled in a couple of places, and not declaring
+USE_TYPEOF_UNQUAL is one of them.
 
-Dave Hansen reports the following crash on a 32-bit system with
-CONFIG_HIGHMEM=y and CONFIG_X86_PAE=y:
+OTOH, my patch avoids __typeof_unqual__() only when generating
+preprocessed source for genksyms. genksyms uses this preprocessed
+source to generate CRC32 from keywords that declare variables and it
+is perfectly OK to use "old" definitions, without __typeof_unqual__
+and __seg_gs keywords; there is no loss of functionality. __GENKSYMS__
+condition can be removed once genksyms recognizes __typeof_unqual__
+(and __seg_gs).
 
-  > 0xf75fe000 is the mem_map[] entry for the first page >4GB. It
-  > obviously wasn't allocated, thus the oops.
+Everything else besides "sparse", which already uses the same
+fallback, handles __typeof_unqual__() perfectly well. This includes
+GNUC >=3D 14 and clang >=3D 19.
 
-  BUG: unable to handle page fault for address: f75fe000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0002) - not-present page
-  *pdpt = 0000000002da2001 *pde = 000000000300c067 *pte = 0000000000000000
-  Oops: Oops: 0002 [#1] SMP NOPTI
-  CPU: 0 UID: 0 PID: 0 Comm: swapper Not tainted 6.15.0-rc1-00288-ge618ee89561b-dirty #311 PREEMPT(undef)
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-  EIP: __free_pages_core+0x3c/0x74
-  ...
-  Call Trace:
-   memblock_free_pages+0x11/0x2c
-   memblock_free_all+0x2ce/0x3a0
-   mm_core_init+0xf5/0x320
-   start_kernel+0x296/0x79c
-   i386_start_kernel+0xad/0xb0
-   startup_32_smp+0x151/0x154
-
-The mem_map[] is allocated up to the end of ZONE_HIGHMEM which is defined
-by max_pfn.
-
-The bug was introduced by this recent commit:
-
-  6faea3422e3b ("arch, mm: streamline HIGHMEM freeing")
-
-Previously, freeing of high memory was also clamped to the end of
-ZONE_HIGHMEM but after this change, memblock_free_all() tries to
-free memory above the of ZONE_HIGHMEM as well and that causes
-access to mem_map[] entries beyond the end of the memory map.
-
-To fix this, discard the memory after max_pfn from memblock on
-32-bit systems so that core MM would be aware only of actually
-usable memory.
-
-Fixes: 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing")
-Reported-by: Dave Hansen <dave.hansen@intel.com>
-Tested-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Shevchenko <andy@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Davide Ciminaghi <ciminaghi@gnudd.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-Link: https://lore.kernel.org/r/20250413080858.743221-1-rppt@kernel.org
----
- arch/x86/kernel/e820.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index 9d8dd8d..9920122 100644
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -1299,6 +1299,14 @@ void __init e820__memblock_setup(void)
- 		memblock_add(entry->addr, entry->size);
- 	}
- 
-+	/*
-+	 * 32-bit systems are limited to 4BG of memory even with HIGHMEM and
-+	 * to even less without it.
-+	 * Discard memory after max_pfn - the actual limit detected at runtime.
-+	 */
-+	if (IS_ENABLED(CONFIG_X86_32))
-+		memblock_remove(PFN_PHYS(max_pfn), -1);
-+
- 	/* Throw away partial pages: */
- 	memblock_trim_memory(PAGE_SIZE);
- 
+Thanks,
+Uros.
 
