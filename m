@@ -1,117 +1,172 @@
-Return-Path: <linux-tip-commits+bounces-4952-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4953-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562F7A873AC
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 21:43:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CC2A878C6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Apr 2025 09:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDCF87A288C
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 13 Apr 2025 19:42:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9171D1701D7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Apr 2025 07:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001D639FCE;
-	Sun, 13 Apr 2025 19:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165E41ACECD;
+	Mon, 14 Apr 2025 07:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="shydVDea"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="awCovut7";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5Fe+XRD4"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9BA1862A;
-	Sun, 13 Apr 2025 19:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2434F1A3161;
+	Mon, 14 Apr 2025 07:32:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744573395; cv=none; b=kjzHsBqsg+mF2ceeKBtQG6xJND3XuZM4m4CyCVPlFTirAFHj4wVcBovOGhgtQRewOJlDoQxSbWSUWeVY5eAa63VtC75+Fp6AvnyFtIS3MOH+Ht0erwdXD1+vUxyjfFS/eFEKjdaWDdqlICCnz3f51oZ3ucquyFv30erv+mmtmAw=
+	t=1744615955; cv=none; b=gQf8HxHHDywhZ0FooiAUWjHiSfF2cj3ilefYMiEOiwNFCyf8GjnB98k5d0uon6M1lMwbZZPpIE0sfOTDv7CpwvrIDlOO16mZrgCAv6JXzkYo97MCwbnOnp847HyH2YQpHYYNpnHcdD4JM+HSkUdbALaPRrAhfsSw1HTa4Q5GkD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744573395; c=relaxed/simple;
-	bh=oEqBz1Ey1X/q0WGJonnMdNetp5YCj0ml3zi7CP04Qqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VzjAYEjhqWQbz5HypcTwgbEZO1+NVEUrFAYSphCy8vQMAxhnXKtivVnrdo25Gy9ZFNRBJZwBSMRGe1+GbZ4GxO4vATkaD+0rhuX23eCHH366wqu3C2wePwGelB5gufR1VZ/XAInrZ/A5A/VHJBVtpWzfO4JWBmmSzhJ5g+C69/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=shydVDea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CBEC4CEDD;
-	Sun, 13 Apr 2025 19:43:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744573394;
-	bh=oEqBz1Ey1X/q0WGJonnMdNetp5YCj0ml3zi7CP04Qqg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=shydVDeaFK8H13Clx2kwH3TURm4XlXWO23IOtUF47I2rv8GNKRgDCTuCuXpnzmmsf
-	 /yvlUdNmL5W90yTzkR5ARQNK6QOmY8CNGMVBhBkdNYL4rNHfJAdq4BfhGXhJ4MxXiJ
-	 ZFwmbNtYi/tKif2KXhS+xmW3EqVibEL5tvtypO5Dn9tTqV1I/AMhyl9xr3MxMT+4Sx
-	 G55Y85BWIWrIh3th2wScx4HMcsL6XlHVgT4va2XR5P3B4KKBDvcrhYW//ZAceEQ6ox
-	 m27jgf55dV+x8Jk5kxZcquV/n7rNww6SjLNq9wbp3pueWDGvaBG5e+5aU/roTOJo+E
-	 iRF/DedZDaXFQ==
-Date: Sun, 13 Apr 2025 21:43:09 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Uros Bizjak <ubizjak@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Paul Menzel <pmenzel@molgen.mpg.de>, x86@kernel.org
-Subject: Re: [tip: core/urgent] compiler.h: Avoid the usage of
- __typeof_unqual__() when __GENKSYMS__ is defined
-Message-ID: <Z_wTzWA7h5jdy47Y@gmail.com>
-References: <174428272631.31282.1484467383146370221.tip-bot2@tip-bot2>
- <20250411210815.GAZ_mEv8riLWzvERYY@renoirsky.local>
- <Z_oqalk92C4G6Rqt@gmail.com>
- <CAFULd4bTd6GMftLBX7Nu0xftini00o4v7=1XfuoDC8ydUr9Ueg@mail.gmail.com>
- <Z_t7_brzSoboOsen@gmail.com>
- <CAFULd4ZBbAG4ndn+rzjjqF+pmtGa3UbyDOWfEXww0XhExJByVA@mail.gmail.com>
- <Z_wI0uNoG2G2TQMC@gmail.com>
- <CAFULd4b2afcu5PnxhqwwepwWMSA7mvYNyPnMtkCjjT84VG8VXA@mail.gmail.com>
- <Z_wOYOrVJJkUUUF9@gmail.com>
- <CAFULd4ZRTfZggPp395Y-ZJ6DkHFdorvjX-MiFHxR40UGU+3rSQ@mail.gmail.com>
+	s=arc-20240116; t=1744615955; c=relaxed/simple;
+	bh=tzEEwXbnXf4EP5gSjBkWwooM0FmRX6MPMkNxlvK9ESc=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=nw4sg6mSBGTk6QKvoQZsFm4bYfGpfl7ZQwTo/xJyAOSUc38s1GS01S/iC49p/QNUqPXK6adVDOA2/Lmh3S0aDtnzVEkQsxfE/dWf8U/82Q6vShbvul0qr57XpCjb+mg4wyZJc3zP/fmSfOAsbrKs4s2PPH+v08l6OmUn1/Z4fM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=awCovut7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5Fe+XRD4; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 14 Apr 2025 07:32:25 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744615949;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yzd/sNzUwzcCF4WdVvwkKiCySoTwG7TykwSehPyV72Y=;
+	b=awCovut7pz8p4U4WRsEQo+NBxyORTGjbodn1w7GCsN1QAQruJU2jDcROXvPcelb8eQWEA+
+	VygFAfyhlu2BxHCAgSJFPSq2JxAv/bfYB+XGaB2TxCqfnLdDbQwIDjo/qzywC/CKvDasOY
+	pHGKEMrZ1u1Zcfh/Wt/Mlde39pq7X+3NyNQ+SB63NEmmU5tLOHkvzMMOQ0nt4KaUC/efZ4
+	Mmh1JWdAjeslVhskzQNjykJTTAh7wIqSy0JmGi8cl5C0c5Ng6vOLudE5otA1c0StCUvTMe
+	HnAoZot2VQe1tpaDpKwPrTnNiZKt+d+Xn8Hq4P4CnNF1xRM/IBxnstgsH05pZw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744615949;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yzd/sNzUwzcCF4WdVvwkKiCySoTwG7TykwSehPyV72Y=;
+	b=5Fe+XRD45n3BHarLXKIX8l1pyBQ+3scC0i7aUJf68nCu9G4mZLtfbh7DL/e779b1hzfq2F
+	zLQG8WNDSIUGkDAw==
+From: "tip-bot2 for Uros Bizjak" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: core/urgent] genksyms: Handle typeof_unqual keyword and
+ __seg_{fs,gs} qualifiers
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Uros Bizjak <ubizjak@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250413220749.270704-1-ubizjak@gmail.com>
+References: <20250413220749.270704-1-ubizjak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFULd4ZRTfZggPp395Y-ZJ6DkHFdorvjX-MiFHxR40UGU+3rSQ@mail.gmail.com>
+Message-ID: <174461594538.31282.5752735096854392083.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the core/urgent branch of tip:
 
-* Uros Bizjak <ubizjak@gmail.com> wrote:
+Commit-ID:     1013f5636fd808569c1f4c40a58a4efc70713a28
+Gitweb:        https://git.kernel.org/tip/1013f5636fd808569c1f4c40a58a4efc70713a28
+Author:        Uros Bizjak <ubizjak@gmail.com>
+AuthorDate:    Mon, 14 Apr 2025 00:07:34 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Mon, 14 Apr 2025 09:19:04 +02:00
 
-> On Sun, Apr 13, 2025 at 9:20 PM Ingo Molnar <mingo@kernel.org> wrote:
-> >
-> >
-> > * Uros Bizjak <ubizjak@gmail.com> wrote:
-> >
-> > > > > If this commit is removed, [...]
-> > > >
-> > > > I did not remove commit ac053946f5c4, it's already upstream. Nor
-> > > > did I advocate for it to be reverted - I'd like it to be fixed. So
-> > > > you are barking up the wrong tree.
-> > >
-> > > If the intention is to pass my proposed workaround via Andrew's tree,
-> > > then I'm happy to bark up the wrong tree, but from the referred
-> > > message trail, I didn't get the clear decision about the patch, and
-> > > neither am sure which patch "brown paper bag bug" refers to.
-> >
-> > It's up to akpm (he merged your original patch that regressed), but I
-> > think scripts/genksyms/ should be fixed instead of worked around -
-> > which is why I zapped the workaround.
-> 
-> As said earlier, I have tried to fix genksyms, but the simple fix was 
-> not enough. The correct fix would be somehow more involved, and I 
-> have zero experience in genksyms source. I'm afraid I don't know this 
-> source well enough to offer a fix in the foreseeable future, so I 
-> resorted to the workaround (which at the end of the day is as 
-> effective as the real fix).
+genksyms: Handle typeof_unqual keyword and __seg_{fs,gs} qualifiers
 
-I disagree that hacks/workarounds are as effective as the real fix.
+Handle typeof_unqual, __typeof_unqual and __typeof_unqual__ keywords
+using TYPEOF_KEYW token in the same way as typeof keyword.
 
-In the Linux kernel the usual principle is that developers who 
-introduce unanticipated in-tree regressions are expected to fix them 
-for real and not just work them around. Not following that principle 
-may have reputational costs going forward (or not), but it's your time 
-and your call really.
+Also ignore x86 __seg_fs and __seg_gs named address space qualifiers
+using X86_SEG_KEYW token in the same way as const, volatile or
+restrict qualifiers.
 
-Thanks,
+Fixes: ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
+Closes: https://lore.kernel.org/lkml/81a25a60-de78-43fb-b56a-131151e1c035@molgen.mpg.de/
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Link: https://lore.kernel.org/r/20250413220749.270704-1-ubizjak@gmail.com
+---
+ scripts/genksyms/keywords.c | 7 +++++++
+ scripts/genksyms/parse.y    | 5 ++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-	Ingo
+diff --git a/scripts/genksyms/keywords.c b/scripts/genksyms/keywords.c
+index b85e097..ee1499d 100644
+--- a/scripts/genksyms/keywords.c
++++ b/scripts/genksyms/keywords.c
+@@ -17,6 +17,8 @@ static struct resword {
+ 	{ "__signed__", SIGNED_KEYW },
+ 	{ "__typeof", TYPEOF_KEYW },
+ 	{ "__typeof__", TYPEOF_KEYW },
++	{ "__typeof_unqual", TYPEOF_KEYW },
++	{ "__typeof_unqual__", TYPEOF_KEYW },
+ 	{ "__volatile", VOLATILE_KEYW },
+ 	{ "__volatile__", VOLATILE_KEYW },
+ 	{ "__builtin_va_list", VA_LIST_KEYW },
+@@ -40,6 +42,10 @@ static struct resword {
+ 	// KAO. },
+ 	// { "attribute", ATTRIBUTE_KEYW },
+ 
++	// X86 named address space qualifiers
++	{ "__seg_gs", X86_SEG_KEYW },
++	{ "__seg_fs", X86_SEG_KEYW },
++
+ 	{ "auto", AUTO_KEYW },
+ 	{ "char", CHAR_KEYW },
+ 	{ "const", CONST_KEYW },
+@@ -57,6 +63,7 @@ static struct resword {
+ 	{ "struct", STRUCT_KEYW },
+ 	{ "typedef", TYPEDEF_KEYW },
+ 	{ "typeof", TYPEOF_KEYW },
++	{ "typeof_unqual", TYPEOF_KEYW },
+ 	{ "union", UNION_KEYW },
+ 	{ "unsigned", UNSIGNED_KEYW },
+ 	{ "void", VOID_KEYW },
+diff --git a/scripts/genksyms/parse.y b/scripts/genksyms/parse.y
+index ee600a8..efdcf07 100644
+--- a/scripts/genksyms/parse.y
++++ b/scripts/genksyms/parse.y
+@@ -91,6 +91,8 @@ static void record_compound(struct string_list **keyw,
+ %token TYPEOF_KEYW
+ %token VA_LIST_KEYW
+ 
++%token X86_SEG_KEYW
++
+ %token EXPORT_SYMBOL_KEYW
+ 
+ %token ASM_PHRASE
+@@ -292,7 +294,8 @@ type_qualifier_seq:
+ 	;
+ 
+ type_qualifier:
+-	CONST_KEYW | VOLATILE_KEYW
++	X86_SEG_KEYW
++	| CONST_KEYW | VOLATILE_KEYW
+ 	| RESTRICT_KEYW
+ 		{ /* restrict has no effect in prototypes so ignore it */
+ 		  remove_node($1);
 
