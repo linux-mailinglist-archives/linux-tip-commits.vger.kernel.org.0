@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-4967-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4968-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E105DA878EB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Apr 2025 09:36:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864EAA8798D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Apr 2025 09:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A3B51884A35
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Apr 2025 07:36:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 075467A907B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 14 Apr 2025 07:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D6B25E819;
-	Mon, 14 Apr 2025 07:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B492580F9;
+	Mon, 14 Apr 2025 07:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sBdMlInf";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UUp7u4qO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="thQiez2c";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MnFncKY3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB5E25D8F0;
-	Mon, 14 Apr 2025 07:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E591A5B82;
+	Mon, 14 Apr 2025 07:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744616097; cv=none; b=Cq5uZS9QLUL62RG758ih0aJ7IlMAY3qi2bV3J0QNbjAu1ympHMmSmBeMtHMIum0kUiZI2UEexOdS+5GQA+/GNXcy1GaYdoXexhbwltQ4cD/jcpCpi6bJpB0S+AWtBMnFddAcmckI3FhE7EUG+VEqdUaj0yKyNZeKSjrg/fDDuBE=
+	t=1744617359; cv=none; b=GTwktXYFyJ/E4DzCkTXg2aYcdsejhzc7fn2SQW3MFWpSFaYTa1gtqYZ3/iTsY9ZlIvMVp+/uplaP7w6rVZ0WfJj9gy+YPbGm07Zg6IU+vuEPdM2BeXNhY9W9omE4SeYld0hg4DxT2YiKnnCyYw46A9Tp2X3/nFKblT05P9CFf1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744616097; c=relaxed/simple;
-	bh=BbnOsEdNmc3zD8sDqozAFfusGwOVC7ccEYE3521DXBs=;
+	s=arc-20240116; t=1744617359; c=relaxed/simple;
+	bh=vrsZh3uAG1aDJMEf6ghO31G+kZx2VPa64CHtzE45Utw=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=AeQjCaZvRjngCFUjx2xty6rI4gS/pE6P3ZTZAkP4X1tA/ldxiuRkdwr0kfiyppC7iDAb5bMyBnebnMyaLgbP9fO1v1OcZ1qad5Lw4vH25WDNkJJi7umd10hQzQ34UBOuQ5C4ZiQBsdY72wfuNKAdptxWMfjyYEp2boFQ08BSREA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sBdMlInf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UUp7u4qO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=tUEf0Q6NhV7GOX/oUBLoPUz6e5AY+LfF4R5zMSP89HUjmXe94fgChbKVAFsQOpAnFsnmykzvFGUgUGkqhnhD48wDi4eNpbSBhqU7heyUHwBnPUj+vCdjLgjGMwRsqwfdeC4ODHplsXF1kp4ORZCdo8KPYOKK5J8qUFB/yE3afps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=thQiez2c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MnFncKY3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 14 Apr 2025 07:34:53 -0000
+Date: Mon, 14 Apr 2025 07:55:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744616094;
+	s=2020; t=1744617355;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EitfPRLcZHVP5Ahy5o0TyYq2RUR2mXyGRJAgxNLtsH0=;
-	b=sBdMlInfP1BiQx9ol9TUXpLCRqW2PN4xbz9lYURhHBTPHexgUoC1Hme876doNRu0BcpnLR
-	TfAUTzAXzpPfxbkPwbswH7qTAAyvTWu4dUVFMsuo8xoNRWFzx3PMBlDv+jQ8Fy1uiJUfYq
-	AdoYNCj2lKE3T/agbJidI+EVa3TNWdH53fFun0xuROmDj9CfKqvfH4uPEOWj6yOiIvooFd
-	nv6ykGxCAu8WWhYbRHY4zX30oisMy7bQLq20UL3uM2aJbLdgcdQbs7H4gchswOq8HX74h8
-	8eBnAls4QtpypbIJ6EEd7cR5s6jEuXUqB4PcKdtuMuZiX9wCeC4UqNMwsk8Cxg==
+	bh=ElGkOZjkzLr8xH5zBFdX2kyDZSP44f/fcuLV7YD5vks=;
+	b=thQiez2cHEiEvkXpVsww4GK/EF17DiQzMygDlM9vB05sh4NrdKWIIZK0VWmdZwVxdvz2lr
+	BluSIbbQBBgVVu8WAHE8jfFhpT6SQCnKIa2ZkNPmPrA+I7OeEpwcNae8tE4xsnvxcbsl6n
+	m0thq6aRudGl+wYj6gkXpxgihd/KC0Ob1RZmRhzuGLm000qnqcThI+83zm2BwBUVdnE96X
+	bkACdVUW7+jfZwIMpPmNuqJiNshKgav4R5cHYIM3peygeMNkBBW9VnHw2xCABrs6a0Mv4X
+	OC9gC4wq7L5NUDkTJrUv0TS2aQYA+UHXKCzVtbuNkdqwt1A9a6DUGMPym8g+Yg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744616094;
+	s=2020e; t=1744617355;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EitfPRLcZHVP5Ahy5o0TyYq2RUR2mXyGRJAgxNLtsH0=;
-	b=UUp7u4qObTU672MHBuCRehHR8WfxX1wT7dIFk9nJEliS9q/K7pCPkFmUO1FlEVqQgxvQ/M
-	BmwTliTVcHYtNmDQ==
-From: "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
+	bh=ElGkOZjkzLr8xH5zBFdX2kyDZSP44f/fcuLV7YD5vks=;
+	b=MnFncKY3ne8lTG7rT4Wq8UM6nY0EptNVfwJD7Xi3+q7TlhYDuHGjG6J52yjcZNeMqPnu79
+	unGdyA37VTg9h1AA==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/merge] x86/fpu/xstate: Remove xstate offset check
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Ingo Molnar <mingo@kernel.org>,
- Andy Lutomirski <luto@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Oleg Nesterov <oleg@redhat.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250320234301.8342-2-chang.seok.bae@intel.com>
-References: <20250320234301.8342-2-chang.seok.bae@intel.com>
+Subject: [tip: x86/alternatives] x86/alternatives, um: Rename UML's
+ text_poke_sync() wrapper to smp_text_poke_sync_each_cpu()
+Cc: kernel test robot <lkp@intel.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <202504141003.kc69fVoj-lkp@intel.com>
+References: <202504141003.kc69fVoj-lkp@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174461609349.31282.17899934397631644178.tip-bot2@tip-bot2>
+Message-ID: <174461735124.31282.10048527543027738159.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,72 +79,38 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/merge branch of tip:
+The following commit has been merged into the x86/alternatives branch of tip:
 
-Commit-ID:     031b33ef1a6a1129a1a02a16b89608ded2eff9be
-Gitweb:        https://git.kernel.org/tip/031b33ef1a6a1129a1a02a16b89608ded2eff9be
-Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Thu, 20 Mar 2025 16:42:52 -07:00
+Commit-ID:     f99002b9a9cc441a8f362e6fb32cf8a5a990261a
+Gitweb:        https://git.kernel.org/tip/f99002b9a9cc441a8f362e6fb32cf8a5a990261a
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Mon, 14 Apr 2025 09:39:33 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 14 Apr 2025 08:18:29 +02:00
+CommitterDate: Mon, 14 Apr 2025 09:42:22 +02:00
 
-x86/fpu/xstate: Remove xstate offset check
+x86/alternatives, um: Rename UML's text_poke_sync() wrapper to smp_text_poke_sync_each_cpu()
 
-Traditionally, new xstate components have been assigned sequentially,
-aligning feature numbers with their offsets in the XSAVE buffer. However,
-this ordering is not architecturally mandated in the non-compacted
-format, where a component's offset may not correspond to its feature
-number.
+Missed this UML wrapper in the rename.
 
-The kernel caches CPUID-reported xstate component details, including size
-and offset in the non-compacted format. As part of this process, a sanity
-check is also conducted to ensure alignment between feature numbers and
-offsets.
-
-This check was likely intended as a general guideline rather than a
-strict requirement. Upcoming changes will support out-of-order offsets.
-Remove the check as becoming obsolete.
-
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Fixes: 6e4955a9d73e ("x86/alternatives: Rename 'text_poke_sync()' to 'smp_text_poke_sync_each_cpu()'")
+Reported-by: kernel test robot <lkp@intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Link: https://lore.kernel.org/r/20250320234301.8342-2-chang.seok.bae@intel.com
+Link: https://lore.kernel.org/r/202504141003.kc69fVoj-lkp@intel.com
 ---
- arch/x86/kernel/fpu/xstate.c | 13 -------------
- 1 file changed, 13 deletions(-)
+ arch/um/kernel/um_arch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 6a41d16..542c698 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -216,9 +216,6 @@ static bool xfeature_enabled(enum xfeature xfeature)
- static void __init setup_xstate_cache(void)
- {
- 	u32 eax, ebx, ecx, edx, i;
--	/* start at the beginning of the "extended state" */
--	unsigned int last_good_offset = offsetof(struct xregs_state,
--						 extended_state_area);
- 	/*
- 	 * The FP xstates and SSE xstates are legacy states. They are always
- 	 * in the fixed offsets in the xsave area in either compacted form
-@@ -246,16 +243,6 @@ static void __init setup_xstate_cache(void)
- 			continue;
+diff --git a/arch/um/kernel/um_arch.c b/arch/um/kernel/um_arch.c
+index d4b3b67..2f5ee04 100644
+--- a/arch/um/kernel/um_arch.c
++++ b/arch/um/kernel/um_arch.c
+@@ -477,7 +477,7 @@ void *text_poke_copy(void *addr, const void *opcode, size_t len)
+ 	return text_poke(addr, opcode, len);
+ }
  
- 		xstate_offsets[i] = ebx;
--
--		/*
--		 * In our xstate size checks, we assume that the highest-numbered
--		 * xstate feature has the highest offset in the buffer.  Ensure
--		 * it does.
--		 */
--		WARN_ONCE(last_good_offset > xstate_offsets[i],
--			  "x86/fpu: misordered xstate at %d\n", last_good_offset);
--
--		last_good_offset = xstate_offsets[i];
- 	}
+-void text_poke_sync(void)
++void smp_text_poke_sync_each_cpu(void)
+ {
  }
  
 
