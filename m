@@ -1,180 +1,137 @@
-Return-Path: <linux-tip-commits+bounces-4993-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-4995-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCC6A8A943
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Apr 2025 22:26:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C23A8AA89
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Apr 2025 23:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E13E1900BEE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Apr 2025 20:27:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0486F7AC920
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 15 Apr 2025 21:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03330254872;
-	Tue, 15 Apr 2025 20:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B70B82248AB;
+	Tue, 15 Apr 2025 21:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yxAn/d20";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0nvV4T/W"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="buzp1Inj"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98DA2251790;
-	Tue, 15 Apr 2025 20:26:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCDC21C18C;
+	Tue, 15 Apr 2025 21:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744748804; cv=none; b=cIja7BdiKIybrKSG4cT54xqyMq41dvRS6OkYy+q3X6dmnRb55GGkDyxtAAV8/fSgUMWMSPqvwvicyMda9wpe2k190Q6838RhCaKluDgO7g+qKWZ+fjw8bGWM7ZnjTfv94eNelbkI3SF2EQYFQyYtRta1UajFptvcN7kSGkJp92c=
+	t=1744754093; cv=none; b=j9YHHoPketb76jBVJPxitQbOXKayXuv3nqlsLKxvVz7I4u3dh8PbxEdKuIf4Ey23Cz3HrYnfmrXRVYQyhnbSq1dnBJwCBEcobUQ5B1pWcZeUVlkMi8oWcScGiBV9YqMPYjNKNeO6qq3ai3y0nJ7sDzMtOaTnNDzSJlWG4aZn5O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744748804; c=relaxed/simple;
-	bh=3zSv6tt/8UWvGb3NyynfypH3Nubv1KM3HCgDQjGpZpM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=M+tjXkU5ZIQ3HOucZ17wG+nvSmdgLa5jlkVF7RCxXJiWqBNwKr9widVMpSnmeQLb/joUhYIok+QknlSHNjNcL18hv3eWKs7PmsxH7gFChF/y49b6pYWcpyFFA541u8qvWd5h1xCdl5zEj6s9oijdbqueMIEemyxfjYQdAva5O8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yxAn/d20; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0nvV4T/W; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 15 Apr 2025 20:26:34 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744748795;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RBRjhv9ePgPQmnVnwWtoD5ZqcJe8IVtsg6FHj+Sup2s=;
-	b=yxAn/d208OtgaB0PHHg2vq9m4cgTf47NLp5PBzIxA8DmuTd6CVRjPROOqD3EqKk2F0Hl+Y
-	6liRGvih3YvydZup8j4l/PwyUqnZd6MMQa0SRoLZxXc3gTrbBxRo+bKOWzZUguoxUTtHI5
-	AHPpJ5JWC+SDekF6bv4EJxM0t7uHrTHrOAFVlk13FGN24LiN0xJv4ZckLJtyyoPC7HMPMa
-	H7X0wnGo0pvjuaBib30Mg399COyEX5cVTeaKTLvHf2NsBxCOJ+1Ht3ROn9y30kIf9eqDB2
-	DXzJ8lcGRRr4Gk1E1iibjwXs8JN+1lS4zXrHLIAze6BWOMXbA7RIzmwMxcFKEQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744748795;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RBRjhv9ePgPQmnVnwWtoD5ZqcJe8IVtsg6FHj+Sup2s=;
-	b=0nvV4T/WFYBVo1PuPiazke1SzD+hTBGFEHtFQsI6+kYw3e8l3tkpjv+0uo6ofsNFD1Bnnz
-	KbEAP6c2mzmYMJAQ==
-From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cpu] x86/cpufeatures: Shorten X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, "Xin Li (Intel)" <xin@zytor.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250415175410.2944032-3-xin@zytor.com>
-References: <20250415175410.2944032-3-xin@zytor.com>
+	s=arc-20240116; t=1744754093; c=relaxed/simple;
+	bh=ZZbFtBetr1YtrRn001MQ+bU4WVmaLaWXdReIWobzDo8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SQqyR81+IQ4kXXWoQq2ELWFg1WAv5nJOCpf1S8ixSZLd41QYqcWDaS8lQRyz25FNMVd0uw+tapmvix+XeqD3R8+l+VV3LZFIBLVGYM/3s8gS9+2VltWkSnjEUv/GZC3C4YPCNUmAhgJW+TmkHUH+4AcCgnQt6iAn6ZZgNy5i6r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=buzp1Inj reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A84B840E015E;
+	Tue, 15 Apr 2025 21:54:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 1NibRQDG_KtU; Tue, 15 Apr 2025 21:54:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1744754082; bh=SxhtpHPnd4nLcF0fPWUahX1phFdNE82RskD4BKP0aqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=buzp1InjGiXcOpDtp9/TylV7AqU1n40pgojsyZn8VFHg5fHCHt9CTQDoBzYjCU6IY
+	 lkjn+HmfusevzUt4ZM0gkuLNBZdijiHCtWcHktxvDpkFMisIoL9zpd1jgwVdsmfuaD
+	 3W4ay4/SK3JU5uizE4Ggr/gb+UmwOBD9DLJsM2R2mey924UswxB/k+H8SidqhG8R24
+	 jYSBnMcTrQHlKg6pxSZnNRE1aNKhlOvS9+nnsJNX91VYBv588s0zIscGHgf0omKNkH
+	 mDBbCd1ndbU3E9A0ATLDR8rpD3K3cx8Z3JztHbFfhnFbF7YTetQRzxrYkz2SCsDZNS
+	 UeIU3vYm+4G+RINmWyTlLAmjUGfcpgP45a8zhJcer7Q9+eWrKnp/focB9/R/gPz3yU
+	 uPjiguU1JLymYtriMlT38a4KcoDfMnAlma+trRPiDiIq42mokYQKkNrxgwSaHVq/DP
+	 krDFWOD5g7cAIVa7ERGYEl60Hsy6uzHYUXfLxdXoPOOLjIUa+lsMsDgzC3PKgBU/zh
+	 bTOEErfAhXqk/tY+wH7K5WNWZLcX8U5+LVsoxwjUjfRc+TbvhGJ2zt4P84iQYzSDzi
+	 TAoBjQO4OD8LoYJP2MQYmolw8PtOHpv+50sHZTKWpU5ymv1S4JhdkVBkMkT4/Es1G9
+	 k/Z5OHc5hwzZeWFnbRsNvcXs=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 91B2A40E0196;
+	Tue, 15 Apr 2025 21:54:34 +0000 (UTC)
+Date: Tue, 15 Apr 2025 23:54:27 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+	Ian Campbell <ijc@hellion.org.uk>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: [tip: x86/build] x86/boot: Add back some padding for the CRC-32
+ checksum
+Message-ID: <20250415215427.GLZ_7Vk6t9Vg-kgAhH@fat_crate.local>
+References: <20250312081204.521411-2-ardb+git@google.com>
+ <174178137443.14745.10057090473999621829.tip-bot2@tip-bot2>
+ <20250414135625.GDZ_0UCcIQ-fg8DKZL@fat_crate.local>
+ <CAMj1kXEWerW9A7t0njN7hM7Ms48+mE94p3CTv_LP9P-CotOtPg@mail.gmail.com>
+ <89CE5702-6C52-4E02-9A18-31E4161CA677@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174474879408.31282.1332107078743444126.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <89CE5702-6C52-4E02-9A18-31E4161CA677@zytor.com>
+Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/cpu branch of tip:
+On Tue, Apr 15, 2025 at 10:00:11AM -0700, H. Peter Anvin wrote:
+> >This was done on hpa's request - maybe he has a duration in mind for
+> >this grace period?
+>=20
+> I would prefer to leave it indefinitely, because an all zero pattern is=
+ far easier to detect than what would look like a false checksum.
+>=20
+> So I remembered eventually who wanted it: it was a direct from flash bo=
+ot loader who wanted to detect a partial flash failure before invoking th=
+e kernel, so that it can redirect to a secondary kernel.
 
-Commit-ID:     13327fada7ff0ae858e28b9515cd7d6ccb5fccc7
-Gitweb:        https://git.kernel.org/tip/13327fada7ff0ae858e28b9515cd7d6ccb5fccc7
-Author:        Xin Li (Intel) <xin@zytor.com>
-AuthorDate:    Tue, 15 Apr 2025 10:54:09 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 15 Apr 2025 22:09:16 +02:00
+What is a "direct from flash boot loader"?
 
-x86/cpufeatures: Shorten X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT
+> That would obviously not be an UEFI environment, so the signing issue i=
+s not applicable.
+>=20
+> An all zero end field actually works for that purpose (although require=
+s a boot loader patch), because an unprogrammed flash sector contains FFF=
+FFFFF not 00000000.
+>=20
+> We have kept the bzImage format backwards compatible =E2=80=93 sometime=
+s at considerable effort =E2=80=93 and the cost of reasonably continuing =
+to do so is absolutely minimal. This is an incompatible change, so at lea=
+st it is appropriate to give unambiguous indication thereof.
+>=20
+> In other words: it ain't broken, don't try to fix it. It is all downsid=
+e, no upside.
 
-Shorten X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT to
-X86_FEATURE_CLEAR_BHB_VMEXIT to make the last column aligned
-consistently in the whole file.
+Sure but look at what is there now:
 
-There's no need to explain in the name what the mitigation does.
+                /* Add 4 bytes of extra space for the obsolete CRC-32 che=
+cksum */
+                . =3D ALIGN(. + 4, 0x200);
+                _edata =3D . ;
 
-No functional changes.
+This basically screams at me: "delete me, delete me!" :-P
 
-Suggested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250415175410.2944032-3-xin@zytor.com
----
- arch/x86/include/asm/cpufeatures.h       | 2 +-
- arch/x86/include/asm/nospec-branch.h     | 2 +-
- arch/x86/kernel/cpu/bugs.c               | 6 +++---
- tools/arch/x86/include/asm/cpufeatures.h | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+So I would probably put the gist of what you say above as a comment there=
+ so
+that we have the rationale stated there, for future, trigger-happy
+generations.
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 60b4a4c..bd27a1d 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -476,7 +476,7 @@
- #define X86_FEATURE_CLEAR_BHB_LOOP	(21*32+ 1) /* Clear branch history at syscall entry using SW loop */
- #define X86_FEATURE_BHI_CTRL		(21*32+ 2) /* BHI_DIS_S HW control available */
- #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* BHI_DIS_S HW control enabled */
--#define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* Clear branch history at vmexit using SW loop */
-+#define X86_FEATURE_CLEAR_BHB_VMEXIT	(21*32+ 4) /* Clear branch history at vmexit using SW loop */
- #define X86_FEATURE_AMD_FAST_CPPC	(21*32+ 5) /* Fast CPPC */
- #define X86_FEATURE_AMD_HETEROGENEOUS_CORES (21*32+ 6) /* Heterogeneous Core Topology */
- #define X86_FEATURE_AMD_WORKLOAD_CLASS	(21*32+ 7) /* Workload Classification */
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 8a5cc8e..707ee52 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -327,7 +327,7 @@
- .endm
- 
- .macro CLEAR_BRANCH_HISTORY_VMEXIT
--	ALTERNATIVE "", "call clear_bhb_loop", X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT
-+	ALTERNATIVE "", "call clear_bhb_loop", X86_FEATURE_CLEAR_BHB_VMEXIT
- .endm
- #else
- #define CLEAR_BRANCH_HISTORY
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index a91a1ca..3228f5d 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1701,13 +1701,13 @@ static void __init bhi_select_mitigation(void)
- 
- 	if (bhi_mitigation == BHI_MITIGATION_VMEXIT_ONLY) {
- 		pr_info("Spectre BHI mitigation: SW BHB clearing on VM exit only\n");
--		setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT);
-+		setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_VMEXIT);
- 		return;
- 	}
- 
- 	pr_info("Spectre BHI mitigation: SW BHB clearing on syscall and VM exit\n");
- 	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP);
--	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT);
-+	setup_force_cpu_cap(X86_FEATURE_CLEAR_BHB_VMEXIT);
- }
- 
- static void __init spectre_v2_select_mitigation(void)
-@@ -2891,7 +2891,7 @@ static const char *spectre_bhi_state(void)
- 		 !boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE) &&
- 		 rrsba_disabled)
- 		return "; BHI: Retpoline";
--	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT))
-+	else if (boot_cpu_has(X86_FEATURE_CLEAR_BHB_VMEXIT))
- 		return "; BHI: Vulnerable, KVM: SW loop";
- 
- 	return "; BHI: Vulnerable";
-diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/include/asm/cpufeatures.h
-index 2e219be..e10c3f4 100644
---- a/tools/arch/x86/include/asm/cpufeatures.h
-+++ b/tools/arch/x86/include/asm/cpufeatures.h
-@@ -466,7 +466,7 @@
- #define X86_FEATURE_CLEAR_BHB_LOOP	(21*32+ 1) /* Clear branch history at syscall entry using SW loop */
- #define X86_FEATURE_BHI_CTRL		(21*32+ 2) /* BHI_DIS_S HW control available */
- #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* BHI_DIS_S HW control enabled */
--#define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* Clear branch history at vmexit using SW loop */
-+#define X86_FEATURE_CLEAR_BHB_VMEXIT	(21*32+ 4) /* Clear branch history at vmexit using SW loop */
- #define X86_FEATURE_AMD_FAST_CPPC	(21*32+ 5) /* Fast CPPC */
- #define X86_FEATURE_AMD_HETEROGENEOUS_CORES (21*32+ 6) /* Heterogeneous Core Topology */
- #define X86_FEATURE_AMD_WORKLOAD_CLASS	(21*32+ 7) /* Workload Classification */
+Thx.
+
+--=20
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
