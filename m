@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-5015-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5016-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65699A90A98
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Apr 2025 19:57:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB965A90C15
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Apr 2025 21:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D73465A14ED
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Apr 2025 17:56:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FF0C7A19C9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 16 Apr 2025 19:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834F5204598;
-	Wed, 16 Apr 2025 17:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A653221DB9;
+	Wed, 16 Apr 2025 19:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cXoFOOUM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nIvTe/0X"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KFZkJa/R";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4ZLfOZk8"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0CE17A302;
-	Wed, 16 Apr 2025 17:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0722222B0;
+	Wed, 16 Apr 2025 19:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744826227; cv=none; b=j2FyNsd56GvybUQ4RuPvaKcbg7NvMEJ93gcpr69BoccK+5a/hD4bCfRKfRsAA6O/07sb55V1jEs86IBcgXICVmflYB5tpUs+xd2KdjU3Cxo4m1xrTQwyn2OfdZ7dhk42AMw5CYB/TWi4pgN/LNohJIP24G3lvgaDVbQVhKeDXTI=
+	t=1744830999; cv=none; b=NZH4q9vcvBjvwHbgTPAV6+2E+hTr1Kj0BKYIz0gW6th4H6YfZ/JyUTAd/Z7L89Yk/CHn1dUQOvAUtULHFVqeZIcU3qwAr445Ps10NQiiujkpwsDJnl1bvjl/8IQlZVtPa3llfzaX859CUTKFJDqEPu1jkVVTO/L//P0hOwlzLoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744826227; c=relaxed/simple;
-	bh=w/+VvnaX9XqMugN34PceUSxBXDforvtEajVM/0HAoeE=;
+	s=arc-20240116; t=1744830999; c=relaxed/simple;
+	bh=y8EOh2IdpQ87rvbk7rRX/EubUhmNFfJVyiYaxHETmIc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=pQJ4Cs1YWJHJR5YxdO3aplShBoiTUy1p/HXea+/Doy2dQhQwAucBp40zo5PGtjT4jSxFVwbL1uriqsfxUlDcp0oviQOcz6YSAT/z06DL9ZJBlrJn2CvK+fjnwOsSTTTapvriCnzlDdUBL8rk9BRTo0stUVPggipyyrQC5Xw/t+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cXoFOOUM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nIvTe/0X; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ed3KhQQFQsW0a4duUGeP1snsDX8kY8Ojl5Zcpfrk6gYlXfY0yzXmt+vwftW8oNOIdB7cQ2iPGLwFVaL+HRw/bkejhjBb7GKepmJjxapiqyn1nNRR3Au0EchBeROvOWqHStxgwf94jOf/DsVi6fXCPuVvK04mU1EYMkqpHvIf79M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KFZkJa/R; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4ZLfOZk8; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 16 Apr 2025 17:56:57 -0000
+Date: Wed, 16 Apr 2025 19:16:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744826223;
+	s=2020; t=1744830995;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7Xsf10dIAqnAF2ECrxgcaAvbZRzlsqA/1bTFId4bg/k=;
-	b=cXoFOOUMR+svZUItFvGyzQ27aHHUUuLndyKS+M88+1Hs3G6dBbSyyBeECmnr5YvjYhZLW5
-	TPnUDGCuw6Hciux0XQxt8/d2Pg5v8FX8hQfh9EcmeyryG5IqWJI/3DaV0ziYjuWQ+D5B9D
-	+6KN6/cyk6i8vVjmHhGm9wULwqMSi3UHQ+KDbgXrlHgYMRhI4l5YOFaeAOa4DvZbYe7A7r
-	JuDKOK8jQqexeAdILTuFUh4VP6oRTrrOM2lpJzW7jibWfPehs/Yg5HlJuvFv4YRGLjIc/x
-	v1huFxzYdaIfpf5Fr2YyvEzn2Xkg1zEnYnO4/QtFW67vWFbzjXCAC0tECluxmA==
+	bh=dhAbYJ1PgRLBViX+3M7BU4iyIZEx4zWLuUMil1spSoA=;
+	b=KFZkJa/Ru350YaFaUbC6xAEeKYugb48wdMfiHmyjfPrGaNCWM8UT4dv9d482ojktbgpKjB
+	vdwvd9GGXZrmuyCOrqw9lmuxKB7MqjdNTix+eaRu9VHwxN1vCwx+uWLB00m2k7rPudCANr
+	NTGrU3XyhIEmhmYmOi3BHOYHRr4oXgtwzZSUA3qeR9ZEx9KfeZy0fUCshlIDH3ERdKp8/F
+	IQWhOztlCg5QBmPlClfWlTo+EeSNqRoMj8rV6xvGFpH3hvz4Ox+yxXtup/yXl9hI7nonvc
+	hpR+2sVpScQXj9mB4pDTNzUgOR9hQfXWwjASBEnWqJOkyJUgEBmLw8w4ChM2xg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744826223;
+	s=2020e; t=1744830995;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7Xsf10dIAqnAF2ECrxgcaAvbZRzlsqA/1bTFId4bg/k=;
-	b=nIvTe/0Xh11vsMKAIaAlNiwpETrMhpA+uJGQaeIgzZ26GlarFJx2HVTHZBUtP99R8HLY+7
-	5p8PSa87DTr3aOCw==
-From: "tip-bot2 for Pawan Gupta" <tip-bot2@linutronix.de>
+	bh=dhAbYJ1PgRLBViX+3M7BU4iyIZEx4zWLuUMil1spSoA=;
+	b=4ZLfOZk8j3NxDKqGszV1MJrjsDosAaCsGixs1+NUlIwhuXvASr3mX3s+D1V5RGmbZZ2X3U
+	IhM7yTeqaXVLcEBw==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/bugs] x86/bugs: Rename mmio_stale_data_clear to cpu_buf_vm_clear
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject: [tip: sched/core] sched/fair: Adhere to place_entity() constraints
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Mike Galbraith <efault@gmx.de>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250416-mmio-rename-v2-1-ad1f5488767c@linux.intel.com>
-References: <20250416-mmio-rename-v2-1-ad1f5488767c@linux.intel.com>
+In-Reply-To: <c216eb4ef0e0e0029c600aefc69d56681cee5581.camel@gmx.de>
+References: <c216eb4ef0e0e0029c600aefc69d56681cee5581.camel@gmx.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174482621725.31282.15395514760827222939.tip-bot2@tip-bot2>
+Message-ID: <174483098990.31282.10026690550502878428.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,104 +79,74 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/bugs branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     d9b79111fd9945931b7a2b2a3e7db7625dd953fe
-Gitweb:        https://git.kernel.org/tip/d9b79111fd9945931b7a2b2a3e7db7625dd953fe
-Author:        Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-AuthorDate:    Wed, 16 Apr 2025 06:47:51 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 16 Apr 2025 19:40:01 +02:00
+Commit-ID:     c70fc32f44431bb30f9025ce753ba8be25acbba3
+Gitweb:        https://git.kernel.org/tip/c70fc32f44431bb30f9025ce753ba8be25acbba3
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 28 Jan 2025 15:39:49 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 16 Apr 2025 21:09:12 +02:00
 
-x86/bugs: Rename mmio_stale_data_clear to cpu_buf_vm_clear
+sched/fair: Adhere to place_entity() constraints
 
-The static key mmio_stale_data_clear controls the KVM-only mitigation for MMIO
-Stale Data vulnerability. Rename it to reflect its purpose.
+Mike reports that commit 6d71a9c61604 ("sched/fair: Fix EEVDF entity
+placement bug causing scheduling lag") relies on commit 4423af84b297
+("sched/fair: optimize the PLACE_LAG when se->vlag is zero") to not
+trip a WARN in place_entity().
 
-No functional change.
+What happens is that the lag of the very last entity is 0 per
+definition -- the average of one element matches the value of that
+element. Therefore place_entity() will match the condition skipping
+the lag adjustment:
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250416-mmio-rename-v2-1-ad1f5488767c@linux.intel.com
+  if (sched_feat(PLACE_LAG) && cfs_rq->nr_queued && se->vlag) {
+
+Without the 'se->vlag' condition -- it will attempt to adjust the zero
+lag even though we're inserting into an empty tree.
+
+Notably, we should have failed the 'cfs_rq->nr_queued' condition, but
+don't because they didn't get updated.
+
+Additionally, move update_load_add() after placement() as is
+consistent with other place_entity() users -- this change is
+non-functional, place_entity() does not use cfs_rq->load.
+
+Fixes: 6d71a9c61604 ("sched/fair: Fix EEVDF entity placement bug causing scheduling lag")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Signed-off-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/c216eb4ef0e0e0029c600aefc69d56681cee5581.camel@gmx.de
 ---
- arch/x86/include/asm/nospec-branch.h |  2 +-
- arch/x86/kernel/cpu/bugs.c           | 16 ++++++++++------
- arch/x86/kvm/vmx/vmx.c               |  6 +++++-
- 3 files changed, 16 insertions(+), 8 deletions(-)
+ kernel/sched/fair.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 5c43f14..81c4a13 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -561,7 +561,7 @@ DECLARE_STATIC_KEY_FALSE(mds_idle_clear);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 5e1bd9e..eb5a257 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3795,6 +3795,7 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
+ 		update_entity_lag(cfs_rq, se);
+ 		se->deadline -= se->vruntime;
+ 		se->rel_deadline = 1;
++		cfs_rq->nr_queued--;
+ 		if (!curr)
+ 			__dequeue_entity(cfs_rq, se);
+ 		update_load_sub(&cfs_rq->load, se->load.weight);
+@@ -3821,10 +3822,11 @@ static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
  
- DECLARE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
+ 	enqueue_load_avg(cfs_rq, se);
+ 	if (se->on_rq) {
+-		update_load_add(&cfs_rq->load, se->load.weight);
+ 		place_entity(cfs_rq, se, 0);
++		update_load_add(&cfs_rq->load, se->load.weight);
+ 		if (!curr)
+ 			__enqueue_entity(cfs_rq, se);
++		cfs_rq->nr_queued++;
  
--DECLARE_STATIC_KEY_FALSE(mmio_stale_data_clear);
-+DECLARE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
- 
- extern u16 mds_verw_sel;
- 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 362602b..9131e61 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -127,9 +127,13 @@ EXPORT_SYMBOL_GPL(mds_idle_clear);
-  */
- DEFINE_STATIC_KEY_FALSE(switch_mm_cond_l1d_flush);
- 
--/* Controls CPU Fill buffer clear before KVM guest MMIO accesses */
--DEFINE_STATIC_KEY_FALSE(mmio_stale_data_clear);
--EXPORT_SYMBOL_GPL(mmio_stale_data_clear);
-+/*
-+ * Controls CPU Fill buffer clear before VMenter. This is a subset of
-+ * X86_FEATURE_CLEAR_CPU_BUF, and should only be enabled when KVM-only
-+ * mitigation is required.
-+ */
-+DEFINE_STATIC_KEY_FALSE(cpu_buf_vm_clear);
-+EXPORT_SYMBOL_GPL(cpu_buf_vm_clear);
- 
- void __init cpu_select_mitigations(void)
- {
-@@ -449,9 +453,9 @@ static void __init mmio_select_mitigation(void)
- 	 * mitigations, disable KVM-only mitigation in that case.
- 	 */
- 	if (boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
--		static_branch_disable(&mmio_stale_data_clear);
-+		static_branch_disable(&cpu_buf_vm_clear);
- 	else
--		static_branch_enable(&mmio_stale_data_clear);
-+		static_branch_enable(&cpu_buf_vm_clear);
- 
- 	/*
- 	 * If Processor-MMIO-Stale-Data bug is present and Fill Buffer data can
-@@ -571,7 +575,7 @@ static void __init md_clear_update_mitigation(void)
- 		taa_select_mitigation();
- 	}
- 	/*
--	 * MMIO_MITIGATION_OFF is not checked here so that mmio_stale_data_clear
-+	 * MMIO_MITIGATION_OFF is not checked here so that cpu_buf_vm_clear
- 	 * gets updated correctly as per X86_FEATURE_CLEAR_CPU_BUF state.
- 	 */
- 	if (boot_cpu_has_bug(X86_BUG_MMIO_STALE_DATA)) {
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 5c57664..a1754f7 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7358,10 +7358,14 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
- 	 * mitigation for MDS is done late in VMentry and is still
- 	 * executed in spite of L1D Flush. This is because an extra VERW
- 	 * should not matter much after the big hammer L1D Flush.
-+	 *
-+	 * cpu_buf_vm_clear is used when system is not vulnerable to MDS/TAA,
-+	 * and is affected by MMIO Stale Data. In such cases mitigation in only
-+	 * needed against an MMIO capable guest.
- 	 */
- 	if (static_branch_unlikely(&vmx_l1d_should_flush))
- 		vmx_l1d_flush(vcpu);
--	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
-+	else if (static_branch_unlikely(&cpu_buf_vm_clear) &&
- 		 kvm_arch_has_assigned_device(vcpu->kvm))
- 		mds_clear_cpu_buffers();
- 
+ 		/*
+ 		 * The entity's vruntime has been adjusted, so let's check
 
