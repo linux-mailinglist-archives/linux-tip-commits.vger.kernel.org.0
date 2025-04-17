@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5028-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5030-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C2EA91A15
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 13:09:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4A7A91AE8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 13:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59AEA5A0153
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 11:09:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D978E19E4F0A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 11:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEC12356D4;
-	Thu, 17 Apr 2025 11:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6223F23ED40;
+	Thu, 17 Apr 2025 11:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2oECC+Ok";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qGBs5Rxg"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1/G38Xhc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WXCCh9aI"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25031282F5;
-	Thu, 17 Apr 2025 11:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26A523E351;
+	Thu, 17 Apr 2025 11:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744888159; cv=none; b=KN5xeFD3l2SL7iWuydZvQKU8Jqt0DgTt6ZkBIepy33V67CYwKtzHes8suFl5+yXN9npIABgxpoWvrF4qkksA6C2OFgCsO2sOl/oqP3GGA38JreUrVMi25w5HWcvi82j/Z0WrecNUfQVPEH3d1qb7U+hpOvKnQF/MH9hzc6BUXfM=
+	t=1744889413; cv=none; b=XZJQ+fBUKv6pDgfzf1+41krVIjIpvg+7CEWw+tAqUAS4t23xV8YWdS+TfpRn15jp14dDrjkQXm3mm5JJnrCztgdreWykAxTVG75VR/baZWt+wFj2c5I0fyxRPA+E9FX86Xbd25l3wdMlmsWDiOarqrswukQl2T2PHVYY1D/DmY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744888159; c=relaxed/simple;
-	bh=569Vl79qE9wxBCgdTtnVWyUSAIMktPNuoFwl7F2vJOU=;
+	s=arc-20240116; t=1744889413; c=relaxed/simple;
+	bh=F2FkW6HpzGcrMfu76O8qYCIk3IsbJvtavVlnU3g/Dys=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MAblx+EN/KC3DWbIxXRFYjttqvGuOHJPlAa0V0d2EwEUqt6MYuxifvU1i+igPizKA+IEbwFEC5jmbY88M9GlXL2slevhoRGOEvfARzJAOo25DsxO7XbPe/SA5Oq4CVrFau2Sxt7+kH20TZRXzZuanjKQaJbG6K5xK8+su2IS6Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2oECC+Ok; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qGBs5Rxg; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=I1tLxecU7/IKfdm4tYedslrk4Jy71+2tayRTstJiqpLubl5H1CtTYD4bzBd6u8KAHz+/Jd7+Ls5aZcjj+MjfbjCs+bBkn7NgZYU5J33vcsPzM/wjYBJ4yTumvZrYmVdcQHBGUi0h1rL+BbpyVrcxJGD+MUQYDkg5gU3hHZHaf0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1/G38Xhc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WXCCh9aI; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 17 Apr 2025 11:09:15 -0000
+Date: Thu, 17 Apr 2025 11:30:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744888156;
+	s=2020; t=1744889409;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GzArZZa9Qxkr/GWJ2jSL4BIuKleIDz7osPoXYKOSEmk=;
-	b=2oECC+OkhZVKiGd4quuLnSGCcZlwxggcY0f3F8kdzD5UKVp6RG4XdP1WDvlejccXqxRVId
-	ET2kWPeKglamDp0jRiKaZhprWCYZep/+XjlSKuAI2sJBeWW+lOCe4sUZEvHOujq98lljps
-	FRzPDDWotbJ3VrVmFTmyuGTmOgsLM7a6IGTae/PnLztH0AiYd8FslTflu0KBWlW/jmBFwo
-	+TuTRhq3O3mMu6d6pCOcgUhVJzr7p/nK7aGfctoJtH+kpy6Ut03yY8EBBFPfh/VK9+LMZY
-	I6NRpONTGUvttO5K9NCbDlYRIB7Mvm/amBIPVNpGEO2bgTWo2wn4zcXlu9dt4w==
+	bh=aEVxWaYPmPTMnblGckSO4LjwU6cfLemZFXMtF0N2uv4=;
+	b=1/G38Xhcd+PiQIxp+AAC9POXi9FGl1DMlS9glEUDHYw8N6HFyE4SZGsjp5oo5uN2q1WVm8
+	cqkMsD8v3l2jix0BDsvz4iEpyEqbmwrZdqvXHOv7wq8LCwzKAUbaPbg3Miy6gjJ8r8aDvE
+	7d7lHSSwjSSyXjLv5L8F+CjkActETkB6CnlEi9G9+QhHn6Njnpvm+pNEStmilSPVCw56h7
+	TMlc2IlpFaA277XjjRwwZq4/jg4HkizZB/HZnwDTe3PnKRKnmsTJqtXuHvp1jlWg7umC7q
+	NPu8fsS24Scv403lz1RGTpUkMCEW2nOQHmfWywfjlyOMK5aVU8H7qG3AOmK/Dg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744888156;
+	s=2020e; t=1744889409;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GzArZZa9Qxkr/GWJ2jSL4BIuKleIDz7osPoXYKOSEmk=;
-	b=qGBs5Rxg20bS9YMG7kk362D+k5rfI2zjy/EnFYCdUF/NuA8WVS8WKuRXBNFYME+PQwwC68
-	elXx0ahvJCh+YPAw==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+	bh=aEVxWaYPmPTMnblGckSO4LjwU6cfLemZFXMtF0N2uv4=;
+	b=WXCCh9aIzHIlaEVVM2xg5POoUeOhRPwqtH6/qdW+HjweUQHC2usb9izIP6FT66GwoheY5z
+	+fmiA4igb2+orbAA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel/uncore: Fix the scale of IIO free
- running counters on SNR
-Cc: Kan Liang <kan.liang@linux.intel.com>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <a.p.zijlstra@chello.nl>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250416142426.3933977-1-kan.liang@linux.intel.com>
-References: <20250416142426.3933977-1-kan.liang@linux.intel.com>
+Subject: [tip: perf/core] perf/core: Fix perf-stat / read()
+Cc: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
+ James Clark <james.clark@linaro.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250417080725.GH38216@noisy.programming.kicks-ass.net>
+References: <20250417080725.GH38216@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174488815597.31282.9087365988248723967.tip-bot2@tip-bot2>
+Message-ID: <174488940302.31282.13464297816136814347.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,78 +80,46 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     96a720db59ab330c8562b2437153faa45dac705f
-Gitweb:        https://git.kernel.org/tip/96a720db59ab330c8562b2437153faa45dac705f
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Wed, 16 Apr 2025 07:24:24 -07:00
+Commit-ID:     75195453f7b17ae604dc28a91f19937b1906b333
+Gitweb:        https://git.kernel.org/tip/75195453f7b17ae604dc28a91f19937b1906b333
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 16 Apr 2025 20:50:27 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 17 Apr 2025 12:57:20 +02:00
+CommitterDate: Thu, 17 Apr 2025 13:24:49 +02:00
 
-perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+perf/core: Fix perf-stat / read()
 
-There was a mistake in the SNR uncore spec. The counter increments for
-every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
-which was documented in the spec.
+In the zeal to adjust all event->state checks to include the new
+REVOKED state, one adjustment was made in error. Notably it resulted
+in read() on the perf filedesc to stop working for any state lower
+than ERROR, specifically EXIT.
 
-The event list has been updated:
+This leads to problems with (among others) perf-stat, which wants to
+read the counts after a program has finished execution.
 
-  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
-  "BriefDescription": "Free running counter that increments for every 32
-		       bytes of data sent from the IO agent to the SOC",
-
-Update the scale of the IIO bandwidth in free running counters as well.
-
-Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: da916e96e2de ("perf: Make perf_pmu_unregister() useable")
+Reported-by: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+Reported-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20250417080725.GH38216@noisy.programming.kicks-ass.net
 ---
- arch/x86/events/intel/uncore_snbep.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/events/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
-index 60973c2..35da2c4 100644
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4891,28 +4891,28 @@ static struct uncore_event_desc snr_uncore_iio_freerunning_events[] = {
- 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
- 	/* Free-Running IIO BANDWIDTH IN Counters */
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
- 	{ /* end: all zeroes */ },
- };
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2eb9cd5..e4d7a0c 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6021,7 +6021,7 @@ __perf_read(struct perf_event *event, char __user *buf, size_t count)
+ 	 * error state (i.e. because it was pinned but it couldn't be
+ 	 * scheduled on to the CPU at some point).
+ 	 */
+-	if (event->state <= PERF_EVENT_STATE_ERROR)
++	if (event->state == PERF_EVENT_STATE_ERROR)
+ 		return 0;
+ 
+ 	if (count < event->read_size)
 
