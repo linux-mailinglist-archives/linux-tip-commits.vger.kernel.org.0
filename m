@@ -1,125 +1,188 @@
-Return-Path: <linux-tip-commits+bounces-5030-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5031-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4A7A91AE8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 13:30:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB4CA91B89
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 14:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D978E19E4F0A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 11:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFE1D8A049E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 12:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6223F23ED40;
-	Thu, 17 Apr 2025 11:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B96A24166E;
+	Thu, 17 Apr 2025 12:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1/G38Xhc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WXCCh9aI"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omJ8nD5G"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26A523E351;
-	Thu, 17 Apr 2025 11:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A07241667;
+	Thu, 17 Apr 2025 12:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744889413; cv=none; b=XZJQ+fBUKv6pDgfzf1+41krVIjIpvg+7CEWw+tAqUAS4t23xV8YWdS+TfpRn15jp14dDrjkQXm3mm5JJnrCztgdreWykAxTVG75VR/baZWt+wFj2c5I0fyxRPA+E9FX86Xbd25l3wdMlmsWDiOarqrswukQl2T2PHVYY1D/DmY0=
+	t=1744891439; cv=none; b=onTUJyS8Ct2ie9rCpKJhQDUVW7zI+cAyOkUN6D4oPw2ief6t0Zs/UGbE1bN9l2T4mW/K9UCrp52kUBqo06jM4Wp5hAuMdcu3ss5fh6w0979kDmlmfUV/MhTc8I/NAhj9Ez+5yg7EAzBV42QUl1FQHCBkNZGfFKSeiiGqqrM0pOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744889413; c=relaxed/simple;
-	bh=F2FkW6HpzGcrMfu76O8qYCIk3IsbJvtavVlnU3g/Dys=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=I1tLxecU7/IKfdm4tYedslrk4Jy71+2tayRTstJiqpLubl5H1CtTYD4bzBd6u8KAHz+/Jd7+Ls5aZcjj+MjfbjCs+bBkn7NgZYU5J33vcsPzM/wjYBJ4yTumvZrYmVdcQHBGUi0h1rL+BbpyVrcxJGD+MUQYDkg5gU3hHZHaf0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1/G38Xhc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WXCCh9aI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 17 Apr 2025 11:30:03 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744889409;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aEVxWaYPmPTMnblGckSO4LjwU6cfLemZFXMtF0N2uv4=;
-	b=1/G38Xhcd+PiQIxp+AAC9POXi9FGl1DMlS9glEUDHYw8N6HFyE4SZGsjp5oo5uN2q1WVm8
-	cqkMsD8v3l2jix0BDsvz4iEpyEqbmwrZdqvXHOv7wq8LCwzKAUbaPbg3Miy6gjJ8r8aDvE
-	7d7lHSSwjSSyXjLv5L8F+CjkActETkB6CnlEi9G9+QhHn6Njnpvm+pNEStmilSPVCw56h7
-	TMlc2IlpFaA277XjjRwwZq4/jg4HkizZB/HZnwDTe3PnKRKnmsTJqtXuHvp1jlWg7umC7q
-	NPu8fsS24Scv403lz1RGTpUkMCEW2nOQHmfWywfjlyOMK5aVU8H7qG3AOmK/Dg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744889409;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aEVxWaYPmPTMnblGckSO4LjwU6cfLemZFXMtF0N2uv4=;
-	b=WXCCh9aIzHIlaEVVM2xg5POoUeOhRPwqtH6/qdW+HjweUQHC2usb9izIP6FT66GwoheY5z
-	+fmiA4igb2+orbAA==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Fix perf-stat / read()
-Cc: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
- James Clark <james.clark@linaro.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250417080725.GH38216@noisy.programming.kicks-ass.net>
-References: <20250417080725.GH38216@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1744891439; c=relaxed/simple;
+	bh=2JZS5eIe1ON0EHD3QKIZWeAakJBfbzWDc3CKofn5RLI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fDmmjxcYkACSCiVQHNQS0Gts+r1k5NutmmqTh/B9FXYS4HLRap4BYoRY5kFXCT00kdGSvsF2vpkQAuTb3lmMkUdNCKKAIBQ+BvRGNHJ1kP/MSalsM18ob71i0eTGB/xKZsCLDPNfDgEMoUwOxErgCvuUbLbZw3qL0SV9BS4Nuwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omJ8nD5G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3C7C4CEE4;
+	Thu, 17 Apr 2025 12:03:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744891438;
+	bh=2JZS5eIe1ON0EHD3QKIZWeAakJBfbzWDc3CKofn5RLI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=omJ8nD5Gnh7AW0sOLU+A8W0tj5UQSP5n2U3bHAzK/0YX0GpdTJyNTVJSbYAfsjOFr
+	 lQk3Sccx8r7gWS8kkZbNZJb4+4dysqKEi76oehvZbjTNM2OFkXcOSu0wTGapQWrV9E
+	 B4tZZZNInmV1s2qTXFHlKyM6V4kXSv2jU1wlcQ/0Q+yYba4hPuyP6DlHlI8tRPDw1Z
+	 FJqANqpDplWwEjyi//T6gLrmkqpkQrPp/3HWzFk8UbBf0tAwoSVrbVPwIwogvRoeDM
+	 vo9L8NKJtI7Jjy1rR+JnKeV4lIG19Ai5o9Qg+Ezsh1Sc/CORL0Th/y+0/qgVaHSedT
+	 gEeJJzE8t1hoQ==
+Date: Thu, 17 Apr 2025 14:03:55 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>, x86@kernel.org
+Subject: Re: [tip: perf/core] perf: Simplify perf_event_free_task() wait
+Message-ID: <aADuK4jhKT2AGOYp@gmail.com>
+References: <20250307193723.044499344@infradead.org>
+ <174413910413.31282.5179470093314736126.tip-bot2@tip-bot2>
+ <Z_ZvmEhjkAhplCBE@localhost.localdomain>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174488940302.31282.13464297816136814347.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Z_ZvmEhjkAhplCBE@localhost.localdomain>
 
-The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     75195453f7b17ae604dc28a91f19937b1906b333
-Gitweb:        https://git.kernel.org/tip/75195453f7b17ae604dc28a91f19937b1906b333
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 16 Apr 2025 20:50:27 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 17 Apr 2025 13:24:49 +02:00
+* Frederic Weisbecker <frederic@kernel.org> wrote:
 
-perf/core: Fix perf-stat / read()
+> Le Tue, Apr 08, 2025 at 07:05:04PM -0000, tip-bot2 for Peter Zijlstra a écrit :
+> > The following commit has been merged into the perf/core branch of tip:
+> > 
+> > Commit-ID:     59f3aa4a3ee27e96132e16d2d2bdc3acadb4bf79
+> > Gitweb:        https://git.kernel.org/tip/59f3aa4a3ee27e96132e16d2d2bdc3acadb4bf79
+> > Author:        Peter Zijlstra <peterz@infradead.org>
+> > AuthorDate:    Fri, 17 Jan 2025 15:27:07 +01:00
+> > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > CommitterDate: Tue, 08 Apr 2025 20:55:46 +02:00
+> > 
+> > perf: Simplify perf_event_free_task() wait
+> > 
+> > Simplify the code by moving the duplicated wakeup condition into
+> > put_ctx().
+> > 
+> > Notably, wait_var_event() is in perf_event_free_task() and will have
+> > set ctx->task = TASK_TOMBSTONE.
+> > 
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Reviewed-by: Ravi Bangoria <ravi.bangoria@amd.com>
+> > Link: https://lkml.kernel.org/r/20250307193723.044499344@infradead.org
+> > ---
+> >  kernel/events/core.c | 25 +++----------------------
+> >  1 file changed, 3 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/kernel/events/core.c b/kernel/events/core.c
+> > index 3c92b75..fa6dab0 100644
+> > --- a/kernel/events/core.c
+> > +++ b/kernel/events/core.c
+> > @@ -1270,6 +1270,9 @@ static void put_ctx(struct perf_event_context *ctx)
+> >  		if (ctx->task && ctx->task != TASK_TOMBSTONE)
+> >  			put_task_struct(ctx->task);
+> >  		call_rcu(&ctx->rcu_head, free_ctx);
+> > +	} else if (ctx->task == TASK_TOMBSTONE) {
+> > +		smp_mb(); /* pairs with wait_var_event() */
+> > +		wake_up_var(&ctx->refcount);
+> 
+> So there are three situations:
+> 
+> * If perf_event_free_task() has removed all the children from the parent list
+>   before perf_event_release_kernel() got a chance to even iterate them, then
+>   it's all good as there is no get_ctx() pending.
+> 
+> * If perf_event_release_kernel() iterates a child event, but it gets freed
+>   meanwhile by perf_event_free_task() while the mutexes are temporarily
+>   unlocked, it's all good because while locking again the ctx mutex,
+>   perf_event_release_kernel() observes TASK_TOMBSTONE.
+> 
+> * But if perf_event_release_kernel() frees the child event before
+>   perf_event_free_task() got a chance, we may face this scenario:
+> 
+>     perf_event_release_kernel()                                  perf_event_free_task()
+>     --------------------------                                   ------------------------
+>     mutex_lock(&event->child_mutex)
+>     get_ctx(child->ctx)
+>     mutex_unlock(&event->child_mutex)
+> 
+>     mutex_lock(ctx->mutex)
+>     mutex_lock(&event->child_mutex)
+>     perf_remove_from_context(child)
+>     mutex_unlock(&event->child_mutex)
+>     mutex_unlock(ctx->mutex)
+> 
+>                                                                  // This lock acquires ctx->refcount == 2
+>                                                                  // visibility
+>                                                                  mutex_lock(ctx->mutex)
+>                                                                  ctx->task = TASK_TOMBSTONE
+>                                                                  mutex_unlock(ctx->mutex)
+>                                                                  
+>                                                                  wait_var_event()
+>                                                                      // enters prepare_to_wait() since
+>                                                                      // ctx->refcount == 2
+>                                                                      // is guaranteed to be seen
+>                                                                      set_current_state(TASK_INTERRUPTIBLE)
+>                                                                      smp_mb()
+>                                                                      if (ctx->refcount != 1)
+>                                                                          schedule()
+>     put_ctx()
+>        // NOT fully ordered! Only RELEASE semantics
+>        refcount_dec_and_test()
+>            atomic_fetch_sub_release()
+>        // So TASK_TOMBSTONE is not guaranteed to be seen
+>        if (ctx->task == TASK_TOMBSTONE)
+>            wake_up_var()
+> 
+> Basically it's a broken store buffer:
+> 
+>     perf_event_release_kernel()                                  perf_event_free_task()
+>     --------------------------                                   ------------------------
+>     ctx->task = TASK_TOMBSTONE                                   smp_store_release(&ctx->refcount, ctx->refcount - 1)
+>     smp_mb()
+>     READ_ONCE(ctx->refcount)                                     READ_ONCE(ctx->task)
+> 
+> 
+> So you need this:
+> 
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index fa6dab08be47..c4fbbe25361a 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -1270,9 +1270,10 @@ static void put_ctx(struct perf_event_context *ctx)
+>  		if (ctx->task && ctx->task != TASK_TOMBSTONE)
+>  			put_task_struct(ctx->task);
+>  		call_rcu(&ctx->rcu_head, free_ctx);
+> -	} else if (ctx->task == TASK_TOMBSTONE) {
+> +	} else {
+>  		smp_mb(); /* pairs with wait_var_event() */
+> -		wake_up_var(&ctx->refcount);
+> +		if (ctx->task == TASK_TOMBSTONE)
+> +			wake_up_var(&ctx->refcount);
+>  	}
+>  }
 
-In the zeal to adjust all event->state checks to include the new
-REVOKED state, one adjustment was made in error. Notably it resulted
-in read() on the perf filedesc to stop working for any state lower
-than ERROR, specifically EXIT.
+JFYI, I've added your SOB:
 
-This leads to problems with (among others) perf-stat, which wants to
-read the counts after a program has finished execution.
+    Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 
-Fixes: da916e96e2de ("perf: Make perf_pmu_unregister() useable")
-Reported-by: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-Reported-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250417080725.GH38216@noisy.programming.kicks-ass.net
----
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 2eb9cd5..e4d7a0c 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6021,7 +6021,7 @@ __perf_read(struct perf_event *event, char __user *buf, size_t count)
- 	 * error state (i.e. because it was pinned but it couldn't be
- 	 * scheduled on to the CPU at some point).
- 	 */
--	if (event->state <= PERF_EVENT_STATE_ERROR)
-+	if (event->state == PERF_EVENT_STATE_ERROR)
- 		return 0;
- 
- 	if (count < event->read_size)
+	Ingo
 
