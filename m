@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-5051-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5053-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0BEA92598
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 20:05:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1036BA9259E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 20:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F0293A9811
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 18:04:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7E51B61FC2
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 17 Apr 2025 18:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54EE256C9C;
-	Thu, 17 Apr 2025 18:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BE325EFA3;
+	Thu, 17 Apr 2025 18:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kS8atxwC";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PU5oAnSj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SwQ+xkFF";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MtZpe7zv"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A76257AD1;
-	Thu, 17 Apr 2025 18:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43779258CD6;
+	Thu, 17 Apr 2025 18:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913011; cv=none; b=dYoDJ3rtx9KZQqidPWMtLp6zHN9VABoJAVY+w4H1FQSDL4hiJpYtPL15W235v240I4o7yuXAtX6ZOvsd1jOstCtzcFYyqXyrrmfjuTUyG22R9SXmlS62PxXCcBYhGwtKZSqaMQhexdMfUftqzV2vjvFLlRpQspdV1qMgNXc/1+Q=
+	t=1744913012; cv=none; b=ZxZ7UuR40bpCPYotju1V0N86ea1GO7SmR5LJ92fjto9qnlc4lTobV54AzICld1xkeetJ/W6DEXMazSRD9Kg4ee+tVTXYNbcdfxuBdBsgCppVlDJK+TJxH4oUvv93Je+y/CYLV5tsOCOSWPzJs6rbsyfWcFR/pKFwjIDnFt+HY4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913011; c=relaxed/simple;
-	bh=SHagOM7q8YotFbO/VX8Cd8VQdTdJhrU2B6P3R8m43U0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ryTxE+eTI7uefeo5TTqF2CFmNAqYAgbHvqwKzgWIve1OD51BN8iA4meNwlIEe0v8vNSRVgY1hEVbHcBIf012Lsf40qic7zKDz3f24S3LA7c2byLgbYZsPex+SFQhTWSwqyROIQA21vUKo4pP59rzzm3o8LXCLUWgiAVnp6slwbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kS8atxwC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PU5oAnSj; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1744913012; c=relaxed/simple;
+	bh=+t9zJbQ0JltkHvqRHbXezRt65OGPMfBum+XNcSTfRuQ=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=psSHvAawi1gMFRWcYJQP42qhw32aOYlaRIBjAJ1KTiOZF1r6fWs/ijMNRvVM9V/IUJ2Q3Ws41mhbK91y4C3gXqshIghgpN8LU1I3v7Um3596/36midwpywMC02TtRgsecGP6/8ltFmEoTgX1RfqeRgpCL8h4deUkJaL9eWRDns0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SwQ+xkFF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MtZpe7zv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 17 Apr 2025 18:03:27 -0000
+Date: Thu, 17 Apr 2025 18:03:28 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744913008;
+	s=2020; t=1744913009;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vH8JDT/bgq6XEaGBXPCAdqlVPFUvFzuv7efqS6ba+Aw=;
-	b=kS8atxwCnXKdsXkNqOFLZPBnr5lIpkwHqjPWSOPEcZDMYG94+aIYk3lACj1YdN0hDxQN+k
-	I72rg7QTG8KJ2kSkW6cYv4pYUR6Ogrz6mSMe67Z0/F6txOQr63JZTSRqiMHzRNggUV4DHt
-	WGDp0Ou6ikIE4EloZtp3V0t8Z6LcaV3GkrzbTAUqm3D8ftUlkFIuzG4YEYB6gqT2Lvd/dr
-	Y0DOk1qnmPpiIaxu0d11izEW09au1Z09YFR86JS8fx0WqT+71/bdAev6um2mBH4ZaxsMHN
-	xId/uwLFmvIwPmVc9xYthPIYZpRaRyPtF9waiLrOcYHldsfVoAYKDcztUKamIw==
+	bh=w4MOnZjH94ClsFkVXhMSrzdThD0j+bxaNzheCiKyzZk=;
+	b=SwQ+xkFFir+el/qpBeBg9Qg1g8hlvI8uNeRuY4jT3gpn56s0ePk4whuqOHeVstaMy/sMjV
+	olG0p3vvcJH64w/ixNdda83iM4VAS+Zrwb5SOJyRRCe6JRHnEOfPGE9TPsTtG7AGnzxiKy
+	JLXe35tkA+FV2Xx3U5OJBV2soVdKAoIFkzCw9Saz+Hl0ULNbUIM/L73/ZakgpLMJWc4Wvs
+	MvHVqReCk3MDk4OGcOFHlrefEjJe5cqcwoqwveB0BhLfqfRXzJzVrAw0WLcwlyk1CQ+Ic0
+	4N8uxCOKiW2z45ZiPD5aYyHUpbcIIBQWiloliPoxqoGNAMsH8hp1gUVFh2tLFA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744913008;
+	s=2020e; t=1744913009;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vH8JDT/bgq6XEaGBXPCAdqlVPFUvFzuv7efqS6ba+Aw=;
-	b=PU5oAnSjoMwRF6f2fQRqC+UQj4Ogsl+fkmEgXV3Hb8p68sAkQirX384MI8867pl+2pH9lo
-	n8dnge7v5MpRD8AA==
+	bh=w4MOnZjH94ClsFkVXhMSrzdThD0j+bxaNzheCiKyzZk=;
+	b=MtZpe7zv5iG9Fiu2rDNP+IaOC8taLG8yy1yu7fjtm4mJ/v+J2BV6zOnU/Do7fb0vC853nY
+	OeRTxedYlnkvpXBQ==
 From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm: Always tell core mm to sync kernel mappings
+Subject: [tip: x86/mm] x86/mm: Always allocate a whole page for PAE PGDs
 Cc: Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 Precedence: bulk
@@ -63,7 +63,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174491300738.31282.6790702061292691578.tip-bot2@tip-bot2>
+Message-ID: <174491300872.31282.11754944062858812203.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,50 +73,116 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     eb9c7f00f22d6ea2a94e00eb4f33a79064681564
-Gitweb:        https://git.kernel.org/tip/eb9c7f00f22d6ea2a94e00eb4f33a79064681564
+Commit-ID:     780f97e309302fdee05b31c91a4dc81ded4c3702
+Gitweb:        https://git.kernel.org/tip/780f97e309302fdee05b31c91a4dc81ded4c3702
 Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Mon, 14 Apr 2025 10:32:37 -07:00
+AuthorDate:    Mon, 14 Apr 2025 10:32:34 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 17 Apr 2025 10:39:25 -07:00
+CommitterDate: Thu, 17 Apr 2025 10:39:24 -07:00
 
-x86/mm: Always tell core mm to sync kernel mappings
+x86/mm: Always allocate a whole page for PAE PGDs
 
-Each mm_struct has its own copy of the page tables. When core mm code
-makes changes to a copy of the page tables those changes sometimes
-need to be synchronized with other mms' copies of the page tables. But
-when this synchronization actually needs to happen is highly
-architecture and configuration specific.
+A hardware PAE PGD is only 32 bytes. A PGD is PAGE_SIZE in the other
+paging modes. But for reasons*, the kernel _sometimes_ allocates a
+whole page even though it only ever uses 32 bytes.
 
-In cases where kernel PMDs are shared across processes
-(SHARED_KERNEL_PMD) the core mm does not itself need to do that
-synchronization for kernel PMD changes. The x86 code communicates
-this by clearing the PGTBL_PMD_MODIFIED bit cleared in those
-configs to avoid expensive synchronization.
+Make PAE less weird. Just allocate a page like the other paging modes.
+This was already being done for PTI (and Xen in the past) and nobody
+screamed that loudly about it so it can't be that bad.
 
-The kernel is moving toward never sharing kernel PMDs on 32-bit.
-Prepare for that and make 32-bit PAE always set PGTBL_PMD_MODIFIED,
-even if there is no modification to synchronize. This obviously adds
-some synchronization overhead in cases where the kernel page tables
-are being changed.
+ * The original reason for PAGE_SIZE allocations for the PAE PGDs was
+   Xen's need to detect page table writes. But 32-bit PTI forced it too
+   for reasons I'm unclear about.
 
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20250414173237.EC790E95%40davehans-spike.ostc.intel.com
+Link: https://lore.kernel.org/all/20250414173234.D34F0C3E%40davehans-spike.ostc.intel.com
 ---
- arch/x86/include/asm/pgtable-3level_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/mm/pgtable.c | 62 ++----------------------------------------
+ 1 file changed, 4 insertions(+), 58 deletions(-)
 
-diff --git a/arch/x86/include/asm/pgtable-3level_types.h b/arch/x86/include/asm/pgtable-3level_types.h
-index 9d5b257..9759fa0 100644
---- a/arch/x86/include/asm/pgtable-3level_types.h
-+++ b/arch/x86/include/asm/pgtable-3level_types.h
-@@ -29,7 +29,7 @@ typedef union {
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index a05fcdd..ea01b55 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -318,68 +318,15 @@ static void pgd_prepopulate_user_pmd(struct mm_struct *mm,
+ {
+ }
+ #endif
+-/*
+- * Xen paravirt assumes pgd table should be in one page. 64 bit kernel also
+- * assumes that pgd should be in one page.
+- *
+- * But kernel with PAE paging that is not running as a Xen domain
+- * only needs to allocate 32 bytes for pgd instead of one page.
+- */
+-#ifdef CONFIG_X86_PAE
+-
+-#include <linux/slab.h>
+-
+-#define PGD_SIZE	(PTRS_PER_PGD * sizeof(pgd_t))
+-#define PGD_ALIGN	32
+-
+-static struct kmem_cache *pgd_cache;
+-
+-void __init pgtable_cache_init(void)
+-{
+-	/*
+-	 * When PAE kernel is running as a Xen domain, it does not use
+-	 * shared kernel pmd. And this requires a whole page for pgd.
+-	 */
+-	if (!SHARED_KERNEL_PMD)
+-		return;
+-
+-	/*
+-	 * when PAE kernel is not running as a Xen domain, it uses
+-	 * shared kernel pmd. Shared kernel pmd does not require a whole
+-	 * page for pgd. We are able to just allocate a 32-byte for pgd.
+-	 * During boot time, we create a 32-byte slab for pgd table allocation.
+-	 */
+-	pgd_cache = kmem_cache_create("pgd_cache", PGD_SIZE, PGD_ALIGN,
+-				      SLAB_PANIC, NULL);
+-}
  
- #define SHARED_KERNEL_PMD	(!static_cpu_has(X86_FEATURE_PTI))
+ static inline pgd_t *_pgd_alloc(struct mm_struct *mm)
+ {
+ 	/*
+-	 * If no SHARED_KERNEL_PMD, PAE kernel is running as a Xen domain.
+-	 * We allocate one page for pgd.
+-	 */
+-	if (!SHARED_KERNEL_PMD)
+-		return __pgd_alloc(mm, PGD_ALLOCATION_ORDER);
+-
+-	/*
+-	 * Now PAE kernel is not running as a Xen domain. We can allocate
+-	 * a 32-byte slab for pgd to save memory space.
++	 * PTI and Xen need a whole page for the PAE PGD
++	 * even though the hardware only needs 32 bytes.
++	 *
++	 * For simplicity, allocate a page for all users.
+ 	 */
+-	return kmem_cache_alloc(pgd_cache, GFP_PGTABLE_USER);
+-}
+-
+-static inline void _pgd_free(struct mm_struct *mm, pgd_t *pgd)
+-{
+-	if (!SHARED_KERNEL_PMD)
+-		__pgd_free(mm, pgd);
+-	else
+-		kmem_cache_free(pgd_cache, pgd);
+-}
+-#else
+-
+-static inline pgd_t *_pgd_alloc(struct mm_struct *mm)
+-{
+ 	return __pgd_alloc(mm, PGD_ALLOCATION_ORDER);
+ }
  
--#define ARCH_PAGE_TABLE_SYNC_MASK	(SHARED_KERNEL_PMD ? 0 : PGTBL_PMD_MODIFIED)
-+#define ARCH_PAGE_TABLE_SYNC_MASK	PGTBL_PMD_MODIFIED
+@@ -387,7 +334,6 @@ static inline void _pgd_free(struct mm_struct *mm, pgd_t *pgd)
+ {
+ 	__pgd_free(mm, pgd);
+ }
+-#endif /* CONFIG_X86_PAE */
  
- /*
-  * PGDIR_SHIFT determines what a top-level page table entry can map
+ pgd_t *pgd_alloc(struct mm_struct *mm)
+ {
 
