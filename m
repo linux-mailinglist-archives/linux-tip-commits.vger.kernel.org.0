@@ -1,151 +1,134 @@
-Return-Path: <linux-tip-commits+bounces-5054-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5055-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E57A93230
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 08:44:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967FBA9332C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B720319E7755
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 06:44:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8410168A72
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8D9268FF2;
-	Fri, 18 Apr 2025 06:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4417421325C;
+	Fri, 18 Apr 2025 07:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0IfBuvu4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mwp4jAzo"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOb7fReI"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0604E268C5D;
-	Fri, 18 Apr 2025 06:44:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C66D8C0E;
+	Fri, 18 Apr 2025 07:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744958670; cv=none; b=X5r9hlpK4m8+8aXX8QOML0PL01/gSnAvXIzmp67/+ilMNaI+Au9pI/+pTrEAg+GaynANMYnE6cjLiO5IAWpvue3NNcb+pLtHZP9IM0/cD1A2khy0aRdMvDsoFbwqfDwmR8rL84KWqQ8D1xQ9KvJm+9jFPsWYyTHqGOSx4NI3ufs=
+	t=1744959924; cv=none; b=o7aFkeAaufRPjjFsz2kxY+xgPuZsXDreG7VcHDvDgOejDhkwTW2VCPI+knjKfP53PEQZQHrfofa4XSpc8PRGYgo8x+6Y43EHrfd+O1FPQG/+a0U+mhzZUG2ZxE/QX1lqcmLJmsDvlNk9nGXhU98amVfGdaAzUGqdeD3ec7bXBmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744958670; c=relaxed/simple;
-	bh=xFjwdh5zXJsl4jdplxYeKbRKXf0sjx7mjLgO9ma1Dbc=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=NFgoHCeMaHpLiPB3dTFbcPAa5oBWEkwzH09IZ8QpoPZrYJb5EWZJ0Ho+cjS+uhLWWpzZKAWzm2mvipW/f6Pc1i3rr14klBOEXr5bNGX1QTxb6rTEfh1VGab3eF4o6etTpYhoLwh9edcPxj0Pl/JLfH0g9S1e8oLEQQhueBLH36c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0IfBuvu4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mwp4jAzo; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 18 Apr 2025 06:36:19 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744958185;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BvUR9r0Nx9ybqwkRq9Dm8Rrk5uvOYBOtpGL96xkz9h0=;
-	b=0IfBuvu4Dr+cUnfFf3dFvdHx7BEyUprRF+1L7Q7BQv5GwIre5Cc4rB2ORY8G47FaFDqw1I
-	nmgTURFxwrUaA/kUZS40r/zGImF9UlPz6zY2gnNhC9FNn1VUR2Q/JBxh5f8tVaA69gLt8t
-	j2RZwlVIRuS81Dx0A0KeAdp3F081JKUeNurVo8xWon16+xHbtTPOwwAy9s5ZthtkoyG58g
-	JTLFPgf24UfxSyFL8lej2W05Zga+tgDxZMnjIhN03y6TM2jI7LAVHIEwKwNq4N7t7fcU2G
-	G1DCIEUswp/EZkUi7St9LK4nGDDVdx71qQXi25RUjkKbnZ+uJ786wLObb//9JQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744958185;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BvUR9r0Nx9ybqwkRq9Dm8Rrk5uvOYBOtpGL96xkz9h0=;
-	b=mwp4jAzobfHwc1Y4c7BP3rlZopVieA0j5oLUpWucun5ORBP0KLIDdTWYoLmBVG7919cVpz
-	9uzBnCkEzTLL3gDQ==
-From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/amd: Fix workaround for erratum 1054
-Cc: Sandipan Das <sandipan.das@amd.com>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3Ccaa057a9d6f8ad579e2f1abaa71efbd5bd4eaf6d=2E17449?=
- =?utf-8?q?56467=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
-References: =?utf-8?q?=3Ccaa057a9d6f8ad579e2f1abaa71efbd5bd4eaf6d=2E174495?=
- =?utf-8?q?6467=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+	s=arc-20240116; t=1744959924; c=relaxed/simple;
+	bh=KBWytEzvIXK4gEe9LdE7ZJpPSwTE8tFcqoRCCQHJUKc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AAyTk1QJ8OmbZvk4hO9mEgDxNhT1rEU8hBd+H240EIxdlPJQOHqr0QWfCD+s02IRIJo6huW0vU/33wkBcWmM9dwrrGHrXcLqoIQM7Jk4Qcll08rfYIPkG2XId2+sAw94PyL2c2PgSL95zQ36SX62uiiLY0mCTQwCKARQLA1ixZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOb7fReI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E79AC4CEE7;
+	Fri, 18 Apr 2025 07:05:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744959923;
+	bh=KBWytEzvIXK4gEe9LdE7ZJpPSwTE8tFcqoRCCQHJUKc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KOb7fReIoOl+1kQirFw0QwxSDEGKez1RizxewAr1V63GXoaLrhQB9kni1Z1qT7Rub
+	 ti70+13q6ifHqheVX016ecTg09EtO3MsPy5tD78uI4hVWR0rj8S7MRbJYb7br/fWo3
+	 xrD//xOXW0OEGRDSubGKNZKR27onwKzMptgLrtsQNi6Br+BPv/DwMjczMsVz4cBa9Z
+	 f2p3y01lJPRhFQt3SitjjESDSWiynE2SblDWqy1zKc1qxaIeP/5EnDhW9G9brHOjjQ
+	 kzYDJngxcp4tdOXHwqLBw5dEOp9iaDkWLI5KQPaA1BVnHxMsaUSR7Wo0+BKnL8tI4l
+	 pgmaJb5PGMtog==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so2186890e87.2;
+        Fri, 18 Apr 2025 00:05:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW2qVtGcEk9P6TEnJ2vixn7XoGalagUPrnfo494TQIroakJDdoLoWb1qlMxazISxZpo4aEBsl5ySHDFQM0Xov7WrS4=@vger.kernel.org, AJvYcCWSCYWOauJ1IO5IqThWdENcVMSvqVpD9z0UgxYioW3SSc5mg/BqroHGh6noea4Xc5cAEBIop9hl+skwGXg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya6ltM9b58uW0fpRGSZYop4fvfdwhMkN6w7tapqHHbk4Iohf3P
+	ZwuPart8FjkrIs6vmvrAUgmIeLQNBJvohB1N4ikgfjdbERC8Wp/n7Zj7uVwVwDvIMRGJfRWVKT0
+	+t6C1vYKQQI5hvPt5OkSmxj8SnP0=
+X-Google-Smtp-Source: AGHT+IF1vvWYSlieY57kroMtUhKs+syOnJM4QZdLDfSdU7K4Gqax0E2ezt34ZfxGcBDMosbhCdaM2T73K8LeYC9BbXo=
+X-Received: by 2002:a05:6512:b28:b0:549:792a:a382 with SMTP id
+ 2adb3069b0e04-54d6e635987mr478097e87.32.1744959922030; Fri, 18 Apr 2025
+ 00:05:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174495817953.31282.5641497960291856424.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20250307164801.885261-2-ardb+git@google.com> <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
+ <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com> <2fddc2e9-8c97-48de-bcc3-29645d58f0f1@intel.com>
+ <Z_oo3eBywzj6s8Eg@gmail.com>
+In-Reply-To: <Z_oo3eBywzj6s8Eg@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 18 Apr 2025 09:05:10 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGzSK0YxdiGsK9b4ph8dqt08fXFQkWYBg9VFerSwowZUg@mail.gmail.com>
+X-Gm-Features: ATxdqUG0Cm9QjGkUxRV_oVu3d7YwLUoAlr8-PwK7dw88P7VsxPlkdUhIQz59-Tw
+Message-ID: <CAMj1kXGzSK0YxdiGsK9b4ph8dqt08fXFQkWYBg9VFerSwowZUg@mail.gmail.com>
+Subject: Re: [tip: x86/build] x86/boot: Drop CRC-32 checksum and the build
+ tool that generates it
+To: Ingo Molnar <mingo@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-tip-commits@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Ian Campbell <ijc@hellion.org.uk>, Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Sat, 12 Apr 2025 at 10:48, Ingo Molnar <mingo@kernel.org> wrote:
+>
+>
+> * Dave Hansen <dave.hansen@intel.com> wrote:
+>
+> > On 4/11/25 12:33, Dave Hansen wrote:
+> > ...
+> > > The only weird thing I'm doing is booting the kernel with qemu's -kernel
+> > > argument.
+> >
+> > I lied. I'm doing other weird things. I have a local script named
+> > "truncate" that's not the same thing as /usr/bin/truncate. Guess what
+> > this patch started doing:
+> >
+> > >  quiet_cmd_image = BUILD   $@
+> > > -silent_redirect_image = >/dev/null
+> > > -cmd_image = $(obj)/tools/build $(obj)/setup.bin $(obj)/vmlinux.bin \
+> > > -                          $(obj)/zoffset.h $@ $($(quiet)redirect_image)
+> > > +      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
+> >
+> >                                ^ right there
+>
+> Oh that sucks ...
+>
+> > I'm an idiot. That was a poorly named script and it cost me a kernel
+> > bisect and poking at the patch for an hour. <sigh>
+> >
+> > Sorry for the noise.
+>
+> I feel your pain, I too once overlaid a well-known utility with my own
+> script in ~/bin/. After that incident I started adding the .sh postfix
+> to my own scripts, that way there's a much lower chance of namespace
+> collisions.
+>
 
-Commit-ID:     f4efdb357680bef4584faedbd44b90cd53d3245f
-Gitweb:        https://git.kernel.org/tip/f4efdb357680bef4584faedbd44b90cd53d3245f
-Author:        Sandipan Das <sandipan.das@amd.com>
-AuthorDate:    Fri, 18 Apr 2025 11:49:40 +05:30
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 18 Apr 2025 08:31:07 +02:00
+There was another report about this, but in that case, the problem was
+that busybox's truncate clone does not understand the % notation (even
+though the very first original truncate version that I found from 2008
+already supported that)
 
-x86/cpu/amd: Fix workaround for erratum 1054
+In any case, we might change this to
 
-Erratum 1054 affects AMD Zen processors that are a part of Family 17h
-Models 00-2Fh and the workaround is to not set HWCR[IRPerfEn]. However,
-when X86_FEATURE_ZEN1 was introduced, the condition to detect unaffected
-processors was incorrectly changed in a way that the IRPerfEn bit gets
-set only for unaffected Zen 1 processors.
+--- a/arch/x86/boot/Makefile
++++ b/arch/x86/boot/Makefile
+@@ -59,7 +59,7 @@
+ $(obj)/bzImage: asflags-y  := $(SVGA_MODE)
 
-Ensure that HWCR[IRPerfEn] is set for all unaffected processors. This
-includes a subset of Zen 1 (Family 17h Models 30h and above) and all
-later processors. Also clear X86_FEATURE_IRPERF on affected processors
-so that the IRPerfCount register is not used by other entities like the
-MSR PMU driver.
+ quiet_cmd_image = BUILD   $@
+-      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
++      cmd_image = (dd if=$< bs=4096 conv=sync status=none; cat
+$(obj)/vmlinux.bin) >$@
 
-Fixes: 232afb557835 ("x86/CPU/AMD: Add X86_FEATURE_ZEN1")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/caa057a9d6f8ad579e2f1abaa71efbd5bd4eaf6d.1744956467.git.sandipan.das@amd.com
----
- arch/x86/kernel/cpu/amd.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ $(obj)/bzImage: $(obj)/setup.bin $(obj)/vmlinux.bin FORCE
+        $(call if_changed,image)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index a839ff5..2b36379 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -869,6 +869,16 @@ static void init_amd_zen1(struct cpuinfo_x86 *c)
- 
- 	pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
- 	setup_force_cpu_bug(X86_BUG_DIV0);
-+
-+	/*
-+	 * Turn off the Instructions Retired free counter on machines that are
-+	 * susceptible to erratum #1054 "Instructions Retired Performance
-+	 * Counter May Be Inaccurate".
-+	 */
-+	if (c->x86_model < 0x30) {
-+		msr_clear_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
-+		clear_cpu_cap(c, X86_FEATURE_IRPERF);
-+	}
- }
- 
- static bool cpu_has_zenbleed_microcode(void)
-@@ -1052,13 +1062,8 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	if (!cpu_feature_enabled(X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
- 
--	/*
--	 * Turn on the Instructions Retired free counter on machines not
--	 * susceptible to erratum #1054 "Instructions Retired Performance
--	 * Counter May Be Inaccurate".
--	 */
--	if (cpu_has(c, X86_FEATURE_IRPERF) &&
--	    (boot_cpu_has(X86_FEATURE_ZEN1) && c->x86_model > 0x2f))
-+	/* Enable the Instructions Retired free counter */
-+	if (cpu_has(c, X86_FEATURE_IRPERF))
- 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
- 
- 	check_null_seg_clears_base(c);
+which is slightly cleaner - I'll send out a patch once I receive
+confirmation that busybox dd implements conv=sync (which takes care of
+the padding) correctly.
 
