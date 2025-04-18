@@ -1,82 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-5057-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5058-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85E2A93355
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:15:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D92A93357
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1DB7B35B1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3EB546449E
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE18F25744F;
-	Fri, 18 Apr 2025 07:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E9926A0E2;
+	Fri, 18 Apr 2025 07:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RWZ4Tjww";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KmnEgmHu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QJXI6gaR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZOJQ6wGQ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1D62116E0;
-	Fri, 18 Apr 2025 07:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A5C2571CF;
+	Fri, 18 Apr 2025 07:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744960505; cv=none; b=fb4ESZLAg+k7hQ8TTMUrgD9YT/2kkB9+X+ZgJY3bgxOTz8pWqZnGnNs8hVeLzm4gv/95JXZx5mWvFmYUoH5Ym93ydIaZCZH8Kv6b/Qf07/gvA7p5VqPAkzfvaGpFjQQBk5LdTAW/Y5mZNcbpvHQ3bBVtRIuOVx+y7bhSGSxH+yc=
+	t=1744960506; cv=none; b=RIiOBAEd+OePP2+jBZGL8dAC1jYUu1JRtf5bOWZtbso8M4vHWnQUaxZEGhFytkhxN8Byh6ntvXwhTsueuG2DwSWmSwuGfnlIYV8lmV4fZhBuw8CuAyyOp6TOUZ4cDLZOFyPCAhN5Sv4nCamqSe2mN6FsZRf+I/kARRNSdWYbPsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744960505; c=relaxed/simple;
-	bh=goFcXiNu6hwu2tVjllltb0m7Z1D+rJMKVeb2Mv0o620=;
+	s=arc-20240116; t=1744960506; c=relaxed/simple;
+	bh=Wtw/oNtZGlPn5EsTcIh48DpbmWA8Wfaotp9jT9wOB0w=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=peM5nJiWdPXa+KiS/qGZobyS9BeJo/kzOrrH/bHjGAgWYAz+rKhfINdLcACIIm7WU6eik4TGoDVdCJJ2ARp9mjSgBwmoPgUAHuBb1jXFokXin4BkVGfvDjPFbICRh3NtrYSauv0eKt2g/Ep90ZEZzPfwNeKNnVbD2QE5rFOPVq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RWZ4Tjww; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KmnEgmHu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Xlzx7jSE6U+fFRKT3j67iFdEOfjUcBDYIiazzXKaQKaNOEshyBMuCF30+dka8udAqwdXpS6vgrgq8Kbi4bDu4adBBKoSDDjMP+9FInvYGKofXdNvd2s+qC/IUTwwYa0+M9qRlWHue0IlN++QevFjsEgGy2LCoiwddxU+6VmAI1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QJXI6gaR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZOJQ6wGQ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 18 Apr 2025 07:15:00 -0000
+Date: Fri, 18 Apr 2025 07:15:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1744960502;
+	s=2020; t=1744960503;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OTYLGJMnZirVFG1sTedDkjiRPCL5mxWjS2oGscgpDtU=;
-	b=RWZ4Tjww1lXB3aYPIlpDzQ0Jm9iChrvLNhsgwxWalZCIZp8Iw3FWoKPJevALCSOsM2Psqn
-	/Ml4cTOxiN8NMhovtaKNusN+vppSXTbjDtpMzKZlFhvom78iIZeqZ5f+f+AABsr4pRLf2Q
-	BRFXzuFCfhuuRnzGrbqjKh0EKDhkpDpx83YzRizAdAXz0/+UQrRXdyNVNwK8XAM6PaK59w
-	HT5Gu8ndMeRUul/mtyZKB8DIpojYpMrVULaJGyRe3b9WDOAIMXmsL3foBYW6TP3Rloj0d+
-	aVZh2fPzx0GZNlXtPn8fr4fwPy7b2qMeKJ8OLrye3XNxbeQouW74DSxzyYTDZQ==
+	bh=e4PB6JDxuxq+bT4QOlcDzuE+mYx5gAr1KJ5ZJ4k85cU=;
+	b=QJXI6gaRxZ62aocjUacWd4y1gW+X9AEIESID+285j5AIlIXlARBCUfkxwjcqgZ7/P6ywPk
+	6V3XY0LZn2+yuOyAyP5xaOyijlZlAUKRqTKovCEFSTgS2q6rslLUF4gCnUldCtYWq5tR4q
+	56d3ZqfNqdUVXWkwPR9mDkX68lUV90Qe7XHN/UhyEEgjx60dtPiiJI46ikjC5ZWoga0AIB
+	m4AC5kty8BOmWCIKpUt69eW7aTJvMQ04ymA8yWeu69EjVmAML+67+qSLiZfPtHrWKfrjZI
+	4B3uS+IIy0fM5fLu4rlcfAxZeJSWITuhkvuWsfQwkNq8Bmiwu77W+B0jf6R45g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1744960502;
+	s=2020e; t=1744960503;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OTYLGJMnZirVFG1sTedDkjiRPCL5mxWjS2oGscgpDtU=;
-	b=KmnEgmHud3fQOdgwUUibxxNPkH8CtU2IaTVfPhR3V47kW8xKJWcxwx7TTd/qxgL6Itae0h
-	Ds7/lU2DMI2NfcCg==
+	bh=e4PB6JDxuxq+bT4QOlcDzuE+mYx5gAr1KJ5ZJ4k85cU=;
+	b=ZOJQ6wGQvEjAyWQhIDDoA5FnbQVdh1n61KbW4tE9Og+XFaYos8CqUhk8z2a63PZ1LUXuxP
+	waFiaO37fzVKtICA==
 From: "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/core] selftests/bpf: Add 5-byte NOP uprobe trigger benchmark
-Cc: Jiri Olsa <jolsa@kernel.org>, Ingo Molnar <mingo@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- John Fastabend <john.fastabend@gmail.com>, Hao Luo <haoluo@google.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Alan Maguire <alan.maguire@oracle.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250414083647.1234007-2-jolsa@kernel.org>
-References: <20250414083647.1234007-2-jolsa@kernel.org>
+Subject: [tip: perf/core] uprobes/x86: Add support to emulate NOP instructions
+Cc: Oleg Nesterov <oleg@redhat.com>, Andrii Nakryiko <andrii@kernel.org>,
+ Jiri Olsa <jolsa@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Alan Maguire <alan.maguire@oracle.com>, Hao Luo <haoluo@google.com>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>, Song Liu <songliubraving@fb.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Yonghong Song <yhs@fb.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250414083647.1234007-1-jolsa@kernel.org>
+References: <20250414083647.1234007-1-jolsa@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174496050005.31282.10614285702352344746.tip-bot2@tip-bot2>
+Message-ID: <174496050221.31282.986459648353750898.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -86,141 +85,57 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     fe8e5a3215ccd8e54ce0a9df1b89d4ab42ad8fec
-Gitweb:        https://git.kernel.org/tip/fe8e5a3215ccd8e54ce0a9df1b89d4ab42ad8fec
+Commit-ID:     610f6e14c29dc7f9637e8d9481e9f241f355e2e4
+Gitweb:        https://git.kernel.org/tip/610f6e14c29dc7f9637e8d9481e9f241f355e2e4
 Author:        Jiri Olsa <jolsa@kernel.org>
-AuthorDate:    Mon, 14 Apr 2025 10:36:47 +02:00
+AuthorDate:    Mon, 14 Apr 2025 10:36:46 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 18 Apr 2025 09:03:45 +02:00
+CommitterDate: Fri, 18 Apr 2025 09:03:05 +02:00
 
-selftests/bpf: Add 5-byte NOP uprobe trigger benchmark
+uprobes/x86: Add support to emulate NOP instructions
 
-Add a 5-byte NOP uprobe trigger benchmark (x86_64 specific) to measure
-uprobes/uretprobes on top of NOP5 instructions.
+Add support to emulate all NOP instructions as the original uprobe
+instruction.
 
+This change speeds up uprobe on top of all NOP instructions and is a
+preparation for usdt probe optimization, that will be done on top of
+NOP5 instructions.
+
+With this change the usdt probe on top of NOP5s won't take the performance
+hit compared to usdt probe on top of standard NOP instructions.
+
+Suggested-by: Oleg Nesterov <oleg@redhat.com>
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
 Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Song Liu <songliubraving@fb.com>
-Cc: Yonghong Song <yhs@fb.com>
-Cc: John Fastabend <john.fastabend@gmail.com>
-Cc: Hao Luo <haoluo@google.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Alan Maguire <alan.maguire@oracle.com>
-Link: https://lore.kernel.org/r/20250414083647.1234007-2-jolsa@kernel.org
+Cc: Hao Luo <haoluo@google.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20250414083647.1234007-1-jolsa@kernel.org
 ---
- tools/testing/selftests/bpf/bench.c                     | 12 ++-
- tools/testing/selftests/bpf/benchs/bench_trigger.c      | 42 ++++++++-
- tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh |  2 +-
- 3 files changed, 55 insertions(+), 1 deletion(-)
+ arch/x86/kernel/uprobes.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/bench.c b/tools/testing/selftests/bpf/bench.c
-index 1bd403a..0fd8c9b 100644
---- a/tools/testing/selftests/bpf/bench.c
-+++ b/tools/testing/selftests/bpf/bench.c
-@@ -526,6 +526,12 @@ extern const struct bench bench_trig_uprobe_multi_push;
- extern const struct bench bench_trig_uretprobe_multi_push;
- extern const struct bench bench_trig_uprobe_multi_ret;
- extern const struct bench bench_trig_uretprobe_multi_ret;
-+#ifdef __x86_64__
-+extern const struct bench bench_trig_uprobe_nop5;
-+extern const struct bench bench_trig_uretprobe_nop5;
-+extern const struct bench bench_trig_uprobe_multi_nop5;
-+extern const struct bench bench_trig_uretprobe_multi_nop5;
-+#endif
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 9194695..6d38383 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -840,6 +840,11 @@ static int branch_setup_xol_ops(struct arch_uprobe *auprobe, struct insn *insn)
+ 	insn_byte_t p;
+ 	int i;
  
- extern const struct bench bench_rb_libbpf;
- extern const struct bench bench_rb_custom;
-@@ -586,6 +592,12 @@ static const struct bench *benchs[] = {
- 	&bench_trig_uretprobe_multi_push,
- 	&bench_trig_uprobe_multi_ret,
- 	&bench_trig_uretprobe_multi_ret,
-+#ifdef __x86_64__
-+	&bench_trig_uprobe_nop5,
-+	&bench_trig_uretprobe_nop5,
-+	&bench_trig_uprobe_multi_nop5,
-+	&bench_trig_uretprobe_multi_nop5,
-+#endif
- 	/* ringbuf/perfbuf benchmarks */
- 	&bench_rb_libbpf,
- 	&bench_rb_custom,
-diff --git a/tools/testing/selftests/bpf/benchs/bench_trigger.c b/tools/testing/selftests/bpf/benchs/bench_trigger.c
-index 32e9f19..8232765 100644
---- a/tools/testing/selftests/bpf/benchs/bench_trigger.c
-+++ b/tools/testing/selftests/bpf/benchs/bench_trigger.c
-@@ -333,6 +333,20 @@ static void *uprobe_producer_ret(void *input)
- 	return NULL;
- }
- 
-+#ifdef __x86_64__
-+__nocf_check __weak void uprobe_target_nop5(void)
-+{
-+	asm volatile (".byte 0x0f, 0x1f, 0x44, 0x00, 0x00");
-+}
++	/* x86_nops[insn->length]; same as jmp with .offs = 0 */
++	if (insn->length <= ASM_NOP_MAX &&
++	    !memcmp(insn->kaddr, x86_nops[insn->length], insn->length))
++		goto setup;
 +
-+static void *uprobe_producer_nop5(void *input)
-+{
-+	while (true)
-+		uprobe_target_nop5();
-+	return NULL;
-+}
-+#endif
-+
- static void usetup(bool use_retprobe, bool use_multi, void *target_addr)
- {
- 	size_t uprobe_offset;
-@@ -448,6 +462,28 @@ static void uretprobe_multi_ret_setup(void)
- 	usetup(true, true /* use_multi */, &uprobe_target_ret);
- }
- 
-+#ifdef __x86_64__
-+static void uprobe_nop5_setup(void)
-+{
-+	usetup(false, false /* !use_multi */, &uprobe_target_nop5);
-+}
-+
-+static void uretprobe_nop5_setup(void)
-+{
-+	usetup(true, false /* !use_multi */, &uprobe_target_nop5);
-+}
-+
-+static void uprobe_multi_nop5_setup(void)
-+{
-+	usetup(false, true /* use_multi */, &uprobe_target_nop5);
-+}
-+
-+static void uretprobe_multi_nop5_setup(void)
-+{
-+	usetup(true, true /* use_multi */, &uprobe_target_nop5);
-+}
-+#endif
-+
- const struct bench bench_trig_syscall_count = {
- 	.name = "trig-syscall-count",
- 	.validate = trigger_validate,
-@@ -506,3 +542,9 @@ BENCH_TRIG_USERMODE(uprobe_multi_ret, ret, "uprobe-multi-ret");
- BENCH_TRIG_USERMODE(uretprobe_multi_nop, nop, "uretprobe-multi-nop");
- BENCH_TRIG_USERMODE(uretprobe_multi_push, push, "uretprobe-multi-push");
- BENCH_TRIG_USERMODE(uretprobe_multi_ret, ret, "uretprobe-multi-ret");
-+#ifdef __x86_64__
-+BENCH_TRIG_USERMODE(uprobe_nop5, nop5, "uprobe-nop5");
-+BENCH_TRIG_USERMODE(uretprobe_nop5, nop5, "uretprobe-nop5");
-+BENCH_TRIG_USERMODE(uprobe_multi_nop5, nop5, "uprobe-multi-nop5");
-+BENCH_TRIG_USERMODE(uretprobe_multi_nop5, nop5, "uretprobe-multi-nop5");
-+#endif
-diff --git a/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh b/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh
-index af169f8..03f5540 100755
---- a/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh
-+++ b/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh
-@@ -2,7 +2,7 @@
- 
- set -eufo pipefail
- 
--for i in usermode-count syscall-count {uprobe,uretprobe}-{nop,push,ret}
-+for i in usermode-count syscall-count {uprobe,uretprobe}-{nop,push,ret,nop5}
- do
- 	summary=$(sudo ./bench -w2 -d5 -a trig-$i | tail -n1 | cut -d'(' -f1 | cut -d' ' -f3-)
- 	printf "%-15s: %s\n" $i "$summary"
+ 	switch (opc1) {
+ 	case 0xeb:	/* jmp 8 */
+ 	case 0xe9:	/* jmp 32 */
 
