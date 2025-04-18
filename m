@@ -1,106 +1,226 @@
-Return-Path: <linux-tip-commits+bounces-5056-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5057-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271DBA93341
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:12:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85E2A93355
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46EC446321D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:12:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1DB7B35B1
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494A6255E2A;
-	Fri, 18 Apr 2025 07:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE18F25744F;
+	Fri, 18 Apr 2025 07:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqrv3FBC"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RWZ4Tjww";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KmnEgmHu"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C13253955;
-	Fri, 18 Apr 2025 07:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1D62116E0;
+	Fri, 18 Apr 2025 07:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744960356; cv=none; b=ZCGaB8CwOtDXsGpDnqie7r8iUOmqzDnKlsve4pkri/fRjFL4hP391Tf9uVmiKW9M8ExfnTluu6Qc+8+F9aqY7JV//qFX2+n/oKh/1Vgxlua0hPqTFXCEgYn/JV+OrMJKcqonhxS60IJakXMsilqRYAvt9zqtIKDB402Rsr4llSQ=
+	t=1744960505; cv=none; b=fb4ESZLAg+k7hQ8TTMUrgD9YT/2kkB9+X+ZgJY3bgxOTz8pWqZnGnNs8hVeLzm4gv/95JXZx5mWvFmYUoH5Ym93ydIaZCZH8Kv6b/Qf07/gvA7p5VqPAkzfvaGpFjQQBk5LdTAW/Y5mZNcbpvHQ3bBVtRIuOVx+y7bhSGSxH+yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744960356; c=relaxed/simple;
-	bh=IGplsZv5NV3fSX3lKlH0s+Mz+pPQO3iP62Vs+r45B2I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IDyjAlhKwmXOjg+4SWMdqAdZSQljXraJL7jXxGpgl74K3GTEoXYaHWE8iZNKUTLa/pJabmzYmZDYz8MlfB1QgcF2tWpAvVwgeMbgQKbB3DNf1umRmoKq03BGTzqkitS6hCYA+wnOb5dtEBdRuaGPLR993Y3dw59EWemhG+dSUX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqrv3FBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F11C4CEED;
-	Fri, 18 Apr 2025 07:12:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744960354;
-	bh=IGplsZv5NV3fSX3lKlH0s+Mz+pPQO3iP62Vs+r45B2I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hqrv3FBCUn+C89k4mK7pHBQNthTZbVunPQpPyZfgz3UsSwx+SI14lMjbd285mrB4C
-	 4LkdR2pg8WZgGYGRRvb+1QA2+teX7PiPDggB/kVMPd7d4+KU1Ns+WepvJC6gUUt63k
-	 i7rQlMdv5UnMh6pXSTBBh5JaxpRoBBzUCTtm/RPa3ChT/Pn8Vi1MdDYfELPYhVHK7m
-	 ZWTgDEjTJrZ8RjsycumgUybmvDQp0/dBWxoJq4JuChAEh7WlsnXJTfRp8LtEdyuatX
-	 Rmygewq6StcuZq8crGQ8P5VEdhNJqjKxVFL0jygYvQTHYkHmPjtXHzkkl7Rq2E5arH
-	 N7F55yX/lunfA==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54d65eb26b2so1450592e87.2;
-        Fri, 18 Apr 2025 00:12:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWKhMXXLDN88Zc3s0ZG1DG3OBkohd+o5SmU5CEtKtLRY7VxJISOzmCadP2YuSRkp12U2+CD0u4wX/ChIzMVMsIonnU=@vger.kernel.org, AJvYcCXIRgaL7dLN71sDH7ZNjR98vdhL98iYcZV4EZI6ZuiuOJbyjKqwoNMMxbeuxKdX6AWj2m2MX8d42rY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZaKTMKY7CMEUv9Hx9bbFGnS97qkGDzmbb+ChYE1cMTHv1htSW
-	EthROIZItN/6nOM5BllSG7Z14ZFCwPBVii9BWaQT8pXTiArhGI+2TuIPRbHuEG1tm0jMAGWeueZ
-	eP7jWwlc5qhwoAPmpMaWHneTEB8c=
-X-Google-Smtp-Source: AGHT+IEtvy8lsnlF0Hom1dwg1kwU6oHxvO0Tzxo4Gbn29xWyXvBOHJzFV4/nSajDqVBWcHr+IyGvj9D3NgxS51oUCm8=
-X-Received: by 2002:a05:6512:1598:b0:545:944:aae1 with SMTP id
- 2adb3069b0e04-54d6e61be62mr459896e87.12.1744960352856; Fri, 18 Apr 2025
- 00:12:32 -0700 (PDT)
+	s=arc-20240116; t=1744960505; c=relaxed/simple;
+	bh=goFcXiNu6hwu2tVjllltb0m7Z1D+rJMKVeb2Mv0o620=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=peM5nJiWdPXa+KiS/qGZobyS9BeJo/kzOrrH/bHjGAgWYAz+rKhfINdLcACIIm7WU6eik4TGoDVdCJJ2ARp9mjSgBwmoPgUAHuBb1jXFokXin4BkVGfvDjPFbICRh3NtrYSauv0eKt2g/Ep90ZEZzPfwNeKNnVbD2QE5rFOPVq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RWZ4Tjww; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KmnEgmHu; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 18 Apr 2025 07:15:00 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744960502;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OTYLGJMnZirVFG1sTedDkjiRPCL5mxWjS2oGscgpDtU=;
+	b=RWZ4Tjww1lXB3aYPIlpDzQ0Jm9iChrvLNhsgwxWalZCIZp8Iw3FWoKPJevALCSOsM2Psqn
+	/Ml4cTOxiN8NMhovtaKNusN+vppSXTbjDtpMzKZlFhvom78iIZeqZ5f+f+AABsr4pRLf2Q
+	BRFXzuFCfhuuRnzGrbqjKh0EKDhkpDpx83YzRizAdAXz0/+UQrRXdyNVNwK8XAM6PaK59w
+	HT5Gu8ndMeRUul/mtyZKB8DIpojYpMrVULaJGyRe3b9WDOAIMXmsL3foBYW6TP3Rloj0d+
+	aVZh2fPzx0GZNlXtPn8fr4fwPy7b2qMeKJ8OLrye3XNxbeQouW74DSxzyYTDZQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744960502;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OTYLGJMnZirVFG1sTedDkjiRPCL5mxWjS2oGscgpDtU=;
+	b=KmnEgmHud3fQOdgwUUibxxNPkH8CtU2IaTVfPhR3V47kW8xKJWcxwx7TTd/qxgL6Itae0h
+	Ds7/lU2DMI2NfcCg==
+From: "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: perf/core] selftests/bpf: Add 5-byte NOP uprobe trigger benchmark
+Cc: Jiri Olsa <jolsa@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+ John Fastabend <john.fastabend@gmail.com>, Hao Luo <haoluo@google.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Alan Maguire <alan.maguire@oracle.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250414083647.1234007-2-jolsa@kernel.org>
+References: <20250414083647.1234007-2-jolsa@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250410132850.3708703-2-ardb+git@google.com> <174448976513.31282.4012948519562214371.tip-bot2@tip-bot2>
- <CAMj1kXFEXZ8cGMwz6N_ToYp0Wf5Vr9UBFRueWx_MtrwbDLq+LQ@mail.gmail.com> <Z_rQ4eu4LYh6jGzY@gmail.com>
-In-Reply-To: <Z_rQ4eu4LYh6jGzY@gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 18 Apr 2025 09:12:21 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGTP31w7vM+jWqpbJPmoyPU9vqOrmvXsueoPnBin0y_hQ@mail.gmail.com>
-X-Gm-Features: ATxdqUFSZYSzhayH8HR_8vlXz5UCXO7B_Opm4HMpscXP0Yw54leyf23bLKfLlEw
-Message-ID: <CAMj1kXGTP31w7vM+jWqpbJPmoyPU9vqOrmvXsueoPnBin0y_hQ@mail.gmail.com>
-Subject: Re: [tip: x86/boot] x86/boot/sev: Avoid shared GHCB page for early
- memory acceptance
-To: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
-	Kevin Loughlin <kevinloughlin@google.com>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-efi@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <174496050005.31282.10614285702352344746.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Sat, 12 Apr 2025 at 22:45, Ingo Molnar <mingo@kernel.org> wrote:
->
->
-> * Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> > On Sat, 12 Apr 2025 at 22:29, tip-bot2 for Ard Biesheuvel
-> > <tip-bot2@linutronix.de> wrote:
-> > >
-> > > The following commit has been merged into the x86/boot branch of tip:
-> > >
-> >
-> > This may be slightly premature. I took some of Tom's code, hence the
-> > co-developed-by, but the should really confirm that what I did is
-> > correct before we queue this up.
->
-> OK, I've zapped it again, especially as the rest of the series wasn't
-> ready either, please include the latest version of this patch as part
-> of the boot/setup/ series, which hard-relies upon it.
->
+The following commit has been merged into the perf/core branch of tip:
 
-I have sent out a v4 here [0].
+Commit-ID:     fe8e5a3215ccd8e54ce0a9df1b89d4ab42ad8fec
+Gitweb:        https://git.kernel.org/tip/fe8e5a3215ccd8e54ce0a9df1b89d4ab42ad8fec
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Mon, 14 Apr 2025 10:36:47 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 18 Apr 2025 09:03:45 +02:00
 
-I am not including it in the next rev of the startup/ refactor series,
-given that this change is a fix that also needs to go to stable.
-Please apply it as a fix and merge back the branch into tip/x86/boot -
-I will rebase the startup/ refactor series on top of that.
+selftests/bpf: Add 5-byte NOP uprobe trigger benchmark
 
-Thanks,
+Add a 5-byte NOP uprobe trigger benchmark (x86_64 specific) to measure
+uprobes/uretprobes on top of NOP5 instructions.
 
-[0] https://lore.kernel.org/linux-efi/20250417202120.1002102-2-ardb+git@google.com/T/#u
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Song Liu <songliubraving@fb.com>
+Cc: Yonghong Song <yhs@fb.com>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Alan Maguire <alan.maguire@oracle.com>
+Link: https://lore.kernel.org/r/20250414083647.1234007-2-jolsa@kernel.org
+---
+ tools/testing/selftests/bpf/bench.c                     | 12 ++-
+ tools/testing/selftests/bpf/benchs/bench_trigger.c      | 42 ++++++++-
+ tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh |  2 +-
+ 3 files changed, 55 insertions(+), 1 deletion(-)
+
+diff --git a/tools/testing/selftests/bpf/bench.c b/tools/testing/selftests/bpf/bench.c
+index 1bd403a..0fd8c9b 100644
+--- a/tools/testing/selftests/bpf/bench.c
++++ b/tools/testing/selftests/bpf/bench.c
+@@ -526,6 +526,12 @@ extern const struct bench bench_trig_uprobe_multi_push;
+ extern const struct bench bench_trig_uretprobe_multi_push;
+ extern const struct bench bench_trig_uprobe_multi_ret;
+ extern const struct bench bench_trig_uretprobe_multi_ret;
++#ifdef __x86_64__
++extern const struct bench bench_trig_uprobe_nop5;
++extern const struct bench bench_trig_uretprobe_nop5;
++extern const struct bench bench_trig_uprobe_multi_nop5;
++extern const struct bench bench_trig_uretprobe_multi_nop5;
++#endif
+ 
+ extern const struct bench bench_rb_libbpf;
+ extern const struct bench bench_rb_custom;
+@@ -586,6 +592,12 @@ static const struct bench *benchs[] = {
+ 	&bench_trig_uretprobe_multi_push,
+ 	&bench_trig_uprobe_multi_ret,
+ 	&bench_trig_uretprobe_multi_ret,
++#ifdef __x86_64__
++	&bench_trig_uprobe_nop5,
++	&bench_trig_uretprobe_nop5,
++	&bench_trig_uprobe_multi_nop5,
++	&bench_trig_uretprobe_multi_nop5,
++#endif
+ 	/* ringbuf/perfbuf benchmarks */
+ 	&bench_rb_libbpf,
+ 	&bench_rb_custom,
+diff --git a/tools/testing/selftests/bpf/benchs/bench_trigger.c b/tools/testing/selftests/bpf/benchs/bench_trigger.c
+index 32e9f19..8232765 100644
+--- a/tools/testing/selftests/bpf/benchs/bench_trigger.c
++++ b/tools/testing/selftests/bpf/benchs/bench_trigger.c
+@@ -333,6 +333,20 @@ static void *uprobe_producer_ret(void *input)
+ 	return NULL;
+ }
+ 
++#ifdef __x86_64__
++__nocf_check __weak void uprobe_target_nop5(void)
++{
++	asm volatile (".byte 0x0f, 0x1f, 0x44, 0x00, 0x00");
++}
++
++static void *uprobe_producer_nop5(void *input)
++{
++	while (true)
++		uprobe_target_nop5();
++	return NULL;
++}
++#endif
++
+ static void usetup(bool use_retprobe, bool use_multi, void *target_addr)
+ {
+ 	size_t uprobe_offset;
+@@ -448,6 +462,28 @@ static void uretprobe_multi_ret_setup(void)
+ 	usetup(true, true /* use_multi */, &uprobe_target_ret);
+ }
+ 
++#ifdef __x86_64__
++static void uprobe_nop5_setup(void)
++{
++	usetup(false, false /* !use_multi */, &uprobe_target_nop5);
++}
++
++static void uretprobe_nop5_setup(void)
++{
++	usetup(true, false /* !use_multi */, &uprobe_target_nop5);
++}
++
++static void uprobe_multi_nop5_setup(void)
++{
++	usetup(false, true /* use_multi */, &uprobe_target_nop5);
++}
++
++static void uretprobe_multi_nop5_setup(void)
++{
++	usetup(true, true /* use_multi */, &uprobe_target_nop5);
++}
++#endif
++
+ const struct bench bench_trig_syscall_count = {
+ 	.name = "trig-syscall-count",
+ 	.validate = trigger_validate,
+@@ -506,3 +542,9 @@ BENCH_TRIG_USERMODE(uprobe_multi_ret, ret, "uprobe-multi-ret");
+ BENCH_TRIG_USERMODE(uretprobe_multi_nop, nop, "uretprobe-multi-nop");
+ BENCH_TRIG_USERMODE(uretprobe_multi_push, push, "uretprobe-multi-push");
+ BENCH_TRIG_USERMODE(uretprobe_multi_ret, ret, "uretprobe-multi-ret");
++#ifdef __x86_64__
++BENCH_TRIG_USERMODE(uprobe_nop5, nop5, "uprobe-nop5");
++BENCH_TRIG_USERMODE(uretprobe_nop5, nop5, "uretprobe-nop5");
++BENCH_TRIG_USERMODE(uprobe_multi_nop5, nop5, "uprobe-multi-nop5");
++BENCH_TRIG_USERMODE(uretprobe_multi_nop5, nop5, "uretprobe-multi-nop5");
++#endif
+diff --git a/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh b/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh
+index af169f8..03f5540 100755
+--- a/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh
++++ b/tools/testing/selftests/bpf/benchs/run_bench_uprobes.sh
+@@ -2,7 +2,7 @@
+ 
+ set -eufo pipefail
+ 
+-for i in usermode-count syscall-count {uprobe,uretprobe}-{nop,push,ret}
++for i in usermode-count syscall-count {uprobe,uretprobe}-{nop,push,ret,nop5}
+ do
+ 	summary=$(sudo ./bench -w2 -d5 -a trig-$i | tail -n1 | cut -d'(' -f1 | cut -d' ' -f3-)
+ 	printf "%-15s: %s\n" $i "$summary"
 
