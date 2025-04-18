@@ -1,134 +1,106 @@
-Return-Path: <linux-tip-commits+bounces-5055-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5056-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967FBA9332C
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:05:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271DBA93341
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 09:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8410168A72
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:05:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46EC446321D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 07:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4417421325C;
-	Fri, 18 Apr 2025 07:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494A6255E2A;
+	Fri, 18 Apr 2025 07:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KOb7fReI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqrv3FBC"
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C66D8C0E;
-	Fri, 18 Apr 2025 07:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C13253955;
+	Fri, 18 Apr 2025 07:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744959924; cv=none; b=o7aFkeAaufRPjjFsz2kxY+xgPuZsXDreG7VcHDvDgOejDhkwTW2VCPI+knjKfP53PEQZQHrfofa4XSpc8PRGYgo8x+6Y43EHrfd+O1FPQG/+a0U+mhzZUG2ZxE/QX1lqcmLJmsDvlNk9nGXhU98amVfGdaAzUGqdeD3ec7bXBmU=
+	t=1744960356; cv=none; b=ZCGaB8CwOtDXsGpDnqie7r8iUOmqzDnKlsve4pkri/fRjFL4hP391Tf9uVmiKW9M8ExfnTluu6Qc+8+F9aqY7JV//qFX2+n/oKh/1Vgxlua0hPqTFXCEgYn/JV+OrMJKcqonhxS60IJakXMsilqRYAvt9zqtIKDB402Rsr4llSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744959924; c=relaxed/simple;
-	bh=KBWytEzvIXK4gEe9LdE7ZJpPSwTE8tFcqoRCCQHJUKc=;
+	s=arc-20240116; t=1744960356; c=relaxed/simple;
+	bh=IGplsZv5NV3fSX3lKlH0s+Mz+pPQO3iP62Vs+r45B2I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AAyTk1QJ8OmbZvk4hO9mEgDxNhT1rEU8hBd+H240EIxdlPJQOHqr0QWfCD+s02IRIJo6huW0vU/33wkBcWmM9dwrrGHrXcLqoIQM7Jk4Qcll08rfYIPkG2XId2+sAw94PyL2c2PgSL95zQ36SX62uiiLY0mCTQwCKARQLA1ixZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KOb7fReI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E79AC4CEE7;
-	Fri, 18 Apr 2025 07:05:23 +0000 (UTC)
+	 To:Cc:Content-Type; b=IDyjAlhKwmXOjg+4SWMdqAdZSQljXraJL7jXxGpgl74K3GTEoXYaHWE8iZNKUTLa/pJabmzYmZDYz8MlfB1QgcF2tWpAvVwgeMbgQKbB3DNf1umRmoKq03BGTzqkitS6hCYA+wnOb5dtEBdRuaGPLR993Y3dw59EWemhG+dSUX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqrv3FBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F11C4CEED;
+	Fri, 18 Apr 2025 07:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744959923;
-	bh=KBWytEzvIXK4gEe9LdE7ZJpPSwTE8tFcqoRCCQHJUKc=;
+	s=k20201202; t=1744960354;
+	bh=IGplsZv5NV3fSX3lKlH0s+Mz+pPQO3iP62Vs+r45B2I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KOb7fReIoOl+1kQirFw0QwxSDEGKez1RizxewAr1V63GXoaLrhQB9kni1Z1qT7Rub
-	 ti70+13q6ifHqheVX016ecTg09EtO3MsPy5tD78uI4hVWR0rj8S7MRbJYb7br/fWo3
-	 xrD//xOXW0OEGRDSubGKNZKR27onwKzMptgLrtsQNi6Br+BPv/DwMjczMsVz4cBa9Z
-	 f2p3y01lJPRhFQt3SitjjESDSWiynE2SblDWqy1zKc1qxaIeP/5EnDhW9G9brHOjjQ
-	 kzYDJngxcp4tdOXHwqLBw5dEOp9iaDkWLI5KQPaA1BVnHxMsaUSR7Wo0+BKnL8tI4l
-	 pgmaJb5PGMtog==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so2186890e87.2;
-        Fri, 18 Apr 2025 00:05:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW2qVtGcEk9P6TEnJ2vixn7XoGalagUPrnfo494TQIroakJDdoLoWb1qlMxazISxZpo4aEBsl5ySHDFQM0Xov7WrS4=@vger.kernel.org, AJvYcCWSCYWOauJ1IO5IqThWdENcVMSvqVpD9z0UgxYioW3SSc5mg/BqroHGh6noea4Xc5cAEBIop9hl+skwGXg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya6ltM9b58uW0fpRGSZYop4fvfdwhMkN6w7tapqHHbk4Iohf3P
-	ZwuPart8FjkrIs6vmvrAUgmIeLQNBJvohB1N4ikgfjdbERC8Wp/n7Zj7uVwVwDvIMRGJfRWVKT0
-	+t6C1vYKQQI5hvPt5OkSmxj8SnP0=
-X-Google-Smtp-Source: AGHT+IF1vvWYSlieY57kroMtUhKs+syOnJM4QZdLDfSdU7K4Gqax0E2ezt34ZfxGcBDMosbhCdaM2T73K8LeYC9BbXo=
-X-Received: by 2002:a05:6512:b28:b0:549:792a:a382 with SMTP id
- 2adb3069b0e04-54d6e635987mr478097e87.32.1744959922030; Fri, 18 Apr 2025
- 00:05:22 -0700 (PDT)
+	b=hqrv3FBCUn+C89k4mK7pHBQNthTZbVunPQpPyZfgz3UsSwx+SI14lMjbd285mrB4C
+	 4LkdR2pg8WZgGYGRRvb+1QA2+teX7PiPDggB/kVMPd7d4+KU1Ns+WepvJC6gUUt63k
+	 i7rQlMdv5UnMh6pXSTBBh5JaxpRoBBzUCTtm/RPa3ChT/Pn8Vi1MdDYfELPYhVHK7m
+	 ZWTgDEjTJrZ8RjsycumgUybmvDQp0/dBWxoJq4JuChAEh7WlsnXJTfRp8LtEdyuatX
+	 Rmygewq6StcuZq8crGQ8P5VEdhNJqjKxVFL0jygYvQTHYkHmPjtXHzkkl7Rq2E5arH
+	 N7F55yX/lunfA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54d65eb26b2so1450592e87.2;
+        Fri, 18 Apr 2025 00:12:34 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWKhMXXLDN88Zc3s0ZG1DG3OBkohd+o5SmU5CEtKtLRY7VxJISOzmCadP2YuSRkp12U2+CD0u4wX/ChIzMVMsIonnU=@vger.kernel.org, AJvYcCXIRgaL7dLN71sDH7ZNjR98vdhL98iYcZV4EZI6ZuiuOJbyjKqwoNMMxbeuxKdX6AWj2m2MX8d42rY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZaKTMKY7CMEUv9Hx9bbFGnS97qkGDzmbb+ChYE1cMTHv1htSW
+	EthROIZItN/6nOM5BllSG7Z14ZFCwPBVii9BWaQT8pXTiArhGI+2TuIPRbHuEG1tm0jMAGWeueZ
+	eP7jWwlc5qhwoAPmpMaWHneTEB8c=
+X-Google-Smtp-Source: AGHT+IEtvy8lsnlF0Hom1dwg1kwU6oHxvO0Tzxo4Gbn29xWyXvBOHJzFV4/nSajDqVBWcHr+IyGvj9D3NgxS51oUCm8=
+X-Received: by 2002:a05:6512:1598:b0:545:944:aae1 with SMTP id
+ 2adb3069b0e04-54d6e61be62mr459896e87.12.1744960352856; Fri, 18 Apr 2025
+ 00:12:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250307164801.885261-2-ardb+git@google.com> <174138907883.14745.965399833848496586.tip-bot2@tip-bot2>
- <364ad671-5e5c-47c1-af22-34a7c481f8e3@intel.com> <2fddc2e9-8c97-48de-bcc3-29645d58f0f1@intel.com>
- <Z_oo3eBywzj6s8Eg@gmail.com>
-In-Reply-To: <Z_oo3eBywzj6s8Eg@gmail.com>
+References: <20250410132850.3708703-2-ardb+git@google.com> <174448976513.31282.4012948519562214371.tip-bot2@tip-bot2>
+ <CAMj1kXFEXZ8cGMwz6N_ToYp0Wf5Vr9UBFRueWx_MtrwbDLq+LQ@mail.gmail.com> <Z_rQ4eu4LYh6jGzY@gmail.com>
+In-Reply-To: <Z_rQ4eu4LYh6jGzY@gmail.com>
 From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 18 Apr 2025 09:05:10 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGzSK0YxdiGsK9b4ph8dqt08fXFQkWYBg9VFerSwowZUg@mail.gmail.com>
-X-Gm-Features: ATxdqUG0Cm9QjGkUxRV_oVu3d7YwLUoAlr8-PwK7dw88P7VsxPlkdUhIQz59-Tw
-Message-ID: <CAMj1kXGzSK0YxdiGsK9b4ph8dqt08fXFQkWYBg9VFerSwowZUg@mail.gmail.com>
-Subject: Re: [tip: x86/build] x86/boot: Drop CRC-32 checksum and the build
- tool that generates it
+Date: Fri, 18 Apr 2025 09:12:21 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGTP31w7vM+jWqpbJPmoyPU9vqOrmvXsueoPnBin0y_hQ@mail.gmail.com>
+X-Gm-Features: ATxdqUFSZYSzhayH8HR_8vlXz5UCXO7B_Opm4HMpscXP0Yw54leyf23bLKfLlEw
+Message-ID: <CAMj1kXGTP31w7vM+jWqpbJPmoyPU9vqOrmvXsueoPnBin0y_hQ@mail.gmail.com>
+Subject: Re: [tip: x86/boot] x86/boot/sev: Avoid shared GHCB page for early
+ memory acceptance
 To: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org, 
-	linux-tip-commits@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Ian Campbell <ijc@hellion.org.uk>, Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
+	Tom Lendacky <thomas.lendacky@amd.com>, Dionna Amalie Glaze <dionnaglaze@google.com>, 
+	Kevin Loughlin <kevinloughlin@google.com>, 
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>, linux-efi@vger.kernel.org, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 12 Apr 2025 at 10:48, Ingo Molnar <mingo@kernel.org> wrote:
+On Sat, 12 Apr 2025 at 22:45, Ingo Molnar <mingo@kernel.org> wrote:
 >
 >
-> * Dave Hansen <dave.hansen@intel.com> wrote:
+> * Ard Biesheuvel <ardb@kernel.org> wrote:
 >
-> > On 4/11/25 12:33, Dave Hansen wrote:
-> > ...
-> > > The only weird thing I'm doing is booting the kernel with qemu's -kernel
-> > > argument.
+> > On Sat, 12 Apr 2025 at 22:29, tip-bot2 for Ard Biesheuvel
+> > <tip-bot2@linutronix.de> wrote:
+> > >
+> > > The following commit has been merged into the x86/boot branch of tip:
+> > >
 > >
-> > I lied. I'm doing other weird things. I have a local script named
-> > "truncate" that's not the same thing as /usr/bin/truncate. Guess what
-> > this patch started doing:
-> >
-> > >  quiet_cmd_image = BUILD   $@
-> > > -silent_redirect_image = >/dev/null
-> > > -cmd_image = $(obj)/tools/build $(obj)/setup.bin $(obj)/vmlinux.bin \
-> > > -                          $(obj)/zoffset.h $@ $($(quiet)redirect_image)
-> > > +      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
-> >
-> >                                ^ right there
+> > This may be slightly premature. I took some of Tom's code, hence the
+> > co-developed-by, but the should really confirm that what I did is
+> > correct before we queue this up.
 >
-> Oh that sucks ...
->
-> > I'm an idiot. That was a poorly named script and it cost me a kernel
-> > bisect and poking at the patch for an hour. <sigh>
-> >
-> > Sorry for the noise.
->
-> I feel your pain, I too once overlaid a well-known utility with my own
-> script in ~/bin/. After that incident I started adding the .sh postfix
-> to my own scripts, that way there's a much lower chance of namespace
-> collisions.
+> OK, I've zapped it again, especially as the rest of the series wasn't
+> ready either, please include the latest version of this patch as part
+> of the boot/setup/ series, which hard-relies upon it.
 >
 
-There was another report about this, but in that case, the problem was
-that busybox's truncate clone does not understand the % notation (even
-though the very first original truncate version that I found from 2008
-already supported that)
+I have sent out a v4 here [0].
 
-In any case, we might change this to
+I am not including it in the next rev of the startup/ refactor series,
+given that this change is a fix that also needs to go to stable.
+Please apply it as a fix and merge back the branch into tip/x86/boot -
+I will rebase the startup/ refactor series on top of that.
 
---- a/arch/x86/boot/Makefile
-+++ b/arch/x86/boot/Makefile
-@@ -59,7 +59,7 @@
- $(obj)/bzImage: asflags-y  := $(SVGA_MODE)
+Thanks,
 
- quiet_cmd_image = BUILD   $@
--      cmd_image = cp $< $@; truncate -s %4K $@; cat $(obj)/vmlinux.bin >>$@
-+      cmd_image = (dd if=$< bs=4096 conv=sync status=none; cat
-$(obj)/vmlinux.bin) >$@
-
- $(obj)/bzImage: $(obj)/setup.bin $(obj)/vmlinux.bin FORCE
-        $(call if_changed,image)
-
-which is slightly cleaner - I'll send out a patch once I receive
-confirmation that busybox dd implements conv=sync (which takes care of
-the padding) correctly.
+[0] https://lore.kernel.org/linux-efi/20250417202120.1002102-2-ardb+git@google.com/T/#u
 
