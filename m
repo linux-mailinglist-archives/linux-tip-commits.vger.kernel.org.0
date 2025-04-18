@@ -1,102 +1,89 @@
-Return-Path: <linux-tip-commits+bounces-5074-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5075-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA766A936A2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 13:44:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87FF3A936E5
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 14:11:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1840417EE75
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 11:44:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE9153BD6B9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Apr 2025 12:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C805E1D5170;
-	Fri, 18 Apr 2025 11:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C15D27466A;
+	Fri, 18 Apr 2025 12:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ZUcsCc+J"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nl6XTcIC"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433481885A5;
-	Fri, 18 Apr 2025 11:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320772741B9;
+	Fri, 18 Apr 2025 12:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744976655; cv=none; b=RzVA7y3i7YBsT4jpNblQGwRT2kjT8SsDYEeEWdudgBV1yh8xbszLc5zpuzojPS7gfx52d5QP3tm4odriHoG2r3PiOqY665HBXGgvJeg+PBVmjrPP42FXH3kH0sVm/IUnO4+OcfBIynvaXCaPmjygsTYXwQbY6PkEx3JcKW4IxBk=
+	t=1744978308; cv=none; b=MuDSsU4srqsC9nrOrjdTUy9pBJujspPL7ArDca1gfMiouTh2mjuWTOwoaXpZROD4+Y3sn5EuDDvqLmpDidw4mEWMRALL6HgQKs0QnqPgFxHOaNMgzHtgn0cBOP0GC2nsRqzebsdhy93wxWUo0+h29FsWQfv5F9PEOhnjj+IP6yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744976655; c=relaxed/simple;
-	bh=yLGL8heeJcZC/qprBhd2ZylWzrlApzNJLo+TG+1mTxI=;
+	s=arc-20240116; t=1744978308; c=relaxed/simple;
+	bh=i1GAHaPRubCG+Ok7kknHanKt2FeoM7pX/uRadDM54Ik=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jhUSBnn53SVoRpoDGNLYckuZrSitz+crpN6IkavrbOSn7SvoFWewT3y7PC9yk4rk3lzoZFTFIlfJVjsMahTHaEBwgeicW5NoRtZWobA1ZMPm5O9bdZ1p0XcWSC48JtcKdg3banoaKEmBhMhCM64+lAhyXJGLYN49bf5MNc/AAKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ZUcsCc+J; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1B02F40E0214;
-	Fri, 18 Apr 2025 11:44:11 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id rYyAgMN3oQD2; Fri, 18 Apr 2025 11:44:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1744976646; bh=NiyydWlJa+7G6PPfSYX2cmaxmpcTnqGhtJ/YkVAp0rI=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=fQy7I56xH3yeAyJOv7Mhs7+9gsg4kyeE5992/l7tQgra3WsQdv3Of+elcOBYz16cShF4d14VH8taESxWskpHbx3ypqnPXmltKUVju7q4f8hbAcTbojjqmOanOKkf5AkEDRqx4L3VqUzkCgxx7z0WfHuBG0uEnrnKywuK5qUL1bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nl6XTcIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82647C4CEE2;
+	Fri, 18 Apr 2025 12:11:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744978307;
+	bh=i1GAHaPRubCG+Ok7kknHanKt2FeoM7pX/uRadDM54Ik=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZUcsCc+J9b/Z3qxT8wwsuthJXu76krhBCibK+nYyvOxw2EK26O62Qb3FCSiOmPbas
-	 tUUVOoBXS+4x+urIaDoEBx8B85J8QrOnYezfRHwFedW7H8f2Qqg1GNQzktoYgZLAwx
-	 uCcE8UgcfuLzUTQpZJEEE6yNJWVadfoI7mwDdWlOx/Dj0+TvT9q2qhsZ+FZfhYVfq8
-	 vApqN7iDP5PpI/ILfIS9WzdI5Z6sCsJRy4z6a26DV45EDB9AqoNJKaw3DlfCNud4Fd
-	 SQk9ZvpL2+Jh6AK3JqXzIgQ0JLllmrHl0vHhiLbrtpttmS4eruw0H/vNqoYduE99Fl
-	 FCUsbTCDyZcq27lb/I5B2c0p0KN2PvFBlATe4X7fhqf7wckBL6DUU3JkDCbpeBEr2k
-	 gza13whx0EqU6dWWvDJpT+5TvV2/CR5avmvB2Bu9t8fG4373ez7FYpI2ajzeU4fAp1
-	 p4/XqfcM8kAA+7POAF22efGuWKSSGx7kT3s8brYIyJIJGgSSn4rxKNsioXPY5qzqHN
-	 wsTy6ufXPLiUKVA7jNpajeKitQgXzl27dwJU3b6OxwCWhBIQGY5/g+48T74cDJO+h/
-	 c2XWyFF7OyrinsU7U7xBq7mrJmTXbWjCW1PDLUGKF2AEHCZHs3x08gw4Az8sa7ULzs
-	 ueZckq+n7b9ujySIOr1YYPBo=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 6391140E0200;
-	Fri, 18 Apr 2025 11:43:56 +0000 (UTC)
-Date: Fri, 18 Apr 2025 13:43:50 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Peter Zijlstra <peterz@infradead.org>
+	b=nl6XTcICYGhT6VhVHA+Yn+C+X9+gT+2Jv4FxrWuA/NW7mrkhQmEoMblCOy9tHKR1L
+	 YVhOXXm+zJOunbrfyObtpbkiT9Xc2EolZrkYGNSg+gzeqoFhBStwcw4KxHnLSYDfkw
+	 I4RYO6ZeOy3ZisYtMejKZ2EJY68gbb/4fqH6zXf9LYP+RqL0rgzdwJb4fOKV7b+b2g
+	 SIVDPEign+sgyySIIM7I90qhgLz4tfJKdVTHKT485TePajyW/xaYOWQQiOhwyBmmbz
+	 T4GPRiXrqWN0O8xlSCV763yTjP34byu2/P55+q6+wH4y/GfoPss9LlUs8B5JpCnR8d
+	 d8DUI121wa33Q==
+Date: Fri, 18 Apr 2025 14:11:44 +0200
+From: Ingo Molnar <mingo@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
 Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Andy Lutomirski <luto@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Rik van Riel <riel@surriel.com>, "H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org
-Subject: Re: [tip: x86/alternatives] x86/efi: Make efi_enter/leave_mm() use
- the use_/unuse_temporary_mm() machinery
-Message-ID: <20250418114350.GAaAI69qRzXARBY5tU@fat_crate.local>
-References: <20250402094540.3586683-7-mingo@kernel.org>
- <174448360887.31282.4227052210506129936.tip-bot2@tip-bot2>
- <20250417141751.GAaAENj1RsBOtp2Tvb@fat_crate.local>
- <20250418095034.GR38216@noisy.programming.kicks-ass.net>
+	Sandipan Das <sandipan.das@amd.com>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/cpu/amd: Fix workaround for erratum 1054
+Message-ID: <aAJBgCjGpvyI43E3@gmail.com>
+References: <174495817953.31282.5641497960291856424.tip-bot2@tip-bot2>
+ <20250418104013.GAaAIsDW2skB12L-nm@renoirsky.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250418095034.GR38216@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250418104013.GAaAIsDW2skB12L-nm@renoirsky.local>
 
-On Fri, Apr 18, 2025 at 11:50:34AM +0200, Peter Zijlstra wrote:
-> Ah yes :-( Something like so perhaps..
 
-Thanks, that does it.
+* Borislav Petkov <bp@alien8.de> wrote:
 
-Reported-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+> > Fixes: 232afb557835 ("x86/CPU/AMD: Add X86_FEATURE_ZEN1")
+> > Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > Link: https://lore.kernel.org/r/caa057a9d6f8ad579e2f1abaa71efbd5bd4eaf6d.1744956467.git.sandipan.das@amd.com
+> 
+> This needs
+> 
+> Cc: <stable@kernel.org>
 
-Thx.
+No, it doesn't really 'need' a stable tag, it has a Fixes tag already, 
+which gets processed by the -stable team.
 
--- 
-Regards/Gruss,
-    Boris.
+Also, the bug is old, 1.5 years old:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+  Date: Sat, 2 Dec 2023 12:50:23 +0100
+
+plus the erratum is a perf-counters information quality bug affecting 
+what appears to be a limited number of models, with the workaround 
+likely incorporated in BIOS updates as well. Leave it up to the -stable 
+team whether they think it's severe enough to backport it?
+
+Thanks,
+
+	Ingo
 
