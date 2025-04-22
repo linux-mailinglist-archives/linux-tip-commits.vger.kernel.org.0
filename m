@@ -1,230 +1,134 @@
-Return-Path: <linux-tip-commits+bounces-5099-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5100-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7338FA96AC5
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Apr 2025 14:48:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E66DA96DE1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Apr 2025 16:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B311635EE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Apr 2025 12:48:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E2B7A67BC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Apr 2025 14:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24C325E823;
-	Tue, 22 Apr 2025 12:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5FD277809;
+	Tue, 22 Apr 2025 14:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IyrkDUCN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gSEIaEBj"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i9dNX+3G"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97B31F09B1;
-	Tue, 22 Apr 2025 12:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8191EDA27;
+	Tue, 22 Apr 2025 14:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745326076; cv=none; b=KAv+imQ4VgiPLO7Zhe6JoEtk8+n9XaQj5ms8uqc2q3fpRqsPOs1eo3NcFb6WS00URVMUvKoFPCS9lFEH/8BSzfZeA0DvFCh+ohNdLKnAAi6FyT1wQm4aKayGhTBJ30oTYWQq1T92/zEXyrJj178FGUO6lh4iFwPHSNtH/blWWX4=
+	t=1745330732; cv=none; b=VvYS8hMZb0unLDkJpV0NeWZ8dEm9QQrm81RFhQDE3hPOmVmjtDzERllj0vmErVhpJepJhbAXIuPpysf/REc+0A2GPMZmoSR9B5PZU6KAtg8zLMR920tBvhE5vGbSZnAVt98mcXv1/3+XZhyaxZOafB7+BY5rxjguleUNjAQvOJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745326076; c=relaxed/simple;
-	bh=nXPbs8A5dt6z/JkCwNxw0+h8ZN58rPQtHIMURAwymeM=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LY4PoXBTHT/tCWqkqvJOzpZrKd7ES77cMRn4LC4EXOVwkxPwkstCGQyRiS2Yj/6ruPKPkxHv4TQq4U9hMz+v74dEH45PJASE5xpHHCLJW4F4l9kDtv6hnpIX5SmKrPdCzNbbEuu6AEwtGE8ritb+0MgqYEr7iT1PesPPIz6BdmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IyrkDUCN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gSEIaEBj; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 22 Apr 2025 12:47:52 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745326073;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ql9b6i2zSQYGcDt8W5lkvV2GEUKWfBKrkMiEWuE231w=;
-	b=IyrkDUCN0eWGTx4z+sesE9A6xx8h1Q4OCkyzjsJRkDG1EaQrob7lmj5ir12KHlJV60KsQR
-	ora00UEIaCJ2Z+D+3WM1lbRRutpfEPpe1tpFfqbYbE8pd54SwutLKh9RMP6tocmhNBzJA1
-	TM/bKND2ZSiUtCK6sRvnmxNI5DMuclre1lpR6eSJ+mv40kL4GkRa0r8b8GKPhcOrZvjDz5
-	UZIZDkB8bw07RLkFGljSLXosqv/i85jqqmwNC54EeJuHFNTkIGVean7+JP5Gor/Km+f2v/
-	ZcIrFIoHtBGsx8ITVpsm0KjYsPdYS8DzNzpIb2pje1uBYjBfPc0tmHwZ9h5hZw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745326073;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ql9b6i2zSQYGcDt8W5lkvV2GEUKWfBKrkMiEWuE231w=;
-	b=gSEIaEBjSj0qK0HnmSurABR/wm+hnq7ex+hE58dYMW2ryHRKb3UDA0ACMwjV9WNPTnUnon
-	aeXl5Bi5vaB3ouBw==
-From:
- tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/entry] x86/vdso: Remove #ifdeffery around page setup variants
-Cc: thomas.weissschuh@linutronix.de, Ingo Molnar <mingo@kernel.org>,
- Andrew Cooper <andrew.cooper3@citrix.com>, Andy Lutomirski <luto@kernel.org>,
- Brian Gerst <brgerst@gmail.com>, Eric Biederman <ebiederm@xmission.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>,
- Kees Cook <kees@kernel.org>, Linus Torvalds <torvalds@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Rik van Riel <riel@surriel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240910-x86-vdso-ifdef-v1-1-877c9df9b081@linutronix.de>
-References: <20240910-x86-vdso-ifdef-v1-1-877c9df9b081@linutronix.de>
+	s=arc-20240116; t=1745330732; c=relaxed/simple;
+	bh=O36NCqmXtfDtkMjQnKd9UylbWRh0JSGz88R68aSYA/w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J+DLVWL7pKHa3yVBXP1NpLZ0Q9jXxumCdtCkCvQ2L34InuuWGIw7OEMSN1nuuk6CejxHthnX/511OMDdnSJmQa+eIMhvYEWjaGqSaQ0iuZRGNw/1bEatGBanRYeSve7ABng+7y14G9pIxACp/Q80pCtc8wQ3wp0F2nvtA4ST3zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i9dNX+3G; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745330730; x=1776866730;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=O36NCqmXtfDtkMjQnKd9UylbWRh0JSGz88R68aSYA/w=;
+  b=i9dNX+3GRW0vedeX8Yl+VkkboabW1u2raED+xHSKbsehPGErEkxdwtrn
+   aH+XiBjR8b85eY30h9HE1FDopwH6zmADTmB3W3Lyx0I3aAHJ0riK8mis/
+   lzyf/UM2s7zADNvoYH+inKzxojMIWGYCKa/yABKHoBs866QGUBKrDDbTF
+   izT7UD9eTE60M4Jt9ogsqidAz/hAZpQFgjtuqFXvlMfPzt8Tfn3vEojcS
+   3/3TfzhvVWkP06oRN2DWB3XCbfcZMImMBgzdULDvRcxZnwkBCJ8HnWFBh
+   3/9Bgc0Qkk6Mysj3gajPfk0gwmh09pQPpWCzvVvM5nD2bpojasWoHJO+H
+   g==;
+X-CSE-ConnectionGUID: GLyH6drgRJyy++j1TDYyQw==
+X-CSE-MsgGUID: rpEXU8sGQ8+QdGTqqr3KWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46125209"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
+   d="scan'208";a="46125209"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 07:05:30 -0700
+X-CSE-ConnectionGUID: rjra1eAWTaGV6k+8jTo/xw==
+X-CSE-MsgGUID: 4WFMQkx0RhykwKSUVVnOdg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
+   d="scan'208";a="131977821"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.124.220.191]) ([10.124.220.191])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 07:05:30 -0700
+Message-ID: <36c94ac8-0e13-40c1-893c-3f173acab8f2@intel.com>
+Date: Tue, 22 Apr 2025 07:05:28 -0700
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174532607207.31282.2250932956675441767.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: x86/microcode] x86/cpu: Help users notice when running old
+ Intel microcode
+To: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+ Dave Hansen <dave.hansen@linux.intel.com>
+Cc: linux-tip-commits@vger.kernel.org, x86@kernel.org
+References: <174526703555.31282.4002502301046834125.tip-bot2@tip-bot2>
+ <aAc3hCVAnNLVo-Xh@gmail.com> <aAc4-eFLp_QeLOUu@gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <aAc4-eFLp_QeLOUu@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/entry branch of tip:
+On 4/21/25 23:36, Ingo Molnar wrote:
+> I've also fixed the format of the new X86_BUG_OLD_MICROCODE entry to 
+> the canonical format used in <asm/cpufeatures.h> (see the delta patch 
+> below), and pre-merged tip:x86/cpu with fixes/changes by Boris in that 
+> area. This avoids a tip:master conflict as well. The current commit is:
+> 
+>   4e2c719782a8 x86/cpu: Help users notice when running old Intel microcode
 
-Commit-ID:     2ce8043b1d34756509430675696aafcd6db601c7
-Gitweb:        https://git.kernel.org/tip/2ce8043b1d34756509430675696aafcd6db=
-601c7
-Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Tue, 10 Sep 2024 12:11:35 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 22 Apr 2025 14:24:07 +02:00
-
-x86/vdso: Remove #ifdeffery around page setup variants
-
-Replace the open-coded ifdefs in C sources files with IS_ENABLED().
-This makes the code easier to read and enables the compiler to typecheck
-also the disabled parts, before optimizing them away.
-To make this work, also remove the ifdefs from declarations of used
-variables.
-
-Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Brian Gerst <brgerst@gmail.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/r/20240910-x86-vdso-ifdef-v1-1-877c9df9b081@lin=
-utronix.de
----
- arch/x86/entry/vdso/vma.c   | 31 ++++++++++++-------------------
- arch/x86/include/asm/elf.h  |  4 ----
- arch/x86/include/asm/vdso.h |  8 --------
- 3 files changed, 12 insertions(+), 31 deletions(-)
-
-diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
-index adb299d..495fdd4 100644
---- a/arch/x86/entry/vdso/vma.c
-+++ b/arch/x86/entry/vdso/vma.c
-@@ -227,7 +227,6 @@ int map_vdso_once(const struct vdso_image *image, unsigne=
-d long addr)
- 	return map_vdso(image, addr);
- }
-=20
--#if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
- static int load_vdso32(void)
- {
- 	if (vdso32_enabled !=3D 1)  /* Other values all mean "disabled" */
-@@ -235,39 +234,33 @@ static int load_vdso32(void)
-=20
- 	return map_vdso(&vdso_image_32, 0);
- }
--#endif
-=20
--#ifdef CONFIG_X86_64
- int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
- {
--	if (!vdso64_enabled)
--		return 0;
-+	if (IS_ENABLED(CONFIG_X86_64)) {
-+		if (!vdso64_enabled)
-+			return 0;
-+
-+		return map_vdso(&vdso_image_64, 0);
-+	}
-=20
--	return map_vdso(&vdso_image_64, 0);
-+	return load_vdso32();
- }
-=20
- #ifdef CONFIG_COMPAT
- int compat_arch_setup_additional_pages(struct linux_binprm *bprm,
- 				       int uses_interp, bool x32)
- {
--#ifdef CONFIG_X86_X32_ABI
--	if (x32) {
-+	if (IS_ENABLED(CONFIG_X86_X32_ABI) && x32) {
- 		if (!vdso64_enabled)
- 			return 0;
- 		return map_vdso(&vdso_image_x32, 0);
- 	}
--#endif
--#ifdef CONFIG_IA32_EMULATION
--	return load_vdso32();
--#else
-+
-+	if (IS_ENABLED(CONFIG_IA32_EMULATION))
-+		return load_vdso32();
-+
- 	return 0;
--#endif
--}
--#endif
--#else
--int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
--{
--	return load_vdso32();
- }
- #endif
-=20
-diff --git a/arch/x86/include/asm/elf.h b/arch/x86/include/asm/elf.h
-index 1286026..6c8fdc9 100644
---- a/arch/x86/include/asm/elf.h
-+++ b/arch/x86/include/asm/elf.h
-@@ -76,12 +76,8 @@ typedef struct user_i387_struct elf_fpregset_t;
-=20
- #include <asm/vdso.h>
-=20
--#ifdef CONFIG_X86_64
- extern unsigned int vdso64_enabled;
--#endif
--#if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
- extern unsigned int vdso32_enabled;
--#endif
-=20
- /*
-  * This is used to ensure we don't load something for the wrong architecture.
-diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
-index 80be0da..b7253ef 100644
---- a/arch/x86/include/asm/vdso.h
-+++ b/arch/x86/include/asm/vdso.h
-@@ -27,17 +27,9 @@ struct vdso_image {
- 	long sym_vdso32_rt_sigreturn_landing_pad;
- };
-=20
--#ifdef CONFIG_X86_64
- extern const struct vdso_image vdso_image_64;
--#endif
--
--#ifdef CONFIG_X86_X32_ABI
- extern const struct vdso_image vdso_image_x32;
--#endif
--
--#if defined CONFIG_X86_32 || defined CONFIG_COMPAT
- extern const struct vdso_image vdso_image_32;
--#endif
-=20
- extern int __init init_vdso_image(const struct vdso_image *image);
-=20
+Looks good, thanks Ingo!
 
