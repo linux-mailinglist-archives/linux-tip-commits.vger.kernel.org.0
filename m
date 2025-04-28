@@ -1,77 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-5129-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5130-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF148A9F959
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Apr 2025 21:22:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF39A9F9FA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Apr 2025 21:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E14B23AE9E8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Apr 2025 19:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E1C2464D85
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 28 Apr 2025 19:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88F82951B5;
-	Mon, 28 Apr 2025 19:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08901297A6A;
+	Mon, 28 Apr 2025 19:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GWpOuszU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mJ9R/yS4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QohumDQR";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MioIuUhV"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21822957CB;
-	Mon, 28 Apr 2025 19:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A924297A48;
+	Mon, 28 Apr 2025 19:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745868126; cv=none; b=GKfuMSyefPHJ/5MYr2DnIkc+p1jZUg4n4BJPRpmwm2zZ5QlnTVIoTuZ+5EysK7smI5IHfUMPGF6DD2pgsjL+jMrIh5SpkfQmACulL3GseAPZCzMZnftDTqvW92hbZibrNxKMpl4fEdOl2km1lZs6i3m7nKAI5cNM1swCVny2UH8=
+	t=1745869972; cv=none; b=FuRI0HvR9mv+IADuWJ/TUP21TYW8eyjx2s9nxqjx2KaESGk0do9ujAuyXbDq33cct8vRkZbCmVsm3MxrJY5HMRRJ71HWFF9t8vq3sQZ+a1Vb6cQosw25NHpQn54iU72rL0cv4cVqzzdTF0bo2B9iYqTWW16bqQKhNmXT901rm5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745868126; c=relaxed/simple;
-	bh=HtfokJNJj34J3mCE9iyrn/maZxeUZcOgwla6przObF8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=BP+uDhIm50WtTIESvMhJxd+guLB92CKECBSf50qUdfke7dpekP3fDskA81VzHLhKiR9Pia5qu6YRbFyA+2yhBa4j5XClMP9KfpEdBppCyYOdaHQ4DQMeSNZcIXJziBiAJ+dTfUIHaRUfypgpiomdstTTeLyfvxAptLPXMQF/f08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GWpOuszU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mJ9R/yS4; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1745869972; c=relaxed/simple;
+	bh=jwChOoXC4TDoE7TY3m7P2SVfrlsRULxdum5DpPFxMUI=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=YvM8jCnSkcjcZ5xdp2ltevozOjEvDzJrWY0QUWd9u8d96dnB0ywExIprUwGmFxcIt0+hcjGULJYOdUkHuG8RbDI8LjWy3xonaEqrG8jlayPdUr+1qQpHbhJy0Kdr90y+2a07nnl5WfRF2aQ2hKs9VuHo5eIdpn0jCKGbpcOQarQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QohumDQR; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MioIuUhV; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 28 Apr 2025 19:21:56 -0000
+Date: Mon, 28 Apr 2025 19:52:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745868122;
+	s=2020; t=1745869968;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YO5xSfRZ5ebwM14pT4QlhcVHgpjwsTo17OmxMSnITnc=;
-	b=GWpOuszUrIGYXHQ4cVVg8uRxZzQnYhepkbzlQUaDEcDBxovWzLahlqvJNxgLaxKKFJhFMv
-	+xttQ71fXv0kyqZgaVAtiLKpYQmGlWD9oYax6Y2vK77TSk1Cfk6XMQYocuM+fqHPOvnW97
-	Bj19NC2SUqkNpq+L/cYE0nB7SIWgqq4urP+Ms2xIuk2PiSHBmTNjm8HRDbSKs4uhfaGQT2
-	4B9Z5Td2amF3ft4lzDk99ddIGefUtgPHe28mgAzHNf9beuscHbuhBzfV/OjCsx7W+3NcZc
-	zNRCX6UtK3GQWGNzzoZXevJOc2w6fSBtFoUKC6XksnR8CjsTfFJfsHFBjl/7oQ==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=J2lhbUVZjjWqNgm5FC2+kfuyoRjnEUzQbEK7mgl3MKE=;
+	b=QohumDQR3TB2GrjQFNIBDLvDaH93WEDkz4MWj3SZsUIg34NBD6Rkuc6Z1ONtZHWVPGGv8x
+	mJJKCnpVqI/PBxRSUTKkaa5v5UEW1YVMuPot77ZJn5sBD6z5DaFqJjg2nY/6loJGHesbOF
+	g5m70+5pKBmy52gKNFFHeyB4Zl2F6npE1BI2DdqkWBoHQzl3YC/T2Tj39pXZW9s2E20qwg
+	u3J5Jlhqf8E1cJxpICZlVhnL6HW69JCGu9IB8i79x+2O7koBeMHt14bJItqxTiD+Uab3EW
+	5/Vmod1lo/gDgJ3Ky3N0MIRol9AuhGc8Jd7ex5D0bVh5IAlPltxetQcRvTwWHQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745868122;
+	s=2020e; t=1745869968;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YO5xSfRZ5ebwM14pT4QlhcVHgpjwsTo17OmxMSnITnc=;
-	b=mJ9R/yS4O4+wL7UHxb9jgpcB9SaU1kvo5Z0XBlTB2Icca6Z0mpG4zzpQMVcSyeWAbb1j41
-	n4nJGZQtpjzwIYCw==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=J2lhbUVZjjWqNgm5FC2+kfuyoRjnEUzQbEK7mgl3MKE=;
+	b=MioIuUhVmw0Qxdes3nh9RXAy6W//Ajk6SUaMfnfPCc7bYDOQ7bx8lBTJS3Yt+NrPXarTRe
+	ZekOzfye/igb37DA==
 From: "tip-bot2 for Eric Biggers" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode/AMD: Use sha256() instead of
- init/update/final
-Cc: Eric Biggers <ebiggers@google.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250428183006.782501-1-ebiggers@kernel.org>
-References: <20250428183006.782501-1-ebiggers@kernel.org>
+Subject:
+ [tip: x86/sgx] x86/sgx: Use SHA-256 library API instead of crypto_shash API
+Cc: Eric Biggers <ebiggers@google.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174586811655.22196.14930925796793997721.tip-bot2@tip-bot2>
+Message-ID: <174586996366.22196.10366786516838231392.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,49 +73,109 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/microcode branch of tip:
+The following commit has been merged into the x86/sgx branch of tip:
 
-Commit-ID:     c0a62eadb6fd158e4d6d4d47d806109e7ae32e8b
-Gitweb:        https://git.kernel.org/tip/c0a62eadb6fd158e4d6d4d47d806109e7ae32e8b
+Commit-ID:     e59236b5a09e168fdf961a10d2519cef44f5d6b4
+Gitweb:        https://git.kernel.org/tip/e59236b5a09e168fdf961a10d2519cef44f5d6b4
 Author:        Eric Biggers <ebiggers@google.com>
-AuthorDate:    Mon, 28 Apr 2025 11:30:06 -07:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 28 Apr 2025 21:03:58 +02:00
+AuthorDate:    Mon, 28 Apr 2025 11:38:38 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 28 Apr 2025 12:39:33 -07:00
 
-x86/microcode/AMD: Use sha256() instead of init/update/final
+x86/sgx: Use SHA-256 library API instead of crypto_shash API
 
-Just call sha256() instead of doing the init/update/final sequence.
-
-No functional changes.
+This user of SHA-256 does not support any other algorithm, so the
+crypto_shash abstraction provides no value.  Just use the SHA-256
+library API instead, which is much simpler and easier to use.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250428183006.782501-1-ebiggers@kernel.org
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20250428183838.799333-1-ebiggers%40kernel.org
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ arch/x86/Kconfig                 |  3 +--
+ arch/x86/kernel/cpu/sgx/driver.h |  1 -
+ arch/x86/kernel/cpu/sgx/ioctl.c  | 30 ++----------------------------
+ 3 files changed, 3 insertions(+), 31 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 57bd61f..b2bbfc4 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -211,7 +211,6 @@ static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsi
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 4b9f378..6eb0ebb 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1881,8 +1881,7 @@ endchoice
+ config X86_SGX
+ 	bool "Software Guard eXtensions (SGX)"
+ 	depends on X86_64 && CPU_SUP_INTEL && X86_X2APIC
+-	depends on CRYPTO=y
+-	depends on CRYPTO_SHA256=y
++	select CRYPTO_LIB_SHA256
+ 	select MMU_NOTIFIER
+ 	select NUMA_KEEP_MEMINFO if NUMA
+ 	select XARRAY_MULTI
+diff --git a/arch/x86/kernel/cpu/sgx/driver.h b/arch/x86/kernel/cpu/sgx/driver.h
+index 4eddb4d..30f39f9 100644
+--- a/arch/x86/kernel/cpu/sgx/driver.h
++++ b/arch/x86/kernel/cpu/sgx/driver.h
+@@ -2,7 +2,6 @@
+ #ifndef __ARCH_SGX_DRIVER_H__
+ #define __ARCH_SGX_DRIVER_H__
+ 
+-#include <crypto/hash.h>
+ #include <linux/kref.h>
+ #include <linux/mmu_notifier.h>
+ #include <linux/radix-tree.h>
+diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/ioctl.c
+index 776a201..66f1efa 100644
+--- a/arch/x86/kernel/cpu/sgx/ioctl.c
++++ b/arch/x86/kernel/cpu/sgx/ioctl.c
+@@ -3,6 +3,7 @@
+ 
+ #include <asm/mman.h>
+ #include <asm/sgx.h>
++#include <crypto/sha2.h>
+ #include <linux/mman.h>
+ #include <linux/delay.h>
+ #include <linux/file.h>
+@@ -463,31 +464,6 @@ static long sgx_ioc_enclave_add_pages(struct sgx_encl *encl, void __user *arg)
+ 	return ret;
+ }
+ 
+-static int __sgx_get_key_hash(struct crypto_shash *tfm, const void *modulus,
+-			      void *hash)
+-{
+-	SHASH_DESC_ON_STACK(shash, tfm);
+-
+-	shash->tfm = tfm;
+-
+-	return crypto_shash_digest(shash, modulus, SGX_MODULUS_SIZE, hash);
+-}
+-
+-static int sgx_get_key_hash(const void *modulus, void *hash)
+-{
+-	struct crypto_shash *tfm;
+-	int ret;
+-
+-	tfm = crypto_alloc_shash("sha256", 0, CRYPTO_ALG_ASYNC);
+-	if (IS_ERR(tfm))
+-		return PTR_ERR(tfm);
+-
+-	ret = __sgx_get_key_hash(tfm, modulus, hash);
+-
+-	crypto_free_shash(tfm);
+-	return ret;
+-}
+-
+ static int sgx_encl_init(struct sgx_encl *encl, struct sgx_sigstruct *sigstruct,
+ 			 void *token)
  {
- 	struct patch_digest *pd = NULL;
- 	u8 digest[SHA256_DIGEST_SIZE];
--	struct sha256_state s;
- 	int i;
+@@ -523,9 +499,7 @@ static int sgx_encl_init(struct sgx_encl *encl, struct sgx_sigstruct *sigstruct,
+ 	    sgx_xfrm_reserved_mask)
+ 		return -EINVAL;
  
- 	if (x86_family(bsp_cpuid_1_eax) < 0x17 ||
-@@ -230,9 +229,7 @@ static bool verify_sha256_digest(u32 patch_id, u32 cur_rev, const u8 *data, unsi
- 		return false;
- 	}
+-	ret = sgx_get_key_hash(sigstruct->modulus, mrsigner);
+-	if (ret)
+-		return ret;
++	sha256(sigstruct->modulus, SGX_MODULUS_SIZE, (u8 *)mrsigner);
  
--	sha256_init(&s);
--	sha256_update(&s, data, len);
--	sha256_final(&s, digest);
-+	sha256(data, len, digest);
+ 	mutex_lock(&encl->lock);
  
- 	if (memcmp(digest, pd->sha256, sizeof(digest))) {
- 		pr_err("Patch 0x%x SHA256 digest mismatch!\n", patch_id);
 
