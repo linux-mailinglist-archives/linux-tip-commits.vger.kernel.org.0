@@ -1,164 +1,95 @@
-Return-Path: <linux-tip-commits+bounces-5135-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5136-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E51AA39F2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 23:39:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B470EAA3A3E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 23:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A41F4C1483
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 21:39:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C483B0479
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 21:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6BC262FD8;
-	Tue, 29 Apr 2025 21:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9852822A7ED;
+	Tue, 29 Apr 2025 21:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kVn7y2Us"
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="KmSJYFvs"
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A84626A0CA;
-	Tue, 29 Apr 2025 21:38:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92651E282D;
+	Tue, 29 Apr 2025 21:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745962737; cv=none; b=AhIkEpjWIiVJ3VbPPtjVR5CPr3PXBzdlwqJQCEzSdpF/XFIKmC05dZXI817JnP7tQTT6VjyfoddGxVILXSM5IEKTTZjmbMDLI9aaVCi33RKYuhQNQmYDY0qtZugH2rvLyOX0e3rgPvAch/Mhwp5dOIUSWFALwedYxVOUOtuTmjE=
+	t=1745963778; cv=none; b=kCQbqiyYmG3QZ9bZFg0BeVh/rfkpUwxEAgfYElyKqUmwXdvYzlJYQwDMT612PeR4ZzWYK49LK9gI6QEB2rnVSAVX2E0BrzymIJhAaOSqRaWPDOwGOV4lN8Nujw79OUj9dj0UO4DP1z4z/ownVqe1RlFHuAJZ4ss1yPRc8ZH1Ud0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745962737; c=relaxed/simple;
-	bh=NgXlRi7ByvyuqoGSVzg0p9LuPp3ZSSrv2et1Oir0qnE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O7iscL+ybrwr2ne0cybFqlzy8hTiFkMbe5TNHVmV9u9mEx0sN+XcqbW83fsuyyi/Vsq5S5HU6ktTKM+qBU86fiftiniqUfZKeaUgpcIFjB3RrmxjWIjEyh3ljwytK34/MiV06XzK8uZotG7ixcy1GYVWUz44e9HVDyanF+euwD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kVn7y2Us; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1745962736; x=1777498736;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6pWS6UFOhe9i4/+rtYoRtmh+LDBHour1WcHut23/qrU=;
-  b=kVn7y2UsugburEFpGHMxf8KWHXg9OOgkvD6/3JLXmpJzCqb4BBQXdUJh
-   1TO26bLGkx2RTnOnT0XZ29fp/DBWZ5lrl/+Bk2iEVsgHTTj6e24KFU0/b
-   ECfS4Wr9Ag13tfytZcBbOnllRJUc9U8KNfL+6ijInY2aOY2C+5QFvSixF
-   8=;
-X-IronPort-AV: E=Sophos;i="6.15,250,1739836800"; 
-   d="scan'208";a="292876582"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 21:38:52 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:37204]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.68:2525] with esmtp (Farcaster)
- id 9febca8e-c496-45a3-a44b-1c2b580bfebb; Tue, 29 Apr 2025 21:38:51 +0000 (UTC)
-X-Farcaster-Flow-ID: 9febca8e-c496-45a3-a44b-1c2b580bfebb
-Received: from EX19D016UWA004.ant.amazon.com (10.13.139.119) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 29 Apr 2025 21:38:51 +0000
-Received: from 88665a51a6b2.amazon.com (10.106.178.54) by
- EX19D016UWA004.ant.amazon.com (10.13.139.119) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 29 Apr 2025 21:38:48 +0000
-From: Cristian Prundeanu <cpru@amazon.com>
-To: Peter Zijlstra <peterz@infradead.org>
-CC: Cristian Prundeanu <cpru@amazon.com>, K Prateek Nayak
-	<kprateek.nayak@amd.com>, Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
-	"Ali Saidi" <alisaidi@amazon.com>, Benjamin Herrenschmidt
-	<benh@kernel.crashing.org>, Geoff Blake <blakgeof@amazon.com>, Csaba Csoma
-	<csabac@amazon.com>, Bjoern Doebel <doebel@amazon.com>, Gautham Shenoy
-	<gautham.shenoy@amd.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>, "Joseph
- Salisbury" <joseph.salisbury@oracle.com>, Dietmar Eggemann
-	<dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>, Linus Torvalds
-	<torvalds@linux-foundation.org>, Borislav Petkov <bp@alien8.de>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-tip-commits@vger.kernel.org>, <x86@kernel.org>
-Subject: EEVDF regression still exists
-Date: Tue, 29 Apr 2025 16:38:17 -0500
-Message-ID: <20250429213817.65651-1-cpru@amazon.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1745963778; c=relaxed/simple;
+	bh=3S7n0Y8vfnS9V8Uy6Sw3Ev9mKH+II66wb2WDjsCsHNM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kcd6FCSIQf6tYzZjYhlDl6honiJWwieAAimc0zgH71BPZSU2CLF6FNgYlLLIKmKwLnaUuDpnt0QUsbfuVPJzK0JIzjurVuboH+Hl3frb5HHr5NSyyMOrS01YXTrGHv48L985X6GPulFm24nBNssowS5OB0F2+lnia+1dsdGrRYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=KmSJYFvs; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ZgKR/aK6M3ZJDk7DeAJjGJw01SYV+7z18ycrliw9Mj0=; b=KmSJYFvs5c2pEmZpIertWrJMEP
+	bZOCZQb9dESY2bWXR24y5clY35dUYN7zEdj97CB4ROV6KGStYUpI3n/4pUXobQmOqazCMyR0VQC24
+	mzZk4l4SLQFOwMPSd8a8d/h94ktT3JYC6afRP+HDQh+knharCd2goPbdTBFNNNKp3a2yPSwk4fPAN
+	FAeU6v1E8qWCtFOkAesk3V9R5mPLyPHLvLzKM5QHlMydNcVWZSFFBX4z5RwnD8OBrWO02qUXtMKYf
+	tW76vJHP+RYg6FEiuj4rzABtUZylm+rf7Kz8gmnxp7dDfOTPpr6oVJ+i1lpnzrl+DLBScUqgdk2SO
+	HpB92TvA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
+	id 1u9svt-0000000DXCy-13qA;
+	Tue, 29 Apr 2025 21:56:05 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id B06C630057C; Tue, 29 Apr 2025 23:56:04 +0200 (CEST)
+Date: Tue, 29 Apr 2025 23:56:04 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Cristian Prundeanu <cpru@amazon.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
+	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	Ali Saidi <alisaidi@amazon.com>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Geoff Blake <blakgeof@amazon.com>, Csaba Csoma <csabac@amazon.com>,
+	Bjoern Doebel <doebel@amazon.com>,
+	Gautham Shenoy <gautham.shenoy@amd.com>,
+	Swapnil Sapkal <swapnil.sapkal@amd.com>,
+	Joseph Salisbury <joseph.salisbury@oracle.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Borislav Petkov <bp@alien8.de>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: EEVDF regression still exists
+Message-ID: <20250429215604.GE4439@noisy.programming.kicks-ass.net>
+References: <20250429213817.65651-1-cpru@amazon.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
- EX19D016UWA004.ant.amazon.com (10.13.139.119)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250429213817.65651-1-cpru@amazon.com>
 
-Peter,
+On Tue, Apr 29, 2025 at 04:38:17PM -0500, Cristian Prundeanu wrote:
+> Peter,
+> 
+> Here are the latest results for the EEVDF impact on database workloads. 
+> The regression introduced in kernel 6.6 still persists and doesn't look 
+> like it is improving.
 
-Here are the latest results for the EEVDF impact on database workloads. 
-The regression introduced in kernel 6.6 still persists and doesn't look 
-like it is improving.
+Well, I was under the impression it had actually been solved :-(
 
-This time I've compared apples to apples - default 6.5 vs default 6.12+ 
-and SCHED_BATCH on 6.5 vs SCHED_BATCH on 6.12+. The results are below.
+My understanding from the last round was that Prateek and co had it
+sorted -- with the caveat being that you had to stick SCHED_BATCH in at
+the right place in MySQL start scripts or somesuch.
 
-Kernel   | Runtime     | Throughput | P50 latency
-aarm64   | parameters  | (NOPM)     | (larger is worse)
----------+-------------+------------+------------------
-6.5.13   | default     |  baseline  |  baseline
----------+-------------+------------+------------------
-6.12.25  | default     |  -5.1%     |  +7.8%
----------+-------------+------------+------------------
-6.14.4   | default     |  -7.4%     |  +9.6%
----------+-------------+------------+------------------
-6.15-rc4 | default     |  -7.4%     |  +10.2%
-======================================================
-6.5.13   | SCHED_BATCH |  baseline  |  baseline
----------+-------------+------------+------------------
-6.12.25  | SCHED_BATCH |  -8.1%     |  +8.7%
----------+-------------+------------+------------------
-6.14.4   | SCHED_BATCH |  -7.9%     |  +8.3%
----------+-------------+------------+------------------
-6.15-rc4 | SCHED_BATCH |  -10.6%    |  +11.8%
----------+-------------+------------+------------------
+Prateek, Gautham?
 
-The tests were run with the mysql reproducer published before (link and 
-instructions below), using two networked machines running hammerdb and 
-mysql respectively. The full test details and reports from "perf sched 
-stats" are also posted [1], not included here for brevity.
-
-[1] https://github.com/aws/repro-collection/blob/main/repros/repro-mysql-EEVDF-regression/results/20250428/README.md
-
-
-At this time, we have accumulated numerous data points and many hours of 
-testing exhibiting this regression. The only counter arguments I've seen 
-are relying on either synthetic test cases or unrealistic simplified tests 
-(e.g. SUT and loadgen on the same machine, or severely limited thread 
-count). It's becoming painfully obvious that EEVDF replaced CFS before it 
-was ready to be released; yet most of what we've been debating is whether 
-SCHED_BATCH is a good enough workaround.
-
-Please let's take a fresh approach at what's happening, and find out why 
-the scheduler is underperforming. I'm happy to provide additional data if 
-it helps debug this. I've backported and forward ported Swapnil's "perf 
-sched stats" command [2] so it is ready to run on any kernel from 6.5 up 
-to 6.15, and the reproducer already runs it automatically for convenience.
-
-[2] https://lore.kernel.org/lkml/20250311120230.61774-1-swapnil.sapkal@amd.com/
-
-
-Instructions for reproducing the above tests (same as before):
-
-1. Code: The reproducer scenario and framework can be found here: 
-https://github.com/aws/repro-collection
-
-2. Setup: I used a 16 vCPU / 32G RAM / 1TB RAID0 SSD instance as SUT, 
-running Ubuntu 22.04 with the latest updates. All kernels were compiled 
-from source, preserving the same config across versions (as much as 
-possible) to minimize noise - in particular, CONFIG_HZ=250 was used 
-everywhere.
-
-3. Running: To run the repro, set up a SUT machine and a LDG (loadgen) 
-machine on the same network, clone the git repo on both, and run:
-
-(on the SUT) ./repro.sh repro-mysql-EEVDF-regression SUT --ldg=<loadgen_IP> 
-
-(on the LDG) ./repro.sh repro-mysql-EEVDF-regression LDG --sut=<SUT_IP>
-
-The repro will build and test multiple combinations of kernel versions and 
-scheduler settings, and will prompt you when to reboot the SUT and rerun 
-the same above command to continue the process.
-
-More instructions can be found both in the repo's README and by running 
-'repro.sh --help'.
 
