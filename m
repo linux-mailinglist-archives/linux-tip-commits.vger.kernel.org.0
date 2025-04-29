@@ -1,195 +1,164 @@
-Return-Path: <linux-tip-commits+bounces-5134-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5135-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50C1AA036A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 08:33:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E51AA39F2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 23:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 827FC3B056F
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 06:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A41F4C1483
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Apr 2025 21:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E70274FE7;
-	Tue, 29 Apr 2025 06:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6BC262FD8;
+	Tue, 29 Apr 2025 21:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dHI5IqZH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HptT/39q"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="kVn7y2Us"
+Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0C82749C5;
-	Tue, 29 Apr 2025 06:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A84626A0CA;
+	Tue, 29 Apr 2025 21:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745908407; cv=none; b=LjSWTbZ0NAyxqUNdYbltN6RpXRqOg0ItdYaohfbwgv6KJmNyrlgxSF8ldqtucv/olUeY8TOrWeFGDgTn7CLDR0nKWi6oj2r2q74Ijw4wLNXLEYSY1wRc5YBNZGVchwoIHNXUfwoMXLXjnFUnR+i0boeuDa2DmlEgsD/mXcHwh6s=
+	t=1745962737; cv=none; b=AhIkEpjWIiVJ3VbPPtjVR5CPr3PXBzdlwqJQCEzSdpF/XFIKmC05dZXI817JnP7tQTT6VjyfoddGxVILXSM5IEKTTZjmbMDLI9aaVCi33RKYuhQNQmYDY0qtZugH2rvLyOX0e3rgPvAch/Mhwp5dOIUSWFALwedYxVOUOtuTmjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745908407; c=relaxed/simple;
-	bh=3iVu7+tTT8Gvmt0QJt/DmkfY+NZPjNaOC/KGL1a8Pmg=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WG44ckYp0zRYdklAA4ql3TZiQy0q9GBPyNGDy79wqS2IXi6fAl2+ffvKk/RbENl4ddnNE3fU3HtN6Gr/FA7djfARl+xr6IwYIYguo7v2BiS1qvE8y4ls49/s8/PhhOMms+Sfl9ZqXr1dHJ2zTEQWWkAfBB2gnHjgEOyhRdDPJSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dHI5IqZH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HptT/39q; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 29 Apr 2025 06:33:23 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745908404;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eJHm+u5b6jQcx+fXi4PW4N4Y+DdOrABspo9C7Hak+r0=;
-	b=dHI5IqZH+CLgJVQMgjZGTmFIPplghEzDF8GC3kqk6cTBpNpH855uahMpiZ17WZSBZV1Ctd
-	0McdDjh5+C+uP+4H+A4C8Ys1sftUI6p5uumqs28VoKNrYH4Llv/gA5K6RJyr3iQRtq3QQY
-	S2yjRCiTBQx/gz7Bj4lXQ5GNbIkIss+GsghQlkoOEQd+fKCr1VfZZ4EoXcEdCuwAJlt5TA
-	9ePA6CLTnG8dQIIfvWdCGfYI3eH1bGd6ttWCovQml56Y/PqXhRUi52nF8ykGWfBT7YEATZ
-	/ymPgrjMPnkt6x7gQ+44KquSLH9Z0J1nNhV3JYfJIcHBkIZa36or+ITi9pCjyg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745908404;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eJHm+u5b6jQcx+fXi4PW4N4Y+DdOrABspo9C7Hak+r0=;
-	b=HptT/39qUoSq5Yloohpk22yxmzj2pvRcvMMF7/f1Jrh8NZltPlx5tKa6qsLysB9Uf8QuMn
-	Cy8BRqkl7QPuBIAQ==
-From: "tip-bot2 for Charlie Jenkins" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/entry] riscv: entry: Convert ret_from_fork() to C
-Cc: Charlie Jenkins <charlie@rivosinc.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- Alexandre Ghiti <alexghiti@rivosinc.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250320-riscv_optimize_entry-v6-1-63e187e26041@rivosinc.com>
-References: <20250320-riscv_optimize_entry-v6-1-63e187e26041@rivosinc.com>
+	s=arc-20240116; t=1745962737; c=relaxed/simple;
+	bh=NgXlRi7ByvyuqoGSVzg0p9LuPp3ZSSrv2et1Oir0qnE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O7iscL+ybrwr2ne0cybFqlzy8hTiFkMbe5TNHVmV9u9mEx0sN+XcqbW83fsuyyi/Vsq5S5HU6ktTKM+qBU86fiftiniqUfZKeaUgpcIFjB3RrmxjWIjEyh3ljwytK34/MiV06XzK8uZotG7ixcy1GYVWUz44e9HVDyanF+euwD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=kVn7y2Us; arc=none smtp.client-ip=52.119.213.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1745962736; x=1777498736;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6pWS6UFOhe9i4/+rtYoRtmh+LDBHour1WcHut23/qrU=;
+  b=kVn7y2UsugburEFpGHMxf8KWHXg9OOgkvD6/3JLXmpJzCqb4BBQXdUJh
+   1TO26bLGkx2RTnOnT0XZ29fp/DBWZ5lrl/+Bk2iEVsgHTTj6e24KFU0/b
+   ECfS4Wr9Ag13tfytZcBbOnllRJUc9U8KNfL+6ijInY2aOY2C+5QFvSixF
+   8=;
+X-IronPort-AV: E=Sophos;i="6.15,250,1739836800"; 
+   d="scan'208";a="292876582"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2025 21:38:52 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.38.20:37204]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.21.68:2525] with esmtp (Farcaster)
+ id 9febca8e-c496-45a3-a44b-1c2b580bfebb; Tue, 29 Apr 2025 21:38:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 9febca8e-c496-45a3-a44b-1c2b580bfebb
+Received: from EX19D016UWA004.ant.amazon.com (10.13.139.119) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 29 Apr 2025 21:38:51 +0000
+Received: from 88665a51a6b2.amazon.com (10.106.178.54) by
+ EX19D016UWA004.ant.amazon.com (10.13.139.119) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 29 Apr 2025 21:38:48 +0000
+From: Cristian Prundeanu <cpru@amazon.com>
+To: Peter Zijlstra <peterz@infradead.org>
+CC: Cristian Prundeanu <cpru@amazon.com>, K Prateek Nayak
+	<kprateek.nayak@amd.com>, Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
+	"Ali Saidi" <alisaidi@amazon.com>, Benjamin Herrenschmidt
+	<benh@kernel.crashing.org>, Geoff Blake <blakgeof@amazon.com>, Csaba Csoma
+	<csabac@amazon.com>, Bjoern Doebel <doebel@amazon.com>, Gautham Shenoy
+	<gautham.shenoy@amd.com>, Swapnil Sapkal <swapnil.sapkal@amd.com>, "Joseph
+ Salisbury" <joseph.salisbury@oracle.com>, Dietmar Eggemann
+	<dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>, Linus Torvalds
+	<torvalds@linux-foundation.org>, Borislav Petkov <bp@alien8.de>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-tip-commits@vger.kernel.org>, <x86@kernel.org>
+Subject: EEVDF regression still exists
+Date: Tue, 29 Apr 2025 16:38:17 -0500
+Message-ID: <20250429213817.65651-1-cpru@amazon.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174590840374.22196.13222665858567689095.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D043UWC004.ant.amazon.com (10.13.139.206) To
+ EX19D016UWA004.ant.amazon.com (10.13.139.119)
 
-The following commit has been merged into the core/entry branch of tip:
+Peter,
 
-Commit-ID:     f955aa8723a65759e920d4de8e5d076cef412afc
-Gitweb:        https://git.kernel.org/tip/f955aa8723a65759e920d4de8e5d076cef412afc
-Author:        Charlie Jenkins <charlie@rivosinc.com>
-AuthorDate:    Thu, 20 Mar 2025 10:29:21 -07:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 29 Apr 2025 08:27:10 +02:00
+Here are the latest results for the EEVDF impact on database workloads. 
+The regression introduced in kernel 6.6 still persists and doesn't look 
+like it is improving.
 
-riscv: entry: Convert ret_from_fork() to C
+This time I've compared apples to apples - default 6.5 vs default 6.12+ 
+and SCHED_BATCH on 6.5 vs SCHED_BATCH on 6.12+. The results are below.
 
-Move the main section of ret_from_fork() to C to allow inlining of
-syscall_exit_to_user_mode().
+Kernel   | Runtime     | Throughput | P50 latency
+aarm64   | parameters  | (NOPM)     | (larger is worse)
+---------+-------------+------------+------------------
+6.5.13   | default     |  baseline  |  baseline
+---------+-------------+------------+------------------
+6.12.25  | default     |  -5.1%     |  +7.8%
+---------+-------------+------------+------------------
+6.14.4   | default     |  -7.4%     |  +9.6%
+---------+-------------+------------+------------------
+6.15-rc4 | default     |  -7.4%     |  +10.2%
+======================================================
+6.5.13   | SCHED_BATCH |  baseline  |  baseline
+---------+-------------+------------+------------------
+6.12.25  | SCHED_BATCH |  -8.1%     |  +8.7%
+---------+-------------+------------+------------------
+6.14.4   | SCHED_BATCH |  -7.9%     |  +8.3%
+---------+-------------+------------+------------------
+6.15-rc4 | SCHED_BATCH |  -10.6%    |  +11.8%
+---------+-------------+------------+------------------
 
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/all/20250320-riscv_optimize_entry-v6-1-63e187e26041@rivosinc.com
+The tests were run with the mysql reproducer published before (link and 
+instructions below), using two networked machines running hammerdb and 
+mysql respectively. The full test details and reports from "perf sched 
+stats" are also posted [1], not included here for brevity.
 
----
- arch/riscv/include/asm/asm-prototypes.h |  1 +
- arch/riscv/kernel/entry.S               | 15 ++++++---------
- arch/riscv/kernel/process.c             | 14 ++++++++++++--
- 3 files changed, 19 insertions(+), 11 deletions(-)
+[1] https://github.com/aws/repro-collection/blob/main/repros/repro-mysql-EEVDF-regression/results/20250428/README.md
 
-diff --git a/arch/riscv/include/asm/asm-prototypes.h b/arch/riscv/include/asm/asm-prototypes.h
-index cd627ec..733ff60 100644
---- a/arch/riscv/include/asm/asm-prototypes.h
-+++ b/arch/riscv/include/asm/asm-prototypes.h
-@@ -52,6 +52,7 @@ DECLARE_DO_ERROR_INFO(do_trap_ecall_s);
- DECLARE_DO_ERROR_INFO(do_trap_ecall_m);
- DECLARE_DO_ERROR_INFO(do_trap_break);
- 
-+asmlinkage void ret_from_fork(void *fn_arg, int (*fn)(void *), struct pt_regs *regs);
- asmlinkage void handle_bad_stack(struct pt_regs *regs);
- asmlinkage void do_page_fault(struct pt_regs *regs);
- asmlinkage void do_irq(struct pt_regs *regs);
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 33a5a9f..b2dc5e7 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -319,17 +319,14 @@ SYM_CODE_END(handle_kernel_stack_overflow)
- ASM_NOKPROBE(handle_kernel_stack_overflow)
- #endif
- 
--SYM_CODE_START(ret_from_fork)
-+SYM_CODE_START(ret_from_fork_asm)
- 	call schedule_tail
--	beqz s0, 1f	/* not from kernel thread */
--	/* Call fn(arg) */
--	move a0, s1
--	jalr s0
--1:
--	move a0, sp /* pt_regs */
--	call syscall_exit_to_user_mode
-+	move a0, s1 /* fn_arg */
-+	move a1, s0 /* fn */
-+	move a2, sp /* pt_regs */
-+	call ret_from_fork
- 	j ret_from_exception
--SYM_CODE_END(ret_from_fork)
-+SYM_CODE_END(ret_from_fork_asm)
- 
- #ifdef CONFIG_IRQ_STACKS
- /*
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index 7c244de..7b0a0bf 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -17,7 +17,9 @@
- #include <linux/ptrace.h>
- #include <linux/uaccess.h>
- #include <linux/personality.h>
-+#include <linux/entry-common.h>
- 
-+#include <asm/asm-prototypes.h>
- #include <asm/unistd.h>
- #include <asm/processor.h>
- #include <asm/csr.h>
-@@ -36,7 +38,7 @@ unsigned long __stack_chk_guard __read_mostly;
- EXPORT_SYMBOL(__stack_chk_guard);
- #endif
- 
--extern asmlinkage void ret_from_fork(void);
-+extern asmlinkage void ret_from_fork_asm(void);
- 
- void noinstr arch_cpu_idle(void)
- {
-@@ -206,6 +208,14 @@ int arch_dup_task_struct(struct task_struct *dst, struct task_struct *src)
- 	return 0;
- }
- 
-+asmlinkage void ret_from_fork(void *fn_arg, int (*fn)(void *), struct pt_regs *regs)
-+{
-+	if (unlikely(fn))
-+		fn(fn_arg);
-+
-+	syscall_exit_to_user_mode(regs);
-+}
-+
- int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- {
- 	unsigned long clone_flags = args->flags;
-@@ -242,7 +252,7 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
- 	p->thread.riscv_v_flags = 0;
- 	if (has_vector() || has_xtheadvector())
- 		riscv_v_thread_alloc(p);
--	p->thread.ra = (unsigned long)ret_from_fork;
-+	p->thread.ra = (unsigned long)ret_from_fork_asm;
- 	p->thread.sp = (unsigned long)childregs; /* kernel sp */
- 	return 0;
- }
+
+At this time, we have accumulated numerous data points and many hours of 
+testing exhibiting this regression. The only counter arguments I've seen 
+are relying on either synthetic test cases or unrealistic simplified tests 
+(e.g. SUT and loadgen on the same machine, or severely limited thread 
+count). It's becoming painfully obvious that EEVDF replaced CFS before it 
+was ready to be released; yet most of what we've been debating is whether 
+SCHED_BATCH is a good enough workaround.
+
+Please let's take a fresh approach at what's happening, and find out why 
+the scheduler is underperforming. I'm happy to provide additional data if 
+it helps debug this. I've backported and forward ported Swapnil's "perf 
+sched stats" command [2] so it is ready to run on any kernel from 6.5 up 
+to 6.15, and the reproducer already runs it automatically for convenience.
+
+[2] https://lore.kernel.org/lkml/20250311120230.61774-1-swapnil.sapkal@amd.com/
+
+
+Instructions for reproducing the above tests (same as before):
+
+1. Code: The reproducer scenario and framework can be found here: 
+https://github.com/aws/repro-collection
+
+2. Setup: I used a 16 vCPU / 32G RAM / 1TB RAID0 SSD instance as SUT, 
+running Ubuntu 22.04 with the latest updates. All kernels were compiled 
+from source, preserving the same config across versions (as much as 
+possible) to minimize noise - in particular, CONFIG_HZ=250 was used 
+everywhere.
+
+3. Running: To run the repro, set up a SUT machine and a LDG (loadgen) 
+machine on the same network, clone the git repo on both, and run:
+
+(on the SUT) ./repro.sh repro-mysql-EEVDF-regression SUT --ldg=<loadgen_IP> 
+
+(on the LDG) ./repro.sh repro-mysql-EEVDF-regression LDG --sut=<SUT_IP>
+
+The repro will build and test multiple combinations of kernel versions and 
+scheduler settings, and will prompt you when to reboot the SUT and rerun 
+the same above command to continue the process.
+
+More instructions can be found both in the repo's README and by running 
+'repro.sh --help'.
 
