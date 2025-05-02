@@ -1,33 +1,33 @@
-Return-Path: <linux-tip-commits+bounces-5176-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5173-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC6BAA6DAD
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 11:08:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503C6AA6DB0
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 11:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 721644C07F8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 09:08:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 888CC3B9952
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 09:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6222D26AA8F;
-	Fri,  2 May 2025 09:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E17269820;
+	Fri,  2 May 2025 09:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jiu2uwuj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vzgG5GFX"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="codDo3iP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nQA89Cr/"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0845B2690CC;
-	Fri,  2 May 2025 09:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDBE22E412;
+	Fri,  2 May 2025 09:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746176675; cv=none; b=FRMm8d2V+tz76Yeys7EyPZJ+vAVozJePafyEzxY9N6T2UBT7tHf5smFcse/7EuWRbWZ4P5J3c90sP0nv2MUtD1lJEpANZTQTrOmBisivw/8bT20SDTA75PqWSzb2yjcV41duS2H48xV2xrY7erKKwl5YfOzY5nHysmVRPCrAXVU=
+	t=1746176673; cv=none; b=jsVTD48KA88vtglHGbL0mIgpCIp4dDjagZbcUyTMJ5tU9bWyB5mVU87aHI/2fadY5W7DZOCo/aads0fn+wD1jyAGkQkvK/xxyDh1FICc5RWvo92HscRk1u3hMwFfd3sCNZzM4ywbFbt3KrqyiUoy4a1n4QcPBtqRJ6BjZyuaQ/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746176675; c=relaxed/simple;
-	bh=qsjLoGLKx7/EfAt7Fpy5n52uXeF+kK36JqvZEcFOno0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=uYO/Nw/3AsgrPqbOFGvX5umoa5hVtzeWxYbiIrBnsTKLYNjuMAuA75PhMpWZFA0wTZl+QSpTWo6ThlZaYWdpcCPWNVQpGhzUSvytwUtyhdb1mRv15GE5k4MOy2rTqVWISO5cLaBj5Kkooh7xgEMcWFtgxqcinMigwMP2dOpkrYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jiu2uwuj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vzgG5GFX; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1746176673; c=relaxed/simple;
+	bh=gAfpwhRy0PausGyXExpuYTcFnsAqoO/Rg6ex+WXRp18=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=f7gt926PXk2jNPooCu/IqnXPqtcAnKUZJsSQ1HXe3ADzPZffyILWh8h1h1X8/oCm914Az45LaNJ14cDabs6pO+x8enEPJ1G+IpNs9bBz5nSJAL03M28EkDuctR/VGez7imiWeygc6pUQdpVV39w33/Iy/a/02SR/w4tpmxO/gII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=codDo3iP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nQA89Cr/; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Fri, 02 May 2025 09:04:29 -0000
@@ -36,26 +36,26 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=Je0gKWWrsM6qLzgZTu2Y5+U0+Nna6+DXrgiHboyP0dM=;
-	b=jiu2uwuj3SbM68g4ON8PKi01OcupxEepdQegBFXuW0zWjMQcMlv0wVnUXUw84i69iCnipn
-	ueghAHk5yWf6c8HRYa1jfY1Un/4MYbyursCsjuDsIpfcgabilIVDMOlkQWQS4TIvvZ0+sL
-	6Z9dPTIp7Y/s0u8hc4Xb844WDiMbt7uwslspiQtvNizTyM1Ta8hUwiOZKoY/qjttBTypo5
-	gY0c+RcSGDI+LiuRug3GmhaEexXD8HkGCnY+8B5HgXHfViniRWSWA7AfsZr52asljcd4bA
-	SVmiIw08YgCkub6yAgOXzSmZE55yud3p9eCkaRaCqxcE4TFmZLEAn4SftCexPQ==
+	bh=vCCx+cl/KgyFWO+2MpwB6p8/gEIAgSU6eo2RisRWUJo=;
+	b=codDo3iP+5ycBk2tqhh4wafziqwyBEXzheUzrgDAmx98Tp2uWqSjWXa7nHDooo0k6ND9GU
+	baijUL0Nbv9lIakQvf6WBKBVVFORO+3zPnwoDy+Itw1ydBQoK2LEe5YcxqZgwqQ0nWc0kh
+	s+tWEWmNv8hgmokgHjmsMl/CGGEvO65JN16MAPAP1rfCfBzDSA7dlCM4faY+kTauVMeRv6
+	gM9gVLSqLhcZroW1/cbc/2FF+FsdEcvAH2pBVNkfW3P8IBRGtbHcvP7DA9K+RDovzwes3f
+	EK57SvZXyN4b50usDzcdhfgaI5PMsSotQSD0+l4Ra0b7my2xuNn+jYNNc24ZRw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1746176670;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=Je0gKWWrsM6qLzgZTu2Y5+U0+Nna6+DXrgiHboyP0dM=;
-	b=vzgG5GFX/DBKybMQqIvjNqitLE/7Q6eaYW0pGOi87kI7G4o45HYDKCg9mzv3sKP+UQtO6u
-	/JnuR1zoNhRbADBA==
+	bh=vCCx+cl/KgyFWO+2MpwB6p8/gEIAgSU6eo2RisRWUJo=;
+	b=nQA89Cr/p/bx0LodT0HbecpaRJR3QWO1UzXMycomWz/zAMXSodTi4DcbzAw9asQ+3xQ1rY
+	c00/YFfhzqsB9QAA==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/merge] x86/msr: Rename DECLARE_ARGS() to EAX_EDX_DECLARE_ARGS
+Subject: [tip: x86/merge] x86/msr: Move the EAX_EDX_*() methods from
+ <asm/msr.h> to <asm/asm.h>
 Cc: Ingo Molnar <mingo@kernel.org>, Andy Lutomirski <luto@kernel.org>,
  Brian Gerst <brgerst@gmail.com>, Juergen Gross <jgross@suse.com>,
  "H. Peter Anvin" <hpa@zytor.com>,
@@ -70,7 +70,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174617666993.22196.2729172970704358674.tip-bot2@tip-bot2>
+Message-ID: <174617666933.22196.17231571188397764274.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,22 +80,18 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/merge branch of tip:
 
-Commit-ID:     c9d8ea9d53d4ddb80f2ad2bca5b9e9e40fcb9b16
-Gitweb:        https://git.kernel.org/tip/c9d8ea9d53d4ddb80f2ad2bca5b9e9e40fcb9b16
+Commit-ID:     bdfda83a6b5988f1ac62cd0eaceb6c3b44dc2a31
+Gitweb:        https://git.kernel.org/tip/bdfda83a6b5988f1ac62cd0eaceb6c3b44dc2a31
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 02 May 2025 10:08:42 +02:00
+AuthorDate:    Fri, 02 May 2025 10:13:53 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 02 May 2025 10:11:17 +02:00
+CommitterDate: Fri, 02 May 2025 10:18:19 +02:00
 
-x86/msr: Rename DECLARE_ARGS() to EAX_EDX_DECLARE_ARGS
+x86/msr: Move the EAX_EDX_*() methods from <asm/msr.h> to <asm/asm.h>
 
-DECLARE_ARGS() is way too generic of a name that says very little about
-why these args are declared in that fashion - use the EAX_EDX_ prefix
-to create a common prefix between the three helper methods:
-
-	EAX_EDX_DECLARE_ARGS()
-	EAX_EDX_VAL()
-	EAX_EDX_RET()
+We are going to use them from multiple headers, and in any case,
+such register access wrapper macros are better in <asm/asm.h>
+anyway.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Andy Lutomirski <luto@kernel.org>
@@ -111,84 +107,67 @@ Cc: Josh Poimboeuf <jpoimboe@redhat.com>
 Cc: Uros Bizjak <ubizjak@gmail.com>
 Cc: linux-kernel@vger.kernel.org
 ---
- arch/x86/include/asm/msr.h     | 14 +++++++-------
- arch/x86/kernel/cpu/mce/core.c |  2 +-
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/asm.h | 19 +++++++++++++++++++
+ arch/x86/include/asm/msr.h | 19 -------------------
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
+diff --git a/arch/x86/include/asm/asm.h b/arch/x86/include/asm/asm.h
+index cc28815..206e134 100644
+--- a/arch/x86/include/asm/asm.h
++++ b/arch/x86/include/asm/asm.h
+@@ -243,5 +243,24 @@ register unsigned long current_stack_pointer asm(_ASM_SP);
+ #define _ASM_EXTABLE_FAULT(from, to)				\
+ 	_ASM_EXTABLE_TYPE(from, to, EX_TYPE_FAULT)
+ 
++/*
++ * Both i386 and x86_64 returns 64-bit values in edx:eax for certain
++ * instructions, but GCC's "A" constraint has different meanings.
++ * For i386, "A" means exactly edx:eax, while for x86_64 it
++ * means rax *or* rdx.
++ *
++ * These helpers wrapping these semantic differences save one instruction
++ * clearing the high half of 'low':
++ */
++#ifdef CONFIG_X86_64
++# define EAX_EDX_DECLARE_ARGS(val, low, high)	unsigned long low, high
++# define EAX_EDX_VAL(val, low, high)		((low) | (high) << 32)
++# define EAX_EDX_RET(val, low, high)		"=a" (low), "=d" (high)
++#else
++# define EAX_EDX_DECLARE_ARGS(val, low, high)	u64 val
++# define EAX_EDX_VAL(val, low, high)		(val)
++# define EAX_EDX_RET(val, low, high)		"=A" (val)
++#endif
++
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_X86_ASM_H */
 diff --git a/arch/x86/include/asm/msr.h b/arch/x86/include/asm/msr.h
-index 27bc0b5..d57a94c 100644
+index d57a94c..856d660 100644
 --- a/arch/x86/include/asm/msr.h
 +++ b/arch/x86/include/asm/msr.h
-@@ -46,11 +46,11 @@ struct saved_msrs {
-  * clearing the high half of 'low':
+@@ -37,25 +37,6 @@ struct saved_msrs {
+ };
+ 
+ /*
+- * Both i386 and x86_64 returns 64-bit values in edx:eax for certain
+- * instructions, but GCC's "A" constraint has different meanings.
+- * For i386, "A" means exactly edx:eax, while for x86_64 it
+- * means rax *or* rdx.
+- *
+- * These helpers wrapping these semantic differences save one instruction
+- * clearing the high half of 'low':
+- */
+-#ifdef CONFIG_X86_64
+-# define EAX_EDX_DECLARE_ARGS(val, low, high)	unsigned long low, high
+-# define EAX_EDX_VAL(val, low, high)		((low) | (high) << 32)
+-# define EAX_EDX_RET(val, low, high)		"=a" (low), "=d" (high)
+-#else
+-# define EAX_EDX_DECLARE_ARGS(val, low, high)	u64 val
+-# define EAX_EDX_VAL(val, low, high)		(val)
+-# define EAX_EDX_RET(val, low, high)		"=A" (val)
+-#endif
+-
+-/*
+  * Be very careful with includes. This header is prone to include loops.
   */
- #ifdef CONFIG_X86_64
--# define DECLARE_ARGS(val, low, high)	unsigned long low, high
-+# define EAX_EDX_DECLARE_ARGS(val, low, high)	unsigned long low, high
- # define EAX_EDX_VAL(val, low, high)		((low) | (high) << 32)
- # define EAX_EDX_RET(val, low, high)		"=a" (low), "=d" (high)
- #else
--# define DECLARE_ARGS(val, low, high)	u64 val
-+# define EAX_EDX_DECLARE_ARGS(val, low, high)	u64 val
- # define EAX_EDX_VAL(val, low, high)		(val)
- # define EAX_EDX_RET(val, low, high)		"=A" (val)
- #endif
-@@ -83,7 +83,7 @@ static inline void do_trace_rdpmc(u32 msr, u64 val, int failed) {}
-  */
- static __always_inline u64 __rdmsr(u32 msr)
- {
--	DECLARE_ARGS(val, low, high);
-+	EAX_EDX_DECLARE_ARGS(val, low, high);
- 
- 	asm volatile("1: rdmsr\n"
- 		     "2:\n"
-@@ -129,7 +129,7 @@ static inline u64 native_read_msr(u32 msr)
- 
- static inline u64 native_read_msr_safe(u32 msr, int *err)
- {
--	DECLARE_ARGS(val, low, high);
-+	EAX_EDX_DECLARE_ARGS(val, low, high);
- 
- 	asm volatile("1: rdmsr ; xor %[err],%[err]\n"
- 		     "2:\n\t"
-@@ -182,7 +182,7 @@ extern int wrmsr_safe_regs(u32 regs[8]);
-  */
- static __always_inline u64 rdtsc(void)
- {
--	DECLARE_ARGS(val, low, high);
-+	EAX_EDX_DECLARE_ARGS(val, low, high);
- 
- 	asm volatile("rdtsc" : EAX_EDX_RET(val, low, high));
- 
-@@ -199,7 +199,7 @@ static __always_inline u64 rdtsc(void)
-  */
- static __always_inline u64 rdtsc_ordered(void)
- {
--	DECLARE_ARGS(val, low, high);
-+	EAX_EDX_DECLARE_ARGS(val, low, high);
- 
- 	/*
- 	 * The RDTSC instruction is not ordered relative to memory
-@@ -227,7 +227,7 @@ static __always_inline u64 rdtsc_ordered(void)
- 
- static inline u64 native_read_pmc(int counter)
- {
--	DECLARE_ARGS(val, low, high);
-+	EAX_EDX_DECLARE_ARGS(val, low, high);
- 
- 	asm volatile("rdpmc" : EAX_EDX_RET(val, low, high) : "c" (counter));
- 	if (tracepoint_enabled(rdpmc))
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 255927f..7b9908c 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -390,7 +390,7 @@ void ex_handler_msr_mce(struct pt_regs *regs, bool wrmsr)
- /* MSR access wrappers used for error injection */
- noinstr u64 mce_rdmsrq(u32 msr)
- {
--	DECLARE_ARGS(val, low, high);
-+	EAX_EDX_DECLARE_ARGS(val, low, high);
- 
- 	if (__this_cpu_read(injectm.finished)) {
- 		int offset;
+ #include <asm/atomic.h>
 
