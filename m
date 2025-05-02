@@ -1,149 +1,151 @@
-Return-Path: <linux-tip-commits+bounces-5202-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5203-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64450AA7A09
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 21:09:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A3DAA7A1E
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 21:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0FE53B36DD
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 19:09:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A503B3277
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 19:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEC81F12FA;
-	Fri,  2 May 2025 19:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4217F1B3925;
+	Fri,  2 May 2025 19:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2UqVy1hY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I4GFsysY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aSWM4/m6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fno4J4GY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EBC1EFFA2;
-	Fri,  2 May 2025 19:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EEE185B73;
+	Fri,  2 May 2025 19:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746212976; cv=none; b=OcEbEEsSYmw8kBY+IxeIzbGtLUOS34it6XgNGoZIyzJgVdrgYEnyP3SYJ/HKr54Yycw2hfpTiEwjKW2UrOUq+sUBf8iIhYNcwHg/EWRgGHtcb00kaHf57SV9xpn2m3w/W8dso/PKogjOgNXLhdkorz8xkfwGw8X8TE7nAIbI0Bo=
+	t=1746213538; cv=none; b=LQgZznr2Gg9y1UAOZ8m+a2jAIVzszuxQ8m2lGtlaFXrajkqsqfkoEKHYu5eFSUu6Dq29z17jHyp2PbWcyohOl3qQx0Rb0rdd2/oMZ0STHIcMYwb+15kZ8wAmBvC1XXeOXY7oXH2PqMriUaDC/KsY5j5igYPJt94zWzHDvkOkjdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746212976; c=relaxed/simple;
-	bh=MaT6m/oZyNFM8P+0xZFYFUmM26PLpT+c1agjvAb0MxI=;
+	s=arc-20240116; t=1746213538; c=relaxed/simple;
+	bh=KIPErOtyZkn8In6mCP+4UwwhSq7iRx8QLimBtxZPGSE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mkWFhIHO5i07AoIaJAhT8q+hDYnRZvpC4dxFTlvvHdG3f6o12DgVEKgDN/zm261jJQ52sKl8iWjFhWaS3JhG/BEynNGtC30CQ3/BsJ2q+wTtAQ6UIqfSq2koI3QV75kh1sqt0r+OUv7SyuXlcMWK1dthP2OroIn/iSbJ4efZ4uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2UqVy1hY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I4GFsysY; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nXOHLAM9AqIG3KFRmnWLlmnHQExnfCo3/AAZuw/fahPTlUzCryi2H0a9pkPRlHfEzDdb1ODMqiq80obZSRf9xHd3M1efxDCqH9ukWgJov2IWL8+p0j4G0AqmCKpBuDkYw+2ANTaGhNn6DRdOBB4vzM0qYpzJRdDYgF9V2Nk7hvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aSWM4/m6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fno4J4GY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 02 May 2025 19:09:31 -0000
+Date: Fri, 02 May 2025 19:18:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746212972;
+	s=2020; t=1746213534;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p+P7xGI5GdriEKLGKPO6+wNOq1MXu9f1CdUtqMQ3jP4=;
-	b=2UqVy1hYmWRUmbnqhBVVhkZrtRr12hr0iNJmzvPQmQ5PwAraSQeYNgxLret6AQX3gwbI9g
-	hsNyOMqITu71dXXcChfmRZzO36TMadCSkka64iMHJm6nAazH0H9mbgoOgYAV26/WtScMpH
-	FrIF1Z5/L9r8vloogKk/wQ4sCA+YiMmEz9lR2VVKXajkH9D/D+2T2uZ2Ox7XqLyAxBV/Y9
-	A9/0u1gPR81SL3E4IsKQpshqhD4hVws9C59Lv1N18BmstRQ2mxCAk7jPP+cu9T8eowjZ4Z
-	OrGDX+IEGE9KJFxUz43xA1irh+EOhiWnSxyyZKwxrdQxx1L7Vr7mE5kspJX9CA==
+	bh=N9fs6+BA1aJDHTiBWOlJ4M1yDdsQE8GsdG3fQO/PsnU=;
+	b=aSWM4/m6xBYNaoqzYpBJYGlPB+MBpX7EN2CuMNpqIRKx0DNNsjrNLGg1ilFZPd1yl7leU0
+	qIto7alFyYZWlvvTTVnUlBFDesiuRLJgKTZvh07tfF5RrzISqpcGHEuwy56xQ5BXthMYO8
+	8aTcTiHCMBvVMXXfwFBb1SE6D7yfbwep0C4mCHdOXUWqcpHtonXrqOPaP/90CU2qG6XiJ2
+	lPH3dlhiw7/EZhXX93WeUK7V2R6gXn6BiAQjZ0T4QV0ekkl8DKNT/DQ+C2VmP7orpM+uEt
+	Sp2ZPq8T9Iw+pSWcDWRAKzyJcf/0SQnParFurlIXq4exSsGKf1w9OvORFUpG4w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746212972;
+	s=2020e; t=1746213534;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p+P7xGI5GdriEKLGKPO6+wNOq1MXu9f1CdUtqMQ3jP4=;
-	b=I4GFsysY1H17jYgkJ4y8GIcgNyB0fCAHy7raQeNIysX8Nrm5/dUyAlkRIoaI2O8LVIiDCX
-	EXd+egAyhQdR+dBQ==
-From:
- tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
+	bh=N9fs6+BA1aJDHTiBWOlJ4M1yDdsQE8GsdG3fQO/PsnU=;
+	b=fno4J4GY+ySCJuEdPXdq8Pu4HTSqsDCqgJ+awjlAe9XL4dBfgVLNpcEtggA/TYuA6Rg036
+	mE5gxuZyYkeZd9DA==
+From: "tip-bot2 for Stephan Gerhold" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] arm64: vdso: Work around invalid absolute
- relocations from GCC
-Cc: Jan Stancek <jstancek@redhat.com>, thomas.weissschuh@linutronix.de,
+Subject: [tip: irq/urgent] irqchip/qcom-mpm: Prevent crash when trying to
+ handle non-wake GPIOs
+Cc: Alexey Klimov <alexey.klimov@linaro.org>,
+ Stephan Gerhold <stephan.gerhold@linaro.org>,
  Thomas Gleixner <tglx@linutronix.de>,
- Catalin Marinas <catalin.marinas@arm.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250430-vdso-absolute-reloc-v2-1-5efcc3bc4b26@linutronix.de>
-References: <20250430-vdso-absolute-reloc-v2-1-5efcc3bc4b26@linutronix.de>
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org>
+References: <20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174621297192.22196.5751074600127323972.tip-bot2@tip-bot2>
+Message-ID: <174621352984.22196.3097382094433288761.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     0c314cda93258cd1f0055a278a6576b5d4aeabf5
-Gitweb:        https://git.kernel.org/tip/0c314cda93258cd1f0055a278a6576b5d4a=
-eabf5
-Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Wed, 30 Apr 2025 11:20:13 +02:00
+Commit-ID:     38a05c0b87833f5b188ae43b428b1f792df2b384
+Gitweb:        https://git.kernel.org/tip/38a05c0b87833f5b188ae43b428b1f792df2b384
+Author:        Stephan Gerhold <stephan.gerhold@linaro.org>
+AuthorDate:    Fri, 02 May 2025 13:22:28 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 May 2025 20:57:11 +02:00
+CommitterDate: Fri, 02 May 2025 21:07:02 +02:00
 
-arm64: vdso: Work around invalid absolute relocations from GCC
+irqchip/qcom-mpm: Prevent crash when trying to handle non-wake GPIOs
 
-All vDSO code needs to be completely position independent.  Symbol
-references are marked as hidden so the compiler emits PC-relative
-relocations.
+On Qualcomm chipsets not all GPIOs are wakeup capable. Those GPIOs do not
+have a corresponding MPM pin and should not be handled inside the MPM
+driver. The IRQ domain hierarchy is always applied, so it's required to
+explicitly disconnect the hierarchy for those. The pinctrl-msm driver marks
+these with GPIO_NO_WAKE_IRQ. qcom-pdc has a check for this, but
+irq-qcom-mpm is currently missing the check. This is causing crashes when
+setting up interrupts for non-wake GPIOs:
 
-However GCC emits absolute relocations for symbol-relative references with
-an offset >=3D 64KiB. After recent refactorings in the vDSO code this is the
-case in __arch_get_vdso_u_timens_data() with a page size of 64KiB.
+ root@rb1:~# gpiomon -c gpiochip1 10
+   irq: IRQ159: trimming hierarchy from :soc@0:interrupt-controller@f200000-1
+   Unable to handle kernel paging request at virtual address ffff8000a1dc3820
+   Hardware name: Qualcomm Technologies, Inc. Robotics RB1 (DT)
+   pc : mpm_set_type+0x80/0xcc
+   lr : mpm_set_type+0x5c/0xcc
+   Call trace:
+    mpm_set_type+0x80/0xcc (P)
+    qcom_mpm_set_type+0x64/0x158
+    irq_chip_set_type_parent+0x20/0x38
+    msm_gpio_irq_set_type+0x50/0x530
+    __irq_set_trigger+0x60/0x184
+    __setup_irq+0x304/0x6bc
+    request_threaded_irq+0xc8/0x19c
+    edge_detector_setup+0x260/0x364
+    linereq_create+0x420/0x5a8
+    gpio_ioctl+0x2d4/0x6c0
 
-Work around the issue by preventing the optimizer from seeing the offsets.
+Fix this by copying the check for GPIO_NO_WAKE_IRQ from qcom-pdc.c, so that
+MPM is removed entirely from the hierarchy for non-wake GPIOs.
 
-Fixes: 83a2a6b8cfc5 ("vdso/gettimeofday: Prepare do_hres_timens() for introdu=
-ction of struct vdso_clock")
-Reported-by: Jan Stancek <jstancek@redhat.com>
-Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+Fixes: a6199bb514d8 ("irqchip: Add Qualcomm MPM controller driver")
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/all/20250430-vdso-absolute-reloc-v2-1-5efcc3bc4=
-b26@linutronix.de
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D120002
-Closes: https://lore.kernel.org/lkml/aApGPAoctq_eoE2g@t14ultra/
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org
 ---
- arch/arm64/include/asm/vdso/gettimeofday.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/irqchip/irq-qcom-mpm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/include/asm/vdso/gettimeofday.h b/arch/arm64/include/=
-asm/vdso/gettimeofday.h
-index 92a2b59..3322c70 100644
---- a/arch/arm64/include/asm/vdso/gettimeofday.h
-+++ b/arch/arm64/include/asm/vdso/gettimeofday.h
-@@ -99,6 +99,19 @@ static __always_inline u64 __arch_get_hw_counter(s32 clock=
-_mode,
- 	return res;
- }
-=20
-+#if IS_ENABLED(CONFIG_CC_IS_GCC) && IS_ENABLED(CONFIG_PAGE_SIZE_64KB)
-+static __always_inline const struct vdso_time_data *__arch_get_vdso_u_time_d=
-ata(void)
-+{
-+	const struct vdso_time_data *ret =3D &vdso_u_time_data;
+diff --git a/drivers/irqchip/irq-qcom-mpm.c b/drivers/irqchip/irq-qcom-mpm.c
+index 7942d8e..f772deb 100644
+--- a/drivers/irqchip/irq-qcom-mpm.c
++++ b/drivers/irqchip/irq-qcom-mpm.c
+@@ -227,6 +227,9 @@ static int qcom_mpm_alloc(struct irq_domain *domain, unsigned int virq,
+ 	if (ret)
+ 		return ret;
+ 
++	if (pin == GPIO_NO_WAKE_IRQ)
++		return irq_domain_disconnect_hierarchy(domain, virq);
 +
-+	/* Work around invalid absolute relocations */
-+	OPTIMIZER_HIDE_VAR(ret);
-+
-+	return ret;
-+}
-+#define __arch_get_vdso_u_time_data __arch_get_vdso_u_time_data
-+#endif /* IS_ENABLED(CONFIG_CC_IS_GCC) && IS_ENABLED(CONFIG_PAGE_SIZE_64KB) =
-*/
-+
- #endif /* !__ASSEMBLY__ */
-=20
- #endif /* __ASM_VDSO_GETTIMEOFDAY_H */
+ 	ret = irq_domain_set_hwirq_and_chip(domain, virq, pin,
+ 					    &qcom_mpm_chip, priv);
+ 	if (ret)
 
