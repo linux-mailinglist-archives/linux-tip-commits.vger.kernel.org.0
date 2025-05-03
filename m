@@ -1,226 +1,167 @@
-Return-Path: <linux-tip-commits+bounces-5204-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5205-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8FAFAA7E4A
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 May 2025 05:34:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DA5AA8091
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 May 2025 14:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DDA016EAF2
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 May 2025 03:34:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08A339A1B21
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 May 2025 12:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E22A158DD4;
-	Sat,  3 May 2025 03:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060241F1510;
+	Sat,  3 May 2025 12:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MWwqAF90"
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2075.outbound.protection.outlook.com [40.107.102.75])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="NtK7Ho7X"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44255156F45;
-	Sat,  3 May 2025 03:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.75
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746243282; cv=fail; b=o3apDiwa4TuYlWq7UXuKncCm7BmVgGUzZepZQ9v3rgTVVbmFNwd9H4lZ/aogBpe7XMsVHLaNzL4H+l1vPcJUWVoVp0nwsuReF+D57K9dLxPJecP7/JwUFQ1+qxVk1O9G8cjezy9x3KaVI1KQQtpz5O7EsiQdxIklr0UegpdMSMQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746243282; c=relaxed/simple;
-	bh=GWv4tAsFye88dZ7WQkBzVCEYyMcmr8YLNrEFfljFdZw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PIRLG5sg0FqV7SpaNeyGacg5DsBMvUukOdl5WyYJO2SqdpBAUF9gjT02WPc7y1xIhUUuU7pnELyB65PK3nUE3Dz42BhrT1EwiwFQ4FpuaLs0DtEYGKP2PoCxtKvUlVUZWM4EGj8Ilk1lpiH1zWAoXyPVloDRnPU5pSa2q36F+9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MWwqAF90; arc=fail smtp.client-ip=40.107.102.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ey00R6so2Or0xJdfT0u7OIF+DGtlR2yBEtC4SoRzc4ZoQD5/NRBxS2pcQMrGZ45dUgcX42/8fEnEC2SaCm2vtnFutXqxD03AmmXoei+EMl2qzCk3hGAMhMNWCYuDuqeC8d52LBTtf0OR6EGBx20cqSnu7T6HmQdhGacR6zpa7PnigVJNV6sPx0WGb12ylrtpLX3VCLs7iyugUzRKHDiBabjStduob1xWzHb2u+HU5JuApFBBmzgUWM7MskoymQjmYpQr1o3INnsfWI9QF1YmGpajRMTV9xK84+k9oG+GQImAd+1Bo9QykgV6nMr6yDn+TGwQ5cQjBinnpgXcVnSqLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rPgNobfBTYOujqbLiEIdQ4nZqkuaEpAIqPG9ONJwXPA=;
- b=CCLVlBuznsfsdmjHuoOAvVljeL7aPgJeOomt8DgxnZju6fnni+5VDLQmwNHNvUsB1mJflS9pKl5tALfsjsUk90JbbTGKyJtlzgdYN4w7t0E+N//TvtXb1RICO59684Z95znWRi+K/9DBjqIK0RCXdwZ/T4w9bnJ001BwR2rT07bsSvY0B1bcISvs/8DQCm8OEWgFcZemCZC7FHF6RTi032de8G+5IBbrCd45gSNWENKll36mbE6eOO24V1JBCHr6NqGItzlL0yESVFgblPbTu+LdigRJxEPwvVsQVlxBxq2w9AtS4/mwaT42klehE9nrShejOTJCgyNtQ7uQxLpqOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rPgNobfBTYOujqbLiEIdQ4nZqkuaEpAIqPG9ONJwXPA=;
- b=MWwqAF90QgAErPxaenDlmCba1yUi/lf6Z7tQZFJ1abDC+DQnwKjgRO7yC4+2bzVIU4CWQDVUD9qFOH4NJkH2od51MYZ5+mQwaYPaZL6HUT9AQyZoaprw8pTYPqgqEmZKp4I1oulnAV5AzmndO5lilOJnIRapZgubdiLxk0uFW5c=
-Received: from PH8P221CA0061.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:349::17)
- by PH7PR12MB8828.namprd12.prod.outlook.com (2603:10b6:510:26b::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Sat, 3 May
- 2025 03:34:36 +0000
-Received: from SA2PEPF000015CD.namprd03.prod.outlook.com
- (2603:10b6:510:349:cafe::3) by PH8P221CA0061.outlook.office365.com
- (2603:10b6:510:349::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.24 via Frontend Transport; Sat,
- 3 May 2025 03:34:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF000015CD.mail.protection.outlook.com (10.167.241.203) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8699.20 via Frontend Transport; Sat, 3 May 2025 03:34:36 +0000
-Received: from [10.143.196.137] (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 2 May
- 2025 22:34:30 -0500
-Message-ID: <6a83c7fb-dbfa-49df-be8b-f1257ad1a47a@amd.com>
-Date: Sat, 3 May 2025 09:04:28 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62C7182;
+	Sat,  3 May 2025 12:07:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746274066; cv=none; b=Ti/WO3QxZRvtZpO7RDZsnJIOcdK4BWFjCgyrPwkN4Yg6mhoPpibTMwCISNtdSRquC78llMNk7weoOFACIu9Uh6nqo01qvIqa8etShRKDPZD5VJGeDKZCk+9Cy73Yld7QJlfW3vaLJlIJPGn4FpUqy5Q8dTy8y+NNT/pZnlj1isQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746274066; c=relaxed/simple;
+	bh=xURoyVohLnXtIHjBFLS8HV022V4nATDEUMvGaKCIqSg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ahYt5aAKtf9+2/qRBPVyXcXsCPhCF4X6g4eqgkfdi0mvwUoZr5MrABVWkNY9oyX8DsJayIrALvTlwa5NSpaGEsBwbajiaqcSDvf8DynHHQTwNttrGfLscFAblsLMD9C8Ry+6yaLgYQUJFKtv+gHV3T6gjYJm6XDqMMVOgNWR4S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=NtK7Ho7X; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 110A540E0206;
+	Sat,  3 May 2025 12:07:39 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id qO-hxwK00kTd; Sat,  3 May 2025 12:07:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746274050; bh=xp0Sbz9Zv7k2nPjyqhgjhsdzmEuEZZQ52kdsfDfr8TU=;
+	h=Date:From:To:Cc:Subject:From;
+	b=NtK7Ho7Xua1WTZ0NdRFhb/reD/GdGIN1EzXDdpCf0nQHgIs97iSObZbDg11BFZvKK
+	 Jfqdwg2PVtLjMHE/bCksoP0iccxtJV2Wj5MkFnPeSqdYS1UgX5N62h97hzf8W09rKO
+	 oJ7BFChpfRqw3LqOZl0N3S8Pn6NsPzAmflLxTbUruclVK2PbJ3RKbKizx254ydNZwe
+	 kKGKXmBxmnlmBLCAKFjJx1WP1JGaKiE46di7osPdDxZ9c4b3lYRp95rmS6p3IfVjVn
+	 DXimgcvjTOCx9ZP+lf18mKkA5MA7RXfs0HLSoo0PVRFCTzZ0mOhQ0J8jakGiEpEoQt
+	 ITzbF6I81FecLPSSLsyn/GFEDJ/UbnJ3RBeIctu9fZtw1uzutCYtYMKgn+E21F4qXC
+	 1OTy6g8WIytYA+/2UQ2nEOdBF7mD+f+CMqFa1ew+a7XuGpumYQvTPbUPsfYsZdsX42
+	 64WrkC17HuLyPgDrRyj7Tbwdn4Xtrn23V+AFs/Bsum9Ue/BspFdfRp6v5JffrOOOLM
+	 31BaxYiBrfyEZB0HYQxFVisg6R2zpETchVQ0APAtfEuIJCvK96Ku9X9WTQCGr5eRiL
+	 sfHg+djY/Yd675KpbKZONB5FsYSNPA30jBEMGPYYZ4d4JGwO2MpXomjgxK8euI3cfY
+	 H0EWNlbGBBcxbYYuiHueyC5U=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AEB6A40E0192;
+	Sat,  3 May 2025 12:07:18 +0000 (UTC)
+Date: Sat, 3 May 2025 14:07:12 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ingo Molnar <mingo@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: hardened_usercopy 32-bit (was: Re: [tip: x86/merge] x86/fpu: Make
+ task_struct::thread constant size)
+Message-ID: <20250503120712.GJaBYG8A-D77MllFZ3@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: EEVDF regression still exists
-To: Linus Torvalds <torvalds@linux-foundation.org>, "Prundeanu, Cristian"
-	<cpru@amazon.com>
-CC: Peter Zijlstra <peterz@infradead.org>, "Mohamed Abuelfotoh, Hazem"
-	<abuehaze@amazon.com>, "Saidi, Ali" <alisaidi@amazon.com>, "Benjamin
- Herrenschmidt" <benh@kernel.crashing.org>, "Blake, Geoff"
-	<blakgeof@amazon.com>, "Csoma, Csaba" <csabac@amazon.com>, "Doebel, Bjoern"
-	<doebel@amazon.de>, Gautham Shenoy <gautham.shenoy@amd.com>, Swapnil Sapkal
-	<swapnil.sapkal@amd.com>, Joseph Salisbury <joseph.salisbury@oracle.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>, "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-tip-commits@vger.kernel.org"
-	<linux-tip-commits@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
-References: <20250429213817.65651-1-cpru@amazon.com>
- <20250430100259.GK4439@noisy.programming.kicks-ass.net>
- <B27ECDA1-632D-44CD-AB99-B7A9C27393E4@amazon.com>
- <CAHk-=wgb5WcfMEgsOQg4wzVWuYNgCL-e17YX33ZET_G3-ZCo7g@mail.gmail.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <CAHk-=wgb5WcfMEgsOQg4wzVWuYNgCL-e17YX33ZET_G3-ZCo7g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CD:EE_|PH7PR12MB8828:EE_
-X-MS-Office365-Filtering-Correlation-Id: b938ea01-96e3-4e56-5716-08dd89f36d61
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RUQvZndDQU14UWlZYnFxb3hsTnIyeFNmR0V0K0VXcTRTTTMwajVXbmxpK095?=
- =?utf-8?B?WFEreFNVUTJVd2M5RkRNbml3S1gwRDdYZCttdkZ3NGp5Q29HeTYreWUvMElN?=
- =?utf-8?B?N0RQWUwzMlpXT01IMTl1a0JEejEzNGxybDd3MlB4N0p4eDVlWHdTbThwTmpr?=
- =?utf-8?B?VmZQbUt6K01nOEQyalpIeEVWVm56UWNlVXk1QkN5L3dlYzhIa1JzKzZReEtX?=
- =?utf-8?B?SGFuc0w4MENObHdFUmcwbHBDbXJYQ2dIT3JPa2pYU0tMVGluZUI5ZWd0QmJF?=
- =?utf-8?B?dWRlWHlWWTNqeGR5QXlqSUZZd2h3TTB1V0xYeG0vbkxSaG1NYVdOd3ZycHd4?=
- =?utf-8?B?UDVwSm42TFJWR29ZYm40UncrTGhkN05TczZmRDJjckt1K2gzbkE2RUZscDNF?=
- =?utf-8?B?MFdmNjJveGdLY1hPT3ZnMTFGam5DOXhVMHV6VXNrZkNrNGRIaTh6Vnc5V1ph?=
- =?utf-8?B?bFZ0MnVhSlZrRGpmc2R1ZTF5WmFBN2dGSkJjVmE1YWdNQ3J0VmNEOWE5K0ds?=
- =?utf-8?B?TFdOdGc3S3o0VWxEYXB3QjRoNXJyS1JwQi9hS0REdUp4YjhLZ1NIbVFIS0Rv?=
- =?utf-8?B?cFY2MUhwaFo4M0kxTW1nU29hamE2R3lySlgwL1pSUUE2MXRNcm1hUFl4NXlI?=
- =?utf-8?B?bnZvNGxYajRzTmI2bko3VXV6NWJENTkwVUJncVpwSXN1RWxyL3cyS2QyRmND?=
- =?utf-8?B?aEJOUThucFU5bUhRVW5RYklyNTV3Qi8wVXVHcHdJd2tYaVNsU2RoSU8zamNE?=
- =?utf-8?B?N0pJb3J3TkgvVmFueDUrVWVEeVliRTVURUtYQVRocXFadmxwY0pCamVKMFZx?=
- =?utf-8?B?emppcFdSNDAyVG1hdlMyRzlMdDlqYkdRczhia05pTXgxZFlJdnB4Vi9pdE11?=
- =?utf-8?B?LzFEc3IxbCtsU3llZGpITFdjbmNFWmpvaGtpeUdVMk9uZUErdm9WREVjTGd6?=
- =?utf-8?B?NnpCREZGK1ZrblhiQzVyb2VudC9pUktFdW5kdGVNQVNhQWM1dm43c0NyQ1gw?=
- =?utf-8?B?bS9DSmc0SjFucWtBdnE2RDNaN3cxTWFMTzhFY3I3dU9mb1ZHRnFuSXNxdEo2?=
- =?utf-8?B?eEljNHFwcHhic0JaMy82SzM4dUlXWS8zQnFFSWxxc0I2SUk3ZHdtdkxBcWxO?=
- =?utf-8?B?Nng2andQS0pBTXorUFBENGRHdDRnL1UyTW1hYjVUQjFjSCt3aUtrdS80NldS?=
- =?utf-8?B?UEw2SmFVRFd6eFlCVUVkSE1iZ1BUZ3hxOWtPOXFxL2pJV2JwQU15K3FWUThu?=
- =?utf-8?B?MEt0dnpCUWxyVWJ5ayt2aGR0UHV1VjBtcytEUFdZRkxVZGpQaHhJeXNyL3lO?=
- =?utf-8?B?QU05U05CeUIzZi85RXltQ29xWlExYmRlcEJaTmF2NmpIZklKdDFSYkhMaEc0?=
- =?utf-8?B?b2ROY3VZK01LZ0hyK0wyWjZBMldlOSttNDFVNFM4bWoyTnA2RE1CN1dsdVkx?=
- =?utf-8?B?aFBQdnFxcHZjM1huVisxck93UFBIa3VSVUd1SlIxcDRGQXk0cXdodnorenFU?=
- =?utf-8?B?ZE4vR0RlUnh6R0lxbEkvQ3hNTTRzd05CMXRBZ0ZoRGVMQXVlaHZMcXc0MnVX?=
- =?utf-8?B?MnhZSTdDWGdXcm1HcWdjTVFUYWR1V201K29jcWxNTk1EbWsxSjEwNStLNkhC?=
- =?utf-8?B?ZDRYSmdOWnIrMlcyeWY1OGNpejFYTXZIMVhzRUJwWWlDWE5rdWEzZmdyRkM2?=
- =?utf-8?B?NVdKVkdkS1dWMWtDdkdWaDQ0ZnVUdGVZTlJpdXorZ1Z3V2tubDBNQzNuQUZm?=
- =?utf-8?B?bisrU0JEb1NyN0hoSE9oTzZqeThJeGNFcXMvNHJhdTZDUXgvdzVNcWNBZWp1?=
- =?utf-8?B?L1NXZGwyU2gzQTV4cjNyMkg5YWN1MCszQzN6SGR6bUd4NUJwRkdHMGx6YVVt?=
- =?utf-8?B?V2kxREhBTGljUjNUd3g0a0ZKSkIwbUpaWHVJNTVHVDc1VG9yV1duVE5tb3Nm?=
- =?utf-8?B?cEIvaHNyMHpMN0cxeWdEbm45bjNORjJhRHJIYTJDUGd2OXF6YkJLSVJHZVdw?=
- =?utf-8?B?T2lVODFDemlGQmdIVTZmUnU3d0swVFBXbFBubVRzSzIzcERqajU5NlNCL0hS?=
- =?utf-8?Q?8S5Zos?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 May 2025 03:34:36.0969
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b938ea01-96e3-4e56-5716-08dd89f36d61
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF000015CD.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8828
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 
-Hello Linus,
+On Mon, Apr 14, 2025 at 07:34:48AM -0000, tip-bot2 for Ingo Molnar wrote:
+> The fpu_thread_struct_whitelist() quirk to hardened usercopy can be removed,
+> now that the FPU structure is not embedded in the task struct anymore, which
+> reduces text footprint a bit.
 
-On 5/2/2025 11:22 PM, Linus Torvalds wrote:
-> On Fri, 2 May 2025 at 10:25, Prundeanu, Cristian <cpru@amazon.com> wrote:
->>
->> Another, more recent observation is that 6.15-rc4 has worse performance than
->> rc3 and earlier kernels. Maybe that can help narrow down the cause?
->> I've added the perf reports for rc3 and rc2 in the same location as before.
-> 
-> The only _scheduler_ change that looks relevant is commit bbce3de72be5
-> ("sched/eevdf: Fix se->slice being set to U64_MAX and resulting
-> crash"). Which does affect the slice calculation, although supposedly
-> only under special circumstances.> 
-> Of course, it could be something else.
+Well, hardened usercopy still doesn't like it on 32-bit, see splat below:
 
-Since it is the only !SCHED_EXT change in kernel/sched, Cristian can
-perhaps try reverting it on top of v6.15-rc4 and checking if the
-benchmark results jump back to v6.15-rc3 level to rule that single
-change out. Very likely it could be something else.
+I did some debugging printks and here's what I see:
 
-> 
-> For example, we have a AMD performance regression in general due to
-> _another_ CPU leak mitigation issue, but that predates rc3 (happened
-> during the merge window), so that one isn't relevant, but maybe
-> something else is..
-> 
-> Although honestly, that slice calculation still looks just plain odd.
-> It defaults the slice to zero, so if none of the 'break' conditions in
-> the first loop happens, it will reset the slice to that zero value and
+That's the loop in copy_uabi_to_xstate(), copying the first FPU state
+- XFEATURE_FP - to the kernel buffer:
 
-I believe setting slice to U64_MAX was the actual problem. Previously,
-when the slice was initialized as:
+[    1.752756] copy_uabi_to_xstate: i: 0 dst: 0xcab11f40, offset: 0, size: 160, kbuf: 0x00000000, ubuf: 0xbfcbca80
+[    1.754600] copy_from_buffer: dst: 0xcab11f40, src: 0xbfcbca80, size: 160
 
-       cfs_rq = group_cfs_rq(se);
-       slice = cfs_rq_min_slice(cfs_rq);
+hardened wants to check it:
 
-If the "se" was delayed, it basically means that the group_cfs_rq() had
-no tasks on it and cfs_rq_min_slice() would return "~0ULL" which will
-get propagated and can lead to bad math.
+[    1.755823] __check_heap_object: ptr: 0xcab11f40, slap_address: 0xcab10000, size: 2944
+[    1.757102] __check_heap_object: offset: 2112
 
-> then the
-> 
->          slice = cfs_rq_min_slice(cfs_rq);
-> 
-> ion that second loop looks like it might just pick up that zero value again.
+and figures out it is in some weird offset 2112 from *task_struct* even
+though:
 
-If the first loop does not break, even for "if (cfs_rq->load.weight)",
-it basically means that there are no tasks / delayed entities queued
-all the way until root cfs_rq so the slices shouldn't matter.
+[    1.750149] copy_uabi_to_xstate: sizeof(task_struct): 1984
 
-Enqueue of the next task will correct the slices for the queued
-hierarchy.
+btw, the buffer is big enough too:
 
-> 
-> I clearly don't understand the code.
-> 
->               Linus
+[    1.749077] copy_uabi_to_xstate: sizeof(&fpstate->regs.xsave): 576
+
+but then it decides to BUG because an overwrite attempt is being done on
+task_struct which is bollocks now as struct fpu is not part of it anymore.
+
+And this is where I'm all out of ideas so lemme CC folks.
+
+[    1.757898] __check_heap_object: will abort: offset: 2112, size: 160
+
+[    1.758951] usercopy: Kernel memory overwrite attempt detected to SLUB object 'task_struct' (offset 2112, size 160)!
+[    1.760651] ------------[ cut here ]------------
+[    1.761474] kernel BUG at mm/usercopy.c:102!
+[    1.762240] Oops: invalid opcode: 0000 [#1] SMP
+[    1.763063] CPU: 6 UID: 0 PID: 1182 Comm: rc Not tainted 6.15.0-rc2+ #35 PREEMPT(full) 
+[    1.764374] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    1.765952] EIP: usercopy_abort+0x79/0x88
+[    1.768411] Code: c1 89 44 24 0c 0f 45 cb 8b 5d 0c 89 74 24 10 89 4c 24 04 c7 04 24 98 f0 c5 c1 89 5c 24 20 8b 5d 08 89 5c 24 1c e8 d3 8b e7 ff <0f> 0b ba 89 8f ce c1 89 55 f0 89 d6 eb 97 90 3e 8d 74 26 00 85 d2
+[    1.771573] EAX: 00000068 EBX: 00000840 ECX: 00000000 EDX: 00000006
+[    1.772638] ESI: c1cdb354 EDI: c1ce0c9a EBP: cc751d40 ESP: cc751d0c
+[    1.773707] DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 00010292
+[    1.774831] CR0: 80050033 CR2: 00511860 CR3: 0cde1000 CR4: 003506d0
+[    1.775921] Call Trace:
+[    1.776498]  __check_heap_object+0x117/0x14c
+[    1.777314]  __check_object_size+0x1af/0x250
+[    1.778129]  ? vprintk+0x13/0x1c
+[    1.778778]  copy_from_buffer+0xbc/0x114
+[    1.779498]  copy_uabi_to_xstate+0x1b7/0x31c
+[    1.780251]  copy_sigframe_from_user_to_xstate+0x27/0x34
+[    1.781171]  __fpu_restore_sig+0x4ae/0x4c4
+[    1.781954]  fpu__restore_sig+0x60/0xb0
+[    1.784487]  ia32_restore_sigcontext+0xe4/0x108
+[    1.785464]  __do_sys_sigreturn+0x66/0xac
+[    1.786191]  ia32_sys_call+0x226a/0x30e0
+[    1.786942]  do_int80_syscall_32+0x83/0x158
+[    1.787735]  entry_INT80_32+0x108/0x108
+[    1.788424] EIP: 0xb7f8b232
+[    1.788989] Code: ab 01 00 05 f5 6d 02 00 83 ec 14 8d 80 44 7f ff ff 50 6a 02 e8 df f6 00 00 c7 04 24 7f 00 00 00 e8 7e 9b 01 00 66 90 90 cd 80 <c3> 8d b4 26 00 00 00 00 8d b6 00 00 00 00 8b 1c 24 c3 8d b4 26 00
+[    1.792057] EAX: 000004a0 EBX: ffffffff ECX: bfcbce44 EDX: 00000000
+[    1.793184] ESI: 00000000 EDI: 00000001 EBP: 005118c0 ESP: bfcbcde0
+[    1.794284] DS: 007b ES: 007b FS: 0000 GS: 0033 SS: 007b EFLAGS: 00000286
+[    1.795440] Modules linked in:
+[    1.796088] ---[ end trace 0000000000000000 ]---
+[    1.796932] EIP: usercopy_abort+0x79/0x88
+[    1.797671] Code: c1 89 44 24 0c 0f 45 cb 8b 5d 0c 89 74 24 10 89 4c 24 04 c7 04 24 98 f0 c5 c1 89 5c 24 20 8b 5d 08 89 5c 24 1c e8 d3 8b e7 ff <0f> 0b ba 89 8f ce c1 89 55 f0 89 d6 eb 97 90 3e 8d 74 26 00 85 d2
+[    1.803256] EAX: 00000068 EBX: 00000840 ECX: 00000000 EDX: 00000006
+[    1.804604] ESI: c1cdb354 EDI: c1ce0c9a EBP: cc751d40 ESP: cc751d0c
+[    1.805686] DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 00010292
+[    1.806814] CR0: 80050033 CR2: 00511860 CR3: 0cde1000 CR4: 003506d0
+
+Thx.
 
 -- 
-Thanks and Regards,
-Prateek
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
