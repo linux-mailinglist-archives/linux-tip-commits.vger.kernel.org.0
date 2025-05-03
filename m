@@ -1,151 +1,226 @@
-Return-Path: <linux-tip-commits+bounces-5203-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5204-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A3DAA7A1E
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 21:19:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FAFAA7E4A
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 May 2025 05:34:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A503B3277
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  2 May 2025 19:18:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DDA016EAF2
+	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 May 2025 03:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4217F1B3925;
-	Fri,  2 May 2025 19:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E22A158DD4;
+	Sat,  3 May 2025 03:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aSWM4/m6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fno4J4GY"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MWwqAF90"
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2075.outbound.protection.outlook.com [40.107.102.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EEE185B73;
-	Fri,  2 May 2025 19:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746213538; cv=none; b=LQgZznr2Gg9y1UAOZ8m+a2jAIVzszuxQ8m2lGtlaFXrajkqsqfkoEKHYu5eFSUu6Dq29z17jHyp2PbWcyohOl3qQx0Rb0rdd2/oMZ0STHIcMYwb+15kZ8wAmBvC1XXeOXY7oXH2PqMriUaDC/KsY5j5igYPJt94zWzHDvkOkjdY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746213538; c=relaxed/simple;
-	bh=KIPErOtyZkn8In6mCP+4UwwhSq7iRx8QLimBtxZPGSE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=nXOHLAM9AqIG3KFRmnWLlmnHQExnfCo3/AAZuw/fahPTlUzCryi2H0a9pkPRlHfEzDdb1ODMqiq80obZSRf9xHd3M1efxDCqH9ukWgJov2IWL8+p0j4G0AqmCKpBuDkYw+2ANTaGhNn6DRdOBB4vzM0qYpzJRdDYgF9V2Nk7hvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aSWM4/m6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fno4J4GY; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 02 May 2025 19:18:49 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746213534;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N9fs6+BA1aJDHTiBWOlJ4M1yDdsQE8GsdG3fQO/PsnU=;
-	b=aSWM4/m6xBYNaoqzYpBJYGlPB+MBpX7EN2CuMNpqIRKx0DNNsjrNLGg1ilFZPd1yl7leU0
-	qIto7alFyYZWlvvTTVnUlBFDesiuRLJgKTZvh07tfF5RrzISqpcGHEuwy56xQ5BXthMYO8
-	8aTcTiHCMBvVMXXfwFBb1SE6D7yfbwep0C4mCHdOXUWqcpHtonXrqOPaP/90CU2qG6XiJ2
-	lPH3dlhiw7/EZhXX93WeUK7V2R6gXn6BiAQjZ0T4QV0ekkl8DKNT/DQ+C2VmP7orpM+uEt
-	Sp2ZPq8T9Iw+pSWcDWRAKzyJcf/0SQnParFurlIXq4exSsGKf1w9OvORFUpG4w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746213534;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N9fs6+BA1aJDHTiBWOlJ4M1yDdsQE8GsdG3fQO/PsnU=;
-	b=fno4J4GY+ySCJuEdPXdq8Pu4HTSqsDCqgJ+awjlAe9XL4dBfgVLNpcEtggA/TYuA6Rg036
-	mE5gxuZyYkeZd9DA==
-From: "tip-bot2 for Stephan Gerhold" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/qcom-mpm: Prevent crash when trying to
- handle non-wake GPIOs
-Cc: Alexey Klimov <alexey.klimov@linaro.org>,
- Stephan Gerhold <stephan.gerhold@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org>
-References: <20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44255156F45;
+	Sat,  3 May 2025 03:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746243282; cv=fail; b=o3apDiwa4TuYlWq7UXuKncCm7BmVgGUzZepZQ9v3rgTVVbmFNwd9H4lZ/aogBpe7XMsVHLaNzL4H+l1vPcJUWVoVp0nwsuReF+D57K9dLxPJecP7/JwUFQ1+qxVk1O9G8cjezy9x3KaVI1KQQtpz5O7EsiQdxIklr0UegpdMSMQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746243282; c=relaxed/simple;
+	bh=GWv4tAsFye88dZ7WQkBzVCEYyMcmr8YLNrEFfljFdZw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=PIRLG5sg0FqV7SpaNeyGacg5DsBMvUukOdl5WyYJO2SqdpBAUF9gjT02WPc7y1xIhUUuU7pnELyB65PK3nUE3Dz42BhrT1EwiwFQ4FpuaLs0DtEYGKP2PoCxtKvUlVUZWM4EGj8Ilk1lpiH1zWAoXyPVloDRnPU5pSa2q36F+9g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MWwqAF90; arc=fail smtp.client-ip=40.107.102.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ey00R6so2Or0xJdfT0u7OIF+DGtlR2yBEtC4SoRzc4ZoQD5/NRBxS2pcQMrGZ45dUgcX42/8fEnEC2SaCm2vtnFutXqxD03AmmXoei+EMl2qzCk3hGAMhMNWCYuDuqeC8d52LBTtf0OR6EGBx20cqSnu7T6HmQdhGacR6zpa7PnigVJNV6sPx0WGb12ylrtpLX3VCLs7iyugUzRKHDiBabjStduob1xWzHb2u+HU5JuApFBBmzgUWM7MskoymQjmYpQr1o3INnsfWI9QF1YmGpajRMTV9xK84+k9oG+GQImAd+1Bo9QykgV6nMr6yDn+TGwQ5cQjBinnpgXcVnSqLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rPgNobfBTYOujqbLiEIdQ4nZqkuaEpAIqPG9ONJwXPA=;
+ b=CCLVlBuznsfsdmjHuoOAvVljeL7aPgJeOomt8DgxnZju6fnni+5VDLQmwNHNvUsB1mJflS9pKl5tALfsjsUk90JbbTGKyJtlzgdYN4w7t0E+N//TvtXb1RICO59684Z95znWRi+K/9DBjqIK0RCXdwZ/T4w9bnJ001BwR2rT07bsSvY0B1bcISvs/8DQCm8OEWgFcZemCZC7FHF6RTi032de8G+5IBbrCd45gSNWENKll36mbE6eOO24V1JBCHr6NqGItzlL0yESVFgblPbTu+LdigRJxEPwvVsQVlxBxq2w9AtS4/mwaT42klehE9nrShejOTJCgyNtQ7uQxLpqOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux-foundation.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rPgNobfBTYOujqbLiEIdQ4nZqkuaEpAIqPG9ONJwXPA=;
+ b=MWwqAF90QgAErPxaenDlmCba1yUi/lf6Z7tQZFJ1abDC+DQnwKjgRO7yC4+2bzVIU4CWQDVUD9qFOH4NJkH2od51MYZ5+mQwaYPaZL6HUT9AQyZoaprw8pTYPqgqEmZKp4I1oulnAV5AzmndO5lilOJnIRapZgubdiLxk0uFW5c=
+Received: from PH8P221CA0061.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:349::17)
+ by PH7PR12MB8828.namprd12.prod.outlook.com (2603:10b6:510:26b::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Sat, 3 May
+ 2025 03:34:36 +0000
+Received: from SA2PEPF000015CD.namprd03.prod.outlook.com
+ (2603:10b6:510:349:cafe::3) by PH8P221CA0061.outlook.office365.com
+ (2603:10b6:510:349::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.24 via Frontend Transport; Sat,
+ 3 May 2025 03:34:36 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF000015CD.mail.protection.outlook.com (10.167.241.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8699.20 via Frontend Transport; Sat, 3 May 2025 03:34:36 +0000
+Received: from [10.143.196.137] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 2 May
+ 2025 22:34:30 -0500
+Message-ID: <6a83c7fb-dbfa-49df-be8b-f1257ad1a47a@amd.com>
+Date: Sat, 3 May 2025 09:04:28 +0530
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174621352984.22196.3097382094433288761.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: EEVDF regression still exists
+To: Linus Torvalds <torvalds@linux-foundation.org>, "Prundeanu, Cristian"
+	<cpru@amazon.com>
+CC: Peter Zijlstra <peterz@infradead.org>, "Mohamed Abuelfotoh, Hazem"
+	<abuehaze@amazon.com>, "Saidi, Ali" <alisaidi@amazon.com>, "Benjamin
+ Herrenschmidt" <benh@kernel.crashing.org>, "Blake, Geoff"
+	<blakgeof@amazon.com>, "Csoma, Csaba" <csabac@amazon.com>, "Doebel, Bjoern"
+	<doebel@amazon.de>, Gautham Shenoy <gautham.shenoy@amd.com>, Swapnil Sapkal
+	<swapnil.sapkal@amd.com>, Joseph Salisbury <joseph.salisbury@oracle.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-tip-commits@vger.kernel.org"
+	<linux-tip-commits@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>
+References: <20250429213817.65651-1-cpru@amazon.com>
+ <20250430100259.GK4439@noisy.programming.kicks-ass.net>
+ <B27ECDA1-632D-44CD-AB99-B7A9C27393E4@amazon.com>
+ <CAHk-=wgb5WcfMEgsOQg4wzVWuYNgCL-e17YX33ZET_G3-ZCo7g@mail.gmail.com>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <CAHk-=wgb5WcfMEgsOQg4wzVWuYNgCL-e17YX33ZET_G3-ZCo7g@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CD:EE_|PH7PR12MB8828:EE_
+X-MS-Office365-Filtering-Correlation-Id: b938ea01-96e3-4e56-5716-08dd89f36d61
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|36860700013|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RUQvZndDQU14UWlZYnFxb3hsTnIyeFNmR0V0K0VXcTRTTTMwajVXbmxpK095?=
+ =?utf-8?B?WFEreFNVUTJVd2M5RkRNbml3S1gwRDdYZCttdkZ3NGp5Q29HeTYreWUvMElN?=
+ =?utf-8?B?N0RQWUwzMlpXT01IMTl1a0JEejEzNGxybDd3MlB4N0p4eDVlWHdTbThwTmpr?=
+ =?utf-8?B?VmZQbUt6K01nOEQyalpIeEVWVm56UWNlVXk1QkN5L3dlYzhIa1JzKzZReEtX?=
+ =?utf-8?B?SGFuc0w4MENObHdFUmcwbHBDbXJYQ2dIT3JPa2pYU0tMVGluZUI5ZWd0QmJF?=
+ =?utf-8?B?dWRlWHlWWTNqeGR5QXlqSUZZd2h3TTB1V0xYeG0vbkxSaG1NYVdOd3ZycHd4?=
+ =?utf-8?B?UDVwSm42TFJWR29ZYm40UncrTGhkN05TczZmRDJjckt1K2gzbkE2RUZscDNF?=
+ =?utf-8?B?MFdmNjJveGdLY1hPT3ZnMTFGam5DOXhVMHV6VXNrZkNrNGRIaTh6Vnc5V1ph?=
+ =?utf-8?B?bFZ0MnVhSlZrRGpmc2R1ZTF5WmFBN2dGSkJjVmE1YWdNQ3J0VmNEOWE5K0ds?=
+ =?utf-8?B?TFdOdGc3S3o0VWxEYXB3QjRoNXJyS1JwQi9hS0REdUp4YjhLZ1NIbVFIS0Rv?=
+ =?utf-8?B?cFY2MUhwaFo4M0kxTW1nU29hamE2R3lySlgwL1pSUUE2MXRNcm1hUFl4NXlI?=
+ =?utf-8?B?bnZvNGxYajRzTmI2bko3VXV6NWJENTkwVUJncVpwSXN1RWxyL3cyS2QyRmND?=
+ =?utf-8?B?aEJOUThucFU5bUhRVW5RYklyNTV3Qi8wVXVHcHdJd2tYaVNsU2RoSU8zamNE?=
+ =?utf-8?B?N0pJb3J3TkgvVmFueDUrVWVEeVliRTVURUtYQVRocXFadmxwY0pCamVKMFZx?=
+ =?utf-8?B?emppcFdSNDAyVG1hdlMyRzlMdDlqYkdRczhia05pTXgxZFlJdnB4Vi9pdE11?=
+ =?utf-8?B?LzFEc3IxbCtsU3llZGpITFdjbmNFWmpvaGtpeUdVMk9uZUErdm9WREVjTGd6?=
+ =?utf-8?B?NnpCREZGK1ZrblhiQzVyb2VudC9pUktFdW5kdGVNQVNhQWM1dm43c0NyQ1gw?=
+ =?utf-8?B?bS9DSmc0SjFucWtBdnE2RDNaN3cxTWFMTzhFY3I3dU9mb1ZHRnFuSXNxdEo2?=
+ =?utf-8?B?eEljNHFwcHhic0JaMy82SzM4dUlXWS8zQnFFSWxxc0I2SUk3ZHdtdkxBcWxO?=
+ =?utf-8?B?Nng2andQS0pBTXorUFBENGRHdDRnL1UyTW1hYjVUQjFjSCt3aUtrdS80NldS?=
+ =?utf-8?B?UEw2SmFVRFd6eFlCVUVkSE1iZ1BUZ3hxOWtPOXFxL2pJV2JwQU15K3FWUThu?=
+ =?utf-8?B?MEt0dnpCUWxyVWJ5ayt2aGR0UHV1VjBtcytEUFdZRkxVZGpQaHhJeXNyL3lO?=
+ =?utf-8?B?QU05U05CeUIzZi85RXltQ29xWlExYmRlcEJaTmF2NmpIZklKdDFSYkhMaEc0?=
+ =?utf-8?B?b2ROY3VZK01LZ0hyK0wyWjZBMldlOSttNDFVNFM4bWoyTnA2RE1CN1dsdVkx?=
+ =?utf-8?B?aFBQdnFxcHZjM1huVisxck93UFBIa3VSVUd1SlIxcDRGQXk0cXdodnorenFU?=
+ =?utf-8?B?ZE4vR0RlUnh6R0lxbEkvQ3hNTTRzd05CMXRBZ0ZoRGVMQXVlaHZMcXc0MnVX?=
+ =?utf-8?B?MnhZSTdDWGdXcm1HcWdjTVFUYWR1V201K29jcWxNTk1EbWsxSjEwNStLNkhC?=
+ =?utf-8?B?ZDRYSmdOWnIrMlcyeWY1OGNpejFYTXZIMVhzRUJwWWlDWE5rdWEzZmdyRkM2?=
+ =?utf-8?B?NVdKVkdkS1dWMWtDdkdWaDQ0ZnVUdGVZTlJpdXorZ1Z3V2tubDBNQzNuQUZm?=
+ =?utf-8?B?bisrU0JEb1NyN0hoSE9oTzZqeThJeGNFcXMvNHJhdTZDUXgvdzVNcWNBZWp1?=
+ =?utf-8?B?L1NXZGwyU2gzQTV4cjNyMkg5YWN1MCszQzN6SGR6bUd4NUJwRkdHMGx6YVVt?=
+ =?utf-8?B?V2kxREhBTGljUjNUd3g0a0ZKSkIwbUpaWHVJNTVHVDc1VG9yV1duVE5tb3Nm?=
+ =?utf-8?B?cEIvaHNyMHpMN0cxeWdEbm45bjNORjJhRHJIYTJDUGd2OXF6YkJLSVJHZVdw?=
+ =?utf-8?B?T2lVODFDemlGQmdIVTZmUnU3d0swVFBXbFBubVRzSzIzcERqajU5NlNCL0hS?=
+ =?utf-8?Q?8S5Zos?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(36860700013)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 May 2025 03:34:36.0969
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b938ea01-96e3-4e56-5716-08dd89f36d61
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015CD.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8828
 
-The following commit has been merged into the irq/urgent branch of tip:
+Hello Linus,
 
-Commit-ID:     38a05c0b87833f5b188ae43b428b1f792df2b384
-Gitweb:        https://git.kernel.org/tip/38a05c0b87833f5b188ae43b428b1f792df2b384
-Author:        Stephan Gerhold <stephan.gerhold@linaro.org>
-AuthorDate:    Fri, 02 May 2025 13:22:28 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 02 May 2025 21:07:02 +02:00
+On 5/2/2025 11:22 PM, Linus Torvalds wrote:
+> On Fri, 2 May 2025 at 10:25, Prundeanu, Cristian <cpru@amazon.com> wrote:
+>>
+>> Another, more recent observation is that 6.15-rc4 has worse performance than
+>> rc3 and earlier kernels. Maybe that can help narrow down the cause?
+>> I've added the perf reports for rc3 and rc2 in the same location as before.
+> 
+> The only _scheduler_ change that looks relevant is commit bbce3de72be5
+> ("sched/eevdf: Fix se->slice being set to U64_MAX and resulting
+> crash"). Which does affect the slice calculation, although supposedly
+> only under special circumstances.> 
+> Of course, it could be something else.
 
-irqchip/qcom-mpm: Prevent crash when trying to handle non-wake GPIOs
+Since it is the only !SCHED_EXT change in kernel/sched, Cristian can
+perhaps try reverting it on top of v6.15-rc4 and checking if the
+benchmark results jump back to v6.15-rc3 level to rule that single
+change out. Very likely it could be something else.
 
-On Qualcomm chipsets not all GPIOs are wakeup capable. Those GPIOs do not
-have a corresponding MPM pin and should not be handled inside the MPM
-driver. The IRQ domain hierarchy is always applied, so it's required to
-explicitly disconnect the hierarchy for those. The pinctrl-msm driver marks
-these with GPIO_NO_WAKE_IRQ. qcom-pdc has a check for this, but
-irq-qcom-mpm is currently missing the check. This is causing crashes when
-setting up interrupts for non-wake GPIOs:
+> 
+> For example, we have a AMD performance regression in general due to
+> _another_ CPU leak mitigation issue, but that predates rc3 (happened
+> during the merge window), so that one isn't relevant, but maybe
+> something else is..
+> 
+> Although honestly, that slice calculation still looks just plain odd.
+> It defaults the slice to zero, so if none of the 'break' conditions in
+> the first loop happens, it will reset the slice to that zero value and
 
- root@rb1:~# gpiomon -c gpiochip1 10
-   irq: IRQ159: trimming hierarchy from :soc@0:interrupt-controller@f200000-1
-   Unable to handle kernel paging request at virtual address ffff8000a1dc3820
-   Hardware name: Qualcomm Technologies, Inc. Robotics RB1 (DT)
-   pc : mpm_set_type+0x80/0xcc
-   lr : mpm_set_type+0x5c/0xcc
-   Call trace:
-    mpm_set_type+0x80/0xcc (P)
-    qcom_mpm_set_type+0x64/0x158
-    irq_chip_set_type_parent+0x20/0x38
-    msm_gpio_irq_set_type+0x50/0x530
-    __irq_set_trigger+0x60/0x184
-    __setup_irq+0x304/0x6bc
-    request_threaded_irq+0xc8/0x19c
-    edge_detector_setup+0x260/0x364
-    linereq_create+0x420/0x5a8
-    gpio_ioctl+0x2d4/0x6c0
+I believe setting slice to U64_MAX was the actual problem. Previously,
+when the slice was initialized as:
 
-Fix this by copying the check for GPIO_NO_WAKE_IRQ from qcom-pdc.c, so that
-MPM is removed entirely from the hierarchy for non-wake GPIOs.
+       cfs_rq = group_cfs_rq(se);
+       slice = cfs_rq_min_slice(cfs_rq);
 
-Fixes: a6199bb514d8 ("irqchip: Add Qualcomm MPM controller driver")
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org
----
- drivers/irqchip/irq-qcom-mpm.c | 3 +++
- 1 file changed, 3 insertions(+)
+If the "se" was delayed, it basically means that the group_cfs_rq() had
+no tasks on it and cfs_rq_min_slice() would return "~0ULL" which will
+get propagated and can lead to bad math.
 
-diff --git a/drivers/irqchip/irq-qcom-mpm.c b/drivers/irqchip/irq-qcom-mpm.c
-index 7942d8e..f772deb 100644
---- a/drivers/irqchip/irq-qcom-mpm.c
-+++ b/drivers/irqchip/irq-qcom-mpm.c
-@@ -227,6 +227,9 @@ static int qcom_mpm_alloc(struct irq_domain *domain, unsigned int virq,
- 	if (ret)
- 		return ret;
- 
-+	if (pin == GPIO_NO_WAKE_IRQ)
-+		return irq_domain_disconnect_hierarchy(domain, virq);
-+
- 	ret = irq_domain_set_hwirq_and_chip(domain, virq, pin,
- 					    &qcom_mpm_chip, priv);
- 	if (ret)
+> then the
+> 
+>          slice = cfs_rq_min_slice(cfs_rq);
+> 
+> ion that second loop looks like it might just pick up that zero value again.
+
+If the first loop does not break, even for "if (cfs_rq->load.weight)",
+it basically means that there are no tasks / delayed entities queued
+all the way until root cfs_rq so the slices shouldn't matter.
+
+Enqueue of the next task will correct the slices for the queued
+hierarchy.
+
+> 
+> I clearly don't understand the code.
+> 
+>               Linus
+
+-- 
+Thanks and Regards,
+Prateek
+
 
