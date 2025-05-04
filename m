@@ -1,120 +1,142 @@
-Return-Path: <linux-tip-commits+bounces-5212-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5213-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0A8AA84DC
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 10:44:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AE5AA84E1
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 10:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D987F3B3F8D
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 08:44:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA83A3B8F11
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 08:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1218C17A5BE;
-	Sun,  4 May 2025 08:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E7618C322;
+	Sun,  4 May 2025 08:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8eeP9SV"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AFbBFJAa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xDCg5uSI"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50672AE7C;
-	Sun,  4 May 2025 08:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E1841C7F;
+	Sun,  4 May 2025 08:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746348266; cv=none; b=SzUYfl/rVcEosBqe3Q0EH+ybWO4YW1GFSWsQ7XhyZWhXpN1Zp4hxcr6qTCiaUQTOnAR2XJskQBhYLm+EDnQARN8+yba85HbBf/G6/KCgUnfrEUlpj6x3AV/QD1huo36BndcHP0dcQiXXcISQ+Z0ChVvseOtd2diCRcJLHYJdbzQ=
+	t=1746348867; cv=none; b=LKrlKr3WFRiaB3hVFvagq5n3YJblLvMr6PbN02QVkkxhtvCnH2Rp6VvKPzCbrf1xtQQNLl20GBPn1cQpS3u1QqbaHypQiPBIgV6pjP6DAXc9ETWiZc58+32htd3A1rKV84iK+iaZsiI9jKa3rszttHJHU9BOKsibrr/onNX/UUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746348266; c=relaxed/simple;
-	bh=DuZLt4NBgqyPvHNG4sC1zIFj3mL3e1JjsQxnA4j7FYU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ww/kqp1SCm8GemUr6isGBQhAMGHX0yaadnuzlnYHCKaU4LcuiyxiXyBp0j1kNludOEaFAmahtRRQ4OAz8gXAzL+q/h/60TptBziWSQL6FSZYWf809jkdjqdW0Yvp+amEsBKQzKya42fDprVPoHHV/A+stdefglD8ODwJ7XXrIgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8eeP9SV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01F6C4CEE7;
-	Sun,  4 May 2025 08:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746348265;
-	bh=DuZLt4NBgqyPvHNG4sC1zIFj3mL3e1JjsQxnA4j7FYU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U8eeP9SVPpUQP2vkf42qFVr6qWU0fqdNcgCv8yejCu2l0BA827/0qIf/kHvycanz3
-	 vJJBcy9bsTp97bFLdZR1JYniNqR0C/aAyYM8LC7LWn4OiYCFU1PG39hAMNy3p1Z0a2
-	 VGCAAkDa5fOqdUbUixcw/JJHZdvn0D1xirEu051LPvohbmD3me7NXWXO72rG+3iyXv
-	 yyQ1X12TdSWp+wKc6SRRCHa+LCOfughW5rqdRvNYQdxqvcIZW8zSqD98Rrs8ZHXXnA
-	 irFTKYhH0B+J0ohxiSedbnlasbmtQj+b25P368X6eYBwNueXXukYVqAF9QgtHLu/W9
-	 wp37/NxLBvjpg==
-Date: Sun, 4 May 2025 10:44:20 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org,
-	Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
-	"Chang S. Bae" <chang.seok.bae@intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org,
-	Oleg Nesterov <oleg@redhat.com>
-Subject: Re: hardened_usercopy 32-bit (was: Re: [tip: x86/merge] x86/fpu:
- Make task_struct::thread constant size)
-Message-ID: <aBco5IostuyCepaT@gmail.com>
-References: <20250503120712.GJaBYG8A-D77MllFZ3@fat_crate.local>
- <aBcM7UXj8HQWZeHJ@gmail.com>
+	s=arc-20240116; t=1746348867; c=relaxed/simple;
+	bh=FaPHSfpeS/VKfTQ96ytnifgQJRelrXudnTNIfRrmk10=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=lKpDWf3Xwn8vhN2fqH/i0cEnrF1xgyTOGc0kT9Zq4WA+R4LxDAAbakemcOmBCJER0Sqqi2QFFI2lBvVT+W+b22P+z0dmePallL/kpSKNpAjNrI5ytf0z41aVO5yM3kLxYzH7/gCLOlPpzYqTmH32YgfdS+eBXTEJK81O/L0FPyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AFbBFJAa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xDCg5uSI; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 04 May 2025 08:54:16 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1746348863;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=76mCQ80O10NdR7Wus0DBp50aRGpQKOSRwjtzOp2n3UI=;
+	b=AFbBFJAaQkSgnGlNJlleAcEW200UtSzoc7erAoErsfzUIFrNKXu4YsApVHB9C+U20/i9bF
+	PP3+1JHlx0uyvTUtSZWwiDhrf3jJnEyyunMWv9UJD2maYqa8CV0ccERlOvVtWj99lw/YBV
+	Il7rQw5L5DosOmD9PDu4dFBbSWDRjyhkex84nw2eM4URE4ZdFDSuMQc0+TgFZLBw5rP66h
+	DvmIlWpF6gcDLOyLb9qnl3AGu8wdvH9Nvalfqjg/9wFW+Y2nQygNBP9WFFF/XVNZiMmCY+
+	X2gcVuDjB+ymNpj4mITg+eB8FDo67fkbvRAC/mQ2To/pbR5jQv6WQlVDWns77A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1746348863;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=76mCQ80O10NdR7Wus0DBp50aRGpQKOSRwjtzOp2n3UI=;
+	b=xDCg5uSIQRs85T+tQCed491ayAwL8ELtYpCijpwQZa5sujn29qo424Qd7C15xTPyzMB2Xz
+	BUmWNwqOhSS15dBA==
+From: "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/fpu] x86/fpu: Shift fpregs_assert_state_consistent() from
+ arch_exit_work() to its caller
+Cc: Oleg Nesterov <oleg@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ "Chang S . Bae" <chang.seok.bae@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Andy Lutomirski <luto@amacapital.net>, Brian Gerst <brgerst@gmail.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250503143902.GA9012@redhat.com>
+References: <20250503143902.GA9012@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBcM7UXj8HQWZeHJ@gmail.com>
+Message-ID: <174634885768.22196.8535762687259029868.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the x86/fpu branch of tip:
 
-* Ingo Molnar <mingo@kernel.org> wrote:
+Commit-ID:     46c158e3ad0fc633007802c338c409c188ec0a12
+Gitweb:        https://git.kernel.org/tip/46c158e3ad0fc633007802c338c409c188ec0a12
+Author:        Oleg Nesterov <oleg@redhat.com>
+AuthorDate:    Sat, 03 May 2025 16:39:02 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sun, 04 May 2025 10:29:25 +02:00
 
-> 
-> * Borislav Petkov <bp@alien8.de> wrote:
-> 
-> > On Mon, Apr 14, 2025 at 07:34:48AM -0000, tip-bot2 for Ingo Molnar wrote:
-> >
-> > > The fpu_thread_struct_whitelist() quirk to hardened usercopy can be 
-> > > removed, now that the FPU structure is not embedded in the task 
-> > > struct anymore, which reduces text footprint a bit.
-> > 
-> > Well, hardened usercopy still doesn't like it on 32-bit, see splat below:
-> > 
-> > I did some debugging printks and here's what I see:
-> > 
-> > That's the loop in copy_uabi_to_xstate(), copying the first FPU state
-> > - XFEATURE_FP - to the kernel buffer:
-> > 
-> > [    1.752756] copy_uabi_to_xstate: i: 0 dst: 0xcab11f40, offset: 0, size: 160, kbuf: 0x00000000, ubuf: 0xbfcbca80
-> > [    1.754600] copy_from_buffer: dst: 0xcab11f40, src: 0xbfcbca80, size: 160
-> > 
-> > hardened wants to check it:
-> > 
-> > [    1.755823] __check_heap_object: ptr: 0xcab11f40, slap_address: 0xcab10000, size: 2944
-> > [    1.757102] __check_heap_object: offset: 2112
-> > 
-> > and figures out it is in some weird offset 2112 from *task_struct* even
-> > though:
-> > 
-> > [    1.750149] copy_uabi_to_xstate: sizeof(task_struct): 1984
-> > 
-> > btw, the buffer is big enough too:
-> > 
-> > [    1.749077] copy_uabi_to_xstate: sizeof(&fpstate->regs.xsave): 576
-> > 
-> > but then it decides to BUG because an overwrite attempt is being done on
-> > task_struct which is bollocks now as struct fpu is not part of it anymore.
-> > 
-> > And this is where I'm all out of ideas so lemme CC folks.
-> 
-> Thx for the report, mind sending the exact .config that fails for you?
+x86/fpu: Shift fpregs_assert_state_consistent() from arch_exit_work() to its caller
 
-BTW., mind sending the full bootlog as well? I cannot reproduce it here 
-with CONFIG_HARDENED_USERCOPY=y, so I suspect it's something about the 
-build, HW or boot environment.
+If CONFIG_X86_DEBUG_FPU=Y, arch_exit_to_user_mode_prepare() calls
+arch_exit_work() even if ti_work == 0. There only reason is that we
+want to call fpregs_assert_state_consistent() if TIF_NEED_FPU_LOAD
+is not set.
 
-Thanks,
+This looks confusing. arch_exit_to_user_mode_prepare() can just call
+fpregs_assert_state_consistent() unconditionally, it depends on
+CONFIG_X86_DEBUG_FPU and checks TIF_NEED_FPU_LOAD itself.
 
-	Ingo
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Chang S . Bae <chang.seok.bae@intel.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250503143902.GA9012@redhat.com
+---
+ arch/x86/include/asm/entry-common.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/include/asm/entry-common.h b/arch/x86/include/asm/entry-common.h
+index 77d2055..d535a97 100644
+--- a/arch/x86/include/asm/entry-common.h
++++ b/arch/x86/include/asm/entry-common.h
+@@ -53,7 +53,6 @@ static inline void arch_exit_work(unsigned long ti_work)
+ 	if (unlikely(ti_work & _TIF_IO_BITMAP))
+ 		tss_update_io_bitmap();
+ 
+-	fpregs_assert_state_consistent();
+ 	if (unlikely(ti_work & _TIF_NEED_FPU_LOAD))
+ 		switch_fpu_return();
+ }
+@@ -61,7 +60,9 @@ static inline void arch_exit_work(unsigned long ti_work)
+ static inline void arch_exit_to_user_mode_prepare(struct pt_regs *regs,
+ 						  unsigned long ti_work)
+ {
+-	if (IS_ENABLED(CONFIG_X86_DEBUG_FPU) || unlikely(ti_work))
++	fpregs_assert_state_consistent();
++
++	if (unlikely(ti_work))
+ 		arch_exit_work(ti_work);
+ 
+ 	fred_update_rsp0();
 
