@@ -1,188 +1,323 @@
-Return-Path: <linux-tip-commits+bounces-5229-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5230-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C74AA88E0
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 20:08:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F481AA89B9
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 May 2025 00:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A5927A1106
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 18:07:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6860C7A66AF
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 May 2025 22:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6212824677F;
-	Sun,  4 May 2025 18:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07E316D9C2;
+	Sun,  4 May 2025 22:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="mzfYCnbI"
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2059.outbound.protection.outlook.com [40.107.243.59])
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="stcnGy5I"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856256DCE1;
-	Sun,  4 May 2025 18:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.59
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746382109; cv=fail; b=DoEiAlIKab7UaejI1HBOJTjqj0ElNQ92YPucyQUAhm/u0Tk+ANhTDKT4xCL8eZQFVtyRfeFs5FjTwHMcMOPp0/x7s4CHB5XryG2mwF7QTPOYMbrMWHM6lI4WQNxygFSgVfhmt9teHooXGlugzj1hQc629/0XL/A45FSk9DfeWaQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746382109; c=relaxed/simple;
-	bh=FJFZf9eGVYw4xRZwHsvh4DTfcOFXeVDg4TiDxjyxnEc=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=q6aeWF9pIKOgdGQyPQOH5qw3REma2lNf1KYtwGfGzXeu1al6yymP+cYTRd1HLgbuDCWz1y8RFQotqSFmoSxckUU80tS3nMB+9FIcjMBM1qVBUcjcG5Zuk8HwWLMEewcLZPKL7ZI+Txx5aXqJnteVCHWgU0VoPQzgmVJIkVHmvhk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=mzfYCnbI; arc=fail smtp.client-ip=40.107.243.59
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MCIYpJcKOJ+oTyOBn/h5HxDvWlbfhVCep1/gUpj4MQ717nfUx2fulInautGHBTGTvmkT8WrhmM5YNrfDT8j9uQHx4cdYShKCx4vKzZmxjuPwa0JmesOoOAsgdc2ZSmC51zPk6xrYMpHvig5T48C2avzMZhfohJ7WGNxs8FA8XQ5fjRuWFSyoC9XQJa6eoffqW4S2m6KRplSfGlkZ5RwLEyL8jPP9gVk7bvgZGqAPUfO8tuSSolEKnHQQNZ6oic8q32LOqaLo9Z5ZKdxHzt0anJKRZPquGrg4H6Vnq7wvWEkafIuPisEe+cSaQkY3h1UVnUTvT34LzFw+5p98K7bM7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+1l1hh6xozOata6HtHNWygWruwzAeN2tPIb/oaT1nnA=;
- b=LZU4yibP9PzOCIeXRVi7gBgzpcWqYSShg7bLgaGsgH93aV1gmWtG8+7sr6b2VadU4il7IMFJdw3j6EE6tZ+zkGc1FLCrktIzbccS9yr9Nk22CTNtRHmgrI8I+p/wZzMrxBD7XqQO+WjdHF9hoBtn1X/NEZpZi3LTfOJMZqHOqmZIRLyV8SjLFu8Jueo+JTp66xW6T8Wm7Faq9ymccjRQPoIdrVBlcfZm2/FYiH3bgpHrtEI6x6P4o9sOrE3efw7HdBPXW4ANADcaTItrXGBVwKC9F293CLA77FXIuEi31Eg9i+6Rt8zKUAKSpzOPUfC/jvOMRKwB0tViQSjWj/Em2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+1l1hh6xozOata6HtHNWygWruwzAeN2tPIb/oaT1nnA=;
- b=mzfYCnbIfEE2BSZTkdKsDBrF99weaJ+UhN+qmojDxCLK4evT6ieCkaKkcOLXE0j+bIuece3mddZRwxvLwDE4KRbBKRr/kVzQcHcW4MarQjEb13oWDHIWZ1geJz+snD1tl41u8/xC5BRrNlZ7zHa4qio+ee/U9FSj71DgdnyDpaw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by MW6PR12MB8899.namprd12.prod.outlook.com (2603:10b6:303:248::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.21; Sun, 4 May
- 2025 18:08:24 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%6]) with mapi id 15.20.8699.022; Sun, 4 May 2025
- 18:08:23 +0000
-Message-ID: <a3fc2553-6a2c-45d8-a514-bc9d43b1d525@amd.com>
-Date: Sun, 4 May 2025 13:08:23 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/CPU/AMD: Clean up the last-reset printing code a bit
-To: Borislav Petkov <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
- Yazen Ghannam <yazen.ghannam@amd.com>, x86@kernel.org
-References: <20250422234830.2840784-6-superm1@kernel.org>
- <174617858494.22196.5727323411231361285.tip-bot2@tip-bot2>
- <aBcLJxjTQGa1-r5S@gmail.com> <aBcRXYkJlfySzBEx@gmail.com>
- <20250504095212.GBaBc4zOxcAKQ26cbn@fat_crate.local>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20250504095212.GBaBc4zOxcAKQ26cbn@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN7PR04CA0194.namprd04.prod.outlook.com
- (2603:10b6:806:126::19) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C103A17BD9;
+	Sun,  4 May 2025 22:30:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746397842; cv=none; b=blSsHJA3uozlhFewvYxaHC4r7QxIYeY4XbtrncuVrSY8oFMXw2r9FaoQQF2F5bMPIgYUrzAUdxVMfyFoOPNQydSqM31MVE/oUTzSggHqGXxo5aeegzdq5fnxTL+Ms+4PkyFgDqF4Xbmk0zVCC6U/dy9XZNrfrqBdEDkw3iBoMSQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746397842; c=relaxed/simple;
+	bh=72R/lYceIJnJbBsVKju62bJw1eCFFK+MwoHbhFYYyi4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L7UxWk0vtJHqAC0U9hFHRhZqRzXGF/Vc1pEUAzZ4wizuZdRKYaQmtM5+/tMt7s+x2PVgixQkw4SWlSkhKlno00U+ErFEfvmt4rDgT0UhBhAVmAvTQgWLwk4X3UMsgStva2UdnUTRLfkoBovh1OGMIQcSAa0AUjJW6cqXrIUeoTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=stcnGy5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4DEC4CEE7;
+	Sun,  4 May 2025 22:30:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746397842;
+	bh=72R/lYceIJnJbBsVKju62bJw1eCFFK+MwoHbhFYYyi4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=stcnGy5I5lz135i3sNLLlVi1A+ZZlC6hOyKMtlL9dbXIjUALRY6BjF+jShxaCoBBz
+	 h4Hpn6O5AU3J/APvPcc2NUqAPlHf4eHJxW6V25U0fpGSLAI4OjruqTo4oRBiuxLbQe
+	 X9vhpjmdiRitll/lpXYXyL0m9oCDTwaj6IjcTyQ0qG7kPh4BX6v1NVCuH1ugJukq3W
+	 rZQ4MXCac4UQpXZyxT6Ap1tSPZ5FDeTbBbTs9ZgltbppJrzUW1PkWT+xyAZsByxByF
+	 xfudzibDr9wP5AN3HlRuNPLfi7dGlWeOsykZpeb6DFX0eeP+vHnWMCy9OfTr7yP6TQ
+	 ja5nmQ1A5E/1A==
+Date: Sun, 4 May 2025 15:30:38 -0700
+From: Kees Cook <kees@kernel.org>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Ingo Molnar <mingo@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-tip-commits@vger.kernel.org,
+	Andy Lutomirski <luto@kernel.org>, Brian Gerst <brgerst@gmail.com>,
+	"Chang S. Bae" <chang.seok.bae@intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>, x86@kernel.org
+Subject: Re: hardened_usercopy 32-bit (was: Re: [tip: x86/merge] x86/fpu:
+ Make task_struct::thread constant size)
+Message-ID: <202505041418.F47130C4C8@keescook>
+References: <20250503120712.GJaBYG8A-D77MllFZ3@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|MW6PR12MB8899:EE_
-X-MS-Office365-Filtering-Correlation-Id: ff001e1f-8e87-4f1a-6c83-08dd8b36a8ab
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WUZBUkdsQTNNSEtCZXNhdDhGcWp0amdqOU10MlhtQ2NTQUNpWEM2UXZZTktr?=
- =?utf-8?B?NUVBWjlSRitTcER6clk0dm1CQ2FsN0ZZd2hSR29vWmQ3Y1VGN245K0ErTlg1?=
- =?utf-8?B?TitUUzBGK1h5My84aFBSeDUwMWYrTWREWi8wTGNzNFZUUjAyc1JiNEptQjl2?=
- =?utf-8?B?Q05BNWxzTW11T1BlQ2VWSU9iTy82WER5d2Vmd2RtRStpSVRZRHVGbjlMRlpC?=
- =?utf-8?B?Y1ZLdXNkdnJOaXhncEJyU3lWLzVYbXZGbFA4ZjlleEdwcjJYczBVblV0Vkx3?=
- =?utf-8?B?Ym51NS9HckFKdE1jYjZ1bnUyd25EK3ZKU2l5MEVhOVNMVlMxcjVnQmxsTmdx?=
- =?utf-8?B?eHBrZDdja0xOUmxKNFEvMEtIRElQVjZLMFNwYmV3Nk9kSkQ1Mm16b1RqbC9Z?=
- =?utf-8?B?N0piVW51V25nblA0TXpnbDdpd2lrdHJiNUxSUkx5aXVPeDVac2sreDJZZnFu?=
- =?utf-8?B?dWQxTTZsTERFY3IxcE1aQmNxN21iSXZHWDNpVis2WWpYUXI1Rkprc2pVUk5C?=
- =?utf-8?B?UU5uWXhrUUlla3Y3NFBhbkdSN24xeno2MkkyRTRhN3J5V0c0V3ZTY0pPTGgw?=
- =?utf-8?B?SVFsSmVtb1R3RGpwYm1FNUl5MTJYbTNraWFTaGdncm95MXlFSjU0UDNiemtx?=
- =?utf-8?B?azliSzlyTWFFUDExaCs3eE5UdnhkazZzYkRZVnRyQkJyZzJsOUwxb3MzNVBp?=
- =?utf-8?B?WnFsNnBmdUh5TkU1WGNzVTVXb0dNcDlIYzNDWGhhVWYvdVRHeWlSSWdpT2V6?=
- =?utf-8?B?bXdMSkFyNzljcm11b2tPRVp0cHRsNXBrV0xPaVExWHR1eHdLYWllZ3FxK0Ew?=
- =?utf-8?B?cUg4RlJkZTk5YytIdG5FUENUSzhyamlFdUdjQk14OC9WR0FEeUxhaGJYNVEx?=
- =?utf-8?B?UFFEejY1eDBudC9iekQzeXgrY2M3STFvNkp5TDR6eGx4VEVWTG4zMkZRV0M2?=
- =?utf-8?B?ZWtWOXBSbDhKSDdYblJrcjB0Z1RqTjRmM0RiQXBpbDhSWk10K00wNkxySEJX?=
- =?utf-8?B?cTAzVDZPcElva2NFYlYwSHJmTTJPRTVLZEhMaHFuQklLSnZvMlliUmVUREha?=
- =?utf-8?B?MFNJbnRSUFRtOGJoMkRhcU9laWgrVUpLRmRSOU5xT2IrMFlmSm5UbXF6R1dp?=
- =?utf-8?B?aU5xcVFDNDErR3J0Q3NnWEhnUTAwKzZhVFY3cTNBcWtPNnRaQ2VUVUZRd01Y?=
- =?utf-8?B?VFh5aXpQUmNxdVZwRDZqOXg2MU00U2w1a2NUQ3g0NnQvbjNRZXVUSTh3NzlI?=
- =?utf-8?B?TkFXcStSUnlNU1VXUTdieTJ1SkFIYitZdGRSWHlGb0NzeVRQV1JFM1lJb1hx?=
- =?utf-8?B?enJXdGtpb1ZxWmtLOUxGUkJ1R3crUE9BVjlZTnY4UGFobGxxUVpsVVdmTmdq?=
- =?utf-8?B?aTBSc0JCUmVEYVJRcXlobmtJSXVJa0JGNU5pcFo1TTF4c2dpMFB3SnhoNWRH?=
- =?utf-8?B?RTN0RG45dzBqV21mRS9yTFBEYUpoeklKRTdab1NiU3dMMzJ4UDhzWFk5Vzcx?=
- =?utf-8?B?TlpFeFFvMFZvNlYrMFZLZ3M1bDlmanZlNXQvSXhUODAzMGdUMXNDbjY5cDBU?=
- =?utf-8?B?S0FtYVVoaTRidk9jOENpaEltR2E0UndSWEVGRVUvbG54WHJ6UnJSNlZmNHJV?=
- =?utf-8?B?dGIydnhHSUs1bEQ4QTBiWXJVbXlQbmhHMHY4ai9IcjZyWmhrcWsxcUFYb1kz?=
- =?utf-8?B?Z0EyN2RFenU2Szd5MUtVeTdVNTE2Si9XVjRzZWtaSGxnaVlXTEtObGJiRklw?=
- =?utf-8?B?OEltSi8vcWIxZkdXMEpYM21Wdk9GWUNaaHQ3VXcwb2UxTlBDcTBLMlRyS3dG?=
- =?utf-8?B?bDBrUzJkNXQrOUMxQkQ1QmYxNUdseVk2WkZ2VFptMWE3ZzdNdFZ4QzBQYjha?=
- =?utf-8?B?OTFyNGErT05pNGJjeHhCOE81NFNDbHhUVUpOOXhwaXJUMEFXYkdOb2RycUF0?=
- =?utf-8?Q?+btXELa/toI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?azhiTnFJWnlVL1ZORTlJMUVxOFY3bzFJeEdEU3BndDFkZGRLc2xMeThKQTJB?=
- =?utf-8?B?QnNZUmt3a0FPRnlGVkdSUld0czJoUE9WM20vTmRSenA0Y290TVJWMnVQTExr?=
- =?utf-8?B?TTQrNGxyWEMzYnJRTHZINFdhaUJCeFpnc0psYnBpc2FGOS9DRGZ2d0ZxMDhN?=
- =?utf-8?B?YkFSSkd2V2NWZkpjKzVFWTJzSjdTQU1BVmlNL0pWUHFMU2R5YkkycmhxcUZE?=
- =?utf-8?B?b2YrbG5hS2puQ2ZTY2UzNUVETHR2R0drTWpGT0FsdHZFdDV2cDJjd0R0dU9O?=
- =?utf-8?B?SXlPZDZKMXhVMGJpeXNsTDFnYXJEUmRvVHNqSzRvamdxbUhOcUNkTHBSd3Z2?=
- =?utf-8?B?dXV1M3U4U3RGY21WRUpIVmxkMmRVYWN5Nko3aFZHL2RWU3hVWkZUSXpSZnlT?=
- =?utf-8?B?RVA0Y2ovcnhVcVcrWFNkbEwxOGUvaTVla1ByYXJRUmFTdTdrUTRiMUJReGtG?=
- =?utf-8?B?QUlQMVJNQ2luZCs1c3FvVVZ2MkJteU9KY1F0dHBjMnRxbjdvY0xzSS9GdXVz?=
- =?utf-8?B?MG9YNzM5TU9JOFVSSHY3eUZiY29YREJUd2ZZQXovZ0Z2Q3M1SDI5VEZNUWxk?=
- =?utf-8?B?RXlnY3pLeHFucEVEWjRQdGZuUTVMTkZxOWhiR1lrSUxnQXFsK3ZHRE4yRHVF?=
- =?utf-8?B?UnVtZGhEaUY2L3Bha2hvOUF1Q0VMSDlPQWV3RzgwOS9BeGJicHFCaW1EM0Rk?=
- =?utf-8?B?ejFQM3U1SmZBQ1BoRFpRR3FJbFM2Q25WOEJTT3p2VHVudVFoejhPK1dVK2xX?=
- =?utf-8?B?dy9GQk5MaDc3STFjTUNKMGlKTmVLQkpMcmJSTzN2RjI5bDREQ3lybmVqc016?=
- =?utf-8?B?aWRCSUg2NGZ3S2kwTzVRZ1g4SFUyUjhIQXpNZUJjOVhBVlBXUVlWUS9QRDlo?=
- =?utf-8?B?cmYyZGdJWkhjUXA0RzFCMzQxRlh1d3ZZM0ZUWnB4cVZRL0NtaldYQ3NLcmdD?=
- =?utf-8?B?cjQ3WCt1d1J4Tmh3a3lEY2RFeDRTYzVDSFdVVjZiM2plcUxUNENCZVB2WG9v?=
- =?utf-8?B?TEpmUXRpcFkrWC9va2RubVU1VVV6QTVvdU42U3BZanRMK003MmlQV1pieU9K?=
- =?utf-8?B?MVFiU3ZNYlNMcGhEOWgrSHdaMlZjdFJIYWJLcTlmcW5BTkpTa2R1VmNqUUU1?=
- =?utf-8?B?Rnk3Ym9PSGIramhPSXlwNElPejArZ3dadXYvZkErb2FJcEpGaWxKR3NKWHNM?=
- =?utf-8?B?S3FjR0JTZmRnNEplYlh5bndtemlZbVZ3bFBOQ1dGd0htQ3BOL2YyMm5EcUNq?=
- =?utf-8?B?cUFMbEdpZFcxU2JRRUYxcG9rMlBrZ2p5M3FLZ0t3c0d4RlVSSUVnVk9CY0Zh?=
- =?utf-8?B?ZGdJVWQ3TmtLNDd4RGVkU3NQWWNYM3hKNzhRbGswMVg1ZVRDQ3VpVkIxMjhw?=
- =?utf-8?B?em1KTHRIZU1ESy9PSFJJL1V1YS9sSjMvYVhxa0pJd0tZSTJSQXRKcTVCUlNE?=
- =?utf-8?B?SEQ3UkE0L2ZiSEQyODB3M2hzTDhJNlJ2bVcySmt2UUhqVTlTeWF1a2RsVUNx?=
- =?utf-8?B?QlR3WEwwcU42bXZ1NmpvVHV5bGFEbEhtY0RpUWZpRHU0Q1g1MEJDMm5adGN4?=
- =?utf-8?B?c0dWcU5hVmlKUGRnOVRjNWdSRHJQT2xSUUExOVdNUEJldWY1RmUwekE0c0dM?=
- =?utf-8?B?di9UaUVyYndqa0UvVjk2Qnl6OXRreHE4V280SDVScnhLZ01KKzl2V0JzTTRl?=
- =?utf-8?B?ZkVPdTVPamE1UkN4WS9oN3o5ZDlJUmFQaXFDSFhoeUN6ei84MDRFejdnanRL?=
- =?utf-8?B?cHdSdmkzQXBzcmRuSnFMc1FxeDNaV1pkd0lOdHFwRE8zNy9paFlYNXNqZ2tN?=
- =?utf-8?B?bVNtTzBOeUExR05wUmpsTlRHYlNuVWI3OE5sTmJXS09aTDQzU1ArRWljU3lh?=
- =?utf-8?B?VUg2eXBLRnV1SXhrVXcrM0RjUkcrOWxpMjZkNWhRZVZ4d3liUFJBYUZBeURK?=
- =?utf-8?B?bytpYThLSTBVT0tUWkxGSVdwUjg0NXlVZDV3azN1dHIxTDhjbXQ5L0ZjNE56?=
- =?utf-8?B?eThXcThwc2QvZHJTZDEwV3Z4ZUY4ZGhJWHN5UWI3MEt1dHhreU1hZE5TSnNp?=
- =?utf-8?B?VldmSjNmalV4U200WnJTcmN3WlVFQ0xFOEZhejJCQ3UvdE1sUHZ3UXVhR09m?=
- =?utf-8?Q?jWIc4hsAkFRw7l9CKvWktr2qi?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ff001e1f-8e87-4f1a-6c83-08dd8b36a8ab
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2025 18:08:23.3342
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Bp/a6TryElaj2eoKSzEI9oSyaHfd532r/9tGTZDv0+YuZ55H0wAlnUmMxbA0z1rhWCNJ1EoDAb1k8i38E5kD8A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8899
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250503120712.GJaBYG8A-D77MllFZ3@fat_crate.local>
 
-On 5/4/2025 4:52 AM, Borislav Petkov wrote:
-> On Sun, May 04, 2025 at 09:03:57AM +0200, Ingo Molnar wrote:
->> Patch attached to clean this all up.
+On Sat, May 03, 2025 at 02:07:12PM +0200, Borislav Petkov wrote:
+> On Mon, Apr 14, 2025 at 07:34:48AM -0000, tip-bot2 for Ingo Molnar wrote:
+> > The fpu_thread_struct_whitelist() quirk to hardened usercopy can be removed,
+> > now that the FPU structure is not embedded in the task struct anymore, which
+> > reduces text footprint a bit.
 > 
-> Ack, just merge it into Mario's original patch.
+> Well, hardened usercopy still doesn't like it on 32-bit, see splat below:
 > 
-> Thx.
+> I did some debugging printks and here's what I see:
 > 
+> That's the loop in copy_uabi_to_xstate(), copying the first FPU state
+> - XFEATURE_FP - to the kernel buffer:
+> 
+> [    1.752756] copy_uabi_to_xstate: i: 0 dst: 0xcab11f40, offset: 0, size: 160, kbuf: 0x00000000, ubuf: 0xbfcbca80
+> [    1.754600] copy_from_buffer: dst: 0xcab11f40, src: 0xbfcbca80, size: 160
+> 
+> hardened wants to check it:
+> 
+> [    1.755823] __check_heap_object: ptr: 0xcab11f40, slap_address: 0xcab10000, size: 2944
+> [    1.757102] __check_heap_object: offset: 2112
+> 
+> and figures out it is in some weird offset 2112 from *task_struct* even
+> though:
+> 
+> [    1.750149] copy_uabi_to_xstate: sizeof(task_struct): 1984
+> 
+> btw, the buffer is big enough too:
+> 
+> [    1.749077] copy_uabi_to_xstate: sizeof(&fpstate->regs.xsave): 576
+> 
+> but then it decides to BUG because an overwrite attempt is being done on
+> task_struct which is bollocks now as struct fpu is not part of it anymore.
+> 
+> And this is where I'm all out of ideas so lemme CC folks.
 
-Yeah no concerns on my side to just squash it in.  If you keep it 
-separate though here's a tag:
+I had to dig a bit to find the series -- this reply seems to have broken
+threading with:
+https://lore.kernel.org/all/20250409211127.3544993-1-mingo@kernel.org/
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> [    1.757898] __check_heap_object: will abort: offset: 2112, size: 160
+> 
+> [    1.758951] usercopy: Kernel memory overwrite attempt detected to SLUB object 'task_struct' (offset 2112, size 160)!
+
+So the useroffset and usersize arguments are what control the allowed
+window of copying in/out of the "task_struct" kmem cache:
+
+        /* create a slab on which task_structs can be allocated */
+        task_struct_whitelist(&useroffset, &usersize);
+        task_struct_cachep = kmem_cache_create_usercopy("task_struct",
+                        arch_task_struct_size, align,
+                        SLAB_PANIC|SLAB_ACCOUNT,
+                        useroffset, usersize, NULL);
+
+task_struct_whitelist() positions this window based on the location of
+the thread_struct within task_struct, and gets the arch-specific details
+via arch_thread_struct_whitelist(offset, size):
+
+static void __init task_struct_whitelist(unsigned long *offset, unsigned long *size)
+{
+        /* Fetch thread_struct whitelist for the architecture. */
+        arch_thread_struct_whitelist(offset, size);
+
+        /*
+         * Handle zero-sized whitelist or empty thread_struct, otherwise
+         * adjust offset to position of thread_struct in task_struct.
+         */
+        if (unlikely(*size == 0))
+                *offset = 0;
+        else
+                *offset += offsetof(struct task_struct, thread);
+}
+
+Commit "x86/fpu: Make task_struct::thread constant size" removed the
+logic for the window, leaving:
+
+static inline void
+arch_thread_struct_whitelist(unsigned long *offset, unsigned long *size)
+{
+        *offset = 0;
+        *size = 0;
+}
+
+So now there is no window that usercopy hardening will allow to be copied
+in/out of task_struct.
+
+> [    1.760651] ------------[ cut here ]------------
+> [    1.761474] kernel BUG at mm/usercopy.c:102!
+> [    1.762240] Oops: invalid opcode: 0000 [#1] SMP
+> [    1.763063] CPU: 6 UID: 0 PID: 1182 Comm: rc Not tainted 6.15.0-rc2+ #35 PREEMPT(full) 
+> [    1.764374] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> [    1.765952] EIP: usercopy_abort+0x79/0x88
+> [    1.768411] Code: c1 89 44 24 0c 0f 45 cb 8b 5d 0c 89 74 24 10 89 4c 24 04 c7 04 24 98 f0 c5 c1 89 5c 24 20 8b 5d 08 89 5c 24 1c e8 d3 8b e7 ff <0f> 0b ba 89 8f ce c1 89 55 f0 89 d6 eb 97 90 3e 8d 74 26 00 85 d2
+> [    1.771573] EAX: 00000068 EBX: 00000840 ECX: 00000000 EDX: 00000006
+> [    1.772638] ESI: c1cdb354 EDI: c1ce0c9a EBP: cc751d40 ESP: cc751d0c
+> [    1.773707] DS: 007b ES: 007b FS: 00d8 GS: 0033 SS: 0068 EFLAGS: 00010292
+> [    1.774831] CR0: 80050033 CR2: 00511860 CR3: 0cde1000 CR4: 003506d0
+> [    1.775921] Call Trace:
+> [    1.776498]  __check_heap_object+0x117/0x14c
+> [    1.777314]  __check_object_size+0x1af/0x250
+> [    1.778129]  ? vprintk+0x13/0x1c
+> [    1.778778]  copy_from_buffer+0xbc/0x114
+> [    1.779498]  copy_uabi_to_xstate+0x1b7/0x31c
+> [    1.780251]  copy_sigframe_from_user_to_xstate+0x27/0x34
+> [    1.781171]  __fpu_restore_sig+0x4ae/0x4c4
+> [    1.781954]  fpu__restore_sig+0x60/0xb0
+> [    1.784487]  ia32_restore_sigcontext+0xe4/0x108
+> [    1.785464]  __do_sys_sigreturn+0x66/0xac
+> [    1.786191]  ia32_sys_call+0x226a/0x30e0
+> [    1.786942]  do_int80_syscall_32+0x83/0x158
+> [    1.787735]  entry_INT80_32+0x108/0x108
+
+But as reported above, there *is* a copy in copy_uabi_to_xstate(). (It
+seems there are several, actually.)
+
+int copy_sigframe_from_user_to_xstate(struct task_struct *tsk,
+                                      const void __user *ubuf)
+{
+        return copy_uabi_to_xstate(x86_task_fpu(tsk)->fpstate, NULL, ubuf, &tsk->thread.pkru);
+}
+
+This appears to be writing into x86_task_fpu(tsk)->fpstate. With or
+without CONFIG_X86_DEBUG_FPU, this resolves to:
+
+	((struct fpu *)((void *)(task) + sizeof(*(task))))
+
+i.e. the memory "after task_struct" is cast to "struct fpu", and the
+uses the "fpstate" pointer. How that pointer gets set looks to be
+variable, but I think the one we care about here is:
+
+        fpu->fpstate = &fpu->__fpstate;
+
+And struct fpu::__fpstate says:
+
+        struct fpstate                  __fpstate;
+        /*
+         * WARNING: '__fpstate' is dynamically-sized.  Do not put
+         * anything after it here.
+         */
+
+So we're still dealing with a dynamically sized thing, even if it's not
+within the literal struct task_struct -- it's still in the kmem cache,
+though.
+
+Looking at the kmem cache size, it has allocated "arch_task_struct_size"
+bytes, which is calculated in fpu__init_task_struct_size():
+
+        int task_size = sizeof(struct task_struct);
+
+        task_size += sizeof(struct fpu);
+
+        /*
+         * Subtract off the static size of the register state.
+         * It potentially has a bunch of padding.
+         */
+        task_size -= sizeof(union fpregs_state);
+
+        /*
+         * Add back the dynamically-calculated register state
+         * size.
+         */
+        task_size += fpu_kernel_cfg.default_size;
+
+        /*
+         * We dynamically size 'struct fpu', so we require that
+         * 'state' be at the end of 'it:
+         */
+        CHECK_MEMBER_AT_END_OF(struct fpu, __fpstate);
+
+        arch_task_struct_size = task_size;
+
+So, this is still copying out of the kmem cache for task_struct, and the
+window seems unchanged (still fpu regs). This is what the window was
+before:
+
+void fpu_thread_struct_whitelist(unsigned long *offset, unsigned long *size)
+{
+        *offset = offsetof(struct thread_struct, fpu.__fpstate.regs);
+        *size = fpu_kernel_cfg.default_size;
+}
+
+And the same commit I mentioned above removed it.
+
+I think the misunderstanding is here:
+
+>    The fpu_thread_struct_whitelist() quirk to hardened usercopy can be removed,
+>    now that the FPU structure is not embedded in the task struct anymore, which
+>    reduces text footprint a bit.
+
+Yes, FPU is no longer in task_struct, but it IS in the kmem cache named
+"task_struct", since the fpstate is still being allocated there.
+
+This partial revert of the earlier mentioned commit, along with a
+recalculation of the fpstate regs location, should fix it, and can get
+squashed into the earlier mentioned commit:
+
+diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
+index eaa7214d6953..ad33903dc92a 100644
+--- a/arch/x86/include/asm/processor.h
++++ b/arch/x86/include/asm/processor.h
+@@ -522,14 +522,12 @@ extern struct fpu *x86_task_fpu(struct task_struct *task);
+ # define x86_task_fpu(task)	((struct fpu *)((void *)(task) + sizeof(*(task))))
+ #endif
+ 
+-/*
+- * X86 doesn't need any embedded-FPU-struct quirks:
+- */
+-static inline void
+-arch_thread_struct_whitelist(unsigned long *offset, unsigned long *size)
++extern void fpu_thread_struct_whitelist(unsigned long *offset, unsigned long *size);
++
++static inline void arch_thread_struct_whitelist(unsigned long *offset,
++						unsigned long *size)
+ {
+-	*offset = 0;
+-	*size = 0;
++	fpu_thread_struct_whitelist(offset, size);
+ }
+ 
+ static inline void
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 3a19877a314e..e8188b0527cf 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -680,6 +680,20 @@ int fpu_clone(struct task_struct *dst, unsigned long clone_flags, bool minimal,
+ 	return 0;
+ }
+ 
++/*
++ * While struct fpu is no longer part of struct thread_struct, it is still
++ * allocated after struct task_struct in the "task_struct" kmem cache. But
++ * since FPU is expected to be part of struct thread_struct, we have to
++ * adjust for it here.
++ */
++void fpu_thread_struct_whitelist(unsigned long *offset, unsigned long *size)
++{
++	/* The allocation follows struct task_struct. */
++	*offset = sizeof(struct task_struct) - offsetof(struct task_struct, thread);
++	*offset += offsetof(struct fpu, __fpstate.regs);
++	*size = fpu_kernel_cfg.default_size;
++}
++
+ /*
+  * Drops current FPU state: deactivates the fpregs and
+  * the fpstate. NOTE: it still leaves previous contents
+
+
+However, I can't test this patch -- I'm not able to reproduce the problem
+either, even with your .config. What hardware are you using?
+
+I assume that for me x86_task_fpu(tsk)->fpstate isn't pointing to struct
+fpu::__fpstate. I'll keep digging...
+
+-- 
+Kees Cook
 
