@@ -1,311 +1,203 @@
-Return-Path: <linux-tip-commits+bounces-5243-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5244-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F782AA9525
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 May 2025 16:12:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E553EAA9849
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 May 2025 18:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6A163BD532
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 May 2025 14:12:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C67B4188EB02
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 May 2025 16:04:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9F9259CA4;
-	Mon,  5 May 2025 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8B92586FE;
+	Mon,  5 May 2025 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="riWvSFNB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e/6W9TTB"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="AXDwvafm"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16B41F9F70;
-	Mon,  5 May 2025 14:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1551487C3;
+	Mon,  5 May 2025 16:04:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746454341; cv=none; b=lxvUAUncvfZsWtppTGhrf8lyi4t+pMza4ecIzawskal+Rk8babOvEj6nuKERC+c3UtcR06fvwacOUOatHKAhlIanQbbA82N3YD6u0+erJ79YQU+0gMIY9V0m8hZgAlyAw8R2m8i4TMnVa4aSEM9PKRpzcgHKIIX+7ElzcdfW2Ew=
+	t=1746461063; cv=none; b=pT/OJG+YufCYR2oMq425wGQQAR4a9gR50ODx10Oyu/QgZJg74xYWuYm46UoHrLINcKq7qMpVeQQAgDnXRynDofU294CZtZk4ysCIcYMltxFX5ePdDz4K2YOsXvsPKaG9tgHOpzD48ezKF+dUrdGag8kEtWgnHHrhpjAVhnx+jFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746454341; c=relaxed/simple;
-	bh=8qGlmhtN6d45m0iYJDpRl9af/26dZhT/YVPFvzmsRus=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=dsG1hNoHDOqK+s7nQfyQtQL2ztIoY+oRCbb2e39E1nO7rn/hXJj+n8MkvR2CkqQ6O1rE+62q0szp9Bfzbj/evrOjOAu9lv0nDJQd1KCss+/NLc9QBw5lJvabWDFlRzBzL/dmXMdcfX3lxJPHnBPQgGK9ubphVLjXGDY1uSRbItM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=riWvSFNB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e/6W9TTB; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 05 May 2025 14:12:11 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746454335;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=97SXynVy8RbV/33z/XSivtrnS3uo7Eyb9hocrgqEeUo=;
-	b=riWvSFNBz4a9BlB2Pu3NjxEcm2pQ5vaqwJjqV0esE0b9ty94oie4q6NW2X5mxMyob/9jk5
-	w+GxsxCwlk7khpIgJRWshye4QRhRVcPAkbH4K9oOVdrGUnGsyS4lf0agOzG26Vn+SvHeuX
-	m5KlptFybVMf+ZKmvyCIPx5kat9G2Wcc3eIJc1ipHgEVGpazLfbszAaAu5IamsHZ65AyPZ
-	JX078UCbIfvA22cxvDwQC313myAWU5PU9z/FTFVKgshGf04xzmSNhLxw4XZKnEjQqAeL4e
-	COGvNEz5pHZhffOKTxo0snLjwCMd8CmNTFCvCkvb9rnhOojTYOFqLIFInEBGXQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746454335;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=97SXynVy8RbV/33z/XSivtrnS3uo7Eyb9hocrgqEeUo=;
-	b=e/6W9TTBahD0mOMTgVLdFzPklK5cKAW/fzmOTNQpoS76QYNK9jHsQ7G4VUM09NaOzVY97k
-	prKs/uDIBnzGTPCw==
-From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/platform] x86/CPU/AMD: Print the reason for the last reset
-Cc: James Dutton <james.dutton@gmail.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>,
- Mario Limonciello <mario.limonciello@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250422234830.2840784-6-superm1@kernel.org>
-References: <20250422234830.2840784-6-superm1@kernel.org>
+	s=arc-20240116; t=1746461063; c=relaxed/simple;
+	bh=wjHjAl6gK0zoew3zDb5vbq6k2Lubi+YiIwuifw1qFE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OHTI20aOS0K7agbPWnpTwLTDLJa8TMRrEHOeyM6EV7vNNlmimuJ5+6y4Sa2fiDYjDMhR/kiJwCPudPRMyxbjed8B4xL/h0qVzRNcqEYk8ZLD0UhQXUqliFBgU27lTL4Rwn4fhJ23bH02KTypfgAeCXkMtGssMaBnB2kxs5qpW6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=AXDwvafm; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2F22B40E0196;
+	Mon,  5 May 2025 16:04:18 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id uvjKqAb2xMf3; Mon,  5 May 2025 16:04:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746461048; bh=eOdR04Av+2p2q0BfKNb9pAObXvs8afM3+NDxhb3Wysg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AXDwvafm5GhPNDRFMYfOCSTnnMUlXbQFulg9OyLgTHPKH+ObCQFNJ8Q2hLW7cAHSK
+	 bXmUxbotjcN98Y9G2Mb/AbtGY/tpUtNZbMr8irF66lf5LNEUQVGp8tmVfYlQqCF6EV
+	 CK676oGgxDIAW9Bq3v5iG9QJ+df9KdSn+1iLX4PY+faBVVqaDuPokPOhgaZxy2hajM
+	 UO6hu69XosxEj1quI4cKa+XMnrTOpYB5rHLxTgOXVpK1toomkz942650gLG6R6meTh
+	 y4xJafQyVwVaMLxmrxYRK+dMY4ei6VfvneCZ3C/3VoGhuIurhVfcCfC20gvq4gLUMI
+	 eXhpPyXZfgDw1/7NnHvb4U5Rzy+qhGON4YGtqNl8ikTaEdT1b7ctbifEuVrrVFSa48
+	 iDyznIZpiOITeQUJw2KqJXSEuEB78O5zrqHwFYZzy2mZJ9sYaN7UYkNu9LJ7ctJcsF
+	 3JtNJqrfM0C5Kv9uepA+3dU+ZE44CjqCOIxHdtQxajF//1BOVFfS8ZNjR3pqLJmBwF
+	 /lN98JDmcgxDB+0SBl1jKsV6G/vOMP5q7i9l/JG/aNf4vGbr9ETmont6EsVln4QZOi
+	 jNpfu2ccpMesGJxVmdsx2oytTDBQMainm9V8/ZLcgWpO+EfsXBYSZpG4d05jw6CAJT
+	 rJ+95viGb0/UNU0v958HWa9c=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 12E2840E0222;
+	Mon,  5 May 2025 16:03:52 +0000 (UTC)
+Date: Mon, 5 May 2025 18:03:46 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Dionna Amalie Glaze <dionnaglaze@google.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Kees Cook <keescook@chromium.org>,
+	Kevin Loughlin <kevinloughlin@google.com>,
+	Len Brown <len.brown@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>, linux-efi@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [tip: x86/boot] x86/boot: Provide __pti_set_user_pgtbl() to
+ startup code
+Message-ID: <20250505160346.GJaBjhYp09sLZ5AyyJ@fat_crate.local>
+References: <20250504095230.2932860-40-ardb+git@google.com>
+ <174636840512.22196.14007684119604658714.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174645433169.22196.15231212692699077898.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <174636840512.22196.14007684119604658714.tip-bot2@tip-bot2>
 
-The following commit has been merged into the x86/platform branch of tip:
+On Sun, May 04, 2025 at 02:20:04PM -0000, tip-bot2 for Ard Biesheuvel wrote:
+> The following commit has been merged into the x86/boot branch of tip:
+> 
+> Commit-ID:     5297886f0cc45db5f4a804caf359e6e7874ee864
+> Gitweb:        https://git.kernel.org/tip/5297886f0cc45db5f4a804caf359e6e7874ee864
+> Author:        Ard Biesheuvel <ardb@kernel.org>
+> AuthorDate:    Sun, 04 May 2025 11:52:45 +02:00
+> Committer:     Ingo Molnar <mingo@kernel.org>
+> CommitterDate: Sun, 04 May 2025 15:59:43 +02:00
+> 
+> x86/boot: Provide __pti_set_user_pgtbl() to startup code
+> 
+> The SME encryption startup code populates page tables using the ordinary
+> set_pXX() helpers, and in a PTI build, these will call out to
+> __pti_set_user_pgtbl() to manipulate the shadow copy of the page tables
+> for user space.
+> 
+> This is unneeded for the startup code, which only manipulates the
+> swapper page tables, and so this call could be avoided in this
+> particular case. So instead of exposing the ordinary
+> __pti_set_user_pgtblt() to the startup code after its gets confined into
+> its own symbol space, provide an alternative which just returns pgd,
+> which is always correct in the startup context.
+> 
+> Annotate it as __weak for now, this will be dropped in a subsequent
+> patch.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: David Woodhouse <dwmw@amazon.co.uk>
+> Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
+> Cc: H. Peter Anvin <hpa@zytor.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Kevin Loughlin <kevinloughlin@google.com>
+> Cc: Len Brown <len.brown@intel.com>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: linux-efi@vger.kernel.org
+> Link: https://lore.kernel.org/r/20250504095230.2932860-40-ardb+git@google.com
+> ---
+>  arch/x86/boot/startup/sme.c |  9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/arch/x86/boot/startup/sme.c b/arch/x86/boot/startup/sme.c
+> index 5738b31..753cd20 100644
+> --- a/arch/x86/boot/startup/sme.c
+> +++ b/arch/x86/boot/startup/sme.c
+> @@ -564,3 +564,12 @@ void __head sme_enable(struct boot_params *bp)
+>  	cc_vendor	= CC_VENDOR_AMD;
+>  	cc_set_mask(me_mask);
+>  }
+> +
+> +#ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+> +/* Local version for startup code, which never operates on user page tables */
+> +__weak
+> +pgd_t __pti_set_user_pgtbl(pgd_t *pgdp, pgd_t pgd)
+> +{
+> +	return pgd;
+> +}
+> +#endif
 
-Commit-ID:     ab8131028710d009ab93d6bffd2a2749ade909b0
-Gitweb:        https://git.kernel.org/tip/ab8131028710d009ab93d6bffd2a2749ade909b0
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 22 Apr 2025 18:48:30 -05:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 05 May 2025 15:51:24 +02:00
+[    1.227968] smp: Brought up 1 node, 32 CPUs
+[    1.231576] smpboot: Total of 32 processors activated (191999.61 BogoMIPS)
+[    1.247644] ------------[ cut here ]------------
+[    1.248697] WARNING: CPU: 17 PID: 104 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x2a/0x80
+[    1.251592] Modules linked in:
+[    1.252370] CPU: 17 UID: 0 PID: 104 Comm: kworker/17:0 Not tainted 6.15.0-rc4+ #2 PREEMPT(voluntary) 
+[    1.253173] node 0 deferred pages initialised in 12ms
+[    1.254539] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
+[    1.257490] Workqueue: events unaccepted_cleanup_work
+[    1.258698] RIP: 0010:__static_key_slow_dec_cpuslocked+0x2a/0x80
+[    1.259574] Code: 0f 1f 44 00 00 53 48 89 fb e8 82 66 e5 ff 8b 03 85 c0 78 16 74 54 83 f8 01 74 11 8d 50 ff f0 0f b1 13 75 ec 5b e9 66 bf 8c 00 <0f> 0b 48 c7 c7 00 44 54 82 e8 a8 5f 8c 00 8b 03 83 f8 ff 74 33 85
+[    1.266446] Memory: 7574396K/8381588K available (13737K kernel code, 2487K rwdata, 6056K rodata, 3916K init, 3592K bss, 791248K reserved, 0K cma-reserved)
+[    1.263574] RSP: 0018:ffffc9000048fe40 EFLAGS: 00010286
+[    1.267573] RAX: 00000000ffffffff RBX: ffffffff82f10d00 RCX: 0000000000000000
+[    1.269388] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffffffff82f10d00
+[    1.275578] RBP: ffff88827b7d4d98 R08: 8080808080808080 R09: ffff888100b59100
+[    1.277441] R10: ffff888100050cc0 R11: fefefefefefefeff R12: ffff88827326e300
+[    1.279574] R13: ffff888100bc1940 R14: ffff8881000e2405 R15: ffff8881000e2400
+[    1.281460] FS:  0000000000000000(0000) GS:ffff8882f0400000(0000) knlGS:0000000000000000
+[    1.281460] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.281460] CR2: 0000000000000000 CR3: 0008000002c22000 CR4: 00000000003506f0
+[    1.287576] Call Trace:
+[    1.288381]  <TASK>
+[    1.289015]  static_key_slow_dec+0x1f/0x40
+[    1.289980]  process_one_work+0x171/0x330
+[    1.290988]  worker_thread+0x247/0x390
+[    1.291576]  ? __pfx_worker_thread+0x10/0x10
+[    1.292773]  kthread+0x107/0x240
+[    1.293536]  ? __pfx_kthread+0x10/0x10
+[    1.295573]  ret_from_fork+0x30/0x50
+[    1.295575]  ? __pfx_kthread+0x10/0x10
+[    1.296580]  ret_from_fork_asm+0x1a/0x30
+[    1.297507]  </TASK>
+[    1.298085] ---[ end trace 0000000000000000 ]---
 
-x86/CPU/AMD: Print the reason for the last reset
+mingo simply doesn't want to listen and stop queueing untested patches.
 
-The following register contains bits that indicate the cause for the
-previous reset.
+So lemme whack this one.
 
-  PMx000000C0 (FCH::PM::S5_RESET_STATUS)
+My SNP guest had CONFIG_MITIGATION_PAGE_TABLE_ISOLATION=y leading to the
+above.
 
-This is useful for debug. The reasons for reset are broken into 6 high level
-categories. Decode it by category and print during boot.
+Thx.
 
-Specifics within a category are split off into debugging documentation.
+-- 
+Regards/Gruss,
+    Boris.
 
-The register is accessed indirectly through a "PM" port in the FCH. Use
-MMIO access in order to avoid restrictions with legacy port access.
-
-Use a late_initcall() to ensure that MMIO has been set up before trying to
-access the register.
-
-This register was introduced with AMD Family 17h, so avoid access on older
-families. There is no CPUID feature bit for this register.
-
-  [ bp: Simplify the reason dumping loop.
-    - merge a fix to not access an array element after the last one:
-      https://lore.kernel.org/r/20250505133609.83933-1-superm1@kernel.org
-      Reported-by: James Dutton <james.dutton@gmail.com>
-      ]
-
-  [ mingo:
-    - Use consistent .rst formatting
-    - Fix 'Sleep' class field to 'ACPI-State'
-    - Standardize pin messages around the 'tripped' verbiage
-    - Remove reference to ring-buffer printing & simplify the wording
-    - Use curly braces for multi-line conditional statements ]
-
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250422234830.2840784-6-superm1@kernel.org
----
- Documentation/arch/x86/amd-debugging.rst | 48 ++++++++++++++++++++-
- arch/x86/include/asm/amd/fch.h           |  1 +-
- arch/x86/kernel/cpu/amd.c                | 54 +++++++++++++++++++++++-
- 3 files changed, 103 insertions(+)
-
-diff --git a/Documentation/arch/x86/amd-debugging.rst b/Documentation/arch/x86/amd-debugging.rst
-index d3290f2..d92bf59 100644
---- a/Documentation/arch/x86/amd-debugging.rst
-+++ b/Documentation/arch/x86/amd-debugging.rst
-@@ -52,6 +52,7 @@ report generated from this script to
- 
- Spurious s2idle wakeups from an IRQ
- ===================================
-+
- Spurious wakeups will generally have an IRQ set to ``/sys/power/pm_wakeup_irq``.
- This can be matched to ``/proc/interrupts`` to determine what device woke the system.
- 
-@@ -134,6 +135,7 @@ The ``amd_s2idle.py`` script will capture most of these artifacts for you.
- 
- s2idle PM debug messages
- ========================
-+
- During the s2idle flow on AMD systems, the ACPI LPS0 driver is responsible
- to check all uPEP constraints.  Failing uPEP constraints does not prevent
- s0i3 entry.  This means that if some constraints are not met, it is possible
-@@ -160,6 +162,7 @@ After doing this, run the suspend cycle and look specifically for errors around:
- 
- Historical examples of s2idle issues
- ====================================
-+
- To help understand the types of issues that can occur and how to debug them,
- here are some historical examples of s2idle issues that have been resolved.
- 
-@@ -248,6 +251,7 @@ state entry.
- 
- Runtime power consumption issues
- ================================
-+
- Runtime power consumption is influenced by many factors, including but not
- limited to the configuration of the PCIe Active State Power Management (ASPM),
- the display brightness, the EPP policy of the CPU, and the power management
-@@ -272,6 +276,7 @@ the battery life when more heavily biased towards performance.
- 
- BIOS debug messages
- ===================
-+
- Most OEM machines don't have a serial UART for outputting kernel or BIOS
- debug messages. However BIOS debug messages are useful for understanding
- both BIOS bugs and bugs with the Linux kernel drivers that call BIOS AML.
-@@ -318,3 +323,46 @@ As mentioned above, parsing by hand can be tedious, especially with a lot of
- messages.  To help with this, a tool has been created at
- `amd-debug-tools <https://git.kernel.org/pub/scm/linux/kernel/git/superm1/amd-debug-tools.git/about/>`_
- to help parse the messages.
-+
-+Random reboot issues
-+====================
-+
-+When a random reboot occurs, the high-level reason for the reboot is stored
-+in a register that will persist onto the next boot.
-+
-+There are 6 classes of reasons for the reboot:
-+ * Software induced
-+ * Power state transition
-+ * Pin induced
-+ * Hardware induced
-+ * Remote reset
-+ * Internal CPU event
-+
-+.. csv-table::
-+   :header: "Bit", "Type", "Reason"
-+   :align: left
-+
-+   "0",  "Pin",      "thermal pin BP_THERMTRIP_L was tripped"
-+   "1",  "Pin",      "power button was pressed for 4 seconds"
-+   "2",  "Pin",      "shutdown pin was tripped"
-+   "4",  "Remote",   "remote ASF power off command was received"
-+   "9",  "Internal", "internal CPU thermal limit was tripped"
-+   "16", "Pin",      "system reset pin BP_SYS_RST_L was tripped"
-+   "17", "Software", "software issued PCI reset"
-+   "18", "Software", "software wrote 0x4 to reset control register 0xCF9"
-+   "19", "Software", "software wrote 0x6 to reset control register 0xCF9"
-+   "20", "Software", "software wrote 0xE to reset control register 0xCF9"
-+   "21", "ACPI-state", "ACPI power state transition occurred"
-+   "22", "Pin",      "keyboard reset pin KB_RST_L was tripped"
-+   "23", "Internal", "internal CPU shutdown event occurred"
-+   "24", "Hardware", "system failed to boot before failed boot timer expired"
-+   "25", "Hardware", "hardware watchdog timer expired"
-+   "26", "Remote",   "remote ASF reset command was received"
-+   "27", "Internal", "an uncorrected error caused a data fabric sync flood event"
-+   "29", "Internal", "FCH and MP1 failed warm reset handshake"
-+   "30", "Internal", "a parity error occurred"
-+   "31", "Internal", "a software sync flood event occurred"
-+
-+This information is read by the kernel at bootup and printed into
-+the syslog. When a random reboot occurs this message can be helpful
-+to determine the next component to debug.
-diff --git a/arch/x86/include/asm/amd/fch.h b/arch/x86/include/asm/amd/fch.h
-index 01ee15b..2cf5153 100644
---- a/arch/x86/include/asm/amd/fch.h
-+++ b/arch/x86/include/asm/amd/fch.h
-@@ -8,5 +8,6 @@
- #define FCH_PM_DECODEEN			0x00
- #define FCH_PM_DECODEEN_SMBUS0SEL	GENMASK(20, 19)
- #define FCH_PM_SCRATCH			0x80
-+#define FCH_PM_S5_RESET_STATUS		0xC0
- 
- #endif /* _ASM_X86_AMD_FCH_H_ */
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 2b36379..ded4a2a 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -9,6 +9,7 @@
- #include <linux/sched/clock.h>
- #include <linux/random.h>
- #include <linux/topology.h>
-+#include <asm/amd/fch.h>
- #include <asm/processor.h>
- #include <asm/apic.h>
- #include <asm/cacheinfo.h>
-@@ -1237,3 +1238,56 @@ void amd_check_microcode(void)
- 	if (cpu_feature_enabled(X86_FEATURE_ZEN2))
- 		on_each_cpu(zenbleed_check_cpu, NULL, 1);
- }
-+
-+static const char * const s5_reset_reason_txt[] = {
-+	[0]  = "thermal pin BP_THERMTRIP_L was tripped",
-+	[1]  = "power button was pressed for 4 seconds",
-+	[2]  = "shutdown pin was tripped",
-+	[4]  = "remote ASF power off command was received",
-+	[9]  = "internal CPU thermal limit was tripped",
-+	[16] = "system reset pin BP_SYS_RST_L was tripped",
-+	[17] = "software issued PCI reset",
-+	[18] = "software wrote 0x4 to reset control register 0xCF9",
-+	[19] = "software wrote 0x6 to reset control register 0xCF9",
-+	[20] = "software wrote 0xE to reset control register 0xCF9",
-+	[21] = "ACPI power state transition occurred",
-+	[22] = "keyboard reset pin KB_RST_L was tripped",
-+	[23] = "internal CPU shutdown event occurred",
-+	[24] = "system failed to boot before failed boot timer expired",
-+	[25] = "hardware watchdog timer expired",
-+	[26] = "remote ASF reset command was received",
-+	[27] = "an uncorrected error caused a data fabric sync flood event",
-+	[29] = "FCH and MP1 failed warm reset handshake",
-+	[30] = "a parity error occurred",
-+	[31] = "a software sync flood event occurred",
-+};
-+
-+static __init int print_s5_reset_status_mmio(void)
-+{
-+	unsigned long value;
-+	void __iomem *addr;
-+	int i;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
-+		return 0;
-+
-+	addr = ioremap(FCH_PM_BASE + FCH_PM_S5_RESET_STATUS, sizeof(value));
-+	if (!addr)
-+		return 0;
-+
-+	value = ioread32(addr);
-+	iounmap(addr);
-+
-+	for (i = 0; i < ARRAY_SIZE(s5_reset_reason_txt); i++) {
-+		if (!(value & BIT(i)))
-+			continue;
-+
-+		if (s5_reset_reason_txt[i]) {
-+			pr_info("x86/amd: Previous system reset reason [0x%08lx]: %s\n",
-+				value, s5_reset_reason_txt[i]);
-+		}
-+	}
-+
-+	return 0;
-+}
-+late_initcall(print_s5_reset_status_mmio);
+https://people.kernel.org/tglx/notes-about-netiquette
 
