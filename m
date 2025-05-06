@@ -1,69 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-5320-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5321-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C056AACBB0
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 18:59:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA3EAACC84
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 19:52:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26BD31895F6D
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 16:58:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEEE35054F5
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 17:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D008C286431;
-	Tue,  6 May 2025 16:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855822857C7;
+	Tue,  6 May 2025 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZyucBSml";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="r/r/YEmB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FhMTS4H5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u6fb4KEk"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6C22857C7;
-	Tue,  6 May 2025 16:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0902857F9;
+	Tue,  6 May 2025 17:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746550260; cv=none; b=ks4/Xkv+zo8q8DGH8WhLBjfp1yfc0RAQ+OlM1iE6gx17RUrGSa9/l0GH7gkSJEid2ujL7Xb3BT0kjfw/DjxYg5Cq5wA6e6aSdQ7qrnPg0/BqVwDE3cj9FGI/l1+7Uf7S80t7F+cfUv1kaIJaJ31Z5L+a8+CLCBcejQFxKzF/FYw=
+	t=1746553924; cv=none; b=HhOnwR6dmWWPfk1hrXuQeJX9v9R9W240SHwZ2HYT2bNZdcgVyhqKkUEHSR/t81bwjNNGVk/5C21k0U3Ddfz1FvT6VRIOOzPB6B6KxhHmyD0RhUR5cy1JbAYvxRMi2o1lVEWz6jjVit0wO4+mj6d+ACgzQmjuydWoEmmLs0bpYTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746550260; c=relaxed/simple;
-	bh=hZPnjP3xsxtDgiZKosUEwj7HTu+Ozx/QTdHlXT1xNsU=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=mC42mTZ49QIUnxPL3rDJyJbn0e9XEuGqXJY5W4BXy+AExmlnZXeOvz6ZciWQ3571sc6PF7yVeCPbJCKH2WwEmq4tJ3ajTbL2efSuU/H2cT0H3JPTYJsW+LQg6TpTwVjxaDkr4ytY3efHmuLSwSVAN444jMKwPPyCDkjW6IH+ZZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZyucBSml; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=r/r/YEmB; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1746553924; c=relaxed/simple;
+	bh=+zBvID6pdQggJhA19nORDhI+WskB0lYsDHOqPp+OYlE=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Q7S2cBOp+49fWQ3lD87FE1SdRZaQpa5ZAdHK9hGeHe5XbYx/Vc5EOh/vF6pvMwDBTxR9RO8+vlh9AQPZMzP3IGqNGxEGxdIiqLNgwRszWCAIHxG4fni1zsn3cjXW490HW3Dmk950/KEbNNxwdLnoje/UHcRVIvSd5VDaCYcqH0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FhMTS4H5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u6fb4KEk; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 06 May 2025 16:50:55 -0000
+Date: Tue, 06 May 2025 17:51:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746550256;
+	s=2020; t=1746553920;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=TrX2F3+mV3NFabTlNSd+4gucV1QXew4stbO9eOUURPE=;
-	b=ZyucBSmlcWd2sf2T9eu3hHPlYYxQYx0zff88I3eUBHclsqQIe9cOg8dCF/ICamdEgMH+kj
-	sklXBcgMGCt1J1FQwwUYtKzNC1SQUPzcxmN4sMGFjt3fswY6XRjU5ESalMESAvM8YQc8NQ
-	XakLfQmsFygzGSMsT/y2InOJg/oobK7xQsnPOHHwK3qext3HZxYN4uzVoWAYv/j62KsLRL
-	yU2NDVrGyN/XFYMqEomAL55hHLDd7l2r/kpi7/PMPjnCJ1mv7MbDgOFsBrQgxpTIr9JZG0
-	1nY8NfrCuqkl7XUq7E8x71dHnr+gKlfa0UPHE5ZbvjKkTVh+XsPi8HPIt0QT1A==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LrELiDwvwRJZFDFJYCE8vcMrS3XwWZLY1inE0Rnih+s=;
+	b=FhMTS4H5ZKQxWzBsOzT0xRf1dWHNwVB2S3wijtGgQd98nk2opSW18JNgopaLVtAfCODYzw
+	uaJtfpPL8dyHPo1L32N7W7FbpDx4uTtKW0h2rCxbUG3Qoyi0SVGyPMrWllUyM5Bhj/r+mC
+	n0eziuM/AdUAYk5VLOywpHhX7occhYfe5uugmhe7Ljf0/IOzlK3kvfh/N7aV4NeiX3fLyz
+	cD2oFXhy9KhFTKAzgUVeSaWmmvem/5/QoSB2Ico0ORIt6rj2dwwXcZY5t+M9h9S6Rneg+E
+	PCmHKnjl4ROJT5sFcV5Yoj/Eu1WBT6XSbzT8gmeH8EpRWIWpBfHGDI1Kw12MhQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746550256;
+	s=2020e; t=1746553920;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=TrX2F3+mV3NFabTlNSd+4gucV1QXew4stbO9eOUURPE=;
-	b=r/r/YEmBMLrA4PpAEa/7DY60pTMQsl0ldInn89YCw4xw94wv9wEI75LS0ddSf5WVODJavy
-	hLxjY0N//7tfvpBw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LrELiDwvwRJZFDFJYCE8vcMrS3XwWZLY1inE0Rnih+s=;
+	b=u6fb4KEkfBkZlouyv+fOkog/5lDVGQx9hQOnNsGMzU7EjLSxh1Qv4kd2QK16563uc7bIwe
+	2SEEYWGvl+9o69BQ==
+From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/cleanups] irqdomain: Consolidate coding style
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: locking/core] locking/lockdep: Add number of dynamic keys to
+ /proc/lockdep_stats
+Cc: Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Ingo Molnar <mingo@kernel.org>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Nathan Chancellor <nathan@kernel.org>,
+ Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
+ llvm@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250506042049.50060-4-boqun.feng@gmail.com>
+References: <20250506042049.50060-4-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174655025510.406.7696800979335323185.tip-bot2@tip-bot2>
+Message-ID: <174655391949.406.15401244848537848279.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -71,507 +83,97 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/cleanups branch of tip:
+The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     32cef01ae60e394738be3049b3460ec54d6fa84c
-Gitweb:        https://git.kernel.org/tip/32cef01ae60e394738be3049b3460ec54d6fa84c
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 06 May 2025 14:22:59 +02:00
+Commit-ID:     cdb7d2d68cde6145a06a56c9d5d5d917297501c6
+Gitweb:        https://git.kernel.org/tip/cdb7d2d68cde6145a06a56c9d5d5d917297501c6
+Author:        Waiman Long <longman@redhat.com>
+AuthorDate:    Mon, 05 May 2025 21:20:49 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 06 May 2025 18:38:43 +02:00
+CommitterDate: Tue, 06 May 2025 18:34:43 +02:00
 
-irqdomain: Consolidate coding style
+locking/lockdep: Add number of dynamic keys to /proc/lockdep_stats
 
-Now that the file has been thrown through the mincer, finish the job and
-consolidate the coding style.
+There have been recent reports about running out of lockdep keys:
 
-[ mingo: Restore accidentally removed irq_domain_translate_onecell() prototype. ]
+	MAX_LOCKDEP_KEYS too low!
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+One possible reason is that too many dynamic keys have been registered.
+A possible culprit is the lockdep_register_key() call in qdisc_alloc()
+of net/sched/sch_generic.c.
+
+Currently, there is no way to find out how many dynamic keys have been
+registered. Add such a stat to the /proc/lockdep_stats to get better
+clarity.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: llvm@lists.linux.dev
+Link: https://lore.kernel.org/r/20250506042049.50060-4-boqun.feng@gmail.com
 ---
- include/linux/irqdomain.h | 257 ++++++++++++++++---------------------
- 1 file changed, 113 insertions(+), 144 deletions(-)
+ kernel/locking/lockdep.c           | 3 +++
+ kernel/locking/lockdep_internals.h | 1 +
+ kernel/locking/lockdep_proc.c      | 2 ++
+ 3 files changed, 6 insertions(+)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 1a1786d..2f6e4c9 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -39,9 +39,9 @@ struct msi_parent_ops;
-  * pass a device-specific description of an interrupt.
-  */
- struct irq_fwspec {
--	struct fwnode_handle *fwnode;
--	int param_count;
--	u32 param[IRQ_DOMAIN_IRQ_SPEC_PARAMS];
-+	struct fwnode_handle	*fwnode;
-+	int			param_count;
-+	u32			param[IRQ_DOMAIN_IRQ_SPEC_PARAMS];
- };
- 
- /* Conversion function from of_phandle_args fields to fwspec  */
-@@ -50,26 +50,26 @@ void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
- 
- /**
-  * struct irq_domain_ops - Methods for irq_domain objects
-- * @match: Match an interrupt controller device node to a domain, returns
-- *         1 on a match
-- * @select: Match an interrupt controller fw specification. It is more generic
-- *	    than @match as it receives a complete struct irq_fwspec. Therefore,
-- *	    @select is preferred if provided. Returns 1 on a match.
-- * @map: Create or update a mapping between a virtual irq number and a hw
-- *       irq number. This is called only once for a given mapping.
-- * @unmap: Dispose of such a mapping
-- * @xlate: Given a device tree node and interrupt specifier, decode
-- *         the hardware irq number and linux irq type value.
-- * @alloc: Allocate @nr_irqs interrupts starting from @virq.
-- * @free: Free @nr_irqs interrupts starting from @virq.
-- * @activate: Activate one interrupt in HW (@irqd). If @reserve is set, only
-- *	      reserve the vector. If unset, assign the vector (called from
-- *	      request_irq()).
-- * @deactivate: Disarm one interrupt (@irqd).
-- * @translate: Given @fwspec, decode the hardware irq number (@out_hwirq) and
-- *	       linux irq type value (@out_type). This is a generalised @xlate
-- *	       (over struct irq_fwspec) and is preferred if provided.
-- * @debug_show: For domains to show specific data for an interrupt in debugfs.
-+ * @match:	Match an interrupt controller device node to a domain, returns
-+ *		1 on a match
-+ * @select:	Match an interrupt controller fw specification. It is more generic
-+ *		than @match as it receives a complete struct irq_fwspec. Therefore,
-+ *		@select is preferred if provided. Returns 1 on a match.
-+ * @map:	Create or update a mapping between a virtual irq number and a hw
-+ *		irq number. This is called only once for a given mapping.
-+ * @unmap:	Dispose of such a mapping
-+ * @xlate:	Given a device tree node and interrupt specifier, decode
-+ *		the hardware irq number and linux irq type value.
-+ * @alloc:	Allocate @nr_irqs interrupts starting from @virq.
-+ * @free:	Free @nr_irqs interrupts starting from @virq.
-+ * @activate:	Activate one interrupt in HW (@irqd). If @reserve is set, only
-+ *		reserve the vector. If unset, assign the vector (called from
-+ *		request_irq()).
-+ * @deactivate:	Disarm one interrupt (@irqd).
-+ * @translate:	Given @fwspec, decode the hardware irq number (@out_hwirq) and
-+ *		linux irq type value (@out_type). This is a generalised @xlate
-+ *		(over struct irq_fwspec) and is preferred if provided.
-+ * @debug_show:	For domains to show specific data for an interrupt in debugfs.
-  *
-  * Functions below are provided by the driver and called whenever a new mapping
-  * is created or an old mapping is disposed. The driver can then proceed to
-@@ -77,29 +77,29 @@ void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
-  * to setup the irq_desc when returning from map().
-  */
- struct irq_domain_ops {
--	int (*match)(struct irq_domain *d, struct device_node *node,
--		     enum irq_domain_bus_token bus_token);
--	int (*select)(struct irq_domain *d, struct irq_fwspec *fwspec,
--		      enum irq_domain_bus_token bus_token);
--	int (*map)(struct irq_domain *d, unsigned int virq, irq_hw_number_t hw);
--	void (*unmap)(struct irq_domain *d, unsigned int virq);
--	int (*xlate)(struct irq_domain *d, struct device_node *node,
--		     const u32 *intspec, unsigned int intsize,
--		     unsigned long *out_hwirq, unsigned int *out_type);
-+	int	(*match)(struct irq_domain *d, struct device_node *node,
-+			 enum irq_domain_bus_token bus_token);
-+	int	(*select)(struct irq_domain *d, struct irq_fwspec *fwspec,
-+			  enum irq_domain_bus_token bus_token);
-+	int	(*map)(struct irq_domain *d, unsigned int virq, irq_hw_number_t hw);
-+	void	(*unmap)(struct irq_domain *d, unsigned int virq);
-+	int	(*xlate)(struct irq_domain *d, struct device_node *node,
-+			 const u32 *intspec, unsigned int intsize,
-+			 unsigned long *out_hwirq, unsigned int *out_type);
- #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
- 	/* extended V2 interfaces to support hierarchy irq_domains */
--	int (*alloc)(struct irq_domain *d, unsigned int virq,
--		     unsigned int nr_irqs, void *arg);
--	void (*free)(struct irq_domain *d, unsigned int virq,
--		     unsigned int nr_irqs);
--	int (*activate)(struct irq_domain *d, struct irq_data *irqd, bool reserve);
--	void (*deactivate)(struct irq_domain *d, struct irq_data *irq_data);
--	int (*translate)(struct irq_domain *d, struct irq_fwspec *fwspec,
--			 unsigned long *out_hwirq, unsigned int *out_type);
-+	int	(*alloc)(struct irq_domain *d, unsigned int virq,
-+			 unsigned int nr_irqs, void *arg);
-+	void	(*free)(struct irq_domain *d, unsigned int virq,
-+			unsigned int nr_irqs);
-+	int	(*activate)(struct irq_domain *d, struct irq_data *irqd, bool reserve);
-+	void	(*deactivate)(struct irq_domain *d, struct irq_data *irq_data);
-+	int	(*translate)(struct irq_domain *d, struct irq_fwspec *fwspec,
-+			     unsigned long *out_hwirq, unsigned int *out_type);
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 050dbe9..dd2bbf7 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -219,6 +219,7 @@ static DECLARE_BITMAP(list_entries_in_use, MAX_LOCKDEP_ENTRIES);
+ static struct hlist_head lock_keys_hash[KEYHASH_SIZE];
+ unsigned long nr_lock_classes;
+ unsigned long nr_zapped_classes;
++unsigned long nr_dynamic_keys;
+ unsigned long max_lock_class_idx;
+ struct lock_class lock_classes[MAX_LOCKDEP_KEYS];
+ DECLARE_BITMAP(lock_classes_in_use, MAX_LOCKDEP_KEYS);
+@@ -1238,6 +1239,7 @@ void lockdep_register_key(struct lock_class_key *key)
+ 			goto out_unlock;
+ 	}
+ 	hlist_add_head_rcu(&key->hash_entry, hash_head);
++	nr_dynamic_keys++;
+ out_unlock:
+ 	graph_unlock();
+ restore_irqs:
+@@ -6609,6 +6611,7 @@ void lockdep_unregister_key(struct lock_class_key *key)
+ 		pf = get_pending_free();
+ 		__lockdep_free_key_range(pf, key, 1);
+ 		need_callback = prepare_call_rcu_zapped(pf);
++		nr_dynamic_keys--;
+ 	}
+ 	lockdep_unlock();
+ 	raw_local_irq_restore(flags);
+diff --git a/kernel/locking/lockdep_internals.h b/kernel/locking/lockdep_internals.h
+index 20f9ef5..82156ca 100644
+--- a/kernel/locking/lockdep_internals.h
++++ b/kernel/locking/lockdep_internals.h
+@@ -138,6 +138,7 @@ extern unsigned long nr_lock_classes;
+ extern unsigned long nr_zapped_classes;
+ extern unsigned long nr_zapped_lock_chains;
+ extern unsigned long nr_list_entries;
++extern unsigned long nr_dynamic_keys;
+ long lockdep_next_lockchain(long i);
+ unsigned long lock_chain_count(void);
+ extern unsigned long nr_stack_trace_entries;
+diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
+index 6db0f43..b52c07c 100644
+--- a/kernel/locking/lockdep_proc.c
++++ b/kernel/locking/lockdep_proc.c
+@@ -286,6 +286,8 @@ static int lockdep_stats_show(struct seq_file *m, void *v)
  #endif
- #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
--	void (*debug_show)(struct seq_file *m, struct irq_domain *d,
--			   struct irq_data *irqd, int ind);
-+	void	(*debug_show)(struct seq_file *m, struct irq_domain *d,
-+			      struct irq_data *irqd, int ind);
- #endif
- };
- 
-@@ -222,8 +222,7 @@ static inline struct device_node *irq_domain_get_of_node(struct irq_domain *d)
- 	return to_of_node(d->fwnode);
- }
- 
--static inline void irq_domain_set_pm_device(struct irq_domain *d,
--					    struct device *dev)
-+static inline void irq_domain_set_pm_device(struct irq_domain *d, struct device *dev)
- {
- 	if (d)
- 		d->pm_dev = dev;
-@@ -239,14 +238,12 @@ enum {
- 	IRQCHIP_FWNODE_NAMED_ID,
- };
- 
--static inline
--struct fwnode_handle *irq_domain_alloc_named_fwnode(const char *name)
-+static inline struct fwnode_handle *irq_domain_alloc_named_fwnode(const char *name)
- {
- 	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL);
- }
- 
--static inline
--struct fwnode_handle *irq_domain_alloc_named_id_fwnode(const char *name, int id)
-+static inline struct fwnode_handle *irq_domain_alloc_named_id_fwnode(const char *name, int id)
- {
- 	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED_ID, id, name,
- 					 NULL);
-@@ -311,23 +308,17 @@ struct irq_domain *irq_domain_instantiate(const struct irq_domain_info *info);
- struct irq_domain *devm_irq_domain_instantiate(struct device *dev,
- 					       const struct irq_domain_info *info);
- 
--struct irq_domain *irq_domain_create_simple(struct fwnode_handle *fwnode,
--					    unsigned int size,
-+struct irq_domain *irq_domain_create_simple(struct fwnode_handle *fwnode, unsigned int size,
- 					    unsigned int first_irq,
--					    const struct irq_domain_ops *ops,
--					    void *host_data);
--struct irq_domain *irq_domain_create_legacy(struct fwnode_handle *fwnode,
--					    unsigned int size,
--					    unsigned int first_irq,
--					    irq_hw_number_t first_hwirq,
--					    const struct irq_domain_ops *ops,
--					    void *host_data);
-+					    const struct irq_domain_ops *ops, void *host_data);
-+struct irq_domain *irq_domain_create_legacy(struct fwnode_handle *fwnode, unsigned int size,
-+					    unsigned int first_irq, irq_hw_number_t first_hwirq,
-+					    const struct irq_domain_ops *ops, void *host_data);
- struct irq_domain *irq_find_matching_fwspec(struct irq_fwspec *fwspec,
- 					    enum irq_domain_bus_token bus_token);
- void irq_set_default_domain(struct irq_domain *domain);
- struct irq_domain *irq_get_default_domain(void);
--int irq_domain_alloc_descs(int virq, unsigned int nr_irqs,
--			   irq_hw_number_t hwirq, int node,
-+int irq_domain_alloc_descs(int virq, unsigned int nr_irqs, irq_hw_number_t hwirq, int node,
- 			   const struct irq_affinity_desc *affinity);
- 
- extern const struct fwnode_operations irqchip_fwnode_ops;
-@@ -337,12 +328,10 @@ static inline bool is_fwnode_irqchip(const struct fwnode_handle *fwnode)
- 	return fwnode && fwnode->ops == &irqchip_fwnode_ops;
- }
- 
--void irq_domain_update_bus_token(struct irq_domain *domain,
--				 enum irq_domain_bus_token bus_token);
-+void irq_domain_update_bus_token(struct irq_domain *domain, enum irq_domain_bus_token bus_token);
- 
--static inline
--struct irq_domain *irq_find_matching_fwnode(struct fwnode_handle *fwnode,
--					    enum irq_domain_bus_token bus_token)
-+static inline struct irq_domain *irq_find_matching_fwnode(struct fwnode_handle *fwnode,
-+							  enum irq_domain_bus_token bus_token)
- {
- 	struct irq_fwspec fwspec = {
- 		.fwnode = fwnode,
-@@ -370,9 +359,9 @@ static inline struct irq_domain *irq_find_host(struct device_node *node)
- 
- #ifdef CONFIG_IRQ_DOMAIN_NOMAP
- static inline struct irq_domain *irq_domain_create_nomap(struct fwnode_handle *fwnode,
--					 unsigned int max_irq,
--					 const struct irq_domain_ops *ops,
--					 void *host_data)
-+							 unsigned int max_irq,
-+							 const struct irq_domain_ops *ops,
-+							 void *host_data)
- {
- 	const struct irq_domain_info info = {
- 		.fwnode		= fwnode,
-@@ -391,17 +380,17 @@ unsigned int irq_create_direct_mapping(struct irq_domain *domain);
- 
- /**
-  * irq_domain_create_linear - Allocate and register a linear revmap irq_domain.
-- * @fwnode: pointer to interrupt controller's FW node.
-- * @size: Number of interrupts in the domain.
-- * @ops: map/unmap domain callbacks
-- * @host_data: Controller private data pointer
-+ * @fwnode:	pointer to interrupt controller's FW node.
-+ * @size:	Number of interrupts in the domain.
-+ * @ops:	map/unmap domain callbacks
-+ * @host_data:	Controller private data pointer
-  *
-  * Returns: Newly created irq_domain
-  */
- static inline struct irq_domain *irq_domain_create_linear(struct fwnode_handle *fwnode,
--					 unsigned int size,
--					 const struct irq_domain_ops *ops,
--					 void *host_data)
-+							  unsigned int size,
-+							  const struct irq_domain_ops *ops,
-+							  void *host_data)
- {
- 	const struct irq_domain_info info = {
- 		.fwnode		= fwnode,
-@@ -416,8 +405,8 @@ static inline struct irq_domain *irq_domain_create_linear(struct fwnode_handle *
- }
- 
- static inline struct irq_domain *irq_domain_create_tree(struct fwnode_handle *fwnode,
--					 const struct irq_domain_ops *ops,
--					 void *host_data)
-+							const struct irq_domain_ops *ops,
-+							void *host_data)
- {
- 	const struct irq_domain_info info = {
- 		.fwnode		= fwnode,
-@@ -432,22 +421,19 @@ static inline struct irq_domain *irq_domain_create_tree(struct fwnode_handle *fw
- 
- void irq_domain_remove(struct irq_domain *domain);
- 
--int irq_domain_associate(struct irq_domain *domain, unsigned int irq,
--			 irq_hw_number_t hwirq);
--void irq_domain_associate_many(struct irq_domain *domain,
--			       unsigned int irq_base,
-+int irq_domain_associate(struct irq_domain *domain, unsigned int irq, irq_hw_number_t hwirq);
-+void irq_domain_associate_many(struct irq_domain *domain, unsigned int irq_base,
- 			       irq_hw_number_t hwirq_base, int count);
- 
--unsigned int irq_create_mapping_affinity(struct irq_domain *domain,
--					 irq_hw_number_t hwirq,
-+unsigned int irq_create_mapping_affinity(struct irq_domain *domain, irq_hw_number_t hwirq,
- 					 const struct irq_affinity_desc *affinity);
- unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec);
- void irq_dispose_mapping(unsigned int virq);
- 
- /**
-  * irq_create_mapping - Map a hardware interrupt into linux irq space
-- * @domain: domain owning this hardware interrupt or NULL for default domain
-- * @hwirq: hardware irq number in that domain space
-+ * @domain:	domain owning this hardware interrupt or NULL for default domain
-+ * @hwirq:	hardware irq number in that domain space
-  *
-  * Only one mapping per hardware interrupt is permitted.
-  *
-@@ -456,8 +442,7 @@ void irq_dispose_mapping(unsigned int virq);
-  *
-  * Returns: Linux irq number or 0 on error
-  */
--static inline unsigned int irq_create_mapping(struct irq_domain *domain,
--					      irq_hw_number_t hwirq)
-+static inline unsigned int irq_create_mapping(struct irq_domain *domain, irq_hw_number_t hwirq)
- {
- 	return irq_create_mapping_affinity(domain, hwirq, NULL);
- }
-@@ -468,8 +453,8 @@ struct irq_desc *__irq_resolve_mapping(struct irq_domain *domain,
- 
- /**
-  * irq_resolve_mapping - Find a linux irq from a hw irq number.
-- * @domain: domain owning this hardware interrupt
-- * @hwirq: hardware irq number in that domain space
-+ * @domain:	domain owning this hardware interrupt
-+ * @hwirq:	hardware irq number in that domain space
-  *
-  * Returns: Interrupt descriptor
-  */
-@@ -481,8 +466,8 @@ static inline struct irq_desc *irq_resolve_mapping(struct irq_domain *domain,
- 
- /**
-  * irq_find_mapping() - Find a linux irq from a hw irq number.
-- * @domain: domain owning this hardware interrupt
-- * @hwirq: hardware irq number in that domain space
-+ * @domain:	domain owning this hardware interrupt
-+ * @hwirq:	hardware irq number in that domain space
-  *
-  * Returns: Linux irq number or 0 if not found
-  */
-@@ -501,14 +486,14 @@ extern const struct irq_domain_ops irq_domain_simple_ops;
- 
- /* stock xlate functions */
- int irq_domain_xlate_onecell(struct irq_domain *d, struct device_node *ctrlr,
--			const u32 *intspec, unsigned int intsize,
--			irq_hw_number_t *out_hwirq, unsigned int *out_type);
-+			     const u32 *intspec, unsigned int intsize,
-+			     irq_hw_number_t *out_hwirq, unsigned int *out_type);
- int irq_domain_xlate_twocell(struct irq_domain *d, struct device_node *ctrlr,
--			const u32 *intspec, unsigned int intsize,
--			irq_hw_number_t *out_hwirq, unsigned int *out_type);
-+			     const u32 *intspec, unsigned int intsize,
-+			     irq_hw_number_t *out_hwirq, unsigned int *out_type);
- int irq_domain_xlate_onetwocell(struct irq_domain *d, struct device_node *ctrlr,
--			const u32 *intspec, unsigned int intsize,
--			irq_hw_number_t *out_hwirq, unsigned int *out_type);
-+				const u32 *intspec, unsigned int intsize,
-+				irq_hw_number_t *out_hwirq, unsigned int *out_type);
- int irq_domain_xlate_twothreecell(struct irq_domain *d, struct device_node *ctrlr,
- 				  const u32 *intspec, unsigned int intsize,
- 				  irq_hw_number_t *out_hwirq, unsigned int *out_type);
-@@ -525,12 +510,9 @@ int irq_reserve_ipi(struct irq_domain *domain, const struct cpumask *dest);
- int irq_destroy_ipi(unsigned int irq, const struct cpumask *dest);
- 
- /* V2 interfaces to support hierarchy IRQ domains. */
--struct irq_data *irq_domain_get_irq_data(struct irq_domain *domain,
--					 unsigned int virq);
--void irq_domain_set_info(struct irq_domain *domain, unsigned int virq,
--			 irq_hw_number_t hwirq,
--			 const struct irq_chip *chip,
--			 void *chip_data, irq_flow_handler_t handler,
-+struct irq_data *irq_domain_get_irq_data(struct irq_domain *domain, unsigned int virq);
-+void irq_domain_set_info(struct irq_domain *domain, unsigned int virq, irq_hw_number_t hwirq,
-+			 const struct irq_chip *chip, void *chip_data, irq_flow_handler_t handler,
- 			 void *handler_data, const char *handler_name);
- void irq_domain_reset_irq_data(struct irq_data *irq_data);
- #ifdef	CONFIG_IRQ_DOMAIN_HIERARCHY
-@@ -551,11 +533,10 @@ void irq_domain_reset_irq_data(struct irq_data *irq_data);
-  * Returns: A pointer to IRQ domain, or %NULL on failure.
-  */
- static inline struct irq_domain *irq_domain_create_hierarchy(struct irq_domain *parent,
--					    unsigned int flags,
--					    unsigned int size,
--					    struct fwnode_handle *fwnode,
--					    const struct irq_domain_ops *ops,
--					    void *host_data)
-+							     unsigned int flags, unsigned int size,
-+							     struct fwnode_handle *fwnode,
-+							     const struct irq_domain_ops *ops,
-+							     void *host_data)
- {
- 	const struct irq_domain_info info = {
- 		.fwnode		= fwnode,
-@@ -571,9 +552,8 @@ static inline struct irq_domain *irq_domain_create_hierarchy(struct irq_domain *
- 	return IS_ERR(d) ? NULL : d;
- }
- 
--int __irq_domain_alloc_irqs(struct irq_domain *domain, int irq_base,
--			    unsigned int nr_irqs, int node, void *arg,
--			    bool realloc,
-+int __irq_domain_alloc_irqs(struct irq_domain *domain, int irq_base, unsigned int nr_irqs,
-+			    int node, void *arg, bool realloc,
- 			    const struct irq_affinity_desc *affinity);
- void irq_domain_free_irqs(unsigned int virq, unsigned int nr_irqs);
- int irq_domain_activate_irq(struct irq_data *irq_data, bool early);
-@@ -588,37 +568,29 @@ void irq_domain_deactivate_irq(struct irq_data *irq_data);
-  *
-  * See __irq_domain_alloc_irqs()' documentation.
-  */
--static inline int irq_domain_alloc_irqs(struct irq_domain *domain,
--			unsigned int nr_irqs, int node, void *arg)
-+static inline int irq_domain_alloc_irqs(struct irq_domain *domain, unsigned int nr_irqs,
-+					int node, void *arg)
- {
--	return __irq_domain_alloc_irqs(domain, -1, nr_irqs, node, arg, false,
--				       NULL);
-+	return __irq_domain_alloc_irqs(domain, -1, nr_irqs, node, arg, false, NULL);
- }
- 
--int irq_domain_set_hwirq_and_chip(struct irq_domain *domain,
--				  unsigned int virq,
--				  irq_hw_number_t hwirq,
--				  const struct irq_chip *chip,
-+int irq_domain_set_hwirq_and_chip(struct irq_domain *domain, unsigned int virq,
-+				  irq_hw_number_t hwirq, const struct irq_chip *chip,
- 				  void *chip_data);
--void irq_domain_free_irqs_common(struct irq_domain *domain,
--				 unsigned int virq,
-+void irq_domain_free_irqs_common(struct irq_domain *domain, unsigned int virq,
- 				 unsigned int nr_irqs);
--void irq_domain_free_irqs_top(struct irq_domain *domain,
--			      unsigned int virq, unsigned int nr_irqs);
-+void irq_domain_free_irqs_top(struct irq_domain *domain, unsigned int virq, unsigned int nr_irqs);
- 
- int irq_domain_push_irq(struct irq_domain *domain, int virq, void *arg);
- int irq_domain_pop_irq(struct irq_domain *domain, int virq);
- 
--int irq_domain_alloc_irqs_parent(struct irq_domain *domain,
--				 unsigned int irq_base,
-+int irq_domain_alloc_irqs_parent(struct irq_domain *domain, unsigned int irq_base,
- 				 unsigned int nr_irqs, void *arg);
- 
--void irq_domain_free_irqs_parent(struct irq_domain *domain,
--				 unsigned int irq_base,
-+void irq_domain_free_irqs_parent(struct irq_domain *domain, unsigned int irq_base,
- 				 unsigned int nr_irqs);
- 
--int irq_domain_disconnect_hierarchy(struct irq_domain *domain,
--					   unsigned int virq);
-+int irq_domain_disconnect_hierarchy(struct irq_domain *domain, unsigned int virq);
- 
- static inline bool irq_domain_is_hierarchy(struct irq_domain *domain)
- {
-@@ -627,8 +599,7 @@ static inline bool irq_domain_is_hierarchy(struct irq_domain *domain)
- 
- static inline bool irq_domain_is_ipi(struct irq_domain *domain)
- {
--	return domain->flags &
--		(IRQ_DOMAIN_FLAG_IPI_PER_CPU | IRQ_DOMAIN_FLAG_IPI_SINGLE);
-+	return domain->flags & (IRQ_DOMAIN_FLAG_IPI_PER_CPU | IRQ_DOMAIN_FLAG_IPI_SINGLE);
- }
- 
- static inline bool irq_domain_is_ipi_per_cpu(struct irq_domain *domain)
-@@ -657,14 +628,13 @@ static inline bool irq_domain_is_msi_device(struct irq_domain *domain)
- }
- 
- #else	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
--static inline int irq_domain_alloc_irqs(struct irq_domain *domain,
--			unsigned int nr_irqs, int node, void *arg)
-+static inline int irq_domain_alloc_irqs(struct irq_domain *domain, unsigned int nr_irqs,
-+					int node, void *arg)
- {
- 	return -1;
- }
- 
--static inline void irq_domain_free_irqs(unsigned int virq,
--					unsigned int nr_irqs) { }
-+static inline void irq_domain_free_irqs(unsigned int virq, unsigned int nr_irqs) { }
- 
- static inline bool irq_domain_is_hierarchy(struct irq_domain *domain)
- {
-@@ -704,8 +674,7 @@ static inline bool irq_domain_is_msi_device(struct irq_domain *domain)
- #endif	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
- 
- #ifdef CONFIG_GENERIC_MSI_IRQ
--int msi_device_domain_alloc_wired(struct irq_domain *domain, unsigned int hwirq,
--				  unsigned int type);
-+int msi_device_domain_alloc_wired(struct irq_domain *domain, unsigned int hwirq, unsigned int type);
- void msi_device_domain_free_wired(struct irq_domain *domain, unsigned int virq);
- #else
- static inline int msi_device_domain_alloc_wired(struct irq_domain *domain, unsigned int hwirq,
-@@ -727,8 +696,8 @@ static inline struct fwnode_handle *of_node_to_fwnode(struct device_node *node)
- }
- 
- static inline struct irq_domain *irq_domain_add_tree(struct device_node *of_node,
--					 const struct irq_domain_ops *ops,
--					 void *host_data)
-+						     const struct irq_domain_ops *ops,
-+						     void *host_data)
- {
- 	struct irq_domain_info info = {
- 		.fwnode		= of_fwnode_handle(of_node),
-@@ -743,9 +712,9 @@ static inline struct irq_domain *irq_domain_add_tree(struct device_node *of_node
- }
- 
- static inline struct irq_domain *irq_domain_add_linear(struct device_node *of_node,
--					 unsigned int size,
--					 const struct irq_domain_ops *ops,
--					 void *host_data)
-+						       unsigned int size,
-+						       const struct irq_domain_ops *ops,
-+						       void *host_data)
- {
- 	struct irq_domain_info info = {
- 		.fwnode		= of_fwnode_handle(of_node),
-@@ -762,8 +731,8 @@ static inline struct irq_domain *irq_domain_add_linear(struct device_node *of_no
- 
- #else /* CONFIG_IRQ_DOMAIN */
- static inline void irq_dispose_mapping(unsigned int virq) { }
--static inline struct irq_domain *irq_find_matching_fwnode(
--	struct fwnode_handle *fwnode, enum irq_domain_bus_token bus_token)
-+static inline struct irq_domain *irq_find_matching_fwnode(struct fwnode_handle *fwnode,
-+							  enum irq_domain_bus_token bus_token)
- {
- 	return NULL;
- }
+ 	seq_printf(m, " lock-classes:                  %11lu [max: %lu]\n",
+ 			nr_lock_classes, MAX_LOCKDEP_KEYS);
++	seq_printf(m, " dynamic-keys:                  %11lu\n",
++			nr_dynamic_keys);
+ 	seq_printf(m, " direct dependencies:           %11lu [max: %lu]\n",
+ 			nr_list_entries, MAX_LOCKDEP_ENTRIES);
+ 	seq_printf(m, " indirect dependencies:         %11lu\n",
 
