@@ -1,81 +1,83 @@
-Return-Path: <linux-tip-commits+bounces-5322-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5323-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC98AACC88
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 19:52:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79C81AACC86
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 19:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BC053B4379
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 17:51:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA62B1C04D5B
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 17:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6C3286400;
-	Tue,  6 May 2025 17:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BFF286413;
+	Tue,  6 May 2025 17:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Do2b8fY9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c/iVe04C"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Mvh2BHX+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pkvLNqVg"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B006A2857FB;
-	Tue,  6 May 2025 17:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176432853E9;
+	Tue,  6 May 2025 17:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746553925; cv=none; b=l3GMmF3FY1a9Tuv/ZCDs+6KeYR6c5PeGyEFESh1LkWxqv/r2v9NNEy+OnqRd9KJ2Hg+A/Bzzbg4+MwJsVaXSANk+NE/nS6rMsXs2gbnTCb0dEFF9a4IZ02l9OQPumMeoY9LoonhVdXYi76jckq7oF1J+L+ipekbGyLuK2ytM4M4=
+	t=1746553925; cv=none; b=dD8gJlgYLR5VYX9y9qWeRQUpxk5y0Z7fQab7UCgE1h0sH1vXF5aAJwues76Tt8cSvRlmJR4hw5CMRPWsi1gUy7bnhMaP/l6YA0xvOmXzqHIIWre+rfe0QyUbGhIzP89UWd5BLCVGJwQ1zvL1zWRvAVqZf0Y3/2G/uf0RDgk0Nos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746553925; c=relaxed/simple;
-	bh=fA0K5tQFw5Yp63FtiM4eR0Osn5prSTAMzY4SQURkhXA=;
+	bh=p3w/St0kW8fKa76Db7E8rYhh3MsgIDsElDGzAXP9C8A=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VYyDHHXpQO5zmUzmEuwe76HdKUmIcHK9Mt03ehp0KP1kVqdwELhro/+YUKy+0oZpZfVHHwD1cqYb4uxSj6DYRtTDuiP9Mkp/qK/QEafOSsUwCxE720+XFCKuAzxr2vy9KHFFse/Achtu/PiA2jzrtFwTD+r/0X9lCCyVk6+P+v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Do2b8fY9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c/iVe04C; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=sI828eUw8kw6RQmNeF3IoReoHXUOJXZWrFL+HqD5FiiCNLEm9uKEHroGJJF1ctyrwplzpoM2USfZ//QqGLsgcJ5c8v3BEQ61nqEmCogVUwaW2VzBLI599CHn2RN7m/FwhizUUYp7VlOIsRU1/LkgsiH6a86ISUd2v+sEND76900=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Mvh2BHX+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pkvLNqVg; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 06 May 2025 17:52:00 -0000
+Date: Tue, 06 May 2025 17:52:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746553921;
+	s=2020; t=1746553922;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a4LqRx76U5ZyLsHooPZrl8L9TVtNoP0s5z+HpfXM1d4=;
-	b=Do2b8fY99kp/FmLDIJhLl/ZUKZNjNw7QT0l+bk922SqTYUuJaKEO6QsPWVa5OgIdsMY0ae
-	ebM89Fa6+qolhaHytfuyeMxXir16ZpamNfs6IY+J1/9matQ1hnVtpJPYb5Ha60mHUqZIRA
-	s5UKVsdZJpAjWMzfAYBrKqLzZ5br9Gbk/q68pqK4gwXG0uYgcpsrPqWYP+axvn9KSR2YCW
-	PoLTqb56gesGH9oBeumZqE6TfwELJ8Zrr2KRgysQuwZVmRPDZ89e4X937ForPb8ixqel8c
-	8/onfqNLB/ECDDw0d28hTbiM8hpft2cA0YzbQzq+YtcTotvO2ZtSsZO8GCzxAQ==
+	bh=5hp2iDlvZc776exwlwCKdQCJZrhOKa0RLDTpLaBIuAs=;
+	b=Mvh2BHX+OWGB6ERtP1WY0BFwGF50Ju/KV9tk1/KYd2fyOVWv0qQWiXkeFusJ/HnTHQ7nMQ
+	Gc+NyoD/kknF6Y0wdHidcBr8+5rksd//wp5MaYgn9lfbuTV8Wt5dzKfcm1f0QOhet7GdC8
+	Y9hrHZqGz0Jw9AoZllZZ0xXlBta5LzzhkLeTQrRVe9/Up2RnS6scA3/gwQFiwxWNafEdoO
+	+VxRcTKAk2XBnnCG1hlxgDWeBZJm7dodwqfpPFdkg9/3QZy5zOjfNcxJt1ExsKOtK56y9m
+	VPokfxf8YxQkO+7MyY6UifPvm3uVQSDm5veb834NWjdMHGSeJSdzjEzoD/m4XQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746553921;
+	s=2020e; t=1746553922;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a4LqRx76U5ZyLsHooPZrl8L9TVtNoP0s5z+HpfXM1d4=;
-	b=c/iVe04CX9SpcCtDd2rkPRp3LbEL4EZMn88DMuXf0OitX7PVs3HzrnAaMxi4xiMSX0FVH4
-	B19FGVSc/al3elDA==
-From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
+	bh=5hp2iDlvZc776exwlwCKdQCJZrhOKa0RLDTpLaBIuAs=;
+	b=pkvLNqVg5bOusrc/LcyBM6jZYnIYJNBK16qNOg/6vX00/Px53TjlwePyBBpmwyk+LkL/Of
+	FnrvT+BTYsz3aODA==
+From: "tip-bot2 for Andy Shevchenko" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: locking/core] locking/lockdep: Prevent abuse of lockdep subclass
-Cc: Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
- Ingo Molnar <mingo@kernel.org>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, Nathan Chancellor <nathan@kernel.org>,
+Subject: [tip: locking/core] locking/lockdep: Move hlock_equal() to the
+ respective #ifdeffery
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Ingo Molnar <mingo@kernel.org>,
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ Nathan Chancellor <nathan@kernel.org>,
  Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>,
- llvm@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250506042049.50060-3-boqun.feng@gmail.com>
-References: <20250506042049.50060-3-boqun.feng@gmail.com>
+ Peter Zijlstra <peterz@infradead.org>, Waiman Long <longman@redhat.com>,
+ Will Deacon <will@kernel.org>, llvm@lists.linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250506042049.50060-2-boqun.feng@gmail.com>
+References: <20250506042049.50060-2-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174655392027.406.8515086852883668250.tip-bot2@tip-bot2>
+Message-ID: <174655392101.406.10520586528110757948.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,22 +87,30 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     6a1a219f535a437eb12a06d8cef2518e58654beb
-Gitweb:        https://git.kernel.org/tip/6a1a219f535a437eb12a06d8cef2518e58654beb
-Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Mon, 05 May 2025 21:20:48 -07:00
+Commit-ID:     96ca1830e1219eda431702eb9a74225e8fe3ccc0
+Gitweb:        https://git.kernel.org/tip/96ca1830e1219eda431702eb9a74225e8fe3ccc0
+Author:        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+AuthorDate:    Mon, 05 May 2025 21:20:47 -07:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 06 May 2025 18:34:35 +02:00
+CommitterDate: Tue, 06 May 2025 18:34:31 +02:00
 
-locking/lockdep: Prevent abuse of lockdep subclass
+locking/lockdep: Move hlock_equal() to the respective #ifdeffery
 
-To catch the code trying to use a subclass value >= MAX_LOCKDEP_SUBCLASSES (8),
-add a DEBUG_LOCKS_WARN_ON() statement to notify the users that such a
-large value is not allowed.
+When hlock_equal() is unused, it prevents kernel builds with clang,
+`make W=1` and CONFIG_WERROR=y, CONFIG_LOCKDEP=y and
+CONFIG_LOCKDEP_SMALL=n:
 
-[ boqun: Reword the commit log with a more objective tone ]
+  lockdep.c:2005:20: error: unused function 'hlock_equal' [-Werror,-Wunused-function]
 
-Signed-off-by: Waiman Long <longman@redhat.com>
+Fix this by moving the function to the respective existing ifdeffery
+for its the only user.
+
+See also:
+
+  6863f5643dd7 ("kbuild: allow Clang to find unused static inline functions for W=1 build")
+
+Fixes: 68e305678583 ("lockdep: Adjust check_redundant() for recursive read change")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Bill Wendling <morbo@google.com>
@@ -108,25 +118,100 @@ Cc: Justin Stitt <justinstitt@google.com>
 Cc: Nathan Chancellor <nathan@kernel.org>
 Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Waiman Long <longman@redhat.com>
 Cc: Will Deacon <will@kernel.org>
 Cc: llvm@lists.linux.dev
-Link: https://lore.kernel.org/r/20250506042049.50060-3-boqun.feng@gmail.com
+Link: https://lore.kernel.org/r/20250506042049.50060-2-boqun.feng@gmail.com
 ---
- kernel/locking/lockdep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/locking/lockdep.c | 70 +++++++++++++++++++--------------------
+ 1 file changed, 35 insertions(+), 35 deletions(-)
 
 diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 546e928..050dbe9 100644
+index 58d78a3..546e928 100644
 --- a/kernel/locking/lockdep.c
 +++ b/kernel/locking/lockdep.c
-@@ -5101,6 +5101,9 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
- 		lockevent_inc(lockdep_nocheck);
- 	}
+@@ -1977,41 +1977,6 @@ print_circular_bug_header(struct lock_list *entry, unsigned int depth,
+ }
  
-+	if (DEBUG_LOCKS_WARN_ON(subclass >= MAX_LOCKDEP_SUBCLASSES))
-+		return 0;
+ /*
+- * We are about to add A -> B into the dependency graph, and in __bfs() a
+- * strong dependency path A -> .. -> B is found: hlock_class equals
+- * entry->class.
+- *
+- * If A -> .. -> B can replace A -> B in any __bfs() search (means the former
+- * is _stronger_ than or equal to the latter), we consider A -> B as redundant.
+- * For example if A -> .. -> B is -(EN)-> (i.e. A -(E*)-> .. -(*N)-> B), and A
+- * -> B is -(ER)-> or -(EN)->, then we don't need to add A -> B into the
+- * dependency graph, as any strong path ..-> A -> B ->.. we can get with
+- * having dependency A -> B, we could already get a equivalent path ..-> A ->
+- * .. -> B -> .. with A -> .. -> B. Therefore A -> B is redundant.
+- *
+- * We need to make sure both the start and the end of A -> .. -> B is not
+- * weaker than A -> B. For the start part, please see the comment in
+- * check_redundant(). For the end part, we need:
+- *
+- * Either
+- *
+- *     a) A -> B is -(*R)-> (everything is not weaker than that)
+- *
+- * or
+- *
+- *     b) A -> .. -> B is -(*N)-> (nothing is stronger than this)
+- *
+- */
+-static inline bool hlock_equal(struct lock_list *entry, void *data)
+-{
+-	struct held_lock *hlock = (struct held_lock *)data;
+-
+-	return hlock_class(hlock) == entry->class && /* Found A -> .. -> B */
+-	       (hlock->read == 2 ||  /* A -> B is -(*R)-> */
+-		!entry->only_xr); /* A -> .. -> B is -(*N)-> */
+-}
+-
+-/*
+  * We are about to add B -> A into the dependency graph, and in __bfs() a
+  * strong dependency path A -> .. -> B is found: hlock_class equals
+  * entry->class.
+@@ -2916,6 +2881,41 @@ static inline bool usage_skip(struct lock_list *entry, void *mask)
+ 
+ #ifdef CONFIG_LOCKDEP_SMALL
+ /*
++ * We are about to add A -> B into the dependency graph, and in __bfs() a
++ * strong dependency path A -> .. -> B is found: hlock_class equals
++ * entry->class.
++ *
++ * If A -> .. -> B can replace A -> B in any __bfs() search (means the former
++ * is _stronger_ than or equal to the latter), we consider A -> B as redundant.
++ * For example if A -> .. -> B is -(EN)-> (i.e. A -(E*)-> .. -(*N)-> B), and A
++ * -> B is -(ER)-> or -(EN)->, then we don't need to add A -> B into the
++ * dependency graph, as any strong path ..-> A -> B ->.. we can get with
++ * having dependency A -> B, we could already get a equivalent path ..-> A ->
++ * .. -> B -> .. with A -> .. -> B. Therefore A -> B is redundant.
++ *
++ * We need to make sure both the start and the end of A -> .. -> B is not
++ * weaker than A -> B. For the start part, please see the comment in
++ * check_redundant(). For the end part, we need:
++ *
++ * Either
++ *
++ *     a) A -> B is -(*R)-> (everything is not weaker than that)
++ *
++ * or
++ *
++ *     b) A -> .. -> B is -(*N)-> (nothing is stronger than this)
++ *
++ */
++static inline bool hlock_equal(struct lock_list *entry, void *data)
++{
++	struct held_lock *hlock = (struct held_lock *)data;
 +
- 	if (subclass < NR_LOCKDEP_CACHING_CLASSES)
- 		class = lock->class_cache[subclass];
- 	/*
++	return hlock_class(hlock) == entry->class && /* Found A -> .. -> B */
++	       (hlock->read == 2 ||  /* A -> B is -(*R)-> */
++		!entry->only_xr); /* A -> .. -> B is -(*N)-> */
++}
++
++/*
+  * Check that the dependency graph starting at <src> can lead to
+  * <target> or not. If it can, <src> -> <target> dependency is already
+  * in the graph.
 
