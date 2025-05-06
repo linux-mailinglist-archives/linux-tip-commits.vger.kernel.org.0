@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5269-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5270-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF6D8AAC5B2
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 15:21:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C747EAAC5A9
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 15:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F074A2F12
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 13:20:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78573A4AF7
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  6 May 2025 13:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D613280A22;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2408280A55;
 	Tue,  6 May 2025 13:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3lbnoKWO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v6kcq//N"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qDjhr6Xj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Th+YM87S"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE52027AC41;
-	Tue,  6 May 2025 13:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8830280003;
+	Tue,  6 May 2025 13:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746537618; cv=none; b=gHbzPJ/8ByK4oeZwjs1Rod7J4Zza/2QTEyYkKm1IWkx4b76FDL2MsnRBEc7BqCr+dzVW/n4USOd/CQ/sn7PvSTH4GFOLnD4khMdVoV5qLkUAx6qmDKuwIhZ1cjyskIFpACEh40IsRzSOb6TXRH/oa84uRSi6dWfGHC4d3Yussl8=
+	t=1746537618; cv=none; b=oDHBRdVfm+GhIbm4THdrkFsLrCgq3C6GUXwDCTRLkV2c+/2oMMDYaBPB+jpZr8PKb//aPG2JyGQjpYAEhzrH2T0mqAaUMDzk4qWu1kvdw+sAoJjlO+++9TXK1bqkjjxRBCfDloxZjumQZBJm4HrrByKXVzNLndEbeuPT2doYQ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746537618; c=relaxed/simple;
-	bh=Om5WzWR3UmRyBpJevCUdlamYK1A9LnFGJJuAJxElblc=;
+	bh=eW6UjRcCaq/sMw8hCcUtdMVTNidm9tzjRn+U1gVcu3k=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KQVRPmh4uZIY9OOSvWmwy1/TN9yP45P8s4OWJ4hqPcBmATLi2wyvA4gCfDEekVhvDAZtZYumgrmI8LYFeiSUXPSM94Qx75Vvu84Z0oSubZyTXR5LHgWZ7KWuqj5GJgUxI4uX4VGfpLIdS5YKBXptUNHvRM+xmqCFShQv6953Jfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3lbnoKWO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v6kcq//N; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nEhyDa9ZqIEMDaJUSe5CxMfGDijRIVlGhDy65tOAq07q9Vt/F/sexKTTY34FiLqzoZ7p6lObRZTN5OubE1T0wLinv0/W6ceqKhhcEMPgR0Juof2MrD1Ws80zxQzRPnnmDpN0EyeOSpPNZ0kqGS185Ys/4k0wGf4B9eaLtAQIe+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qDjhr6Xj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Th+YM87S; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 06 May 2025 13:20:13 -0000
+Date: Tue, 06 May 2025 13:20:14 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746537614;
+	s=2020; t=1746537615;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PP5ytWjQCNJFsROl50J2C5IKGGlzxgPmfSSVxK43n2M=;
-	b=3lbnoKWOKBdyKxNsdsMqrlSZi0/WGg3Yo3kP+krr+/2kcGHXE6XpXZ7pWswFHp/qdDAG6K
-	k//j34xp8pjZzP5+ahQkI8qhqEujCbmXupwEQd4GydHlM+dRIn5jKAiIsr/2u6HoMM0hiR
-	5NSU6RQ2XsA8L+uTBfJu+Pa1qsB6x2SxdLhKYU/UTVcXPEk1LLlPjCVN+OTX3OxjeCrhHG
-	GkxdwewlTHNkF2zLpcgsN3lTsBs8oKEBj8iNbxIY9nQ9VqRbqYvVxHUqXnSdzviCI1wR60
-	EoOQsjGAVmHYcYbRGnTvNyxQlsqaw46JtP85eFpxgQLNKgbPRhPveG4+teqRwA==
+	bh=HzuaDLJwwVysIyAdOCro+9gtoWbupxRepvKTtxWGNrM=;
+	b=qDjhr6XjwQmAj4bAwa1deLiOSvMTRvX+eTiE4ckuxnfk0ndSLkddncu15NbHeoJXLIzfvk
+	ZqJdfQyrw72fXQdL4i5Xl1J0tbiL77ihlmuMcqZRMtiSIGV4TDQ4HUek3y2sIbVZROf6rF
+	8sdwvo+8EejsmcE2U5D/etA/toFVpaBCfF73nqzt4fAaa5j2J6wzc4Qxv0rWRRk8y1EBdd
+	TYMfUChFVI+niFpSNJ6tVXmkXw1gKU+9vBE+oLI3DTx4VCbK+1QFuP8bKhYcwQDqrl3YIK
+	RS3qQn6dQJAS7uWXAFtuqX14igTDlnPFh3tBG8wjqdaiR08B5HrcUzE5h0kRUA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746537614;
+	s=2020e; t=1746537615;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PP5ytWjQCNJFsROl50J2C5IKGGlzxgPmfSSVxK43n2M=;
-	b=v6kcq//NwqyHwfSITUe+akM/JMcHZsOK/WWJuHoZjLQYOD6Age7H8zRMVH8wbJcT+WHhkF
-	EbI3Wero5zD/DNCg==
+	bh=HzuaDLJwwVysIyAdOCro+9gtoWbupxRepvKTtxWGNrM=;
+	b=Th+YM87SpmjzxKrvZ3TqcBWQjmTqlFHNMJgEWbNII/1PrLN51z/XsXKx1qRvJbufBdIv7c
+	s+srYIAJsfXAAtDQ==
 From: "tip-bot2 for Jiri Slaby (SUSE)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/cleanups] Documentation: irqdomain: Update it
+Subject:
+ [tip: irq/cleanups] Documentation: irq-domain.rst: Simple improvements
 Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250319092951.37667-57-jirislaby@kernel.org>
-References: <20250319092951.37667-57-jirislaby@kernel.org>
+In-Reply-To: <20250319092951.37667-56-jirislaby@kernel.org>
+References: <20250319092951.37667-56-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174653761354.406.17600836815878007682.tip-bot2@tip-bot2>
+Message-ID: <174653761428.406.8803786696017286023.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,253 +82,116 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/cleanups branch of tip:
 
-Commit-ID:     1213b222c7b62d6aa775f945ae7a825b174a3133
-Gitweb:        https://git.kernel.org/tip/1213b222c7b62d6aa775f945ae7a825b174a3133
+Commit-ID:     3701ae11de5fdcde0d129a7083032c8d87fd7e04
+Gitweb:        https://git.kernel.org/tip/3701ae11de5fdcde0d129a7083032c8d87fd7e04
 Author:        Jiri Slaby (SUSE) <jirislaby@kernel.org>
-AuthorDate:    Wed, 19 Mar 2025 10:29:49 +01:00
+AuthorDate:    Wed, 19 Mar 2025 10:29:48 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 06 May 2025 14:59:09 +02:00
 
-Documentation: irqdomain: Update it
+Documentation: irq-domain.rst: Simple improvements
 
-The irqdomain documentaion became obsolete over time. Update and extend
-it a bit with respect to the current code and HW.
+The improvements include:
 
-Most notably the doubled documentation of irq_domain (from .rst and .h)
-was unified and let only in .rst. A reference link was added to .h.
+  * Capitals in headlines.
+  * Add commas: for easier reading, it is always desired to add commas
+    at some places in text. Like before adverbs or after fronted
+    sentences.
+  * 3rd person -> add 's' to verbs.
+  * End some sentences with period and start a new one. Avoid thus heavy
+    sentences.
 
-Furthermore:
- * Add some 'struct' keywords, so that the respective structs are
-   hyperlinked
- * :c:member: use where appropriate to mark a member of a struct
- * Rephrase some wording to improve readability/understanding
+[ tglx: Fix up subject prefix ]
 
 Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250319092951.37667-57-jirislaby@kernel.org
+Link: https://lore.kernel.org/all/20250319092951.37667-56-jirislaby@kernel.org
 
 ---
- Documentation/core-api/irq/irq-domain.rst | 122 ++++++++++++---------
- include/linux/irqdomain.h                 |  26 +----
- 2 files changed, 76 insertions(+), 72 deletions(-)
+ Documentation/core-api/irq/irq-domain.rst | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/Documentation/core-api/irq/irq-domain.rst b/Documentation/core-api/irq/irq-domain.rst
-index cb25649..67d45b3 100644
+index c365c3e..cb25649 100644
 --- a/Documentation/core-api/irq/irq-domain.rst
 +++ b/Documentation/core-api/irq/irq-domain.rst
-@@ -3,8 +3,8 @@ The irq_domain Interrupt Number Mapping Library
+@@ -1,19 +1,19 @@
+ ===============================================
+-The irq_domain interrupt number mapping library
++The irq_domain Interrupt Number Mapping Library
  ===============================================
  
  The current design of the Linux kernel uses a single large number
--space where each separate IRQ source is assigned a different number.
--This is simple when there is only one interrupt controller, but in
-+space where each separate IRQ source is assigned a unique number.
-+This is simple when there is only one interrupt controller. But in
- systems with multiple interrupt controllers, the kernel must ensure
+ space where each separate IRQ source is assigned a different number.
+ This is simple when there is only one interrupt controller, but in
+-systems with multiple interrupt controllers the kernel must ensure
++systems with multiple interrupt controllers, the kernel must ensure
  that each one gets assigned non-overlapping allocations of Linux
  IRQ numbers.
-@@ -15,44 +15,63 @@ such as GPIO controllers avoid reimplementing identical callback
+ 
+ The number of interrupt controllers registered as unique irqchips
+-show a rising tendency: for example subdrivers of different kinds
++shows a rising tendency. For example, subdrivers of different kinds
+ such as GPIO controllers avoid reimplementing identical callback
  mechanisms as the IRQ core system by modelling their interrupt
- handlers as irqchips. I.e. in effect cascading interrupt controllers.
+-handlers as irqchips, i.e. in effect cascading interrupt controllers.
++handlers as irqchips. I.e. in effect cascading interrupt controllers.
  
--Here the interrupt number loose all kind of correspondence to
--hardware interrupt numbers: whereas in the past, IRQ numbers could
--be chosen so they matched the hardware IRQ line into the root
--interrupt controller (i.e. the component actually fireing the
--interrupt line to the CPU) nowadays this number is just a number.
-+So in the past, IRQ numbers could be chosen so that they match the
-+hardware IRQ line into the root interrupt controller (i.e. the
-+component actually firing the interrupt line to the CPU). Nowadays,
-+this number is just a number and the number loose all kind of
-+correspondence to hardware interrupt numbers.
+ Here the interrupt number loose all kind of correspondence to
+ hardware interrupt numbers: whereas in the past, IRQ numbers could
+@@ -21,15 +21,15 @@ be chosen so they matched the hardware IRQ line into the root
+ interrupt controller (i.e. the component actually fireing the
+ interrupt line to the CPU) nowadays this number is just a number.
  
- For this reason, we need a mechanism to separate controller-local
- interrupt numbers, called hardware IRQs, from Linux IRQ numbers.
+-For this reason we need a mechanism to separate controller-local
+-interrupt numbers, called hardware irq's, from Linux IRQ numbers.
++For this reason, we need a mechanism to separate controller-local
++interrupt numbers, called hardware IRQs, from Linux IRQ numbers.
  
  The irq_alloc_desc*() and irq_free_desc*() APIs provide allocation of
--irq numbers, but they don't provide any support for reverse mapping of
-+IRQ numbers, but they don't provide any support for reverse mapping of
+ irq numbers, but they don't provide any support for reverse mapping of
  the controller-local IRQ (hwirq) number into the Linux IRQ number
  space.
  
- The irq_domain library adds a mapping between hwirq and IRQ numbers on
--top of the irq_alloc_desc*() API.  An irq_domain to manage mapping is
--preferred over interrupt controller drivers open coding their own
-+top of the irq_alloc_desc*() API. An irq_domain to manage the mapping
-+is preferred over interrupt controller drivers open coding their own
+-The irq_domain library adds mapping between hwirq and IRQ numbers on
++The irq_domain library adds a mapping between hwirq and IRQ numbers on
+ top of the irq_alloc_desc*() API.  An irq_domain to manage mapping is
+ preferred over interrupt controller drivers open coding their own
  reverse mapping scheme.
+@@ -38,7 +38,7 @@ irq_domain also implements translation from an abstract irq_fwspec
+ structure to hwirq numbers (Device Tree and ACPI GSI so far), and can
+ be easily extended to support other IRQ topology data sources.
  
--irq_domain also implements translation from an abstract irq_fwspec
--structure to hwirq numbers (Device Tree and ACPI GSI so far), and can
--be easily extended to support other IRQ topology data sources.
-+irq_domain also implements a translation from an abstract struct
-+irq_fwspec to hwirq numbers (Device Tree, non-DT firmware node, ACPI
-+GSI, and software node so far), and can be easily extended to support
-+other IRQ topology data sources. The implementation is performed
-+without any extra platform support code.
- 
- irq_domain Usage
+-irq_domain usage
++irq_domain Usage
  ================
--
--An interrupt controller driver creates and registers an irq_domain by
--calling one of the irq_domain_create_*() functions.  The function will
--return a pointer to the irq_domain on success. The caller must provide the
--allocator function with an irq_domain_ops structure.
-+struct irq_domain could be defined as an irq domain controller. That
-+is, it handles the mapping between hardware and virtual interrupt
-+numbers for a given interrupt domain. The domain structure is
-+generally created by the PIC code for a given PIC instance (though a
-+domain can cover more than one PIC if they have a flat number model).
-+It is the domain callbacks that are responsible for setting the
-+irq_chip on a given irq_desc after it has been mapped.
-+
-+The host code and data structures use a fwnode_handle pointer to
-+identify the domain. In some cases, and in order to preserve source
-+code compatibility, this fwnode pointer is "upgraded" to a DT
-+device_node. For those firmware infrastructures that do not provide a
-+unique identifier for an interrupt controller, the irq_domain code
-+offers a fwnode allocator.
-+
-+An interrupt controller driver creates and registers a struct irq_domain
-+by calling one of the irq_domain_create_*() functions (each mapping
-+method has a different allocator function, more on that later). The
-+function will return a pointer to the struct irq_domain on success. The
-+caller must provide the allocator function with a struct irq_domain_ops
-+pointer.
  
- In most cases, the irq_domain will begin empty without any mappings
- between hwirq and IRQ numbers.  Mappings are added to the irq_domain
- by calling irq_create_mapping() which accepts the irq_domain and a
--hwirq number as arguments.  If a mapping for the hwirq doesn't already
--exist then it will allocate a new Linux irq_desc, associate it with
--the hwirq, and call the .map() callback so the driver can perform any
--required hardware setup.
-+hwirq number as arguments. If a mapping for the hwirq doesn't already
-+exist, irq_create_mapping() allocates a new Linux irq_desc, associates
-+it with the hwirq, and calls the :c:member:`irq_domain_ops.map()`
-+callback. In there, the driver can perform any required hardware
-+setup.
- 
- Once a mapping has been established, it can be retrieved or used via a
- variety of methods:
-@@ -74,7 +93,8 @@ be allocated.
- 
- If the driver has the Linux IRQ number or the irq_data pointer, and
+ An interrupt controller driver creates and registers an irq_domain by
+@@ -76,7 +76,7 @@ If the driver has the Linux IRQ number or the irq_data pointer, and
  needs to know the associated hwirq number (such as in the irq_chip
--callbacks) then it can be directly obtained from irq_data->hwirq.
-+callbacks) then it can be directly obtained from
-+:c:member:`irq_data.hwirq`.
+ callbacks) then it can be directly obtained from irq_data->hwirq.
  
- Types of irq_domain Mappings
+-Types of irq_domain mappings
++Types of irq_domain Mappings
  ============================
-@@ -230,20 +250,40 @@ There are four major interfaces to use hierarchy irq_domain:
- 4) irq_domain_deactivate_irq(): deactivate interrupt controller hardware
-    to stop delivering the interrupt.
  
--Following changes are needed to support hierarchy irq_domain:
-+The following is needed to support hierarchy irq_domain:
+ There are several mechanisms available for reverse mapping from hwirq
+@@ -101,7 +101,7 @@ map are fixed time lookup for IRQ numbers, and irq_descs are only
+ allocated for in-use IRQs.  The disadvantage is that the table must be
+ as large as the largest possible hwirq number.
  
--1) a new field 'parent' is added to struct irq_domain; it's used to
-+1) The :c:member:`parent` field in struct irq_domain is used to
-    maintain irq_domain hierarchy information.
--2) a new field 'parent_data' is added to struct irq_data; it's used to
--   build hierarchy irq_data to match hierarchy irq_domains. The irq_data
--   is used to store irq_domain pointer and hardware irq number.
--3) new callbacks are added to struct irq_domain_ops to support hierarchy
--   irq_domain operations.
--
--With support of hierarchy irq_domain and hierarchy irq_data ready, an
--irq_domain structure is built for each interrupt controller, and an
-+2) The :c:member:`parent_data` field in struct irq_data is used to
-+   build hierarchy irq_data to match hierarchy irq_domains. The
-+   irq_data is used to store irq_domain pointer and hardware irq
-+   number.
-+3) The :c:member:`alloc()`, :c:member:`free()`, and other callbacks in
-+   struct irq_domain_ops to support hierarchy irq_domain operations.
-+
-+With the support of hierarchy irq_domain and hierarchy irq_data ready,
-+an irq_domain structure is built for each interrupt controller, and an
- irq_data structure is allocated for each irq_domain associated with an
--IRQ. Now we could go one step further to support stacked(hierarchy)
-+IRQ.
-+
-+For an interrupt controller driver to support hierarchy irq_domain, it
-+needs to:
-+
-+1) Implement irq_domain_ops.alloc() and irq_domain_ops.free()
-+2) Optionally, implement irq_domain_ops.activate() and
-+   irq_domain_ops.deactivate().
-+3) Optionally, implement an irq_chip to manage the interrupt controller
-+   hardware.
-+4) There is no need to implement irq_domain_ops.map() and
-+   irq_domain_ops.unmap(). They are unused with hierarchy irq_domain.
-+
-+Note the hierarchy irq_domain is in no way x86-specific, and is
-+heavily used to support other architectures, such as ARM, ARM64 etc.
-+
-+Stacked irq_chip
-+~~~~~~~~~~~~~~~~
-+
-+Now, we could go one step further to support stacked (hierarchy)
- irq_chip. That is, an irq_chip is associated with each irq_data along
- the hierarchy. A child irq_chip may implement a required action by
- itself or by cooperating with its parent irq_chip.
-@@ -253,20 +293,6 @@ with the hardware managed by itself and may ask for services from its
- parent irq_chip when needed. So we could achieve a much cleaner
- software architecture.
+-The majority of drivers should use the linear map.
++The majority of drivers should use the Linear map.
  
--For an interrupt controller driver to support hierarchy irq_domain, it
--needs to:
--
--1) Implement irq_domain_ops.alloc and irq_domain_ops.free
--2) Optionally implement irq_domain_ops.activate and
--   irq_domain_ops.deactivate.
--3) Optionally implement an irq_chip to manage the interrupt controller
--   hardware.
--4) No need to implement irq_domain_ops.map and irq_domain_ops.unmap,
--   they are unused with hierarchy irq_domain.
--
--Hierarchy irq_domain is in no way x86 specific, and is heavily used to
--support other architectures, such as ARM, ARM64 etc.
--
- Debugging
- =========
+ Tree
+ ----
+@@ -189,7 +189,7 @@ that the driver using the simple domain call irq_create_mapping()
+ before any irq_find_mapping() since the latter will actually work
+ for the static IRQ assignment case.
  
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index a70e2ba..1a1786d 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -1,30 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
- /*
-- * irq_domain - IRQ translation domains
-+ * irq_domain - IRQ Translation Domains
-  *
-- * Translation infrastructure between hw and linux irq numbers.  This is
-- * helpful for interrupt controllers to implement mapping between hardware
-- * irq numbers and the Linux irq number space.
-- *
-- * irq_domains also have hooks for translating device tree or other
-- * firmware interrupt representations into a hardware irq number that
-- * can be mapped back to a Linux irq number without any extra platform
-- * support code.
-- *
-- * Interrupt controller "domain" data structure. This could be defined as a
-- * irq domain controller. That is, it handles the mapping between hardware
-- * and virtual interrupt numbers for a given interrupt domain. The domain
-- * structure is generally created by the PIC code for a given PIC instance
-- * (though a domain can cover more than one PIC if they have a flat number
-- * model). It's the domain callbacks that are responsible for setting the
-- * irq_chip on a given irq_desc after it's been mapped.
-- *
-- * The host code and data structures use a fwnode_handle pointer to
-- * identify the domain. In some cases, and in order to preserve source
-- * code compatibility, this fwnode pointer is "upgraded" to a DT
-- * device_node. For those firmware infrastructures that do not provide
-- * a unique identifier for an interrupt controller, the irq_domain
-- * code offers a fwnode allocator.
-+ * See Documentation/core-api/irq/irq-domain.rst for the details.
-  */
+-Hierarchy IRQ domain
++Hierarchy IRQ Domain
+ --------------------
  
- #ifndef _LINUX_IRQDOMAIN_H
+ On some architectures, there may be multiple interrupt controllers
 
