@@ -1,55 +1,55 @@
-Return-Path: <linux-tip-commits+bounces-5416-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5417-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70EEAADC66
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 12:26:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB481AAE0FF
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 15:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6E4B1C00E58
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 10:26:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07271466202
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 13:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BE32139B0;
-	Wed,  7 May 2025 10:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8404E288CBA;
+	Wed,  7 May 2025 13:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q56zlVXW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tqZNOqIV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Sf1iy0eE";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iKwwXOTt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46B8210185;
-	Wed,  7 May 2025 10:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F677202C26;
+	Wed,  7 May 2025 13:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746613575; cv=none; b=dpHvhIVKAqEbf4vyL4yXKrBLmit9Y5Ab98hBGji01QZTFV1viqRMFJe5KVA7qpEnoeiNsn9+YASq14jdlqMogxHPN63u9vR9alpUCuh9Qtn36CK3HcsjPpfQgD0dDHW1yhlAV5hp7ZL3XIPeBE3RDoIeghhtgHVd/n6RBTg1bZs=
+	t=1746625447; cv=none; b=OKPlYoPLkolUEx5e6MofH3RaXTxtw3WVT9766Uqgrr2H0PAxwhd+4N5jYvxIYe0Sk+rVEZ3WN6XqGs1L51RhfUIkaHV7QCZtubxwoaYAd/oCnwasomzcQaCaFjKVgtrXtaB7PPDelURStomSyKESN7T2sCpH9VI1q7cIa7WtHHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746613575; c=relaxed/simple;
-	bh=P4Rmk7zqkOBtJYnu54vJ7EQmYpq1VOIVl/jkh2k5fOU=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=MHcdfJF8caRq8HrnIImkhqQessKCtddQXC1hJ9bEekhGbyEZc6CtFRk+tZEOXS07nycvPv6Bymul5HECiPkur8O/uufbLNKuucPoCFZeu9VSbl5NvAyvunZfkVkAu/Jr0ntuIXA/u4J//O21WGHgt8S7ZQ2OTFtoW5k1vwaZ24w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q56zlVXW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tqZNOqIV; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1746625447; c=relaxed/simple;
+	bh=/HWw5K4nCtkm4u1YH6waq03O1zAuuXBzvPSFWMAxATE=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Zx4CL+r7bjric8LA3DcIyHzi+vloiIelDqBOwOUvoAdAL8/ReKxtZBqZs1oUJ3xXqMpMHNN3mI1g9gHkH8/zes0JWO4YddwXi4qGmfK7aqYuLcsH8drwW9kebm2voBi6LhJ75zN4QN70yxZxfFHxkzNiQu7GUAKkpYNevdBnOOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Sf1iy0eE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iKwwXOTt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 07 May 2025 10:26:09 -0000
+Date: Wed, 07 May 2025 13:44:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746613570;
+	s=2020; t=1746625443;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=4Ug/1JYcubOrRS7mAj4HGia7t32tIksBAX3hizW9Jmk=;
-	b=q56zlVXWmnxuIbINtoYihBfjcixvo370C2WXotV3EUPf6W5vLJa3W0L1eBcqHuKJNFIlDp
-	DoPOT4Gj5XOlmuKteFc3KVrq7uxkfYYAhJtWRcCSRqo61ARRM7Rh65mzrvV3uYgk98or2L
-	oQer3HwNr64IShyAuiJifwA1YNPT/xUKb3ESTEmB0zF5bsn9DCc7LXVoS9uD5R1UPNuYMY
-	BWg8cjDW3oabBrsAXTfp8XovKbW0W99sqr+2yWXzrqSyPGP0t+Ly3uoT9pPImkBlKOI2oO
-	Bti+BUB5L3fZkfeAmLdp5JMATfJzQWFbgzi/dLc8yt5/OH8LlhKcITzB5ltsAQ==
+	bh=FkXQ2Gk0K3YvbEjNiACfM1YTsZorg3lYL4R4iifKG1Y=;
+	b=Sf1iy0eE/nClQG0R4MwxP6P7fI0dlacMnwaKL+mL+l3CwT86YJmB3St2yvSDYoxwrcChMm
+	pgkgUcom4ZBhlUBvm0U/MqsUQcIdBa8MxDljJIwiC0qXi+JJbSn3OGAO0eyh9nJy+fD1el
+	9m64X1dAwgQaFFJi+v6oyT2zF8Jk+evCMQGIQx6fq0C15BlBBOeROBHWI9zp8UoU2uinsG
+	r5EeC3vTUSZ1zPBv9p8YokQKnfaZYqXRtMvae7GR+ijWPIHMFV7hB3YDVhSR6FK1hqchvs
+	PZ+Th0g6TKBtMeMbMhqEZZR1ofIr9t7uP6l+ddtZr5L15C7BD4ph8nYePU0TSg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746613570;
+	s=2020e; t=1746625443;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=4Ug/1JYcubOrRS7mAj4HGia7t32tIksBAX3hizW9Jmk=;
-	b=tqZNOqIV9WrS8nbtMJfzrswvU34vUdrc2I/ZkD9zEeGHlImOFaAgnN3gWWOUuVicABgCk9
-	qPzt6paNDXscGuAA==
+	bh=FkXQ2Gk0K3YvbEjNiACfM1YTsZorg3lYL4R4iifKG1Y=;
+	b=iKwwXOTtrE8/Sas0Gg9IGT0hRHLAntHePNFCHnfpPEon94GDzN6i+R7EvHMfTd7H03a20u
+	hww/L6+CrF5v9RDA==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -63,7 +63,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174661356932.406.8269713535832168901.tip-bot2@tip-bot2>
+Message-ID: <174662544200.406.664561025386766855.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,12 +73,12 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/cleanups branch of tip:
 
-Commit-ID:     b95a00df343eef56fa7489e5a2ac8308dce7e3c9
-Gitweb:        https://git.kernel.org/tip/b95a00df343eef56fa7489e5a2ac8308dce7e3c9
+Commit-ID:     c63e393a16c9c4cf8c9b70fedf9f27b442874ef2
+Gitweb:        https://git.kernel.org/tip/c63e393a16c9c4cf8c9b70fedf9f27b442874ef2
 Author:        Thomas Gleixner <tglx@linutronix.de>
 AuthorDate:    Tue, 06 May 2025 14:22:59 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 07 May 2025 12:24:05 +02:00
+CommitterDate: Wed, 07 May 2025 15:39:43 +02:00
 
 irqdomain: Consolidate coding style
 
@@ -86,6 +86,7 @@ Now that the file has been thrown through the mincer, finish the job and
 consolidate the coding style.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+
 ---
  include/linux/irqdomain.h | 257 ++++++++++++++++---------------------
  1 file changed, 113 insertions(+), 144 deletions(-)
