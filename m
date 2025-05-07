@@ -1,34 +1,34 @@
-Return-Path: <linux-tip-commits+bounces-5398-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5399-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60658AADAF1
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 11:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38510AADAF3
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 11:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BE313B6804
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 09:12:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A6383BBC30
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  7 May 2025 09:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DDF242D87;
-	Wed,  7 May 2025 09:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7512441AA;
+	Wed,  7 May 2025 09:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pqf7YBCv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CLJ4CK8M"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FmCDbGib";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EbcZxEl3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FD0241663;
-	Wed,  7 May 2025 09:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BDD2417F0;
+	Wed,  7 May 2025 09:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746608863; cv=none; b=JqjoXEYJo6sd93qgftL1sG6RkJ0VaBswS4apEi6pCv6ctsigLXBoMyJeCt77Sy6r8nrAThCkBWKQiOtvBu2fGXpi1yOZQ2BSDzcPWZ0AOIkN6goJNT+6AbgRUn2ISHG+K/iC8PsvBMx/JPd/KW/WYn5xgKtzhM3bSmN6TxvkWXA=
+	t=1746608864; cv=none; b=c3xX0Z2kdcDSa+gCxFHJoZhV/EA1cXnP2ll5JPrZkaBrj++X/2GPftfiI/xEWyuiteeHliXVkkEfZ9HfXHVUMwAdGcC+UBtwEgUKHBLyvTfzlUA64U8NjIrcsDk84jbMELK5iEqCnwDPsM/x/lE3q6lF0fneAyqUv0Q9K79L3sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746608863; c=relaxed/simple;
-	bh=Cuw2D5eNQQW/eA8BUCMbsppaTpHqfdzfgfX2rLTU/dM=;
+	s=arc-20240116; t=1746608864; c=relaxed/simple;
+	bh=1qXpLQn0N3oUo4SDJQFsMlSCTQluPauNVLiuVGmHa38=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gqK+nKS2a9wNJ7HqVMdcjoegD/k5WJ66uV/jjIRaezbC5QtnfdjzXCM3OO1AEySSgZW57bBerC8kCA/YnP0E/hk9SLKW5DTj8l3iXVFYHmNTysBW9Ch+kTnRY8tT+G4KeJn5/gTJhu3bNlIdSFeyTvVE9Vr7dNlMuNcU/6Ut5E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pqf7YBCv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CLJ4CK8M; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qmEX30Qac8sK9NGm4uzg7FAYoWlQeK5dBmrbZ9SvvbeJhtJTzlgpKb2EZWF5nnbbOH8raJTf997rPc2uLM2ghRihMB3nYK6v2WnGIKCUDsLA4UWg8kMMraq+jPnWzrtGdf3KLrpl5YEL+NtsGKso5PAjFeasN8K2A+IJwR6kpvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FmCDbGib; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EbcZxEl3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Wed, 07 May 2025 09:07:38 -0000
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IyiB0OhW8XH7K8PA7BzBORSysaybLZikDjZ6YdcXaeA=;
-	b=pqf7YBCvGbE0J7LSKp331iXa3KoF8Ne+xp7vsEB8y0RGVucBXV1C4RD/U2bs7Sur/bb/Ct
-	4ZTaSIMAOxpCTdt1oPTLWY5fho1jS5F665LpaHQNI7q+AQ0wYTCAOrHED1BlwNod6dis0I
-	psK3yj4j7fm7fNV57ISBTBUE/ytWbmcW7/mdWx0jhVc74bTZmldFiPS1gZUaoinhLGwGZa
-	C4t4vbvDDBD8pj6UOWtvN+i7B62GNVHxqcEv2/2/17B+zn1PmMNketXZkQcJRAeLYi5bIO
-	rUvJZMLLzhHVSVQtWW7uAKTDa6UoL/St5NGJaGHTndF4/YE6FyaY4lyvAuL7Bg==
+	bh=/xTiK9LK0HMtxXWDcML84j/PNUhnA1JLM/g8Qd0ANQ4=;
+	b=FmCDbGib72Sg2WlAUTxSGocZRoVLUyZdFXS4UDXllo8LgS8rHmawpBiK0e0GeUsYDfkyWx
+	mZUkmn81iTVgmZg1UgXh1L1iC8ZmzrvV6mdohLJ4OrjNgQQ7BgzP7K6cNaTC/zS8mLh3tN
+	8p+k2ZHGxeZMDs34d1q7l1s82VPZURyowfeu3hz13B9pC+gii8fdu8om3eSPo6bBzm0hxW
+	x+UEoHRKUC9AfOTrQqun8Lb0+re72h6t6GU6ZW0k6lYI4Px04SFRM7NMaQELz4ypoi/I+n
+	WB/1BGe4CtIDMzxSZmNVrIorT4IS+/izd24AwIlu7mLstAJxDt1PzYbeJUilYQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1746608859;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,26 +52,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IyiB0OhW8XH7K8PA7BzBORSysaybLZikDjZ6YdcXaeA=;
-	b=CLJ4CK8MLD4FsxVybA9UVF+Ba5C0D6NglSquVbD6M/3YU5j+FHmUx5WTrxcXDehmORQIje
-	BW9EytQnFvFgW0BQ==
+	bh=/xTiK9LK0HMtxXWDcML84j/PNUhnA1JLM/g8Qd0ANQ4=;
+	b=EbcZxEl3DHN24DF0YR0AO/XRPDNTmRrspj5pqvH12W3jdU7PN9p/ZZ8yn1agl2esxErlqR
+	NhQiL7Y0dvD06DBQ==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/chip: Rework handle_eoi_irq()
+Subject: [tip: irq/core] genirq/chip: Rework handle_level_irq()
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20250429065420.986002418@linutronix.de>
-References: <20250429065420.986002418@linutronix.de>
+In-Reply-To: <20250429065420.926362488@linutronix.de>
+References: <20250429065420.926362488@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174660885818.406.11814716534240691806.tip-bot2@tip-bot2>
+Message-ID: <174660885885.406.17847204461521972074.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,14 +81,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     15d772e2eebd297e3714abad8bf1d424d3d700fc
-Gitweb:        https://git.kernel.org/tip/15d772e2eebd297e3714abad8bf1d424d3d700fc
+Commit-ID:     2334c45521033772fd808e54814f5844ac35c9d0
+Gitweb:        https://git.kernel.org/tip/2334c45521033772fd808e54814f5844ac35c9d0
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 29 Apr 2025 08:55:11 +02:00
+AuthorDate:    Tue, 29 Apr 2025 08:55:10 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 07 May 2025 09:08:13 +02:00
 
-genirq/chip: Rework handle_eoi_irq()
+genirq/chip: Rework handle_level_irq()
 
 Use the new helpers to decide whether the interrupt should be handled and
 switch the descriptor locking to guard().
@@ -99,88 +99,65 @@ No functional change.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/20250429065420.986002418@linutronix.de
+Link: https://lore.kernel.org/all/20250429065420.926362488@linutronix.de
 
 
 ---
- kernel/irq/chip.c | 42 ++++++++++++++++++------------------------
- 1 file changed, 18 insertions(+), 24 deletions(-)
+ kernel/irq/chip.c | 32 +++++++++-----------------------
+ 1 file changed, 9 insertions(+), 23 deletions(-)
 
 diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
-index eddf0c6..1ca9b50 100644
+index 48f62fc..eddf0c6 100644
 --- a/kernel/irq/chip.c
 +++ b/kernel/irq/chip.c
-@@ -653,20 +653,26 @@ static void cond_unmask_eoi_irq(struct irq_desc *desc, struct irq_chip *chip)
- 	}
+@@ -609,40 +609,26 @@ static void cond_unmask_irq(struct irq_desc *desc)
  }
  
-+static inline void cond_eoi_irq(struct irq_chip *chip, struct irq_data *data)
-+{
-+	if (!(chip->flags & IRQCHIP_EOI_IF_HANDLED))
-+		chip->irq_eoi(data);
-+}
-+
  /**
-- *	handle_fasteoi_irq - irq handler for transparent controllers
+- *	handle_level_irq - Level type irq handler
 - *	@desc:	the interrupt description structure for this irq
-+ * handle_fasteoi_irq - irq handler for transparent controllers
++ * handle_level_irq - Level type irq handler
 + * @desc:	the interrupt description structure for this irq
   *
-- *	Only a single callback will be issued to the chip: an ->eoi()
-- *	call when the interrupt has been serviced. This enables support
-- *	for modern forms of interrupt handlers, which handle the flow
-- *	details in hardware, transparently.
-+ * Only a single callback will be issued to the chip: an ->eoi() call when
-+ * the interrupt has been serviced. This enables support for modern forms
-+ * of interrupt handlers, which handle the flow details in hardware,
-+ * transparently.
+- *	Level type interrupts are active as long as the hardware line has
+- *	the active level. This may require to mask the interrupt and unmask
+- *	it after the associated handler has acknowledged the device, so the
+- *	interrupt line is back to inactive.
++ * Level type interrupts are active as long as the hardware line has the
++ * active level. This may require to mask the interrupt and unmask it after
++ * the associated handler has acknowledged the device, so the interrupt
++ * line is back to inactive.
   */
- void handle_fasteoi_irq(struct irq_desc *desc)
+ void handle_level_irq(struct irq_desc *desc)
  {
- 	struct irq_chip *chip = desc->irq_data.chip;
- 
 -	raw_spin_lock(&desc->lock);
 +	guard(raw_spinlock)(&desc->lock);
+ 	mask_ack_irq(desc);
  
- 	/*
- 	 * When an affinity change races with IRQ handling, the next interrupt
-@@ -676,19 +682,14 @@ void handle_fasteoi_irq(struct irq_desc *desc)
- 	if (!irq_can_handle_pm(desc)) {
- 		if (irqd_needs_resend_when_in_progress(&desc->irq_data))
- 			desc->istate |= IRQS_PENDING;
--		goto out;
-+		cond_eoi_irq(chip, &desc->irq_data);
-+		return;
- 	}
- 
+-	if (!irq_can_handle_pm(desc))
+-		goto out_unlock;
+-
 -	desc->istate &= ~(IRQS_REPLAY | IRQS_WAITING);
 -
 -	/*
 -	 * If its disabled or no action available
--	 * then mask it and get out of here:
+-	 * keep it masked and get out of here
 -	 */
 -	if (unlikely(!desc->action || irqd_irq_disabled(&desc->irq_data))) {
 -		desc->istate |= IRQS_PENDING;
-+	if (!irq_can_handle_actions(desc)) {
- 		mask_irq(desc);
--		goto out;
-+		cond_eoi_irq(chip, &desc->irq_data);
+-		goto out_unlock;
+-	}
++	if (!irq_can_handle(desc))
 +		return;
- 	}
  
  	kstat_incr_irqs_this_cpu(desc);
-@@ -704,13 +705,6 @@ void handle_fasteoi_irq(struct irq_desc *desc)
- 	 */
- 	if (unlikely(desc->istate & IRQS_PENDING))
- 		check_irq_resend(desc, false);
+ 	handle_irq_event(desc);
+ 
+ 	cond_unmask_irq(desc);
 -
--	raw_spin_unlock(&desc->lock);
--	return;
--out:
--	if (!(chip->flags & IRQCHIP_EOI_IF_HANDLED))
--		chip->irq_eoi(&desc->irq_data);
+-out_unlock:
 -	raw_spin_unlock(&desc->lock);
  }
- EXPORT_SYMBOL_GPL(handle_fasteoi_irq);
+ EXPORT_SYMBOL_GPL(handle_level_irq);
  
 
