@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-5480-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5479-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9A9AAF804
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 12:37:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D66AAAF807
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 12:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CB349E1E19
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 10:36:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6006A167912
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 10:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898C221ABA8;
-	Thu,  8 May 2025 10:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48B722D793;
+	Thu,  8 May 2025 10:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="svLyJTAN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hO6lAxRH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q2APzils";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J/ZgdIWA"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07272153CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD4922B581;
 	Thu,  8 May 2025 10:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746700442; cv=none; b=AZg/NSQpMCnJnXZfJW72eM6k0WEA1Gc2vHvdFG/by/7s7tSJhP73qMU2gnlMWNooDezUh30ZS5phz09aUiXPeRYIyuWG+OalgBMzd6wyX1iph8BuZ8AO2otKEvemNudbpgkgzoYT/UTq81dQe89FcBLlXkwUdCIQbKCcQonx/dw=
+	t=1746700441; cv=none; b=TP+8IAKpskmpaB54Cxay1KuNIAwnf9Omk6zob67B0i5fad6dEBm0iz/VIKSTIXmCSIGy2hYp+oiglZMUvqH6cU5e1MT7mV8dsL1M0tWVZTsJuiEypZUeayCd5y/mjPr8U6OJ2uFbcfuO6whdyyYbzcRWb8FyShorEKg+J9r5JhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746700442; c=relaxed/simple;
-	bh=E3gTllr6M/bSxgfEWpyw0C9KFSbOix/pX2MysmWgCQs=;
+	s=arc-20240116; t=1746700441; c=relaxed/simple;
+	bh=uug6YibHPnddICp2w95P8O6Eup8gvSDn/5kLo/prxKg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=h2j7y2yWtkWU6EVopG2Ycr9pNIqYGRticHa4mwOWaJh+L3C7Yi3X8ekczJ5CtbbP6df8iNGCDgi+4AVbRWxUye6LqYGMfR8UVaCYCPn7RQk99xmJMrBwWUWShCzxS7cpKI9DvnpGCqEj12AMIbOKjGaHAtMtSfwl/feTHL7lJMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=svLyJTAN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hO6lAxRH; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AdxgA4iOyWyLlTGiTqNk0ar/RfecnwvSzYhSkdbvSiDaeROgzDEDhx6RgPgWkpXUtZei9+CkVZ4cLT5UIdVVSHBIhzcbsnEH/hYlQaU4/nzBC8nRfPo3bhLjcoXETr/MgpdhXSwjz6DULzeYObgQWcyzSWtdNBCjxnSl6KCc9xE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q2APzils; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J/ZgdIWA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Date: Thu, 08 May 2025 10:33:56 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746700437;
+	s=2020; t=1746700438;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ErtzgTdqvJrBSVxY3pVGHaa6HrQHUQ+PJ1JbBc1xP5s=;
-	b=svLyJTANMd2DNmT/+PViuEe1AfLiZda19geynwgomjIIYU4lFAcw+s2AbcgVrmcgbywZ8q
-	b/Ce1vblgEXU6K5H+IvfaHk5fQjsOOPOK3jkGeOuWjjkWClPhO5zvezk1+veAEMl8BLSP8
-	7bfcufyzFqiT2RBC9XP5PEE7FJ4SvTDpgykqHw3o57c3NJU6PlswW4C7l3NAga4ccG1mx/
-	g5iilBfwPyqND/WFFp6/T6KFowyuaGQtoayhlhCEax1clB9NIxB6z82WPtc75bvaoyfh3f
-	iC205EYa+3eiFtcTg3hRfu0tLD++NgUmB9yW5VzjwToyza/AjLNGClpBPJLrVA==
+	bh=/vBlTQyw9629Dpc9q+aEG6jInKHk47GuWVGoJI9bq5g=;
+	b=Q2APzilsHgKU0yKxyDKPTzgQcGCa0YspPdGPryzjsCCouUoyT2UX2x6n5EsF26jL4ccB88
+	RwP7U+Pn7+eI/USJm+ZO/9lclRIV1KPTJwASfHykvXgvN02CFcgHlveEY96HAWynMxAEoo
+	Px/Ct0jbnRHob5Z/EQRbEtyxFEXxEEZIpzjzBz7JjV6Xx9zr4hgS454z1yWpGs/DRSRuQb
+	QwGyfsa9/cX54Wec7xBFOG1Oid5xrskAv9E61taKqegxBUfUjDKvWZswVa2+GfHhvwD1/Y
+	1Cy45zVGB1ae8oRRzEhm9DHK8lbSU5uPBr7s3gr8HIUaLBXW6L1Q1bWC6k/mkg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746700437;
+	s=2020e; t=1746700438;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ErtzgTdqvJrBSVxY3pVGHaa6HrQHUQ+PJ1JbBc1xP5s=;
-	b=hO6lAxRHaGyh80ZvVQuZ1JCPvq2C+/i06dPuHPYPwjd1qclY1HHo8RQ2OkmaQPQtaepgyX
-	nP3dCZBAuhHUG2Cw==
+	bh=/vBlTQyw9629Dpc9q+aEG6jInKHk47GuWVGoJI9bq5g=;
+	b=J/ZgdIWAobFlAzPRB1iTjzfMOBdYrHJXPYwaK8B3zd13g7QLlS7X5NjuZWWCAyUz650CuB
+	e3VbCy/tvCQT4fBQ==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/futex] futex: Create private_hash() get/put class
+Subject: [tip: locking/futex] futex: Create futex_hash() get/put class
 Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250416162921.513656-8-bigeasy@linutronix.de>
-References: <20250416162921.513656-8-bigeasy@linutronix.de>
+In-Reply-To: <20250416162921.513656-7-bigeasy@linutronix.de>
+References: <20250416162921.513656-7-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174670043627.406.8429793484565476771.tip-bot2@tip-bot2>
+Message-ID: <174670043699.406.6341213088234094404.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,74 +81,213 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/futex branch of tip:
 
-Commit-ID:     d854e4e7850e6d3ed24f863a877abc2279d60506
-Gitweb:        https://git.kernel.org/tip/d854e4e7850e6d3ed24f863a877abc2279d60506
+Commit-ID:     6c67f8d880c0950215b8e6f8539562ad1971a05a
+Gitweb:        https://git.kernel.org/tip/6c67f8d880c0950215b8e6f8539562ad1971a05a
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 16 Apr 2025 18:29:07 +02:00
+AuthorDate:    Wed, 16 Apr 2025 18:29:06 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 03 May 2025 12:02:06 +02:00
 
-futex: Create private_hash() get/put class
+futex: Create futex_hash() get/put class
 
 This gets us:
 
-  fph = futex_private_hash(key) /* gets fph and inc users */
-  futex_private_hash_get(fph)   /* inc users */
-  futex_private_hash_put(fph)   /* dec users */
+  hb = futex_hash(key) /* gets hb and inc users */
+  futex_hash_get(hb)   /* inc users */
+  futex_hash_put(hb)   /* dec users */
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250416162921.513656-8-bigeasy@linutronix.de
+Link: https://lore.kernel.org/r/20250416162921.513656-7-bigeasy@linutronix.de
 ---
- kernel/futex/core.c  | 12 ++++++++++++
- kernel/futex/futex.h |  8 ++++++++
- 2 files changed, 20 insertions(+)
+ kernel/futex/core.c     |  6 +++---
+ kernel/futex/futex.h    |  7 +++++++
+ kernel/futex/pi.c       | 16 ++++++++++++----
+ kernel/futex/requeue.c  | 10 +++-------
+ kernel/futex/waitwake.c | 15 +++++----------
+ 5 files changed, 30 insertions(+), 24 deletions(-)
 
 diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index 56a5653..6a1d6b1 100644
+index e4cb5ce..56a5653 100644
 --- a/kernel/futex/core.c
 +++ b/kernel/futex/core.c
-@@ -107,6 +107,18 @@ late_initcall(fail_futex_debugfs);
+@@ -122,6 +122,8 @@ struct futex_hash_bucket *futex_hash(union futex_key *key)
+ 	return &futex_queues[hash & futex_hashmask];
+ }
  
- #endif /* CONFIG_FAIL_FUTEX */
++void futex_hash_get(struct futex_hash_bucket *hb) { }
++void futex_hash_put(struct futex_hash_bucket *hb) { }
  
-+struct futex_private_hash *futex_private_hash(void)
-+{
-+	return NULL;
-+}
-+
-+bool futex_private_hash_get(struct futex_private_hash *fph)
-+{
-+	return false;
-+}
-+
-+void futex_private_hash_put(struct futex_private_hash *fph) { }
-+
  /**
-  * futex_hash - Return the hash bucket in the global hash
-  * @key:	Pointer to the futex key for which the hash is calculated
+  * futex_setup_timer - set up the sleeping hrtimer.
+@@ -957,9 +959,7 @@ static void exit_pi_state_list(struct task_struct *curr)
+ 		pi_state = list_entry(next, struct futex_pi_state, list);
+ 		key = pi_state->key;
+ 		if (1) {
+-			struct futex_hash_bucket *hb;
+-
+-			hb = futex_hash(&key);
++			CLASS(hb, hb)(&key);
+ 
+ 			/*
+ 			 * We can race against put_pi_state() removing itself from the
 diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-index 77d9b35..bc76e36 100644
+index a219903..77d9b35 100644
 --- a/kernel/futex/futex.h
 +++ b/kernel/futex/futex.h
-@@ -206,10 +206,18 @@ extern struct futex_hash_bucket *futex_hash(union futex_key *key);
- extern void futex_hash_get(struct futex_hash_bucket *hb);
- extern void futex_hash_put(struct futex_hash_bucket *hb);
+@@ -7,6 +7,7 @@
+ #include <linux/sched/wake_q.h>
+ #include <linux/compat.h>
+ #include <linux/uaccess.h>
++#include <linux/cleanup.h>
  
-+extern struct futex_private_hash *futex_private_hash(void);
-+extern bool futex_private_hash_get(struct futex_private_hash *fph);
-+extern void futex_private_hash_put(struct futex_private_hash *fph);
-+
- DEFINE_CLASS(hb, struct futex_hash_bucket *,
- 	     if (_T) futex_hash_put(_T),
- 	     futex_hash(key), union futex_key *key);
+ #ifdef CONFIG_PREEMPT_RT
+ #include <linux/rcuwait.h>
+@@ -202,6 +203,12 @@ futex_setup_timer(ktime_t *time, struct hrtimer_sleeper *timeout,
+ 		  int flags, u64 range_ns);
  
-+DEFINE_CLASS(private_hash, struct futex_private_hash *,
-+	     if (_T) futex_private_hash_put(_T),
-+	     futex_private_hash(), void);
+ extern struct futex_hash_bucket *futex_hash(union futex_key *key);
++extern void futex_hash_get(struct futex_hash_bucket *hb);
++extern void futex_hash_put(struct futex_hash_bucket *hb);
 +
++DEFINE_CLASS(hb, struct futex_hash_bucket *,
++	     if (_T) futex_hash_put(_T),
++	     futex_hash(key), union futex_key *key);
+ 
  /**
   * futex_match - Check whether two futex keys are equal
-  * @key1:	Pointer to key1
+diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
+index a56f28f..e52f540 100644
+--- a/kernel/futex/pi.c
++++ b/kernel/futex/pi.c
+@@ -939,9 +939,8 @@ retry:
+ 
+ retry_private:
+ 	if (1) {
+-		struct futex_hash_bucket *hb;
++		CLASS(hb, hb)(&q.key);
+ 
+-		hb = futex_hash(&q.key);
+ 		futex_q_lock(&q, hb);
+ 
+ 		ret = futex_lock_pi_atomic(uaddr, hb, &q.key, &q.pi_state, current,
+@@ -995,6 +994,16 @@ retry_private:
+ 		}
+ 
+ 		/*
++		 * Caution; releasing @hb in-scope. The hb->lock is still locked
++		 * while the reference is dropped. The reference can not be dropped
++		 * after the unlock because if a user initiated resize is in progress
++		 * then we might need to wake him. This can not be done after the
++		 * rt_mutex_pre_schedule() invocation. The hb will remain valid because
++		 * the thread, performing resize, will block on hb->lock during
++		 * the requeue.
++		 */
++		futex_hash_put(no_free_ptr(hb));
++		/*
+ 		 * Must be done before we enqueue the waiter, here is unfortunately
+ 		 * under the hb lock, but that *should* work because it does nothing.
+ 		 */
+@@ -1119,7 +1128,6 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
+ {
+ 	u32 curval, uval, vpid = task_pid_vnr(current);
+ 	union futex_key key = FUTEX_KEY_INIT;
+-	struct futex_hash_bucket *hb;
+ 	struct futex_q *top_waiter;
+ 	int ret;
+ 
+@@ -1139,7 +1147,7 @@ retry:
+ 	if (ret)
+ 		return ret;
+ 
+-	hb = futex_hash(&key);
++	CLASS(hb, hb)(&key);
+ 	spin_lock(&hb->lock);
+ retry_hb:
+ 
+diff --git a/kernel/futex/requeue.c b/kernel/futex/requeue.c
+index 209794c..992e3ce 100644
+--- a/kernel/futex/requeue.c
++++ b/kernel/futex/requeue.c
+@@ -444,10 +444,8 @@ retry:
+ 
+ retry_private:
+ 	if (1) {
+-		struct futex_hash_bucket *hb1, *hb2;
+-
+-		hb1 = futex_hash(&key1);
+-		hb2 = futex_hash(&key2);
++		CLASS(hb, hb1)(&key1);
++		CLASS(hb, hb2)(&key2);
+ 
+ 		futex_hb_waiters_inc(hb2);
+ 		double_lock_hb(hb1, hb2);
+@@ -817,9 +815,7 @@ int futex_wait_requeue_pi(u32 __user *uaddr, unsigned int flags,
+ 	switch (futex_requeue_pi_wakeup_sync(&q)) {
+ 	case Q_REQUEUE_PI_IGNORE:
+ 		{
+-			struct futex_hash_bucket *hb;
+-
+-			hb = futex_hash(&q.key);
++			CLASS(hb, hb)(&q.key);
+ 			/* The waiter is still on uaddr1 */
+ 			spin_lock(&hb->lock);
+ 			ret = handle_early_requeue_pi_wakeup(hb, &q, to);
+diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
+index 7dc35be..d52541b 100644
+--- a/kernel/futex/waitwake.c
++++ b/kernel/futex/waitwake.c
+@@ -154,7 +154,6 @@ void futex_wake_mark(struct wake_q_head *wake_q, struct futex_q *q)
+  */
+ int futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
+ {
+-	struct futex_hash_bucket *hb;
+ 	struct futex_q *this, *next;
+ 	union futex_key key = FUTEX_KEY_INIT;
+ 	DEFINE_WAKE_Q(wake_q);
+@@ -170,7 +169,7 @@ int futex_wake(u32 __user *uaddr, unsigned int flags, int nr_wake, u32 bitset)
+ 	if ((flags & FLAGS_STRICT) && !nr_wake)
+ 		return 0;
+ 
+-	hb = futex_hash(&key);
++	CLASS(hb, hb)(&key);
+ 
+ 	/* Make sure we really have tasks to wakeup */
+ 	if (!futex_hb_waiters_pending(hb))
+@@ -267,10 +266,8 @@ retry:
+ 
+ retry_private:
+ 	if (1) {
+-		struct futex_hash_bucket *hb1, *hb2;
+-
+-		hb1 = futex_hash(&key1);
+-		hb2 = futex_hash(&key2);
++		CLASS(hb, hb1)(&key1);
++		CLASS(hb, hb2)(&key2);
+ 
+ 		double_lock_hb(hb1, hb2);
+ 		op_ret = futex_atomic_op_inuser(op, uaddr2);
+@@ -444,9 +441,8 @@ retry:
+ 		u32 val = vs[i].w.val;
+ 
+ 		if (1) {
+-			struct futex_hash_bucket *hb;
++			CLASS(hb, hb)(&q->key);
+ 
+-			hb = futex_hash(&q->key);
+ 			futex_q_lock(q, hb);
+ 			ret = futex_get_value_locked(&uval, uaddr);
+ 
+@@ -618,9 +614,8 @@ retry:
+ 
+ retry_private:
+ 	if (1) {
+-		struct futex_hash_bucket *hb;
++		CLASS(hb, hb)(&q->key);
+ 
+-		hb = futex_hash(&q->key);
+ 		futex_q_lock(q, hb);
+ 
+ 		ret = futex_get_value_locked(&uval, uaddr);
 
