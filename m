@@ -1,70 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-5463-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5464-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AA7AAF7DF
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 12:33:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ED1AAF7E1
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 12:33:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C461F3A5E33
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 10:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CB781C06434
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  8 May 2025 10:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E187220E328;
-	Thu,  8 May 2025 10:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CAAE21504E;
+	Thu,  8 May 2025 10:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gIj2pKVL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JzN7Q1M4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jXfhcFdP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NEH31Zc7"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B5720C46F;
-	Thu,  8 May 2025 10:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CC64B1E7C;
+	Thu,  8 May 2025 10:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746700428; cv=none; b=QiwgjQn1wC/1uU3SOtNLzLvFmZO4N+xfSDr6ChnKONVydMO5ghXYmw55DTXcTzId/ZD74BP2vDR0TSuH0fQj4ttPf67ZeR4+f4BDhaeEwYh54DkzFvUhn+OvdcPP1jC1yDok6ykRqft06UFbcY3bRajcRdq/0uIcqRq+8SUgIhQ=
+	t=1746700430; cv=none; b=s2IEsPm1No5z0C5tACsfi8zTGtefqqvZKTJzahlYw+5Zv9naSifMnDt5vSyU+smzoYGbBbIJXTqKo+OoEyYJSe7omGiLTdNEzsvuHhy5Wq4E+2rzX+xCDTMwIPwcs+NBLR7rsr45cGyErFvwMSg1R2HgqsSf21pYNb79We6tY08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746700428; c=relaxed/simple;
-	bh=+J0enqHHpgBHl9JpwsJuc6UllKrHph0deck3C7BBMSc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=PtQe09S9sEXfMzluDD3u/HeNcisbHJQC5dv4m0zSFLNF1m8VeNyNt2floU4romNKhbmipQ01x15UmzxHthzG/IkqzANrvwGag9qdTwCK+mImSNF8udCgP3CEK5YRMiqgcUKojN+tz9W553TfDi7OG264uP3YdyhZVAh2tQTFjgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gIj2pKVL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JzN7Q1M4; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1746700430; c=relaxed/simple;
+	bh=TJH4jpbNSg2c7C0T+/ASUnPVqKy7iTplJYETUcxL1Bk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=p3drU4ccVtEfnKk7494bc9WRJv5Bj+gmfEfhLZhWTHRluR0P39O03UOZPCil4cobgyez8YKHWZ+9RoCfWvKdNNvPD6kof7X2y6g5aDApoLHM2k7sDkkR8mXsThuWtzwZJHuHF2+M3Yvccf2pKMqMn7pCAnI7yOp+ngVns11OGeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jXfhcFdP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NEH31Zc7; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 08 May 2025 10:33:44 -0000
+Date: Thu, 08 May 2025 10:33:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746700425;
+	s=2020; t=1746700426;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=t1A2RXlLH+TFnPaT/ra8mreTAG0XVq3Avb4+bAg0ZT8=;
-	b=gIj2pKVL1m5woVrNCanI1imBE1wf7xbMXFq58iIyrxXMjzL12rI1BK701JghnIFt/V5vKY
-	e4kg1N5EIdCLDDqNFOolcEl6IkkmmVv/XanOAHluOd3F0K2Lh2/tU65FxJMhAZIdrjcCdD
-	Mut9QxVM+o32jzXRLPVa9Q0ATiC+7aznkM5hBXzSlm4C7WLK7LS7BamM4tSJQmTbRUvJ6S
-	jR8niwfrSp0pmUjIUG1vkfDRHn7Do5nqXf5f/Uftm+bcvs9AqURfiyDY59OxY4a2CBpFby
-	U2PFUmEm+8REs0LNsZXMPQv9YI0Lble84D1uK28UZQf+1Nrs8h/fnYsc8iz9NQ==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTERVacphTRjOfCkD/3pVwtmaa2yLseQtsrKwDvpz28=;
+	b=jXfhcFdPOVwxf78y8L4bdPoDav6CAoPAjYab1U1Gz5g4SUNhieNGY3zKIFxJfdHr9j+3yB
+	fnDxy4ew6yt2k8UqWfS2mce0qXwScXqFQVE3qVmkMi3mzMV9W02k3j9gdLu5ETIcMZnObD
+	ZY04wl0TTA8dHlg0/dsxqBOHo+iD6mHX8Fk+1eWJbMdH3jT66jBb1W5tdlWOUAaW+NRf9K
+	MhdN6E9I60U+o43QiQUJpetKfg3atmzMIn/HHbLHtYMUfoNqp5iT+kg9D8+m+4mA9Gm2Dm
+	KOxmO0n8IXlhZ8KcUtxFB6ZjLXFXIh9Dd4Bfd6Y9f+eRuDAjSgCExPIfYDYWEg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746700425;
+	s=2020e; t=1746700426;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=t1A2RXlLH+TFnPaT/ra8mreTAG0XVq3Avb4+bAg0ZT8=;
-	b=JzN7Q1M4EoGR21F6CwjE3Sq+WiulgNKK3rjqm3Qns9QEpt63spZDVcd40oCKQFLFEaLWsS
-	aGh+c+b5O8gofbBA==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PTERVacphTRjOfCkD/3pVwtmaa2yLseQtsrKwDvpz28=;
+	b=NEH31Zc7vM1IUHjFxkz180wFvrPHUR9wM58T5P7XDcpIYAn01PuFW3IcSafizJTtUMIVrB
+	dvecUn2BNLjAzAAw==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: locking/futex] futex,selftests: Add another FUTEX2_NUMA selftest
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: locking/futex] selftests/futex: Add futex_numa_mpol
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
+In-Reply-To: <20250416162921.513656-22-bigeasy@linutronix.de>
+References: <20250416162921.513656-22-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174670042408.406.13029931335930886132.tip-bot2@tip-bot2>
+Message-ID: <174670042503.406.13929766563847807863.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,304 +81,388 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the locking/futex branch of tip:
 
-Commit-ID:     9140f57c1c1391a0343a08daea9cd53f56e51154
-Gitweb:        https://git.kernel.org/tip/9140f57c1c1391a0343a08daea9cd53f56e51154
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 21 Sep 2023 17:17:14 +02:00
+Commit-ID:     3163369407baf8331a234fe4817e9ea27ba7ea9c
+Gitweb:        https://git.kernel.org/tip/3163369407baf8331a234fe4817e9ea27ba7ea9c
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Wed, 16 Apr 2025 18:29:21 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 03 May 2025 12:02:11 +02:00
+CommitterDate: Sat, 03 May 2025 12:02:10 +02:00
 
-futex,selftests: Add another FUTEX2_NUMA selftest
+selftests/futex: Add futex_numa_mpol
 
-Implement a simple NUMA aware spinlock for testing and howto purposes.
+Test the basic functionality for the NUMA and MPOL flags:
+- FUTEX2_NUMA should take the NUMA node which is after the uaddr
+  and use it.
+- Only update the node if FUTEX_NO_NODE was set by the user
+- FUTEX2_MPOL should use the memory based on the policy. I attempted to
+  set the node with mbind() and then use this with MPOL but this fails
+  and futex falls back to the default node for the current CPU.
 
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250416162921.513656-22-bigeasy@linutronix.de
 ---
- tools/testing/selftests/futex/functional/Makefile     |   3 +-
- tools/testing/selftests/futex/functional/futex_numa.c | 262 +++++++++-
- 2 files changed, 264 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/futex/functional/futex_numa.c
+ tools/testing/selftests/futex/functional/.gitignore        |   1 +-
+ tools/testing/selftests/futex/functional/Makefile          |   3 +-
+ tools/testing/selftests/futex/functional/futex_numa_mpol.c | 232 +++++++-
+ tools/testing/selftests/futex/functional/run.sh            |   3 +-
+ tools/testing/selftests/futex/include/futex2test.h         |  52 ++-
+ 5 files changed, 290 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/futex/functional/futex_numa_mpol.c
 
+diff --git a/tools/testing/selftests/futex/functional/.gitignore b/tools/testing/selftests/futex/functional/.gitignore
+index d37ae7c..7b24ae8 100644
+--- a/tools/testing/selftests/futex/functional/.gitignore
++++ b/tools/testing/selftests/futex/functional/.gitignore
+@@ -1,4 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++futex_numa_mpol
+ futex_priv_hash
+ futex_requeue
+ futex_requeue_pi
 diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testing/selftests/futex/functional/Makefile
-index a4881fd..8cfb87f 100644
+index 67d9e16..a4881fd 100644
 --- a/tools/testing/selftests/futex/functional/Makefile
 +++ b/tools/testing/selftests/futex/functional/Makefile
-@@ -19,7 +19,8 @@ TEST_GEN_PROGS := \
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ INCLUDES := -I../include -I../../ $(KHDR_INCLUDES)
+ CFLAGS := $(CFLAGS) -g -O2 -Wall -pthread $(INCLUDES) $(KHDR_INCLUDES)
+-LDLIBS := -lpthread -lrt
++LDLIBS := -lpthread -lrt -lnuma
+ 
+ LOCAL_HDRS := \
+ 	../include/futextest.h \
+@@ -18,6 +18,7 @@ TEST_GEN_PROGS := \
+ 	futex_wait \
  	futex_requeue \
  	futex_priv_hash \
- 	futex_numa_mpol \
--	futex_waitv
-+	futex_waitv \
-+	futex_numa
++	futex_numa_mpol \
+ 	futex_waitv
  
  TEST_PROGS := run.sh
- 
-diff --git a/tools/testing/selftests/futex/functional/futex_numa.c b/tools/testing/selftests/futex/functional/futex_numa.c
+diff --git a/tools/testing/selftests/futex/functional/futex_numa_mpol.c b/tools/testing/selftests/futex/functional/futex_numa_mpol.c
 new file mode 100644
-index 0000000..f29e4d6
+index 0000000..dd70532
 --- /dev/null
-+++ b/tools/testing/selftests/futex/functional/futex_numa.c
-@@ -0,0 +1,262 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/tools/testing/selftests/futex/functional/futex_numa_mpol.c
+@@ -0,0 +1,232 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright (C) 2025 Sebastian Andrzej Siewior <bigeasy@linutronix.de>
++ */
 +
++#define _GNU_SOURCE
++
++#include <errno.h>
 +#include <pthread.h>
-+#include <sys/shm.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <numa.h>
++#include <numaif.h>
++
++#include <linux/futex.h>
 +#include <sys/mman.h>
-+#include <fcntl.h>
-+#include <stdbool.h>
-+#include <time.h>
-+#include <assert.h>
++
 +#include "logging.h"
 +#include "futextest.h"
 +#include "futex2test.h"
 +
-+typedef u_int32_t u32;
-+typedef int32_t   s32;
-+typedef u_int64_t u64;
++#define MAX_THREADS	64
 +
-+static unsigned int fflags = (FUTEX2_SIZE_U32 | FUTEX2_PRIVATE);
-+static int fnode = FUTEX_NO_NODE;
-+
-+/* fairly stupid test-and-set lock with a waiter flag */
-+
-+#define N_LOCK		0x0000001
-+#define N_WAITERS	0x0001000
-+
-+struct futex_numa_32 {
-+	union {
-+		u64 full;
-+		struct {
-+			u32 val;
-+			u32 node;
-+		};
-+	};
-+};
-+
-+void futex_numa_32_lock(struct futex_numa_32 *lock)
-+{
-+	for (;;) {
-+		struct futex_numa_32 new, old = {
-+			.full = __atomic_load_n(&lock->full, __ATOMIC_RELAXED),
-+		};
-+
-+		for (;;) {
-+			new = old;
-+			if (old.val == 0) {
-+				/* no waiter, no lock -> first lock, set no-node */
-+				new.node = fnode;
-+			}
-+			if (old.val & N_LOCK) {
-+				/* contention, set waiter */
-+				new.val |= N_WAITERS;
-+			}
-+			new.val |= N_LOCK;
-+
-+			/* nothing changed, ready to block */
-+			if (old.full == new.full)
-+				break;
-+
-+			/*
-+			 * Use u64 cmpxchg to set the futex value and node in a
-+			 * consistent manner.
-+			 */
-+			if (__atomic_compare_exchange_n(&lock->full,
-+							&old.full, new.full,
-+							/* .weak */ false,
-+							__ATOMIC_ACQUIRE,
-+							__ATOMIC_RELAXED)) {
-+
-+				/* if we just set N_LOCK, we own it */
-+				if (!(old.val & N_LOCK))
-+					return;
-+
-+				/* go block */
-+				break;
-+			}
-+		}
-+
-+		futex2_wait(lock, new.val, fflags, NULL, 0);
-+	}
-+}
-+
-+void futex_numa_32_unlock(struct futex_numa_32 *lock)
-+{
-+	u32 val = __atomic_sub_fetch(&lock->val, N_LOCK, __ATOMIC_RELEASE);
-+	assert((s32)val >= 0);
-+	if (val & N_WAITERS) {
-+		int woken = futex2_wake(lock, 1, fflags);
-+		assert(val == N_WAITERS);
-+		if (!woken) {
-+			__atomic_compare_exchange_n(&lock->val, &val, 0U,
-+						    false, __ATOMIC_RELAXED,
-+						    __ATOMIC_RELAXED);
-+		}
-+	}
-+}
-+
-+static long nanos = 50000;
++static pthread_barrier_t barrier_main;
++static pthread_t threads[MAX_THREADS];
 +
 +struct thread_args {
-+	pthread_t tid;
-+	volatile int * done;
-+	struct futex_numa_32 *lock;
-+	int val;
-+	int *val1, *val2;
-+	int node;
++	void *futex_ptr;
++	unsigned int flags;
++	int result;
 +};
 +
-+static void *threadfn(void *_arg)
++static struct thread_args thread_args[MAX_THREADS];
++
++#ifndef FUTEX_NO_NODE
++#define FUTEX_NO_NODE (-1)
++#endif
++
++#ifndef FUTEX2_MPOL
++#define FUTEX2_MPOL	0x08
++#endif
++
++static void *thread_lock_fn(void *arg)
 +{
-+	struct thread_args *args = _arg;
-+	struct timespec ts = {
-+		.tv_nsec = nanos,
-+	};
-+	int node;
++	struct thread_args *args = arg;
++	int ret;
 +
-+	while (!*args->done) {
++	pthread_barrier_wait(&barrier_main);
++	ret = futex2_wait(args->futex_ptr, 0, args->flags, NULL, 0);
++	args->result = ret;
++	return NULL;
++}
 +
-+		futex_numa_32_lock(args->lock);
-+		args->val++;
++static void create_max_threads(void *futex_ptr)
++{
++	int i, ret;
 +
-+		assert(*args->val1 == *args->val2);
-+		(*args->val1)++;
-+		nanosleep(&ts, NULL);
-+		(*args->val2)++;
-+
-+		node = args->lock->node;
-+		futex_numa_32_unlock(args->lock);
-+
-+		if (node != args->node) {
-+			args->node = node;
-+			printf("node: %d\n", node);
++	for (i = 0; i < MAX_THREADS; i++) {
++		thread_args[i].futex_ptr = futex_ptr;
++		thread_args[i].flags = FUTEX2_SIZE_U32 | FUTEX_PRIVATE_FLAG | FUTEX2_NUMA;
++		thread_args[i].result = 0;
++		ret = pthread_create(&threads[i], NULL, thread_lock_fn, &thread_args[i]);
++		if (ret) {
++			error("pthread_create failed\n", errno);
++			exit(1);
 +		}
-+
-+		nanosleep(&ts, NULL);
 +	}
-+
-+	return NULL;
 +}
 +
-+static void *contendfn(void *_arg)
++static void join_max_threads(void)
 +{
-+	struct thread_args *args = _arg;
++	int i, ret;
 +
-+	while (!*args->done) {
-+		/*
-+		 * futex2_wait() will take hb-lock, verify *var == val and
-+		 * queue/abort.  By knowingly setting val 'wrong' this will
-+		 * abort and thereby generate hb-lock contention.
-+		 */
-+		futex2_wait(&args->lock->val, ~0U, fflags, NULL, 0);
-+		args->val++;
++	for (i = 0; i < MAX_THREADS; i++) {
++		ret = pthread_join(threads[i], NULL);
++		if (ret) {
++			error("pthread_join failed for thread %d\n", errno, i);
++			exit(1);
++		}
 +	}
-+
-+	return NULL;
 +}
 +
-+static volatile int done = 0;
-+static struct futex_numa_32 lock = { .val = 0, };
-+static int val1, val2;
++static void __test_futex(void *futex_ptr, int must_fail, unsigned int futex_flags)
++{
++	int to_wake, ret, i, need_exit = 0;
++
++	pthread_barrier_init(&barrier_main, NULL, MAX_THREADS + 1);
++	create_max_threads(futex_ptr);
++	pthread_barrier_wait(&barrier_main);
++	to_wake = MAX_THREADS;
++
++	do {
++		ret = futex2_wake(futex_ptr, to_wake, futex_flags);
++		if (must_fail) {
++			if (ret < 0)
++				break;
++			fail("Should fail, but didn't\n");
++			exit(1);
++		}
++		if (ret < 0) {
++			error("Failed futex2_wake(%d)\n", errno, to_wake);
++			exit(1);
++		}
++		if (!ret)
++			usleep(50);
++		to_wake -= ret;
++
++	} while (to_wake);
++	join_max_threads();
++
++	for (i = 0; i < MAX_THREADS; i++) {
++		if (must_fail && thread_args[i].result != -1) {
++			fail("Thread %d should fail but succeeded (%d)\n", i, thread_args[i].result);
++			need_exit = 1;
++		}
++		if (!must_fail && thread_args[i].result != 0) {
++			fail("Thread %d failed (%d)\n", i, thread_args[i].result);
++			need_exit = 1;
++		}
++	}
++	if (need_exit)
++		exit(1);
++}
++
++static void test_futex(void *futex_ptr, int must_fail)
++{
++	__test_futex(futex_ptr, must_fail, FUTEX2_SIZE_U32 | FUTEX_PRIVATE_FLAG | FUTEX2_NUMA);
++}
++
++static void test_futex_mpol(void *futex_ptr, int must_fail)
++{
++	__test_futex(futex_ptr, must_fail, FUTEX2_SIZE_U32 | FUTEX_PRIVATE_FLAG | FUTEX2_NUMA | FUTEX2_MPOL);
++}
++
++static void usage(char *prog)
++{
++	printf("Usage: %s\n", prog);
++	printf("  -c    Use color\n");
++	printf("  -h    Display this help message\n");
++	printf("  -v L  Verbosity level: %d=QUIET %d=CRITICAL %d=INFO\n",
++	       VQUIET, VCRITICAL, VINFO);
++}
 +
 +int main(int argc, char *argv[])
 +{
-+	struct thread_args *tas[512], *cas[512];
-+	int c, t, threads = 2, contenders = 0;
-+	int sleeps = 10;
-+	int total = 0;
++	struct futex32_numa *futex_numa;
++	int mem_size, i;
++	void *futex_ptr;
++	char c;
 +
-+	while ((c = getopt(argc, argv, "c:t:s:n:N::")) != -1) {
++	while ((c = getopt(argc, argv, "chv:")) != -1) {
 +		switch (c) {
 +		case 'c':
-+			contenders = atoi(optarg);
++			log_color(1);
 +			break;
-+		case 't':
-+			threads = atoi(optarg);
++		case 'h':
++			usage(basename(argv[0]));
++			exit(0);
 +			break;
-+		case 's':
-+			sleeps = atoi(optarg);
-+			break;
-+		case 'n':
-+			nanos = atoi(optarg);
-+			break;
-+		case 'N':
-+			fflags |= FUTEX2_NUMA;
-+			if (optarg)
-+				fnode = atoi(optarg);
++		case 'v':
++			log_verbosity(atoi(optarg));
 +			break;
 +		default:
++			usage(basename(argv[0]));
 +			exit(1);
-+			break;
 +		}
 +	}
 +
-+	for (t = 0; t < contenders; t++) {
-+		struct thread_args *args = calloc(1, sizeof(*args));
-+		if (!args) {
-+			perror("thread_args");
-+			exit(-1);
-+		}
++	mem_size = sysconf(_SC_PAGE_SIZE);
++	futex_ptr = mmap(NULL, mem_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0);
++	if (futex_ptr == MAP_FAILED) {
++		error("mmap() for %d bytes failed\n", errno, mem_size);
++		return 1;
++	}
++	futex_numa = futex_ptr;
 +
-+		args->done = &done;
-+		args->lock = &lock;
-+		args->val1 = &val1;
-+		args->val2 = &val2;
-+		args->node = -1;
++	info("Regular test\n");
++	futex_numa->futex = 0;
++	futex_numa->numa = FUTEX_NO_NODE;
++	test_futex(futex_ptr, 0);
 +
-+		if (pthread_create(&args->tid, NULL, contendfn, args)) {
-+			perror("pthread_create");
-+			exit(-1);
-+		}
-+
-+		cas[t] = args;
++	if (futex_numa->numa == FUTEX_NO_NODE) {
++		fail("NUMA node is left unitiliazed\n");
++		return 1;
 +	}
 +
-+	for (t = 0; t < threads; t++) {
-+		struct thread_args *args = calloc(1, sizeof(*args));
-+		if (!args) {
-+			perror("thread_args");
-+			exit(-1);
++	info("Memory too small\n");
++	test_futex(futex_ptr + mem_size - 4, 1);
++
++	info("Memory out of range\n");
++	test_futex(futex_ptr + mem_size, 1);
++
++	futex_numa->numa = FUTEX_NO_NODE;
++	mprotect(futex_ptr, mem_size, PROT_READ);
++	info("Memory, RO\n");
++	test_futex(futex_ptr, 1);
++
++	mprotect(futex_ptr, mem_size, PROT_NONE);
++	info("Memory, no access\n");
++	test_futex(futex_ptr, 1);
++
++	mprotect(futex_ptr, mem_size, PROT_READ | PROT_WRITE);
++	info("Memory back to RW\n");
++	test_futex(futex_ptr, 0);
++
++	/* MPOL test. Does not work as expected */
++	for (i = 0; i < 4; i++) {
++		unsigned long nodemask;
++		int ret;
++
++		nodemask = 1 << i;
++		ret = mbind(futex_ptr, mem_size, MPOL_BIND, &nodemask,
++			    sizeof(nodemask) * 8, 0);
++		if (ret == 0) {
++			info("Node %d test\n", i);
++			futex_numa->futex = 0;
++			futex_numa->numa = FUTEX_NO_NODE;
++
++			ret = futex2_wake(futex_ptr, 0, FUTEX2_SIZE_U32 | FUTEX_PRIVATE_FLAG | FUTEX2_NUMA | FUTEX2_MPOL);
++			if (ret < 0)
++				error("Failed to wake 0 with MPOL.\n", errno);
++			if (0)
++				test_futex_mpol(futex_numa, 0);
++			if (futex_numa->numa != i) {
++				fail("Returned NUMA node is %d expected %d\n",
++				     futex_numa->numa, i);
++			}
 +		}
-+
-+		args->done = &done;
-+		args->lock = &lock;
-+		args->val1 = &val1;
-+		args->val2 = &val2;
-+		args->node = -1;
-+
-+		if (pthread_create(&args->tid, NULL, threadfn, args)) {
-+			perror("pthread_create");
-+			exit(-1);
-+		}
-+
-+		tas[t] = args;
 +	}
-+
-+	sleep(sleeps);
-+
-+	done = true;
-+
-+	for (t = 0; t < threads; t++) {
-+		struct thread_args *args = tas[t];
-+
-+		pthread_join(args->tid, NULL);
-+		total += args->val;
-+//		printf("tval: %d\n", args->val);
-+	}
-+	printf("total: %d\n", total);
-+
-+	if (contenders) {
-+		total = 0;
-+		for (t = 0; t < contenders; t++) {
-+			struct thread_args *args = cas[t];
-+
-+			pthread_join(args->tid, NULL);
-+			total += args->val;
-+			//		printf("tval: %d\n", args->val);
-+		}
-+		printf("contenders: %d\n", total);
-+	}
-+
 +	return 0;
 +}
+diff --git a/tools/testing/selftests/futex/functional/run.sh b/tools/testing/selftests/futex/functional/run.sh
+index f0f0d2b..8173984 100755
+--- a/tools/testing/selftests/futex/functional/run.sh
++++ b/tools/testing/selftests/futex/functional/run.sh
+@@ -86,3 +86,6 @@ echo
+ echo
+ ./futex_priv_hash $COLOR
+ ./futex_priv_hash -g $COLOR
 +
++echo
++./futex_numa_mpol $COLOR
+diff --git a/tools/testing/selftests/futex/include/futex2test.h b/tools/testing/selftests/futex/include/futex2test.h
+index 9ee3592..ea79662 100644
+--- a/tools/testing/selftests/futex/include/futex2test.h
++++ b/tools/testing/selftests/futex/include/futex2test.h
+@@ -18,14 +18,43 @@ struct futex_waitv {
+ };
+ #endif
+ 
++#ifndef __NR_futex_wake
++#define __NR_futex_wake 454
++#endif
++
++#ifndef __NR_futex_wait
++#define __NR_futex_wait 455
++#endif
++
+ #ifndef FUTEX2_SIZE_U32
+ #define FUTEX2_SIZE_U32 0x02
+ #endif
+ 
++#ifndef FUTEX2_NUMA
++#define FUTEX2_NUMA 0x04
++#endif
++
++#ifndef FUTEX2_MPOL
++#define FUTEX2_MPOL 0x08
++#endif
++
++#ifndef FUTEX2_PRIVATE
++#define FUTEX2_PRIVATE FUTEX_PRIVATE_FLAG
++#endif
++
++#ifndef FUTEX2_NO_NODE
++#define FUTEX_NO_NODE (-1)
++#endif
++
+ #ifndef FUTEX_32
+ #define FUTEX_32 FUTEX2_SIZE_U32
+ #endif
+ 
++struct futex32_numa {
++	futex_t futex;
++	futex_t numa;
++};
++
+ /**
+  * futex_waitv - Wait at multiple futexes, wake on any
+  * @waiters:    Array of waiters
+@@ -38,3 +67,26 @@ static inline int futex_waitv(volatile struct futex_waitv *waiters, unsigned lon
+ {
+ 	return syscall(__NR_futex_waitv, waiters, nr_waiters, flags, timo, clockid);
+ }
++
++/*
++ * futex_wait() - block on uaddr with optional timeout
++ * @val:	Expected value
++ * @flags:	FUTEX2 flags
++ * @timeout:	Relative timeout
++ * @clockid:	Clock id for the timeout
++ */
++static inline int futex2_wait(void *uaddr, long val, unsigned int flags,
++			      struct timespec *timeout, clockid_t clockid)
++{
++	return syscall(__NR_futex_wait, uaddr, val, ~0U, flags, timeout, clockid);
++}
++
++/*
++ * futex2_wake() - Wake a number of futexes
++ * @nr:		Number of threads to wake at most
++ * @flags:	FUTEX2 flags
++ */
++static inline int futex2_wake(void *uaddr, int nr, unsigned int flags)
++{
++	return syscall(__NR_futex_wake, uaddr, ~0U, nr, flags);
++}
 
