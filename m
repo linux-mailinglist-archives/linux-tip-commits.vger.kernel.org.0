@@ -1,130 +1,110 @@
-Return-Path: <linux-tip-commits+bounces-5515-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5516-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A97AB08D4
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 May 2025 05:22:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16D7AB1CA1
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 May 2025 20:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFFE1B62BF8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 May 2025 03:22:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219EB4E711C
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  9 May 2025 18:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333A8219319;
-	Fri,  9 May 2025 03:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CD723C4FD;
+	Fri,  9 May 2025 18:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1CywGkS"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xL4N83Jg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SMAcjrxt"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0192B1F8750;
-	Fri,  9 May 2025 03:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D528723ED5E;
+	Fri,  9 May 2025 18:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746760936; cv=none; b=eixPq34Q8ALsFRk2FyX1HS6H9afNsUXK/hyqb11aT65lOKYpXW39HHbuB7CrBqVpPMfVT0IzEdntyKQ1364A76ZfG50S+DksancojcTPf9a31HogVRF0JQPLaJwYjmnKeKj6eDHAHUyiuueZsQjfhqYXYrxB6z0vznAn7VTBGco=
+	t=1746816564; cv=none; b=IUlpj9KrFpWwOpY2Y7U12VHvA1mD9mUiT7xKwEIuokoLoKcPvbx7C9bse2/ZcA1rt7o4/tbonDpbTzDBrDUBgpqC4ADI1ldT3HGUcKLNk/Ccp+thPuTRGfxJ8qFG1TIgSAT4S54i3e++BF1iDE29FBT9w7BYzYsge3YFTr93SvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746760936; c=relaxed/simple;
-	bh=SsNCueF8A7VqlQhoL36fgJMU6tN9VQrjDiQfdzjssck=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TdrSZ+8Z2HSDSRZ8nEr2tG2mRPt8qI52EkPSka6H5siZbC6tKFP05o0+oC8ACvZNkSOKyfsTn5kB2fI5vT+MmOURvzovwQENydedHbGUecaF1Mj16pPpdavLmv5OO2AAoHgcpNMgbd/9QpOWr5GzOUHKj511wswlatDujxgZUqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1CywGkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50513C4CEE7;
-	Fri,  9 May 2025 03:22:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746760935;
-	bh=SsNCueF8A7VqlQhoL36fgJMU6tN9VQrjDiQfdzjssck=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m1CywGkSz/rfUQACrb11wBz1Qm4Ni5w42U2CLojgXRQc4fMTZHjojMlXnxJ1qr0A2
-	 872U/r5CPd7jVB1++XStw0mDEjfKjLzXaBIdQMmhh35MTKHdNVDLlsCI2PP+VNsNgm
-	 GzzzqPf7ICxV4iWVoWGeufzaZCrcDH+omkla1KQGw+4LMkxCZflDggW2qGziYugRwf
-	 4hgY71XCAswS3bk0Wnzw5q1z24UpWmWVUFvqTsCmaOuvdmrqmwgWfAE8QPgIcZqbFM
-	 ieyMI0NnOn8sUoOsWvjmXKV6Gmm0difqBPDA6XzK8IW3A2jrPQTpNWypYwK6ZkjIH6
-	 26YxhtTWuONXw==
-Date: Thu, 8 May 2025 20:22:12 -0700
-From: Josh Poimboeuf <jpoimboe@kernel.org>
-To: Rong Xu <xur@google.com>
-Cc: tip-bot2 for Rong Xu <tip-bot2@linutronix.de>, 
-	linux-tip-commits@vger.kernel.org, "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [tip: objtool/core] objtool: Fix up st_info in COMDAT group
- section
-Message-ID: <cilgdvjaihkdstabhvblpuz3xonuuxtaep462bdipaosbmp4sh@a3tsfzitaibb>
-References: <20250425200541.113015-1-xur@google.com>
- <174601619410.22196.10353886760773998736.tip-bot2@tip-bot2>
- <jj4fu243l7ap4bza5imrgjk5f5dhsoloxezgphdjwo7sb5iqsq@wkt46abbt45r>
- <CAF1bQ=SBgs6RiOEXakcZ=TaYjwXngMKNrp8gHL9FhfjOodOxiA@mail.gmail.com>
+	s=arc-20240116; t=1746816564; c=relaxed/simple;
+	bh=vTm1UPAYBKXj/NtunEqp0VH16i8irWFyVFkAUSPo0QY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=sW44LE+q6wNbBZ1sQmVULIK//4Xp5hxfGwrcgga2GkOWlKqsQNZcdUZFfPYWLo6lz5Ksw4Bvgh01UE8rFQD17cLDUZziVQoDIoj/lGQCYrjOc/s8ifmdGGcVq/QnJeGvlLehRzApmkAU7aYXqau1e7p5pPYXOQA9L8/lE0POgj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xL4N83Jg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SMAcjrxt; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 09 May 2025 18:49:19 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1746816560;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Av5RZLI0gkZU85yW1UwoZiS9zvo6O+KA2YoViJunh6Y=;
+	b=xL4N83JgQFAV/o2hdRewppCiQzI3ER23nnMNDN8z8sYvvznIS+23D2R04DMlbtfokQYVnR
+	oa2wASfY3x8WmBdQJnYb4J5eJqg2eJQchrzbwFlkVFuDMmAjsTiBWZ5BSqVZCfeGeQLpSf
+	6EB1z1IriJbUkkvJ2n6ivkEmYPDdq7eiGjocQdh4/TOGYQr5vi9P8tPjdhbAI//jAV5N6Y
+	/hdnU9LMsCwx66+zNaDg0LU93KHsAtbJK/5ddEEZGvTmjBfNKSlTSBKkt/I2BiYmnTIXQ5
+	pHfbXQhbFg04/3e775IRE4UGVhfH3gVifKcj4BkY6cBMIjKQ65JTxzmsxClnHA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1746816560;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Av5RZLI0gkZU85yW1UwoZiS9zvo6O+KA2YoViJunh6Y=;
+	b=SMAcjrxt2IvQC1+JgG11oZf6K6VqCxU3ya9q7TiHZmTUO5N4wzSNR2zDhAKGasumjsUrSb
+	ZVF9AbV3Yrfj0zAA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] genirq: Fix inverted condition in handle_nested_irq()
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF1bQ=SBgs6RiOEXakcZ=TaYjwXngMKNrp8gHL9FhfjOodOxiA@mail.gmail.com>
+Message-ID: <174681655962.406.11707812475471138588.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 08, 2025 at 05:45:18PM -0700, Rong Xu wrote:
-> On Wed, May 7, 2025 at 4:22 PM Josh Poimboeuf <jpoimboe@kernel.org> wrote:
-> >
-> > On Wed, Apr 30, 2025 at 12:29:54PM +0000, tip-bot2 for Rong Xu wrote:
-> > > The following commit has been merged into the objtool/core branch of tip:
-> > >
-> > > Commit-ID:     2cb291596e2c1837238bc322ae3545dacb99d584
-> > > Gitweb:        https://git.kernel.org/tip/2cb291596e2c1837238bc322ae3545dacb99d584
-> > > Author:        Rong Xu <xur@google.com>
-> > > AuthorDate:    Fri, 25 Apr 2025 13:05:41 -07:00
-> > > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > > CommitterDate: Wed, 30 Apr 2025 13:58:34 +02:00
-> > >
-> > > objtool: Fix up st_info in COMDAT group section
-> > >
-> > > When __elf_create_symbol creates a local symbol, it relocates the first
-> > > global symbol upwards to make space. Subsequently, elf_update_symbol()
-> > > is called to refresh the symbol table section. However, this isn't
-> > > sufficient, as other sections might have the reference to the old
-> > > symbol index, for instance, the sh_info field of an SHT_GROUP section.
-> > >
-> > > This patch updates the `sh_info` field when necessary. This field
-> > > serves as the key for the COMDAT group. An incorrect key would prevent
-> > > the linker's from deduplicating COMDAT symbols, leading to duplicate
-> > > definitions in the final link.
-> > >
-> > > Signed-off-by: Rong Xu <xur@google.com>
-> > > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > > Link: https://lkml.kernel.org/r/20250425200541.113015-1-xur@google.com
-> >
-> > Unfortunately this patch completely destroys performance when adding a
-> > bunch of symbols.  Which I'm doing in v2 of my klp-build patch set.
-> The patch won't add symbols. Do you mean the updates take too much time
-> when adding symbols?
+The following commit has been merged into the irq/core branch of tip:
 
-Right.  I was testing a new feature for generating livepatch modules.  I
-was using objtool to add thousands of local symbols to a binary with
--ffunction-sections and -fdata-sections, so it was calling that function
-in a tight loop.
+Commit-ID:     c1ab449df871d6ce9189cb0a9efcd37d2ead10f0
+Gitweb:        https://git.kernel.org/tip/c1ab449df871d6ce9189cb0a9efcd37d2ead10f0
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 09 May 2025 20:37:54 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 09 May 2025 20:42:26 +02:00
 
-> It's probably true as we lookup the sections for every
-> added symbols. I did not notice the compile time issues in my builds.
+genirq: Fix inverted condition in handle_nested_irq()
 
-Yeah, I had an extreme test case :-)
+Marek reported that the rework of handle_nested_irq() introduced a inverted
+condition, which prevents handling of interrupts. Fix it up.
 
-> If this is a problem, it needs to be fixed.
-> Thanks for working with v2!
-> >
-> > What was the use case for this?  I don't remember seeing any COMDAT
-> > groups in the kernel.
-> 
-> In the PGO or AutoFDO builds, we used many COMDAT variables for counters
-> and control variables. I think the compiler also puts the functions
-> defined in header
-> as COMDAT.
-> The issue I encountered was objtool moved the variables for
-> profile_filename and
-> profile_version, but the comdat keys were not updated.
+Fixes: 2ef2e13094c7 ("genirq/chip: Rework handle_nested_irq()")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Closes: https://lore.kernel/org/all/46ed4040-ca11-4157-8bd7-13c04c113734@samsung.com
+---
+ kernel/irq/chip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I see.  Thanks for the explanation.
-
--- 
-Josh
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index 865cf74..1d45c84 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -497,7 +497,7 @@ void handle_nested_irq(unsigned int irq)
+ 	might_sleep();
+ 
+ 	scoped_guard(raw_spinlock_irq, &desc->lock) {
+-		if (irq_can_handle_actions(desc))
++		if (!irq_can_handle_actions(desc))
+ 			return;
+ 
+ 		action = desc->action;
 
