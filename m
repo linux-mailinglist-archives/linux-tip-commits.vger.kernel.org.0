@@ -1,175 +1,126 @@
-Return-Path: <linux-tip-commits+bounces-5518-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5519-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D8EAB271F
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 May 2025 10:11:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA163AB2780
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 May 2025 11:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60AEE1752B0
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 May 2025 08:11:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C133BAFAF
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 11 May 2025 09:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885F328FD;
-	Sun, 11 May 2025 08:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2AF191F6A;
+	Sun, 11 May 2025 09:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Xx/sMCnZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zLh1YHHK"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="21QlskRt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="euE0Iun4"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD9813BAF1;
-	Sun, 11 May 2025 08:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30897184E;
+	Sun, 11 May 2025 09:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746951101; cv=none; b=UpJyZLUDJxfV/fYMfmip8ktLBtqKfpJyF+O6zTbnqQm3XTUvsfMZidg8N1rMid1EjXa7ldkExegUO/TWOYeIzBdtmNQqYopCB/qRo56M60IFlsxmhxEzlKYrCIZzdyY7UHXy7QfcoVdtMvl9znAAoqf0Wz2Pwd+aKYCwmltJagQ=
+	t=1746956836; cv=none; b=k/r83Ilp4rP5IzBp4Z8tITpEgHBHcS/7AlFk3mutPeXTg8ktQFvLcfhVsvoNGZAQnbmLcj4D0AEzct1ZLNxeS0PwrwkCZAyj5zYDB/eIY34xh7JRKIQAcFpYZWmyldRr6b4LqtpAVgos2ImpTRafERQJqhc0541kEzc8hQSxYtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746951101; c=relaxed/simple;
-	bh=yK4ahCza8TbbcdrJScmCg9Adt0N6k/EJklC2rTOweGY=;
+	s=arc-20240116; t=1746956836; c=relaxed/simple;
+	bh=JgsLRPoHfVI0FmkKHM8XYJ+TGri+MUoSNGaKcxhktoM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iJVehDu0B8En4COn89i+PBV3hM6CKi6FoJpgi6xtXlVYZPAmJItvavu0VqWKRssvfzRYEi3Up92tdtp3aO6RlV1BSFwsNY0Wdk4nSr7fPRIWFT5w6wKrEHTx8sZGR7wO7a7jfWF+EG8DwWK9UIcbSW3H1Q29pNIbfxMLxBylu0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Xx/sMCnZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zLh1YHHK; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=PaA4cOcW4AsETXb+/Dg7YdB/tXSURpKwA0bHKZhABZ+8ULwG03rlyHw4iMPphxcDJz8hsKliTgtTnIV5oZ8EE9svfJnzsmpNF61LhZOLcBWWiqPYgTLfAof4sdXTtOCU53zgZZ3hMoGFFgjbqVlvaQerYTB/zu3AYdXLrc7YoDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=21QlskRt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=euE0Iun4; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 11 May 2025 08:11:31 -0000
+Date: Sun, 11 May 2025 09:47:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1746951092;
+	s=2020; t=1746956832;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HOdk++yGxo5I5tl1JLhOpwsBoXiUfzp+zUr3nIx6XWM=;
-	b=Xx/sMCnZzZMsDYl48cUWqx07NAjt+37HK5BkY6sDWp1vlJrHHyeFFyUdtSt41OPrVM+yvV
-	1OWaJ4TEJeXon9nVb9uj5yQ9wLXlqq/vq8EC/+7MxjcasxmJ3omeCQpieV+sw4yVlJXnOi
-	ibIjSQ4hVS1C47f2xPtz6QyRt4OUIEA9TADmIVA+CtlUtMtSSOl+MUa1JbHLiZumJAiiiq
-	7t+F3xB2tw9tUkE8DSBi4ecvJmX5Xrc+2XIIfGGO9d5jbqVLwc0EWuzg45+oqu8SR6U5ko
-	nTVJCUWeghVhUN59DpM3eum5OZsKE2X1CJ4aBVy2b98cpbEZpzUcEoBCBa51ag==
+	bh=hd8PphlBAuMqIEqPyAgnkP+emeIlQvZgqNZrMmBw4lg=;
+	b=21QlskRtDuil9abS7mKtqu22Khz/KgpQhATR+ZhAcAXT9vEBsZEUJMzC2zCKm8eRqrSOH9
+	FyTNVMVlipIcadBUmvxszFUgd4/J+mwBC0nzXR3/lD8RiS0gTCs8UVn87PlynC93NAoTGi
+	TIxgTfIrofwrcW0c6kD3A0nGkUtgGuWtxRCcqovY6GQOWYi9yKMjb0/F6IfWXdymscx8L2
+	jeoSwwtG5dk5poI1i+TEcjR90gKw4oa05iRseDdnZsah/bgsfo0MKCQ+0m238+kbFsSZkD
+	R/G4HEFwIlb6uV8Dpb/IZa1aIuNtGFptDogfwJmC6mngnueGPagBITmsYkVYQw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1746951092;
+	s=2020e; t=1746956832;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HOdk++yGxo5I5tl1JLhOpwsBoXiUfzp+zUr3nIx6XWM=;
-	b=zLh1YHHKiVbsSQzVmPm3ac5KSoOGa2GmRi+odZBn9tkCfyWVdDA3wSVgTnmsvsB5p7o0Bs
-	kQ+VoRhnz8U0afDw==
-From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+	bh=hd8PphlBAuMqIEqPyAgnkP+emeIlQvZgqNZrMmBw4lg=;
+	b=euE0Iun4YBea9SFqIrpzttFTrzNnVxu0Hf9jBrHBUMqp1RTc47f+N3cltl7dss8fiiPYoR
+	gfuzKGMHInja2YCA==
+From: "tip-bot2 for Seongman Lee" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/futex] futex: Relax the rcu_assign_pointer() assignment
- of mm->futex_phash in futex_mm_init()
-Cc: Ingo Molnar <mingo@kernel.org>, andrealmeid@igalia.com,
- Darren Hart <dvhart@infradead.org>, Davidlohr Bueso <dave@stgolabs.net>,
- Juri Lelli <juri.lelli@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Valentin Schneider <vschneid@redhat.com>, Waiman Long <longman@redhat.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <aB8SI00EHBri23lB@gmail.com>
-References: <aB8SI00EHBri23lB@gmail.com>
+Subject: [tip: x86/urgent] x86/sev: Fix operator precedence in
+ GHCB_MSR_VMPL_REQ_LEVEL macro
+Cc: Seongman Lee <augustus92@kaist.ac.kr>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250511092329.12680-1-cloudlee1719@gmail.com>
+References: <20250511092329.12680-1-cloudlee1719@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174695109115.406.3560364055449285428.tip-bot2@tip-bot2>
+Message-ID: <174695683185.406.15235858727409884425.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/futex branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     094ac8cff7858bee5fa4554f6ea66c964f8e160e
-Gitweb:        https://git.kernel.org/tip/094ac8cff7858bee5fa4554f6ea66c964f8=
-e160e
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Sat, 10 May 2025 10:45:28 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 11 May 2025 10:02:12 +02:00
+Commit-ID:     f7387eff4bad33d12719c66c43541c095556ae4e
+Gitweb:        https://git.kernel.org/tip/f7387eff4bad33d12719c66c43541c095556ae4e
+Author:        Seongman Lee <augustus92@kaist.ac.kr>
+AuthorDate:    Sun, 11 May 2025 18:23:28 +09:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Sun, 11 May 2025 11:38:03 +02:00
 
-futex: Relax the rcu_assign_pointer() assignment of mm->futex_phash in futex_=
-mm_init()
+x86/sev: Fix operator precedence in GHCB_MSR_VMPL_REQ_LEVEL macro
 
-The following commit added an rcu_assign_pointer() assignment to
-futex_mm_init() in <linux/futex.h>:
+The GHCB_MSR_VMPL_REQ_LEVEL macro lacked parentheses around the bitmask
+expression, causing the shift operation to bind too early. As a result,
+when requesting VMPL1 (e.g., GHCB_MSR_VMPL_REQ_LEVEL(1)), incorrect
+values such as 0x000000016 were generated instead of the intended
+0x100000016 (the requested VMPL level is specified in GHCBData[39:32]).
 
-  bd54df5ea7ca ("futex: Allow to resize the private local hash")
+Fix the precedence issue by grouping the masked value before applying
+the shift.
 
-Which breaks the build on older compilers (gcc-9, x86-64 defconfig):
+  [ bp: Massage commit message. ]
 
-   CC      io_uring/futex.o
-   In file included from ./arch/x86/include/generated/asm/rwonce.h:1,
-                    from ./include/linux/compiler.h:390,
-                    from ./include/linux/array_size.h:5,
-                    from ./include/linux/kernel.h:16,
-                    from io_uring/futex.c:2:
-   ./include/linux/futex.h: In function 'futex_mm_init':
-   ./include/linux/rcupdate.h:555:36: error: dereferencing pointer to incompl=
-ete type 'struct futex_private_hash'
-
-The problem is that this variant of rcu_assign_pointer() wants to
-know the full type of 'struct futex_private_hash', which type
-is local to futex.c:
-
-   kernel/futex/core.c:struct futex_private_hash {
-
-There are a couple of mechanical solutions for this bug:
-
-  - we can uninline futex_mm_init() and move it into futex/core.c
-
-  - or we can share the structure definition with kernel/fork.c.
-
-But both of these solutions have disadvantages: the first one adds
-runtime overhead, while the second one dis-encapsulates private
-futex types.
-
-A third solution, implemented by this patch, is to just initialize
-mm->futex_phash with NULL like the patch below, it's not like this
-new MM's ->futex_phash can be observed externally until the task
-is inserted into the task list, which guarantees full store ordering.
-
-The relaxation of this initialization might also give a tiny speedup
-on certain platforms.
-
-Fixes: bd54df5ea7ca ("futex: Allow to resize the private local hash")
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/r/aB8SI00EHBri23lB@gmail.com
+Fixes: 34ff65901735 ("x86/sev: Use kernel provided SVSM Calling Areas")
+Signed-off-by: Seongman Lee <augustus92@kaist.ac.kr>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250511092329.12680-1-cloudlee1719@gmail.com
 ---
- include/linux/futex.h |  9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/sev-common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/futex.h b/include/linux/futex.h
-index eccc997..168ffd5 100644
---- a/include/linux/futex.h
-+++ b/include/linux/futex.h
-@@ -88,7 +88,14 @@ void futex_hash_free(struct mm_struct *mm);
-=20
- static inline void futex_mm_init(struct mm_struct *mm)
- {
--	rcu_assign_pointer(mm->futex_phash, NULL);
-+	/*
-+	 * No need for rcu_assign_pointer() here, as we can rely on
-+	 * tasklist_lock write-ordering in copy_process(), before
-+	 * the task's MM becomes visible and the ->futex_phash
-+	 * becomes externally observable:
-+	 */
-+	mm->futex_phash =3D NULL;
-+
- 	mutex_init(&mm->futex_hash_lock);
- }
-=20
+diff --git a/arch/x86/include/asm/sev-common.h b/arch/x86/include/asm/sev-common.h
+index acb85b9..0020d77 100644
+--- a/arch/x86/include/asm/sev-common.h
++++ b/arch/x86/include/asm/sev-common.h
+@@ -116,7 +116,7 @@ enum psc_op {
+ #define GHCB_MSR_VMPL_REQ		0x016
+ #define GHCB_MSR_VMPL_REQ_LEVEL(v)			\
+ 	/* GHCBData[39:32] */				\
+-	(((u64)(v) & GENMASK_ULL(7, 0) << 32) |		\
++	((((u64)(v) & GENMASK_ULL(7, 0)) << 32) |	\
+ 	/* GHCBDdata[11:0] */				\
+ 	GHCB_MSR_VMPL_REQ)
+ 
 
