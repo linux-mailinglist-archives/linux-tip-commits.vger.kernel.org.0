@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5528-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5529-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E23CAB5C09
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 May 2025 20:08:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F461AB5E3C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 May 2025 23:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16A054615CE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 May 2025 18:08:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2DF019E7044
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 May 2025 21:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96B72BF3DC;
-	Tue, 13 May 2025 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B502E1F76C2;
+	Tue, 13 May 2025 21:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kP+D2Ynl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cv5erCyI"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ErujLYNA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2Il958TQ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C7E1E0083;
-	Tue, 13 May 2025 18:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C6C53365;
+	Tue, 13 May 2025 21:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747159672; cv=none; b=MMHRNL2ewes93sIUZPgE4ZvrrZAIdoiDtKZCl/KpRaDjGo4eqzq0VmlTI9tc51JHjgqkl/Aymqzl41+muB9wiCfmGaFZS82/2m9onPFXa2CRaBksm3xFoBYWm+ur+obTb/ACE2GEvcQ4hPaOJ1fwpjqqbbXbRv6a1kTlUsB1n9g=
+	t=1747170364; cv=none; b=m/FG0lX0r6tmNRiQLY9RO/umKoA40rqkifW+uQ8dST/Cu5TAr4a0mu/XOYIFvfh+0X5DMfeYMzgaOpN5UerXV/Amt1nD0PGaWC5hhSDwazgBkeM95/ci2kDBFo7/4us155GUyzS5pqSWjwL1ZRqR7v1GVeHPJHTelgYyYZkES0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747159672; c=relaxed/simple;
-	bh=/QpeFcl2VthoJ0gjijjEJaJFJbBz/vFy3CjA4vm8phI=;
+	s=arc-20240116; t=1747170364; c=relaxed/simple;
+	bh=ed9/47FWrNsalFiLyCe8DUotofjuDTZjnyhZJw8VoEY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ryNEyIkXJUXuWy+9XnjPaMDgPR2FpaMjdf4BAvKo2UJyn2AlHuvLs+KYd8uxEUcDNVd62qAV4BVzhuEGsXpuT/i7NkA24P7iLIfSYC6WKxokwpvTYiNbmWxTGyBGiKDF9M73yVGLVRZ/XKSclrQy7dHfSj9a+bLjP/pCSfPSK9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kP+D2Ynl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cv5erCyI; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=HPVyrpk3xBwdBHTGblI0Tynh0xL9ynpKDBGpZ4zuya0k/OujanVunzQzUS92yL0Q1Fi/noagbsOSeYuct5kFeHXQOExEosESTgzovH7wejemz0tgfCWQm2NjQ/tLbURyxqi0o6Uw6v4lkNH2c9YXBmDsS07mJMiWULSMgeO+cso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ErujLYNA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2Il958TQ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 May 2025 18:07:47 -0000
+Date: Tue, 13 May 2025 21:05:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747159668;
+	s=2020; t=1747170358;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aH7ej6N9qJWoZxc+h/McgMIF89aH3zqHZ6RSW5dr/gQ=;
-	b=kP+D2YnlPBlK676CQvZBfnSbqnBvF2373Bra07J+q81uNdXsySNt/iId/H/BEEfRs8ovn9
-	Qv528TPKzS/0yHxIoqKIeXOP45t6s3yUVFHnfEZKg9ULalD2cCTdBefWwrBaQkWtKztxy5
-	jA22myoyZJWlCerhCq/xj4cwwXmLcoE8jANUaHbsneZK183k9CBS+CI7zIZ9iFIRcfK6tg
-	Fpuguem78mKYG1cyMrlmmvLLeub4eHuRnBDkUWg2XUX8oIXcYjcUmPrCva6bUVklzPfq/m
-	vHKRr/pqduXzGnBk2fSRDlCPcQxRlzZzqK9JXMZIVWxkn4vNYevvlM+q7WfT6Q==
+	bh=kYbvQXSqsrpWKgI0ARIijGnYFej3O36gLn3mVBYtK+s=;
+	b=ErujLYNAagd4tTRAkYDrsDfTLOKvGkX0fk3+8jdMThPvuPRPAQs/HL8F3/yJoSjwlL1rXp
+	mcVWhA3Z/81EsMRlkF95eBqJqZ/iCoEFmdXRB4w5MmAVbevtH7Tdj5YjI9T7fU0h5Bu5e6
+	383MbSa9Vdxw+JgJDzWsr/FyHZrkY+HeLhlp4PxEvhFMnxQZPQQIZCg4H3WCd8zXcjgaXy
+	wBt/gssYPI6P+sqeaoxKkZUwHXqxi8odc5P0rqn6JYmnB17Mzi6jBVwq6ivRcgFiBvVlzh
+	CdyTJDRQyKC2/wMQHt4U7ttoXCVy3ODRwrq/fGQJIqMyS5DzGe4eADKdvMHnzw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747159668;
+	s=2020e; t=1747170358;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aH7ej6N9qJWoZxc+h/McgMIF89aH3zqHZ6RSW5dr/gQ=;
-	b=Cv5erCyIaMy8WvC0dyxwukRm9qOEi74AslCT+lsWiutHdVm0peceuRucblXIuiKXhT0Hdn
-	NPCf2D5O2guJ5bCQ==
-From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
+	bh=kYbvQXSqsrpWKgI0ARIijGnYFej3O36gLn3mVBYtK+s=;
+	b=2Il958TQ/tEwovudOhyceNna9wdl1RalmI4K03ZAgveJQ/DhhjNkvIlN7IixodmXQcqDCr
+	n4etwjPuNXi6ioCQ==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Do not touch VMSA pages during SNP guest
- memory kdump
-Cc: Ashish Kalra <ashish.kalra@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Srikanth Aithal <sraithal@amd.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250428214151.155464-1-Ashish.Kalra@amd.com>
-References: <20250428214151.155464-1-Ashish.Kalra@amd.com>
+Subject:
+ [tip: x86/core] x86/bugs: Fix SRSO reporting on Zen1/2 with SMT disabled
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
+ David Kaplan <david.kaplan@amd.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250513110405.15872-1-bp@kernel.org>
+References: <20250513110405.15872-1-bp@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174715966762.406.12942579862694214802.tip-bot2@tip-bot2>
+Message-ID: <174717035700.406.11853328229238715261.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,338 +80,58 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     d2062cc1b1c367d5d019f595ef860159e1301351
-Gitweb:        https://git.kernel.org/tip/d2062cc1b1c367d5d019f595ef860159e1301351
-Author:        Ashish Kalra <ashish.kalra@amd.com>
-AuthorDate:    Mon, 28 Apr 2025 21:41:51 
+Commit-ID:     891d3b8be32a69ae94d32e3f1e1ee01359020d49
+Gitweb:        https://git.kernel.org/tip/891d3b8be32a69ae94d32e3f1e1ee01359020d49
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Tue, 13 May 2025 13:04:05 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 13 May 2025 19:40:44 +02:00
+CommitterDate: Tue, 13 May 2025 22:31:08 +02:00
 
-x86/sev: Do not touch VMSA pages during SNP guest memory kdump
+x86/bugs: Fix SRSO reporting on Zen1/2 with SMT disabled
 
-When kdump is running makedumpfile to generate vmcore and dump SNP guest
-memory it touches the VMSA page of the vCPU executing kdump.
+1f4bb068b498 ("x86/bugs: Restructure SRSO mitigation") does this:
 
-It then results in unrecoverable #NPF/RMP faults as the VMSA page is
-marked busy/in-use when the vCPU is running and subsequently a causes
-guest softlockup/hang.
+  if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
+          setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
+          srso_mitigation = SRSO_MITIGATION_NONE;
+          return;
+  }
 
-Additionally, other APs may be halted in guest mode and their VMSA pages
-are marked busy and touching these VMSA pages during guest memory dump
-will also cause #NPF.
+and, in particular, sets srso_mitigation to NONE. This leads to
+reporting
 
-Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
-of guest mode and then clear the VMSA bit on their VMSA pages.
+  Speculative Return Stack Overflow: Vulnerable
 
-If the vCPU running kdump is an AP, mark it's VMSA page as offline to
-ensure that makedumpfile excludes that page while dumping guest memory.
+on Zen2 machines.
 
-Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+There's a far bigger confusion with what SRSO_NO means and how it is
+used in the code but this will be a matter of future fixes and
+restructuring to how the SRSO mitigation gets determined.
+
+Fix the reporting issue for now.
+
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250428214151.155464-1-Ashish.Kalra@amd.com
+Reviewed-by: David Kaplan <david.kaplan@amd.com>
+Link: https://lore.kernel.org/20250513110405.15872-1-bp@kernel.org
 ---
- arch/x86/coco/sev/core.c | 244 ++++++++++++++++++++++++--------------
- 1 file changed, 158 insertions(+), 86 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b0c1a7a..41060ba 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -959,6 +959,102 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
- 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 47c74c4..dd8b50b 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2942,7 +2942,9 @@ static void __init srso_update_mitigation(void)
+ 	    boot_cpu_has(X86_FEATURE_IBPB_BRTYPE))
+ 		srso_mitigation = SRSO_MITIGATION_IBPB;
+ 
+-	if (boot_cpu_has_bug(X86_BUG_SRSO) && !cpu_mitigations_off())
++	if (boot_cpu_has_bug(X86_BUG_SRSO) &&
++	    !cpu_mitigations_off() &&
++	    !boot_cpu_has(X86_FEATURE_SRSO_NO))
+ 		pr_info("%s\n", srso_strings[srso_mitigation]);
  }
  
-+static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
-+{
-+	bool create = event != SVM_VMGEXIT_AP_DESTROY;
-+	struct ghcb_state state;
-+	unsigned long flags;
-+	struct ghcb *ghcb;
-+	int ret = 0;
-+
-+	local_irq_save(flags);
-+
-+	ghcb = __sev_get_ghcb(&state);
-+
-+	vc_ghcb_invalidate(ghcb);
-+
-+	if (create)
-+		ghcb_set_rax(ghcb, vmsa->sev_features);
-+
-+	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
-+	ghcb_set_sw_exit_info_1(ghcb,
-+				((u64)apic_id << 32)	|
-+				((u64)snp_vmpl << 16)	|
-+				event);
-+	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
-+
-+	sev_es_wr_ghcb_msr(__pa(ghcb));
-+	VMGEXIT();
-+
-+	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
-+	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
-+		pr_err("SNP AP %s error\n", (create ? "CREATE" : "DESTROY"));
-+		ret = -EINVAL;
-+	}
-+
-+	__sev_put_ghcb(&state);
-+
-+	local_irq_restore(flags);
-+
-+	return ret;
-+}
-+
-+static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
-+{
-+	int ret;
-+
-+	if (snp_vmpl) {
-+		struct svsm_call call = {};
-+		unsigned long flags;
-+
-+		local_irq_save(flags);
-+
-+		call.caa = this_cpu_read(svsm_caa);
-+		call.rcx = __pa(va);
-+
-+		if (make_vmsa) {
-+			/* Protocol 0, Call ID 2 */
-+			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
-+			call.rdx = __pa(caa);
-+			call.r8  = apic_id;
-+		} else {
-+			/* Protocol 0, Call ID 3 */
-+			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
-+		}
-+
-+		ret = svsm_perform_call_protocol(&call);
-+
-+		local_irq_restore(flags);
-+	} else {
-+		/*
-+		 * If the kernel runs at VMPL0, it can change the VMSA
-+		 * bit for a page using the RMPADJUST instruction.
-+		 * However, for the instruction to succeed it must
-+		 * target the permissions of a lesser privileged (higher
-+		 * numbered) VMPL level, so use VMPL1.
-+		 */
-+		u64 attrs = 1;
-+
-+		if (make_vmsa)
-+			attrs |= RMPADJUST_VMSA_PAGE_BIT;
-+
-+		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
-+	}
-+
-+	return ret;
-+}
-+
-+static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
-+{
-+	int err;
-+
-+	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
-+	if (err)
-+		pr_err("clear VMSA page failed (%u), leaking page\n", err);
-+	else
-+		free_page((unsigned long)vmsa);
-+}
-+
- static void set_pte_enc(pte_t *kpte, int level, void *va)
- {
- 	struct pte_enc_desc d = {
-@@ -1055,6 +1151,65 @@ void snp_kexec_begin(void)
- 		pr_warn("Failed to stop shared<->private conversions\n");
- }
- 
-+/*
-+ * Shutdown all APs except the one handling kexec/kdump and clearing
-+ * the VMSA tag on AP's VMSA pages as they are not being used as
-+ * VMSA page anymore.
-+ */
-+static void shutdown_all_aps(void)
-+{
-+	struct sev_es_save_area *vmsa;
-+	int apic_id, this_cpu, cpu;
-+
-+	this_cpu = get_cpu();
-+
-+	/*
-+	 * APs are already in HLT loop when enc_kexec_finish() callback
-+	 * is invoked.
-+	 */
-+	for_each_present_cpu(cpu) {
-+		vmsa = per_cpu(sev_vmsa, cpu);
-+
-+		/*
-+		 * The BSP or offlined APs do not have guest allocated VMSA
-+		 * and there is no need  to clear the VMSA tag for this page.
-+		 */
-+		if (!vmsa)
-+			continue;
-+
-+		/*
-+		 * Cannot clear the VMSA tag for the currently running vCPU.
-+		 */
-+		if (this_cpu == cpu) {
-+			unsigned long pa;
-+			struct page *p;
-+
-+			pa = __pa(vmsa);
-+			/*
-+			 * Mark the VMSA page of the running vCPU as offline
-+			 * so that is excluded and not touched by makedumpfile
-+			 * while generating vmcore during kdump.
-+			 */
-+			p = pfn_to_online_page(pa >> PAGE_SHIFT);
-+			if (p)
-+				__SetPageOffline(p);
-+			continue;
-+		}
-+
-+		apic_id = cpuid_to_apicid[cpu];
-+
-+		/*
-+		 * Issue AP destroy to ensure AP gets kicked out of guest mode
-+		 * to allow using RMPADJUST to remove the VMSA tag on it's
-+		 * VMSA page.
-+		 */
-+		vmgexit_ap_control(SVM_VMGEXIT_AP_DESTROY, vmsa, apic_id);
-+		snp_cleanup_vmsa(vmsa, apic_id);
-+	}
-+
-+	put_cpu();
-+}
-+
- void snp_kexec_finish(void)
- {
- 	struct sev_es_runtime_data *data;
-@@ -1069,6 +1224,8 @@ void snp_kexec_finish(void)
- 	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
- 		return;
- 
-+	shutdown_all_aps();
-+
- 	unshare_all_memory();
- 
- 	/*
-@@ -1090,51 +1247,6 @@ void snp_kexec_finish(void)
- 	}
- }
- 
--static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
--{
--	int ret;
--
--	if (snp_vmpl) {
--		struct svsm_call call = {};
--		unsigned long flags;
--
--		local_irq_save(flags);
--
--		call.caa = this_cpu_read(svsm_caa);
--		call.rcx = __pa(va);
--
--		if (make_vmsa) {
--			/* Protocol 0, Call ID 2 */
--			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
--			call.rdx = __pa(caa);
--			call.r8  = apic_id;
--		} else {
--			/* Protocol 0, Call ID 3 */
--			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
--		}
--
--		ret = svsm_perform_call_protocol(&call);
--
--		local_irq_restore(flags);
--	} else {
--		/*
--		 * If the kernel runs at VMPL0, it can change the VMSA
--		 * bit for a page using the RMPADJUST instruction.
--		 * However, for the instruction to succeed it must
--		 * target the permissions of a lesser privileged (higher
--		 * numbered) VMPL level, so use VMPL1.
--		 */
--		u64 attrs = 1;
--
--		if (make_vmsa)
--			attrs |= RMPADJUST_VMSA_PAGE_BIT;
--
--		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
--	}
--
--	return ret;
--}
--
- #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
- #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
- #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
-@@ -1166,24 +1278,10 @@ static void *snp_alloc_vmsa_page(int cpu)
- 	return page_address(p + 1);
- }
- 
--static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
--{
--	int err;
--
--	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
--	if (err)
--		pr_err("clear VMSA page failed (%u), leaking page\n", err);
--	else
--		free_page((unsigned long)vmsa);
--}
--
- static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
- {
- 	struct sev_es_save_area *cur_vmsa, *vmsa;
--	struct ghcb_state state;
- 	struct svsm_ca *caa;
--	unsigned long flags;
--	struct ghcb *ghcb;
- 	u8 sipi_vector;
- 	int cpu, ret;
- 	u64 cr4;
-@@ -1297,33 +1395,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
- 	}
- 
- 	/* Issue VMGEXIT AP Creation NAE event */
--	local_irq_save(flags);
--
--	ghcb = __sev_get_ghcb(&state);
--
--	vc_ghcb_invalidate(ghcb);
--	ghcb_set_rax(ghcb, vmsa->sev_features);
--	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
--	ghcb_set_sw_exit_info_1(ghcb,
--				((u64)apic_id << 32)	|
--				((u64)snp_vmpl << 16)	|
--				SVM_VMGEXIT_AP_CREATE);
--	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
--
--	sev_es_wr_ghcb_msr(__pa(ghcb));
--	VMGEXIT();
--
--	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
--	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
--		pr_err("SNP AP Creation error\n");
--		ret = -EINVAL;
--	}
--
--	__sev_put_ghcb(&state);
--
--	local_irq_restore(flags);
--
--	/* Perform cleanup if there was an error */
-+	ret = vmgexit_ap_control(SVM_VMGEXIT_AP_CREATE, vmsa, apic_id);
- 	if (ret) {
- 		snp_cleanup_vmsa(vmsa, apic_id);
- 		vmsa = NULL;
 
