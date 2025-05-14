@@ -1,48 +1,67 @@
-Return-Path: <linux-tip-commits+bounces-5536-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5537-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7587CAB6713
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 11:15:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76ED8AB6785
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 11:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 104C2171523
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 09:15:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 966401B60FAE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 09:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9371CEAC2;
-	Wed, 14 May 2025 09:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F52622A1E4;
+	Wed, 14 May 2025 09:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JVxe6Zka"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="eATAisn8"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB361BC3F;
-	Wed, 14 May 2025 09:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C172101BD;
+	Wed, 14 May 2025 09:31:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747214147; cv=none; b=ptqicpzoaLT0LHeaYwPYgD61C7QnZS3OAHq3dfmoRoJaTNNV/fZApGC2OtVIbzu9UZDFmybxSxKtJ5L/teCtpeSSboxmwxrLbOsy5yYm5RCQxzOQB0cuNF4oidqCzTknAArCAQl8V70bb3xuNweZbjrIsVRO2DA/LfZR3jABgj0=
+	t=1747215080; cv=none; b=kzejk//2Xry+iIk/CXlIJWELepjpB9RSnpebJLG+jcmc8mcJD+HmDt9elq30BfJ61kbXm/esewdsAkyJusk5GR6kBqbkV9rnIHth0XuLxE1tniELTd1QL/dyuXyF68FrXu7irynVD4uF91M6wYK8mvpYTefVFrkBr7upp5S/SxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747214147; c=relaxed/simple;
-	bh=1cKoue+upTo4HfjWM/Vwi5Qay2EkwgJIx0igGvDWUwg=;
+	s=arc-20240116; t=1747215080; c=relaxed/simple;
+	bh=wbuzVKsbaIYYgUNIGWiOGf0ggry5wMthmfxhwfd8rRo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iLHUbXtOboFwV0aEmC5/gPN6GG3TSCcnU60Aqt0Pm27aaD/wyAdfp4qkoSNdR5Hrxwi1ySfc/0kmh9ZDcDGXpA93aCJY/9bN7GhV2/gJ1H02V4SFahlUMn0QgEV/bySEBiVsWhc331zQEPOZkgM1UXY4n2DdssOlFGYHvMwp//E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JVxe6Zka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764C1C4CEE9;
-	Wed, 14 May 2025 09:15:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747214146;
-	bh=1cKoue+upTo4HfjWM/Vwi5Qay2EkwgJIx0igGvDWUwg=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=c+rRdOmg6YBmVIum1rrPKZpmcSb5h4S4oCcwX22zZmDfRsbxKBYmruTkY3DNPYJlknksUaTYYh0oFENNrTrJjUcvbgn5g4iS/7B5xQ1nbJQkj1bocsZW5hWGAx3RDsszC+JXsjYF/npmJDP0VGvFRIQIZYn+jBvV52499ci064s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=eATAisn8; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F1EFE40E0163;
+	Wed, 14 May 2025 09:31:14 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 1XWBJqI5yh0g; Wed, 14 May 2025 09:31:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1747215070; bh=kwlDtAjQb/FKYJpSPJnPSjrxlyBEpr/raI0mZ6JF/6w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JVxe6Zka6jWGS+tUAFUL78fgvJsnjKkZzqksLrW3yyshPyT5rWbBhgZqjFCjewVed
-	 qStVS4di+0Lj2l5vZgJe/+CxQiX0AuP5EI4bd99SZBaHycPeWXVICIW3haayavbCeP
-	 BlFlSBz2Du4jk9Cw3cTy6WgHijEL4bQGFAxc0rx+GybtjFawzTAuzqWIfZAHIzOeIB
-	 pz+a/FbjvHvk2ZRoAUS85yNXnuLJpnEI6mf34w9+n5Qca0kfLt8rqyqp1U/TZNrHlK
-	 rHwpmjzMK4PjWRWCTOC5eNERmuAmQutzD8k/wi7ANenKb9PzxwY1nQpu1X9E2J8w7O
-	 sd06XPpg7XQbw==
-Date: Wed, 14 May 2025 11:15:41 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Borislav Petkov <bp@alien8.de>
+	b=eATAisn8ZM3v8CbOYOmEmBd8xPyIEXsQ8/ealMrWoF/UBqezBOt15L4SSxL+zLWNy
+	 +fgp5e5Gbngg4xMDhUegRVqACsctYWeMRBmnfEuXfvat9blc0xoxnVA7gfHivv6H58
+	 65v/C5aOMrSsqdrLX4hAuAIKx4a0mILWAPRFrL6GCY9U4XgkDAPI58xw+nTce8ICRO
+	 LW/YBskANRZuaSurIuGDb+1Jp2UFo0KbksghMceHOwWe5IIerZZVZE4uzc/8gYPhMf
+	 wzAZFSXYOB7MziksDFt0KG5+QwTA9G/bF8zqZQzz4lpVkVotO9kUOrwcSE/2XASMXa
+	 eWmdWscmAW9H2+z9zif3dyuris/cN42uuRkDARiwTox+QenJYehLoVcKjaZ6vxEmBk
+	 Zv1PEEQGmZuWxy9AHMGxIZWPQX8enofdIKkXTShhjLViErWIW9wLafupTuuE0dlWuw
+	 FmDbqGb025nghU2wmiMB5WEFHJMGKKLFADzBYNa1p2FzxLXF5LhRdefO598Rw9jJf+
+	 aE8W2y8uyMHExMHdg4EPFol4wPg0i7L6hdfr8fE89xN0nF4eKClJbCIAZHahctuZ13
+	 X/UPWXBYYo4H0omb2itWoDpsoRZ/XAvW1ciLRi+I+AKN1xSchVjd974U10Xek2dvdo
+	 CbmYSl5qvepTfqwUfdvnTNPw=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A323640E0239;
+	Wed, 14 May 2025 09:31:01 +0000 (UTC)
+Date: Wed, 14 May 2025 11:30:55 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ingo Molnar <mingo@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
 	Ashish Kalra <ashish.kalra@amd.com>,
 	Pankaj Gupta <pankaj.gupta@amd.com>,
@@ -51,75 +70,65 @@ Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
 	x86@kernel.org
 Subject: Re: [tip: x86/urgent] x86/sev: Do not touch VMSA pages during SNP
  guest memory kdump
-Message-ID: <aCRfPTxaPvoqILq8@gmail.com>
+Message-ID: <20250514093055.GDaCRiz6rY7f71YnIr@fat_crate.local>
 References: <20250428214151.155464-1-Ashish.Kalra@amd.com>
  <174715966762.406.12942579862694214802.tip-bot2@tip-bot2>
  <aCREWka5uQndvTN_@gmail.com>
  <20250514081120.GAaCRQKOVcm4dgqp59@fat_crate.local>
+ <aCRfPTxaPvoqILq8@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250514081120.GAaCRQKOVcm4dgqp59@fat_crate.local>
+In-Reply-To: <aCRfPTxaPvoqILq8@gmail.com>
 
+On Wed, May 14, 2025 at 11:15:41AM +0200, Ingo Molnar wrote:
+> imply that you don't accept the other issues my review identified, such as
+> the messy type conversions and the inconsistent handling of svsm_caa_pa as
+> valid? That would be sad.
 
-* Borislav Petkov <bp@alien8.de> wrote:
+Another proof that you're not really reading my emails:
 
-> On Wed, May 14, 2025 at 09:20:58AM +0200, Ingo Molnar wrote:
-> > Boris, please don't rush these SEV patches without proper review first! ;-)
-> 
-> You didn't read the R-by and SOB tags at the beginning?
+"Feel free to propose fixes, Tom and I will review them and even test them for
+you!"
 
-Reviewed-by tags and SOB tags don't necessarily imply a proper review, 
-as my review feedback here amply demonstrates.
+> Secondly, the fact that half of the patch is moving/refactoring code, 
+> while the other half is adding new code is no excuse to ignore review 
+> feedback for the code that gets moved/refactored - reviewers obviously 
+> need to read and understand the code that gets moved too. This is 
+> kernel maintenance 101.
 
-> Feel free to propose fixes, Tom and I will review them and even test 
-> them for you!
-> 
-> But ontop of those: those are fixes and the "issues" you've pointed 
-> out are to existing code which this patch only moves.
+See above.
 
-Firstly, while you may be inclined to ignore the half dozen typos in 
-the changelog and the comments as inconsequential, do your scare-quotes 
-around 'issues' imply that you don't accept the other issues my review 
-identified, such as the messy type conversions and the inconsistent 
-handling of svsm_caa_pa as valid? That would be sad.
+> All these problems accumulate and may result in fragility and bugs.
 
-Secondly, the fact that half of the patch is moving/refactoring code, 
-while the other half is adding new code is no excuse to ignore review 
-feedback for the code that gets moved/refactored - reviewers obviously 
-need to read and understand the code that gets moved too. This is 
-kernel maintenance 101.
+LOL, this is very ironic coming from you: to talk about problems accumulating
+from patches *you* applied without anyone else reviewing. Hillarious.
 
-And the new functionality introduced obviously expands on the bad 
-practices & fragile code I outlined.
+> Oh wow, you really don't take constructive criticism of patches very 
+> well. Review feedback isn't a personal attack against you. Please don't 
+> shoot the messenger.
 
-This is a basic requirement when implementing new functionality (and 
-kdump never really worked on SEV-SNP I suppose, at least since August 
-laste year, so it's basically new functionality), is to have a clean 
-codebase it is extending, especially if the changes are so large:
+Sorry, the time for constructive criticism with you is long over. You have
+proved yourself over and over again that normal way of working with you just
+doesn't fly.
 
-   1 file changed, 158 insertions(+), 86 deletions(-)
+I have told you here why it is ok to do this patch this way. You ignored it.
 
-All these problems accumulate and may result in fragility and bugs.
+This patch was tested with everything we've got. No issues.
 
-Third, this patch should have been split into two parts to begin with: 
-the first one refactors the code into vmgexit_ap_control() and moves 
-snp_set_vmsa() and snp_cleanup_vmsa() - and a second, smaller, easier 
-to review patch that does the real changes. Right now the actual 
-changes are hidden within the noise of code movement and refactoring.
+I suggested you propose changes to that code and we will review and test them.
+You ignore that too.
 
-> I would usually say "Thx" here but not this time.
+Well, ignoring people goes both ways.
 
-Oh wow, you really don't take constructive criticism of patches very 
-well. Review feedback isn't a personal attack against you. Please don't 
-shoot the messenger.
+-- 
+Regards/Gruss,
+    Boris.
 
-Thanks,
-
-	Ingo
+https://people.kernel.org/tglx/notes-about-netiquette
 
