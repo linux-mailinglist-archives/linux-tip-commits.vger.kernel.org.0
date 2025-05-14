@@ -1,77 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-5538-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5539-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF12AB6893
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 12:16:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F70AB69A2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 13:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8ABA4A571C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 10:16:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC1ED3A63FD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 May 2025 11:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B85274FCB;
-	Wed, 14 May 2025 10:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979571DA31D;
+	Wed, 14 May 2025 11:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cWsqkVAK";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O2wh3NFE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OLiQ6Ab4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a5mpvpXa"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5EC8274672;
-	Wed, 14 May 2025 10:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D0026FA46;
+	Wed, 14 May 2025 11:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747217745; cv=none; b=KsHGnlYxRK7ylgpLPNZUZ+il2Axolakpr2MG1H2wH2VsPYa5UHWScELwLPo8WUfYKq1Cl+pmZdF8A+RGnjXgfPnRoFcAgJhQxo29dBcJ2O6rWnH+HDdVeHdiNt1wcTPiGRJ2gZEwq4xlZmg2Jejus3oShMpBXNj5dBIRqO1gWus=
+	t=1747221469; cv=none; b=NY26h2WGJUAn1jnCJxWAztvSR/QifMjeOkL7+knmjdv47tMxaXEpmq4U0wOgSDx5+JU+QmrzzKOcc7FOHy4x30Vz7J/5oImpxCLNuRR88BanzphivXv1hrEgpRGi/IMESPBly3ZNug7Ril4/4X6rnsqzH68oRuB633bdh4OldlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747217745; c=relaxed/simple;
-	bh=io0fuEqu2zUdnHEFnufD9IYz8rdr9vOH4izP/ZTKp4o=;
+	s=arc-20240116; t=1747221469; c=relaxed/simple;
+	bh=gU04qVy90YcsWIRoib9ilAm0k5riivERstZTiKN/WwI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=S1EkpBZBCof9wAw2ELi/EBjdJ2dYda7u3fcafmMa7SyGE7d+qv4zYplGkEdej46yX3UVHjP8Y0v2byQlg5jZ0pfJnLp7oQBqBk1X/Msad0S7hCPIfqF48Q79P8qJpbvVlQlAcoTOjLw1/YhF24zweeosl9/cOQUoSTPDmjvAW1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cWsqkVAK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O2wh3NFE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=QEjsvSDUkg2yQO0Aa7zQYrFtYTgjLkBlGg1hpBhPYsNERY9Y61MWMaJL3iTp33Kama52AbClk05ebAvlhnYgIHPhJO0IqjNdovD9kVE1ZfDuN+XdoDPssuFcC54uGIKP2w4BQ/BvI4JiWVZbN/4xW57BOiqSvJHcnjO4HzQyKzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OLiQ6Ab4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a5mpvpXa; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 14 May 2025 10:15:41 -0000
+Date: Wed, 14 May 2025 11:17:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747217742;
+	s=2020; t=1747221465;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ne44DSn6E2PNnBd9PVaHQ31yx5UAzOe8msVi/cc7N2U=;
-	b=cWsqkVAKiFxxnFahd9iWE0pz/jAsGQNnkYNTngXBwBKjM71yjYBiFZintfkkQTyeaWG2Gp
-	wVDIz2HkLXZow/5RY+b/WRqZ5UOFw+QypuVfrqArUSds23Y21a/W7Oqwjxg9SlSKqdM+9m
-	NSY74HMYGXOdiCJCfr6To2Ts80Mse0U91Oz4r33xpKdyGeD/RSpzAjlylwKjck0S5CYQ7a
-	YYqvruuAfIUraup9RWQ9Au0hVss50pWhuSsBK8xuNb5rgNkY6SL21KU4u/TGWJgRrupteX
-	bGemQwxGuCsYI5gB0IWgbDjHqM21Yhl89kajXS1etIuZ71orFEccODcBMz/ksQ==
+	bh=1GeVX9hQodX/OtNr53La1nzqrSy9bBCOAu2y0PBYT3E=;
+	b=OLiQ6Ab44M7IGTgwTqogJ2WfRbV/vFY8io2e5MKKEx9lhCwLYvL4X7Zbg6y393EFe+MlCL
+	zpjAzUnSvWYascRpayECo0eRkzqcISIDc54XeBGZFNaLS8bbeiJh3k8V+gynKtqaQHVi3M
+	fjb7NuwNXsRBxeBPY40mUTjfnN4cXAeY0GmmEreKKlEVGndMew3s4941YPMtxiOptbW8RM
+	cwuO/aZIJwaCj0C5Gx4QIVc3hE8IQcXuE3ZTdU40UAnvXVIS/MeEkVRko4oEJbGyELi21Q
+	53dI33g1EFWYQXLJLiGY6PZGmSf1MWjT/EH3mtBlBs37eUzZ5218bcSWR9n+mg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747217742;
+	s=2020e; t=1747221465;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ne44DSn6E2PNnBd9PVaHQ31yx5UAzOe8msVi/cc7N2U=;
-	b=O2wh3NFE+1X+2yathWEIJdvWcdbySaXX7oIGki221Ixdbwhfl1Y+U2+vEhLHxcn8TPMp4o
-	H5OBzGoLRgqQX/Dg==
-From: "tip-bot2 for Jon Hunter" <tip-bot2@linutronix.de>
+	bh=1GeVX9hQodX/OtNr53La1nzqrSy9bBCOAu2y0PBYT3E=;
+	b=a5mpvpXa31Fngmwh2O0Hqg7nRfMrDfpgNroDQYsTheUCmal9Z8AALCgQSj8Q8NXJCqEB9z
+	NweI6oQGlynkSTDg==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq/manage: Use the correct lock guard in
- irq_set_irq_wake()
-Cc: Jon Hunter <jonathanh@nvidia.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20250514095041.1109783-1-jonathanh@nvidia.com>
-References: <20250514095041.1109783-1-jonathanh@nvidia.com>
+Subject:
+ [tip: sched/core] sched,livepatch: Untangle cond_resched() and live-patching
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Miroslav Benes <mbenes@suse.cz>,
+ Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250509113659.wkP_HJ5z@linutronix.de>
+References: <20250509113659.wkP_HJ5z@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174721774116.406.2638049997395737811.tip-bot2@tip-bot2>
+Message-ID: <174722146422.406.1553254299090389626.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,47 +82,334 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     58eb5721a445ea0af310d1410d7117a1910627bc
-Gitweb:        https://git.kernel.org/tip/58eb5721a445ea0af310d1410d7117a1910627bc
-Author:        Jon Hunter <jonathanh@nvidia.com>
-AuthorDate:    Wed, 14 May 2025 10:50:41 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 14 May 2025 12:05:58 +02:00
+Commit-ID:     fe2ece0700df81ee1fc91d51d80a1a3f37e59806
+Gitweb:        https://git.kernel.org/tip/fe2ece0700df81ee1fc91d51d80a1a3f37e59806
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 09 May 2025 13:36:59 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 14 May 2025 13:09:50 +02:00
 
-genirq/manage: Use the correct lock guard in irq_set_irq_wake()
+sched,livepatch: Untangle cond_resched() and live-patching
 
-Commit 8589e325ba4f ("genirq/manage: Rework irq_set_irq_wake()") updated
-the irq_set_irq_wake() to use the new guards for locking the interrupt
-descriptor.
+With the goal of deprecating / removing VOLUNTARY preempt, live-patch
+needs to stop relying on cond_resched() to make forward progress.
 
-However, in doing so it inadvertently changed irq_set_irq_wake() such that
-the 'chip_bus_lock' is no longer acquired. This has caused system suspend
-tests to fail on some Tegra platforms.
+Instead, rely on schedule() with TASK_FREEZABLE set. Just like
+live-patching, the freezer needs to be able to stop tasks in a safe /
+known state.
 
-Fix this by correcting the guard used in irq_set_irq_wake() to ensure the
-'chip_bus_lock' is held.
+[bigeasy: use likely() in __klp_sched_try_switch() and update comments]
 
-Fixes: 8589e325ba4f ("genirq/manage: Rework irq_set_irq_wake()")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250514095041.1109783-1-jonathanh@nvidia.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Miroslav Benes <mbenes@suse.cz>
+Acked-by: Miroslav Benes <mbenes@suse.cz>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20250509113659.wkP_HJ5z@linutronix.de
 ---
- kernel/irq/manage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/livepatch_sched.h | 14 +++------
+ include/linux/sched.h           |  6 +----
+ kernel/livepatch/transition.c   | 49 ++++++++-----------------------
+ kernel/sched/core.c             | 50 +++++---------------------------
+ 4 files changed, 27 insertions(+), 92 deletions(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 2861e11..c948373 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -846,7 +846,7 @@ static int set_irq_wake_real(unsigned int irq, unsigned int on)
-  */
- int irq_set_irq_wake(unsigned int irq, unsigned int on)
- {
--	scoped_irqdesc_get_and_lock(irq, IRQ_GET_DESC_CHECK_GLOBAL) {
-+	scoped_irqdesc_get_and_buslock(irq, IRQ_GET_DESC_CHECK_GLOBAL) {
- 		struct irq_desc *desc = scoped_irqdesc;
- 		int ret = 0;
+diff --git a/include/linux/livepatch_sched.h b/include/linux/livepatch_sched.h
+index 013794f..065c185 100644
+--- a/include/linux/livepatch_sched.h
++++ b/include/linux/livepatch_sched.h
+@@ -3,27 +3,23 @@
+ #define _LINUX_LIVEPATCH_SCHED_H_
  
+ #include <linux/jump_label.h>
+-#include <linux/static_call_types.h>
++#include <linux/sched.h>
+ 
+ #ifdef CONFIG_LIVEPATCH
+ 
+ void __klp_sched_try_switch(void);
+ 
+-#if !defined(CONFIG_PREEMPT_DYNAMIC) || !defined(CONFIG_HAVE_PREEMPT_DYNAMIC_CALL)
+-
+ DECLARE_STATIC_KEY_FALSE(klp_sched_try_switch_key);
+ 
+-static __always_inline void klp_sched_try_switch(void)
++static __always_inline void klp_sched_try_switch(struct task_struct *curr)
+ {
+-	if (static_branch_unlikely(&klp_sched_try_switch_key))
++	if (static_branch_unlikely(&klp_sched_try_switch_key) &&
++	    READ_ONCE(curr->__state) & TASK_FREEZABLE)
+ 		__klp_sched_try_switch();
+ }
+ 
+-#endif /* !CONFIG_PREEMPT_DYNAMIC || !CONFIG_HAVE_PREEMPT_DYNAMIC_CALL */
+-
+ #else /* !CONFIG_LIVEPATCH */
+-static inline void klp_sched_try_switch(void) {}
+-static inline void __klp_sched_try_switch(void) {}
++static inline void klp_sched_try_switch(struct task_struct *curr) {}
+ #endif /* CONFIG_LIVEPATCH */
+ 
+ #endif /* _LINUX_LIVEPATCH_SCHED_H_ */
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index f96ac19..b981959 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -44,7 +44,6 @@
+ #include <linux/seqlock_types.h>
+ #include <linux/kcsan.h>
+ #include <linux/rv.h>
+-#include <linux/livepatch_sched.h>
+ #include <linux/uidgid_types.h>
+ #include <linux/tracepoint-defs.h>
+ #include <asm/kmap_size.h>
+@@ -2089,9 +2088,6 @@ extern int __cond_resched(void);
+ 
+ #if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_CALL)
+ 
+-void sched_dynamic_klp_enable(void);
+-void sched_dynamic_klp_disable(void);
+-
+ DECLARE_STATIC_CALL(cond_resched, __cond_resched);
+ 
+ static __always_inline int _cond_resched(void)
+@@ -2112,7 +2108,6 @@ static __always_inline int _cond_resched(void)
+ 
+ static inline int _cond_resched(void)
+ {
+-	klp_sched_try_switch();
+ 	return __cond_resched();
+ }
+ 
+@@ -2122,7 +2117,6 @@ static inline int _cond_resched(void)
+ 
+ static inline int _cond_resched(void)
+ {
+-	klp_sched_try_switch();
+ 	return 0;
+ }
+ 
+diff --git a/kernel/livepatch/transition.c b/kernel/livepatch/transition.c
+index ba06945..2351a19 100644
+--- a/kernel/livepatch/transition.c
++++ b/kernel/livepatch/transition.c
+@@ -29,22 +29,13 @@ static unsigned int klp_signals_cnt;
+ 
+ /*
+  * When a livepatch is in progress, enable klp stack checking in
+- * cond_resched().  This helps CPU-bound kthreads get patched.
++ * schedule().  This helps CPU-bound kthreads get patched.
+  */
+-#if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_CALL)
+-
+-#define klp_cond_resched_enable() sched_dynamic_klp_enable()
+-#define klp_cond_resched_disable() sched_dynamic_klp_disable()
+-
+-#else /* !CONFIG_PREEMPT_DYNAMIC || !CONFIG_HAVE_PREEMPT_DYNAMIC_CALL */
+ 
+ DEFINE_STATIC_KEY_FALSE(klp_sched_try_switch_key);
+-EXPORT_SYMBOL(klp_sched_try_switch_key);
+ 
+-#define klp_cond_resched_enable() static_branch_enable(&klp_sched_try_switch_key)
+-#define klp_cond_resched_disable() static_branch_disable(&klp_sched_try_switch_key)
+-
+-#endif /* CONFIG_PREEMPT_DYNAMIC && CONFIG_HAVE_PREEMPT_DYNAMIC_CALL */
++#define klp_resched_enable() static_branch_enable(&klp_sched_try_switch_key)
++#define klp_resched_disable() static_branch_disable(&klp_sched_try_switch_key)
+ 
+ /*
+  * This work can be performed periodically to finish patching or unpatching any
+@@ -365,26 +356,18 @@ static bool klp_try_switch_task(struct task_struct *task)
+ 
+ void __klp_sched_try_switch(void)
+ {
+-	if (likely(!klp_patch_pending(current)))
+-		return;
+-
+ 	/*
+-	 * This function is called from cond_resched() which is called in many
+-	 * places throughout the kernel.  Using the klp_mutex here might
+-	 * deadlock.
+-	 *
+-	 * Instead, disable preemption to prevent racing with other callers of
+-	 * klp_try_switch_task().  Thanks to task_call_func() they won't be
+-	 * able to switch this task while it's running.
++	 * This function is called from __schedule() while a context switch is
++	 * about to happen. Preemption is already disabled and klp_mutex
++	 * can't be acquired.
++	 * Disabled preemption is used to prevent racing with other callers of
++	 * klp_try_switch_task(). Thanks to task_call_func() they won't be
++	 * able to switch to this task while it's running.
+ 	 */
+-	preempt_disable();
++	lockdep_assert_preemption_disabled();
+ 
+-	/*
+-	 * Make sure current didn't get patched between the above check and
+-	 * preempt_disable().
+-	 */
+-	if (unlikely(!klp_patch_pending(current)))
+-		goto out;
++	if (likely(!klp_patch_pending(current)))
++		return;
+ 
+ 	/*
+ 	 * Enforce the order of the TIF_PATCH_PENDING read above and the
+@@ -395,11 +378,7 @@ void __klp_sched_try_switch(void)
+ 	smp_rmb();
+ 
+ 	klp_try_switch_task(current);
+-
+-out:
+-	preempt_enable();
+ }
+-EXPORT_SYMBOL(__klp_sched_try_switch);
+ 
+ /*
+  * Sends a fake signal to all non-kthread tasks with TIF_PATCH_PENDING set.
+@@ -508,7 +487,7 @@ void klp_try_complete_transition(void)
+ 	}
+ 
+ 	/* Done!  Now cleanup the data structures. */
+-	klp_cond_resched_disable();
++	klp_resched_disable();
+ 	patch = klp_transition_patch;
+ 	klp_complete_transition();
+ 
+@@ -560,7 +539,7 @@ void klp_start_transition(void)
+ 			set_tsk_thread_flag(task, TIF_PATCH_PENDING);
+ 	}
+ 
+-	klp_cond_resched_enable();
++	klp_resched_enable();
+ 
+ 	klp_signals_cnt = 0;
+ }
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index a3507ed..bece0ba 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -66,6 +66,7 @@
+ #include <linux/vtime.h>
+ #include <linux/wait_api.h>
+ #include <linux/workqueue_api.h>
++#include <linux/livepatch_sched.h>
+ 
+ #ifdef CONFIG_PREEMPT_DYNAMIC
+ # ifdef CONFIG_GENERIC_ENTRY
+@@ -6676,6 +6677,8 @@ static void __sched notrace __schedule(int sched_mode)
+ 	if (sched_feat(HRTICK) || sched_feat(HRTICK_DL))
+ 		hrtick_clear(rq);
+ 
++	klp_sched_try_switch(prev);
++
+ 	local_irq_disable();
+ 	rcu_note_context_switch(preempt);
+ 
+@@ -7336,7 +7339,6 @@ EXPORT_STATIC_CALL_TRAMP(might_resched);
+ static DEFINE_STATIC_KEY_FALSE(sk_dynamic_cond_resched);
+ int __sched dynamic_cond_resched(void)
+ {
+-	klp_sched_try_switch();
+ 	if (!static_branch_unlikely(&sk_dynamic_cond_resched))
+ 		return 0;
+ 	return __cond_resched();
+@@ -7508,7 +7510,6 @@ int sched_dynamic_mode(const char *str)
+ #endif
+ 
+ static DEFINE_MUTEX(sched_dynamic_mutex);
+-static bool klp_override;
+ 
+ static void __sched_dynamic_update(int mode)
+ {
+@@ -7516,8 +7517,7 @@ static void __sched_dynamic_update(int mode)
+ 	 * Avoid {NONE,VOLUNTARY} -> FULL transitions from ever ending up in
+ 	 * the ZERO state, which is invalid.
+ 	 */
+-	if (!klp_override)
+-		preempt_dynamic_enable(cond_resched);
++	preempt_dynamic_enable(cond_resched);
+ 	preempt_dynamic_enable(might_resched);
+ 	preempt_dynamic_enable(preempt_schedule);
+ 	preempt_dynamic_enable(preempt_schedule_notrace);
+@@ -7526,8 +7526,7 @@ static void __sched_dynamic_update(int mode)
+ 
+ 	switch (mode) {
+ 	case preempt_dynamic_none:
+-		if (!klp_override)
+-			preempt_dynamic_enable(cond_resched);
++		preempt_dynamic_enable(cond_resched);
+ 		preempt_dynamic_disable(might_resched);
+ 		preempt_dynamic_disable(preempt_schedule);
+ 		preempt_dynamic_disable(preempt_schedule_notrace);
+@@ -7538,8 +7537,7 @@ static void __sched_dynamic_update(int mode)
+ 		break;
+ 
+ 	case preempt_dynamic_voluntary:
+-		if (!klp_override)
+-			preempt_dynamic_enable(cond_resched);
++		preempt_dynamic_enable(cond_resched);
+ 		preempt_dynamic_enable(might_resched);
+ 		preempt_dynamic_disable(preempt_schedule);
+ 		preempt_dynamic_disable(preempt_schedule_notrace);
+@@ -7550,8 +7548,7 @@ static void __sched_dynamic_update(int mode)
+ 		break;
+ 
+ 	case preempt_dynamic_full:
+-		if (!klp_override)
+-			preempt_dynamic_disable(cond_resched);
++		preempt_dynamic_disable(cond_resched);
+ 		preempt_dynamic_disable(might_resched);
+ 		preempt_dynamic_enable(preempt_schedule);
+ 		preempt_dynamic_enable(preempt_schedule_notrace);
+@@ -7562,8 +7559,7 @@ static void __sched_dynamic_update(int mode)
+ 		break;
+ 
+ 	case preempt_dynamic_lazy:
+-		if (!klp_override)
+-			preempt_dynamic_disable(cond_resched);
++		preempt_dynamic_disable(cond_resched);
+ 		preempt_dynamic_disable(might_resched);
+ 		preempt_dynamic_enable(preempt_schedule);
+ 		preempt_dynamic_enable(preempt_schedule_notrace);
+@@ -7584,36 +7580,6 @@ void sched_dynamic_update(int mode)
+ 	mutex_unlock(&sched_dynamic_mutex);
+ }
+ 
+-#ifdef CONFIG_HAVE_PREEMPT_DYNAMIC_CALL
+-
+-static int klp_cond_resched(void)
+-{
+-	__klp_sched_try_switch();
+-	return __cond_resched();
+-}
+-
+-void sched_dynamic_klp_enable(void)
+-{
+-	mutex_lock(&sched_dynamic_mutex);
+-
+-	klp_override = true;
+-	static_call_update(cond_resched, klp_cond_resched);
+-
+-	mutex_unlock(&sched_dynamic_mutex);
+-}
+-
+-void sched_dynamic_klp_disable(void)
+-{
+-	mutex_lock(&sched_dynamic_mutex);
+-
+-	klp_override = false;
+-	__sched_dynamic_update(preempt_dynamic_mode);
+-
+-	mutex_unlock(&sched_dynamic_mutex);
+-}
+-
+-#endif /* CONFIG_HAVE_PREEMPT_DYNAMIC_CALL */
+-
+ static int __init setup_preempt_mode(char *str)
+ {
+ 	int mode = sched_dynamic_mode(str);
 
