@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5548-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5547-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C02AB89E7
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 May 2025 16:52:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93559AB89E3
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 May 2025 16:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A24A18918F4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 May 2025 14:52:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453401889496
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 May 2025 14:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6221FCFFC;
-	Thu, 15 May 2025 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92991DED5B;
+	Thu, 15 May 2025 14:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s0dekOQz";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NUo+Gf60"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WtM4XZ8g";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="35dbUjf3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36991D6DBB;
-	Thu, 15 May 2025 14:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF6434CF9;
+	Thu, 15 May 2025 14:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747320709; cv=none; b=cALovZP9ZZjmXMAg6PZV4WEUThN6f+zomlXXVcDXxhPCpQkMZRE+2b2FID9juQTANM5Y8h+4Zmm/5yE5TfRKa5c3agqS+CBhUqtzr7If6PxGpugKlQjDeZReMiSTOcKNC3GHah6hQPsViubv1vq54bQ0mVCrAfqXqH/RsL2SA2w=
+	t=1747320707; cv=none; b=NBnn6PUhJSh6Dodq4S1CJsp7l87/avfuUs0z7/4YeqnvVH69EjyM8H9kuBqyiNau/EEr8GexsFqC6NOKHtXEqLm4TT8h4vk4Zzt+FV3vWz7PLEU0uNaY7i5XncShlaDjRyR3OzrX8To3npwyKNlWJxOMy1CSmHDxnAL1U+wj+R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747320709; c=relaxed/simple;
-	bh=fLXEyJ04rV/YA6f/3XO9nxbLMNb0+FTMXrQxP0vrhxE=;
+	s=arc-20240116; t=1747320707; c=relaxed/simple;
+	bh=46qP591hUZ1F/7waKJZm7/juT8PjsGzd0r+2kBfe5eI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=N+hXEvn8I6wDmTGn7+GbepZBeHajj0LNGzNM+CuIkPUckGtj+rCyrJ//Xu+6QlrlUsbionJYuThPBA9VGQxAFns1a5BKskTpQhhxwq8tjD02xksJpQUs2y0lXkVbA3JBzbXPwLSdTZJ+Np/GP0NLBYdZ7/fD8qgF6m4+MTgwcUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s0dekOQz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NUo+Gf60; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jdkhrGzC+I8Pnk0etrFndujtmo80Uhhk4TDsrTo8bXRSnFCxNcE9F0Xefqx3f4Bj2xPJ8/EdLF1h21CNfqwVwK4ApTllQMa9FlX0xlaQ7qp9O6RmCrhxn0ToO5l/2Qd87ThE0i4hl+hfyFWtnLK8EE5KNx8sRa0bZ3iB+U3QCoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WtM4XZ8g; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=35dbUjf3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 15 May 2025 14:51:41 -0000
+Date: Thu, 15 May 2025 14:51:42 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747320702;
+	s=2020; t=1747320703;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pHibEe6F3cCTb9te0CFdRUlIGAMn7RJG4y2GTxfmP4k=;
-	b=s0dekOQzrG1vPDSl75rEd1rjCpLU8Bh5SWfPU6TIm2eGIoNPtJ1tcwUrCoemm59+5RBKd8
-	eUHaXnpU7T6R820y8yCvpRK847sfSBU5U6uXHaSXyX6mP3F85+1Q2TLPQxzc5zyoEiG/Pa
-	ulbEJROqiOVFz3DmofOfxkiAYaNj78iYpmewurpMwTmoUTTdl1cvS3/ogxfyyMRNL/Bm0+
-	wzhyLhYGdWH/BXKTvXz5BcsbJ6hFC1qTtwwtZ7mT551i0fam+RSD/+Vs6BXsmWEyH2AfvE
-	Xgrjpmo7/g3kTFLKxZ96Yvgl58ajT+udHQraCTsZQEngV+spodp1IbAI8TqJQg==
+	bh=GinOpFlC91u2NxzD9w3EoFnZRayWWyDQFgi9M/Ggz2g=;
+	b=WtM4XZ8g+rFS3FX73lxQuf7rbp2JUlkytXZeZquPRF9P2PmAXdpOIswwleYhDs/WJ7ETvG
+	dT0LofyNXmHx1pIP7VTaJaUvZk8cQ8APeRyrNZbjmD6eLYW4QQb8xRMwd50Cfd8KGu6NZY
+	nYKoUhpjfIN+3y/1DybIhydwZHd1834vjVI+HFTDTFW678EpRzz23dq90TArdumcBOFPXD
+	w0S3Uf28FNowtUNftZGHZ7oOPUnR0ECj19F1BLbX8cKzAmy2is+RntgL60YaJvTuZbzLLB
+	zDL5PSjvVZ1+WKYuTQkP3XVJUstvgf1rv4txwa9rfUCNiUC7vxTbrJFrlQiI3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747320702;
+	s=2020e; t=1747320703;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=pHibEe6F3cCTb9te0CFdRUlIGAMn7RJG4y2GTxfmP4k=;
-	b=NUo+Gf60yAdJwduv0d43felFy3ZTeAueMh/dIVKM10QWZGWzjfdKorZGaXsPuvPrS0/Uxm
-	7FpSdn5bgB3lH2BA==
+	bh=GinOpFlC91u2NxzD9w3EoFnZRayWWyDQFgi9M/Ggz2g=;
+	b=35dbUjf3s3NhLdyNzbvQE8fqCz6pJOCs00kF7E13XOwQsgm26WeqYLzsYVEoBSIhuoB9vg
+	aH/+OVaLsYbgOzAQ==
 From: "tip-bot2 for Brian Norris" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Add kunit tests for disable depth counts
-Cc: Brian Norris <briannorris@chromium.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+Subject: [tip: irq/core] genirq: Retain disable depth for managed interrupts
+ across CPU hotplug
+Cc: Thomas Gleixner <tglx@linutronix.de>,
+ Brian Norris <briannorris@chromium.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20250514201353.3481400-3-briannorris@chromium.org>
-References: <20250514201353.3481400-3-briannorris@chromium.org>
+In-Reply-To: <20250514201353.3481400-2-briannorris@chromium.org>
+References: <20250514201353.3481400-2-briannorris@chromium.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174732070186.406.2327362552572565637.tip-bot2@tip-bot2>
+Message-ID: <174732070271.406.3712146055779909597.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,374 +82,124 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     334c36eeb5df010ea1d954a96b6eba42a15a1d4a
-Gitweb:        https://git.kernel.org/tip/334c36eeb5df010ea1d954a96b6eba42a15a1d4a
+Commit-ID:     788019eb559fd0b365f501467ceafce540e377cc
+Gitweb:        https://git.kernel.org/tip/788019eb559fd0b365f501467ceafce540e377cc
 Author:        Brian Norris <briannorris@chromium.org>
-AuthorDate:    Wed, 14 May 2025 13:13:17 -07:00
+AuthorDate:    Wed, 14 May 2025 13:13:16 -07:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 15 May 2025 16:44:25 +02:00
 
-genirq: Add kunit tests for disable depth counts
+genirq: Retain disable depth for managed interrupts across CPU hotplug
 
-There have been a few bugs and/or misunderstandings about the reference
-counting, and startup/shutdown behaviors in the interrupt core and the
-related CPU hotplug code. These 4 test cases try to capture a few
-interesting cases.
+Affinity-managed interrupts can be shut down and restarted during CPU
+hotunplug/plug. Thereby the interrupt may be left in an unexpected state.
+Specifically:
 
-* irq_disable_depth_test: basic request/disable/enable sequence
+ 1. Interrupt is affine to CPU N
+ 2. disable_irq() -> depth is 1
+ 3. CPU N goes offline
+ 4. irq_shutdown() -> depth is set to 1 (again)
+ 5. CPU N goes online
+ 6. irq_startup() -> depth is set to 0 (BUG! driver expects that the interrupt
+    		     	      	        still disabled)
+ 7. enable_irq() -> depth underflow / unbalanced enable_irq() warning
 
-* irq_free_disabled_test: request/disable/free/re-request sequence - this
-  catches errors on previous revisions of the fix for the hotplug case.
+This is only a problem for managed interrupts and CPU hotplug, all other
+cases like request()/free()/request() truly needs to reset a possibly stale
+disable depth value.
 
-* irq_cpuhotplug_test: exercises managed-affinity IRQ + CPU hotplug.
+Provide a startup function, which takes the disable depth into account, and
+invoked it for the managed interrupts in the CPU hotplug path.
 
-  This captures a problematic test case for a bug in that code path, which
-  failed to retain the disable depth across the managed interrupt
-  hotunplug/hotplug path.
+This requires to change irq_shutdown() to do a depth increment instead of
+setting it to 1, which allows to retain the disable depth, but is harmless
+for the other code paths using irq_startup(), which will still reset the
+disable depth unconditionally to keep the original correct behaviour.
 
-  This test requires CONFIG_SMP and a hotpluggable CPU#1.
+A kunit tests will be added separately to cover some of these aspects.
 
-* irq_shutdown_depth_test: exercises similar behavior as
+[ tglx: Massaged changelog ]
 
-  irq_cpuhotplug_test, but directly uses the irq_*() APIs instead of going
-  through CPU hotplug. This still requires CONFIG_SMP, because
-  managed-affinity is stubbed out (and not all APIs are even present)
-  without it.
-
-Note the use of 'imply SMP': ARCH=um doesn't support SMP, and kunit is
-often exercised there. Thus, 'imply' will force SMP on where possible
-(such as ARCH=x86_64), but leave it off where it's not.
-
-Behavior on various SMP and ARCH configurations:
-
-  $ tools/testing/kunit/kunit.py run 'irq_test_cases*' --arch x86_64 --qemu_args '-smp 2'
-  [...]
-  [11:12:24] Testing complete. Ran 4 tests: passed: 4
-
-  $ tools/testing/kunit/kunit.py run 'irq_test_cases*' --arch x86_64
-  [...]
-  [11:13:27] [SKIPPED] irq_cpuhotplug_test
-  [11:13:27] ================= [PASSED] irq_test_cases ==================
-  [11:13:27] ============================================================
-  [11:13:27] Testing complete. Ran 4 tests: passed: 3, skipped: 1
-
-  # default: ARCH=um
-  $ tools/testing/kunit/kunit.py run 'irq_test_cases*'
-  [11:14:26] [SKIPPED] irq_shutdown_depth_test
-  [11:14:26] [SKIPPED] irq_cpuhotplug_test
-  [11:14:26] ================= [PASSED] irq_test_cases ==================
-  [11:14:26] ============================================================
-  [11:14:26] Testing complete. Ran 4 tests: passed: 2, skipped: 2
-
-Without the prior fix ("genirq: Retain disable depth for managed interrupts
-across CPU hotplug"), this fails as follows:
-
-  [11:18:55] =============== irq_test_cases (4 subtests) ================
-  [11:18:55] [PASSED] irq_disable_depth_test
-  [11:18:55] [PASSED] irq_free_disabled_test
-  [11:18:55]     # irq_shutdown_depth_test: EXPECTATION FAILED at kernel/irq/irq_test.c:147
-  [11:18:55]     Expected desc->depth == 1, but
-  [11:18:55]         desc->depth == 0 (0x0)
-  [11:18:55] ------------[ cut here ]------------
-  [11:18:55] Unbalanced enable for IRQ 26
-  [11:18:55] WARNING: CPU: 1 PID: 36 at kernel/irq/manage.c:792 __enable_irq+0x36/0x60
-  ...
-  [11:18:55] [FAILED] irq_shutdown_depth_test
-  [11:18:55]  #1
-  [11:18:55]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:202
-  [11:18:55]     Expected irqd_is_activated(data) to be false, but is true
-  [11:18:55]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:203
-  [11:18:55]     Expected irqd_is_started(data) to be false, but is true
-  [11:18:55]     # irq_cpuhotplug_test: EXPECTATION FAILED at kernel/irq/irq_test.c:204
-  [11:18:55]     Expected desc->depth == 1, but
-  [11:18:55]         desc->depth == 0 (0x0)
-  [11:18:55] ------------[ cut here ]------------
-  [11:18:55] Unbalanced enable for IRQ 27
-  [11:18:55] WARNING: CPU: 0 PID: 38 at kernel/irq/manage.c:792 __enable_irq+0x36/0x60
-  ...
-  [11:18:55] [FAILED] irq_cpuhotplug_test
-  [11:18:55]     # module: irq_test
-  [11:18:55] # irq_test_cases: pass:2 fail:2 skip:0 total:4
-  [11:18:55] # Totals: pass:2 fail:2 skip:0 total:4
-  [11:18:55] ================= [FAILED] irq_test_cases ==================
-  [11:18:55] ============================================================
-  [11:18:55] Testing complete. Ran 4 tests: passed: 2, failed: 2
-
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Brian Norris <briannorris@chromium.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250514201353.3481400-3-briannorris@chromium.org
-
+Link: https://lore.kernel.org/all/20250514201353.3481400-2-briannorris@chromium.org
 ---
- kernel/irq/Kconfig    |  11 ++-
- kernel/irq/Makefile   |   1 +-
- kernel/irq/irq_test.c | 229 +++++++++++++++++++++++++++++++++++++++++-
- 3 files changed, 241 insertions(+)
- create mode 100644 kernel/irq/irq_test.c
+ kernel/irq/chip.c       | 22 +++++++++++++++++++++-
+ kernel/irq/cpuhotplug.c |  2 +-
+ kernel/irq/internals.h  |  1 +
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-index 3f02a0e..7429abe 100644
---- a/kernel/irq/Kconfig
-+++ b/kernel/irq/Kconfig
-@@ -144,6 +144,17 @@ config GENERIC_IRQ_DEBUGFS
- config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
- 	bool
+diff --git a/kernel/irq/chip.c b/kernel/irq/chip.c
+index 1d45c84..b0e0a73 100644
+--- a/kernel/irq/chip.c
++++ b/kernel/irq/chip.c
+@@ -202,6 +202,19 @@ __irq_startup_managed(struct irq_desc *desc, const struct cpumask *aff,
+ 		return IRQ_STARTUP_ABORT;
+ 	return IRQ_STARTUP_MANAGED;
+ }
++
++void irq_startup_managed(struct irq_desc *desc)
++{
++	/*
++	 * Only start it up when the disable depth is 1, so that a disable,
++	 * hotunplug, hotplug sequence does not end up enabling it during
++	 * hotplug unconditionally.
++	 */
++	desc->depth--;
++	if (!desc->depth)
++		irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
++}
++
+ #else
+ static __always_inline int
+ __irq_startup_managed(struct irq_desc *desc, const struct cpumask *aff,
+@@ -269,6 +282,7 @@ int irq_startup(struct irq_desc *desc, bool resend, bool force)
+ 			ret = __irq_startup(desc);
+ 			break;
+ 		case IRQ_STARTUP_ABORT:
++			desc->depth = 1;
+ 			irqd_set_managed_shutdown(d);
+ 			return 0;
+ 		}
+@@ -301,7 +315,13 @@ void irq_shutdown(struct irq_desc *desc)
+ {
+ 	if (irqd_is_started(&desc->irq_data)) {
+ 		clear_irq_resend(desc);
+-		desc->depth = 1;
++		/*
++		 * Increment disable depth, so that a managed shutdown on
++		 * CPU hotunplug preserves the actual disabled state when the
++		 * CPU comes back online. See irq_startup_managed().
++		 */
++		desc->depth++;
++
+ 		if (desc->irq_data.chip->irq_shutdown) {
+ 			desc->irq_data.chip->irq_shutdown(&desc->irq_data);
+ 			irq_state_set_disabled(desc);
+diff --git a/kernel/irq/cpuhotplug.c b/kernel/irq/cpuhotplug.c
+index e77ca6d..f07529a 100644
+--- a/kernel/irq/cpuhotplug.c
++++ b/kernel/irq/cpuhotplug.c
+@@ -218,7 +218,7 @@ static void irq_restore_affinity_of_irq(struct irq_desc *desc, unsigned int cpu)
+ 		return;
  
-+config IRQ_KUNIT_TEST
-+	tristate "KUnit tests for IRQ management APIs" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	default KUNIT_ALL_TESTS
-+	imply SMP
-+	help
-+	  This option enables KUnit tests for the IRQ subsystem API. These are
-+	  only for development and testing, not for regular kernel use cases.
-+
-+	  If unsure, say N.
-+
- endmenu
+ 	if (irqd_is_managed_and_shutdown(data))
+-		irq_startup(desc, IRQ_RESEND, IRQ_START_COND);
++		irq_startup_managed(desc);
  
- config GENERIC_IRQ_MULTI_HANDLER
-diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
-index c0f44c0..6ab3a40 100644
---- a/kernel/irq/Makefile
-+++ b/kernel/irq/Makefile
-@@ -19,3 +19,4 @@ obj-$(CONFIG_GENERIC_IRQ_IPI_MUX) += ipi-mux.o
- obj-$(CONFIG_SMP) += affinity.o
- obj-$(CONFIG_GENERIC_IRQ_DEBUGFS) += debugfs.o
- obj-$(CONFIG_GENERIC_IRQ_MATRIX_ALLOCATOR) += matrix.o
-+obj-$(CONFIG_IRQ_KUNIT_TEST) += irq_test.o
-diff --git a/kernel/irq/irq_test.c b/kernel/irq/irq_test.c
-new file mode 100644
-index 0000000..5161b56
---- /dev/null
-+++ b/kernel/irq/irq_test.c
-@@ -0,0 +1,229 @@
-+// SPDX-License-Identifier: LGPL-2.1+
-+
-+#include <linux/cpu.h>
-+#include <linux/cpumask.h>
-+#include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
-+#include <linux/irqdomain.h>
-+#include <linux/nodemask.h>
-+#include <kunit/test.h>
-+
-+#include "internals.h"
-+
-+static irqreturn_t noop_handler(int irq, void *data)
-+{
-+	return IRQ_HANDLED;
-+}
-+
-+static void noop(struct irq_data *data) { }
-+static unsigned int noop_ret(struct irq_data *data) { return 0; }
-+
-+static int noop_affinity(struct irq_data *data, const struct cpumask *dest,
-+			 bool force)
-+{
-+	irq_data_update_effective_affinity(data, dest);
-+
-+	return 0;
-+}
-+
-+static struct irq_chip fake_irq_chip = {
-+	.name           = "fake",
-+	.irq_startup    = noop_ret,
-+	.irq_shutdown   = noop,
-+	.irq_enable     = noop,
-+	.irq_disable    = noop,
-+	.irq_ack        = noop,
-+	.irq_mask       = noop,
-+	.irq_unmask     = noop,
-+	.irq_set_affinity = noop_affinity,
-+	.flags          = IRQCHIP_SKIP_SET_WAKE,
-+};
-+
-+static void irq_disable_depth_test(struct kunit *test)
-+{
-+	struct irq_desc *desc;
-+	int virq, ret;
-+
-+	virq = irq_domain_alloc_descs(-1, 1, 0, NUMA_NO_NODE, NULL);
-+	KUNIT_ASSERT_GE(test, virq, 0);
-+
-+	irq_set_chip_and_handler(virq, &dummy_irq_chip, handle_simple_irq);
-+
-+	desc = irq_to_desc(virq);
-+	KUNIT_ASSERT_PTR_NE(test, desc, NULL);
-+
-+	ret = request_irq(virq, noop_handler, 0, "test_irq", NULL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	disable_irq(virq);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 1);
-+
-+	enable_irq(virq);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	free_irq(virq, NULL);
-+}
-+
-+static void irq_free_disabled_test(struct kunit *test)
-+{
-+	struct irq_desc *desc;
-+	int virq, ret;
-+
-+	virq = irq_domain_alloc_descs(-1, 1, 0, NUMA_NO_NODE, NULL);
-+	KUNIT_ASSERT_GE(test, virq, 0);
-+
-+	irq_set_chip_and_handler(virq, &dummy_irq_chip, handle_simple_irq);
-+
-+	desc = irq_to_desc(virq);
-+	KUNIT_ASSERT_PTR_NE(test, desc, NULL);
-+
-+	ret = request_irq(virq, noop_handler, 0, "test_irq", NULL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	disable_irq(virq);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 1);
-+
-+	free_irq(virq, NULL);
-+	KUNIT_EXPECT_GE(test, desc->depth, 1);
-+
-+	ret = request_irq(virq, noop_handler, 0, "test_irq", NULL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	free_irq(virq, NULL);
-+}
-+
-+static void irq_shutdown_depth_test(struct kunit *test)
-+{
-+	struct irq_desc *desc;
-+	struct irq_data *data;
-+	int virq, ret;
-+	struct irq_affinity_desc affinity = {
-+		.is_managed = 1,
-+		.mask = CPU_MASK_ALL,
-+	};
-+
-+	if (!IS_ENABLED(CONFIG_SMP))
-+		kunit_skip(test, "requires CONFIG_SMP for managed shutdown");
-+
-+	virq = irq_domain_alloc_descs(-1, 1, 0, NUMA_NO_NODE, &affinity);
-+	KUNIT_ASSERT_GE(test, virq, 0);
-+
-+	irq_set_chip_and_handler(virq, &dummy_irq_chip, handle_simple_irq);
-+
-+	desc = irq_to_desc(virq);
-+	KUNIT_ASSERT_PTR_NE(test, desc, NULL);
-+
-+	data = irq_desc_get_irq_data(desc);
-+	KUNIT_ASSERT_PTR_NE(test, data, NULL);
-+
-+	ret = request_irq(virq, noop_handler, 0, "test_irq", NULL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	KUNIT_EXPECT_TRUE(test, irqd_is_activated(data));
-+	KUNIT_EXPECT_TRUE(test, irqd_is_started(data));
-+	KUNIT_EXPECT_TRUE(test, irqd_affinity_is_managed(data));
-+
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	disable_irq(virq);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 1);
-+
-+	irq_shutdown_and_deactivate(desc);
-+
-+	KUNIT_EXPECT_FALSE(test, irqd_is_activated(data));
-+	KUNIT_EXPECT_FALSE(test, irqd_is_started(data));
-+
-+	KUNIT_EXPECT_EQ(test, irq_activate(desc), 0);
-+#ifdef CONFIG_SMP
-+	irq_startup_managed(desc);
-+#endif
-+
-+	KUNIT_EXPECT_EQ(test, desc->depth, 1);
-+
-+	enable_irq(virq);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	free_irq(virq, NULL);
-+}
-+
-+static void irq_cpuhotplug_test(struct kunit *test)
-+{
-+	struct irq_desc *desc;
-+	struct irq_data *data;
-+	int virq, ret;
-+	struct irq_affinity_desc affinity = {
-+		.is_managed = 1,
-+	};
-+
-+	if (!IS_ENABLED(CONFIG_SMP))
-+		kunit_skip(test, "requires CONFIG_SMP for CPU hotplug");
-+	if (!get_cpu_device(1))
-+		kunit_skip(test, "requires more than 1 CPU for CPU hotplug");
-+	if (!cpu_is_hotpluggable(1))
-+		kunit_skip(test, "CPU 1 must be hotpluggable");
-+
-+	cpumask_copy(&affinity.mask, cpumask_of(1));
-+
-+	virq = irq_domain_alloc_descs(-1, 1, 0, NUMA_NO_NODE, &affinity);
-+	KUNIT_ASSERT_GE(test, virq, 0);
-+
-+	irq_set_chip_and_handler(virq, &fake_irq_chip, handle_simple_irq);
-+
-+	desc = irq_to_desc(virq);
-+	KUNIT_ASSERT_PTR_NE(test, desc, NULL);
-+
-+	data = irq_desc_get_irq_data(desc);
-+	KUNIT_ASSERT_PTR_NE(test, data, NULL);
-+
-+	ret = request_irq(virq, noop_handler, 0, "test_irq", NULL);
-+	KUNIT_EXPECT_EQ(test, ret, 0);
-+
-+	KUNIT_EXPECT_TRUE(test, irqd_is_activated(data));
-+	KUNIT_EXPECT_TRUE(test, irqd_is_started(data));
-+	KUNIT_EXPECT_TRUE(test, irqd_affinity_is_managed(data));
-+
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	disable_irq(virq);
-+	KUNIT_EXPECT_EQ(test, desc->depth, 1);
-+
-+	KUNIT_EXPECT_EQ(test, remove_cpu(1), 0);
-+	KUNIT_EXPECT_FALSE(test, irqd_is_activated(data));
-+	KUNIT_EXPECT_FALSE(test, irqd_is_started(data));
-+	KUNIT_EXPECT_GE(test, desc->depth, 1);
-+	KUNIT_EXPECT_EQ(test, add_cpu(1), 0);
-+
-+	KUNIT_EXPECT_FALSE(test, irqd_is_activated(data));
-+	KUNIT_EXPECT_FALSE(test, irqd_is_started(data));
-+	KUNIT_EXPECT_EQ(test, desc->depth, 1);
-+
-+	enable_irq(virq);
-+	KUNIT_EXPECT_TRUE(test, irqd_is_activated(data));
-+	KUNIT_EXPECT_TRUE(test, irqd_is_started(data));
-+	KUNIT_EXPECT_EQ(test, desc->depth, 0);
-+
-+	free_irq(virq, NULL);
-+}
-+
-+static struct kunit_case irq_test_cases[] = {
-+	KUNIT_CASE(irq_disable_depth_test),
-+	KUNIT_CASE(irq_free_disabled_test),
-+	KUNIT_CASE(irq_shutdown_depth_test),
-+	KUNIT_CASE(irq_cpuhotplug_test),
-+	{}
-+};
-+
-+static struct kunit_suite irq_test_suite = {
-+	.name = "irq_test_cases",
-+	.test_cases = irq_test_cases,
-+};
-+
-+kunit_test_suite(irq_test_suite);
-+MODULE_DESCRIPTION("IRQ unit test suite");
-+MODULE_LICENSE("GPL");
+ 	/*
+ 	 * If the interrupt can only be directed to a single target
+diff --git a/kernel/irq/internals.h b/kernel/irq/internals.h
+index 476a20f..aebfe22 100644
+--- a/kernel/irq/internals.h
++++ b/kernel/irq/internals.h
+@@ -87,6 +87,7 @@ extern void __enable_irq(struct irq_desc *desc);
+ extern int irq_activate(struct irq_desc *desc);
+ extern int irq_activate_and_startup(struct irq_desc *desc, bool resend);
+ extern int irq_startup(struct irq_desc *desc, bool resend, bool force);
++extern void irq_startup_managed(struct irq_desc *desc);
+ 
+ extern void irq_shutdown(struct irq_desc *desc);
+ extern void irq_shutdown_and_deactivate(struct irq_desc *desc);
 
