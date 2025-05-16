@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-5573-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5574-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19196AB999F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 12:02:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A199AB99A3
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 12:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23AAD4E1E22
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 10:02:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F7853B25A8
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 10:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF3A23505C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B982523506E;
 	Fri, 16 May 2025 10:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uRr7Qu9l";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KGeXA877"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xo5Hk1fk";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="btmj2Y1M"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D18233159;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA56A233712;
 	Fri, 16 May 2025 10:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747389743; cv=none; b=gmphRxqESgqagxHP+fuNznq/8psmbZzi+zD1wyPEuFTuTihgADrkvN9oxfYqql1TJHLZ7ij18t6iYZcNRu4oC+bVB9v1dli+tjGXeOJA3QGOGKWq7J0dRCtjRcze6YF8CsChTDXIzGsOE5MZ3TzKQNg7x+TIuXAAePza3zvS2jk=
+	t=1747389743; cv=none; b=HbEAuVtQKetGA6mIRoVpvoZxtPzrWnIazu55hQnzz9pRTt+p3HfJDpsWutGhxu1NCxuGeCOo/P8j/ACYDeoQSMGPytcyaZdbq0uJ+ohEnahtnK4YgJSSsU4h3TSJSSh1+fnK91OisuDSx/m8EtoSoaWm/zwPSqWUXR5/Bcbcve0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1747389743; c=relaxed/simple;
-	bh=POT3/ARw8CZNImRu6cSb6dfx9z05W9sH1VxYnnjoDmg=;
+	bh=nkMhTY610Hqq5k1JGKuYFLgdGSAAieWXx0ql4FarTis=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RqmLUbo0KIuqotAU6twW6XKPBF9KKBngN2zWXIH3xXLIZe63e94YKz+LJGcCYTvm5JWDLn44BL0PCvCZOAOzThzFlLhkroVYrLqk98b1cGZmJXmPt2vyiz26bD1wAgexELQQNXDD2eJ71ZMFpSLok1eYV9fCFt+JgidkMOgRPlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uRr7Qu9l; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KGeXA877; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Pwy5YJaVVIc2nX3lP9PF83o82epATzHRyzbSOkmUGr0hF/flrAjgHidzrpEvRIqgiNxY+r0Ptk9+ClJmOiBT0SO0wC0HbeNROWSvyJYycUiAjz0mUjC492nljzZ6Ej6KIxkPOzfSSOvyrzInnBrMuIADXb7ob+oEwd/pBvgdXjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xo5Hk1fk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=btmj2Y1M; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 May 2025 10:02:18 -0000
+Date: Fri, 16 May 2025 10:02:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747389739;
+	s=2020; t=1747389740;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=soz40sqw1VYB3Y1tnkxsfAHN8G757uOiEiMfGYkCA14=;
-	b=uRr7Qu9lXZB0ZZeu2RuSnj1Cjb6fbVJYrk7l6lc8iLDlNa1d4McL3jJ0kySiMLzubJaQO5
-	WYE9vz/ojlSE/sCeSaXRnTT56nLQbdgLEx9T4yR6f2vpTqsO+D9tDYfu36h0mD5Y5kg9hW
-	5jZt8dzp1NCnZfw/ETcCz1vGGTj3z78VEvW/ASaDvYkHYi4HL0FqRA63qQ1Dn2AxwqZWtP
-	TRdIxi3ntHrxVqCkd1+D2ZDRDREjVyYKmVYthlp3bUK/5Mw+arcCtoqPiVpTzUXjbeXYV5
-	coo+xEUEFPX46AP2thuhH6IAAYQEJ+3r1kHICKnC600/qV0EAvEKJoS5wT74ug==
+	bh=h9X7xlxrN7hdzzIxndhlEqrydlKyNF/vYrutu9w7T3s=;
+	b=xo5Hk1fkqPTcAZMcmy4FB7I+Kf0L7rp0weAjaSQ2q6YpdQ/TTZz8WWpkMJippyoDrfjKvS
+	5qOq2MOjMbctuPog/AIAu74RZQeDCzNj1+ZA7wsIqi8ytSIb2xi4JFrRMK+mTZSTM6WQUA
+	6IuqoH2cw9OrZUc3wMo1+V6dxSp7CkOsKB0f4L7BU0KVZsKzvLBcaO6sx3qpdVkqCJmi+q
+	/6JkJHgrNDDSadOpa8MTJF1QuJ1vl5hPCtoCHcOckL0yMghJf5K/xJyujA0nNZq8fFycf9
+	lrHwuGk/ATFa+KGQsdEWkoARo0YEWDflJ8YhcOUY6w15brk9u9dM4y9PZH8Fcg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747389739;
+	s=2020e; t=1747389740;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=soz40sqw1VYB3Y1tnkxsfAHN8G757uOiEiMfGYkCA14=;
-	b=KGeXA877J87cxO/K4mQbP7Z4/MD0QqTODT3YYL/VfER0G3ktrzdVFG4M33nijSi63prGIQ
-	vdnbt9eM7K2c5rBA==
+	bh=h9X7xlxrN7hdzzIxndhlEqrydlKyNF/vYrutu9w7T3s=;
+	b=btmj2Y1MK6gsw17Nu+XjObtaJZgEAYTsBqV98GmBgoBhRGcPo87NJvaYSXcHe8lstgKzqd
+	xMMogyZ9ZDowGLAA==
 From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] irqchip/gic-v3-its: Implement .msi_teardown() callback
+Subject: [tip: irq/msi] genirq/msi: Add .msi_teardown() callback as the
+ reverse of .msi_prepare()
 Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250513163144.2215824-3-maz@kernel.org>
-References: <20250513163144.2215824-3-maz@kernel.org>
+In-Reply-To: <20250513163144.2215824-2-maz@kernel.org>
+References: <20250513163144.2215824-2-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174738973829.406.14237643898316030412.tip-bot2@tip-bot2>
+Message-ID: <174738973930.406.6053911270588279381.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,162 +81,113 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     713335b6ee29f0045737a1ddfc685bc6040d4baf
-Gitweb:        https://git.kernel.org/tip/713335b6ee29f0045737a1ddfc685bc6040d4baf
+Commit-ID:     28026cf2dd84d961a62123b1fa941dc3c2c4a132
+Gitweb:        https://git.kernel.org/tip/28026cf2dd84d961a62123b1fa941dc3c2c4a132
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 13 May 2025 17:31:41 +01:00
+AuthorDate:    Tue, 13 May 2025 17:31:40 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Wed, 14 May 2025 12:36:41 +02:00
 
-irqchip/gic-v3-its: Implement .msi_teardown() callback
+genirq/msi: Add .msi_teardown() callback as the reverse of .msi_prepare()
 
-The ITS driver currently nukes the structure representing an endpoint
-device translating via an ITS on freeing the last LPI allocated for it.
+While the MSI ops do have a .msi_prepare() callback that is responsible for
+setting up the relevant (usually per-device) allocation, there is no
+callback reversing this setup.
 
-That's an unfortunate state of affair, as it is pretty common for a driver
-to allocate a single MSI, do something clever, teardown this MSI, and
-reallocate a whole bunch of them. The NVME driver does exactly that,
-amongst others.
+For this purpose, add .msi_teardown() callback.
 
-What happens in that case is that the core code is accidentaly issuing
-another .msi_prepare() call, even if it shouldn't.  This luckily cancels
-the above behaviour and hides the problem.
-
-In order to fix the core code, start by implementing the new
-.msi_teardown() callback. Nothing calls it yet, so a side effect is that
-the its_dev structure will not be freed and that the DID will stay
-mapped. Not a big deal, and this will be solved in following patches.
+In order to avoid breaking the ITS driver that suffers from related issues,
+do not call the callback just yet.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250513163144.2215824-3-maz@kernel.org
+Link: https://lore.kernel.org/all/20250513163144.2215824-2-maz@kernel.org
 
 ---
- drivers/irqchip/irq-gic-v3-its-msi-parent.c | 10 ++++-
- drivers/irqchip/irq-gic-v3-its.c            | 46 ++++++++++----------
- kernel/irq/msi.c                            |  3 +-
- 3 files changed, 36 insertions(+), 23 deletions(-)
+ include/linux/msi.h | 10 ++++++++--
+ kernel/irq/msi.c    |  8 ++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its-msi-parent.c b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
-index 68f9ba4..9587366 100644
---- a/drivers/irqchip/irq-gic-v3-its-msi-parent.c
-+++ b/drivers/irqchip/irq-gic-v3-its-msi-parent.c
-@@ -167,6 +167,14 @@ static int its_pmsi_prepare(struct irq_domain *domain, struct device *dev,
- 					  dev, nvec, info);
- }
- 
-+static void its_msi_teardown(struct irq_domain *domain, msi_alloc_info_t *info)
-+{
-+	struct msi_domain_info *msi_info;
-+
-+	msi_info = msi_get_domain_info(domain->parent);
-+	msi_info->ops->msi_teardown(domain->parent, info);
-+}
-+
- static bool its_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- 				  struct irq_domain *real_parent, struct msi_domain_info *info)
- {
-@@ -190,6 +198,7 @@ static bool its_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- 		 * %MSI_MAX_INDEX.
- 		 */
- 		info->ops->msi_prepare = its_pci_msi_prepare;
-+		info->ops->msi_teardown = its_msi_teardown;
- 		break;
- 	case DOMAIN_BUS_DEVICE_MSI:
- 	case DOMAIN_BUS_WIRED_TO_MSI:
-@@ -198,6 +207,7 @@ static bool its_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- 		 * size is also known at domain creation time.
- 		 */
- 		info->ops->msi_prepare = its_pmsi_prepare;
-+		info->ops->msi_teardown = its_msi_teardown;
- 		break;
- 	default:
- 		/* Confused. How did the lib return true? */
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index fd6e7c1..a77f11e 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3620,8 +3620,33 @@ out:
- 	return err;
- }
- 
-+static void its_msi_teardown(struct irq_domain *domain, msi_alloc_info_t *info)
-+{
-+	struct its_device *its_dev = info->scratchpad[0].ptr;
-+
-+	guard(mutex)(&its_dev->its->dev_alloc_lock);
-+
-+	/* If the device is shared, keep everything around */
-+	if (its_dev->shared)
-+		return;
-+
-+	/* LPIs should have been already unmapped at this stage */
-+	if (WARN_ON_ONCE(!bitmap_empty(its_dev->event_map.lpi_map,
-+				       its_dev->event_map.nr_lpis)))
-+		return;
-+
-+	its_lpi_free(its_dev->event_map.lpi_map,
-+		     its_dev->event_map.lpi_base,
-+		     its_dev->event_map.nr_lpis);
-+
-+	/* Unmap device/itt, and get rid of the tracking */
-+	its_send_mapd(its_dev, 0);
-+	its_free_device(its_dev);
-+}
-+
- static struct msi_domain_ops its_msi_domain_ops = {
- 	.msi_prepare	= its_msi_prepare,
-+	.msi_teardown	= its_msi_teardown,
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index 8c0ec9f..63c2300 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -423,6 +423,7 @@ struct msi_domain_info;
+  * @msi_init:		Domain specific init function for MSI interrupts
+  * @msi_free:		Domain specific function to free a MSI interrupts
+  * @msi_prepare:	Prepare the allocation of the interrupts in the domain
++ * @msi_teardown:	Reverse the effects of @msi_prepare
+  * @prepare_desc:	Optional function to prepare the allocated MSI descriptor
+  *			in the domain
+  * @set_desc:		Set the msi descriptor for an interrupt
+@@ -438,8 +439,9 @@ struct msi_domain_info;
+  * @get_hwirq, @msi_init and @msi_free are callbacks used by the underlying
+  * irqdomain.
+  *
+- * @msi_check, @msi_prepare, @prepare_desc and @set_desc are callbacks used by the
+- * msi_domain_alloc/free_irqs*() variants.
++ * @msi_check, @msi_prepare, @msi_teardown, @prepare_desc and
++ * @set_desc are callbacks used by the msi_domain_alloc/free_irqs*()
++ * variants.
+  *
+  * @domain_alloc_irqs, @domain_free_irqs can be used to override the
+  * default allocation/free functions (__msi_domain_alloc/free_irqs). This
+@@ -461,6 +463,8 @@ struct msi_domain_ops {
+ 	int		(*msi_prepare)(struct irq_domain *domain,
+ 				       struct device *dev, int nvec,
+ 				       msi_alloc_info_t *arg);
++	void		(*msi_teardown)(struct irq_domain *domain,
++					msi_alloc_info_t *arg);
+ 	void		(*prepare_desc)(struct irq_domain *domain, msi_alloc_info_t *arg,
+ 					struct msi_desc *desc);
+ 	void		(*set_desc)(msi_alloc_info_t *arg,
+@@ -489,6 +493,7 @@ struct msi_domain_ops {
+  * @handler:		Optional: associated interrupt flow handler
+  * @handler_data:	Optional: associated interrupt flow handler data
+  * @handler_name:	Optional: associated interrupt flow handler name
++ * @alloc_data:		Optional: associated interrupt allocation data
+  * @data:		Optional: domain specific data
+  */
+ struct msi_domain_info {
+@@ -501,6 +506,7 @@ struct msi_domain_info {
+ 	irq_flow_handler_t		handler;
+ 	void				*handler_data;
+ 	const char			*handler_name;
++	msi_alloc_info_t		*alloc_data;
+ 	void				*data;
  };
  
- static int its_irq_gic_domain_alloc(struct irq_domain *domain,
-@@ -3722,7 +3747,6 @@ static void its_irq_domain_free(struct irq_domain *domain, unsigned int virq,
- {
- 	struct irq_data *d = irq_domain_get_irq_data(domain, virq);
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
--	struct its_node *its = its_dev->its;
- 	int i;
- 
- 	bitmap_release_region(its_dev->event_map.lpi_map,
-@@ -3736,26 +3760,6 @@ static void its_irq_domain_free(struct irq_domain *domain, unsigned int virq,
- 		irq_domain_reset_irq_data(data);
- 	}
- 
--	mutex_lock(&its->dev_alloc_lock);
--
--	/*
--	 * If all interrupts have been freed, start mopping the
--	 * floor. This is conditioned on the device not being shared.
--	 */
--	if (!its_dev->shared &&
--	    bitmap_empty(its_dev->event_map.lpi_map,
--			 its_dev->event_map.nr_lpis)) {
--		its_lpi_free(its_dev->event_map.lpi_map,
--			     its_dev->event_map.lpi_base,
--			     its_dev->event_map.nr_lpis);
--
--		/* Unmap device/itt */
--		its_send_mapd(its_dev, 0);
--		its_free_device(its_dev);
--	}
--
--	mutex_unlock(&its->dev_alloc_lock);
--
- 	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
- }
- 
 diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index 7f0dfe0..00f4d87 100644
+index a8f7701..7f0dfe0 100644
 --- a/kernel/irq/msi.c
 +++ b/kernel/irq/msi.c
-@@ -795,8 +795,7 @@ static int msi_domain_ops_prepare(struct irq_domain *domain, struct device *dev,
+@@ -795,6 +795,11 @@ static int msi_domain_ops_prepare(struct irq_domain *domain, struct device *dev,
  	return 0;
  }
  
--static void msi_domain_ops_teardown(struct irq_domain *domain,
--				    msi_alloc_info_t *arg)
-+static void msi_domain_ops_teardown(struct irq_domain *domain, msi_alloc_info_t *arg)
++static void msi_domain_ops_teardown(struct irq_domain *domain,
++				    msi_alloc_info_t *arg)
++{
++}
++
+ static void msi_domain_ops_set_desc(msi_alloc_info_t *arg,
+ 				    struct msi_desc *desc)
  {
- }
+@@ -820,6 +825,7 @@ static struct msi_domain_ops msi_domain_ops_default = {
+ 	.get_hwirq		= msi_domain_ops_get_hwirq,
+ 	.msi_init		= msi_domain_ops_init,
+ 	.msi_prepare		= msi_domain_ops_prepare,
++	.msi_teardown		= msi_domain_ops_teardown,
+ 	.set_desc		= msi_domain_ops_set_desc,
+ };
  
+@@ -841,6 +847,8 @@ static void msi_domain_update_dom_ops(struct msi_domain_info *info)
+ 		ops->msi_init = msi_domain_ops_default.msi_init;
+ 	if (ops->msi_prepare == NULL)
+ 		ops->msi_prepare = msi_domain_ops_default.msi_prepare;
++	if (ops->msi_teardown == NULL)
++		ops->msi_teardown = msi_domain_ops_default.msi_teardown;
+ 	if (ops->set_desc == NULL)
+ 		ops->set_desc = msi_domain_ops_default.set_desc;
+ }
 
