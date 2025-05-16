@@ -1,80 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-5561-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5562-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18086AB8D82
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 May 2025 19:19:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43496AB96B6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 09:40:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D9FE7A4E0C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 May 2025 17:17:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 154D17AA239
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 07:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50CCB258CED;
-	Thu, 15 May 2025 17:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D006227E99;
+	Fri, 16 May 2025 07:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tXqUVW5E";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZTufoNb5"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tMhxtrrt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wRC1Mvas"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6656D41C63;
-	Thu, 15 May 2025 17:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C90E215F56;
+	Fri, 16 May 2025 07:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747329491; cv=none; b=CGfM6JI6rrpd5DaexyEs0j95AYw66UM4XF+bARDZ5+mokMVQ0Xd0D0tvL9GuXxmzXxuOjShEgK1/vfkWmX5orX664/ksItWRCdH7iyIg9m6U5II4TVBfqbqHPfpwSzPgfQ6ZC7ol5Jo2AzXJoXiWkR/s0dfRvYq4vcb2ieYeCEo=
+	t=1747381199; cv=none; b=UKt7x8IH6n9mI/OqplJED4SkjQRqEPxCKFLCuYxfizkVHcLOrygHCRW8ZgRjA5HErx+iYoXJnl1iJQOgzkzBnoZfcLPCTp0F+T/0ocwtz7orsYM6SyYtsxcyCgiPreSdpbYknZJdUk0zDAQgYITNU+TBNBn1dhDDHE11ZC+qosE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747329491; c=relaxed/simple;
-	bh=a4Qne7EUq3njwu3tN8seiT1B8K9bvCdm/3W2UzwVpPA=;
+	s=arc-20240116; t=1747381199; c=relaxed/simple;
+	bh=XTjLqTcoNMdGSbSKnQQPkVayOTpXLo05+7q7IPtqkYo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=tn9FGO28n14YPuyunBpXJsWzHO/azLxPEPTuRzOhoAZohEcCdeAW8EGOrccbhXqwsDizyu75+cZnBSLKe/W46PmPlVoinpuKnIvF5mP7zDuD62ysALeOwX/SyO6+4X5nhV/KvQMSpzED0cR3NfAVfhZMQpxZ06E2LdDEgbCp1cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tXqUVW5E; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZTufoNb5; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=LdmQQKlYLM/TGdpzaul6/JQgvocJAKABQAkhuuDB6Tx9+nCfHsxh0qkqA8TFG7tEu7ZaZNFn1mEAv98TZBajEDowS2v35OSqNKN0Wkc7/9pG/ZKB5vfPQGMSSOPPxOIv9zOiLkW+uP0g5xBAkxhDPeqrcEDsaYhX1PdKmV6gjEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tMhxtrrt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wRC1Mvas; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 15 May 2025 17:18:06 -0000
+Date: Fri, 16 May 2025 07:39:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747329487;
+	s=2020; t=1747381194;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Pw173M98a5WT126GMnv8GVkdic7b6WV49PZGTOyDE9I=;
-	b=tXqUVW5EqPsyP9zq59pdPZJdHXcyR1dIYgKIc9YgQ7YmxDTDiBBfetdGVL840QB/Z/vwMn
-	ljIMzXSvz5Y1TLPKZj3dDFMvJNBxbEQMIse4f28u5eJfwW7oSNcWC87z6h1CI8gFgff/jG
-	layj/5+CZ8AeONwmgLCqCwUIpOrTtHa7VqWAios/guDjGY8Ge4rEMHuwjhMOcq17q1r9QU
-	H7GuWeAHpbSAPM/cW0o6bNWA7DtD0xfTBpA6C8QiOLKzow7qkZ9vT0YkcDYUKETIui2uUn
-	c50U9ruou2w0BZXudGnSOPvH3zChwfHTCkfZTsV3UZ3dGaPYySSMW/xkSJJ+jg==
+	bh=TBrAnIgcsqjR5hm3aw2mc2dVx93ozX/mOPLOqZD8ffw=;
+	b=tMhxtrrtwNuPtkLnJ4HnugPjGKFnN+z6KpNrxBkvWyuwgc5QHBcGQ49fzPVKAYp7D9nEBk
+	xgnQAa8gFhJQHkdCs7Ir9TpgBsuyf82agrq2da5GaoX7n2FdK2DQr6NB4k+TL3oiuPG9aU
+	u4wKXTdnXKhBYrJc03thkMgNQiKe3CHJbI/QoUbdJVM+qxhFeedCnFNqCv/jDjti98MhWE
+	hrNwkybNr1dYtaRvZJuadewvpRvMhuwUF+0FJcbeu2nW5f0Xmuqgv5ERUYjzJAphEEy2hL
+	vGOuC+fy0p0RoTT+sfrlQCVPrSGb63pOeODTeNS9i8M5hk7FvH/5PS3BuflX8A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747329487;
+	s=2020e; t=1747381194;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Pw173M98a5WT126GMnv8GVkdic7b6WV49PZGTOyDE9I=;
-	b=ZTufoNb5S1BPHjt3pzlJPu99yOnVj9GiubnFr1iJIHX3pdbzsDhHG8pKAVQlMKNhHYq+ae
-	FRJ8pZ4ymQDXolDg==
-From: "tip-bot2 for Andrew Zaborowski" <tip-bot2@linutronix.de>
+	bh=TBrAnIgcsqjR5hm3aw2mc2dVx93ozX/mOPLOqZD8ffw=;
+	b=wRC1MvasgNOrGpKA3vJut46RL02lYAP09KWXu1iMx6f4oYz2cEJmgTJStYJPlrOSJ66pNI
+	8xyzJ/HbpUBbZiDg==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/sgx] x86/sgx: Prevent attempts to reclaim poisoned pages
-Cc: Andrew Zaborowski <andrew.zaborowski@intel.com>,
- Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Tony Luck <tony.luck@intel.com>, balrogg@gmail.com, linux-sgx@vger.kernel.org,
+Subject: [tip: locking/futex] futex: Fix kernel-doc comments
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Ingo Molnar <mingo@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Peter Zijlstra <peterz@infradead.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250508230429.456271-1-andrew.zaborowski@intel.com>
-References: <20250508230429.456271-1-andrew.zaborowski@intel.com>
+In-Reply-To: <20250515171641.24073-1-bp@kernel.org # submission>
+References: <20250515171641.24073-1-bp@kernel.org # submission>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174732948660.406.520307759495972754.tip-bot2@tip-bot2>
+Message-ID: <174738119305.406.5896356423889834809.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,89 +81,70 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/sgx branch of tip:
+The following commit has been merged into the locking/futex branch of tip:
 
-Commit-ID:     ed16618c380c32c68c06186d0ccbb0d5e0586e59
-Gitweb:        https://git.kernel.org/tip/ed16618c380c32c68c06186d0ccbb0d5e0586e59
-Author:        Andrew Zaborowski <andrew.zaborowski@intel.com>
-AuthorDate:    Fri, 09 May 2025 01:04:29 +02:00
+Commit-ID:     bd59f6170968314c82e2b65f8bbaec55896b7a5f
+Gitweb:        https://git.kernel.org/tip/bd59f6170968314c82e2b65f8bbaec55896b7a5f
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Thu, 15 May 2025 19:16:41 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 15 May 2025 19:01:45 +02:00
+CommitterDate: Fri, 16 May 2025 09:33:53 +02:00
 
-x86/sgx: Prevent attempts to reclaim poisoned pages
+futex: Fix kernel-doc comments
 
-TL;DR: SGX page reclaim touches the page to copy its contents to
-secondary storage. SGX instructions do not gracefully handle machine
-checks. Despite this, the existing SGX code will try to reclaim pages
-that it _knows_ are poisoned. Avoid even trying to reclaim poisoned pages.
+Fix those:
 
-The longer story:
+  ./kernel/futex/futex.h:208: warning: Function parameter or struct member 'drop_hb_ref' not described in 'futex_q'
+  ./kernel/futex/waitwake.c:343: warning: expecting prototype for futex_wait_queue(). Prototype was for futex_do_wait() instead
+  ./kernel/futex/waitwake.c:594: warning: Function parameter or struct member 'task' not described in 'futex_wait_setup'
 
-Pages used by an enclave only get epc_page->poison set in
-arch_memory_failure() but they currently stay on sgx_active_page_list until
-sgx_encl_release(), with the SGX_EPC_PAGE_RECLAIMER_TRACKED flag untouched.
-
-epc_page->poison is not checked in the reclaimer logic meaning that, if other
-conditions are met, an attempt will be made to reclaim an EPC page that was
-poisoned.  This is bad because 1. we don't want that page to end up added
-to another enclave and 2. it is likely to cause one core to shut down
-and the kernel to panic.
-
-Specifically, reclaiming uses microcode operations including "EWB" which
-accesses the EPC page contents to encrypt and write them out to non-SGX
-memory.  Those operations cannot handle MCEs in their accesses other than
-by putting the executing core into a special shutdown state (affecting
-both threads with HT.)  The kernel will subsequently panic on the
-remaining cores seeing the core didn't enter MCE handler(s) in time.
-
-Call sgx_unmark_page_reclaimable() to remove the affected EPC page from
-sgx_active_page_list on memory error to stop it being considered for
-reclaiming.
-
-Testing epc_page->poison in sgx_reclaim_pages() would also work but I assume
-it's better to add code in the less likely paths.
-
-The affected EPC page is not added to &node->sgx_poison_page_list until
-later in sgx_encl_release()->sgx_free_epc_page() when it is EREMOVEd.
-Membership on other lists doesn't change to avoid changing any of the
-lists' semantics except for sgx_active_page_list.  There's a "TBD" comment
-in arch_memory_failure() about pre-emptive actions, the goal here is not
-to address everything that it may imply.
-
-This also doesn't completely close the time window when a memory error
-notification will be fatal (for a not previously poisoned EPC page) --
-the MCE can happen after sgx_reclaim_pages() has selected its candidates
-or even *inside* a microcode operation (actually easy to trigger due to
-the amount of time spent in them.)
-
-The spinlock in sgx_unmark_page_reclaimable() is safe because
-memory_failure() runs in process context and no spinlocks are held,
-explicitly noted in a mm/memory-failure.c comment.
-
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+Fixes: 93f1b6d79a73 ("futex: Move futex_queue() into futex_wait_setup()")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: balrogg@gmail.com
-Cc: linux-sgx@vger.kernel.org
-Link: https://lore.kernel.org/r/20250508230429.456271-1-andrew.zaborowski@intel.com
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250512185641.0450a99b@canb.auug.org.au # report
+Link: https://lore.kernel.org/r/20250515171641.24073-1-bp@kernel.org     # submission
 ---
- arch/x86/kernel/cpu/sgx/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/futex/futex.h    | 1 +
+ kernel/futex/waitwake.c | 5 ++---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index 8ce352f..7c19977 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -719,6 +719,8 @@ int arch_memory_failure(unsigned long pfn, int flags)
- 		goto out;
- 	}
+diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
+index 069fc2a..fcd1617 100644
+--- a/kernel/futex/futex.h
++++ b/kernel/futex/futex.h
+@@ -175,6 +175,7 @@ typedef void (futex_wake_fn)(struct wake_q_head *wake_q, struct futex_q *q);
+  * @requeue_pi_key:	the requeue_pi target futex key
+  * @bitset:		bitset for the optional bitmasked wakeup
+  * @requeue_state:	State field for futex_requeue_pi()
++ * @drop_hb_ref:	Waiter should drop the extra hash bucket reference if true
+  * @requeue_wait:	RCU wait for futex_requeue_pi() (RT only)
+  *
+  * We use this hashed waitqueue, instead of a normal wait_queue_entry_t, so
+diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
+index bd8fef0..b3738fb 100644
+--- a/kernel/futex/waitwake.c
++++ b/kernel/futex/waitwake.c
+@@ -334,8 +334,7 @@ out_unlock:
+ static long futex_wait_restart(struct restart_block *restart);
  
-+	sgx_unmark_page_reclaimable(page);
-+
- 	/*
- 	 * TBD: Add additional plumbing to enable pre-emptive
- 	 * action for asynchronous poison notification. Until
+ /**
+- * futex_wait_queue() - futex_queue() and wait for wakeup, timeout, or signal
+- * @hb:		the futex hash bucket, must be locked by the caller
++ * futex_do_wait() - wait for wakeup, timeout, or signal
+  * @q:		the futex_q to queue up on
+  * @timeout:	the prepared hrtimer_sleeper, or null for no timeout
+  */
+@@ -578,7 +577,7 @@ int futex_wait_multiple(struct futex_vector *vs, unsigned int count,
+  * @flags:	futex flags (FLAGS_SHARED, etc.)
+  * @q:		the associated futex_q
+  * @key2:	the second futex_key if used for requeue PI
+- * task:	Task queueing this futex
++ * @task:	Task queueing this futex
+  *
+  * Setup the futex_q and locate the hash_bucket.  Get the futex value and
+  * compare it with the expected value.  Handle atomic faults internally.
 
