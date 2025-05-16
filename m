@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5603-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5605-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71893ABA404
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 21:41:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BABCABA407
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 21:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1D1CA23CD1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 19:40:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E344E6D66
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 19:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DA6284681;
-	Fri, 16 May 2025 19:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0A827FD61;
+	Fri, 16 May 2025 19:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p9b2pOm7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KVGEY9Ls"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iplxJ1fM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Upfb40Yj"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF3A283FCB;
-	Fri, 16 May 2025 19:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06463284677;
+	Fri, 16 May 2025 19:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747424255; cv=none; b=ivWa+Nqrip/8mhGlyEH6ygwsV8V23Q6M/EkKCiiBkQRVSHMJeBYq2z2fjN6r4HGzZZ9BqWiq5dQtsIHHO16tJyKJVkcupfHQtUA3N9p25agcECJxfbAExU4jfdnSelaQK3V06lcvLpzMc8e3Q3BMhchPPA5OlE/fAN8+zRvxb8Q=
+	t=1747424256; cv=none; b=u5TJsRspeppDS9gqY46KpMjizao7yFZVN1iXSTirk78aXcxXIbtWVl07IEAax0DCrseGyPPdpFkveR1TrNsBgSafIj5aPgL9qFNpYM1c/iYK5uUqk2V3X5kpQv3nv+EfEIJl5ogUXpDxm+Wud05ZsUpd1igIA1pCJxKmDQPvuHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747424255; c=relaxed/simple;
-	bh=INnwyw/oh1gPWrim79M4IMgkD3dUpyK9ZIc5HkSEzFE=;
+	s=arc-20240116; t=1747424256; c=relaxed/simple;
+	bh=pXkC807N4Xmiix1Ftdld2BEYzaQfELuq+hLVTXLg16g=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JZo37SgwpIlZdtZbAs1+A/vn5tr3AHNzw4BinhZczJuxF2b504DCREI69q+kGamQylRAXLjzur3eykfVuOT/2bzFlgVrGiQesYmkhK6dOnF+1x96cWtuZAZZjMXGx0WYFa7fpEvoEKpLwzot9jrZP7oqV31QJTo9ttrEU2Olke8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p9b2pOm7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KVGEY9Ls; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=pu/kh8H3MQ94xmHrG4XqI/F3aaUBVh+EZzuYe1e7OlLTuHtw7iLUXzYFdGpXStyoGljvwzKjrx2jd7uoaN3ULZvEyFFovJlE9U+bL2LKAStkox9kKtya28/ADgBiG1ghkk3L75Gq1iWDdtk3Ag20Illbn6CwHQ20Veb3JJY/6lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iplxJ1fM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Upfb40Yj; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 May 2025 19:37:31 -0000
+Date: Fri, 16 May 2025 19:37:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747424252;
+	s=2020; t=1747424253;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r+Xx/zUQZVnkdkELJ0MlZo3iiRm+j0VJfIlZbEhlYp4=;
-	b=p9b2pOm78ZNdubaC3aglSzOtxueKZuMCAkGsDpe6VMBLm4FvYr/2abwMNSJMecglXF411/
-	+9g/nzzFsxjvybd4cX6gikhXw/mM/FbqCbntTN4xp2GOItdAZnW3mGmPhGbw2O6fljY/yk
-	qmxMrHVuRkQgQMy00LVrxqRn4mUrYv1mlLVNHueIoCgEd1i83bDLt4lOJEzGoE4ihVaQPK
-	uYJK/ZgFSZEQRME6wini/rVf7QRXxfmMiXOUYC3oQ9MApAXnsIiAiuXEmAfPpBRA67Unm8
-	PA656Qlur7Fj6nv95FdyIByjqXlTlztVJWhg/JameUys3RxdAPGUPl9maRcU4A==
+	bh=rU/nEMIvR5Qvtdt1VOc4R+xt1lYIywcuB8xPsT6YZsc=;
+	b=iplxJ1fM035TgnfH/ywcfP00T718ij3b3NfyrGjGsHwFjcn723/Tj46Y9/1DfqtPyIzjVE
+	7IuA/4LogKE+oDviV+e2QThk2LFMdcWm3BINbBq0UxSreUgrINbiqHJEHCgKOsv1RaqZsM
+	ZZKwNHvfxd3zmYwCoRW5l8Z4+9i0MB5yFVHmFkaTrrI4HwoCVrkh5c3fxFRCFDLvhaS6S1
+	PqHE8mnU7VH0gqCAPZtaTgGOCpLhRGpDrzr2yJQVVYDoBCtiLEvAICrhFdhgaq+tOuRH7J
+	yA97G31WrsKMwpSAQX/ecOnfSeAfcP0nYAwAvq6uKas7kyFZytO/r8ib36nQeg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747424252;
+	s=2020e; t=1747424253;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=r+Xx/zUQZVnkdkELJ0MlZo3iiRm+j0VJfIlZbEhlYp4=;
-	b=KVGEY9LsMrgslOJ0NZXjPrEFnwyNnwf6/TZLG/sQ1WWmaqc/d7fT1S8m8h/eKXM/MN7IsK
-	ghDs1D+3uVA4+kBA==
+	bh=rU/nEMIvR5Qvtdt1VOc4R+xt1lYIywcuB8xPsT6YZsc=;
+	b=Upfb40YjVPA9+pgiSz7i4P/Yd74Sy197/kn7Qv2LuypXB8jLQPeIo2NhbWzkwwjTmS5Y6E
+	AoassHBSmA6ZWTBA==
 From: "tip-bot2 for Jiri Slaby (SUSE)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/cleanups] sh: Switch to irq_domain_create_*()
+Subject: [tip: irq/cleanups] pinctrl: Switch to irq_domain_create_*()
 Cc: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Linus Walleij <linus.walleij@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250319092951.37667-34-jirislaby@kernel.org>
-References: <20250319092951.37667-34-jirislaby@kernel.org>
+In-Reply-To: <20250319092951.37667-31-jirislaby@kernel.org>
+References: <20250319092951.37667-31-jirislaby@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174742425127.406.13179373659776580621.tip-bot2@tip-bot2>
+Message-ID: <174742425276.406.14214118284230117953.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,14 +82,14 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/cleanups branch of tip:
 
-Commit-ID:     b625f934ba1c4c7feb026a484564b1f922f254c2
-Gitweb:        https://git.kernel.org/tip/b625f934ba1c4c7feb026a484564b1f922f254c2
+Commit-ID:     219182fe2190ddaf6288bf24dd9a43d2c96316d2
+Gitweb:        https://git.kernel.org/tip/219182fe2190ddaf6288bf24dd9a43d2c96316d2
 Author:        Jiri Slaby (SUSE) <jirislaby@kernel.org>
-AuthorDate:    Wed, 19 Mar 2025 10:29:26 +01:00
+AuthorDate:    Wed, 19 Mar 2025 10:29:23 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 16 May 2025 21:06:11 +02:00
 
-sh: Switch to irq_domain_create_*()
+pinctrl: Switch to irq_domain_create_*()
 
 irq_domain_add_*() interfaces are going away as being obsolete now.
 Switch to the preferred irq_domain_create_*() ones. Those differ in the
@@ -105,74 +106,88 @@ case basis (by people who can actually test with the HW).
 
 Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250319092951.37667-34-jirislaby@kernel.org
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/all/20250319092951.37667-31-jirislaby@kernel.org
 
 
 
 ---
- arch/sh/boards/mach-se/7343/irq.c  | 5 +++--
- arch/sh/boards/mach-se/7722/irq.c  | 2 +-
- arch/sh/boards/mach-x3proto/gpio.c | 2 +-
- drivers/sh/intc/irqdomain.c        | 5 ++---
- 4 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/pinctrl/mediatek/mtk-eint.c   |  5 ++---
+ drivers/pinctrl/pinctrl-at91-pio4.c   |  2 +-
+ drivers/pinctrl/pinctrl-single.c      |  9 +++++----
+ drivers/pinctrl/sunxi/pinctrl-sunxi.c |  7 +++----
+ 4 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/arch/sh/boards/mach-se/7343/irq.c b/arch/sh/boards/mach-se/7343/irq.c
-index f9f3b14..8241bde 100644
---- a/arch/sh/boards/mach-se/7343/irq.c
-+++ b/arch/sh/boards/mach-se/7343/irq.c
-@@ -47,8 +47,9 @@ static void __init se7343_domain_init(void)
- {
- 	int i;
+diff --git a/drivers/pinctrl/mediatek/mtk-eint.c b/drivers/pinctrl/mediatek/mtk-eint.c
+index ced4ee5..8bbe2aa 100644
+--- a/drivers/pinctrl/mediatek/mtk-eint.c
++++ b/drivers/pinctrl/mediatek/mtk-eint.c
+@@ -565,9 +565,8 @@ int mtk_eint_do_init(struct mtk_eint *eint)
+ 			goto err_eint;
+ 	}
  
--	se7343_irq_domain = irq_domain_add_linear(NULL, SE7343_FPGA_IRQ_NR,
--						  &irq_domain_simple_ops, NULL);
-+	se7343_irq_domain = irq_domain_create_linear(NULL, SE7343_FPGA_IRQ_NR,
-+						     &irq_domain_simple_ops,
-+						     NULL);
- 	if (unlikely(!se7343_irq_domain)) {
- 		printk("Failed to get IRQ domain\n");
- 		return;
-diff --git a/arch/sh/boards/mach-se/7722/irq.c b/arch/sh/boards/mach-se/7722/irq.c
-index efa96ed..9a460a8 100644
---- a/arch/sh/boards/mach-se/7722/irq.c
-+++ b/arch/sh/boards/mach-se/7722/irq.c
-@@ -46,7 +46,7 @@ static void __init se7722_domain_init(void)
- {
- 	int i;
+-	eint->domain = irq_domain_add_linear(eint->dev->of_node,
+-					     eint->hw->ap_num,
+-					     &irq_domain_simple_ops, NULL);
++	eint->domain = irq_domain_create_linear(of_fwnode_handle(eint->dev->of_node),
++						eint->hw->ap_num, &irq_domain_simple_ops, NULL);
+ 	if (!eint->domain)
+ 		goto err_eint;
  
--	se7722_irq_domain = irq_domain_add_linear(NULL, SE7722_FPGA_IRQ_NR,
-+	se7722_irq_domain = irq_domain_create_linear(NULL, SE7722_FPGA_IRQ_NR,
- 						  &irq_domain_simple_ops, NULL);
- 	if (unlikely(!se7722_irq_domain)) {
- 		printk("Failed to get IRQ domain\n");
-diff --git a/arch/sh/boards/mach-x3proto/gpio.c b/arch/sh/boards/mach-x3proto/gpio.c
-index f82d3a6..c13d51b 100644
---- a/arch/sh/boards/mach-x3proto/gpio.c
-+++ b/arch/sh/boards/mach-x3proto/gpio.c
-@@ -108,7 +108,7 @@ int __init x3proto_gpio_setup(void)
- 	if (unlikely(ret))
- 		goto err_gpio;
+diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
+index 8b01d31..e57ac4e 100644
+--- a/drivers/pinctrl/pinctrl-at91-pio4.c
++++ b/drivers/pinctrl/pinctrl-at91-pio4.c
+@@ -1206,7 +1206,7 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
+ 		dev_dbg(dev, "bank %i: irq=%d\n", i, ret);
+ 	}
  
--	x3proto_irq_domain = irq_domain_add_linear(NULL, NR_BASEBOARD_GPIOS,
-+	x3proto_irq_domain = irq_domain_create_linear(NULL, NR_BASEBOARD_GPIOS,
- 						   &x3proto_gpio_irq_ops, NULL);
- 	if (unlikely(!x3proto_irq_domain))
- 		goto err_irq;
-diff --git a/drivers/sh/intc/irqdomain.c b/drivers/sh/intc/irqdomain.c
-index 3968f1c..ed7a570 100644
---- a/drivers/sh/intc/irqdomain.c
-+++ b/drivers/sh/intc/irqdomain.c
-@@ -59,10 +59,9 @@ void __init intc_irq_domain_init(struct intc_desc_int *d,
- 	 * tree penalty for linear cases with non-zero hwirq bases.
+-	atmel_pioctrl->irq_domain = irq_domain_add_linear(dev->of_node,
++	atmel_pioctrl->irq_domain = irq_domain_create_linear(of_fwnode_handle(dev->of_node),
+ 			atmel_pioctrl->gpio_chip->ngpio,
+ 			&irq_domain_simple_ops, NULL);
+ 	if (!atmel_pioctrl->irq_domain)
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 5be14dc..5cda620 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -1611,15 +1611,16 @@ static int pcs_irq_init_chained_handler(struct pcs_device *pcs,
+ 
+ 	/*
+ 	 * We can use the register offset as the hardirq
+-	 * number as irq_domain_add_simple maps them lazily.
++	 * number as irq_domain_create_simple maps them lazily.
+ 	 * This way we can easily support more than one
+ 	 * interrupt per function if needed.
  	 */
- 	if (irq_base == 0 && irq_end == (irq_base + hw->nr_vectors - 1))
--		d->domain = irq_domain_add_linear(NULL, hw->nr_vectors,
--						  &intc_evt_ops, NULL);
-+		d->domain = irq_domain_create_linear(NULL, hw->nr_vectors, &intc_evt_ops, NULL);
- 	else
--		d->domain = irq_domain_add_tree(NULL, &intc_evt_ops, NULL);
-+		d->domain = irq_domain_create_tree(NULL, &intc_evt_ops, NULL);
+ 	num_irqs = pcs->size;
  
- 	BUG_ON(!d->domain);
- }
+-	pcs->domain = irq_domain_add_simple(np, num_irqs, 0,
+-					    &pcs_irqdomain_ops,
+-					    pcs_soc);
++	pcs->domain = irq_domain_create_simple(of_fwnode_handle(np),
++					       num_irqs, 0,
++					       &pcs_irqdomain_ops,
++					       pcs_soc);
+ 	if (!pcs->domain) {
+ 		irq_set_chained_handler(pcs_soc->irq, NULL);
+ 		return -EINVAL;
+diff --git a/drivers/pinctrl/sunxi/pinctrl-sunxi.c b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+index f1c5a99..bf8612d 100644
+--- a/drivers/pinctrl/sunxi/pinctrl-sunxi.c
++++ b/drivers/pinctrl/sunxi/pinctrl-sunxi.c
+@@ -1646,10 +1646,9 @@ int sunxi_pinctrl_init_with_flags(struct platform_device *pdev,
+ 		}
+ 	}
+ 
+-	pctl->domain = irq_domain_add_linear(node,
+-					     pctl->desc->irq_banks * IRQ_PER_BANK,
+-					     &sunxi_pinctrl_irq_domain_ops,
+-					     pctl);
++	pctl->domain = irq_domain_create_linear(of_fwnode_handle(node),
++						pctl->desc->irq_banks * IRQ_PER_BANK,
++						&sunxi_pinctrl_irq_domain_ops, pctl);
+ 	if (!pctl->domain) {
+ 		dev_err(&pdev->dev, "Couldn't register IRQ domain\n");
+ 		ret = -ENOMEM;
 
