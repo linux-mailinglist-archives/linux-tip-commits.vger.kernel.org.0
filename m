@@ -1,85 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-5568-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5569-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF977AB9891
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 11:19:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F06AB98C6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 11:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E403A21C8D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 09:19:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8F0C5016AB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 09:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3042D230BDC;
-	Fri, 16 May 2025 09:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB8822FE0E;
+	Fri, 16 May 2025 09:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wX0qegYD";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qa6VwUlm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MTDI9d0Y";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LMLui3hf"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B45922F767;
-	Fri, 16 May 2025 09:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4F117B425;
+	Fri, 16 May 2025 09:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747387151; cv=none; b=cn/HBxUXV59P3/DWTl4OJDFlIM83BbhyVtW6papVkWmfnMcr5+rninYvIa3CWNaSsS3SCg2bFnQUQy5nkivPgUfiIts4LBgcGctWCXDmCJILp95xFgOmEsJWQQ0JIfIWvpES9JIlx4gQU6g8620JpfrM3UjTLvrJbYsMo2duLOI=
+	t=1747387689; cv=none; b=mOsTS9tpg7jwzMiFBINNHb8sNX6f8vXcQDGVG+qTpmSa+1NuXzNuwGgazg4XJ6+yHPPBXFy1UMxysyiXoU/XF7TW/Qf3dCU6MZNRgUc4u4N6yalwd9vQLDr664PtKtRVjsBaR/0JvY0JplUXqlydJMfRmxTWG7n09JV7IvYXIJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747387151; c=relaxed/simple;
-	bh=UwUuRoP4lcyZaAyEjqOmx6ZqJcQ+Bw7MkoIugWI6KRA=;
+	s=arc-20240116; t=1747387689; c=relaxed/simple;
+	bh=dlDha9z2voc3K7ZndzuXEpZISD4Js5B+4bqJb6RluJk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Mkxu5wCcItKNq+l0gmX0I6PTC92KaVbzRxmce1rDPqaoKdlsvhD5IDy+g0fRZKUZCQDWoOGVM2LLfupyGpaK3J758CwiFBQM8eeeb2WGHEoibRHj4GlzQC+BCv9o7lmz6z55C9edYcxVbDUQyqpL1KMF5ggZ9GnbEyEcX3+x0BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wX0qegYD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qa6VwUlm; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=rS7xTA3Ar+EJPRJFlIh76fnGPKOm6rhtKJZYksvqZq9QQ4rWU/rQMPgycfG/Mh9L7ng6c7shN+xyfMswisExa2JqUaG2PzXS/Nn2HKUesoihPdvZ1eHb4N5kMoNmPsnL44G3L2udeY5M/aYUWdbdaLYhCt48dzV9OeEeQv7wlIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MTDI9d0Y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LMLui3hf; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 May 2025 09:19:06 -0000
+Date: Fri, 16 May 2025 09:28:05 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747387147;
+	s=2020; t=1747387686;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hkh99/Lh8jC9qqdfdjd/YQLCiq8mACt3rhDU5rbTjos=;
-	b=wX0qegYDlRqJYa7M8KjHukLSe12F0aM82piye4vCIhSoxjuuEdUro+hp03Yv/SM3qsEsvL
-	ELnmQeRgVB1VkH5wT+pw3oHkyYAISqdg2BWCOytxrw1hIoJt/pQNObIuMNUCkSqdJeVA8l
-	dN9zYJW/VhxJWGJ95Cu5WUUjUitKdpvEKtRwW6cZsWOCP9Mg8ug7T0ctsN88SHtZzHWhye
-	PcI1NPJdvcsKQOUqJQlEXWSt8UKrnILfdVjh62ZW3/j9O31Ta3y2adrpOgdiVnDkn3rk3A
-	iegjSg4rZRAKDztoNgV7Wf5NvE8fGaKOuyt1v1xsghqSX1kZn/1HSdtivz7ICA==
+	bh=GNq/58C7E9N6itWByJdcWr2Jvl1DPdIstlbH/Sr6pkg=;
+	b=MTDI9d0Y7t2KbNfzLS34Rr9YLkerz3fWKux0rJTAudwq8Wdw7ztDh/39HDQmRQtADr6ZNw
+	s4BV3g3xdpJ5K5OtR2K2lGK5f+06brIHqCi4BluG8Mg3eq1Uj1vk6xm9YL/bvDJUT5Z9QB
+	3cW1t2MLQKl54gcRLs7d/JtqgrY+Mj5YFuaj10xjTgiyRs8OqxPro6x+zrMrWki/l0jdfk
+	0PrdHY557F19/NgUV4SJC6aJRTXZ6zBJcjDe7yPrGU8zK3+4DOsgxnaJYPnh4hBUOtqe7N
+	ajMglc3kMW9nF2sBPvDD3klteycObGxdoCUoYebVuS/uTNHqxcsnLDrrzpB88A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747387147;
+	s=2020e; t=1747387686;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Hkh99/Lh8jC9qqdfdjd/YQLCiq8mACt3rhDU5rbTjos=;
-	b=Qa6VwUlmbapZ86msQ3EKKaE2tjJW8FOG8KAtkYk8L+QP8LXEI7sJyara1fnCsZjZ/BAt09
-	LaSNnX4yiFS0rkDQ==
-From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
+	bh=GNq/58C7E9N6itWByJdcWr2Jvl1DPdIstlbH/Sr6pkg=;
+	b=LMLui3hfuFH/TR4IXT/ZAn8gOu8qNRSk58PQlrBXtIQvPg/bbvGGNdtE/X0P5v2pGr3asB
+	IUzZ6aVTv1XZ5PCA==
+From: "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/debug] x86/tracing, x86/mm: Remove redundant trace_pagefault_key
-Cc: Nam Cao <namcao@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Gabriele Monaco <gmonaco@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
- John Ogness <john.ogness@linutronix.de>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
- linux-trace-kernel@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: =?utf-8?q?=3C827c7666d2989f08742a4fb869b1ed5bfaaf1dbf=2E17470?=
- =?utf-8?q?46848=2Egit=2Enamcao=40linutronix=2Ede=3E?=
-References: =?utf-8?q?=3C827c7666d2989f08742a4fb869b1ed5bfaaf1dbf=2E174704?=
- =?utf-8?q?6848=2Egit=2Enamcao=40linutronix=2Ede=3E?=
+Subject: [tip: x86/urgent] x86/mm: Remove duplicated word in warning message
+Cc: Lukas Bulwahn <lukas.bulwahn@redhat.com>, Ingo Molnar <mingo@kernel.org>,
+ Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, kernel-janitors@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250516090810.556623-1-lukas.bulwahn@redhat.com>
+References: <20250516090810.556623-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174738714638.406.10419366957003478787.tip-bot2@tip-bot2>
+Message-ID: <174738768534.406.13532690829248851233.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,163 +81,51 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/debug branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d49ae4172cffa51cc72bdbd668fdd2e64b0a929f
-Gitweb:        https://git.kernel.org/tip/d49ae4172cffa51cc72bdbd668fdd2e64b0a929f
-Author:        Nam Cao <namcao@linutronix.de>
-AuthorDate:    Mon, 12 May 2025 12:50:58 +02:00
+Commit-ID:     03680913744de17fa49e62b1d8f71bab42b0b721
+Gitweb:        https://git.kernel.org/tip/03680913744de17fa49e62b1d8f71bab42b0b721
+Author:        Lukas Bulwahn <lukas.bulwahn@redhat.com>
+AuthorDate:    Fri, 16 May 2025 11:08:10 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 16 May 2025 10:13:59 +02:00
+CommitterDate: Fri, 16 May 2025 11:16:52 +02:00
 
-x86/tracing, x86/mm: Remove redundant trace_pagefault_key
+x86/mm: Remove duplicated word in warning message
 
-trace_pagefault_key is used to optimize the pagefault tracepoints when it
-is disabled. However, tracepoints already have built-in static_key for this
-exact purpose.
+Commit bbeb69ce3013 ("x86/mm: Remove CONFIG_HIGHMEM64G support") introduces
+a new warning message MSG_HIGHMEM_TRIMMED, which accidentally introduces a
+duplicated 'for for' in the warning message.
 
-Remove this redundant key.
+Remove this duplicated word.
 
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+This was noticed while reviewing for references to obsolete kernel build
+config options.
+
+Fixes: bbeb69ce3013 ("x86/mm: Remove CONFIG_HIGHMEM64G support")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Gabriele Monaco <gmonaco@redhat.com>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-trace-kernel@vger.kernel.org
-Link: https://lore.kernel.org/r/827c7666d2989f08742a4fb869b1ed5bfaaf1dbf.1747046848.git.namcao@linutronix.de
+Cc: kernel-janitors@vger.kernel.org
+Link: https://lore.kernel.org/r/20250516090810.556623-1-lukas.bulwahn@redhat.com
 ---
- arch/x86/include/asm/trace/common.h      | 12 ------------
- arch/x86/include/asm/trace/exceptions.h  | 18 ++++++------------
- arch/x86/include/asm/trace/irq_vectors.h |  1 -
- arch/x86/kernel/Makefile                 |  1 -
- arch/x86/kernel/tracepoint.c             | 21 ---------------------
- arch/x86/mm/fault.c                      |  3 ---
- 6 files changed, 6 insertions(+), 50 deletions(-)
- delete mode 100644 arch/x86/include/asm/trace/common.h
- delete mode 100644 arch/x86/kernel/tracepoint.c
+ arch/x86/mm/init_32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/trace/common.h b/arch/x86/include/asm/trace/common.h
-deleted file mode 100644
-index f0f9bcd..0000000
---- a/arch/x86/include/asm/trace/common.h
-+++ /dev/null
-@@ -1,12 +0,0 @@
--#ifndef _ASM_TRACE_COMMON_H
--#define _ASM_TRACE_COMMON_H
--
--#ifdef CONFIG_TRACING
--DECLARE_STATIC_KEY_FALSE(trace_pagefault_key);
--#define trace_pagefault_enabled()			\
--	static_branch_unlikely(&trace_pagefault_key)
--#else
--static inline bool trace_pagefault_enabled(void) { return false; }
--#endif
--
--#endif
-diff --git a/arch/x86/include/asm/trace/exceptions.h b/arch/x86/include/asm/trace/exceptions.h
-index 6b1e871..34bc821 100644
---- a/arch/x86/include/asm/trace/exceptions.h
-+++ b/arch/x86/include/asm/trace/exceptions.h
-@@ -6,10 +6,6 @@
- #define _TRACE_PAGE_FAULT_H
+diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
+index ad662cc..148eba5 100644
+--- a/arch/x86/mm/init_32.c
++++ b/arch/x86/mm/init_32.c
+@@ -565,7 +565,7 @@ static void __init lowmem_pfn_init(void)
+ 	"only %luMB highmem pages available, ignoring highmem size of %luMB!\n"
  
- #include <linux/tracepoint.h>
--#include <asm/trace/common.h>
--
--extern int trace_pagefault_reg(void);
--extern void trace_pagefault_unreg(void);
- 
- DECLARE_EVENT_CLASS(x86_exceptions,
- 
-@@ -34,15 +30,13 @@ DECLARE_EVENT_CLASS(x86_exceptions,
- 		  (void *)__entry->address, (void *)__entry->ip,
- 		  __entry->error_code) );
- 
--#define DEFINE_PAGE_FAULT_EVENT(name)				\
--DEFINE_EVENT_FN(x86_exceptions, name,				\
--	TP_PROTO(unsigned long address,	struct pt_regs *regs,	\
--		 unsigned long error_code),			\
--	TP_ARGS(address, regs, error_code),			\
--	trace_pagefault_reg, trace_pagefault_unreg);
-+DEFINE_EVENT(x86_exceptions, page_fault_user,
-+	TP_PROTO(unsigned long address,	struct pt_regs *regs, unsigned long error_code),
-+	TP_ARGS(address, regs, error_code));
- 
--DEFINE_PAGE_FAULT_EVENT(page_fault_user);
--DEFINE_PAGE_FAULT_EVENT(page_fault_kernel);
-+DEFINE_EVENT(x86_exceptions, page_fault_kernel,
-+	TP_PROTO(unsigned long address,	struct pt_regs *regs, unsigned long error_code),
-+	TP_ARGS(address, regs, error_code));
- 
- #undef TRACE_INCLUDE_PATH
- #undef TRACE_INCLUDE_FILE
-diff --git a/arch/x86/include/asm/trace/irq_vectors.h b/arch/x86/include/asm/trace/irq_vectors.h
-index 88e7f0f..7408beb 100644
---- a/arch/x86/include/asm/trace/irq_vectors.h
-+++ b/arch/x86/include/asm/trace/irq_vectors.h
-@@ -6,7 +6,6 @@
- #define _TRACE_IRQ_VECTORS_H
- 
- #include <linux/tracepoint.h>
--#include <asm/trace/common.h>
- 
- #ifdef CONFIG_X86_LOCAL_APIC
- 
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index 84cfa17..99a783f 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -141,7 +141,6 @@ obj-$(CONFIG_OF)			+= devicetree.o
- obj-$(CONFIG_UPROBES)			+= uprobes.o
- 
- obj-$(CONFIG_PERF_EVENTS)		+= perf_regs.o
--obj-$(CONFIG_TRACING)			+= tracepoint.o
- obj-$(CONFIG_SCHED_MC_PRIO)		+= itmt.o
- obj-$(CONFIG_X86_UMIP)			+= umip.o
- 
-diff --git a/arch/x86/kernel/tracepoint.c b/arch/x86/kernel/tracepoint.c
-deleted file mode 100644
-index 03ae1ca..0000000
---- a/arch/x86/kernel/tracepoint.c
-+++ /dev/null
-@@ -1,21 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * Copyright (C) 2013 Seiji Aguchi <seiji.aguchi@hds.com>
-- */
--#include <linux/jump_label.h>
--#include <linux/atomic.h>
--
--#include <asm/trace/exceptions.h>
--
--DEFINE_STATIC_KEY_FALSE(trace_pagefault_key);
--
--int trace_pagefault_reg(void)
--{
--	static_branch_inc(&trace_pagefault_key);
--	return 0;
--}
--
--void trace_pagefault_unreg(void)
--{
--	static_branch_dec(&trace_pagefault_key);
--}
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 296d294..7e3e51f 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -1455,9 +1455,6 @@ static __always_inline void
- trace_page_fault_entries(struct pt_regs *regs, unsigned long error_code,
- 			 unsigned long address)
- {
--	if (!trace_pagefault_enabled())
--		return;
--
- 	if (user_mode(regs))
- 		trace_page_fault_user(address, regs, error_code);
- 	else
+ #define MSG_HIGHMEM_TRIMMED \
+-	"Warning: only 4GB will be used. Support for for CONFIG_HIGHMEM64G was removed!\n"
++	"Warning: only 4GB will be used. Support for CONFIG_HIGHMEM64G was removed!\n"
+ /*
+  * We have more RAM than fits into lowmem - we try to put it into
+  * highmem, also taking the highmem=x boot parameter into account:
 
