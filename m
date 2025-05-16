@@ -1,77 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-5574-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5575-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A199AB99A3
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 12:02:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81D9AB9DDA
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 15:47:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F7853B25A8
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 10:02:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DABCA507A76
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 May 2025 13:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B982523506E;
-	Fri, 16 May 2025 10:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D060153BED;
+	Fri, 16 May 2025 13:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xo5Hk1fk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="btmj2Y1M"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o9opEJAT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ACEKClsL"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA56A233712;
-	Fri, 16 May 2025 10:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5EF76410;
+	Fri, 16 May 2025 13:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747389743; cv=none; b=HbEAuVtQKetGA6mIRoVpvoZxtPzrWnIazu55hQnzz9pRTt+p3HfJDpsWutGhxu1NCxuGeCOo/P8j/ACYDeoQSMGPytcyaZdbq0uJ+ohEnahtnK4YgJSSsU4h3TSJSSh1+fnK91OisuDSx/m8EtoSoaWm/zwPSqWUXR5/Bcbcve0=
+	t=1747403044; cv=none; b=pxzIOTkQYu3H4c2Sbl69pSAag16Zd1QPLIzOsMarsaql+2YPNa7kzcATGgvgkDH1egK0A1Jf7rlR4wLakgKjM5fXJmjWXLeZsWbR0+iYAcc4nGjDLRBD7lwBGrAEdRBhOM3bikYMugrY47owLWyfkD9Mo8DIcrw+0Khb/0L7rqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747389743; c=relaxed/simple;
-	bh=nkMhTY610Hqq5k1JGKuYFLgdGSAAieWXx0ql4FarTis=;
+	s=arc-20240116; t=1747403044; c=relaxed/simple;
+	bh=LGjIHSIG+XagOZzQXytTkKRnm7d4FWeI4xnR8vvYEfU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Pwy5YJaVVIc2nX3lP9PF83o82epATzHRyzbSOkmUGr0hF/flrAjgHidzrpEvRIqgiNxY+r0Ptk9+ClJmOiBT0SO0wC0HbeNROWSvyJYycUiAjz0mUjC492nljzZ6Ej6KIxkPOzfSSOvyrzInnBrMuIADXb7ob+oEwd/pBvgdXjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xo5Hk1fk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=btmj2Y1M; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=QQw6XFrRUKIVrAV5vWCGYfNr5uuMqyrua5/WVZbfRll/y33fjAI7Wo8hHb5ZyvB4oHBo5J467rZASS8ykmvmvySYt87gCnZrPc9/2V8WmZykws79axas04xEFWjgtz/0WKgbltIHmc8vImx7gsBWp8LIIpXwubGBzULUHFqGSjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o9opEJAT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ACEKClsL; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 May 2025 10:02:19 -0000
+Date: Fri, 16 May 2025 13:43:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747389740;
+	s=2020; t=1747403040;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h9X7xlxrN7hdzzIxndhlEqrydlKyNF/vYrutu9w7T3s=;
-	b=xo5Hk1fkqPTcAZMcmy4FB7I+Kf0L7rp0weAjaSQ2q6YpdQ/TTZz8WWpkMJippyoDrfjKvS
-	5qOq2MOjMbctuPog/AIAu74RZQeDCzNj1+ZA7wsIqi8ytSIb2xi4JFrRMK+mTZSTM6WQUA
-	6IuqoH2cw9OrZUc3wMo1+V6dxSp7CkOsKB0f4L7BU0KVZsKzvLBcaO6sx3qpdVkqCJmi+q
-	/6JkJHgrNDDSadOpa8MTJF1QuJ1vl5hPCtoCHcOckL0yMghJf5K/xJyujA0nNZq8fFycf9
-	lrHwuGk/ATFa+KGQsdEWkoARo0YEWDflJ8YhcOUY6w15brk9u9dM4y9PZH8Fcg==
+	bh=vnBoKr5uj3m1kFiIwkCWqj0I87Ub0/GDTZtCjUbg5Ig=;
+	b=o9opEJATUWMvLyKcLommtovUUUloBKDSDgdQ4YD3KB61ceWlU+WD52L4mLVclI5N+gQ2E5
+	5Ct+Mkydkp3xfoy5c7WdFM2zy4IBkahjlfhxqMUURTzpv00dOqXEljUKmtQ5d157Lk/vOT
+	qvqgft/rqyUw+Oi/ayWu7a02OlkxD4N4awJXOPXxFuSnZak72USqLPZ3KZewk11WH+q8/n
+	Fr8u/inQkE+Heq1iRxPgdX+t5rCosqyiYUpNv2bOwlKNCWvl6Qf4ytvFWdwOC7VEE+VQ1g
+	McJzCYLJYdDq9ILPZ3tdkCC4ZByrRIT6nA6gulZsXctZAoqkS1RT5/s8QH3SNg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747389740;
+	s=2020e; t=1747403040;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h9X7xlxrN7hdzzIxndhlEqrydlKyNF/vYrutu9w7T3s=;
-	b=btmj2Y1MK6gsw17Nu+XjObtaJZgEAYTsBqV98GmBgoBhRGcPo87NJvaYSXcHe8lstgKzqd
-	xMMogyZ9ZDowGLAA==
-From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+	bh=vnBoKr5uj3m1kFiIwkCWqj0I87Ub0/GDTZtCjUbg5Ig=;
+	b=ACEKClsLOAA5JEnWcuFhXwnjk+5RoWCPeLJ2rGJoPURpZvcquDjxpL5eH4zmEi71+UJilJ
+	OIQJkIUnHn4CySDg==
+From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] genirq/msi: Add .msi_teardown() callback as the
- reverse of .msi_prepare()
-Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: perf/urgent] perf/x86/amd/core: Fix Family 17h+ instruction
+ cache events
+Cc: Sandipan Das <sandipan.das@amd.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, linux-perf-users@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250513163144.2215824-2-maz@kernel.org>
-References: <20250513163144.2215824-2-maz@kernel.org>
+In-Reply-To: =?utf-8?q?=3C2f475a1ba4b240111e69644fc2d5bf93b2e39c99=2E17466?=
+ =?utf-8?q?18724=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C2f475a1ba4b240111e69644fc2d5bf93b2e39c99=2E174661?=
+ =?utf-8?q?8724=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174738973930.406.6053911270588279381.tip-bot2@tip-bot2>
+Message-ID: <174740303900.406.5499797802401271693.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,115 +82,45 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     28026cf2dd84d961a62123b1fa941dc3c2c4a132
-Gitweb:        https://git.kernel.org/tip/28026cf2dd84d961a62123b1fa941dc3c2c4a132
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 13 May 2025 17:31:40 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 14 May 2025 12:36:41 +02:00
+Commit-ID:     ebe176981c14b5f6472718f9894db35816749120
+Gitweb:        https://git.kernel.org/tip/ebe176981c14b5f6472718f9894db35816749120
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Wed, 07 May 2025 17:42:04 +05:30
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 16 May 2025 15:32:59 +02:00
 
-genirq/msi: Add .msi_teardown() callback as the reverse of .msi_prepare()
+perf/x86/amd/core: Fix Family 17h+ instruction cache events
 
-While the MSI ops do have a .msi_prepare() callback that is responsible for
-setting up the relevant (usually per-device) allocation, there is no
-callback reversing this setup.
+PMCx080 and PMCx081 report incorrect IC accesses and misses respectively
+for all Family 17h and later processors. PMCx060 unit mask 0x10 replaces
+PMCx081 for counting IC misses but there is no suitable replacement for
+counting IC accesses.
 
-For this purpose, add .msi_teardown() callback.
-
-In order to avoid breaking the ITS driver that suffers from related issues,
-do not call the callback just yet.
-
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250513163144.2215824-2-maz@kernel.org
-
+Fixes: 0e3b74e26280 ("perf/x86/amd: Update generic hardware cache events for Family 17h")
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linux-perf-users@vger.kernel.org
+Link: https://lore.kernel.org/r/2f475a1ba4b240111e69644fc2d5bf93b2e39c99.1746618724.git.sandipan.das@amd.com
 ---
- include/linux/msi.h | 10 ++++++++--
- kernel/irq/msi.c    |  8 ++++++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ arch/x86/events/amd/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 8c0ec9f..63c2300 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -423,6 +423,7 @@ struct msi_domain_info;
-  * @msi_init:		Domain specific init function for MSI interrupts
-  * @msi_free:		Domain specific function to free a MSI interrupts
-  * @msi_prepare:	Prepare the allocation of the interrupts in the domain
-+ * @msi_teardown:	Reverse the effects of @msi_prepare
-  * @prepare_desc:	Optional function to prepare the allocated MSI descriptor
-  *			in the domain
-  * @set_desc:		Set the msi descriptor for an interrupt
-@@ -438,8 +439,9 @@ struct msi_domain_info;
-  * @get_hwirq, @msi_init and @msi_free are callbacks used by the underlying
-  * irqdomain.
-  *
-- * @msi_check, @msi_prepare, @prepare_desc and @set_desc are callbacks used by the
-- * msi_domain_alloc/free_irqs*() variants.
-+ * @msi_check, @msi_prepare, @msi_teardown, @prepare_desc and
-+ * @set_desc are callbacks used by the msi_domain_alloc/free_irqs*()
-+ * variants.
-  *
-  * @domain_alloc_irqs, @domain_free_irqs can be used to override the
-  * default allocation/free functions (__msi_domain_alloc/free_irqs). This
-@@ -461,6 +463,8 @@ struct msi_domain_ops {
- 	int		(*msi_prepare)(struct irq_domain *domain,
- 				       struct device *dev, int nvec,
- 				       msi_alloc_info_t *arg);
-+	void		(*msi_teardown)(struct irq_domain *domain,
-+					msi_alloc_info_t *arg);
- 	void		(*prepare_desc)(struct irq_domain *domain, msi_alloc_info_t *arg,
- 					struct msi_desc *desc);
- 	void		(*set_desc)(msi_alloc_info_t *arg,
-@@ -489,6 +493,7 @@ struct msi_domain_ops {
-  * @handler:		Optional: associated interrupt flow handler
-  * @handler_data:	Optional: associated interrupt flow handler data
-  * @handler_name:	Optional: associated interrupt flow handler name
-+ * @alloc_data:		Optional: associated interrupt allocation data
-  * @data:		Optional: domain specific data
-  */
- struct msi_domain_info {
-@@ -501,6 +506,7 @@ struct msi_domain_info {
- 	irq_flow_handler_t		handler;
- 	void				*handler_data;
- 	const char			*handler_name;
-+	msi_alloc_info_t		*alloc_data;
- 	void				*data;
- };
- 
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index a8f7701..7f0dfe0 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -795,6 +795,11 @@ static int msi_domain_ops_prepare(struct irq_domain *domain, struct device *dev,
- 	return 0;
- }
- 
-+static void msi_domain_ops_teardown(struct irq_domain *domain,
-+				    msi_alloc_info_t *arg)
-+{
-+}
-+
- static void msi_domain_ops_set_desc(msi_alloc_info_t *arg,
- 				    struct msi_desc *desc)
- {
-@@ -820,6 +825,7 @@ static struct msi_domain_ops msi_domain_ops_default = {
- 	.get_hwirq		= msi_domain_ops_get_hwirq,
- 	.msi_init		= msi_domain_ops_init,
- 	.msi_prepare		= msi_domain_ops_prepare,
-+	.msi_teardown		= msi_domain_ops_teardown,
- 	.set_desc		= msi_domain_ops_set_desc,
- };
- 
-@@ -841,6 +847,8 @@ static void msi_domain_update_dom_ops(struct msi_domain_info *info)
- 		ops->msi_init = msi_domain_ops_default.msi_init;
- 	if (ops->msi_prepare == NULL)
- 		ops->msi_prepare = msi_domain_ops_default.msi_prepare;
-+	if (ops->msi_teardown == NULL)
-+		ops->msi_teardown = msi_domain_ops_default.msi_teardown;
- 	if (ops->set_desc == NULL)
- 		ops->set_desc = msi_domain_ops_default.set_desc;
- }
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 30d6ceb..52860b9 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -148,8 +148,8 @@ static __initconst const u64 amd_hw_cache_event_ids_f17h
+ },
+ [C(L1I)] = {
+ 	[C(OP_READ)] = {
+-		[C(RESULT_ACCESS)] = 0x0080, /* Instruction cache fetches  */
+-		[C(RESULT_MISS)]   = 0x0081, /* Instruction cache misses   */
++		[C(RESULT_ACCESS)] = 0,
++		[C(RESULT_MISS)]   = 0x1060, /* L2$ access from IC Miss */
+ 	},
+ 	[C(OP_WRITE)] = {
+ 		[C(RESULT_ACCESS)] = -1,
 
