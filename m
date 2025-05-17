@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5658-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5659-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E73ABA96F
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 May 2025 12:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD84EABA970
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 May 2025 12:06:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A083189FACE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 May 2025 10:06:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801CF189F101
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 17 May 2025 10:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73B9210F65;
-	Sat, 17 May 2025 10:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1EF2116FB;
+	Sat, 17 May 2025 10:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4MpBxqD7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zyDr3CgR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xYVNHlul";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eMqYhcdN"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC2920DD42;
-	Sat, 17 May 2025 10:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7074720E6EB;
+	Sat, 17 May 2025 10:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747476190; cv=none; b=jpReyIhZTzV6L2eKzZVxIpLEwcBroClNkaOwXYcX6CXhRamL8XSARVlxW8s4arbtOEtjEWg/lAwXxPEtGOuKzWI4f2vX2WG/jqgL6v9fPh1/lllL6JeB00itbtx2kJBCf/RlvsIlPRarj6LQqgkOuqecN081zE+RJPh9npeykfs=
+	t=1747476191; cv=none; b=VJT5Q8EzGC+eS/Q8iJ2/G3NLhh7CK3Vet20jzNPQ0wXFQxt79PHkk/o7+8l6+s4ocQhHnxZvJzG5yxHWbpOXsUWpjeLNPTyUI5DQ80Zd///dQpIP1LFuSJ2wR101mh34/k+Ha1xN7ul/xftzkvYFkna7O71DZxTpZNZTG9NdPsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747476190; c=relaxed/simple;
-	bh=hVT2/H0EBIj24WiPC+Darq3S7pmlDeal6spFyiURsyQ=;
+	s=arc-20240116; t=1747476191; c=relaxed/simple;
+	bh=2ybJlWpR/QuJvABpkIJlXTk6kMLfJLGf6FCwF8WG4eA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=mMxm1Dfo4dc8GysM3ugC57iogOXtv3PnGICYBALdvl7tzZtjU6vizJO15DD5Uqc009E7DoRhFtX7Yjfl1KLTSvofKb6qASOQrWPLGpb2ZmUXpuSN6Qdk9WDO5ruGSwL8Si2sRfond2OCIZ4NNdVvfyR3YBC9mn5D6fyQrrygu6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4MpBxqD7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zyDr3CgR; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=S+3qeJdL+Lp9cLGbBxYQu6CPhQVvbHAsdVzNXlx0MOxPp3NyskMC4vIyHX9shjGhUuzKms9I/oDdbJ5lrgNsZjM4qUFMjwpGMkgtWn6FqGYdo9CU1fIdk1yprFL1pQVIkkqFL18hetfht7aMuKgd2dF3Y71uBhkVmBDuehnjSKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xYVNHlul; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eMqYhcdN; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 17 May 2025 10:03:06 -0000
+Date: Sat, 17 May 2025 10:03:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747476187;
+	s=2020; t=1747476188;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GL8LSQoOoW41hiADDixLuTcp4jNbWUc8Ak4mp/n6TDo=;
-	b=4MpBxqD7TfKQznYFFT2hvZ8Rtyrjj+h9EpAraIfEDwyR+T9O58xpkAcBjcafay9TO0yJY0
-	qvUaynqLCPEmyxrMNFuHftE72WgEZwzjNBm6ow3BXmvCWKSBLqAw29ibQUROzFN2yipb+Z
-	+z6lpXyriGJcw0Dr5207cYB02hdjdONGZUGB3zdIwwHp5krRbHg6aSX0UY/qroEBIXJVGe
-	bs4hegrsSPlnc4Bxd7mfFewmv2M5ZD90nqQzZ/3yuAfuwdQr3E2AixH3+8UFSt+s3MSLox
-	vEAUb2tqQHJHELWdFvlX2t3l6SgKI6TBNoYg8051GYI9epKZ3ChmxT9h5N0HlQ==
+	bh=TuUn8cKqOTjuNEfHp2yj+KO26bLMTTxbTLo3jLLSwdE=;
+	b=xYVNHlull3gxEVwSaYEvDNPyGEIf5O4yDX1FJ1GwVqb8MuX6qi0/eKMkZX/p/Rsmz/hMuW
+	E+9A5eF0htQ+n1m44lqMCbEK5BA8/ux2gePvDNLhQbAxf+NyeL5a+dONdJsDFGTa63Mk+Z
+	tMA+djaUVSR7N+Lk5RsxnkEcb6NVK4va9EdM+/NkoXDmMW3cV9m14yOYnfdkrnSZpiGKNj
+	K3u7SRODB6Cei8Dq2mscy4a/cCR5tkzBR6x7fTd1EiZV9LGObwXxDcwHZ4qQeNq+8IE5J8
+	9pahMyMLcliSAyqhKJBNPz58i6clgUKYJ1sLuIO0VrHFvk8tcZzrVeVUU2u1Hg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747476187;
+	s=2020e; t=1747476188;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GL8LSQoOoW41hiADDixLuTcp4jNbWUc8Ak4mp/n6TDo=;
-	b=zyDr3CgR9eQHh5cRKosMtVE5Sw68iVMibZqV3ASug/ZObf0zepVdeC88zZu+rtbeOh83DK
-	X3prfBBmAih313Dw==
+	bh=TuUn8cKqOTjuNEfHp2yj+KO26bLMTTxbTLo3jLLSwdE=;
+	b=eMqYhcdNA49GAKs5sjWe1NtTpsJcT0zfqLtloHGB+Xux0hi8tJaMLpBtIuEBQlRFi6tzCx
+	+JgnvgQAHCf0svCg==
 From: "tip-bot2 for Yury Norov [NVIDIA]" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] find: Add find_first_andnot_bit()
+Subject: [tip: x86/cache] cpumask: Relax cpumask_any_but()
 Cc: "Yury Norov [NVIDIA]" <yury.norov@gmail.com>,
  James Morse <james.morse@arm.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Reinette Chatre <reinette.chatre@intel.com>, Fenghua Yu <fenghuay@nvidia.com>,
  Tony Luck <tony.luck@intel.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250515165855.31452-3-james.morse@arm.com>
-References: <20250515165855.31452-3-james.morse@arm.com>
+In-Reply-To: <20250515165855.31452-2-james.morse@arm.com>
+References: <20250515165855.31452-2-james.morse@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174747618641.406.4541810444223655669.tip-bot2@tip-bot2>
+Message-ID: <174747618717.406.10177537461146320578.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,16 +82,17 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     13f0a02bf4c1c5888c736cedef9ca50de666adb3
-Gitweb:        https://git.kernel.org/tip/13f0a02bf4c1c5888c736cedef9ca50de666adb3
+Commit-ID:     189572bf4e005431051319def435ac4b7e4489ca
+Gitweb:        https://git.kernel.org/tip/189572bf4e005431051319def435ac4b7e4489ca
 Author:        Yury Norov [NVIDIA] <yury.norov@gmail.com>
-AuthorDate:    Thu, 15 May 2025 16:58:32 
+AuthorDate:    Thu, 15 May 2025 16:58:31 
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 15 May 2025 20:24:40 +02:00
+CommitterDate: Thu, 15 May 2025 20:24:22 +02:00
 
-find: Add find_first_andnot_bit()
+cpumask: Relax cpumask_any_but()
 
-The function helps to implement cpumask_andnot() APIs.
+Similarly to other cpumask search functions, accept -1, and consider it as
+'any CPU' hint. This helps users to avoid coding special cases.
 
 Signed-off-by: Yury Norov [NVIDIA] <yury.norov@gmail.com>
 Signed-off-by: James Morse <james.morse@arm.com>
@@ -102,75 +103,57 @@ Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
 Tested-by: James Morse <james.morse@arm.com>
 Tested-by: Tony Luck <tony.luck@intel.com>
 Tested-by: Fenghua Yu <fenghuay@nvidia.com>
-Link: https://lore.kernel.org/20250515165855.31452-3-james.morse@arm.com
+Link: https://lore.kernel.org/20250515165855.31452-2-james.morse@arm.com
 ---
- include/linux/find.h | 25 +++++++++++++++++++++++++
- lib/find_bit.c       | 11 +++++++++++
- 2 files changed, 36 insertions(+)
+ include/linux/cpumask.h | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/find.h b/include/linux/find.h
-index 6868571..5a2c267 100644
---- a/include/linux/find.h
-+++ b/include/linux/find.h
-@@ -29,6 +29,8 @@ unsigned long __find_nth_and_andnot_bit(const unsigned long *addr1, const unsign
- 					unsigned long n);
- extern unsigned long _find_first_and_bit(const unsigned long *addr1,
- 					 const unsigned long *addr2, unsigned long size);
-+unsigned long _find_first_andnot_bit(const unsigned long *addr1, const unsigned long *addr2,
-+				 unsigned long size);
- unsigned long _find_first_and_and_bit(const unsigned long *addr1, const unsigned long *addr2,
- 				      const unsigned long *addr3, unsigned long size);
- extern unsigned long _find_first_zero_bit(const unsigned long *addr, unsigned long size);
-@@ -348,6 +350,29 @@ unsigned long find_first_and_bit(const unsigned long *addr1,
- #endif
- 
- /**
-+ * find_first_andnot_bit - find the first bit set in 1st memory region and unset in 2nd
-+ * @addr1: The first address to base the search on
-+ * @addr2: The second address to base the search on
-+ * @size: The bitmap size in bits
-+ *
-+ * Returns the bit number for the first set bit
-+ * If no bits are set, returns >= @size.
-+ */
-+static __always_inline
-+unsigned long find_first_andnot_bit(const unsigned long *addr1,
-+				 const unsigned long *addr2,
-+				 unsigned long size)
-+{
-+	if (small_const_nbits(size)) {
-+		unsigned long val = *addr1 & (~*addr2) & GENMASK(size - 1, 0);
-+
-+		return val ? __ffs(val) : size;
-+	}
-+
-+	return _find_first_andnot_bit(addr1, addr2, size);
-+}
-+
-+/**
-  * find_first_and_and_bit - find the first set bit in 3 memory regions
-  * @addr1: The first address to base the search on
-  * @addr2: The second address to base the search on
-diff --git a/lib/find_bit.c b/lib/find_bit.c
-index 0836bb3..06b6342 100644
---- a/lib/find_bit.c
-+++ b/lib/find_bit.c
-@@ -117,6 +117,17 @@ EXPORT_SYMBOL(_find_first_and_bit);
- #endif
- 
- /*
-+ * Find the first bit set in 1st memory region and unset in 2nd.
-+ */
-+unsigned long _find_first_andnot_bit(const unsigned long *addr1,
-+				  const unsigned long *addr2,
-+				  unsigned long size)
-+{
-+	return FIND_FIRST_BIT(addr1[idx] & ~addr2[idx], /* nop */, size);
-+}
-+EXPORT_SYMBOL(_find_first_andnot_bit);
-+
-+/*
-  * Find the first set bit in three memory regions.
+diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+index f9a8683..a3ee875 100644
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -413,14 +413,18 @@ unsigned int cpumask_next_wrap(int n, const struct cpumask *src)
+  * @cpu: the cpu to ignore.
+  *
+  * Often used to find any cpu but smp_processor_id() in a mask.
++ * If @cpu == -1, the function is equivalent to cpumask_any().
+  * Return: >= nr_cpu_ids if no cpus set.
   */
- unsigned long _find_first_and_and_bit(const unsigned long *addr1,
+ static __always_inline
+-unsigned int cpumask_any_but(const struct cpumask *mask, unsigned int cpu)
++unsigned int cpumask_any_but(const struct cpumask *mask, int cpu)
+ {
+ 	unsigned int i;
+ 
+-	cpumask_check(cpu);
++	/* -1 is a legal arg here. */
++	if (cpu != -1)
++		cpumask_check(cpu);
++
+ 	for_each_cpu(i, mask)
+ 		if (i != cpu)
+ 			break;
+@@ -433,16 +437,20 @@ unsigned int cpumask_any_but(const struct cpumask *mask, unsigned int cpu)
+  * @mask2: the second input cpumask
+  * @cpu: the cpu to ignore
+  *
++ * If @cpu == -1, the function is equivalent to cpumask_any_and().
+  * Returns >= nr_cpu_ids if no cpus set.
+  */
+ static __always_inline
+ unsigned int cpumask_any_and_but(const struct cpumask *mask1,
+ 				 const struct cpumask *mask2,
+-				 unsigned int cpu)
++				 int cpu)
+ {
+ 	unsigned int i;
+ 
+-	cpumask_check(cpu);
++	/* -1 is a legal arg here. */
++	if (cpu != -1)
++		cpumask_check(cpu);
++
+ 	i = cpumask_first_and(mask1, mask2);
+ 	if (i != cpu)
+ 		return i;
 
