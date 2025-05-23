@@ -1,160 +1,98 @@
-Return-Path: <linux-tip-commits+bounces-5737-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5739-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F5EAC0841
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 May 2025 11:12:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 598FDAC2712
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 May 2025 18:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 792974A5B67
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 22 May 2025 09:12:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3C541886748
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 23 May 2025 16:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34D125E476;
-	Thu, 22 May 2025 09:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14D920102D;
+	Fri, 23 May 2025 16:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3vu3TS8Y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M5ZyO48P"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="sDqt8WYT"
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C49C1A5B89;
-	Thu, 22 May 2025 09:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A08828382;
+	Fri, 23 May 2025 16:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747905115; cv=none; b=etdDcGuOsJ/2q95uiMRAVdEUnhUMgKwNWrzOPTHMzdThWRElVZcUAhAKZ3i01x+IusLW7o6dQU4dYgGtaTgE/doJTRlKkoHakR5ryGFDNK6sueChadxKy1YZxa40hROkLm2e1K13bHbF4fIgkhDvPJ7MtaYct6Mkku6N/eEXFvY=
+	t=1748016108; cv=none; b=gHim64QFX/2AVGNdtgGTGUYUeICC/n2RBhz3DC1bqLq5QT/bfoHmYJaF8i3MkvfSZoefIG0/biBTSAHYHpEIzY1O5yQDt2yNv+nkQiN9was51gM+YinVhFuecVwld0BqbILF8cXXmiAh6y//0YR6EXptyo1V3xk+nXWq3c+zOxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747905115; c=relaxed/simple;
-	bh=gQgdfuuRmsQQkGuY+MBkKwNHY4Vq+mmhkn9UMRV7ZFs=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PXzuPLyiSU5gNEyZ/g/NBiLotfANZ246buROesYxaH6J0ObaHNH/1N5NUJpIXy6ExW4NXs7ki2bA4EUHZwDle42AAeW8153v2qrENj/5eqqAxyiA7QONvcuc57bP/VCcIRf6I9yp/61DOfx2lVz830OTRCMta6wqPfJhQ7dv0ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3vu3TS8Y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M5ZyO48P; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 22 May 2025 09:11:45 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747905106;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ghSfvNbvgXdHqKnG0NsnphSpa7y/lU16KZhti6HbAiI=;
-	b=3vu3TS8YqDAKdh7imnxDlj8fs9z93ReL0+cbhpTlI6uUnJpQLVW+QGfQ04CO0p5BEXU7LX
-	LcBWmjw1c4YYU8fk8bxFz+mynA9q8z0WRR/C1gi4y3zQJ4kjRangHMu3/Wltl/tiWwW0TL
-	+DELOjUCKscBBFro4QLy1M5uMFmp8RR8lnDR8D/WFEb5FZ7MIrWhHOFFBc0uQMjn4FVGLW
-	DZh+FtkGL0hS6VTRag4s6rWlmBQobC7+NKaDAupJP54rQnbU6AsLpOT1Qkq7IpudcC4Byo
-	sZyWSBdTa7Q7B39eRkK47Pr6ax28JpSikxf2F2c9hSrtG40axxxfOgwbXX1uYA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747905106;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ghSfvNbvgXdHqKnG0NsnphSpa7y/lU16KZhti6HbAiI=;
-	b=M5ZyO48P9UVUUQ7uhxscf9d70LROWG4whQmr7cgDuacA8enP9rlFGZ/eNtyO5xHbC5dxrk
-	fTmsZlHHS8kBrwAw==
-From: "tip-bot2 for Ian Rogers" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/uapi: Fix PERF_RECORD_SAMPLE comments in
- <uapi/linux/perf_event.h>
-Cc: Ian Rogers <irogers@google.com>, Ingo Molnar <mingo@kernel.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- James Clark <james.clark@linaro.org>, Jiri Olsa <jolsa@kernel.org>,
- Kan Liang <kan.liang@linux.intel.com>, Mark Rutland <mark.rutland@arm.com>,
- Namhyung Kim <namhyung@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- linux-perf-users@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250521221529.2547099-1-irogers@google.com>
-References: <20250521221529.2547099-1-irogers@google.com>
+	s=arc-20240116; t=1748016108; c=relaxed/simple;
+	bh=X4/5x2g3r0H0D5vuqU8mLH/IrNTkGVhsWoxQBRNKzpg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nUBexj/4vhevZBGMGBbQ6zfUrgp9oC25rbDrBY5sOSsS7x2VY8KGHZrhYeP/UUXPSMYEAxAFOokH4T+IheCeUKsuoD3ilLT5xtPnHj1rBMb+ClHfN7u3yV9tDYNzXj46Lq4xC6agCFFQqU9r0m0qDGLyPZIWeZh90JyaUPYQM3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=sDqt8WYT; arc=none smtp.client-ip=52.95.48.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1748016107; x=1779552107;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Ux2fz6ALWguuUll23AorrgrszZl9ikA7djgXi7e3PXE=;
+  b=sDqt8WYTI2OiysEHkc2nBlZzixbEtKg2h266dTVaCZXymM5XxKQKc+dY
+   ZoNv3NyCtDgvc0BAzv3r8agTe78ySeVekFHSJnce+0uiTlkOCeBULosEi
+   Wt7HflKkXldBg4X8hck3ajjF//R+Erz7QL+m6PKM8gSSxgyJvgepSMHy8
+   rC1hvDCAeydtc6kfOu949IctEh3K/3agjIpAfPulI60UYgVyxhT/5aQW7
+   pahLjax4f0baywbydR8PU6ZMkrnfBkD67LnpGvdmoNyH/nP5ds6nALJr+
+   +QFu+JUV8M6efhJy0zVNRy/WxOuUrVLqG2xP7YWYuiXIZ8gBQA+kN3NF6
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.15,309,1739836800"; 
+   d="scan'208";a="493505763"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2025 16:01:43 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.43.254:49295]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.2.235:2525] with esmtp (Farcaster)
+ id 2f752404-5de8-41fe-8a16-eb65358a1460; Fri, 23 May 2025 16:01:40 +0000 (UTC)
+X-Farcaster-Flow-ID: 2f752404-5de8-41fe-8a16-eb65358a1460
+Received: from EX19D031EUB002.ant.amazon.com (10.252.61.105) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Fri, 23 May 2025 16:01:40 +0000
+Received: from dev-dsk-hmushi-1a-0c348132.eu-west-1.amazon.com
+ (172.19.124.218) by EX19D031EUB002.ant.amazon.com (10.252.61.105) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14; Fri, 23 May 2025
+ 16:01:37 +0000
+From: Mushahid Hussain <hmushi@amazon.co.uk>
+To: <tip-bot2@linutronix.de>
+CC: <efault@gmx.de>, <linux-kernel@vger.kernel.org>,
+	<linux-tip-commits@vger.kernel.org>, <peterz@infradead.org>,
+	<stable@vger.kernel.org>, <x86@kernel.org>, <hmushi@amazon.co.uk>,
+	<nh-open-source@amazon.com>, <sieberf@amazon.com>
+Subject: Re: [PATCH 6.12 000/122] 6.12.11-rc1 review
+Date: Fri, 23 May 2025 16:01:28 +0000
+Message-ID: <20250523160128.8846-1-hmushi@amazon.co.uk>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <173902629450.10177.17446372607519992642.tip-bot2@tip-bot2>
+References: <173902629450.10177.17446372607519992642.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174790510508.406.7162582718080618976.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWB004.ant.amazon.com (10.13.139.143) To
+ EX19D031EUB002.ant.amazon.com (10.252.61.105)
 
-The following commit has been merged into the perf/core branch of tip:
+> The following commit has been merged into the sched/urgent branch of tip:
+> 
+> Commit-ID:     55294004b122c997591d9de8446f5a4c60402805
+> Gitweb:        https://git.kernel.org/tip/55294004b122c997591d9de8446f5a4c60402805
+> Author:        Peter Zijlstra <peterz@infradead.org>
+> AuthorDate:    Tue, 28 Jan 2025 15:39:49 +01:00
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Sat, 08 Feb 2025 15:43:12 +01:00
 
-Commit-ID:     f4b18ff2c147d3b56384fcc8adb30bf733bf2300
-Gitweb:        https://git.kernel.org/tip/f4b18ff2c147d3b56384fcc8adb30bf733bf2300
-Author:        Ian Rogers <irogers@google.com>
-AuthorDate:    Wed, 21 May 2025 15:15:28 -07:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Thu, 22 May 2025 10:01:34 +02:00
-
-perf/uapi: Fix PERF_RECORD_SAMPLE comments in <uapi/linux/perf_event.h>
-
-AAUX data for PERF_SAMPLE_AUX appears last. PERF_SAMPLE_CGROUP is
-missing from the comment.
-
-This makes the <uapi/linux/perf_event.h> comment match that in the
-perf_event_open man page.
-
-Signed-off-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-perf-users@vger.kernel.org
-Link: https://lore.kernel.org/r/20250521221529.2547099-1-irogers@google.com
----
- include/uapi/linux/perf_event.h       | 5 +++--
- tools/include/uapi/linux/perf_event.h | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
-index 5fc753c..b2722da 100644
---- a/include/uapi/linux/perf_event.h
-+++ b/include/uapi/linux/perf_event.h
-@@ -1035,10 +1035,11 @@ enum perf_event_type {
- 	 *	{ u64			abi; # enum perf_sample_regs_abi
- 	 *	  u64			regs[weight(mask)]; } && PERF_SAMPLE_REGS_INTR
- 	 *	{ u64			phys_addr;} && PERF_SAMPLE_PHYS_ADDR
--	 *	{ u64			size;
--	 *	  char			data[size]; } && PERF_SAMPLE_AUX
-+	 *	{ u64			cgroup;} && PERF_SAMPLE_CGROUP
- 	 *	{ u64			data_page_size;} && PERF_SAMPLE_DATA_PAGE_SIZE
- 	 *	{ u64			code_page_size;} && PERF_SAMPLE_CODE_PAGE_SIZE
-+	 *	{ u64			size;
-+	 *	  char			data[size]; } && PERF_SAMPLE_AUX
- 	 * };
- 	 */
- 	PERF_RECORD_SAMPLE			= 9,
-diff --git a/tools/include/uapi/linux/perf_event.h b/tools/include/uapi/linux/perf_event.h
-index 5fc753c..b2722da 100644
---- a/tools/include/uapi/linux/perf_event.h
-+++ b/tools/include/uapi/linux/perf_event.h
-@@ -1035,10 +1035,11 @@ enum perf_event_type {
- 	 *	{ u64			abi; # enum perf_sample_regs_abi
- 	 *	  u64			regs[weight(mask)]; } && PERF_SAMPLE_REGS_INTR
- 	 *	{ u64			phys_addr;} && PERF_SAMPLE_PHYS_ADDR
--	 *	{ u64			size;
--	 *	  char			data[size]; } && PERF_SAMPLE_AUX
-+	 *	{ u64			cgroup;} && PERF_SAMPLE_CGROUP
- 	 *	{ u64			data_page_size;} && PERF_SAMPLE_DATA_PAGE_SIZE
- 	 *	{ u64			code_page_size;} && PERF_SAMPLE_CODE_PAGE_SIZE
-+	 *	{ u64			size;
-+	 *	  char			data[size]; } && PERF_SAMPLE_AUX
- 	 * };
- 	 */
- 	PERF_RECORD_SAMPLE			= 9,
+Was this merged to sched/urgent or any other branches/RCs? Given gitweb link
+sends me to "Bad commit reference". I don't see this commit in sched/urgent:
+https://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git/log/?h=sched%2Furgent
 
