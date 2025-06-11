@@ -1,81 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5769-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5770-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A21ADAD552A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 14:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0DC3AD5905
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 16:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A0581BC14A6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 12:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D3071BC177D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 14:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B61F27CB16;
-	Wed, 11 Jun 2025 12:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6351865FA;
+	Wed, 11 Jun 2025 14:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zWnJIqUG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="msODc+dw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YxpZXFvc";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C2ErQNxJ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024062E610F;
-	Wed, 11 Jun 2025 12:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F6D230BFC;
+	Wed, 11 Jun 2025 14:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749644054; cv=none; b=NPq95zsDvHieWyHGSQmiLhWRgFYucF+aSMllNXbb49N4UieVzJdBn4e/ndtTWkAJsx7UNfT3uCIa23twRqoeMYEBapvqyK3O2FK2086tnRnAsFgCpC929UgmY6aluVl0UYUZ9F32ssGPlLE3BYnFGmn1c2n2BISvyqvt40B6EqM=
+	t=1749652762; cv=none; b=IXgqG2jMfNnn8O4iNPg+Pna+LdUiV/4xgbMliEk3ogxb3DZpIwT5fXkjjG3JbukhEa7quKTH1OBJVqWbyuGqv5Iw6iyg8FBjvUCkzE03qd7X16sqID4wbYoCyFp41eEYKEHndiVDUfloKGxd864S5sBB3IT4sa23xfSLEFzI9Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749644054; c=relaxed/simple;
-	bh=61aDTTnt0gfL98ranD6ViaA9Dly6+I5sCCKE6B8cKY4=;
+	s=arc-20240116; t=1749652762; c=relaxed/simple;
+	bh=NT4yhlGXocscf1t4C1zlD9/UZuoRU9iB1+/1BodA9e8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=eTQHlPBRJWdJ2KN5a9RWC1MpiLB56J2PeKunYq7bPwGhE6LyNkCZ/WNuXVNeeclnr+dmdb9WLPPs9JXrS0JMJk5ipkrAJDr1AKMapAkNUeljwYGSvcVCKUScuycb8fcdr+p3svC/kfoxAiksOvMVIqxzJlW4gDEVvzk5IYcda1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zWnJIqUG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=msODc+dw; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=JgONqmCgSrtJw2R+bvEtpNGlOLFQEJ49N7K5UJJf48lIHwSBK7H//i71IRej95L4/nQXgIOm6B48sZB61Df0Ac6Kzun00WipuAXtZm7s5yVCgXrU8ffYQu7GZB6a4fv5lF1S22e1Lxx0A2RHzYGzdvorIcsyW1GZejZF5UCNk6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YxpZXFvc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C2ErQNxJ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 11 Jun 2025 12:14:09 -0000
+Date: Wed, 11 Jun 2025 14:39:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1749644050;
+	s=2020; t=1749652757;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aLJNjzkKV5KVhwn3VgBgmvy6SLBgBFWTT2d+yJKRMmo=;
-	b=zWnJIqUGIaJ9UfuYZuufe1JjFVu5ef9W8mgCp7EOsMIDc/I64QMRdkoObY9ImPy7jZdyAM
-	2SiZn2c9kTjtY/+Oi9NiykprQ1CwNuRlWQqqhtbA4d1DpKN9581PNHBoK64Lh/lx0LLQZI
-	tLuEa3pZWb6KOGD6SkjMV5E+2aJ377vV7otv4eTiKiNkFil7XvoV2QK2rhJBog1u1p6BSu
-	P3b7AOidw9UJJjQlRI02RsN8kzQirJJKI4c66coXN5z/T7SqOXrx840fMfL9ddqV2mVnDY
-	podn0VZx/oLcFuFmcRpXSmf60rAhZJjK62l/GGvBueqgb8MWe8lnChG7cgiL9Q==
+	bh=mj4oYGVkdG1UcUnYYrQDLR7MSud5DamCI5zqztVORf4=;
+	b=YxpZXFvcLCZ0inU/DIOiYSpxWKqwmGabZh2VWIeghbdUd+8ibCw/jhXZwTirzU2B2xlHDv
+	ckXnli5tm8qKAP+qq019Nlbq55B8vNV++tNJlp7ZvFbAQNXCWp3cUGfjTtcb1ZmN9scv4A
+	Y5OXOaRlQFyp4GbrNgaU6LS10SKfEqX5LarYzhPe3cuXD+9N9N51iuZrhDtf5ZKyFPE4Dm
+	Sc5DfhCefY/84uNWZc2XaeLI/LFBemtWmRGJWpCr8eMWH45SoEO4g5+p6GFrLUNSqrL08o
+	CoK/EnO2nmTeR073b6c+/QL3PSDIWADB5POXHU/IJKIUCw/ls5yNURHh5Zq61w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1749644050;
+	s=2020e; t=1749652757;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aLJNjzkKV5KVhwn3VgBgmvy6SLBgBFWTT2d+yJKRMmo=;
-	b=msODc+dwqXZWqQiKthJCXOGTiwJHVR2z2gYfcyVV4Z056CgvxPMC7IqfezpMGoprDQDAtD
-	p+vvh0peTO0B70Dw==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+	bh=mj4oYGVkdG1UcUnYYrQDLR7MSud5DamCI5zqztVORf4=;
+	b=C2ErQNxJ38xU4NEcqL7ts5ylv+NG8Kduyygpodx/FwYrwuhYuMTjcl+z6JCOdbjZKXxcuk
+	BapDj9C3LW0Q0OAg==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Fix the throttle error of some clock events
-Cc: Leo Yan <leo.yan@arm.com>, Aishwarya TCV <aishwarya.tcv@arm.com>,
- Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Vince Weaver <vincent.weaver@maine.edu>,
- Kan Liang <kan.liang@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ian Rogers <irogers@google.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250606192546.915765-1-kan.liang@linux.intel.com>
-References: <20250606192546.915765-1-kan.liang@linux.intel.com>
+Subject: [tip: locking/urgent] futex: Allow to resize the private local hash
+Cc: "Lai, Yi" <yi1.lai@linux.intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250602110027.wfqbHgzb@linutronix.de>
+References: <20250602110027.wfqbHgzb@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174964404970.406.8430049755633286598.tip-bot2@tip-bot2>
+Message-ID: <174965275618.406.11364856155202390038.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,117 +80,59 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     bc4394e5e79cdda1b0997e0be1d65e242f523f02
-Gitweb:        https://git.kernel.org/tip/bc4394e5e79cdda1b0997e0be1d65e242f523f02
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Fri, 06 Jun 2025 12:25:46 -07:00
+Commit-ID:     703b5f31aee5bda47868c09a3522a78823c1bb77
+Gitweb:        https://git.kernel.org/tip/703b5f31aee5bda47868c09a3522a78823c1bb77
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Mon, 02 Jun 2025 13:00:27 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 11 Jun 2025 14:05:08 +02:00
+CommitterDate: Wed, 11 Jun 2025 16:26:44 +02:00
 
-perf: Fix the throttle error of some clock events
+futex: Allow to resize the private local hash
 
-Both ARM and IBM CI reports RCU stall, which can be reproduced by the
-below perf command.
-  perf record -a -e cpu-clock -- sleep 2
+Once the global hash is requested there is no way back to switch back to
+the per-task private hash. This is checked at the begin of the function.
 
-The issue is introduced by the generic throttle patch set, which
-unconditionally invoke the event_stop() when throttle is triggered.
+It is possible that two threads simultaneously request the global hash
+and both pass the initial check and block later on the
+mm::futex_hash_lock. In this case the first thread performs the switch
+to the global hash. The second thread will also attempt to switch to the
+global hash and while doing so, accessing the nonexisting slot 1 of the
+struct futex_private_hash.
+This has been reported by Yi Lai.
 
-The cpu-clock and task-clock are two special SW events, which rely on
-the hrtimer. The throttle is invoked in the hrtimer handler. The
-event_stop()->hrtimer_cancel() waits for the handler to finish, which is
-a deadlock. Instead of invoking the stop(), the HRTIMER_NORESTART should
-be used to stop the timer.
+Verify under mm_struct::futex_phash that the global hash is not in use.
 
-There may be two ways to fix it:
- - Introduce a PMU flag to track the case. Avoid the event_stop in
-   perf_event_throttle() if the flag is detected.
-   It has been implemented in the
-   https://lore.kernel.org/lkml/20250528175832.2999139-1-kan.liang@linux.intel.com/
-   The new flag was thought to be an overkill for the issue.
- - Add a check in the event_stop. Return immediately if the throttle is
-   invoked in the hrtimer handler. Rely on the existing HRTIMER_NORESTART
-   method to stop the timer.
-
-The latter is implemented here.
-
-Move event->hw.interrupts = MAX_INTERRUPTS before the stop(). It makes
-the order the same as perf_event_unthrottle(). Except the patch, no one
-checks the hw.interrupts in the stop(). There is no impact from the
-order change.
-
-When stops in the throttle, the event should not be updated,
-stop(event, 0). But the cpu_clock_event_stop() doesn't handle the flag.
-In logic, it's wrong. But it didn't bring any problems with the old
-code, because the stop() was not invoked when handling the throttle.
-Checking the flag before updating the event.
-
-Fixes: 9734e25fbf5a ("perf: Fix the throttle logic for a group")
-Closes: https://lore.kernel.org/lkml/20250527161656.GJ2566836@e132581.arm.com/
-Closes: https://lore.kernel.org/lkml/djxlh5fx326gcenwrr52ry3pk4wxmugu4jccdjysza7tlc5fef@ktp4rffawgcw/
-Closes: https://lore.kernel.org/lkml/8e8f51d8-af64-4d9e-934b-c0ee9f131293@linux.ibm.com/
-Closes: https://lore.kernel.org/lkml/4ce106d0-950c-aadc-0b6a-f0215cd39913@maine.edu/
-Reported-by: Leo Yan <leo.yan@arm.com>
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Reported-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reported-by: Vince Weaver <vincent.weaver@maine.edu>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Fixes: bd54df5ea7cad ("futex: Allow to resize the private local hash")
+Closes: https://lore.kernel.org/all/aDwDw9Aygqo6oAx+@ly-workstation/
+Reported-by: "Lai, Yi" <yi1.lai@linux.intel.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Link: https://lkml.kernel.org/r/20250606192546.915765-1-kan.liang@linux.intel.com
+Link: https://lkml.kernel.org/r/20250602110027.wfqbHgzb@linutronix.de
 ---
- kernel/events/core.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ kernel/futex/core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d7cf008..1f74646 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2674,8 +2674,8 @@ static void perf_event_unthrottle(struct perf_event *event, bool start)
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index b652d2f..33b3643 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -1629,6 +1629,16 @@ again:
+ 		mm->futex_phash_new = NULL;
  
- static void perf_event_throttle(struct perf_event *event)
- {
--	event->pmu->stop(event, 0);
- 	event->hw.interrupts = MAX_INTERRUPTS;
-+	event->pmu->stop(event, 0);
- 	if (event == event->group_leader)
- 		perf_log_throttle(event, 0);
- }
-@@ -11774,7 +11774,12 @@ static void perf_swevent_cancel_hrtimer(struct perf_event *event)
- {
- 	struct hw_perf_event *hwc = &event->hw;
- 
--	if (is_sampling_event(event)) {
-+	/*
-+	 * The throttle can be triggered in the hrtimer handler.
-+	 * The HRTIMER_NORESTART should be used to stop the timer,
-+	 * rather than hrtimer_cancel(). See perf_swevent_hrtimer()
-+	 */
-+	if (is_sampling_event(event) && (hwc->interrupts != MAX_INTERRUPTS)) {
- 		ktime_t remaining = hrtimer_get_remaining(&hwc->hrtimer);
- 		local64_set(&hwc->period_left, ktime_to_ns(remaining));
- 
-@@ -11829,7 +11834,8 @@ static void cpu_clock_event_start(struct perf_event *event, int flags)
- static void cpu_clock_event_stop(struct perf_event *event, int flags)
- {
- 	perf_swevent_cancel_hrtimer(event);
--	cpu_clock_event_update(event);
-+	if (flags & PERF_EF_UPDATE)
-+		cpu_clock_event_update(event);
- }
- 
- static int cpu_clock_event_add(struct perf_event *event, int flags)
-@@ -11907,7 +11913,8 @@ static void task_clock_event_start(struct perf_event *event, int flags)
- static void task_clock_event_stop(struct perf_event *event, int flags)
- {
- 	perf_swevent_cancel_hrtimer(event);
--	task_clock_event_update(event, event->ctx->time);
-+	if (flags & PERF_EF_UPDATE)
-+		task_clock_event_update(event, event->ctx->time);
- }
- 
- static int task_clock_event_add(struct perf_event *event, int flags)
+ 		if (fph) {
++			if (cur && !cur->hash_mask) {
++				/*
++				 * If two threads simultaneously request the global
++				 * hash then the first one performs the switch,
++				 * the second one returns here.
++				 */
++				free = fph;
++				mm->futex_phash_new = new;
++				return -EBUSY;
++			}
+ 			if (cur && !new) {
+ 				/*
+ 				 * If we have an existing hash, but do not yet have
 
