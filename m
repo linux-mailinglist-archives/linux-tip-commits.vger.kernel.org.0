@@ -1,79 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-5756-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5757-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5559BAD4F97
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 11:20:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38708AD4FBB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 11:29:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA4943A53CB
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 09:20:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022031892058
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 09:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A891A2609FD;
-	Wed, 11 Jun 2025 09:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5667325E816;
+	Wed, 11 Jun 2025 09:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T670aH/F";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0SOi2mUB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tcW10xGj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uJcTFpdl"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAC325E816;
-	Wed, 11 Jun 2025 09:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C991E226534;
+	Wed, 11 Jun 2025 09:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749633613; cv=none; b=ecxeiVKxIw7Y7Q2FE9Nyz/aO7nIMSF5uiLHyy+l/oFvZnBWkB2TPkZVRNDSab3FarL1jSt/IZ99HUQF10qLrYQuilUKHK3Vas6wLx2x6nVcwbBHauvVvRRJRHoxoxLoEDRxcuShEBJxNMVjiZw8PHZPNglbno7Xr569rylOfgB8=
+	t=1749634175; cv=none; b=TjydJizMIR86pRKIlSH7TfgVc39pnV/EzxkuFGzFo3db7K/9w02gm+9I6OOPT1tIW1rT45wWSQyqwEKTqorHONUZA/dBvMuwe9npWOA3OmQtnCe5ntiFDWqOnQj1T0FIBLnRjdbPwuykeI9P/9cKgx7RcQe3PCq5Yfj86738qJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749633613; c=relaxed/simple;
-	bh=IZUBoDPDJVn6kZGguxb22ZJQbFB/Don4EW0i9D3f9kM=;
+	s=arc-20240116; t=1749634175; c=relaxed/simple;
+	bh=G87f5dihg3b3dtgiBzyUYSxdXVs4tomSjlxBBZQx1EE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HqYIXLChISS91g2ZnqdWSBTjS/49wXIkyBthHxgx7INBjVdQ4vFodX4j/B1Jm4+ElEJLnVKQ0yOzE994Z4o9aEM/VgVD1gO7jzSgJ6dI2rJr9Yb2XD8ayywUmgz5O0dFsZFLbuz4v46PDCpoGdY9nd+MmsPBGk16YfaLqfDAhTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T670aH/F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0SOi2mUB; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=HXEAtTg1j3i/WFY5EIfgRwpCTpXiFBE4g0J9dd0uRePOye0hXpYOGNgC+sclf8kooO3r3rEpxE0wnqthO3ZIFU+ysY3+Y1vabNYN7EsyR2cfP8ImxHL+sX5XIZuY+mL7oisb4L/3h2jc7Rn21qC3TgMDxZYOES26GkGQA2ORvUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tcW10xGj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uJcTFpdl; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 11 Jun 2025 09:20:09 -0000
+Date: Wed, 11 Jun 2025 09:29:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1749633610;
+	s=2020; t=1749634172;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xg8VDoiQasilCrJVdWOzVDyqJuvuup/lC46XCCU9ZdI=;
-	b=T670aH/FQvWMnRRStBaI7cZH81GrQ6sfgYnel4fgsbrQe+bMu9AmgK/WshqL/pNNdIPMYT
-	zBKEVWoC8KOd1pSNLc9aNpUsCh431R3EM3fQgr9KcC3Gyzlvxq4IkpUwJSGvXKFPo5Infj
-	Uo4Dh6Eg+/f823QgsunTtY4IOz5JTKHWTcB75Q4fs5p7r1QPHryj5q467pSeYbQRZ0hc7e
-	S9AmV1F2lVJgL0HDM8mADV54EMntBIS0hw6tcTG8ptyWib6hf0K7Tsz+kyE+JTqVCm1g7S
-	DvkSmyy3XrUO/pWVSkyQZjTjsOKGb72Ab+pRTOkyzy54AZL7ohs5aPvDHpvYng==
+	bh=c5OIp3gwUpjwX0QcjQQFBBA4mrxxVGtIGDoR7tjWYgs=;
+	b=tcW10xGjcomWyU2zg7osoIzKCRDMZPFh3sJFL6gaFAQIB5GQxie/MUAUWzTOw7NwrwP3w1
+	BeSRE97xRL39eYqh/hliPc7+Exs+se4aGC2b/PwzX82mBrFa/n1bDFjkRnlqshhUuDBNzm
+	WGRY4RP1iISMpKRtya7CU4O94AEyRjWrUxeNA0fk0b++FKX16ilAS2q99i9VkMhwHDRPNw
+	Qw1ss/Oa+0h+NYb0iXdi5SX/YijdPmKiIhQ/v966jMxTuSPRSyfOJCNgYnkYsoe2xFd2mE
+	H9LJ7pRRmsoDSbkde172HeIJqaJTUAJgCCnkK6tuZHlZg0B4365vzZCp4YThxQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1749633610;
+	s=2020e; t=1749634172;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xg8VDoiQasilCrJVdWOzVDyqJuvuup/lC46XCCU9ZdI=;
-	b=0SOi2mUBEafLeinnlfds3OSHnvxcTeNV1CIJBFR9qj1hJ8B096jiyqF9ts+6at2k9bpaUR
-	UwmdcEocQEbafoAg==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+	bh=c5OIp3gwUpjwX0QcjQQFBBA4mrxxVGtIGDoR7tjWYgs=;
+	b=uJcTFpdlXdAoHqajpnIPMVN4bbJPTwoYJXi7mNrMiQxs7kAU2SxyXUhiIhRwOkGz5bg2R0
+	ZXnxjwJ6/JatV+DA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: locking/urgent] selftests/futex: getopt() requires int as return value.
-Cc: Mark Brown <broonie@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250528085521.1938355-2-bigeasy@linutronix.de>
-References: <20250528085521.1938355-2-bigeasy@linutronix.de>
+Subject: [tip: perf/urgent] perf: Add comment to enum perf_event_state
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, Leo Yan <leo.yan@arm.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250604135801.GK38114@noisy.programming.kicks-ass.net>
+References: <20250604135801.GK38114@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174963360947.406.3789042411341487780.tip-bot2@tip-bot2>
+Message-ID: <174963417100.406.5429001330664490562.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,59 +78,77 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     1a9dcf69c7a97e733aa2fc026db22f22928ca7b7
-Gitweb:        https://git.kernel.org/tip/1a9dcf69c7a97e733aa2fc026db22f22928ca7b7
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Wed, 28 May 2025 10:55:19 +02:00
+Commit-ID:     49b393af3130c7712c7e8f215f4126c9a8060fa6
+Gitweb:        https://git.kernel.org/tip/49b393af3130c7712c7e8f215f4126c9a8060fa6
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 04 Jun 2025 10:21:38 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 05 Jun 2025 14:37:58 +02:00
+CommitterDate: Thu, 05 Jun 2025 14:37:53 +02:00
 
-selftests/futex: getopt() requires int as return value.
+perf: Add comment to enum perf_event_state
 
-Mark reported that futex_priv_hash fails on ARM64.
-It turns out that the command line parsing does not terminate properly
-and ends in the default case assuming an invalid option was passed.
+Better describe the event states.
 
-Use an int as the return type for getopt().
-
-Closes: https://lore.kernel.org/all/31869a69-063f-44a3-a079-ba71b2506cce@sirena.org.uk/
-Fixes: 3163369407baf ("selftests/futex: Add futex_numa_mpol")
-Fixes: cda95faef7bcf ("selftests/futex: Add futex_priv_hash")
-Reported-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250528085521.1938355-2-bigeasy@linutronix.de
+Reviewed-by: Leo Yan <leo.yan@arm.com>
+Link: https://lkml.kernel.org/r/20250604135801.GK38114@noisy.programming.kicks-ass.net
 ---
- tools/testing/selftests/futex/functional/futex_numa_mpol.c | 2 +-
- tools/testing/selftests/futex/functional/futex_priv_hash.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/perf_event.h | 42 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/futex/functional/futex_numa_mpol.c b/tools/testing/selftests/futex/functional/futex_numa_mpol.c
-index 20a9d3e..564dbd0 100644
---- a/tools/testing/selftests/futex/functional/futex_numa_mpol.c
-+++ b/tools/testing/selftests/futex/functional/futex_numa_mpol.c
-@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
- 	struct futex32_numa *futex_numa;
- 	int mem_size, i;
- 	void *futex_ptr;
--	char c;
-+	int c;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 52dc7cf..ec9d960 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -635,8 +635,46 @@ struct perf_addr_filter_range {
+ 	unsigned long			size;
+ };
  
- 	while ((c = getopt(argc, argv, "chv:")) != -1) {
- 		switch (c) {
-diff --git a/tools/testing/selftests/futex/functional/futex_priv_hash.c b/tools/testing/selftests/futex/functional/futex_priv_hash.c
-index 2dca18f..24a92dc 100644
---- a/tools/testing/selftests/futex/functional/futex_priv_hash.c
-+++ b/tools/testing/selftests/futex/functional/futex_priv_hash.c
-@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
- 	pthread_mutexattr_t mutex_attr_pi;
- 	int use_global_hash = 0;
- 	int ret;
--	char c;
-+	int c;
- 
- 	while ((c = getopt(argc, argv, "cghv:")) != -1) {
- 		switch (c) {
+-/**
+- * enum perf_event_state - the states of an event:
++/*
++ * The normal states are:
++ *
++ *            ACTIVE    --.
++ *               ^        |
++ *               |        |
++ *       sched_{in,out}() |
++ *               |        |
++ *               v        |
++ *      ,---> INACTIVE  --+ <-.
++ *      |                 |   |
++ *      |                {dis,en}able()
++ *   sched_in()           |   |
++ *      |       OFF    <--' --+
++ *      |                     |
++ *      `--->  ERROR    ------'
++ *
++ * That is:
++ *
++ * sched_in:       INACTIVE          -> {ACTIVE,ERROR}
++ * sched_out:      ACTIVE            -> INACTIVE
++ * disable:        {ACTIVE,INACTIVE} -> OFF
++ * enable:         {OFF,ERROR}       -> INACTIVE
++ *
++ * Where {OFF,ERROR} are disabled states.
++ *
++ * Then we have the {EXIT,REVOKED,DEAD} states which are various shades of
++ * defunct events:
++ *
++ *  - EXIT means task that the even was assigned to died, but child events
++ *    still live, and further children can still be created. But the event
++ *    itself will never be active again. It can only transition to
++ *    {REVOKED,DEAD};
++ *
++ *  - REVOKED means the PMU the event was associated with is gone; all
++ *    functionality is stopped but the event is still alive. Can only
++ *    transition to DEAD;
++ *
++ *  - DEAD event really is DYING tearing down state and freeing bits.
++ *
+  */
+ enum perf_event_state {
+ 	PERF_EVENT_STATE_DEAD		= -5,
 
