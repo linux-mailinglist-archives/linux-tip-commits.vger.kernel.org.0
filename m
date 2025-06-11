@@ -1,70 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-5752-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5753-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7C8AD4586
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 00:03:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB4AAD4F92
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 11:20:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD45B3A4C8D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 10 Jun 2025 22:03:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D233A5DFB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 11 Jun 2025 09:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF075288539;
-	Tue, 10 Jun 2025 22:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8332A25C82F;
+	Wed, 11 Jun 2025 09:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BV2IIeDg";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BTcVTgil"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H2dCbvkY";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EIDxRWyn"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A41A288C00;
-	Tue, 10 Jun 2025 22:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3019257427;
+	Wed, 11 Jun 2025 09:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749592840; cv=none; b=AL9+pcRCHsZoqFpXeiklo+sKre8SVFPdCSw4DvTf1bqQyU0f9fn2MCa1PKccGTRa/onjd3WlEMiQDWXnZffQ/4SdXadGVZszdXV2NcRlAkeMcognjKmiVQY3DbqAGk3dpLvbQWVxQVH42JCr93uq47QZ97ZZvH59jJub8sftAZo=
+	t=1749633611; cv=none; b=npz/giL5sff0azU9SZvo2NLTqmAYnCOBQur9gCUsbKSrTRy0ePSCfk+Htby8W8Nx2RnuAq8OF7ijVHy7jvTGFfG2D5H0XypR3tUjFVZZ33mTec+MiCmSC6shoRvU46+pO5HMEFmY7jR0tZtnrejCcEJP/CRoU6X5x9Un1O3Tquw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749592840; c=relaxed/simple;
-	bh=FnrGA5lxkPuqlYIs8QGMviRg4MaEfAXrtzR7YXE3u4g=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=E6cZvps4skWmUXUbr6DoSnCUXWFflsxF3zRW3roOJ8hxgC6He/0lRK5FCD2hlifGDZzZMPJfOqNuAMOYjOHS2NxK0sfJkxTHkKfrSvS7U3mmONgKIITdZIey1TdR4D/pEIu+0QjixcZhl3XO7W9Vl6COUfIy2DnEtY615xX2NtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BV2IIeDg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BTcVTgil; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1749633611; c=relaxed/simple;
+	bh=FGjxhZUr3vbZ/JK8EerGbsKA6vW112c03IUA7S+0DQI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Mxq1/zS4GJqlL3n7bViIbLh/iBTSARGiopOGbKCQ+TPZKrdyfbR7XNCO7q2ZnUSFkHuYgB7ug6j2LzT5Rf7/E4w+oq78azO06n5Wl6XaF9x5UQBKOpMOTr/MirBGGAke3CR7ruqkZhskcCWQTXUwij/1bmIP/k1myV0TYTc7dXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H2dCbvkY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EIDxRWyn; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 10 Jun 2025 22:00:35 -0000
+Date: Wed, 11 Jun 2025 09:20:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1749592836;
+	s=2020; t=1749633607;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZdS3BZQLcu/5nmH72ukL8l+dA44/cwpXTCneWcSu5Lw=;
-	b=BV2IIeDgKiy5hB7RWkWwdotjjQ6ZIYryNRhl8KjB8oviNZNtwoDdZ0ETpY8DFQK+4jMVQz
-	AZl2SDeiAVkYMT2Q5gwaGkIc0xL/qBm8kM0Mnz+ndl5Vh22wc8p27v0SzU3oFchvrtoqxo
-	fqoNO0C3casIu9k8JA1+08yj5g7pG4k9kptr0MWzDjNKbqqrfznyTegxSHpyMtoBAhd93U
-	oTdvl48vQ5lro9JrF6Toyi/1tQraJ/F5M7V3Ya5S1x7Gz6oA53ftEc3wJv/59QBmWwihFv
-	B3J9CdPHfr7DDvh12lwdcPpx7BWdvb6qLy7auGn4jmlzPBCrTolGpH3xOY8xig==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RYYFHqTnmME/NDzSKxly5S2zjP9rIeOoBOjLOwJi+N4=;
+	b=H2dCbvkYq5JTYpwSdghsoo6F/dKuNzI94C4OiziaePLG55m3Cp7FrhIOYodFh3L2pMtmfv
+	y035eYz3Fz05bmo3kZmkf8+ihWCt8dAVkFm1SCUjRPHcDKD+2ATA17H7t7gYMO91CfguVB
+	cuuKiNguKgTFZn/ReL71/j8C62UTQhv2jHFpino6lOXnAHZ2Xuc3TRs8v1azV92VV2G414
+	StF+9OjBHuK0i8a17w0f66EAJcUngH5FnhfgdFv+416uTSPhhfxDA8BCMp4vX1HtJLkCvS
+	JxMQycaiw9+WqAO3MsnIhERrLQgbm9/hl3cXu/zybzgDnwC2R5enotiVX6xLMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1749592836;
+	s=2020e; t=1749633607;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZdS3BZQLcu/5nmH72ukL8l+dA44/cwpXTCneWcSu5Lw=;
-	b=BTcVTgilFHi4/oVwQrfbn3FqA6Xy3KJIidHlUe7la7aOdxy43clEGao3TzlwEYWxA12MZ2
-	QwA4YARhSFuoEnCA==
-From: "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RYYFHqTnmME/NDzSKxly5S2zjP9rIeOoBOjLOwJi+N4=;
+	b=EIDxRWynRwly63hofb3TbicLh3KtJR0ISytbcOFz139X1eXij1bZ1ibCl89ui3TjEy3lDs
+	LNfmVDFANWdVv3Dw==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/virt/tdx: Avoid indirect calls to TDX assembly
- functions
-Cc: Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: locking/urgent] futex: Allow to resize the private local hash
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250602110027.wfqbHgzb@linutronix.de>
+References: <20250602110027.wfqbHgzb@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174959283534.406.15846779981936679822.tip-bot2@tip-bot2>
+Message-ID: <174963360666.406.17688851529613883167.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -72,77 +78,59 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     0b3bc018e86afdc0cbfef61328c63d5c08f8b370
-Gitweb:        https://git.kernel.org/tip/0b3bc018e86afdc0cbfef61328c63d5c08f8b370
-Author:        Kai Huang <kai.huang@intel.com>
-AuthorDate:    Sat, 07 Jun 2025 01:07:37 +12:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 10 Jun 2025 12:32:52 -07:00
+Commit-ID:     cdd0f803c1f9b69785f5ff865864cfea11081c91
+Gitweb:        https://git.kernel.org/tip/cdd0f803c1f9b69785f5ff865864cfea11081c91
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Mon, 02 Jun 2025 13:00:27 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Thu, 05 Jun 2025 14:37:59 +02:00
 
-x86/virt/tdx: Avoid indirect calls to TDX assembly functions
+futex: Allow to resize the private local hash
 
-Two 'static inline' TDX helper functions (sc_retry() and
-sc_retry_prerr()) take function pointer arguments which refer to
-assembly functions.  Normally, the compiler inlines the TDX helper,
-realizes that the function pointer targets are completely static --
-thus can be resolved at compile time -- and generates direct call
-instructions.
+On 2025-06-01 15:39:47 [+0800], Lai, Yi wrote:
+> Hi Sebastian Andrzej Siewior,
+Hi Yi,
+> Greetings!
+>
+> I used Syzkaller and found that there is KASAN: null-ptr-deref Read in __futex_pivot_hash in linux-next next-20250527.
+>
+> After bisection and the first bad commit is:
+> "
+> bd54df5ea7ca futex: Allow to resize the private local hash
+> "
 
-But, other times (like when CONFIG_CC_OPTIMIZE_FOR_SIZE=y), the
-compiler declines to inline the helpers and will instead generate
-indirect call instructions.
+Thank you for the report. Next time please trim your report. There is no
+need to put your report in the middle of the patch.
 
-Indirect calls to assembly functions require special annotation (for
-various Control Flow Integrity mechanisms).  But TDX assembly
-functions lack the special annotations and can only be called
-directly.
+The following fixes it:
 
-Annotate both the helpers as '__always_inline' to prod the compiler
-into maintaining the direct calls. There is no guarantee here, but
-Peter has volunteered to report the compiler bug if this assumption
-ever breaks[1].
-
-Fixes: 1e66a7e27539 ("x86/virt/tdx: Handle SEAMCALL no entropy error in common code")
-Fixes: df01f5ae07dd ("x86/virt/tdx: Add SEAMCALL error printing for module initialization")
-Signed-off-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/20250605145914.GW39944@noisy.programming.kicks-ass.net/ [1]
-Link: https://lore.kernel.org/all/20250606130737.30713-1-kai.huang%40intel.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250602110027.wfqbHgzb@linutronix.de
 ---
- arch/x86/include/asm/tdx.h  | 2 +-
- arch/x86/virt/vmx/tdx/tdx.c | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ kernel/futex/core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 8b19294..7ddef3a 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -106,7 +106,7 @@ void tdx_init(void);
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index b652d2f..33b3643 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -1629,6 +1629,16 @@ again:
+ 		mm->futex_phash_new = NULL;
  
- typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
- 
--static inline u64 sc_retry(sc_func_t func, u64 fn,
-+static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
- 			   struct tdx_module_args *args)
- {
- 	int retry = RDRAND_RETRY_LOOPS;
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 2457d13..c7a9a08 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -75,8 +75,9 @@ static inline void seamcall_err_ret(u64 fn, u64 err,
- 			args->r9, args->r10, args->r11);
- }
- 
--static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
--				 u64 fn, struct tdx_module_args *args)
-+static __always_inline int sc_retry_prerr(sc_func_t func,
-+					  sc_err_func_t err_func,
-+					  u64 fn, struct tdx_module_args *args)
- {
- 	u64 sret = sc_retry(func, fn, args);
- 
+ 		if (fph) {
++			if (cur && !cur->hash_mask) {
++				/*
++				 * If two threads simultaneously request the global
++				 * hash then the first one performs the switch,
++				 * the second one returns here.
++				 */
++				free = fph;
++				mm->futex_phash_new = new;
++				return -EBUSY;
++			}
+ 			if (cur && !new) {
+ 				/*
+ 				 * If we have an existing hash, but do not yet have
 
