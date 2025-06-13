@@ -1,83 +1,83 @@
-Return-Path: <linux-tip-commits+bounces-5827-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5830-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A90AAD8572
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jun 2025 10:25:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C742DAD8579
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jun 2025 10:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD6EC3B4492
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jun 2025 08:25:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3F343B70E6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 13 Jun 2025 08:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96267272804;
-	Fri, 13 Jun 2025 08:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E799279DC4;
+	Fri, 13 Jun 2025 08:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rCUu0Qa0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="V+ciaNC+"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iDK+3Ykp";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="traAt9y9"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B22726B777;
-	Fri, 13 Jun 2025 08:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAC82727F7;
+	Fri, 13 Jun 2025 08:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749803111; cv=none; b=ifWr9KFq0hUPuMVqganfF8XbMGMhFWyq/qe2AKgiwqg4h5V49e2BzuZU6LZCIcyKl/RjxsvRpFgf3iX2toaKWuDi1rn/SqNn489P/2GUc49zRsZWclnunNo9BaDt9+D0KXn5k3o+lt8hJajKzowOipY0yOfjVHyQttwx4A2hCNM=
+	t=1749803114; cv=none; b=C9thr22kfkA0qt2U4rqLgwkhKFtAxh0qo0HTxiPVoz3YCKLS7AIVG89QtXbqq53K9nEzMPIlqjnsgyF7ZhoKbly5QrrxKn4dUxtV0gi8UrY1PoreEY7uXBSRZvpx5KRq3/HFXumT06RehSPertxI9yusfmg2MXtEeB4zWG7n0FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749803111; c=relaxed/simple;
-	bh=JxT4K3EBo5TwCltpCaGCLrHZgA8ZWdzzpq4QmIUpmGQ=;
+	s=arc-20240116; t=1749803114; c=relaxed/simple;
+	bh=IfQm2RM85NO2Rmc35YGpfrm/18e0KjzbYaKyxq8IbrY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=qfvV8C/PaUpGasL0fADX2sPGHK6JCYKAbal/pPVhNAO6xuQyZ1//ZKWxcEwpsklXmuSJ85R1vMuiiz2L8wjCylxlT+H+CK89PkTKDbB76L8I+gMc45ZZ3QMMGDniIrawjUBlzZlLGEgx9BYSo8Mt/idlG+xTunJSgcCDOHeW3TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rCUu0Qa0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=V+ciaNC+; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=KdDysLbCmLY59QcxrswlHVllCb1cv7OUqw+oo4wjaEagDnqespUcIsckmBBrM7muN1lzpVPnnveh+inDjfHeUC0tJN4GZR5nxsRJt6bMlf9pZJKEHztttFnLPuXJH1f2NLGdGFE9gMTa1rxt+3MMfnnHGTs2tU7KnNdD81yiUy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iDK+3Ykp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=traAt9y9; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 13 Jun 2025 08:25:06 -0000
+Date: Fri, 13 Jun 2025 08:25:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1749803107;
+	s=2020; t=1749803108;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=305DmotqGozWz5+0mjGjOXk0cwN3ZChMVcwlcIPibc8=;
-	b=rCUu0Qa01ZmamJaTVAR3mpFcVqW92vJbjo5ugL5tg2O2GLihCd8MoavQwvduOz2fTxp2zQ
-	zc9qCS1oVuztvcpWgPmkbKhBEq5ypowClo7LF5uDBfI0XMLB6Wj3D98ulZJBwK8ZFGgdBH
-	wmyRI+3AWJyoihSqk5CT2sQNQM1BmMCPmN1LjvZSmA8lwMjxvM1FsZGF5Qbylvi/y8V3cg
-	o068RoAYA92/ZFVdwe7oPRHWhMEWJ5571G5g0Q3Albk51aUTvfvHOfML/IXoEkcYSgCzbU
-	ForkNGONDMdZ1nF61RLUdgvIg5hkeLU7RhDgZxw8FJFdZ/k0CtBsWHROPDIyFw==
+	bh=r635YBi/JMbSfYae1srP8gdL3+G3JkHMTcUMvWRVwZg=;
+	b=iDK+3YkperJXqxbIy9DrgDJee5OX45PBBpFokM9NJwE3yYxnW5WTQmST9GdKzTkaguUUAP
+	TidXnbc/6RMwL/fB7WffVtUc65q8oxVOPlqfqQHsJ9evdqnRKiiD6jFvp2FDoIiQSxA8VB
+	AAIxfgt9Ng+w1ijzUntjPNHJMH5QZ80Mk9+BCGpOsOaMReH6O029bR8lMKoGS08wJT1mm3
+	V4vFM29r40eCyEjeEzwQlsaiDkeSocIjtzSeayc0amCV+HVSfyLR69hpthbx+5HSN8SqR1
+	uLrDXiS0M9wTinNz6ZTifdo78Lx+jc5ZhkOin2KLI+7KCCLSC5AD8Ko7L6NrEg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1749803107;
+	s=2020e; t=1749803108;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=305DmotqGozWz5+0mjGjOXk0cwN3ZChMVcwlcIPibc8=;
-	b=V+ciaNC+jaoJhRDF29biumCvIklfUMHfiFsKygql/+zeDcdFZPlm0CT6Xhn/BeR5ECvYlH
-	0Pit7GzEdUc/07Dg==
+	bh=r635YBi/JMbSfYae1srP8gdL3+G3JkHMTcUMvWRVwZg=;
+	b=traAt9y96p29OANS86JjU0Lkyvc/Zg3u9MD/mZ52KresteQcXkqPcLw3tnsKTmRcMyt6fE
+	0Eu37+cc9fGKnaDA==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/kconfig] x86/kconfig/64: Enable popular kernel debugging
- options in the defconfig
-Cc: Ingo Molnar <mingo@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, David Woodhouse <dwmw@amazon.co.uk>,
- "H. Peter Anvin" <hpa@zytor.com>, Ivan Shapovalov <intelfx@intelfx.name>,
+Subject:
+ [tip: x86/kconfig] x86/kconfig/64: Enable popular MM options in the defconfig
+Cc: Ingo Molnar <mingo@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ David Woodhouse <dwmw@amazon.co.uk>, "H. Peter Anvin" <hpa@zytor.com>,
  jgross@suse.com, Linus Torvalds <torvalds@linux-foundation.org>,
  Masahiro Yamada <yamada.masahiro@socionext.com>,
  Michal Marek <michal.lkml@markovi.net>, Peter Zijlstra <peterz@infradead.org>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250515132719.31868-11-mingo@kernel.org>
-References: <20250515132719.31868-11-mingo@kernel.org>
+ Rik van Riel <riel@surriel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250515132719.31868-10-mingo@kernel.org>
+References: <20250515132719.31868-10-mingo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174980310665.406.15231839566884139146.tip-bot2@tip-bot2>
+Message-ID: <174980310768.406.18345070829945395347.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,156 +87,81 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/kconfig branch of tip:
 
-Commit-ID:     53bc35f2d93704ccc012fcbc2039cd72f7942e94
-Gitweb:        https://git.kernel.org/tip/53bc35f2d93704ccc012fcbc2039cd72f79=
-42e94
+Commit-ID:     4e96a8b1eb76811e75cb668a47a6642a17a239ef
+Gitweb:        https://git.kernel.org/tip/4e96a8b1eb76811e75cb668a47a6642a17a=
+239ef
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Thu, 15 May 2025 15:27:16 +02:00
+AuthorDate:    Thu, 15 May 2025 15:27:15 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 13 Jun 2025 10:03:25 +02:00
+CommitterDate: Fri, 13 Jun 2025 10:03:23 +02:00
 
-x86/kconfig/64: Enable popular kernel debugging options in the defconfig
+x86/kconfig/64: Enable popular MM options in the defconfig
 
 Since the x86 defconfig aims to be a distro kernel work-alike with
-fewer drivers and a shorter build time, enable a handful of
-kernel debugging options that are typically enabled on major Linux
-distributions.
+fewer drivers and a shorter build time, enable the following
+MM options that are typically enabled on major Linux distributions:
 
-The options enabled is a superset of the latest Ubuntu and Fedora
-kernel debugging configs, using Ubuntu's config-6.11.0-24-generic
-file, Fedora's kernel-x86_64-fedora.config and RHEL's
-kernel-x86_64-rhel.config from kernel-ark.git.
-
-Notable features enabled:
-
- - CONFIG_UBSAN=3Dy:
-
-     Despite the runtime overhead, UBSAN is actively enabled
-     in all 3 major Linux distros I checked, so we want it
-     enabled in the defconfig as well - to better see the
-     consequences.
-
- - CONFIG_DEBUG_SHIRQ=3Dy:
-
-     Fedora/RHEL have this enabled, while Ubuntu has it disabled.
-
- - CONFIG_LIST_HARDENED=3Dy:
-
-     Fedora/RHEL have CONFIG_DEBUG_LIST enabled, while Ubuntu has
-     it disabled, so pick the lightweight LIST_HARDENED variant.
-
- - CONFIG_FUNCTION_PROFILER=3Dy:
-
-     This is enabled on all distros I checked as well.
-
-DEBUGINFO is still disabled, despite enabled in all Linux distros,
-because the ~10x .o bloat is still just so painful on anything
-but the most powerful build boxes.
-
-Note that while the following features seemingly get removed from
-the defconfig :
-
-  - CONFIG_BLK_DEV_INITRD=3Dy
-  - CONFIG_KPROBES=3Dy
-  - CONFIG_MAGIC_SYSRQ=3Dy
-
-they are actually still enabled in the actual .config, because they
-get selected by other options indirectly.
+- ACPI_HOTPLUG_MEMORY, ZSWAP, SLAB hardening, MEMORY_HOTPLUG,
+  MEMORY_HOTREMOVE, PAGE_REPORTING, KSM, higher DEFAULT_MMAP_MIN_ADDR,
+  MEMORY_FAILURE, HWPOISON_INJECT, TRANSPARENT_HUGEPAGE,
+  TRANSPARENT_HUGEPAGE_MADVISE, IDLE_PAGE_TRACKING, ZONE_DEVICE
+  DEVICE_PRIVATE, ANON_VMA_NAME, USERFAULTFD, multi-gen LRU.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Ard Biesheuvel <ardb@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: David Woodhouse <dwmw@amazon.co.uk>
 Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ivan Shapovalov <intelfx@intelfx.name>
 Cc: J=C3=BCrgen Gro=C3=9F <jgross@suse.com>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
 Cc: Michal Marek <michal.lkml@markovi.net>
 Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
 Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20250515132719.31868-11-mingo@kernel.org
+Link: https://lore.kernel.org/r/20250515132719.31868-10-mingo@kernel.org
 ---
- arch/x86/configs/x86_64_defconfig | 46 ++++++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 3 deletions(-)
+ arch/x86/configs/x86_64_defconfig | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defc=
 onfig
-index 0529678..4bd3122 100644
+index a32ed37..0529678 100644
 --- a/arch/x86/configs/x86_64_defconfig
 +++ b/arch/x86/configs/x86_64_defconfig
-@@ -31,7 +31,6 @@ CONFIG_CGROUP_PERF=3Dy
- CONFIG_CGROUP_BPF=3Dy
- CONFIG_CGROUP_MISC=3Dy
- CONFIG_CGROUP_DEBUG=3Dy
--CONFIG_BLK_DEV_INITRD=3Dy
- CONFIG_KALLSYMS_ALL=3Dy
- CONFIG_PROFILING=3Dy
- CONFIG_KEXEC=3Dy
-@@ -68,7 +67,6 @@ CONFIG_KVM_INTEL=3Dy
- CONFIG_KVM_AMD=3Dy
- CONFIG_KVM_XEN=3Dy
- CONFIG_KVM_MAX_NR_VCPUS=3D4096
--CONFIG_KPROBES=3Dy
- CONFIG_JUMP_LABEL=3Dy
- CONFIG_MODULES=3Dy
- CONFIG_MODULE_UNLOAD=3Dy
-@@ -302,14 +300,56 @@ CONFIG_SECURITY=3Dy
- CONFIG_SECURITY_NETWORK=3Dy
- CONFIG_SECURITY_SELINUX=3Dy
- CONFIG_SECURITY_SELINUX_BOOTPARAM=3Dy
-+CONFIG_LIST_HARDENED=3Dy
- CONFIG_PRINTK_TIME=3Dy
-+CONFIG_BOOT_PRINTK_DELAY=3Dy
-+CONFIG_DYNAMIC_DEBUG=3Dy
- CONFIG_DEBUG_KERNEL=3Dy
--CONFIG_MAGIC_SYSRQ=3Dy
-+CONFIG_STRIP_ASM_SYMS=3Dy
-+CONFIG_HEADERS_INSTALL=3Dy
-+CONFIG_DEBUG_SECTION_MISMATCH=3Dy
-+CONFIG_KGDB=3Dy
-+CONFIG_KGDB_TESTS=3Dy
-+CONFIG_KGDB_LOW_LEVEL_TRAP=3Dy
-+CONFIG_KGDB_KDB=3Dy
-+CONFIG_KDB_KEYBOARD=3Dy
-+CONFIG_UBSAN=3Dy
-+CONFIG_UBSAN_SHIFT=3Dy
-+CONFIG_PAGE_OWNER=3Dy
-+CONFIG_PAGE_POISONING=3Dy
- CONFIG_DEBUG_WX=3Dy
-+CONFIG_PER_VMA_LOCK_STATS=3Dy
- CONFIG_DEBUG_STACK_USAGE=3Dy
-+CONFIG_SCHED_STACK_END_CHECK=3Dy
-+CONFIG_KFENCE=3Dy
-+CONFIG_DEBUG_SHIRQ=3Dy
-+CONFIG_PANIC_ON_OOPS=3Dy
-+CONFIG_HARDLOCKUP_DETECTOR=3Dy
-+CONFIG_BOOTPARAM_HARDLOCKUP_PANIC=3Dy
-+CONFIG_WQ_CPU_INTENSIVE_REPORT=3Dy
- CONFIG_SCHEDSTATS=3Dy
-+CONFIG_NMI_CHECK_CPU=3Dy
-+CONFIG_RCU_CPU_STALL_CPUTIME=3Dy
-+CONFIG_BOOTTIME_TRACING=3Dy
-+CONFIG_FUNCTION_GRAPH_RETVAL=3Dy
-+CONFIG_FPROBE=3Dy
-+CONFIG_FUNCTION_PROFILER=3Dy
-+CONFIG_STACK_TRACER=3Dy
-+CONFIG_SCHED_TRACER=3Dy
-+CONFIG_HWLAT_TRACER=3Dy
-+CONFIG_TIMERLAT_TRACER=3Dy
-+CONFIG_MMIOTRACE=3Dy
-+CONFIG_FTRACE_SYSCALLS=3Dy
- CONFIG_BLK_DEV_IO_TRACE=3Dy
-+CONFIG_USER_EVENTS=3Dy
-+CONFIG_HIST_TRIGGERS=3Dy
-+CONFIG_TRACE_EVENT_INJECT=3Dy
-+CONFIG_RV=3Dy
-+CONFIG_RV_MON_WWNR=3Dy
- CONFIG_PROVIDE_OHCI1394_DMA_INIT=3Dy
- CONFIG_EARLY_PRINTK_DBGP=3Dy
-+CONFIG_EARLY_PRINTK_USB_XDBC=3Dy
- CONFIG_DEBUG_BOOT_PARAMS=3Dy
- CONFIG_DEBUG_ENTRY=3Dy
-+CONFIG_FUNCTION_ERROR_INJECTION=3Dy
-+CONFIG_MEMTEST=3Dy
+@@ -57,6 +57,7 @@ CONFIG_HIBERNATION=3Dy
+ CONFIG_PM_DEBUG=3Dy
+ CONFIG_PM_TRACE_RTC=3Dy
+ CONFIG_ACPI_DOCK=3Dy
++CONFIG_ACPI_HOTPLUG_MEMORY=3Dy
+ CONFIG_ACPI_BGRT=3Dy
+ CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE=3Dy
+ CONFIG_CPU_FREQ_GOV_ONDEMAND=3Dy
+@@ -76,7 +77,25 @@ CONFIG_BLK_CGROUP_IOLATENCY=3Dy
+ CONFIG_BLK_CGROUP_IOCOST=3Dy
+ CONFIG_BLK_CGROUP_IOPRIO=3Dy
+ CONFIG_BINFMT_MISC=3Dy
++CONFIG_ZSWAP=3Dy
++CONFIG_SLAB_FREELIST_RANDOM=3Dy
++CONFIG_SLAB_FREELIST_HARDENED=3Dy
+ # CONFIG_COMPAT_BRK is not set
++CONFIG_MEMORY_HOTPLUG=3Dy
++CONFIG_MEMORY_HOTREMOVE=3Dy
++CONFIG_KSM=3Dy
++CONFIG_DEFAULT_MMAP_MIN_ADDR=3D65536
++CONFIG_MEMORY_FAILURE=3Dy
++CONFIG_HWPOISON_INJECT=3Dy
++CONFIG_TRANSPARENT_HUGEPAGE=3Dy
++CONFIG_TRANSPARENT_HUGEPAGE_MADVISE=3Dy
++CONFIG_IDLE_PAGE_TRACKING=3Dy
++CONFIG_ZONE_DEVICE=3Dy
++CONFIG_DEVICE_PRIVATE=3Dy
++CONFIG_ANON_VMA_NAME=3Dy
++CONFIG_USERFAULTFD=3Dy
++CONFIG_LRU_GEN=3Dy
++CONFIG_LRU_GEN_ENABLED=3Dy
+ CONFIG_NET=3Dy
+ CONFIG_PACKET=3Dy
+ CONFIG_XFRM_USER=3Dy
 
