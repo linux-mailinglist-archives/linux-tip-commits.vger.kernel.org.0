@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-5847-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5850-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7323EAD9EDB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 20:12:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3636AD9F21
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 20:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96C063AE8D3
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 18:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28A2B3B77C6
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 18:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958F22E88BF;
-	Sat, 14 Jun 2025 18:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867651DED5D;
+	Sat, 14 Jun 2025 18:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lx++csVn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tf2EFyK3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XO8sssex";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uy5zKkVZ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02EE2E8893;
-	Sat, 14 Jun 2025 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EC31DB546;
+	Sat, 14 Jun 2025 18:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749924630; cv=none; b=WfIUzbtmRp+IGN/miVlMB7KFOvDd3gZol9B/cO3K+cBeK83EvRVSxIEPunuANfuX+pL6XMpS2QrxQq7GX+AVpRQmmncAksA+CPQ2XopGijW4dc6nejEQBbmDx6UH2kisHYjxN6TpgaEidxYGJ3Aeq3s3o2frnYk1XaqMMZk5gC8=
+	t=1749927030; cv=none; b=bKzBAGpa6vMpgt5A+CwfKE1HmPtb8Y3epqW8/1GqcQF8HqgtlxhCY+jMfnU1D5943tRWXbUq5uZJgpFoaIILeVaoJ8mDm/OYs6b0ReC2wwAfp8MwXRA4qRjZ7LRePp2rDPHrxtJgHIwnZVSCMSGxYsrqoFBAJ6gcrM/kckqs4Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749924630; c=relaxed/simple;
-	bh=TVsXtgMLh/M3YQnXCjrANL11tbtfvBnz2H2jBF3ZVOs=;
+	s=arc-20240116; t=1749927030; c=relaxed/simple;
+	bh=11C2g5Brv0G8B5ZN6rVwoIkS/7FiIUxmhoLEJtBaxQM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WnMnRB/FWBRgsZnVRTN4h9aUVQREMymeRuNRpZoivPBt24Ul7LCdfmyDqtevhpRsJwRLsqE7y5pU4A+m15/Rc5L9tuP/EBvIi3p5GH3KG3gczHEReAV6M0SQCqVTlabUmegPCsaDI0pcFAzlLGJuMIUW8cl7ieRV3Q1VjjgA4ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lx++csVn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tf2EFyK3; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=BUkDzytdNgdxYXG2oDMqKPxl66r+qZbN9guLc0kCd05UhOvc3wEqoEpkJ32Zk3FIeQpG2heyaGYRFmJ+FKuP8Lc9TkGvzLs84GqcNyNojMX/zDqQvLv1mej+94bEdLjxaCiL+jcu2WYqnPxyWALinTJLOXIv+NwAq5qxYaIaMLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XO8sssex; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uy5zKkVZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 14 Jun 2025 07:31:41 -0000
+Date: Sat, 14 Jun 2025 07:41:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1749924626;
+	s=2020; t=1749927027;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2mCcvBLO8NZIUwlT85SzTab0A/b1GootPrFseVJXDHw=;
-	b=Lx++csVnvMRCAw9iJgFNeWpD951qEjk54A+wtfxkKbP9NM0eYht8/7q86LZVdlz77vyCTa
-	Xw0MGnTtrHLp1XLgq3HW8UITaoyHV46d9U5K3NyI/awBmyhLRd/A0OfwNBi8k6C5XE4tiW
-	hNQgr9YUOxfjQW0UKcgRWgt5iZVeqH8K9fsE8Xx/23Lkh3vc0r83p9mve5iHaQI1eLqpqr
-	9uXN6uACVg226YILiWy+i2oMx+mimJ8owsvGoy2+blUHzgZfHDXDriDZC6VFomZXIkthPi
-	FTcd5LL2hpzuAzzXspGH2j7FDa/+m2LuIBbq+HcCVi1D8RZzH+tbyjQzZz5A7A==
+	bh=gku2n3QfKUDzM7OB0nQnIdNsk2wqBgBrcPjFrXQmGco=;
+	b=XO8sssexWkUKsfzSm20K/3vGKvWmH/W62ndvOIytDqZxILG1SDN2XBWSEqwb5kFGVxT4yO
+	UMgXNR9hDndg2NmZ9KcG7a1TwTmhqmupQbYGDL1foVbXGgc/mzZn6W7yxMGIFSWjuN/MI/
+	/KgFcmtJdkptZHIdNQkJ5NKDavg17N/j+a2wh81gjaRzV32weRZP/ZKZUwEeiRpcLzrmYm
+	5CD/tupBiR6/AAiZWcf8LMHKD+u+NyeBJ644URKCt3xSDKE40HEtZlIsKpuoqSVDa4kpFu
+	+85te9A4rD6GARkWoYwVG8beoQjyAo+NiFrU7HxBAEjaYwZ61sKTTeHL+6D3rQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1749924626;
+	s=2020e; t=1749927027;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2mCcvBLO8NZIUwlT85SzTab0A/b1GootPrFseVJXDHw=;
-	b=tf2EFyK3H1cUdu6Ii/6vW6Xes2ZywrIiVbdzptub0NmFdVt37ktt8ckKIokecvoGXG5pr/
-	KYAZ4OIihTCMCxCw==
+	bh=gku2n3QfKUDzM7OB0nQnIdNsk2wqBgBrcPjFrXQmGco=;
+	b=uy5zKkVZwtSs/4qxgKRZuM7ez5PDmXX7GSiU4KNt4vgReoJjoEfzSuk5Q0x5sYmfDX3knt
+	bycxx6ngYfPwtdBw==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -79,7 +79,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174988630189.406.15753586837783578672.tip-bot2@tip-bot2>
+Message-ID: <174988686864.406.18261837065176549919.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -89,13 +89,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/kconfig branch of tip:
 
-Commit-ID:     860a6f26921a56a469e03a0f74d992ee217192df
-Gitweb:        https://git.kernel.org/tip/860a6f26921a56a469e03a0f74d992ee217=
-192df
+Commit-ID:     7ce421edd9fc5a762aeb625cc682cb793ec859d7
+Gitweb:        https://git.kernel.org/tip/7ce421edd9fc5a762aeb625cc682cb793ec=
+859d7
 Author:        Ingo Molnar <mingo@kernel.org>
 AuthorDate:    Sat, 14 Jun 2025 09:10:55 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sat, 14 Jun 2025 09:24:35 +02:00
+CommitterDate: Sat, 14 Jun 2025 09:30:35 +02:00
 
 x86/kconfig/defconfig: Enable CONFIG_DRM_FBDEV_EMULATION=3Dy
 
@@ -116,7 +116,7 @@ So enable CONFIG_DRM_FBDEV_EMULATION.
 
 Also enable the dependent CONFIG_FRAMEBUFFER_CONSOLE_ROTATION option
 (disabled by default), as all major Linux distros have it enabled,
-probably as an sysadmin quality-of-life option:
+probably as a sysadmin quality-of-life option:
 
 	.config.distro.debian.x86_32:     CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
 	.config.distro.fedora.generic:    CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
@@ -125,6 +125,11 @@ probably as an sysadmin quality-of-life option:
 	.config.distro.ubuntu:            CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
 
 There's no measurable build time impact within ~1% stddev:
+
+  $ perf stat --null --repeat 3 --sync --pre=3D'make clean >/dev/null' make -=
+j128 bzImage >/dev/null
+
+  Performance counter stats for 'make -j128 bzImage' (3 runs):
 
   # before:         33.759 +- 0.286 seconds time elapsed  ( +-  0.85% )
   # after:          33.593 +- 0.314 seconds time elapsed  ( +-  0.94% )
