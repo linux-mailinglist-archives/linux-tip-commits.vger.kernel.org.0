@@ -1,107 +1,191 @@
-Return-Path: <linux-tip-commits+bounces-5846-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5847-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580E9AD9A92
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 08:59:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7323EAD9EDB
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 20:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 751341897200
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 06:59:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96C063AE8D3
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 14 Jun 2025 18:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C197A1DF97F;
-	Sat, 14 Jun 2025 06:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958F22E88BF;
+	Sat, 14 Jun 2025 18:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yp++tKyQ"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lx++csVn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tf2EFyK3"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941E91C3F02;
-	Sat, 14 Jun 2025 06:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02EE2E8893;
+	Sat, 14 Jun 2025 18:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749884375; cv=none; b=HXl3d1Y7QHme157A4kNcmnN0Wt8dBm2HPf7wk5BPzVgaU8inbRnl/mqQXhoq0lSeyPqGQ8TvfApeskljXJLd2N6eZQfEcYLsIrtKvdeUrx6S8R4mU0QALfCHE7mmRDG78TTjKrTe6sHoBKaMG2p0nNUFrGsAlyMgHK927gor3xQ=
+	t=1749924630; cv=none; b=WfIUzbtmRp+IGN/miVlMB7KFOvDd3gZol9B/cO3K+cBeK83EvRVSxIEPunuANfuX+pL6XMpS2QrxQq7GX+AVpRQmmncAksA+CPQ2XopGijW4dc6nejEQBbmDx6UH2kisHYjxN6TpgaEidxYGJ3Aeq3s3o2frnYk1XaqMMZk5gC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749884375; c=relaxed/simple;
-	bh=+GqlhQ0m4QFxvYQvMuMJs0KFzihRO4TErtoa/lVJX1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XZzGcDddVYNqoWmhzHXbbq/npxFbkp3Oc9dwzkTFsXij7MIgULnlj+oF4fmKWmgWyAaFaouXHa6NmnZWUZWPtrDVhCKqEDgXD+8Fi5HyokcyoySMJJgLMy2rGC8B/6Lnp72N9rmiZARFx6sSA4/lQJL33+taR7+4Dsi3q/AJoC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yp++tKyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031E6C4CEEB;
-	Sat, 14 Jun 2025 06:59:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749884375;
-	bh=+GqlhQ0m4QFxvYQvMuMJs0KFzihRO4TErtoa/lVJX1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yp++tKyQIL+vWjuuTmGsjDcILwec+i5d7m+67Tnaihi63ASTSkv4zWCfyzqSu7tXp
-	 6nxWU/6yAgF4Gc6Vexs6H+ibkJwc9Lz+mbVpqzvCC0QcFpnjrWjPhDEwrTF+ZasQyB
-	 GCC2/UBlNrKBj9XxehRJxTURzYEC0d0ErCs147zlIJl+nbDTsAILkbnR1OfndFtRHL
-	 h6aWHx41rlaXD3BBbUbtRiw0p84r2mQxnXdku0Mlnu9r8wG6in6XdQwvqHzWPL6fGj
-	 dZjNXLAyluxDiEpH0S7NldIiljI/pXq2uR1xPzIGRE9tVu/lhGOAvTAaC9WhKL7Xxn
-	 FrKKlIb3vj2mg==
-Date: Sat, 14 Jun 2025 08:59:30 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-tip-commits@vger.kernel.org, Dmitry Vyukov <dvyukov@google.com>,
-	x86@kernel.org
-Subject: [PATCH] syscall_user_dispatch: Fix grammar in
- task_set_syscall_user_dispatch()
-Message-ID: <aE0d0uuAxaeCE-9l@gmail.com>
-References: <97947cc8e205ff49675826d7b0327ef2e2c66eea.1747839857.git.dvyukov@google.com>
- <174983307181.406.10132559995641241207.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1749924630; c=relaxed/simple;
+	bh=TVsXtgMLh/M3YQnXCjrANL11tbtfvBnz2H2jBF3ZVOs=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=WnMnRB/FWBRgsZnVRTN4h9aUVQREMymeRuNRpZoivPBt24Ul7LCdfmyDqtevhpRsJwRLsqE7y5pU4A+m15/Rc5L9tuP/EBvIi3p5GH3KG3gczHEReAV6M0SQCqVTlabUmegPCsaDI0pcFAzlLGJuMIUW8cl7ieRV3Q1VjjgA4ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lx++csVn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tf2EFyK3; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 14 Jun 2025 07:31:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1749924626;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2mCcvBLO8NZIUwlT85SzTab0A/b1GootPrFseVJXDHw=;
+	b=Lx++csVnvMRCAw9iJgFNeWpD951qEjk54A+wtfxkKbP9NM0eYht8/7q86LZVdlz77vyCTa
+	Xw0MGnTtrHLp1XLgq3HW8UITaoyHV46d9U5K3NyI/awBmyhLRd/A0OfwNBi8k6C5XE4tiW
+	hNQgr9YUOxfjQW0UKcgRWgt5iZVeqH8K9fsE8Xx/23Lkh3vc0r83p9mve5iHaQI1eLqpqr
+	9uXN6uACVg226YILiWy+i2oMx+mimJ8owsvGoy2+blUHzgZfHDXDriDZC6VFomZXIkthPi
+	FTcd5LL2hpzuAzzXspGH2j7FDa/+m2LuIBbq+HcCVi1D8RZzH+tbyjQzZz5A7A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1749924626;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2mCcvBLO8NZIUwlT85SzTab0A/b1GootPrFseVJXDHw=;
+	b=tf2EFyK3H1cUdu6Ii/6vW6Xes2ZywrIiVbdzptub0NmFdVt37ktt8ckKIokecvoGXG5pr/
+	KYAZ4OIihTCMCxCw==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/kconfig] x86/kconfig/defconfig: Enable CONFIG_DRM_FBDEV_EMULATION=y
+Cc: Michael Kelley <mhklinux@outlook.com>, Ingo Molnar <mingo@kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ David Woodhouse <dwmw@amazon.co.uk>, "H. Peter Anvin" <hpa@zytor.com>,
+ jgross@suse.com, Linus Torvalds <torvalds@linux-foundation.org>,
+ Masahiro Yamada <yamada.masahiro@socionext.com>,
+ Michal Marek <michal.lkml@markovi.net>, linux-kernel@vger.kernel.org,
+ x86@kernel.org
+In-Reply-To: =?utf-8?q?=3CSN6PR02MB4157B1676A6284ECD21E494FD490A=40SN6PR02MB?=
+ =?utf-8?q?4157=2Enamprd02=2Eprod=2Eoutlook=2Ecom?= # Discussion>
+References: =?utf-8?q?=3CSN6PR02MB4157B1676A6284ECD21E494FD490A=40SN6PR02M?=
+ =?utf-8?q?B4157=2Enamprd02=2Eprod=2Eoutlook=2Ecom?= # Discussion>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174983307181.406.10132559995641241207.tip-bot2@tip-bot2>
+Message-ID: <174988630189.406.15753586837783578672.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+The following commit has been merged into the x86/kconfig branch of tip:
 
-* tip-bot2 for Dmitry Vyukov <tip-bot2@linutronix.de> wrote:
+Commit-ID:     860a6f26921a56a469e03a0f74d992ee217192df
+Gitweb:        https://git.kernel.org/tip/860a6f26921a56a469e03a0f74d992ee217=
+192df
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Sat, 14 Jun 2025 09:10:55 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 14 Jun 2025 09:24:35 +02:00
 
-> +	/*
-> +	 * access_ok() will clear memory tags for tagged addresses
-> +	 * if current has memory tagging enabled.
-> +	 *
-> +	 * To enable a tracer to set a tracees selector the
-> +	 * selector address must be untagged for access_ok(),
-> +	 * otherwise an untagged tracer will always fail to set a
-> +	 * tagged tracees selector.
-> +	 */
+x86/kconfig/defconfig: Enable CONFIG_DRM_FBDEV_EMULATION=3Dy
 
-Typo/grammar fixes below. (And feel free to squash this fixlet into the 
-originator commit.)
+Michael Kelley reported that the x86 defconfig *almost* works
+well on Hyper-V guests out of box, with the exception of
+console support:
 
-Thanks,
+ > I built and tested a Hyper-V guest with defconfig. The Hyper-V storage
+ > and keyboard drivers are pulled in automatically. [...]
+ >
+ > But the Linux console for each Hyper-V guest is a synthetic graphics
+ > console, and that didn't work with the DRM_HYPERV driver. Missing
+ > the console pretty much kills any usefulness. DRM doesn't have
+ > Linux console support, so it needs CONFIG_DRM_FBDEV_EMULATION
+ > to be set, and defconfig doesn't have it.
 
-	Ingo
+So enable CONFIG_DRM_FBDEV_EMULATION.
 
-==================================>
+Also enable the dependent CONFIG_FRAMEBUFFER_CONSOLE_ROTATION option
+(disabled by default), as all major Linux distros have it enabled,
+probably as an sysadmin quality-of-life option:
 
+	.config.distro.debian.x86_32:     CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+	.config.distro.fedora.generic:    CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+	.config.distro.opensuse.default:  CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+	.config.distro.rhel.generic:      CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+	.config.distro.ubuntu:            CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+
+There's no measurable build time impact within ~1% stddev:
+
+  # before:         33.759 +- 0.286 seconds time elapsed  ( +-  0.85% )
+  # after:          33.593 +- 0.314 seconds time elapsed  ( +-  0.94% )
+
+Suggested-by: Michael Kelley <mhklinux@outlook.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: J=C3=BCrgen Gro=C3=9F <jgross@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc: Michal Marek <michal.lkml@markovi.net>
+Cc: linux-kernel@vger.kernel.org
+Link: https://lore.kernel.org/r/SN6PR02MB4157B1676A6284ECD21E494FD490A@SN6PR0=
+2MB4157.namprd02.prod.outlook.com # Discussion
+---
+ arch/x86/configs/i386_defconfig   | 2 ++
+ arch/x86/configs/x86_64_defconfig | 3 +++
+ 2 files changed, 5 insertions(+)
 
- kernel/entry/syscall_user_dispatch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/entry/syscall_user_dispatch.c b/kernel/entry/syscall_user_dispatch.c
-index a9055eccb27e..d5363bc768fe 100644
---- a/kernel/entry/syscall_user_dispatch.c
-+++ b/kernel/entry/syscall_user_dispatch.c
-@@ -106,10 +106,10 @@ static int task_set_syscall_user_dispatch(struct task_struct *task, unsigned lon
- 	 * access_ok() will clear memory tags for tagged addresses
- 	 * if current has memory tagging enabled.
- 	 *
--	 * To enable a tracer to set a tracees selector the
-+	 * To enable a tracer to set a tracee's selector, the
- 	 * selector address must be untagged for access_ok(),
- 	 * otherwise an untagged tracer will always fail to set a
--	 * tagged tracees selector.
-+	 * tagged tracee's selector.
- 	 */
- 	if (mode != PR_SYS_DISPATCH_OFF && selector &&
- 		!access_ok(untagged_addr(selector), sizeof(*selector)))
+diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
+index aeba958..39a660d 100644
+--- a/arch/x86/configs/i386_defconfig
++++ b/arch/x86/configs/i386_defconfig
+@@ -239,8 +239,10 @@ CONFIG_AGP=3Dy
+ CONFIG_AGP_AMD64=3Dy
+ CONFIG_AGP_INTEL=3Dy
+ CONFIG_DRM=3Dy
++CONFIG_DRM_FBDEV_EMULATION=3Dy
+ CONFIG_DRM_VIRTIO_GPU=3Dy
+ CONFIG_DRM_HYPERV=3Dy
++CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+ CONFIG_SOUND=3Dy
+ CONFIG_SND=3Dy
+ CONFIG_SND_HRTIMER=3Dy
+diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defc=
+onfig
+index c20100d..b5dc26f 100644
+--- a/arch/x86/configs/x86_64_defconfig
++++ b/arch/x86/configs/x86_64_defconfig
+@@ -116,6 +116,7 @@ CONFIG_ANON_VMA_NAME=3Dy
+ CONFIG_USERFAULTFD=3Dy
+ CONFIG_LRU_GEN=3Dy
+ CONFIG_LRU_GEN_ENABLED=3Dy
++# CONFIG_DAMON is not set
+ CONFIG_NET=3Dy
+ CONFIG_PACKET=3Dy
+ CONFIG_XFRM_USER=3Dy
+@@ -248,8 +249,10 @@ CONFIG_AGP=3Dy
+ CONFIG_AGP_AMD64=3Dy
+ CONFIG_AGP_INTEL=3Dy
+ CONFIG_DRM=3Dy
++CONFIG_DRM_FBDEV_EMULATION=3Dy
+ CONFIG_DRM_VIRTIO_GPU=3Dy
+ CONFIG_DRM_HYPERV=3Dy
++CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=3Dy
+ CONFIG_SOUND=3Dy
+ CONFIG_SND=3Dy
+ CONFIG_SND_HRTIMER=3Dy
 
