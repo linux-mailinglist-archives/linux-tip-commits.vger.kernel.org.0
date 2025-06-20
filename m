@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-5872-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5874-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC50AE02D8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Jun 2025 12:40:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2709FAE183D
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Jun 2025 11:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C941177E66
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 19 Jun 2025 10:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 358ED5A708B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 20 Jun 2025 09:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E6F22A4E3;
-	Thu, 19 Jun 2025 10:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2904428368C;
+	Fri, 20 Jun 2025 09:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x1Bnezjy";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OnuHvKUC"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ug87VqJG";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ofPknW3M"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555F62264BC;
-	Thu, 19 Jun 2025 10:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071F230E830;
+	Fri, 20 Jun 2025 09:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750329611; cv=none; b=UjfkPbOoEB+IoH6Jdgi7slQqpcY/vydTVoi278FUzTu+y6fgTtc+DC7aggZPL0aILmVkcxlNl/Sjb3IrsgsOlVUpuh/gF8ACjyPCvMmJQsfjf2nzqU6WQ/Ojw67G0I3czZ+KsyP/ttCDy5QvyxQUDYGOf8CDx8CW3PEwtIoYOYw=
+	t=1750412997; cv=none; b=u26P9v7eqt6Yv6taHhcMdfIam8rRK143RuCRV24d7BHV9MJM/TjrryWPzfQNxB4vTTucvt0XP0blP+RazjxsJtw8v4wOa1BcwZScM9ezUIygO/mJEn5g5i4oHHGFhKMouadiwou/mdcjJz7qLPkBnCio8dDjpkhM4f54QdPWIHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750329611; c=relaxed/simple;
-	bh=ugDRN2x10YRUu7yJ3Xv0tcTzCM9pNqJCt+mp//K4NQM=;
+	s=arc-20240116; t=1750412997; c=relaxed/simple;
+	bh=4af39J/JEpYYrTyH1+2tKMnr3lVlUhb2ZJfuDSTxZw4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=BatXeakCUKSkNnAVo2VOYFGbcTRd9j9E+Pae5VFkQYWX/X4n107ejE/VdT2yyy0PqyfjgMvoCLFrpzOpviKcCdXgTCpfhgsUD8b0Bj6CMykLSyeVJql+DloM3ZKS/hyfImKD+OewFsVCeSLpfPSlikt7iJA8OruAUMVBoGCBfoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x1Bnezjy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OnuHvKUC; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=iFxF+mn9PBZjv7R93W0IU46/SU6/7L0N9kBxpTfGpV7tXaxoe3D4vuyoep1RtC8lzOS1Kpg0UxMOKmp2gdtHIUyXJiqhh66PoBvn2nVU892iSmmcZAIxxvYm33TlKBR/YpRcOu6EqzFJ2D/fa4DDN6Ll+KOUSJDPd2ahAcNppa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ug87VqJG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ofPknW3M; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 19 Jun 2025 10:40:00 -0000
+Date: Fri, 20 Jun 2025 09:49:51 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750329601;
+	s=2020; t=1750412992;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wO6lkOqXYmlkMYZiigBKuVzVL6Q4+sfc0E72XkHdKU0=;
-	b=x1Bnezjy8M9U/JJq3NU8YHbiK7kWzBhf2K604fTX9vw7l/7x1YYeMWn5tBHNSxDXYf8mqu
-	gq5OAliyUbL9kBqMICjsSNFFyologgvbXnrFeLbWhfCu8ZmaiktZjzgjLXk8D6eOU6Vcfc
-	epIVVygwZcrHezIeAMdlWsF7GnkV3ylyWrAwP+07djNUa4jWhrj3kSv6q6bVU724fSs/vV
-	v/vlWE+UniJZZwqBM7fJ+Afsp1ypfMc5J4x78jSlkeMfkUuA5+j/USHqafZH3EqEQJur5i
-	icGEF7eIltyPuSiCeOoNc8RTOnQk19D2BdFEdALE/QeA9jeEcauAw29N7Jf1AA==
+	bh=qY3Uyr+o98Xh8z0luL0PCKeo2NIL1UrKTVvxgaKb0bo=;
+	b=Ug87VqJGEyKYUd9AUfqN/mLHCME/Ipla9fOBxqR28tQOw1428kNHsHS5AOe6L7jGm18jns
+	FN9uXPY1SpQzh7zgmXa3OoR63iPMEc9HyAIdt8NQKXqk0FpbXpehuVLf0c0+AHhrTlSDWm
+	t2jF28MHqXdIiXrrN6vUVu9pp4/2Qml0Zrn3syHzdoWlhFhWVh82cB860mENmjb52BVxV3
+	rqeMPn+blx+7OEeXYii7Fm7jDw884HlVHiqgc8Jbwj2ELSoVhdYeZFkTmoSY5lVXdlD/fr
+	zwBCFFCWWp+ojiniEYcanURyunU+y7z+yUaesljZDzib2tLMkuAT18J+2kHJPw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750329601;
+	s=2020e; t=1750412992;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wO6lkOqXYmlkMYZiigBKuVzVL6Q4+sfc0E72XkHdKU0=;
-	b=OnuHvKUCCVyOzYEm4Y8ONgNhR3dNnqbNt/mPZt0m1trV6lAIcmVhvLdmfCFHiVI03xLA2S
-	bSZ95errohkum9BQ==
-From: "tip-bot2 for Alexey Kardashevskiy" <tip-bot2@linutronix.de>
+	bh=qY3Uyr+o98Xh8z0luL0PCKeo2NIL1UrKTVvxgaKb0bo=;
+	b=ofPknW3MkvgtHyyAjCjUHSySLaO5EBh6u3Ao1WwUXt5rAxmT8GCDM9dTSgkCoaJB6ytREF
+	CoM8xZFAi/hVT7Bw==
+From: "tip-bot2 for Tejun Heo" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/sev] virt: sev-guest: Contain snp_guest_request_ioctl in sev-guest
-Cc: Alexey Kardashevskiy <aik@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, Dionna Glaze <dionnaglaze@google.com>,
+Subject: [tip: sched/core] sched/core: Reorganize cgroup bandwidth control
+ interface file writes
+Cc: Tejun Heo <tj@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250611040842.2667262-2-aik@amd.com>
-References: <20250611040842.2667262-2-aik@amd.com>
+In-Reply-To: <20250614012346.2358261-5-tj@kernel.org>
+References: <20250614012346.2358261-5-tj@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175032960001.406.17045623951297790051.tip-bot2@tip-bot2>
+Message-ID: <175041299139.406.1283400728227172786.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,241 +79,398 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/sev branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3f83ab6f9f1db9e8f0141c0c6b974f40b4aa0dcf
-Gitweb:        https://git.kernel.org/tip/3f83ab6f9f1db9e8f0141c0c6b974f40b4aa0dcf
-Author:        Alexey Kardashevskiy <aik@amd.com>
-AuthorDate:    Wed, 11 Jun 2025 14:08:39 +10:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 18 Jun 2025 22:55:30 +02:00
+Commit-ID:     5bc34be478d09c4d16009e665e020ad0fcd0deea
+Gitweb:        https://git.kernel.org/tip/5bc34be478d09c4d16009e665e020ad0fcd0deea
+Author:        Tejun Heo <tj@kernel.org>
+AuthorDate:    Fri, 13 Jun 2025 15:23:30 -10:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 18 Jun 2025 13:59:57 +02:00
 
-virt: sev-guest: Contain snp_guest_request_ioctl in sev-guest
+sched/core: Reorganize cgroup bandwidth control interface file writes
 
-SNP Guest Request uses only exitinfo2 which is a return value from GHCB, has
-meaning beyond ioctl and therefore belongs to struct snp_guest_req.
+- Move input parameter validation from tg_set_cfs_bandwidth() to the new
+  outer function tg_set_bandwidth(). The outer function handles parameters
+  in usecs, validates them and calls tg_set_cfs_bandwidth() which converts
+  them into nsecs. This matches tg_bandwidth() on the read side.
 
-Move exitinfo2 there and remove snp_guest_request_ioctl from the SEV platform
-code.
+- max/min_cfs_* consts are now used by tg_set_bandwidth(). Relocate, convert
+  into usecs and drop "cfs" from the names.
 
-No functional change intended.
+- Reimplement cpu_cfs_{period|quote|burst}_write_*() using tg_bandwidth()
+  and tg_set_bandwidth() and replace "cfs" in the names with "bw".
 
-Signed-off-by: Alexey Kardashevskiy <aik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Reviewed-by: Dionna Glaze <dionnaglaze@google.com>
-Link: https://lore.kernel.org/20250611040842.2667262-2-aik@amd.com
+- Update cpu_max_write() to use tg_set_bandiwdth(). cpu_period_quota_parse()
+  is updated to drop nsec conversion accordingly. This aligns the behavior
+  with cfs_period_quota_print().
+
+- Drop now unused tg_set_cfs_{period|quota|burst}().
+
+- While at it, for consistency, rename default_cfs_period() to
+  default_bw_period_us() and make it return usecs.
+
+This is to prepare for adding bandwidth control support to sched_ext.
+tg_set_bandwidth() will be used as the muxing point. No functional changes
+intended.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250614012346.2358261-5-tj@kernel.org
 ---
- arch/x86/coco/sev/core.c                | 36 ++++++++----------------
- arch/x86/include/asm/sev.h              | 10 ++-----
- drivers/virt/coco/sev-guest/sev-guest.c |  9 ++++--
- 3 files changed, 23 insertions(+), 32 deletions(-)
+ kernel/sched/core.c  | 205 ++++++++++++++++++++----------------------
+ kernel/sched/fair.c  |   4 +-
+ kernel/sched/sched.h |  10 +-
+ 3 files changed, 106 insertions(+), 113 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b6db4e0..cf91cb4 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1389,8 +1389,7 @@ int snp_issue_svsm_attest_req(u64 call_id, struct svsm_call *call,
- }
- EXPORT_SYMBOL_GPL(snp_issue_svsm_attest_req);
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 8de93a3..2f8caa9 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9309,47 +9309,23 @@ static u64 cpu_shares_read_u64(struct cgroup_subsys_state *css,
+ #ifdef CONFIG_CFS_BANDWIDTH
+ static DEFINE_MUTEX(cfs_constraints_mutex);
  
--static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_data *input,
--				   struct snp_guest_request_ioctl *rio)
-+static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_data *input)
+-const u64 max_cfs_quota_period = 1 * NSEC_PER_SEC; /* 1s */
+-static const u64 min_cfs_quota_period = 1 * NSEC_PER_MSEC; /* 1ms */
+-/* More than 203 days if BW_SHIFT equals 20. */
+-static const u64 max_cfs_runtime = MAX_BW * NSEC_PER_USEC;
+-
+ static int __cfs_schedulable(struct task_group *tg, u64 period, u64 runtime);
+ 
+-static int tg_set_cfs_bandwidth(struct task_group *tg, u64 period, u64 quota,
+-				u64 burst)
++static int tg_set_cfs_bandwidth(struct task_group *tg,
++				u64 period_us, u64 quota_us, u64 burst_us)
  {
- 	struct ghcb_state state;
- 	struct es_em_ctxt ctxt;
-@@ -1398,7 +1397,7 @@ static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_dat
- 	struct ghcb *ghcb;
- 	int ret;
+ 	int i, ret = 0, runtime_enabled, runtime_was_enabled;
+ 	struct cfs_bandwidth *cfs_b = &tg->cfs_bandwidth;
++	u64 period, quota, burst;
  
--	rio->exitinfo2 = SEV_RET_NO_FW_CALL;
-+	req->exitinfo2 = SEV_RET_NO_FW_CALL;
+-	if (tg == &root_task_group)
+-		return -EINVAL;
+-
+-	/*
+-	 * Ensure we have at some amount of bandwidth every period.  This is
+-	 * to prevent reaching a state of large arrears when throttled via
+-	 * entity_tick() resulting in prolonged exit starvation.
+-	 */
+-	if (quota < min_cfs_quota_period || period < min_cfs_quota_period)
+-		return -EINVAL;
++	period = (u64)period_us * NSEC_PER_USEC;
+ 
+-	/*
+-	 * Likewise, bound things on the other side by preventing insane quota
+-	 * periods.  This also allows us to normalize in computing quota
+-	 * feasibility.
+-	 */
+-	if (period > max_cfs_quota_period)
+-		return -EINVAL;
+-
+-	/*
+-	 * Bound quota to defend quota against overflow during bandwidth shift.
+-	 */
+-	if (quota != RUNTIME_INF && quota > max_cfs_runtime)
+-		return -EINVAL;
++	if (quota_us == RUNTIME_INF)
++		quota = RUNTIME_INF;
++	else
++		quota = (u64)quota_us * NSEC_PER_USEC;
+ 
+-	if (quota != RUNTIME_INF && (burst > quota ||
+-				     burst + quota > max_cfs_runtime))
+-		return -EINVAL;
++	burst = (u64)burst_us * NSEC_PER_USEC;
  
  	/*
- 	 * __sev_get_ghcb() needs to run with IRQs disabled because it is using
-@@ -1423,8 +1422,8 @@ static int snp_issue_guest_request(struct snp_guest_req *req, struct snp_req_dat
- 	if (ret)
- 		goto e_put;
+ 	 * Prevent race between setting of cfs_rq->runtime_enabled and
+@@ -9437,50 +9413,6 @@ static u64 tg_get_cfs_burst(struct task_group *tg)
+ 	return burst_us;
+ }
  
--	rio->exitinfo2 = ghcb->save.sw_exit_info_2;
--	switch (rio->exitinfo2) {
-+	req->exitinfo2 = ghcb->save.sw_exit_info_2;
-+	switch (req->exitinfo2) {
- 	case 0:
- 		break;
- 
-@@ -1919,8 +1918,7 @@ static int enc_payload(struct snp_msg_desc *mdesc, u64 seqno, struct snp_guest_r
+-static int tg_set_cfs_period(struct task_group *tg, long cfs_period_us)
+-{
+-	u64 quota, period, burst;
+-
+-	if ((u64)cfs_period_us > U64_MAX / NSEC_PER_USEC)
+-		return -EINVAL;
+-
+-	period = (u64)cfs_period_us * NSEC_PER_USEC;
+-	quota = tg->cfs_bandwidth.quota;
+-	burst = tg->cfs_bandwidth.burst;
+-
+-	return tg_set_cfs_bandwidth(tg, period, quota, burst);
+-}
+-
+-static int tg_set_cfs_quota(struct task_group *tg, long cfs_quota_us)
+-{
+-	u64 quota, period, burst;
+-
+-	period = ktime_to_ns(tg->cfs_bandwidth.period);
+-	burst = tg->cfs_bandwidth.burst;
+-	if (cfs_quota_us < 0)
+-		quota = RUNTIME_INF;
+-	else if ((u64)cfs_quota_us <= U64_MAX / NSEC_PER_USEC)
+-		quota = (u64)cfs_quota_us * NSEC_PER_USEC;
+-	else
+-		return -EINVAL;
+-
+-	return tg_set_cfs_bandwidth(tg, period, quota, burst);
+-}
+-
+-static int tg_set_cfs_burst(struct task_group *tg, long cfs_burst_us)
+-{
+-	u64 quota, period, burst;
+-
+-	if ((u64)cfs_burst_us > U64_MAX / NSEC_PER_USEC)
+-		return -EINVAL;
+-
+-	burst = (u64)cfs_burst_us * NSEC_PER_USEC;
+-	period = ktime_to_ns(tg->cfs_bandwidth.period);
+-	quota = tg->cfs_bandwidth.quota;
+-
+-	return tg_set_cfs_bandwidth(tg, period, quota, burst);
+-}
+-
+ struct cfs_schedulable_data {
+ 	struct task_group *tg;
+ 	u64 period, quota;
+@@ -9614,6 +9546,11 @@ static int cpu_cfs_local_stat_show(struct seq_file *sf, void *v)
  	return 0;
  }
  
--static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
--				  struct snp_guest_request_ioctl *rio)
-+static int __handle_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req)
++const u64 max_bw_quota_period_us = 1 * USEC_PER_SEC; /* 1s */
++static const u64 min_bw_quota_period_us = 1 * USEC_PER_MSEC; /* 1ms */
++/* More than 203 days if BW_SHIFT equals 20. */
++static const u64 max_bw_runtime_us = MAX_BW;
++
+ static void tg_bandwidth(struct task_group *tg,
+ 			 u64 *period_us_p, u64 *quota_us_p, u64 *burst_us_p)
  {
- 	unsigned long req_start = jiffies;
- 	unsigned int override_npages = 0;
-@@ -1934,7 +1932,7 @@ retry_request:
- 	 * sequence number must be incremented or the VMPCK must be deleted to
- 	 * prevent reuse of the IV.
- 	 */
--	rc = snp_issue_guest_request(req, &req->input, rio);
-+	rc = snp_issue_guest_request(req, &req->input);
- 	switch (rc) {
- 	case -ENOSPC:
- 		/*
-@@ -1987,7 +1985,7 @@ retry_request:
- 	snp_inc_msg_seqno(mdesc);
- 
- 	if (override_err) {
--		rio->exitinfo2 = override_err;
-+		req->exitinfo2 = override_err;
- 
- 		/*
- 		 * If an extended guest request was issued and the supplied certificate
-@@ -2005,8 +2003,7 @@ retry_request:
- 	return rc;
+@@ -9634,6 +9571,50 @@ static u64 cpu_period_read_u64(struct cgroup_subsys_state *css,
+ 	return period_us;
  }
  
--int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
--			   struct snp_guest_request_ioctl *rio)
-+int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req)
++static int tg_set_bandwidth(struct task_group *tg,
++			    u64 period_us, u64 quota_us, u64 burst_us)
++{
++	const u64 max_usec = U64_MAX / NSEC_PER_USEC;
++
++	if (tg == &root_task_group)
++		return -EINVAL;
++
++	/* Values should survive translation to nsec */
++	if (period_us > max_usec ||
++	    (quota_us != RUNTIME_INF && quota_us > max_usec) ||
++	    burst_us > max_usec)
++		return -EINVAL;
++
++	/*
++	 * Ensure we have some amount of bandwidth every period. This is to
++	 * prevent reaching a state of large arrears when throttled via
++	 * entity_tick() resulting in prolonged exit starvation.
++	 */
++	if (quota_us < min_bw_quota_period_us ||
++	    period_us < min_bw_quota_period_us)
++		return -EINVAL;
++
++	/*
++	 * Likewise, bound things on the other side by preventing insane quota
++	 * periods.  This also allows us to normalize in computing quota
++	 * feasibility.
++	 */
++	if (period_us > max_bw_quota_period_us)
++		return -EINVAL;
++
++	/*
++	 * Bound quota to defend quota against overflow during bandwidth shift.
++	 */
++	if (quota_us != RUNTIME_INF && quota_us > max_bw_runtime_us)
++		return -EINVAL;
++
++	if (quota_us != RUNTIME_INF && (burst_us > quota_us ||
++					burst_us + quota_us > max_bw_runtime_us))
++		return -EINVAL;
++
++	return tg_set_cfs_bandwidth(tg, period_us, quota_us, burst_us);
++}
++
+ static s64 cpu_quota_read_s64(struct cgroup_subsys_state *css,
+ 			      struct cftype *cft)
  {
- 	u64 seqno;
- 	int rc;
-@@ -2043,14 +2040,14 @@ int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req
- 	req->input.resp_gpa = __pa(mdesc->response);
- 	req->input.data_gpa = req->certs_data ? __pa(req->certs_data) : 0;
- 
--	rc = __handle_guest_request(mdesc, req, rio);
-+	rc = __handle_guest_request(mdesc, req);
- 	if (rc) {
- 		if (rc == -EIO &&
--		    rio->exitinfo2 == SNP_GUEST_VMM_ERR(SNP_GUEST_VMM_ERR_INVALID_LEN))
-+		    req->exitinfo2 == SNP_GUEST_VMM_ERR(SNP_GUEST_VMM_ERR_INVALID_LEN))
- 			return rc;
- 
- 		pr_alert("Detected error from ASP request. rc: %d, exitinfo2: 0x%llx\n",
--			 rc, rio->exitinfo2);
-+			 rc, req->exitinfo2);
- 
- 		snp_disable_vmpck(mdesc);
- 		return rc;
-@@ -2069,7 +2066,6 @@ EXPORT_SYMBOL_GPL(snp_send_guest_request);
- 
- static int __init snp_get_tsc_info(void)
- {
--	struct snp_guest_request_ioctl *rio;
- 	struct snp_tsc_info_resp *tsc_resp;
- 	struct snp_tsc_info_req *tsc_req;
- 	struct snp_msg_desc *mdesc;
-@@ -2093,13 +2089,9 @@ static int __init snp_get_tsc_info(void)
- 	if (!req)
- 		goto e_free_tsc_resp;
- 
--	rio = kzalloc(sizeof(*rio), GFP_KERNEL);
--	if (!rio)
--		goto e_free_req;
--
- 	mdesc = snp_msg_alloc();
- 	if (IS_ERR_OR_NULL(mdesc))
--		goto e_free_rio;
-+		goto e_free_req;
- 
- 	rc = snp_msg_init(mdesc, snp_vmpl);
- 	if (rc)
-@@ -2114,7 +2106,7 @@ static int __init snp_get_tsc_info(void)
- 	req->resp_sz = sizeof(*tsc_resp) + AUTHTAG_LEN;
- 	req->exit_code = SVM_VMGEXIT_GUEST_REQUEST;
- 
--	rc = snp_send_guest_request(mdesc, req, rio);
-+	rc = snp_send_guest_request(mdesc, req);
- 	if (rc)
- 		goto e_request;
- 
-@@ -2135,8 +2127,6 @@ e_request:
- 	memzero_explicit(tsc_resp, sizeof(*tsc_resp) + AUTHTAG_LEN);
- e_free_mdesc:
- 	snp_msg_free(mdesc);
--e_free_rio:
--	kfree(rio);
- e_free_req:
- 	kfree(req);
-  e_free_tsc_resp:
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 58e028d..fbb616f 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -231,6 +231,7 @@ struct snp_guest_req {
- 	size_t resp_sz;
- 
- 	u64 exit_code;
-+	u64 exitinfo2;
- 	unsigned int vmpck_id;
- 	u8 msg_version;
- 	u8 msg_type;
-@@ -486,8 +487,6 @@ static inline int pvalidate(unsigned long vaddr, bool rmp_psize, bool validate)
- 	return rc;
+@@ -9652,22 +9633,37 @@ static u64 cpu_burst_read_u64(struct cgroup_subsys_state *css,
+ 	return burst_us;
  }
  
--struct snp_guest_request_ioctl;
+-static int cpu_cfs_period_write_u64(struct cgroup_subsys_state *css,
+-				    struct cftype *cftype, u64 cfs_period_us)
++static int cpu_period_write_u64(struct cgroup_subsys_state *css,
++				struct cftype *cftype, u64 period_us)
+ {
+-	return tg_set_cfs_period(css_tg(css), cfs_period_us);
++	struct task_group *tg = css_tg(css);
++	u64 quota_us, burst_us;
++
++	tg_bandwidth(tg, NULL, &quota_us, &burst_us);
++	return tg_set_bandwidth(tg, period_us, quota_us, burst_us);
+ }
+ 
+-static int cpu_cfs_quota_write_s64(struct cgroup_subsys_state *css,
+-				   struct cftype *cftype, s64 cfs_quota_us)
++static int cpu_quota_write_s64(struct cgroup_subsys_state *css,
++			       struct cftype *cftype, s64 quota_us)
+ {
+-	return tg_set_cfs_quota(css_tg(css), cfs_quota_us);
++	struct task_group *tg = css_tg(css);
++	u64 period_us, burst_us;
++
++	if (quota_us < 0)
++		quota_us = RUNTIME_INF;
++
++	tg_bandwidth(tg, &period_us, NULL, &burst_us);
++	return tg_set_bandwidth(tg, period_us, quota_us, burst_us);
+ }
+ 
+-static int cpu_cfs_burst_write_u64(struct cgroup_subsys_state *css,
+-				   struct cftype *cftype, u64 cfs_burst_us)
++static int cpu_burst_write_u64(struct cgroup_subsys_state *css,
++			       struct cftype *cftype, u64 burst_us)
+ {
+-	return tg_set_cfs_burst(css_tg(css), cfs_burst_us);
++	struct task_group *tg = css_tg(css);
++	u64 period_us, quota_us;
++
++	tg_bandwidth(tg, &period_us, &quota_us, NULL);
++	return tg_set_bandwidth(tg, period_us, quota_us, burst_us);
+ }
+ #endif /* CONFIG_CFS_BANDWIDTH */
+ 
+@@ -9733,17 +9729,17 @@ static struct cftype cpu_legacy_files[] = {
+ 	{
+ 		.name = "cfs_period_us",
+ 		.read_u64 = cpu_period_read_u64,
+-		.write_u64 = cpu_cfs_period_write_u64,
++		.write_u64 = cpu_period_write_u64,
+ 	},
+ 	{
+ 		.name = "cfs_quota_us",
+ 		.read_s64 = cpu_quota_read_s64,
+-		.write_s64 = cpu_cfs_quota_write_s64,
++		.write_s64 = cpu_quota_write_s64,
+ 	},
+ 	{
+ 		.name = "cfs_burst_us",
+ 		.read_u64 = cpu_burst_read_u64,
+-		.write_u64 = cpu_cfs_burst_write_u64,
++		.write_u64 = cpu_burst_write_u64,
+ 	},
+ 	{
+ 		.name = "stat",
+@@ -9940,22 +9936,20 @@ static void __maybe_unused cpu_period_quota_print(struct seq_file *sf,
+ }
+ 
+ /* caller should put the current value in *@periodp before calling */
+-static int __maybe_unused cpu_period_quota_parse(char *buf,
+-						 u64 *periodp, u64 *quotap)
++static int __maybe_unused cpu_period_quota_parse(char *buf, u64 *period_us_p,
++						 u64 *quota_us_p)
+ {
+ 	char tok[21];	/* U64_MAX */
+ 
+-	if (sscanf(buf, "%20s %llu", tok, periodp) < 1)
++	if (sscanf(buf, "%20s %llu", tok, period_us_p) < 1)
+ 		return -EINVAL;
+ 
+-	*periodp *= NSEC_PER_USEC;
 -
- void setup_ghcb(void);
- void early_snp_set_memory_private(unsigned long vaddr, unsigned long paddr,
- 				  unsigned long npages);
-@@ -513,8 +512,7 @@ void snp_kexec_begin(void);
- int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id);
- struct snp_msg_desc *snp_msg_alloc(void);
- void snp_msg_free(struct snp_msg_desc *mdesc);
--int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
--			   struct snp_guest_request_ioctl *rio);
-+int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req);
+-	if (sscanf(tok, "%llu", quotap))
+-		*quotap *= NSEC_PER_USEC;
+-	else if (!strcmp(tok, "max"))
+-		*quotap = RUNTIME_INF;
+-	else
+-		return -EINVAL;
++	if (sscanf(tok, "%llu", quota_us_p) < 1) {
++		if (!strcmp(tok, "max"))
++			*quota_us_p = RUNTIME_INF;
++		else
++			return -EINVAL;
++	}
  
- int snp_svsm_vtpm_send_command(u8 *buffer);
+ 	return 0;
+ }
+@@ -9975,14 +9969,13 @@ static ssize_t cpu_max_write(struct kernfs_open_file *of,
+ 			     char *buf, size_t nbytes, loff_t off)
+ {
+ 	struct task_group *tg = css_tg(of_css(of));
+-	u64 period = tg_get_cfs_period(tg);
+-	u64 burst = tg->cfs_bandwidth.burst;
+-	u64 quota;
++	u64 period_us, quota_us, burst_us;
+ 	int ret;
  
-@@ -587,8 +585,8 @@ static inline void snp_kexec_begin(void) { }
- static inline int snp_msg_init(struct snp_msg_desc *mdesc, int vmpck_id) { return -1; }
- static inline struct snp_msg_desc *snp_msg_alloc(void) { return NULL; }
- static inline void snp_msg_free(struct snp_msg_desc *mdesc) { }
--static inline int snp_send_guest_request(struct snp_msg_desc *mdesc, struct snp_guest_req *req,
--					 struct snp_guest_request_ioctl *rio) { return -ENODEV; }
-+static inline int snp_send_guest_request(struct snp_msg_desc *mdesc,
-+					 struct snp_guest_req *req) { return -ENODEV; }
- static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
- static inline void __init snp_secure_tsc_prepare(void) { }
- static inline void __init snp_secure_tsc_init(void) { }
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 7a4e218..d2b3ae7 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -101,7 +101,8 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 	req.resp_sz = resp_len;
- 	req.exit_code = SVM_VMGEXIT_GUEST_REQUEST;
+-	ret = cpu_period_quota_parse(buf, &period, &quota);
++	tg_bandwidth(tg, &period_us, NULL, &burst_us);
++	ret = cpu_period_quota_parse(buf, &period_us, &quota_us);
+ 	if (!ret)
+-		ret = tg_set_cfs_bandwidth(tg, period, quota, burst);
++		ret = tg_set_bandwidth(tg, period_us, quota_us, burst_us);
+ 	return ret ?: nbytes;
+ }
+ #endif /* CONFIG_CFS_BANDWIDTH */
+@@ -10019,7 +10012,7 @@ static struct cftype cpu_files[] = {
+ 		.name = "max.burst",
+ 		.flags = CFTYPE_NOT_ON_ROOT,
+ 		.read_u64 = cpu_burst_read_u64,
+-		.write_u64 = cpu_cfs_burst_write_u64,
++		.write_u64 = cpu_burst_write_u64,
+ 	},
+ #endif /* CONFIG_CFS_BANDWIDTH */
+ #ifdef CONFIG_UCLAMP_TASK_GROUP
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 707be45..7e2963e 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6422,7 +6422,7 @@ static enum hrtimer_restart sched_cfs_period_timer(struct hrtimer *timer)
+ 			 * to fail.
+ 			 */
+ 			new = old * 2;
+-			if (new < max_cfs_quota_period) {
++			if (new < max_bw_quota_period_us * NSEC_PER_USEC) {
+ 				cfs_b->period = ns_to_ktime(new);
+ 				cfs_b->quota *= 2;
+ 				cfs_b->burst *= 2;
+@@ -6456,7 +6456,7 @@ void init_cfs_bandwidth(struct cfs_bandwidth *cfs_b, struct cfs_bandwidth *paren
+ 	raw_spin_lock_init(&cfs_b->lock);
+ 	cfs_b->runtime = 0;
+ 	cfs_b->quota = RUNTIME_INF;
+-	cfs_b->period = ns_to_ktime(default_cfs_period());
++	cfs_b->period = us_to_ktime(default_bw_period_us());
+ 	cfs_b->burst = 0;
+ 	cfs_b->hierarchical_quota = parent ? parent->hierarchical_quota : RUNTIME_INF;
  
--	rc = snp_send_guest_request(mdesc, &req, arg);
-+	rc = snp_send_guest_request(mdesc, &req);
-+	arg->exitinfo2 = req.exitinfo2;
- 	if (rc)
- 		goto e_free;
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index e00b80c..105190b 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -403,15 +403,15 @@ static inline bool dl_server_active(struct sched_dl_entity *dl_se)
+ extern struct list_head task_groups;
  
-@@ -152,7 +153,8 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 	req.resp_sz = resp_len;
- 	req.exit_code = SVM_VMGEXIT_GUEST_REQUEST;
+ #ifdef CONFIG_CFS_BANDWIDTH
+-extern const u64 max_cfs_quota_period;
++extern const u64 max_bw_quota_period_us;
  
--	rc = snp_send_guest_request(mdesc, &req, arg);
-+	rc = snp_send_guest_request(mdesc, &req);
-+	arg->exitinfo2 = req.exitinfo2;
- 	if (rc)
- 		return rc;
+ /*
+- * default period for cfs group bandwidth.
+- * default: 0.1s, units: nanoseconds
++ * default period for group bandwidth.
++ * default: 0.1s, units: microseconds
+  */
+-static inline u64 default_cfs_period(void)
++static inline u64 default_bw_period_us(void)
+ {
+-	return 100000000ULL;
++	return 100000ULL;
+ }
+ #endif /* CONFIG_CFS_BANDWIDTH */
  
-@@ -249,7 +251,8 @@ cmd:
- 	req.resp_sz = resp_len;
- 	req.exit_code = SVM_VMGEXIT_EXT_GUEST_REQUEST;
- 
--	ret = snp_send_guest_request(mdesc, &req, arg);
-+	ret = snp_send_guest_request(mdesc, &req);
-+	arg->exitinfo2 = req.exitinfo2;
- 
- 	/* If certs length is invalid then copy the returned length */
- 	if (arg->vmm_error == SNP_GUEST_VMM_ERR_INVALID_LEN) {
 
