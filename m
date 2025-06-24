@@ -1,65 +1,65 @@
-Return-Path: <linux-tip-commits+bounces-5892-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5893-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E28AE70F2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Jun 2025 22:36:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D7FAE732E
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Jun 2025 01:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A07816BC4A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Jun 2025 20:35:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAA617B191A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Jun 2025 23:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1952EAD02;
-	Tue, 24 Jun 2025 20:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B30625A2CE;
+	Tue, 24 Jun 2025 23:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="deGzkPUs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7dtBQX7W"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FUgEN5mm";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PtmbGx3I"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259942E3B14;
-	Tue, 24 Jun 2025 20:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40993219E0;
+	Tue, 24 Jun 2025 23:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750797329; cv=none; b=j0b6nUBX6ZvP9AOuiXfgl9dGtup2d6qrPID5IRQr8FFxHMl9iH+D3NoGeuFbsboHSWBQG4ZNn3+rqGfEEwqHT1O2I1u/jP3KmpIhIQEr8io7/myHRo9/v4Fg4RNSXaC/UBXIegjCgzTQHXINxMDX9SehQxLFe73jO/HLyWvw8LM=
+	t=1750807861; cv=none; b=GFIJjaJ63Qb+lovrCppspxPH8vLafCCCUIsqkRk7YnOywNbMWKddueSap6RgSsMZkAtZ9rNW6Xsnw2eS3/qkgucuKAzw+ZNIve82Mu92aIJDhVpv6/bUsKSMhd3fWsO/rt6WAZCgYUZSkYBEYRWpeeQL41iLyraZZTAgO+2QTL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750797329; c=relaxed/simple;
-	bh=Ofgl3d5hcJQ0dxQmGdR6z5tCLAC52R5GbmVZodTUN9s=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Uz6m5ZfirGLln+F0YQOysAWBhYhptP4KCY/+7NvpLU50KsPsn2KSWOIeIUt5gX8Ou8ka7c85kOhlXG1zNayDzn+fx+2raCZxWXQKSrM4bLE64OK907BXQtocs7JcUF0fu3FHhl5FBFhGxF3j9gpEebjC0MjrVvgkOS3q583wTDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=deGzkPUs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7dtBQX7W; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1750807861; c=relaxed/simple;
+	bh=GoPi4vGEumlDcv3PAVdoynPjU+EPqy/La5SK/Y4ZmnU=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=M9OXT0AV+cFBqtPCX4Yq4/Vn6cbhUcSPecJVIggCkZ/FEt/EdMB70Bcfs0vHgRnemYY5W1xYnpwO84Pz/WvXI6iPAZTMenuQ9Xxoz5FWIsaIzX86+xplimzh51z1LaFsBOQY/jvwFOmatLY59EYGxWO5J4BlOUh1ehfQnllEk8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FUgEN5mm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PtmbGx3I; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 24 Jun 2025 20:35:23 -0000
+Date: Tue, 24 Jun 2025 23:30:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750797324;
+	s=2020; t=1750807857;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=FbBceXaicaVAgXcuJaywU6HUlfbn9dUW66xXJA4yZRg=;
-	b=deGzkPUstBI8V8aGTEj0Dcz7+ybjrEq3VShk5FU2sxJ2p/G4Uu0K+mP4DosGKAPKILm9oc
-	sURTmz4OSNs2sD9DeKbh8lUGdQku6tu0RErVeeCKlghogg/chsL55kZDN9CyTTZ9oVDss+
-	mwIlLFJJuk4V5rVz08LXWXVqOG9vZOoYidRp6TNWf8myP7jFAXZegYK2zDsgKotz3+JPm9
-	JcPuNYmWFtvW5v7yKRVJXhx6Jk0P5XVlNKoTtgBRYGrVexoNFzXubc+EKJBsag0qwtQEyW
-	1+wkW7HCcHmIZ+lUNU0UGy26cQMN7KgGUCFKHwvHEc8ls5la0L9r7lwOCK870g==
+	bh=V2SwbPC4Am6TXDoVkDm+GvdaIVrwpxa/apVoJBNF/q4=;
+	b=FUgEN5mmwT919iOEk50XdtL6S7I2zgY5YjyImGhSCeQCLsWcSA/dfQ1Y+/mSkPhAwqASOw
+	8nUYyFiiAVXKCHG2hRFyc3A8NBSVJ2dfY7cqiS39awzxjySxdbpHygHXwEMW5PSvgfMyGs
+	ac5LX8BKVa51jvOnXtEJQKkl5NtvlKaO++GieHx8sYyx3ondDX7750Kbd3+6Af9I41R15s
+	UlsU/Da/znkcdPWU1pwMK3TUpS/rimFYKIWCw8qoPcdnrfYd1F3K5LStF5yfMu9tTMad0E
+	dIngAhZ4zmhRxAauqAOSGC8699B42tZxivgpetB3bwWOc4uty68HJlnIZgeBiA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750797324;
+	s=2020e; t=1750807857;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=FbBceXaicaVAgXcuJaywU6HUlfbn9dUW66xXJA4yZRg=;
-	b=7dtBQX7WeKyFQ02oWR71cl8TKbNzUwNJL9jR6FM8Hn/7Omznj4pMvd9joja3URBPoYhGqE
-	bAaJBlN1bF5ncyDw==
-From: "tip-bot2 for Xin Li (Intel)" <tip-bot2@linutronix.de>
+	bh=V2SwbPC4Am6TXDoVkDm+GvdaIVrwpxa/apVoJBNF/q4=;
+	b=PtmbGx3II32vLSO9PP0N3GlzzIZR1l/Ufl2XxbpV0xqzcUm63UJ7wFxzbn9AAzuMIcZ8DJ
+	jhK1NlbBcmbnWaDQ==
+From: "tip-bot2 for Yang Weijiang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/traps: Initialize DR6 by writing its
- architectural reset value
-Cc: Sohil Mehta <sohil.mehta@intel.com>,
- "H. Peter Anvin (Intel)" <hpa@zytor.com>, "Xin Li (Intel)" <xin@zytor.com>,
+Subject: [tip: x86/fpu] x86/fpu/xstate: Add CET supervisor xfeature support as
+ a guest-only feature
+Cc: Yang Weijiang <weijiang.yang@intel.com>, Chao Gao <chao.gao@intel.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Maxim Levitsky <mlevitsk@redhat.com>, John Allen <john.allen@amd.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -67,7 +67,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175079732323.406.383086015651563298.tip-bot2@tip-bot2>
+Message-ID: <175080785593.406.10511311854621496131.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,217 +75,166 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     5f465c148c61e876b6d6eacd8e8e365f2d47758f
-Gitweb:        https://git.kernel.org/tip/5f465c148c61e876b6d6eacd8e8e365f2d47758f
-Author:        Xin Li (Intel) <xin@zytor.com>
-AuthorDate:    Fri, 20 Jun 2025 16:15:03 -07:00
+Commit-ID:     8b05b3c988162ca117b3854ae7d497927b415299
+Gitweb:        https://git.kernel.org/tip/8b05b3c988162ca117b3854ae7d497927b415299
+Author:        Yang Weijiang <weijiang.yang@intel.com>
+AuthorDate:    Thu, 22 May 2025 08:10:09 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 24 Jun 2025 13:15:51 -07:00
+CommitterDate: Tue, 24 Jun 2025 13:46:33 -07:00
 
-x86/traps: Initialize DR6 by writing its architectural reset value
+x86/fpu/xstate: Add CET supervisor xfeature support as a guest-only feature
 
-Initialize DR6 by writing its architectural reset value to avoid
-incorrectly zeroing DR6 to clear DR6.BLD at boot time, which leads
-to a false bus lock detected warning.
+== Background ==
 
-The Intel SDM says:
+CET defines two register states: CET user, which includes user-mode control
+registers, and CET supervisor, which consists of shadow-stack pointers for
+privilege levels 0-2.
 
-  1) Certain debug exceptions may clear bits 0-3 of DR6.
+Current kernels disable shadow stacks in kernel mode, making the CET
+supervisor state unused and eliminating the need for context switching.
 
-  2) BLD induced #DB clears DR6.BLD and any other debug exception
-     doesn't modify DR6.BLD.
+== Problem ==
 
-  3) RTM induced #DB clears DR6.RTM and any other debug exception
-     sets DR6.RTM.
+To virtualize CET for guests, KVM must accurately emulate hardware
+behavior. A key challenge arises because there is no CPUID flag to indicate
+that shadow stack is supported only in user mode. Therefore, KVM cannot
+assume guests will not enable shadow stacks in kernel mode and must
+preserve the CET supervisor state of vCPUs.
 
-  To avoid confusion in identifying debug exceptions, debug handlers
-  should set DR6.BLD and DR6.RTM, and clear other DR6 bits before
-  returning.
+== Solution ==
 
-The DR6 architectural reset value 0xFFFF0FF0, already defined as
-macro DR6_RESERVED, satisfies these requirements, so just use it to
-reinitialize DR6 whenever needed.
+An initial proposal to manually save and restore CET supervisor states
+using raw RDMSR/WRMSR in KVM was rejected due to performance concerns and
+its impact on KVM's ABI. Instead, leveraging the kernel's FPU
+infrastructure for context switching was favored [1].
 
-Since clear_all_debug_regs() no longer zeros all debug registers,
-rename it to initialize_debug_regs() to better reflect its current
-behavior.
+The main question then became whether to enable the CET supervisor state
+globally for all processes or restrict it to vCPU processes. This decision
+involves a trade-off between a 24-byte XSTATE buffer waste for all non-vCPU
+processes and approximately 100 lines of code complexity in the kernel [2].
+The agreed approach is to first try this optimal solution [3], i.e.,
+restricting the CET supervisor state to guest FPUs only and eliminating
+unnecessary space waste.
 
-Since debug_read_clear_dr6() no longer clears DR6, rename it to
-debug_read_reset_dr6() to better reflect its current behavior.
+The guest-only xfeature infrastructure has already been added. Now,
+introduce CET supervisor xstate support as the first guest-only feature
+to prepare for the upcoming CET virtualization in KVM.
 
-Fixes: ebb1064e7c2e9 ("x86/traps: Handle #DB for bus lock")
-Reported-by: Sohil Mehta <sohil.mehta@intel.com>
-Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Yang Weijiang <weijiang.yang@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Link: https://lore.kernel.org/lkml/06e68373-a92b-472e-8fd9-ba548119770c@intel.com/
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250620231504.2676902-2-xin%40zytor.com
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: John Allen <john.allen@amd.com>
+Link: https://lore.kernel.org/kvm/ZM1jV3UPL0AMpVDI@google.com/ [1]
+Link: https://lore.kernel.org/kvm/1c2fd06e-2e97-4724-80ab-8695aa4334e7@intel.com/ [2]
+Link: https://lore.kernel.org/kvm/2597a87b-1248-b8ce-ce60-94074bc67ea4@intel.com/ [3]
+Link: https://lore.kernel.org/all/20250522151031.426788-7-chao.gao%40intel.com
 ---
- arch/x86/include/uapi/asm/debugreg.h | 21 ++++++++++++++++-
- arch/x86/kernel/cpu/common.c         | 24 +++++++------------
- arch/x86/kernel/traps.c              | 34 ++++++++++++++++-----------
- 3 files changed, 51 insertions(+), 28 deletions(-)
+ arch/x86/include/asm/fpu/types.h  | 14 ++++++++++++--
+ arch/x86/include/asm/fpu/xstate.h |  5 ++---
+ arch/x86/kernel/fpu/xstate.c      |  5 ++++-
+ 3 files changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/uapi/asm/debugreg.h b/arch/x86/include/uapi/asm/debugreg.h
-index 0007ba0..41da492 100644
---- a/arch/x86/include/uapi/asm/debugreg.h
-+++ b/arch/x86/include/uapi/asm/debugreg.h
-@@ -15,7 +15,26 @@
-    which debugging register was responsible for the trap.  The other bits
-    are either reserved or not of interest to us. */
+diff --git a/arch/x86/include/asm/fpu/types.h b/arch/x86/include/asm/fpu/types.h
+index 54ba567..93e99d2 100644
+--- a/arch/x86/include/asm/fpu/types.h
++++ b/arch/x86/include/asm/fpu/types.h
+@@ -118,7 +118,7 @@ enum xfeature {
+ 	XFEATURE_PKRU,
+ 	XFEATURE_PASID,
+ 	XFEATURE_CET_USER,
+-	XFEATURE_CET_KERNEL_UNUSED,
++	XFEATURE_CET_KERNEL,
+ 	XFEATURE_RSRVD_COMP_13,
+ 	XFEATURE_RSRVD_COMP_14,
+ 	XFEATURE_LBR,
+@@ -142,7 +142,7 @@ enum xfeature {
+ #define XFEATURE_MASK_PKRU		(1 << XFEATURE_PKRU)
+ #define XFEATURE_MASK_PASID		(1 << XFEATURE_PASID)
+ #define XFEATURE_MASK_CET_USER		(1 << XFEATURE_CET_USER)
+-#define XFEATURE_MASK_CET_KERNEL	(1 << XFEATURE_CET_KERNEL_UNUSED)
++#define XFEATURE_MASK_CET_KERNEL	(1 << XFEATURE_CET_KERNEL)
+ #define XFEATURE_MASK_LBR		(1 << XFEATURE_LBR)
+ #define XFEATURE_MASK_XTILE_CFG		(1 << XFEATURE_XTILE_CFG)
+ #define XFEATURE_MASK_XTILE_DATA	(1 << XFEATURE_XTILE_DATA)
+@@ -269,6 +269,16 @@ struct cet_user_state {
+ };
  
--/* Define reserved bits in DR6 which are always set to 1 */
-+/*
-+ * Define bits in DR6 which are set to 1 by default.
-+ *
-+ * This is also the DR6 architectural value following Power-up, Reset or INIT.
-+ *
-+ * Note, with the introduction of Bus Lock Detection (BLD) and Restricted
-+ * Transactional Memory (RTM), the DR6 register has been modified:
-+ *
-+ * 1) BLD flag (bit 11) is no longer reserved to 1 if the CPU supports
-+ *    Bus Lock Detection.  The assertion of a bus lock could clear it.
-+ *
-+ * 2) RTM flag (bit 16) is no longer reserved to 1 if the CPU supports
-+ *    restricted transactional memory.  #DB occurred inside an RTM region
-+ *    could clear it.
-+ *
-+ * Apparently, DR6.BLD and DR6.RTM are active low bits.
-+ *
-+ * As a result, DR6_RESERVED is an incorrect name now, but it is kept for
-+ * compatibility.
+ /*
++ * State component 12 is Control-flow Enforcement supervisor states.
++ * This state includes SSP pointers for privilege levels 0 through 2.
 + */
- #define DR6_RESERVED	(0xFFFF0FF0)
- 
- #define DR_TRAP0	(0x1)		/* db0 */
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 8feb8fd..0f6c280 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -2243,20 +2243,16 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
- #endif
- #endif
- 
--/*
-- * Clear all 6 debug registers:
-- */
--static void clear_all_debug_regs(void)
-+static void initialize_debug_regs(void)
- {
--	int i;
--
--	for (i = 0; i < 8; i++) {
--		/* Ignore db4, db5 */
--		if ((i == 4) || (i == 5))
--			continue;
--
--		set_debugreg(0, i);
--	}
-+	/* Control register first -- to make sure everything is disabled. */
-+	set_debugreg(0, 7);
-+	set_debugreg(DR6_RESERVED, 6);
-+	/* dr5 and dr4 don't exist */
-+	set_debugreg(0, 3);
-+	set_debugreg(0, 2);
-+	set_debugreg(0, 1);
-+	set_debugreg(0, 0);
- }
- 
- #ifdef CONFIG_KGDB
-@@ -2417,7 +2413,7 @@ void cpu_init(void)
- 
- 	load_mm_ldt(&init_mm);
- 
--	clear_all_debug_regs();
-+	initialize_debug_regs();
- 	dbg_restore_debug_regs();
- 
- 	doublefault_init_cpu_tss();
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index c5c897a..36354b4 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -1022,24 +1022,32 @@ static bool is_sysenter_singlestep(struct pt_regs *regs)
- #endif
- }
- 
--static __always_inline unsigned long debug_read_clear_dr6(void)
-+static __always_inline unsigned long debug_read_reset_dr6(void)
- {
- 	unsigned long dr6;
- 
-+	get_debugreg(dr6, 6);
-+	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
++struct cet_supervisor_state {
++	u64 pl0_ssp;
++	u64 pl1_ssp;
++	u64 pl2_ssp;
++} __packed;
 +
- 	/*
- 	 * The Intel SDM says:
- 	 *
--	 *   Certain debug exceptions may clear bits 0-3. The remaining
--	 *   contents of the DR6 register are never cleared by the
--	 *   processor. To avoid confusion in identifying debug
--	 *   exceptions, debug handlers should clear the register before
--	 *   returning to the interrupted task.
-+	 *   Certain debug exceptions may clear bits 0-3 of DR6.
-+	 *
-+	 *   BLD induced #DB clears DR6.BLD and any other debug
-+	 *   exception doesn't modify DR6.BLD.
- 	 *
--	 * Keep it simple: clear DR6 immediately.
-+	 *   RTM induced #DB clears DR6.RTM and any other debug
-+	 *   exception sets DR6.RTM.
-+	 *
-+	 *   To avoid confusion in identifying debug exceptions,
-+	 *   debug handlers should set DR6.BLD and DR6.RTM, and
-+	 *   clear other DR6 bits before returning.
-+	 *
-+	 * Keep it simple: write DR6 with its architectural reset
-+	 * value 0xFFFF0FF0, defined as DR6_RESERVED, immediately.
- 	 */
--	get_debugreg(dr6, 6);
- 	set_debugreg(DR6_RESERVED, 6);
--	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
++/*
+  * State component 15: Architectural LBR configuration state.
+  * The size of Arch LBR state depends on the number of LBRs (lbr_depth).
+  */
+diff --git a/arch/x86/include/asm/fpu/xstate.h b/arch/x86/include/asm/fpu/xstate.h
+index a3cd254..7a7dc9d 100644
+--- a/arch/x86/include/asm/fpu/xstate.h
++++ b/arch/x86/include/asm/fpu/xstate.h
+@@ -47,7 +47,7 @@
+ #define XFEATURE_MASK_USER_DYNAMIC	XFEATURE_MASK_XTILE_DATA
  
- 	return dr6;
- }
-@@ -1239,13 +1247,13 @@ out:
- /* IST stack entry */
- DEFINE_IDTENTRY_DEBUG(exc_debug)
- {
--	exc_debug_kernel(regs, debug_read_clear_dr6());
-+	exc_debug_kernel(regs, debug_read_reset_dr6());
- }
+ /* Supervisor features which are enabled only in guest FPUs */
+-#define XFEATURE_MASK_GUEST_SUPERVISOR	0
++#define XFEATURE_MASK_GUEST_SUPERVISOR	XFEATURE_MASK_CET_KERNEL
  
- /* User entry, runs on regular task stack */
- DEFINE_IDTENTRY_DEBUG_USER(exc_debug)
- {
--	exc_debug_user(regs, debug_read_clear_dr6());
-+	exc_debug_user(regs, debug_read_reset_dr6());
- }
+ /* All currently supported supervisor features */
+ #define XFEATURE_MASK_SUPERVISOR_SUPPORTED (XFEATURE_MASK_PASID | \
+@@ -79,8 +79,7 @@
+  * Unsupported supervisor features. When a supervisor feature in this mask is
+  * supported in the future, move it to the supported supervisor feature mask.
+  */
+-#define XFEATURE_MASK_SUPERVISOR_UNSUPPORTED (XFEATURE_MASK_PT | \
+-					      XFEATURE_MASK_CET_KERNEL)
++#define XFEATURE_MASK_SUPERVISOR_UNSUPPORTED (XFEATURE_MASK_PT)
  
- #ifdef CONFIG_X86_FRED
-@@ -1264,7 +1272,7 @@ DEFINE_FREDENTRY_DEBUG(exc_debug)
- {
- 	/*
- 	 * FRED #DB stores DR6 on the stack in the format which
--	 * debug_read_clear_dr6() returns for the IDT entry points.
-+	 * debug_read_reset_dr6() returns for the IDT entry points.
- 	 */
- 	unsigned long dr6 = fred_event_data(regs);
+ /* All supervisor states including supported and unsupported states. */
+ #define XFEATURE_MASK_SUPERVISOR_ALL (XFEATURE_MASK_SUPERVISOR_SUPPORTED | \
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index d94a5f4..12ed75c 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -57,7 +57,7 @@ static const char *xfeature_names[] =
+ 	"Protection Keys User registers",
+ 	"PASID state",
+ 	"Control-flow User registers",
+-	"Control-flow Kernel registers (unused)",
++	"Control-flow Kernel registers (KVM only)",
+ 	"unknown xstate feature",
+ 	"unknown xstate feature",
+ 	"unknown xstate feature",
+@@ -81,6 +81,7 @@ static unsigned short xsave_cpuid_features[] __initdata = {
+ 	[XFEATURE_PKRU]				= X86_FEATURE_OSPKE,
+ 	[XFEATURE_PASID]			= X86_FEATURE_ENQCMD,
+ 	[XFEATURE_CET_USER]			= X86_FEATURE_SHSTK,
++	[XFEATURE_CET_KERNEL]			= X86_FEATURE_SHSTK,
+ 	[XFEATURE_XTILE_CFG]			= X86_FEATURE_AMX_TILE,
+ 	[XFEATURE_XTILE_DATA]			= X86_FEATURE_AMX_TILE,
+ 	[XFEATURE_APX]				= X86_FEATURE_APX,
+@@ -372,6 +373,7 @@ static __init void os_xrstor_booting(struct xregs_state *xstate)
+ 	 XFEATURE_MASK_BNDCSR |			\
+ 	 XFEATURE_MASK_PASID |			\
+ 	 XFEATURE_MASK_CET_USER |		\
++	 XFEATURE_MASK_CET_KERNEL |		\
+ 	 XFEATURE_MASK_XTILE |			\
+ 	 XFEATURE_MASK_APX)
  
-@@ -1279,7 +1287,7 @@ DEFINE_FREDENTRY_DEBUG(exc_debug)
- /* 32 bit does not have separate entry points. */
- DEFINE_IDTENTRY_RAW(exc_debug)
- {
--	unsigned long dr6 = debug_read_clear_dr6();
-+	unsigned long dr6 = debug_read_reset_dr6();
- 
- 	if (user_mode(regs))
- 		exc_debug_user(regs, dr6);
+@@ -573,6 +575,7 @@ static bool __init check_xstate_against_struct(int nr)
+ 	case XFEATURE_PASID:	  return XCHECK_SZ(sz, nr, struct ia32_pasid_state);
+ 	case XFEATURE_XTILE_CFG:  return XCHECK_SZ(sz, nr, struct xtile_cfg);
+ 	case XFEATURE_CET_USER:	  return XCHECK_SZ(sz, nr, struct cet_user_state);
++	case XFEATURE_CET_KERNEL: return XCHECK_SZ(sz, nr, struct cet_supervisor_state);
+ 	case XFEATURE_APX:        return XCHECK_SZ(sz, nr, struct apx_state);
+ 	case XFEATURE_XTILE_DATA: check_xtile_data_against_struct(sz); return true;
+ 	default:
 
