@@ -1,62 +1,64 @@
-Return-Path: <linux-tip-commits+bounces-5895-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5896-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2C8AE7334
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Jun 2025 01:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6C3AE7336
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 25 Jun 2025 01:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 804731BC2ABC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Jun 2025 23:31:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18AE41BC2B85
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 24 Jun 2025 23:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9CD26B768;
-	Tue, 24 Jun 2025 23:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8597B26B956;
+	Tue, 24 Jun 2025 23:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ldRC1JfU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0favyQSR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0x4YasJL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JcOh2441"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF8B2253EA;
-	Tue, 24 Jun 2025 23:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49CA26B751;
+	Tue, 24 Jun 2025 23:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750807862; cv=none; b=G4xJd2sH8uQaoRCQ3Iu9d7oZvdTisJ/4BPkcRHAaMNNf/JocwJvR4jjYR7okJJN8Y0NsZfJUaHvB+BynuLWhL4ynk3RtoIy6gF5kgBdJSFoifp1Y6K0aoTYeL167DQ7JngX373pdhqslEA2rMpqE4Ol7ETO6+iru8VZAxt8w/RM=
+	t=1750807863; cv=none; b=L1NK/5xSnfhOxJEaISulV/uyqlH8U+lgD0CNRnMTLehuiNIM1Q3YeGjKvwnvQYOIPcCF7ZwSEy8qgchejXiA3qGlbZ4dXf+B58lbV+U66dUMqCtADv2hfdcdClauW9ME025mm7p4j+h01SR6lCHRogw3vPQKKWGjodwwJ7C3gng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750807862; c=relaxed/simple;
-	bh=Hvq02NZ7AQM//u5hZten7ikyJfmTtJjuuqkSklyINPI=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=kyolQ71T6nQazWG+GX3u3ydQONf8NVoZ6HwVrU/8gp1sP9MTOXaCkB/m5dtjfyhRh9bdlK6Re6IFzJf9eZqw2ceVvzs4epv6N2aIK+Wh9G7N6/sfSqe96ZAM9Dkaa56/60pxn7xirPDANzb9O7lZey6zDYqfzrPej5y2TWIv6OE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ldRC1JfU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0favyQSR; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1750807863; c=relaxed/simple;
+	bh=YbCLBhJbUdelYgjzLt2DRQl3g12Bx1eD4ZsmUclcup4=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=K1nzNTL5cCkINj6d4Gx7bDDznZNVWm/Yxv9wZmB5z/7mHgEbPkDnSo2eCwab8Vt5t/ORA0UXRAHxgRHMtpWg/3Q13RWdcNhidMs2u8tdpGMAX19C6NoMS0ywCLvNVAjHhS5KedUuh8ygWq5itpCJzsWbxIK3Vb8VtTSzwVvaVNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0x4YasJL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JcOh2441; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 24 Jun 2025 23:30:57 -0000
+Date: Tue, 24 Jun 2025 23:30:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1750807858;
+	s=2020; t=1750807859;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8kqLHpe4AO4EEqTPgBATXLb/SQlj25iyEeHuGRNQ9Yk=;
-	b=ldRC1JfUG7uGvTt0rlnBI2BcRvN7UnTibb+oE96RhiIcASvida1I10fsOfx6OZI1D0D8oZ
-	u+0aheM98z+CdOaqLZJWBwdTK3RuIHenpgXrzr0FIyFLY4xFqVIz2gTv7l4/L4UDENf9t4
-	4sE5VblHawZfL0sUiKbeTB80UfYjoMJ1/5IdFare0rPHy1XoI2Rhba/+SDAPL2cghIxHJN
-	VdazaaMEzypj+45DPQvha4p5jjhombYmUpgjuWmkVMZZIaLPdZZd9Mb5e98+PbyNXZThX4
-	th0kPOo0WSXd2a9JC9+rqwMGtkhHmlO43wVOZ1tfe4Bwd4PmOB2bzx8MIyAeOQ==
+	bh=PFi57pI7SXW7krG0eFr4/5IQ5Y0pzBy9MzPi5Gy+ygM=;
+	b=0x4YasJLozOjioftIKf2ugWIyqJ5axIgD7/G4SaqhQt2j9SZFDk1OcT0scsYbQVfbgKkwH
+	YSos3Hb5PxheEHWMFghlaeEnJBqC37SlHHSzVlIlDxM01hMLOQY0MhX2t50fbOh94ttEHR
+	JLZ+BYTOfPeYKDfYhNPgEouhismJmvUcgitYx4q+qoG7rY5GctrCZiQdzS4sEEta2Ip66f
+	CJKNNBZOvbUKV/SzAJD13J+Z1fExPXBDoAOjsqJLDjUgWj4//I1Hj2DyhNuy+OdYA2/9oO
+	E+zkRuhreSilWWTpqgW1vuYAV1eyRPHuiSksNyiM3MXdcgugcS7thfIyoxfG1w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1750807858;
+	s=2020e; t=1750807859;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8kqLHpe4AO4EEqTPgBATXLb/SQlj25iyEeHuGRNQ9Yk=;
-	b=0favyQSRRLKu8/HTEL5zr/UmzIarhRQm8yQnvPUlTIPg2JuQL+SJjUltwTo4jEUBigUpm/
-	LQMKQjn5rwiPfECw==
+	bh=PFi57pI7SXW7krG0eFr4/5IQ5Y0pzBy9MzPi5Gy+ygM=;
+	b=JcOh2441pgeYemkN5qqpPg4db5+qwRQHYLigAjiTMcL/dyX0uMu4z0uhLVfls4N3jV0Snw
+	MXDOnPKT+phSIHDA==
 From: "tip-bot2 for Chao Gao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/fpu] x86/fpu: Remove xfd argument from __fpstate_reset()
-Cc: Sean Christopherson <seanjc@google.com>, Chao Gao <chao.gao@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, John Allen <john.allen@amd.com>,
+Subject: [tip: x86/fpu] x86/fpu: Initialize guest fpstate and FPU pseudo
+ container from guest defaults
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, Chao Gao <chao.gao@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>, John Allen <john.allen@amd.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
@@ -64,7 +66,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175080785791.406.7237637688812808937.tip-bot2@tip-bot2>
+Message-ID: <175080785887.406.10961378813772629174.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,94 +76,89 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the x86/fpu branch of tip:
 
-Commit-ID:     fafb29e18db2eef75edafd4240fcde8b5da2c948
-Gitweb:        https://git.kernel.org/tip/fafb29e18db2eef75edafd4240fcde8b5da2c948
+Commit-ID:     509e880b779592aafb41b3b23de3df7e4e2e2fcf
+Gitweb:        https://git.kernel.org/tip/509e880b779592aafb41b3b23de3df7e4e2e2fcf
 Author:        Chao Gao <chao.gao@intel.com>
-AuthorDate:    Thu, 22 May 2025 08:10:07 -07:00
+AuthorDate:    Thu, 22 May 2025 08:10:06 -07:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Tue, 24 Jun 2025 13:46:32 -07:00
 
-x86/fpu: Remove xfd argument from __fpstate_reset()
+x86/fpu: Initialize guest fpstate and FPU pseudo container from guest defaults
 
-The initial values for fpstate::xfd differ between guest and host fpstates.
-Currently, the initial values are passed as an argument to
-__fpstate_reset(). But, __fpstate_reset() already assigns different default
-features and sizes based on the type of fpstates (i.e., guest or host). So,
-handle fpstate::xfd in a similar way to highlight the differences in the
-initial xfd value between guest and host fpstates
+fpu_alloc_guest_fpstate() currently uses host defaults to initialize guest
+fpstate and pseudo containers. Guest defaults were introduced to
+differentiate the features and sizes of host and guest FPUs. Switch to
+using guest defaults instead.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Adjust __fpstate_reset() to handle different defaults for host and guest
+FPUs. And to distinguish between the types of FPUs, move the initialization
+of indicators (is_guest and is_valloc) before the reset.
+
+Suggested-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Reviewed-by: John Allen <john.allen@amd.com>
-Link: https://lore.kernel.org/all/aBuf7wiiDT0Wflhk@google.com/
-Link: https://lore.kernel.org/all/20250522151031.426788-5-chao.gao%40intel.com
+Link: https://lore.kernel.org/all/20250522151031.426788-4-chao.gao%40intel.com
 ---
- arch/x86/kernel/fpu/core.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/x86/kernel/fpu/core.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
-index e027051..aefd412 100644
+index 94706a5..e027051 100644
 --- a/arch/x86/kernel/fpu/core.c
 +++ b/arch/x86/kernel/fpu/core.c
-@@ -218,7 +218,7 @@ void fpu_reset_from_exception_fixup(void)
- }
+@@ -243,19 +243,22 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
+ 	struct fpstate *fpstate;
+ 	unsigned int size;
  
- #if IS_ENABLED(CONFIG_KVM)
--static void __fpstate_reset(struct fpstate *fpstate, u64 xfd);
-+static void __fpstate_reset(struct fpstate *fpstate);
+-	size = fpu_kernel_cfg.default_size + ALIGN(offsetof(struct fpstate, regs), 64);
++	size = guest_default_cfg.size + ALIGN(offsetof(struct fpstate, regs), 64);
++
+ 	fpstate = vzalloc(size);
+ 	if (!fpstate)
+ 		return false;
  
- static void fpu_lock_guest_permissions(void)
- {
-@@ -253,8 +253,7 @@ bool fpu_alloc_guest_fpstate(struct fpu_guest *gfpu)
- 	fpstate->is_valloc	= true;
- 	fpstate->is_guest	= true;
- 
--	/* Leave xfd to 0 (the reset value defined by spec) */
--	__fpstate_reset(fpstate, 0);
-+	__fpstate_reset(fpstate);
++	/* Initialize indicators to reflect properties of the fpstate */
++	fpstate->is_valloc	= true;
++	fpstate->is_guest	= true;
++
+ 	/* Leave xfd to 0 (the reset value defined by spec) */
+ 	__fpstate_reset(fpstate, 0);
  	fpstate_init_user(fpstate);
+-	fpstate->is_valloc	= true;
+-	fpstate->is_guest	= true;
  
  	gfpu->fpstate		= fpstate;
-@@ -545,7 +544,7 @@ void fpstate_init_user(struct fpstate *fpstate)
- 		fpstate_init_fstate(fpstate);
- }
+-	gfpu->xfeatures		= fpu_kernel_cfg.default_features;
++	gfpu->xfeatures		= guest_default_cfg.features;
  
--static void __fpstate_reset(struct fpstate *fpstate, u64 xfd)
-+static void __fpstate_reset(struct fpstate *fpstate)
- {
  	/*
- 	 * Supervisor features (and thus sizes) may diverge between guest
-@@ -553,25 +552,29 @@ static void __fpstate_reset(struct fpstate *fpstate, u64 xfd)
- 	 * for guests despite not being utilized by the host. User
- 	 * features and sizes are always identical, which allows for
- 	 * common guest and userspace ABI.
-+	 *
-+	 * For the host, set XFD to the kernel's desired initialization
-+	 * value. For guests, set XFD to its architectural RESET value.
- 	 */
- 	if (fpstate->is_guest) {
- 		fpstate->size		= guest_default_cfg.size;
- 		fpstate->xfeatures	= guest_default_cfg.features;
-+		fpstate->xfd		= 0;
- 	} else {
- 		fpstate->size		= fpu_kernel_cfg.default_size;
- 		fpstate->xfeatures	= fpu_kernel_cfg.default_features;
-+		fpstate->xfd		= init_fpstate.xfd;
- 	}
+ 	 * KVM sets the FP+SSE bits in the XSAVE header when copying FPU state
+@@ -544,10 +547,22 @@ void fpstate_init_user(struct fpstate *fpstate)
  
- 	fpstate->user_size	= fpu_user_cfg.default_size;
- 	fpstate->user_xfeatures	= fpu_user_cfg.default_features;
--	fpstate->xfd		= xfd;
- }
- 
- void fpstate_reset(struct fpu *fpu)
+ static void __fpstate_reset(struct fpstate *fpstate, u64 xfd)
  {
- 	/* Set the fpstate pointer to the default fpstate */
- 	fpu->fpstate = &fpu->__fpstate;
--	__fpstate_reset(fpu->fpstate, init_fpstate.xfd);
-+	__fpstate_reset(fpu->fpstate);
- 
- 	/* Initialize the permission related info in fpu */
- 	fpu->perm.__state_perm		= fpu_kernel_cfg.default_features;
+-	/* Initialize sizes and feature masks */
+-	fpstate->size		= fpu_kernel_cfg.default_size;
++	/*
++	 * Supervisor features (and thus sizes) may diverge between guest
++	 * FPUs and host FPUs, as some supervisor features are supported
++	 * for guests despite not being utilized by the host. User
++	 * features and sizes are always identical, which allows for
++	 * common guest and userspace ABI.
++	 */
++	if (fpstate->is_guest) {
++		fpstate->size		= guest_default_cfg.size;
++		fpstate->xfeatures	= guest_default_cfg.features;
++	} else {
++		fpstate->size		= fpu_kernel_cfg.default_size;
++		fpstate->xfeatures	= fpu_kernel_cfg.default_features;
++	}
++
+ 	fpstate->user_size	= fpu_user_cfg.default_size;
+-	fpstate->xfeatures	= fpu_kernel_cfg.default_features;
+ 	fpstate->user_xfeatures	= fpu_user_cfg.default_features;
+ 	fpstate->xfd		= xfd;
+ }
 
