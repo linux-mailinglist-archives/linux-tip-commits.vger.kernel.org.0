@@ -1,102 +1,129 @@
-Return-Path: <linux-tip-commits+bounces-5924-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5925-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C47AE9F8C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 15:58:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E534CAEA01B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 16:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76911C41C5D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 13:57:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0E84E2DBB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 14:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037142E764B;
-	Thu, 26 Jun 2025 13:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A492E889F;
+	Thu, 26 Jun 2025 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="b4NjwwA1"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DK6IkNSg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+7i5CCCZ"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5092E7632;
-	Thu, 26 Jun 2025 13:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0122E1C6E;
+	Thu, 26 Jun 2025 14:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750946227; cv=none; b=HieXMCMNRWgZ2RMyMRpk2t8XC9IcO3he/qiXtdhfPxuk8Jm16DLicDD4+VEnW+f2upHrqIY0C3o8GaUOnbV3tOU7hup6nCRKJqgDBKD/amyzgRkvY+R1f/zcD0US257XQ/tISJfJoady1kYbpzd8ILb5Nx+krh0TB/CWl6WXIzk=
+	t=1750947188; cv=none; b=KmB0mMhQoG1oUDGz18HaLn7hD+yd5qk914AWgpk1HPXICUMaHNXoxdG0mXlHEv5AAfwwOxMiQt91VCjX+ZYqdksonpS+lANUcWsZ7SQB1hbaHk62NlwHYN56R9ZHhq1UYkD9VJFn3uUuHIMdgdF04W8XcCQJlmHNPV5/2Yy+Nx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750946227; c=relaxed/simple;
-	bh=S8qkMDWf8XhnEuG8CI1lX1TmUB0fH3xGQjIcCTUqoWY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VCMLp3B1X+PBz7S2raOMwtSdBbOnlmw8cogpivtu4jL5fchTCKt9vThGs0hLXBvlIXg4I8vKJ7QKCVfs2fA/1OOtNeZSZDvqHFJS8mpc8QirNBgdYDbWawRJ73tHHFLmrmUPx991sHLxaqEfIvUbKDQOXap88/T9gK8vcb6N3ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=b4NjwwA1; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 036EC40E019C;
-	Thu, 26 Jun 2025 13:56:57 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 3yU87XUnB353; Thu, 26 Jun 2025 13:56:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1750946213; bh=F7jl1uTokjpfImmsQnj4q6/RXs1lbQYqOaIqCAoJDAo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b4NjwwA1jiEmzg4Rrv7/MjOczP4J2hVdIBP+UBAaGfuC08ltKnJw97ZfZCl8jLdyN
-	 6n2dh7WBAm8fMBwD2LMcGoZ8OW0A3YXKTAW9C/FSbi4akFec2kfq6r+TEvUZCh039K
-	 dYo0rSvlepZ7E4KGWdetZfc+/ndzc28pSP5Lm8TazumrQjAgV3tcZ3OK6RRzF4/3XK
-	 5wcziZm7TNTVUFH1urKxmqXfY8s2Tei9w5wNKO+4e59Z5pR7hcTigcj7sS6oFnyfDQ
-	 3XXNWaecqa+QWu8p2cFCLOI2RAvbctq3x3vEer5H33CIrP5xXH3oWajTXUQSIhR8/M
-	 v/mfj/4P4IBk62OAda2IRHaviwC7VVqbi98saHllQXyK0Wj25Z5HLQuqLH0+Oy3IJ3
-	 AEH4OIfvSnuo/3S7FWqeQL0oaCwN5eld610pN3xvMdeQru+DSjZlqIBVavFMZQXpWt
-	 RtUVR/Oa9sv8gxIYqfvJrJ506/9wYSK0IaLvvRoNV3H12dL5/4cHBq6f/jvfZitz4n
-	 EiXXjjxpPg6xnBzulq+syMwIzEEpAoa+SoNyansRlRuvjO1edlH6lBBBUAP/+O5GSd
-	 Lc++a56XT2BWnkC6ZJeGDmkyp5+4wG476RMlpBh8j3PWO5Co4Cg5TxXdHe/WqfiFrL
-	 lvn8XHtaQlc13Kn7PViqfx7Q=
-Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B5B1240E015E;
-	Thu, 26 Jun 2025 13:56:43 +0000 (UTC)
-Date: Thu, 26 Jun 2025 15:56:37 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Sean Christopherson <seanjc@google.com>
-Cc: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin (Intel)" <hpa@zytor.com>,
-	Sohil Mehta <sohil.mehta@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/traps: Initialize DR7 by writing its
- architectural reset value
-Message-ID: <20250626135637.GCaF1RlR8n5-Tc-oky@fat_crate.local>
-References: <175079732220.406.9335430223954818839.tip-bot2@tip-bot2>
- <20250626090439.GBaF0NJ34n065_4vb-@fat_crate.local>
- <aF1L0fbNL6xE0C8d@google.com>
+	s=arc-20240116; t=1750947188; c=relaxed/simple;
+	bh=Absztsa7/XkzQNU68S8PrKCv1z22Tg6/MyELLt8fe6g=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=pNr4jXG6lTBidhY4MxJx5xgnvtEntZXelnksvrmEaceDs/vUnB5JBheAkQM0TpPsICzSrdg519KhMsJ8zf70oda608ZmDmyDmI23A0g46f57tH15CeS/56wxo9JEO4T01nkoqlbjZZEgo4zhewjE/FEmFkOIlfYt0IqMvVN085w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DK6IkNSg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+7i5CCCZ; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 26 Jun 2025 14:13:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1750947185;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLXbbbGIbWJtoWchklgPW25YzsDHzONWgD75yAHzIFs=;
+	b=DK6IkNSgJ6xivrXJo5/N/CEDOT8kboic7vvMZ+IFVAlcdMS0Zqe5dW5t2eIlOwdO750Pt4
+	8oeZbXTsC0i/tfkclJvcr9RvF2OfU1V+BZOexUmjMc4oDnB/KjZnABZzhEwnouTneEwvLF
+	F5YAEdsfv+WuRWed8y/wZQwYB7mwQrcVGizo2GunDu2aY+RDCODJVR9dcSEkWAVK/FqHSF
+	GSyctAPTjQckkvTbIdNUI7sqHJ+TH35xZTDC+LJYaNmvLLGR4mv5sFisTxquMzhDG3v5Hc
+	kLPqGXeXjw9wtzzLuZ794rbRLMbT4p/YAW9zQDV2cFwyddkg420Dd7KZHeHvEg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1750947185;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yLXbbbGIbWJtoWchklgPW25YzsDHzONWgD75yAHzIFs=;
+	b=+7i5CCCZcvsBxIkVeBar4dnyWDT+AflrUmi8r4nQYjpiUSsgph5dRihjVT7SRNXm0DRa3a
+	r52ouI7z9J/WG1BA==
+From: "tip-bot2 for Vladimir Kondratiev" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/drivers] irqchip/aslint-sswi: Resolve hart index
+Cc: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250612143911.3224046-6-vladimir.kondratiev@mobileye.com>
+References: <20250612143911.3224046-6-vladimir.kondratiev@mobileye.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aF1L0fbNL6xE0C8d@google.com>
+Message-ID: <175094718429.406.16067714715595873535.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 26, 2025 at 06:32:01AM -0700, Sean Christopherson wrote:
-> I'm pretty sure I can take credit for the latter half.  You're welcome :-)
+The following commit has been merged into the irq/drivers branch of tip:
 
-Oh myy... :-)
+Commit-ID:     128ab2cfd0205fe395196a9f3221bcddd6adf54e
+Gitweb:        https://git.kernel.org/tip/128ab2cfd0205fe395196a9f3221bcddd6adf54e
+Author:        Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+AuthorDate:    Thu, 12 Jun 2025 17:39:09 +03:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 26 Jun 2025 16:06:40 +02:00
 
-You sure managed to get my small brain in a knot.
+irqchip/aslint-sswi: Resolve hart index
 
-:-P
+Resolve hart index according to assignment in the "riscv,hart-indexes"
+property as defined in the specification [1]
 
--- 
-Regards/Gruss,
-    Boris.
+Signed-off-by: Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250612143911.3224046-6-vladimir.kondratiev@mobileye.com
+Link: https://github.com/riscvarchive/riscv-aclint [1]
 
-https://people.kernel.org/tglx/notes-about-netiquette
+---
+ drivers/irqchip/irq-aclint-sswi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/irqchip/irq-aclint-sswi.c b/drivers/irqchip/irq-aclint-sswi.c
+index 9d8b19b..93e28e9 100644
+--- a/drivers/irqchip/irq-aclint-sswi.c
++++ b/drivers/irqchip/irq-aclint-sswi.c
+@@ -71,6 +71,7 @@ static int __init aclint_sswi_parse_irq(struct fwnode_handle *fwnode, void __iom
+ 	for (u32 i = 0; i < contexts; i++) {
+ 		struct of_phandle_args parent;
+ 		unsigned long hartid;
++		u32 hart_index;
+ 		int rc, cpu;
+ 
+ 		rc = of_irq_parse_one(to_of_node(fwnode), i, &parent);
+@@ -86,6 +87,11 @@ static int __init aclint_sswi_parse_irq(struct fwnode_handle *fwnode, void __iom
+ 
+ 		cpu = riscv_hartid_to_cpuid(hartid);
+ 
++		rc = riscv_get_hart_index(fwnode, i, &hart_index);
++		if (rc) {
++			pr_warn("%pfwP: hart index [%d] not found\n", fwnode, i);
++			return -EINVAL;
++		}
+ 		per_cpu(sswi_cpu_regs, cpu) = reg + hart_index * 4;
+ 	}
+ 
 
