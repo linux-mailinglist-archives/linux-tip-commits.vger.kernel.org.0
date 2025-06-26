@@ -1,88 +1,197 @@
-Return-Path: <linux-tip-commits+bounces-5915-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5916-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90841AE984A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 10:28:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D99D9AE9956
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 11:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CC2818849A9
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 08:28:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D1DB189F855
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 26 Jun 2025 09:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD43A206F23;
-	Thu, 26 Jun 2025 08:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B6E295D96;
+	Thu, 26 Jun 2025 08:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOkqdz5p"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4kpqqG7o";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lvTaFlHB"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CC21D5AC0;
-	Thu, 26 Jun 2025 08:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A145026B76D;
+	Thu, 26 Jun 2025 08:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750926520; cv=none; b=J4taCTzIuFehY1/ENozT0zRm971kQ9F7AzfDsU/ujh+StQkZicN7v7S4bU3cUq5PHY5/B8GI3Jru0hCfHiFovQb3aUEw3sVWQSWbhXqDUmmdPoKZErSdlEBViI88QjNA2en+cxtRAqm46cpjpfgGhbhDmb0OEP87NGQWjMZeQQ4=
+	t=1750928388; cv=none; b=E3cT8E5acInzpnBA+ZUtaGwq4ytv1RPcxIDnWnlF/gsKVWFCHLKwn9ZIDnYlikJPSQOUjAZmNl9Ye/dX8YQ9tz2uJVmK8dw6VrgyN+rTtBVA4WZhTnCet0Bu6uMB3Ux2iNJx1ehopvAnHvi6DQaEtsKGYs08RyXi8/P0mu/w16A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750926520; c=relaxed/simple;
-	bh=pciYiVVe4/P6aZZq4WAVoeLPQn83rYOW42I1tvwODuY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ou3pIRzIqriuz2oZn+PWVF9llu4SyW64CYXq+fRfVScfTOBaWPjxHtgoqeteja0FrgX1bhSXUAFm6325PRjX1rbF+N6L+duQLB8UvwUxnx216WDiP/NtECwyV6VlGfIWuU5kkoA05J3QXW6YJP05SRB59g5laiKWG90VpunvOr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOkqdz5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF8CC4CEEB;
-	Thu, 26 Jun 2025 08:28:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750926520;
-	bh=pciYiVVe4/P6aZZq4WAVoeLPQn83rYOW42I1tvwODuY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fOkqdz5pCs1uzPe6pFXCXZHulG/uMZzq0NeSCfZ8oTbxEUkAMC+YifYfX5wkdzC4L
-	 o5wUDtfX1GSrosDzTBPzg84+V6j3fwu9584V6MRZ1z6gPlXkDX8CD6LIFr+C4bkO0C
-	 cTUy+IYU0P3XWeDufJFtGs6Wz9Q0Q6NinMV0hrlQEk9GX/yx2SFWzdcjNiNNVat/E6
-	 8fy2tCapflDasOEkkgNKl2d0oDg9yLc7I3dMScNts96TwTjPzHBCrRCWCNv4ZZLKjx
-	 xRhwzApA7NJzjg4D6B1aGBo3YOJtiACV+vCSlH/spy7jDMVzVknFhL8jSxUinIPid/
-	 3Rl7d+NOrcxeg==
-Date: Thu, 26 Jun 2025 10:28:36 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: linux-kernel@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-tip-commits@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@vger.kernel.org, x86@kernel.org
-Subject: Re: [tip: x86/fpu] x86/fpu: Delay instruction pointer fixup until
- after warning
-Message-ID: <aF0EtAnVEZ9fwTVj@gmail.com>
-References: <175089453700.406.1518104364215542733.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1750928388; c=relaxed/simple;
+	bh=YZeTdplEFjKWkNAT3oKIZ/KV32S6JL60kCYy7TB+ar8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=mU4+ouI8fLJzt+JYR5pgPcmjUF4WHAmDSSu4nY+EYjSPJLxwXSl4d9ThS6KQjBP+6KO4frlbo7pYaU00wk1Cv9UKLshc6qoL4rjLx6MZpCMEeAqIR5z4DYpPeZ79ZguhY92GgNoexeO4abKIpgS5nxufsyYQ4KrAxe/wqD8l2tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4kpqqG7o; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lvTaFlHB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 26 Jun 2025 08:59:43 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1750928384;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rXcm48g55NG0qwnxjRI7N+tlNvL13RoYy6cviIT+ATc=;
+	b=4kpqqG7o9/RPkgDf5x0de4uYkiDOUmXtCIznjLwPS0Vsykot7bi+L+i5toX1wgChw3YpPv
+	JsrTXKp0XDv05h2gda1sw/ksnpVXTfnwVEN9zr7Dsivol6Fzcpyihn/jgcgh1IaZfKTgku
+	ZJu8JxIYVM8SyZ9IDK/65q2N2kQi0WLsQkKkl2PA+JFgU4sssvX+Bh9TdVH/WeU+ipPgIo
+	zY70Ljw/c7U9WcIBF2/OATWKFkL6pglwrToABd/N6wGX102ZRHfsDnfrwWydRX22/ifJeP
+	k5V6E48bPISDPCoas4FxjoGQzwi72h2hSYsmza5W0rydAv9w8c/u6FdfSWFW3Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1750928384;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rXcm48g55NG0qwnxjRI7N+tlNvL13RoYy6cviIT+ATc=;
+	b=lvTaFlHBsj4UCVVPQf1SQvW9nGpNsufvoKkuyOJ275TIDFGRTJSkImsWjUxjz1/M8fTtBu
+	NvPYNRMIV5mCcoAw==
+From: "tip-bot2 for Leo Yan" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/aux: Fix pending disable flow when the AUX
+ ring buffer overruns
+Cc: Leo Yan <leo.yan@arm.com>, Ingo Molnar <mingo@kernel.org>,
+ James Clark <james.clark@linaro.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ Adrian Hunter <adrian.hunter@intel.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Ian Rogers <irogers@google.com>,
+ Jiri Olsa <jolsa@redhat.com>, Liang Kan <kan.liang@linux.intel.com>,
+ Marco Elver <elver@google.com>, Mark Rutland <mark.rutland@arm.com>,
+ Namhyung Kim <namhyung@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ linux-perf-users@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250625170737.2918295-1-leo.yan@arm.com>
+References: <20250625170737.2918295-1-leo.yan@arm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <175089453700.406.1518104364215542733.tip-bot2@tip-bot2>
+Message-ID: <175092838323.406.18028759665594118727.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the perf/urgent branch of tip:
 
-* tip-bot2 for Dave Hansen <tip-bot2@linutronix.de> wrote:
+Commit-ID:     1476b218327b89bbb64c14619a2d34f0c320f2c3
+Gitweb:        https://git.kernel.org/tip/1476b218327b89bbb64c14619a2d34f0c320f2c3
+Author:        Leo Yan <leo.yan@arm.com>
+AuthorDate:    Wed, 25 Jun 2025 18:07:37 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 26 Jun 2025 10:50:37 +02:00
 
-> The following commit has been merged into the x86/fpu branch of tip:
-> 
-> Commit-ID:     1cec9ac2d071cfd2da562241aab0ef701355762a
-> Gitweb:        https://git.kernel.org/tip/1cec9ac2d071cfd2da562241aab0ef701355762a
-> Author:        Dave Hansen <dave.hansen@linux.intel.com>
-> AuthorDate:    Tue, 24 Jun 2025 14:01:48 -07:00
-> Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-> CommitterDate: Wed, 25 Jun 2025 16:28:06 -07:00
-> 
-> x86/fpu: Delay instruction pointer fixup until after warning
-> 
-> Right now, if XRSTOR fails a console message like this is be printed:
+perf/aux: Fix pending disable flow when the AUX ring buffer overruns
 
-s/like this is be printed
- /like this is printed
+If an AUX event overruns, the event core layer intends to disable the
+event by setting the 'pending_disable' flag. Unfortunately, the event
+is not actually disabled afterwards.
 
-Thanks,
+In commit:
 
-	Ingo
+  ca6c21327c6a ("perf: Fix missing SIGTRAPs")
+
+the 'pending_disable' flag was changed to a boolean. However, the
+AUX event code was not updated accordingly. The flag ends up holding a
+CPU number. If this number is zero, the flag is taken as false and the
+IRQ work is never triggered.
+
+Later, with commit:
+
+  2b84def990d3 ("perf: Split __perf_pending_irq() out of perf_pending_irq()")
+
+a new IRQ work 'pending_disable_irq' was introduced to handle event
+disabling. The AUX event path was not updated to kick off the work queue.
+
+To fix this bug, when an AUX ring buffer overrun is detected, call
+perf_event_disable_inatomic() to initiate the pending disable flow.
+
+Also update the outdated comment for setting the flag, to reflect the
+boolean values (0 or 1).
+
+Fixes: 2b84def990d3 ("perf: Split __perf_pending_irq() out of perf_pending_irq()")
+Fixes: ca6c21327c6a ("perf: Fix missing SIGTRAPs")
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Liang Kan <kan.liang@linux.intel.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-perf-users@vger.kernel.org
+Link: https://lore.kernel.org/r/20250625170737.2918295-1-leo.yan@arm.com
+---
+ kernel/events/core.c        | 6 +++---
+ kernel/events/ring_buffer.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 1f74646..7281230 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -7251,15 +7251,15 @@ static void __perf_pending_disable(struct perf_event *event)
+ 	 *  CPU-A			CPU-B
+ 	 *
+ 	 *  perf_event_disable_inatomic()
+-	 *    @pending_disable = CPU-A;
++	 *    @pending_disable = 1;
+ 	 *    irq_work_queue();
+ 	 *
+ 	 *  sched-out
+-	 *    @pending_disable = -1;
++	 *    @pending_disable = 0;
+ 	 *
+ 	 *				sched-in
+ 	 *				perf_event_disable_inatomic()
+-	 *				  @pending_disable = CPU-B;
++	 *				  @pending_disable = 1;
+ 	 *				  irq_work_queue(); // FAILS
+ 	 *
+ 	 *  irq_work_run()
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index d2aef87..aa9a759 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -441,7 +441,7 @@ void *perf_aux_output_begin(struct perf_output_handle *handle,
+ 		 * store that will be enabled on successful return
+ 		 */
+ 		if (!handle->size) { /* A, matches D */
+-			event->pending_disable = smp_processor_id();
++			perf_event_disable_inatomic(handle->event);
+ 			perf_output_wakeup(handle);
+ 			WRITE_ONCE(rb->aux_nest, 0);
+ 			goto err_put;
+@@ -526,7 +526,7 @@ void perf_aux_output_end(struct perf_output_handle *handle, unsigned long size)
+ 
+ 	if (wakeup) {
+ 		if (handle->aux_flags & PERF_AUX_FLAG_TRUNCATED)
+-			handle->event->pending_disable = smp_processor_id();
++			perf_event_disable_inatomic(handle->event);
+ 		perf_output_wakeup(handle);
+ 	}
+ 
 
