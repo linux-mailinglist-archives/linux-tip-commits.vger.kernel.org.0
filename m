@@ -1,77 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-5943-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5944-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1D8AED8EB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Jun 2025 11:41:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52795AEE1D3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Jun 2025 17:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85BF83A81F6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Jun 2025 09:40:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB4147A1A45
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 30 Jun 2025 15:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5821246BB7;
-	Mon, 30 Jun 2025 09:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043F628C027;
+	Mon, 30 Jun 2025 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lmL1dWNu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UL+SN8g8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0eBtbQX6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/fOs+NUA"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04225FC1D;
-	Mon, 30 Jun 2025 09:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7391726290;
+	Mon, 30 Jun 2025 15:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751276456; cv=none; b=DpNqRJ2HsSoXSKfwWG0AevdV7fa3dwH5UF6RpGNezx4uRw6290kxoUO7Zig54+e51eMimXMdH3HQmomo0sVVOmijOybKiUg4AzmhQDlWvRAhc9RDaL2v8jaaKAMx9G53uOYK8j9/pCqFduDZiZr56wRfiz9NcbbaZM4Z4xd0vd8=
+	t=1751295831; cv=none; b=EWAZUBs0XkA4YL89ykBzphwu33lJnQgpHK5m47kYhMZUXFfXnKcIm5zbifdhSeL/oi0nbEXqP8vDRGgIG79bjGJIb4Hwbp5W3yVm13/doIRJQjiDR/wsJJPOoRdQKKQf+M3xs7m+9lWzKllUWSamoKuif95bZqZlxWsUeBBeg88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751276456; c=relaxed/simple;
-	bh=sSM9jhLp1pVLT02DnOy2UJo6+c5qUjmWV0NjvlqNvV4=;
+	s=arc-20240116; t=1751295831; c=relaxed/simple;
+	bh=XkHcS2HIGHdTVzvxKv7AhHFxeGBXmDVmlspzw6lsiMM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=V8Zh0R9cOJadAlSlx4sqwiQphwj7sMNjwBio/dUcqei65/KmiSx2cXfArrTRF2XZqPKjV1tLsUO9DmDrr1YSvDmg7h0WF6GQclRLsAeYKIoJrWpEreWVzj979ZRAUl5kpCVnl29EHq7T6Y+iF+A9csNMnCVC+9s9dygKOYYBwRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lmL1dWNu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UL+SN8g8; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=aMSyaJ8nzSKzaEos5N+FDxgCl6pc2ojeeNSutTdd3tvTFpiSlG3pmxRWqHk7oJnx1Suo41vt5v6F17SgtrhuPb/E3tPiBqO/I1WrtiSV6T2+IzAU7ZtzdsFwxEQw1/v/bWIhJMnpxjiE3IVQBJeTls1B5XHRzDN8pWY7NxLAtmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0eBtbQX6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/fOs+NUA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 30 Jun 2025 09:40:51 -0000
+Date: Mon, 30 Jun 2025 15:03:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751276453;
+	s=2020; t=1751295828;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jM3QnOVAguvJas4rHQZdJ5pvDo16SPMhJSEapvMUsDY=;
-	b=lmL1dWNu+cqethtpNY819RFtjP39FBZEX7upgIv5Fvy3I4IWXGB+8YhruodmVnhG+ZNi82
-	CW8cMTyq0Z8P1Vt7ii/Yd59p6nUB8ttDuEdTogdKEe07bVhK797lT5nZFWZIKULkxt9/6Y
-	KckchT0x3q0AKohtkBsB00K+YrunQERoA/TxuSW+loTroMsTxQaWUX97aUPGvwK0oxBwGF
-	DRV2cc3NxHOv3tMp2MNaU9hGbaIOdyqEOr4gsKvKiCJ/m93SmfZ2Dt77Ah/hLbthxOEf/n
-	MDitpGMFOnYLF/2pkC5qUt0wFpjFnB5DSZrTziZK2DBGG1pSta7Jbe2wPbcRlA==
+	bh=rZkdo2GA6m/ViRvGmYOZl5tqGIVLnzBe+vlTs3iLtXs=;
+	b=0eBtbQX6/f3CyySLejROoLYS8PL/wEtaKIOJ0YHuDCScDp6VR8cpSJJIU+iCgHDZ69Gkwo
+	PVGOLGs5Vif/WIqmq8fMGXcaUGHE97zm8V8YAjxhI8gS1NpHpetxnVMNFcAn5u8C1o6mvQ
+	GRhC9Wp2VrWe5gb05bIiIaaPWvzWrj9e3tciyGNsOD5BvnJYveuSJSscpfx0GUVPcSa03K
+	noEU57WT1bXXL6oWlxNfH0NBOSzlOSajBx9tIqi3eCs15qBauoR5hXFwv2dJwTxKenqp6W
+	YKi/ix7PupaGKQjcWcEH/HzYsYj1QUc/78/wxCkSDmg6MFrug/2T4qN+5CGxng==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751276453;
+	s=2020e; t=1751295828;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jM3QnOVAguvJas4rHQZdJ5pvDo16SPMhJSEapvMUsDY=;
-	b=UL+SN8g8Go18Iu+AQW7tJSNV2dcnLizRvpLS7SMF5ijmkfEXG3IJTBKp1jqLVC+35/GDsb
-	aVlxzrB5eH922QCA==
-From: "tip-bot2 for Nikunj A Dadhania" <tip-bot2@linutronix.de>
+	bh=rZkdo2GA6m/ViRvGmYOZl5tqGIVLnzBe+vlTs3iLtXs=;
+	b=/fOs+NUAreUgjTkMuxEQdZfiGcrE8u9r5jvL3Qe2aDGVXu9lHoOcDBiqoktG9vENzLuj8p
+	ir3HPCQJwbwTmKCw==
+From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Use TSC_FACTOR for Secure TSC frequency
- calculation
-Cc: Nikunj A Dadhania <nikunj@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250630081858.485187-1-nikunj@amd.com>
-References: <20250630081858.485187-1-nikunj@amd.com>
+Subject: [tip: irq/urgent] irqchip/irq-msi-lib: Select CONFIG_GENERIC_MSI_IRQ
+Cc: kernel test robot <lkp@intel.com>, Nam Cao <namcao@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: =?utf-8?q?=3Cb0c44007f3b7e062228349a2395f8d850050db33=2E17512?=
+ =?utf-8?q?77765=2Egit=2Enamcao=40linutronix=2Ede=3E?=
+References: =?utf-8?q?=3Cb0c44007f3b7e062228349a2395f8d850050db33=2E175127?=
+ =?utf-8?q?7765=2Egit=2Enamcao=40linutronix=2Ede=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175127645164.406.7323471406735520474.tip-bot2@tip-bot2>
+Message-ID: <175129582703.406.8111219480420630156.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,130 +81,45 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     4a35d2b5254af89595fd90dae9ee0c8f990a148d
-Gitweb:        https://git.kernel.org/tip/4a35d2b5254af89595fd90dae9ee0c8f990a148d
-Author:        Nikunj A Dadhania <nikunj@amd.com>
-AuthorDate:    Mon, 30 Jun 2025 13:48:58 +05:30
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 30 Jun 2025 11:11:46 +02:00
+Commit-ID:     eb2c93e7028b4c9fe4761734d65ee40712d1c242
+Gitweb:        https://git.kernel.org/tip/eb2c93e7028b4c9fe4761734d65ee40712d1c242
+Author:        Nam Cao <namcao@linutronix.de>
+AuthorDate:    Mon, 30 Jun 2025 12:26:14 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Mon, 30 Jun 2025 16:59:12 +02:00
 
-x86/sev: Use TSC_FACTOR for Secure TSC frequency calculation
+irqchip/irq-msi-lib: Select CONFIG_GENERIC_MSI_IRQ
 
-When using Secure TSC, the GUEST_TSC_FREQ MSR reports a frequency based on
-the nominal P0 frequency, which deviates slightly (typically ~0.2%) from
-the actual mean TSC frequency due to clocking parameters.
+irq-msi-lib directly uses struct msi_domain_info and more things which are
+only available when CONFIG_GENERIC_MSI_IRQ=y.
 
-Over extended VM uptime, this discrepancy accumulates, causing clock skew
-between the hypervisor and a SEV-SNP VM, leading to early timer interrupts as
-perceived by the guest.
+However, there is no dependency specified and CONFIG_IRQ_MSI_LIB can be
+enabled without CONFIG_GENERIC_MSI_IRQ, which causes the kernel build fail.
 
-The guest kernel relies on the reported nominal frequency for TSC-based
-timekeeping, while the actual frequency set during SNP_LAUNCH_START may
-differ. This mismatch results in inaccurate time calculations, causing the
-guest to perceive hrtimers as firing earlier than expected.
+Make IRQ_MSI_LIB select GENEREIC_MSI_IRQ to prevent that.
 
-Utilize the TSC_FACTOR from the SEV firmware's secrets page (see "Secrets
-Page Format" in the SNP Firmware ABI Specification) to calculate the mean
-TSC frequency, ensuring accurate timekeeping and mitigating clock skew in
-SEV-SNP VMs.
-
-Use early_ioremap_encrypted() to map the secrets page as
-ioremap_encrypted() uses kmalloc() which is not available during early TSC
-initialization and causes a panic.
-
-Fixes: 73bbf3b0fbba ("x86/tsc: Init the TSC for Secure TSC guests")
-Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250630081858.485187-1-nikunj@amd.com
+Fixes: 72e257c6f058 ("irqchip: Provide irq-msi-lib")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/b0c44007f3b7e062228349a2395f8d850050db33.1751277765.git.namcao@linutronix.de
+Closes: https://lore.kernel.org/oe-kbuild-all/202506282256.cHlEHrdc-lkp@intel.com/
 ---
- arch/x86/coco/sev/core.c   | 22 ++++++++++++++++++----
- arch/x86/include/asm/sev.h | 18 +++++++++++++++++-
- 2 files changed, 35 insertions(+), 5 deletions(-)
+ drivers/irqchip/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b6db4e0..47d10d9 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -88,7 +88,7 @@ static const char * const sev_status_feat_names[] = {
-  */
- static u64 snp_tsc_scale __ro_after_init;
- static u64 snp_tsc_offset __ro_after_init;
--static u64 snp_tsc_freq_khz __ro_after_init;
-+static unsigned long snp_tsc_freq_khz __ro_after_init;
+diff --git a/drivers/irqchip/Kconfig b/drivers/irqchip/Kconfig
+index 0d196e4..c3928ef 100644
+--- a/drivers/irqchip/Kconfig
++++ b/drivers/irqchip/Kconfig
+@@ -74,6 +74,7 @@ config ARM_VIC_NR
  
- DEFINE_PER_CPU(struct sev_es_runtime_data*, runtime_data);
- DEFINE_PER_CPU(struct sev_es_save_area *, sev_vmsa);
-@@ -2167,15 +2167,29 @@ static unsigned long securetsc_get_tsc_khz(void)
+ config IRQ_MSI_LIB
+ 	bool
++	select GENERIC_MSI_IRQ
  
- void __init snp_secure_tsc_init(void)
- {
--	unsigned long long tsc_freq_mhz;
-+	unsigned long tsc_freq_mhz, dummy;
-+	struct snp_secrets_page *secrets;
-+	void *mem;
- 
- 	if (!cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
- 		return;
- 
-+	mem = early_memremap_encrypted(sev_secrets_pa, PAGE_SIZE);
-+	if (!mem) {
-+		pr_err("Unable to get TSC_FACTOR: failed to map the SNP secrets page.\n");
-+		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_SECURE_TSC);
-+	}
-+
-+	secrets = (__force struct snp_secrets_page *)mem;
-+
- 	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
--	rdmsrq(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz);
--	snp_tsc_freq_khz = (unsigned long)(tsc_freq_mhz * 1000);
-+	rdmsr(MSR_AMD64_GUEST_TSC_FREQ, tsc_freq_mhz, dummy);
-+	/* Extract the GUEST TSC MHZ from BIT[17:0], rest is reserved space */
-+	tsc_freq_mhz = tsc_freq_mhz & GENMASK_ULL(17, 0);
-+	snp_tsc_freq_khz = SNP_SCALE_TSC_FREQ(tsc_freq_mhz * 1000, secrets->tsc_factor);
- 
- 	x86_platform.calibrate_cpu = securetsc_get_tsc_khz;
- 	x86_platform.calibrate_tsc = securetsc_get_tsc_khz;
-+
-+	early_memunmap(mem, PAGE_SIZE);
- }
-diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
-index 58e028d..2624947 100644
---- a/arch/x86/include/asm/sev.h
-+++ b/arch/x86/include/asm/sev.h
-@@ -223,6 +223,19 @@ struct snp_tsc_info_resp {
- 	u8 rsvd2[100];
- } __packed;
- 
-+
-+/*
-+ * Obtain the mean TSC frequency by decreasing the nominal TSC frequency with
-+ * TSC_FACTOR as documented in the SNP Firmware ABI specification:
-+ *
-+ * GUEST_TSC_FREQ * (1 - (TSC_FACTOR * 0.00001))
-+ *
-+ * which is equivalent to:
-+ *
-+ * GUEST_TSC_FREQ -= (GUEST_TSC_FREQ * TSC_FACTOR) / 100000;
-+ */
-+#define SNP_SCALE_TSC_FREQ(freq, factor) ((freq) - (freq) * (factor) / 100000)
-+
- struct snp_guest_req {
- 	void *req_buf;
- 	size_t req_sz;
-@@ -282,8 +295,11 @@ struct snp_secrets_page {
- 	u8 svsm_guest_vmpl;
- 	u8 rsvd3[3];
- 
-+	/* The percentage decrease from nominal to mean TSC frequency. */
-+	u32 tsc_factor;
-+
- 	/* Remainder of page */
--	u8 rsvd4[3744];
-+	u8 rsvd4[3740];
- } __packed;
- 
- struct snp_msg_desc {
+ config ARMADA_370_XP_IRQ
+ 	bool
 
