@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5966-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5968-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E58AEFB85
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Jul 2025 16:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FBCAEFB87
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Jul 2025 16:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F3774A44B4
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Jul 2025 14:04:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14904A54C9
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  1 Jul 2025 14:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0527279784;
-	Tue,  1 Jul 2025 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEE42798E1;
+	Tue,  1 Jul 2025 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YsfgCQWS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o1jxJpdu"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A5QcaJWQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RgiRna/w"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208E527935C;
-	Tue,  1 Jul 2025 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E8C27933E;
+	Tue,  1 Jul 2025 13:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751378358; cv=none; b=Q8l46to+3pasGT40rwHSnzWd/kmvYw6yeZ702YhnCe1qVFmoqVmf/D9ARlcxvsak5g90GAptkAQ3aW1RpCxdD76tKF+QIh2v9UNgTolf25swwoMv5ixzavq4WupYpt17r0DgOwxC6cQ9z+EqS6Hv8e8/5beZaeEJ1CNYdwiSkwA=
+	t=1751378360; cv=none; b=ki7jXeZhykwLaKN+2n66hZSw9L2k+Xe4oRcy8393bl9hubkpZskcEWE11dZIn+7SvAuFjfPEA/LD4CIA18wuMA93bM7om5jo+JxvtJGXbU5iCMBVgYi18QRHBR1APziL4vGn9ZEcUKDOXvi7mtH+yfV4wga0kHbmnftq+4WN1lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751378358; c=relaxed/simple;
-	bh=hMOqvR/Yc65WBvmajTl/+Rd8ycl+uMG027OZLfPxOmE=;
+	s=arc-20240116; t=1751378360; c=relaxed/simple;
+	bh=fXUNcEs78YgJ4RO4MNuP8nW2t+4f8aKrNgyBiZ/4Be4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=cJwi/C1CjldvMhONAnqwWGeZiJqhbvwURvj2XPDabKKEEAiskp5T5JFo4YHsU1180GPdNcuUMvkSz/jKOlcUSHnFBKenrPY5hGMenblHF2nTc45Drzzshko3PIHpdM6JZmzd5eiyN0AXFnOCpVXgp/mZvisUPMuCczJw0WRLm4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YsfgCQWS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o1jxJpdu; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=fGsIGcMcmKnly7K6kOsxT/XJ69IfV5jdMYCfA3UcAVnfA6X6ir/o16qWcIkuTMBt9LMRen/ITiws8N+XwWEvq9IrGAJfFUdR+MxPAfu0bBPNiTVf8cw/IVlz1mCUIZzX1dAiJFkikbVA33oEvCKYRrT7T+GvfqdeQQnyDggYLhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A5QcaJWQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RgiRna/w; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 01 Jul 2025 13:59:14 -0000
+Date: Tue, 01 Jul 2025 13:59:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751378355;
+	s=2020; t=1751378356;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LFZ1wNVNadzQBNchdLo7SzYRU3dwfBraIy+yDsNLVXo=;
-	b=YsfgCQWSpEhGaZmCwRQiJDmKh9po++6ZaT7rSScJ2qqGhdUUImW0UfKYfNVW2GTcy7pNsW
-	wWSoyXPQkR1IyJGVsfX9uESP7Pb4zbJ6kVuXmTGatlEG617KF863yodrCZKlBcxBKDDheD
-	/IwBsWgDYm+wLni/IzkL2tJrgKjWltSVapzU/AjAC3PkHsBaYzCTpTyjNoFx3okZxMb5gC
-	nL35fOqk7r3B3WgCh7g1fgtY+dpzfp1k98co3i7+Am3WsVajbxwkjZ2gIhsAqBsg2zJmDb
-	GzSFBukzvnUG+lBOAmE6dQqDJQKqGoy/ItJSQOR+YoPUZ8ML6bv8PuN/tWnywA==
+	bh=4pMatDXhG/enNNZr2IFaPaLc8W4GmyJ0n9wPb5u+jwk=;
+	b=A5QcaJWQs1Yo/1KArEIKsSWxCLcBXMSWrDjCpdgyR5cZkKyGJbIuLAFgvkZ5LZmceWaHVe
+	gxERxHMhmpJnNphdG+0i6qEMOzmxfRQzm/Dk788B5HGx9x9obMVKu1K++qke2FYfXKRkt7
+	+/1tOpAN5mG3rJBMkKtYWr9RW4Nufp4zE9EfexvSbVbny8SM5k02ESZusb9EOq+10bDftY
+	m/AlmB4WLTe6PPzxbhrW9l9R+Xi23K7noZkz4iUVJGgfWyWi85vcHL579Af6EcSo+SLqK5
+	+RZVoLFOWqKnux7EmS0sytztXzpx6M8vRwmg8P9hNZKyXZTd4zLfQnSsu2AJGQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751378355;
+	s=2020e; t=1751378356;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LFZ1wNVNadzQBNchdLo7SzYRU3dwfBraIy+yDsNLVXo=;
-	b=o1jxJpduenqpisH4Ofms0xG51FR1sU/8ewVm8utS6rfnxR8Pipi1t9a/vNqhG9oE0fnAag
-	O6uy0MOoZ3jqwLAQ==
+	bh=4pMatDXhG/enNNZr2IFaPaLc8W4GmyJ0n9wPb5u+jwk=;
+	b=RgiRna/wM6mhJQ/xIDnOjMBEdGjL05AnAOmAHg/EO31SVxPu1oUC8rKVa8n6mXx7i8Op6Y
+	qEYhrXNHSUdbq8Bw==
 From:
  tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/vdso] selftests: vDSO: vdso_test_getrandom: Always print
- TAP header
+Subject: [tip: timers/vdso] selftests: vDSO: vdso_test_correctness: Fix
+ -Wstrict-prototypes
 Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
- Muhammad Usama Anjum <usama.anjum@collabora.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250611-selftests-vdso-fixes-v3-8-e62e37a6bcf5@linutronix.de>
-References: <20250611-selftests-vdso-fixes-v3-8-e62e37a6bcf5@linutronix.de>
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250611-selftests-vdso-fixes-v3-7-e62e37a6bcf5@linutronix.de>
+References: <20250611-selftests-vdso-fixes-v3-7-e62e37a6bcf5@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175137835415.406.17786155179703712391.tip-bot2@tip-bot2>
+Message-ID: <175137835504.406.4067019385762035812.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,61 +82,64 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/vdso branch of tip:
 
-Commit-ID:     1158220b24674edaf885433153deb4f0e5c7d331
-Gitweb:        https://git.kernel.org/tip/1158220b24674edaf885433153deb4f0e5c=
-7d331
+Commit-ID:     58265d6424c69daf32ed96288709b23f7538c3e2
+Gitweb:        https://git.kernel.org/tip/58265d6424c69daf32ed96288709b23f753=
+8c3e2
 Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Wed, 11 Jun 2025 12:33:58 +02:00
+AuthorDate:    Wed, 11 Jun 2025 12:33:57 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 01 Jul 2025 15:50:42 +02:00
 
-selftests: vDSO: vdso_test_getrandom: Always print TAP header
+selftests: vDSO: vdso_test_correctness: Fix -Wstrict-prototypes
 
-The TAP specification requires that the output begins with a header line.
-If vgetrandom_init() fails and skips the test, that header line is missing.
+Functions definitions without any argument list produce a warning with
+-Wstrict-prototypes:
 
-Call vgetrandom_init() after ksft_print_header().
+vdso_test_correctness.c:111:13: warning: function declaration isn=E2=80=99t a=
+ prototype [-Wstrict-prototypes]
+  111 | static void fill_function_pointers()
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+
+Explicitly use an empty argument list.
+
+Now that all selftests a free of this warning, enable it in the Makefile.
 
 Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/all/20250611-selftests-vdso-fixes-v3-8-e62e37a6=
+Link: https://lore.kernel.org/all/20250611-selftests-vdso-fixes-v3-7-e62e37a6=
 bcf5@linutronix.de
 
 ---
- tools/testing/selftests/vDSO/vdso_test_getrandom.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/vDSO/Makefile                | 2 +-
+ tools/testing/selftests/vDSO/vdso_test_correctness.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vDSO/vdso_test_getrandom.c b/tools/testi=
-ng/selftests/vDSO/vdso_test_getrandom.c
-index 389ead4..dd11325 100644
---- a/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-+++ b/tools/testing/selftests/vDSO/vdso_test_getrandom.c
-@@ -242,6 +242,7 @@ static void kselftest(void)
- 	pid_t child;
+diff --git a/tools/testing/selftests/vDSO/Makefile b/tools/testing/selftests/=
+vDSO/Makefile
+index 06d7225..918a2ca 100644
+--- a/tools/testing/selftests/vDSO/Makefile
++++ b/tools/testing/selftests/vDSO/Makefile
+@@ -12,7 +12,7 @@ TEST_GEN_PROGS +=3D vdso_test_correctness
+ TEST_GEN_PROGS +=3D vdso_test_getrandom
+ TEST_GEN_PROGS +=3D vdso_test_chacha
 =20
- 	ksft_print_header();
-+	vgetrandom_init();
- 	ksft_set_plan(2);
+-CFLAGS :=3D -std=3Dgnu99 -O2 -Wall
++CFLAGS :=3D -std=3Dgnu99 -O2 -Wall -Wstrict-prototypes
 =20
- 	for (size_t i =3D 0; i < 1000; ++i) {
-@@ -295,8 +296,6 @@ static void usage(const char *argv0)
+ ifeq ($(CONFIG_X86_32),y)
+ LDLIBS +=3D -lgcc_s
+diff --git a/tools/testing/selftests/vDSO/vdso_test_correctness.c b/tools/tes=
+ting/selftests/vDSO/vdso_test_correctness.c
+index 5fb97ad..da651cf 100644
+--- a/tools/testing/selftests/vDSO/vdso_test_correctness.c
++++ b/tools/testing/selftests/vDSO/vdso_test_correctness.c
+@@ -108,7 +108,7 @@ static void *vsyscall_getcpu(void)
+ }
 =20
- int main(int argc, char *argv[])
+=20
+-static void fill_function_pointers()
++static void fill_function_pointers(void)
  {
--	vgetrandom_init();
--
- 	if (argc =3D=3D 1) {
- 		kselftest();
- 		return 0;
-@@ -306,6 +305,9 @@ int main(int argc, char *argv[])
- 		usage(argv[0]);
- 		return 1;
- 	}
-+
-+	vgetrandom_init();
-+
- 	if (!strcmp(argv[1], "bench-single"))
- 		bench_single();
- 	else if (!strcmp(argv[1], "bench-multi"))
+ 	void *vdso =3D dlopen("linux-vdso.so.1",
+ 			    RTLD_LAZY | RTLD_LOCAL | RTLD_NOLOAD);
 
