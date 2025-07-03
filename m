@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-5993-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5994-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7436AF7686
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Jul 2025 16:03:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04266AF767E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Jul 2025 16:02:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 445313B931E
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Jul 2025 14:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DEA561B9C
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  3 Jul 2025 14:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285422EAB9E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83012EAD11;
 	Thu,  3 Jul 2025 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PeFxhxuE";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dooKbvXJ"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I31JA0fj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OyioBVlg"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668812EA756;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 300882EAB6F;
 	Thu,  3 Jul 2025 14:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751551240; cv=none; b=vAWjbDD/Qou4fUUq1xc4TjpegflIERhCge6SpHphY/xv+ZPEHQ0VZrNKhMgzbiD+WfDgu09nzePu8RmVQUtKTljdXh7x5s9RG8hmDZNA3Ji9pw5NTcymSEGBNsIVC22921G33C3/UD4n9uvRIEMpDwzOktZVmt+ByMSm3w21uzw=
+	t=1751551240; cv=none; b=rXmm0llWfPyDlSwFlPXFm2Mz75xgovqdCH/DvFgK2hkjg26X1MMvRP6p2YxlsCS0xJrwcZazIAyYBBM1xqjB/V1xhs3/6xh3Tt72mE7tKkzPokufRdb6kKxlEvmSPBwHfmyVb8ojlgKn/0bk96TyrFJ5BkYn5gqAu9fCl2UiQ08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751551240; c=relaxed/simple;
-	bh=NleJJRganPFOEwWfwwRPGjEwWt4mHTAHW1jYqmIsXRk=;
+	bh=JZqgCDl8EVOfb9GdL4Fr0Pr0tWAUyS0Dj8hAhktzTXE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=M+R8UDAKVICYDab4zwjZTRfUSDs5bGtY++Jaxuaq3F6iBf2vWS9KKQ5wU+L5uIL2a6hZt4GPxPmZ7Io2DG5FxM5Y6jF7axchRxZ3NPVvwBVXwLa7ET1/wcJXHcJZdp136fZNRpDuKS66oQURTOK2RznUuLteQ5IUuNjPirKCPbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PeFxhxuE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dooKbvXJ; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=PlDEvWrk8mGYUJC5n4kfdFioVDdbX2Qp7AVtnhTpn0T8yhTSgJUWN0Jr6VD8+Iz7akSP6EwU3htjFrOggaHTMeRqHc2KM+TXi1pPJNtna2cmgayBbYe3LSN2GAlyiefeGXCVfDrMyG9uuiroC/2nsZK+vrR0A/Pre2/BNbWAVVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I31JA0fj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OyioBVlg; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 03 Jul 2025 14:00:35 -0000
+Date: Thu, 03 Jul 2025 14:00:36 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751551236;
+	s=2020; t=1751551237;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MUOW3E8+31t2uueSjsjk9g8bV9j0XXqqlY1058ZkL3E=;
-	b=PeFxhxuEo5oRNsH1VxXM+JNKbE4y3+wAE4ZXlwuHPEnOXxSfo5SkuXfd8oOSu0B1zhkhTg
-	epP4/w4AKY0+IDJoVTvdCUSwsPZPJl7YVwJOuwtOZmRelW2Qwp9H72QwsKgP/JEy+7kch4
-	KlUKAkJUn1rJ13+MSdvW8+OMKc3tMvyKpXPAGBjEv9WKIv+mwu8NCXVV680dSPUkY64XIu
-	pVT5KVie7y7JEYuOTEDGSINc0gQf5gpqm2+4zyrkpDH+hkhF6G8WJQ7HxR0UCMO7ze857x
-	LRUugoLBgnLR+U7OfXchnIAdBsB8pViMhT9w2ZLscrzFbfNmNr7VCjIuVJhK8g==
+	bh=4uSTbjdbBRsb6VhGUHgox9MxThlHR8yFAJS49oFJMI8=;
+	b=I31JA0fjE9R4CrZKzJtyvbfpBbL06U30c+pRZ0jT4mkNwXgpOZJNQARLSUbZ3xYzzlJUcO
+	RfZFpETo/+5o1mC8YQnUB5ZnhDA9qsdhIzcvHMdlOT3MpiS3DbI+rQ4SZIGlUxrLRbrZZ/
+	DXOng7yUgmykWANAzkmsIaCz0d2HgdE7ZSaoBXGOM6capw059KuvXAOuoNj9oln+yhfyTP
+	3xRGLQmxqvQ4M5MZ6CoG64BI0uec8bczZXP3lDT5OwI5ekTtTGEyPmi6Q7nCEjZxt4N6cy
+	/mSxa5i7LMDuO+cVeMkHLkxTLWePe84LVVsDfhdasd/xBQey55nF9h2BiaDS5g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751551236;
+	s=2020e; t=1751551237;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MUOW3E8+31t2uueSjsjk9g8bV9j0XXqqlY1058ZkL3E=;
-	b=dooKbvXJLiNTuTJ9t+JqYLpcM2wAWyFLBS54G5lHNiUSVyRtOaGSNLAVrXEvZepkFUUufp
-	ymOjE3gYdNWFxvDg==
+	bh=4uSTbjdbBRsb6VhGUHgox9MxThlHR8yFAJS49oFJMI8=;
+	b=OyioBVlg2kkE9W2SEw4RD1Ye+GNbKlq2OyJ7jbsxuPDCz+1B42h0eyrjWvsjOgl7c9xKmf
+	4UoBbBprZaNA4IBQ==
 From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/imx-mu-msi: Convert to
+Subject: [tip: irq/drivers] irqchip/riscv-imsic: Convert to
  msi_create_parent_irq_domain() helper
 Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Frank Li <Frank.Li@nxp.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20241204124549.607054-7-maz@kernel.org>
-References: <20241204124549.607054-7-maz@kernel.org>
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241204124549.607054-6-maz@kernel.org>
+References: <20241204124549.607054-6-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175155123559.406.7389650211204464397.tip-bot2@tip-bot2>
+Message-ID: <175155123642.406.3794766003423936937.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,61 +81,60 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     c7cc7b122a4cf1235b53e5bb5f441ce95d8b0cd2
-Gitweb:        https://git.kernel.org/tip/c7cc7b122a4cf1235b53e5bb5f441ce95d8b0cd2
+Commit-ID:     59422904dd9855f94d00dc66598bef1bd2663894
+Gitweb:        https://git.kernel.org/tip/59422904dd9855f94d00dc66598bef1bd2663894
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Thu, 26 Jun 2025 16:49:01 +02:00
+AuthorDate:    Thu, 26 Jun 2025 16:49:00 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Thu, 03 Jul 2025 15:49:24 +02:00
 
-irqchip/imx-mu-msi: Convert to msi_create_parent_irq_domain() helper
+irqchip/riscv-imsic: Convert to msi_create_parent_irq_domain() helper
 
 Now that we have a concise helper to create an MSI parent domain,
-switch the IMX letter soup over to that.
+switch the RISC-V letter soup over to that.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Nam Cao <tglx@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/all/4f05fff99b6cc5875d2f4dadd31707e2dedaafc8.1750860131.git.namcao@linutronix.de
-Link: https://lore.kernel.org/all/20241204124549.607054-7-maz@kernel.org
-
+Link: https://lore.kernel.org/all/b906a38d443577de45923b335d80fc54c5638da0.1750860131.git.namcao@linutronix.de
+Link: https://lore.kernel.org/all/20241204124549.607054-6-maz@kernel.org
 ---
- drivers/irqchip/irq-imx-mu-msi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/irqchip/irq-riscv-imsic-platform.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
-index 137da19..d2a4e8a 100644
---- a/drivers/irqchip/irq-imx-mu-msi.c
-+++ b/drivers/irqchip/irq-imx-mu-msi.c
-@@ -223,21 +223,21 @@ static const struct msi_parent_ops imx_mu_msi_parent_ops = {
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index 1b9fbfc..74a2a28 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -307,6 +307,11 @@ static const struct msi_parent_ops imsic_msi_parent_ops = {
  
- static int imx_mu_msi_domains_init(struct imx_mu_msi *msi_data, struct device *dev)
+ int imsic_irqdomain_init(void)
  {
--	struct fwnode_handle *fwnodes = dev_fwnode(dev);
 +	struct irq_domain_info info = {
-+		.ops		= &imx_mu_msi_domain_ops,
-+		.fwnode		= dev_fwnode(dev),
-+		.size		= IMX_MU_CHANS,
-+		.host_data	= msi_data,
++		.fwnode		= imsic->fwnode,
++		.ops		= &imsic_base_domain_ops,
++		.host_data	= imsic,
 +	};
- 	struct irq_domain *parent;
+ 	struct imsic_global_config *global;
  
- 	/* Initialize MSI domain parent */
--	parent = irq_domain_create_linear(fwnodes, IMX_MU_CHANS,
--					  &imx_mu_msi_domain_ops, msi_data);
-+	parent = msi_create_parent_irq_domain(&info, &imx_mu_msi_parent_ops);
- 	if (!parent) {
- 		dev_err(dev, "failed to create IRQ domain\n");
+ 	if (!imsic || !imsic->fwnode) {
+@@ -320,16 +325,11 @@ int imsic_irqdomain_init(void)
+ 	}
+ 
+ 	/* Create Base IRQ domain */
+-	imsic->base_domain = irq_domain_create_tree(imsic->fwnode,
+-						    &imsic_base_domain_ops, imsic);
++	imsic->base_domain = msi_create_parent_irq_domain(&info, &imsic_msi_parent_ops);
+ 	if (!imsic->base_domain) {
+ 		pr_err("%pfwP: failed to create IMSIC base domain\n", imsic->fwnode);
  		return -ENOMEM;
  	}
+-	imsic->base_domain->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
+-	imsic->base_domain->msi_parent_ops = &imsic_msi_parent_ops;
 -
--	irq_domain_update_bus_token(parent, DOMAIN_BUS_NEXUS);
- 	parent->dev = parent->pm_dev = dev;
--	parent->flags |= IRQ_DOMAIN_FLAG_MSI_PARENT;
--	parent->msi_parent_ops = &imx_mu_msi_parent_ops;
- 	return 0;
- }
+-	irq_domain_update_bus_token(imsic->base_domain, DOMAIN_BUS_NEXUS);
  
+ 	global = &imsic->global;
+ 	pr_info("%pfwP:  hart-index-bits: %d,  guest-index-bits: %d\n",
 
