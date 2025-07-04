@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-5997-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5998-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0DEAF8E4F
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 11:22:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6747BAF8E52
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 11:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E605A78C0
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 09:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0426B1655AA
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 09:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE412ECD14;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1152ECD27;
 	Fri,  4 Jul 2025 09:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jng1KGgP";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fWKv8Yit"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Nhd00h6g";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7liUHniS"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031C12EBDE5;
-	Fri,  4 Jul 2025 09:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABCE2F5493;
+	Fri,  4 Jul 2025 09:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751620408; cv=none; b=m0csX6nsg7posPvQoJ8aasGnz2flYUY7W6Pr7AQ+f1k/S+vuPn+S3+zclE3cjXSatIZVBYa0ELyarLRhcYoxLKJQjDzadxQgj+hzSf+w+plfjHEs2aZtOvpf2CJ9XGYnvyT0EYJlp8QrGFOSzUjJRUvqmGK5CT1R5h6/RVJ3A6g=
+	t=1751620408; cv=none; b=s43ERZjGrnnmSxJKXnIWzsQzNPe62Z036AZfZXBmbJWPfkdGm5L34FAA2EUpx2zR2ZMd8WP01F0UyrqV7QY7IqHl9TsnCtYCDiHE0p5nIpNHFI9Fq8KkBqVwhClFnqYHU2jJR1dnhh0z5Z0E72NbPWFzuQr81Rib6+p4ZDK0Nx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1751620408; c=relaxed/simple;
-	bh=5xS+v0+LHTSAfPzbnw4Stpz+tm1lZx1IDKEGtDX2yJk=;
+	bh=diogebFSP8aXq74Iso455LQJwx4Pgy52QOqqR48ucDY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=sykCZeFDJPZyi0x+iMqZuHnVlwBk6NqN7pHwM8OwX7BzAj6kJW7qMEuKJQ2CGScYmcxAii3UNuV9VYOJ9DCGhJWjp3kkjQnk7xOHapR+EU0uamkuWwUQeN9EVyNa5rSRHYrJOjnO4yE/vrI08kftq76TA7gG2saZg26x0nz4uI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jng1KGgP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fWKv8Yit; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Yo/8NR7KfLsG7TrbBQ9m/uB83slS5+7ubOnd5Wq1vAuuG5Vbg7IrfjvgXUU75Q7x+Q+TsAtYZti9qLczpSe4sqW2Lc+dI3K9SwzA2qjBQk54ge25F9Y5Fi18aFZHaVWo5GwkuI6VaA6KZwsafijArC9RPOQ09FYrR7XAAthiW5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Nhd00h6g; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7liUHniS; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 04 Jul 2025 09:13:16 -0000
+Date: Fri, 04 Jul 2025 09:13:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751620397;
+	s=2020; t=1751620398;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zcfjN5D2uvsDnh9VSFZmaiQcovdMoR4Mohq3CtPiKK0=;
-	b=jng1KGgP5QjTmccLrcBSk/5GU7tJ7z+icADjPr6bexoH4zqbWervVsvTKUzVgcGVfF8Tyi
-	qx1fvleLX7eR+zNrWC+amKHDfRDXfF+kpWbgbLJ56QzVku5gzwgzbwb7lPdEwC5MyDM0XZ
-	Max58K9TXQ/2sClFBYd1aLhqsOASw6JswP4RkbUMmAdd9FZNM560v9RLOlEuNYH5jhiSE5
-	MaOs0pmZe9yZXl+Ul7TzNd4y0XZNFdJQ52QL2xsUUOvnjBD2jh2ZSQsc2OVjoCLJSf1URJ
-	h5I2CU4T/cbmU/KQB8/+EB0MhsVK4zGPkgITEE8FeXkKWUNq9ELzG52z43u59w==
+	bh=x653JVlYzh2z+/ikKk0N2ldf40BlcH63j5i2qtNYCAw=;
+	b=Nhd00h6gqicqVCrNsPDoP4xMxef75eTMdVmGAr3Y24ifSbNlIoDvmahKOkOVL9m7hBbulP
+	/DDeN/t9E+1rn+64JG+VgCOybum7Asi8YsPs+fdZX3Qiv3d9FIk3hOfoVqfJr0jmiTLubr
+	poz3FTL8FEYChBCdyF5aWviSwLkQ4PLPf16yCc4gPMtXWBOizjj+y67oYgujmpa9H0Fsnv
+	6jKxow3yrUqRbzbJOU4cmTgZCSRTzEtJIMlMojXsC3yPsmjHG4PY8tmWMgJkzTCF2V+nHD
+	h/G8aemHxuwNln/muKubgbDbGde+dzYkSrxaTLiqCfuIv2qm/u2g8kJ1i/IK9w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751620397;
+	s=2020e; t=1751620398;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zcfjN5D2uvsDnh9VSFZmaiQcovdMoR4Mohq3CtPiKK0=;
-	b=fWKv8Yit6+YCy26INFGw/oQFWUR04FVcv4FgOtrQe1INAPyHJuoXWOHk3faxPUR95Va1HC
-	3MzHJwocAqO6C5Bw==
-From: "tip-bot2 for K Prateek Nayak" <tip-bot2@linutronix.de>
+	bh=x653JVlYzh2z+/ikKk0N2ldf40BlcH63j5i2qtNYCAw=;
+	b=7liUHniSB5YD1SxHyFbNKfzaInSsGUiSSENpVve0FnJXTJfOyE7DMgovMN4HGIREgDgWIv
+	7+zb+J1XyO1Me+AA==
+From: "tip-bot2 for kuyo chang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Use sched_domain_span() for
- topology_span_sane()
-Cc: Leon Romanovsky <leon@kernel.org>,
- Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250630061059.1547-1-kprateek.nayak@amd.com>
-References: <20250630061059.1547-1-kprateek.nayak@amd.com>
+Subject:
+ [tip: sched/urgent] sched/deadline: Fix dl_server runtime calculation formula
+Cc: Peter Zijlstra <peterz@infradead.org>, John Stultz <jstultz@google.com>,
+ kuyo chang <kuyo.chang@mediatek.com>, Juri Lelli <juri.lelli@redhat.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250702021440.2594736-1-kuyo.chang@mediatek.com>
+References: <20250702021440.2594736-1-kuyo.chang@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175162039637.406.8610358723761872462.tip-bot2@tip-bot2>
+Message-ID: <175162039765.406.4702062609825995302.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,154 +82,94 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     02bb4259ca525efa39a2531cb630329fb87fc968
-Gitweb:        https://git.kernel.org/tip/02bb4259ca525efa39a2531cb630329fb87fc968
-Author:        K Prateek Nayak <kprateek.nayak@amd.com>
-AuthorDate:    Mon, 30 Jun 2025 06:10:59 
+Commit-ID:     fc975cfb36393db1db517fbbe366e550bcdcff14
+Gitweb:        https://git.kernel.org/tip/fc975cfb36393db1db517fbbe366e550bcdcff14
+Author:        kuyo chang <kuyo.chang@mediatek.com>
+AuthorDate:    Wed, 02 Jul 2025 10:12:25 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 04 Jul 2025 10:35:56 +02:00
 
-sched/fair: Use sched_domain_span() for topology_span_sane()
+sched/deadline: Fix dl_server runtime calculation formula
 
-Leon noted a topology_span_sane() warning in their guest deployment
-starting from v6.16-rc1 [1]. Debug that followed pointed to the
-tl->mask() for the NODE domain being incorrectly resolved to that of the
-highest NUMA domain.
+In our testing with 6.12 based kernel on a big.LITTLE system, we were
+seeing instances of RT tasks being blocked from running on the LITTLE
+cpus for multiple seconds of time, apparently by the dl_server. This
+far exceeds the default configured 50ms per second runtime.
 
-tl->mask() for NODE is set to the sd_numa_mask() which depends on the
-global "sched_domains_curr_level" hack. "sched_domains_curr_level" is
-set to the "tl->numa_level" during tl traversal in build_sched_domains()
-calling sd_init() but was not reset before topology_span_sane().
+This is due to the fair dl_server runtime calculation being scaled
+for frequency & capacity of the cpu.
 
-Since "tl->numa_level" still reflected the old value from
-build_sched_domains(), topology_span_sane() for the NODE domain trips
-when the span of the last NUMA domain overlaps.
+Consider the following case under a Big.LITTLE architecture:
+Assume the runtime is: 50,000,000 ns, and Frequency/capacity
+scale-invariance defined as below:
+Frequency scale-invariance: 100
+Capacity scale-invariance: 50
+First by Frequency scale-invariance,
+the runtime is scaled to 50,000,000 * 100 >> 10 = 4,882,812
+Then by capacity scale-invariance,
+it is further scaled to 4,882,812 * 50 >> 10 = 238,418.
+So it will scaled to 238,418 ns.
 
-Instead of replicating the "sched_domains_curr_level" hack, Valentin
-suggested using the spans from the sched_domain objects constructed
-during build_sched_domains() which can also catch overlaps when the
-domain spans are fixed up by build_sched_domain().
+This smaller "accounted runtime" value is what ends up being
+subtracted against the fair-server's runtime for the current period.
+Thus after 50ms of real time, we've only accounted ~238us against the
+fair servers runtime. This 209:1 ratio in this example means that on
+the smaller cpu the fair server is allowed to continue running,
+blocking RT tasks, for over 10 seconds before it exhausts its supposed
+50ms of runtime.  And on other hardware configurations it can be even
+worse.
 
-The original warning was reproducble on the follwoing NUMA topology
-reported by Leon:
+For the fair deadline_server, to prevent realtime tasks from being
+unexpectedly delayed, we really do want to use fixed time, and not
+scaled time for smaller capacity/frequency cpus. So remove the scaling
+from the fair server's accounting to fix this.
 
-    $ sudo numactl -H
-    available: 5 nodes (0-4)
-    node 0 cpus: 0 1
-    node 0 size: 2927 MB
-    node 0 free: 1603 MB
-    node 1 cpus: 2 3
-    node 1 size: 3023 MB
-    node 1 free: 3008 MB
-    node 2 cpus: 4 5
-    node 2 size: 3023 MB
-    node 2 free: 3007 MB
-    node 3 cpus: 6 7
-    node 3 size: 3023 MB
-    node 3 free: 3002 MB
-    node 4 cpus: 8 9
-    node 4 size: 3022 MB
-    node 4 free: 2718 MB
-    node distances:
-    node   0   1   2   3   4
-      0:  10  39  38  37  36
-      1:  39  10  38  37  36
-      2:  38  38  10  37  36
-      3:  37  37  37  10  36
-      4:  36  36  36  36  10
-
-The above topology can be mimicked using the following QEMU cmd that was
-used to reproduce the warning and test the fix:
-
-     sudo qemu-system-x86_64 -enable-kvm -cpu host \
-     -m 20G -smp cpus=10,sockets=10 -machine q35 \
-     -object memory-backend-ram,size=4G,id=m0 \
-     -object memory-backend-ram,size=4G,id=m1 \
-     -object memory-backend-ram,size=4G,id=m2 \
-     -object memory-backend-ram,size=4G,id=m3 \
-     -object memory-backend-ram,size=4G,id=m4 \
-     -numa node,cpus=0-1,memdev=m0,nodeid=0 \
-     -numa node,cpus=2-3,memdev=m1,nodeid=1 \
-     -numa node,cpus=4-5,memdev=m2,nodeid=2 \
-     -numa node,cpus=6-7,memdev=m3,nodeid=3 \
-     -numa node,cpus=8-9,memdev=m4,nodeid=4 \
-     -numa dist,src=0,dst=1,val=39 \
-     -numa dist,src=0,dst=2,val=38 \
-     -numa dist,src=0,dst=3,val=37 \
-     -numa dist,src=0,dst=4,val=36 \
-     -numa dist,src=1,dst=0,val=39 \
-     -numa dist,src=1,dst=2,val=38 \
-     -numa dist,src=1,dst=3,val=37 \
-     -numa dist,src=1,dst=4,val=36 \
-     -numa dist,src=2,dst=0,val=38 \
-     -numa dist,src=2,dst=1,val=38 \
-     -numa dist,src=2,dst=3,val=37 \
-     -numa dist,src=2,dst=4,val=36 \
-     -numa dist,src=3,dst=0,val=37 \
-     -numa dist,src=3,dst=1,val=37 \
-     -numa dist,src=3,dst=2,val=37 \
-     -numa dist,src=3,dst=4,val=36 \
-     -numa dist,src=4,dst=0,val=36 \
-     -numa dist,src=4,dst=1,val=36 \
-     -numa dist,src=4,dst=2,val=36 \
-     -numa dist,src=4,dst=3,val=36 \
-     ...
-
-Closes: https://lore.kernel.org/lkml/20250610110701.GA256154@unreal/ [1]
-Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (partially) overlap") # ce29a7da84cd, f55dac1dafb3
-Reported-by: Leon Romanovsky <leon@kernel.org>
-Suggested-by: Valentin Schneider <vschneid@redhat.com>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Fixes: a110a81c52a9 ("sched/deadline: Deferrable dl server")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Suggested-by: John Stultz <jstultz@google.com>
+Signed-off-by: kuyo chang <kuyo.chang@mediatek.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Tested-by: Valentin Schneider <vschneid@redhat.com>
-Link: https://lore.kernel.org/r/20250630061059.1547-1-kprateek.nayak@amd.com
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Acked-by: John Stultz <jstultz@google.com>
+Tested-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/r/20250702021440.2594736-1-kuyo.chang@mediatek.com
 ---
- kernel/sched/topology.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/sched/deadline.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index b958fe4..0e46068 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2403,6 +2403,7 @@ static bool topology_span_sane(const struct cpumask *cpu_map)
- 	id_seen = sched_domains_tmpmask2;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index ad45a8f..89019a1 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1504,7 +1504,9 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64 
+ 	if (dl_entity_is_special(dl_se))
+ 		return;
  
- 	for_each_sd_topology(tl) {
-+		struct sd_data *sdd = &tl->data;
+-	scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
++	scaled_delta_exec = delta_exec;
++	if (!dl_server(dl_se))
++		scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
  
- 		/* NUMA levels are allowed to overlap */
- 		if (tl->flags & SDTL_OVERLAP)
-@@ -2418,22 +2419,24 @@ static bool topology_span_sane(const struct cpumask *cpu_map)
- 		 * breaks the linking done for an earlier span.
- 		 */
- 		for_each_cpu(cpu, cpu_map) {
--			const struct cpumask *tl_cpu_mask = tl->mask(cpu);
-+			struct sched_domain *sd = *per_cpu_ptr(sdd->sd, cpu);
-+			struct cpumask *sd_span = sched_domain_span(sd);
- 			int id;
+ 	dl_se->runtime -= scaled_delta_exec;
  
- 			/* lowest bit set in this mask is used as a unique id */
--			id = cpumask_first(tl_cpu_mask);
-+			id = cpumask_first(sd_span);
+@@ -1611,7 +1613,7 @@ throttle:
+  */
+ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
+ {
+-	s64 delta_exec, scaled_delta_exec;
++	s64 delta_exec;
  
- 			if (cpumask_test_cpu(id, id_seen)) {
--				/* First CPU has already been seen, ensure identical spans */
--				if (!cpumask_equal(tl->mask(id), tl_cpu_mask))
-+				/* First CPU has already been seen, ensure identical sd spans */
-+				sd = *per_cpu_ptr(sdd->sd, id);
-+				if (!cpumask_equal(sched_domain_span(sd), sd_span))
- 					return false;
- 			} else {
- 				/* First CPU hasn't been seen before, ensure it's a completely new span */
--				if (cpumask_intersects(tl_cpu_mask, covered))
-+				if (cpumask_intersects(sd_span, covered))
- 					return false;
+ 	if (!rq->fair_server.dl_defer)
+ 		return;
+@@ -1624,9 +1626,7 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
+ 	if (delta_exec < 0)
+ 		return;
  
--				cpumask_or(covered, covered, tl_cpu_mask);
-+				cpumask_or(covered, covered, sd_span);
- 				cpumask_set_cpu(id, id_seen);
- 			}
- 		}
+-	scaled_delta_exec = dl_scaled_delta_exec(rq, &rq->fair_server, delta_exec);
+-
+-	rq->fair_server.runtime -= scaled_delta_exec;
++	rq->fair_server.runtime -= delta_exec;
+ 
+ 	if (rq->fair_server.runtime < 0) {
+ 		rq->fair_server.dl_defer_running = 0;
 
