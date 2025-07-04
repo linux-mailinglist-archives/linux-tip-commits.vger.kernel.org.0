@@ -1,175 +1,161 @@
-Return-Path: <linux-tip-commits+bounces-5998-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-5999-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6747BAF8E52
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 11:22:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EEB2AF8FE5
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 12:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0426B1655AA
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 09:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABE433BABCC
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  4 Jul 2025 10:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1152ECD27;
-	Fri,  4 Jul 2025 09:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E8A2EA48C;
+	Fri,  4 Jul 2025 10:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Nhd00h6g";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7liUHniS"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="h0+Aa50G"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABCE2F5493;
-	Fri,  4 Jul 2025 09:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB38184;
+	Fri,  4 Jul 2025 10:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751620408; cv=none; b=s43ERZjGrnnmSxJKXnIWzsQzNPe62Z036AZfZXBmbJWPfkdGm5L34FAA2EUpx2zR2ZMd8WP01F0UyrqV7QY7IqHl9TsnCtYCDiHE0p5nIpNHFI9Fq8KkBqVwhClFnqYHU2jJR1dnhh0z5Z0E72NbPWFzuQr81Rib6+p4ZDK0Nx8=
+	t=1751624491; cv=none; b=Cbxknolp2GqrFBokliFapRdP668Dak7ZAP0RkV1SLljfhwwxqoLStP62k61dUxBCScyvITA1dqnjokYm80XFZ/aTA0iyKYNAEsTRuik9D4epKdbrW1rvnJsKWipVrL172pA6BjKrPY+o5xhgz8Qkkn5akDflWw7EcOjU8yAqrr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751620408; c=relaxed/simple;
-	bh=diogebFSP8aXq74Iso455LQJwx4Pgy52QOqqR48ucDY=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Yo/8NR7KfLsG7TrbBQ9m/uB83slS5+7ubOnd5Wq1vAuuG5Vbg7IrfjvgXUU75Q7x+Q+TsAtYZti9qLczpSe4sqW2Lc+dI3K9SwzA2qjBQk54ge25F9Y5Fi18aFZHaVWo5GwkuI6VaA6KZwsafijArC9RPOQ09FYrR7XAAthiW5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Nhd00h6g; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7liUHniS; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 04 Jul 2025 09:13:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1751620398;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x653JVlYzh2z+/ikKk0N2ldf40BlcH63j5i2qtNYCAw=;
-	b=Nhd00h6gqicqVCrNsPDoP4xMxef75eTMdVmGAr3Y24ifSbNlIoDvmahKOkOVL9m7hBbulP
-	/DDeN/t9E+1rn+64JG+VgCOybum7Asi8YsPs+fdZX3Qiv3d9FIk3hOfoVqfJr0jmiTLubr
-	poz3FTL8FEYChBCdyF5aWviSwLkQ4PLPf16yCc4gPMtXWBOizjj+y67oYgujmpa9H0Fsnv
-	6jKxow3yrUqRbzbJOU4cmTgZCSRTzEtJIMlMojXsC3yPsmjHG4PY8tmWMgJkzTCF2V+nHD
-	h/G8aemHxuwNln/muKubgbDbGde+dzYkSrxaTLiqCfuIv2qm/u2g8kJ1i/IK9w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1751620398;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=x653JVlYzh2z+/ikKk0N2ldf40BlcH63j5i2qtNYCAw=;
-	b=7liUHniSB5YD1SxHyFbNKfzaInSsGUiSSENpVve0FnJXTJfOyE7DMgovMN4HGIREgDgWIv
-	7+zb+J1XyO1Me+AA==
-From: "tip-bot2 for kuyo chang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: sched/urgent] sched/deadline: Fix dl_server runtime calculation formula
-Cc: Peter Zijlstra <peterz@infradead.org>, John Stultz <jstultz@google.com>,
- kuyo chang <kuyo.chang@mediatek.com>, Juri Lelli <juri.lelli@redhat.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250702021440.2594736-1-kuyo.chang@mediatek.com>
-References: <20250702021440.2594736-1-kuyo.chang@mediatek.com>
+	s=arc-20240116; t=1751624491; c=relaxed/simple;
+	bh=+XTJSMqwvfGK5IaXH2uugAcTTaHPKMluCrXOEA+EqlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TUowk8Q/uG7LyuhpPgpIWYGDjSl5lqR2nuSVBhZhbZ+UHETwz4z81CygCr8x0gS2t/+T4lHij1zeE+HnLjCrEW24JtB36seyNAFXQwDcI4bN6zkE51pcknM63pebW/GJKAzsm4x2BZuRwdjwg2dbrwDVT7ciqqMUO8P+6bHBpus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=h0+Aa50G; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 7C05D40E021C;
+	Fri,  4 Jul 2025 10:21:23 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id SS55zBZ0gJcF; Fri,  4 Jul 2025 10:21:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1751624477; bh=zuTBinfrd7r5RN2nXX6H17V7ulbklGFTT6rEOZ/+Ofw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h0+Aa50G1R9eOn6mk524xR/X6hJUJPvY8bFWADAqzL6b7jKxDv6DCcPiKdVYit6dJ
+	 2JiBEzvFcKJlGtrS6p+8qWvx0HXVMysnrkDKkV7QS9J0fPc28AktTnlEZ05502alF6
+	 zL1RurADea1G4ad4+duF6Bho8bMazk0m89ToaQJ8/jptWLqC23HkZbqZYhujDLGJxY
+	 i+OvtKeqcAKAWo4bente4TYPlaOfCVYC9JPOqpVRh8FlPgxPUhbtZU+WDAMCkUHHC1
+	 thqod0Sf1Z62W9poQJw/JNHk1GVMVDXd50PMc0p18Yc1rilssYyevBEuwjsHVbzBzl
+	 zTiQJxxb4Ibhz6JyVeR1j7cIeYVTvWg5M1YNoQ8L2e9PEyxAn12fuo2rqSoxVjOklc
+	 w9i8EH7spypr1Q/6/0t9LT7UHrbuqQ0MTwdfa1Q9/9Ev0RlEG+YGUaHzQK8wkRHOyl
+	 2m76P7f42r8rJGw6D34hHyn42dAHwgBEkT1SKnA9ZFXOZn11PRzRL3Hau5OH3CysfJ
+	 b3k5Q4sOJNz0TJBsJev6xjVg11hWHA69uVztOxlzhzGnIOiH0r+mjWh8r5DmTlZZ2r
+	 xdZoaWZ7h0IPTm8dh/AaUEDB+KQB9O8Q2xj3qqZjw0eQbWflaFXGRRJ/6zrQK6m7j+
+	 0WrRDO+pctdCsSFgpnpmLG1U=
+Received: from zn.tnic (p57969c58.dip0.t-ipconnect.de [87.150.156.88])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 88F7A40E00DD;
+	Fri,  4 Jul 2025 10:21:09 +0000 (UTC)
+Date: Fri, 4 Jul 2025 12:21:03 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Steve Wahl <steve.wahl@hpe.com>, x86@kernel.org
+Subject: Re: [tip: sched/urgent] sched/fair: Use sched_domain_span() for
+ topology_span_sane()
+Message-ID: <20250704102103.GAaGerDxWX7VhePA3j@fat_crate.local>
+References: <20250630061059.1547-1-kprateek.nayak@amd.com>
+ <175162039637.406.8610358723761872462.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175162039765.406.4702062609825995302.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <175162039637.406.8610358723761872462.tip-bot2@tip-bot2>
 
-The following commit has been merged into the sched/urgent branch of tip:
+On Fri, Jul 04, 2025 at 09:13:16AM -0000, tip-bot2 for K Prateek Nayak wrote:
+> The following commit has been merged into the sched/urgent branch of tip:
+> 
+> Commit-ID:     02bb4259ca525efa39a2531cb630329fb87fc968
+> Gitweb:        https://git.kernel.org/tip/02bb4259ca525efa39a2531cb630329fb87fc968
+> Author:        K Prateek Nayak <kprateek.nayak@amd.com>
+> AuthorDate:    Mon, 30 Jun 2025 06:10:59 
+> Committer:     Peter Zijlstra <peterz@infradead.org>
+> CommitterDate: Fri, 04 Jul 2025 10:35:56 +02:00
+> 
+> sched/fair: Use sched_domain_span() for topology_span_sane()
 
-Commit-ID:     fc975cfb36393db1db517fbbe366e550bcdcff14
-Gitweb:        https://git.kernel.org/tip/fc975cfb36393db1db517fbbe366e550bcdcff14
-Author:        kuyo chang <kuyo.chang@mediatek.com>
-AuthorDate:    Wed, 02 Jul 2025 10:12:25 +08:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 04 Jul 2025 10:35:56 +02:00
+My guest doesn't like this one and reverting it ontop of the whole tip lineup
+fixes it.
 
-sched/deadline: Fix dl_server runtime calculation formula
+Holler for more data if needed.
 
-In our testing with 6.12 based kernel on a big.LITTLE system, we were
-seeing instances of RT tasks being blocked from running on the LITTLE
-cpus for multiple seconds of time, apparently by the dl_server. This
-far exceeds the default configured 50ms per second runtime.
+[    0.280062] Timer migration: 2 hierarchy levels; 8 children per group; 2 crossnode level
+[    0.282922] NMI watchdog: Enabled. Permanently consumes one hw-PMU counter.
+[    0.287572] smp: Bringing up secondary CPUs ...
+[    0.288623] smpboot: x86: Booting SMP configuration:
+[    0.289085] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6  #7  #8  #9 #10 #11 #12 #13 #14 #15
+[    0.302358] smp: Brought up 1 node, 16 CPUs
+[    0.304445] smpboot: Total of 16 processors activated (118401.12 BogoMIPS)
+[    0.307884] BUG: unable to handle page fault for address: 0000000089c402fb
+[    0.307884] #PF: supervisor read access in kernel mode
+[    0.307884] #PF: error_code(0x0000) - not-present page
+[    0.307884] PGD 0 P4D 0 
+[    0.307950] Oops: Oops: 0000 [#1] SMP NOPTI
+[    0.308344] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.16.0-rc4+ #1 PREEMPT(full) 
+[    0.309115] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 2023.11-8 02/21/2024
+[    0.309934] RIP: 0010:build_sched_domains+0x627/0x1550
+[    0.310086] Code: 84 75 06 00 00 f3 48 0f bc c0 48 63 f8 89 c0 48 0f a3 05 c4 cf 95 08 0f 83 6c 06 00 00 48 8b 3c fd c0 db 29 82 49 8b 44 24 18 <48> 8b 04 07 48 8b 80 90 00 00 00 48 33 86 90 00 00 00 66 85 c0 0f
+[    0.310086] RSP: 0018:ffffc9000001fe60 EFLAGS: 00010247
+[    0.310086] RAX: ffffffff89c402f8 RBX: ffff88800cea8e40 RCX: 0000000000000001
+[    0.310086] RDX: ffffffffffffffff RSI: ffff88800ceaacc0 RDI: 0000000100000003
+[    0.310086] RBP: ffff88800cc4e3e0 R08: 0000000000000000 R09: 0000000000000000
+[    0.310086] R10: 00000000fffedb1d R11: 00000000fffedb1d R12: ffff88800ceda4c0
+[    0.310086] R13: ffff88800cea9500 R14: 0000000000000010 R15: 000000000000000f
+[    0.310086] FS:  0000000000000000(0000) GS:ffff8880f39f2000(0000) knlGS:0000000000000000
+[    0.310086] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.310086] CR2: 0000000089c402fb CR3: 0000000002c1a000 CR4: 00000000003506f0
+[    0.310086] Call Trace:
+[    0.310086]  <TASK>
+[    0.310086]  ? sched_init_domains+0x58/0xa0
+[    0.310086]  sched_init_smp+0x29/0x90
+[    0.310086]  kernel_init_freeable+0xa3/0x290
+[    0.310086]  ? __pfx_kernel_init+0x10/0x10
+[    0.310086]  kernel_init+0x1a/0x1c0
+[    0.310086]  ret_from_fork+0x85/0xf0
+[    0.310086]  ? __pfx_kernel_init+0x10/0x10
+[    0.310086]  ret_from_fork_asm+0x1a/0x30
+[    0.310086]  </TASK>
+[    0.310086] Modules linked in:
+[    0.310086] CR2: 0000000089c402fb
+[    0.310086] ---[ end trace 0000000000000000 ]---
+[    0.310086] RIP: 0010:build_sched_domains+0x627/0x1550
+[    0.310086] Code: 84 75 06 00 00 f3 48 0f bc c0 48 63 f8 89 c0 48 0f a3 05 c4 cf 95 08 0f 83 6c 06 00 00 48 8b 3c fd c0 db 29 82 49 8b 44 24 18 <48> 8b 04 07 48 8b 80 90 00 00 00 48 33 86 90 00 00 00 66 85 c0 0f
+[    0.310086] RSP: 0018:ffffc9000001fe60 EFLAGS: 00010247
+[    0.310086] RAX: ffffffff89c402f8 RBX: ffff88800cea8e40 RCX: 0000000000000001
+[    0.310086] RDX: ffffffffffffffff RSI: ffff88800ceaacc0 RDI: 0000000100000003
+[    0.310086] RBP: ffff88800cc4e3e0 R08: 0000000000000000 R09: 0000000000000000
+[    0.310086] R10: 00000000fffedb1d R11: 00000000fffedb1d R12: ffff88800ceda4c0
+[    0.310086] R13: ffff88800cea9500 R14: 0000000000000010 R15: 000000000000000f
+[    0.310086] FS:  0000000000000000(0000) GS:ffff8880f39f2000(0000) knlGS:0000000000000000
+[    0.310086] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.310086] CR2: 0000000089c402fb CR3: 0000000002c1a000 CR4: 00000000003506f0
+[    0.310086] note: swapper/0[1] exited with irqs disabled
+[    0.310091] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000009
+[    0.311130] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000009 ]---
 
-This is due to the fair dl_server runtime calculation being scaled
-for frequency & capacity of the cpu.
+-- 
+Regards/Gruss,
+    Boris.
 
-Consider the following case under a Big.LITTLE architecture:
-Assume the runtime is: 50,000,000 ns, and Frequency/capacity
-scale-invariance defined as below:
-Frequency scale-invariance: 100
-Capacity scale-invariance: 50
-First by Frequency scale-invariance,
-the runtime is scaled to 50,000,000 * 100 >> 10 = 4,882,812
-Then by capacity scale-invariance,
-it is further scaled to 4,882,812 * 50 >> 10 = 238,418.
-So it will scaled to 238,418 ns.
-
-This smaller "accounted runtime" value is what ends up being
-subtracted against the fair-server's runtime for the current period.
-Thus after 50ms of real time, we've only accounted ~238us against the
-fair servers runtime. This 209:1 ratio in this example means that on
-the smaller cpu the fair server is allowed to continue running,
-blocking RT tasks, for over 10 seconds before it exhausts its supposed
-50ms of runtime.  And on other hardware configurations it can be even
-worse.
-
-For the fair deadline_server, to prevent realtime tasks from being
-unexpectedly delayed, we really do want to use fixed time, and not
-scaled time for smaller capacity/frequency cpus. So remove the scaling
-from the fair server's accounting to fix this.
-
-Fixes: a110a81c52a9 ("sched/deadline: Deferrable dl server")
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Suggested-by: John Stultz <jstultz@google.com>
-Signed-off-by: kuyo chang <kuyo.chang@mediatek.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Acked-by: John Stultz <jstultz@google.com>
-Tested-by: John Stultz <jstultz@google.com>
-Link: https://lore.kernel.org/r/20250702021440.2594736-1-kuyo.chang@mediatek.com
----
- kernel/sched/deadline.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index ad45a8f..89019a1 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1504,7 +1504,9 @@ static void update_curr_dl_se(struct rq *rq, struct sched_dl_entity *dl_se, s64 
- 	if (dl_entity_is_special(dl_se))
- 		return;
- 
--	scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
-+	scaled_delta_exec = delta_exec;
-+	if (!dl_server(dl_se))
-+		scaled_delta_exec = dl_scaled_delta_exec(rq, dl_se, delta_exec);
- 
- 	dl_se->runtime -= scaled_delta_exec;
- 
-@@ -1611,7 +1613,7 @@ throttle:
-  */
- void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- {
--	s64 delta_exec, scaled_delta_exec;
-+	s64 delta_exec;
- 
- 	if (!rq->fair_server.dl_defer)
- 		return;
-@@ -1624,9 +1626,7 @@ void dl_server_update_idle_time(struct rq *rq, struct task_struct *p)
- 	if (delta_exec < 0)
- 		return;
- 
--	scaled_delta_exec = dl_scaled_delta_exec(rq, &rq->fair_server, delta_exec);
--
--	rq->fair_server.runtime -= scaled_delta_exec;
-+	rq->fair_server.runtime -= delta_exec;
- 
- 	if (rq->fair_server.runtime < 0) {
- 		rq->fair_server.dl_defer_running = 0;
+https://people.kernel.org/tglx/notes-about-netiquette
 
