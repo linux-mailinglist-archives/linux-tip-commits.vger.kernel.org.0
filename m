@@ -1,155 +1,161 @@
-Return-Path: <linux-tip-commits+bounces-6045-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6046-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A33AFE4C3
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Jul 2025 11:59:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C77AFE7EE
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Jul 2025 13:38:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011835A0428
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Jul 2025 09:59:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2445161C65
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  9 Jul 2025 11:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DDE28BA90;
-	Wed,  9 Jul 2025 09:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C8F2C15B1;
+	Wed,  9 Jul 2025 11:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="unrfWTVU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ffyItNbp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="u8/9tHlz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yZ9XNvbi"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937D128AAE0;
-	Wed,  9 Jul 2025 09:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7CD28F93E;
+	Wed,  9 Jul 2025 11:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752055065; cv=none; b=K3GYBzwe5XbUcnWo6SwrZexxlKJ/QaYhYkRGf8+xRugni+5+lg3RT7gZKfOlIm2fEryhTWV1i0jjkifikDqqGjj3JIIfJFECh+AS8m27136nCk33p6W6jwKpTh1z12FEH+Niw0rOTTZChHGuOPngp8SVLZZTgH+jhOI1g3TexuA=
+	t=1752061085; cv=none; b=ouwMBH2CLt80OMHN9uLVcemQ1rLda7RCXopCuhbJ8sBaQzF6/Kyn6lDv0w9/CC/+cY0MnAo0KrWmBy41yEUCwwt3/QytYO2pAtxpNzi4s4Pj1WNFKgCrP/7cSLXMwp/G6VspptYm0VUgE5IQK4VzrrH9PlGhYYY+U4vXG+P4ALA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752055065; c=relaxed/simple;
-	bh=7Vd9OfjPAIvxAHryi9I3/2iwmV94dRNqLVWLb9k6T6g=;
+	s=arc-20240116; t=1752061085; c=relaxed/simple;
+	bh=0HXZTf2+zftvPNshPrkGK7w5FUdfDehbYy8eoBGWk1M=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=EObzpcaZzK76wq4IFOjzIePe+4TqGXu372+hQbFCZOkeXUHqeGZEe+zrc4RMVfa1bDmEFm6sKk2gwN+cgLYU0MfeHfJuQYdp7mpTicFsbIJM5vR5Q2lGtdFXi0FyfHrPQNMU+UMFW8HB7E9oGOvlZJ9h203p5bbbSdVxd1iZA7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=unrfWTVU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ffyItNbp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=V+IMsxITsjLRIlFD3iE4VU0PY0YEFNspKAaQ5D62VCSogZ0SNmoGTFGlvM+jxgaSGPnxEaoO9b+R0f9kWrgiCxKKGHo8icFeHPPs8MhWmpMqhWCNOTbTV7bvSMlQOOCaIr5MFLj+lvghnJ3jb79Hd5QelenvzxcDM4Hkchh1/jg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=u8/9tHlz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yZ9XNvbi; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 09 Jul 2025 09:57:40 -0000
+Date: Wed, 09 Jul 2025 11:37:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752055061;
+	s=2020; t=1752061080;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PFG+5lj6woKDfFrHgOMp1GNT/frw1rtZLhl2zuTQS+A=;
-	b=unrfWTVUQ94AaVpcWWg9m6zU6trOhBdIRdwHMxKQXO/06iUjay7LqoDrnCGTaafxR6Hliq
-	/vdRBunb2AdMt6bsMtwYvcqtewasSiRdqn4sg/0tSD4UaxKbx26LUZsK9SCXcrgRbAMAk0
-	boCipcLN/WYasy54MXHK27wWzpX3IPlOvcynGXSbl83jNd25qN/GxktMyTUPUxtyVkSgQq
-	m/L0z6gQr0V+cfDkXiU80yLN8lYVgBC95FpAo6RIV5HPGmiQkfUZCXU6XKgk7dtmD12FrD
-	KfLXoBbXpDdvyInNPWeCzxLZTefrbqFe9Cggq8DMWjq//PifcKJ7StUgV6yBpg==
+	bh=pQ/FyDJSiGA6TA+ud5XGfY1EFfdC9QJcR+VoS1anZ9w=;
+	b=u8/9tHlzSTSYHOnnm3ctrZiJcR5rGOV0HH8MFY4xzXK2bEbuWBoFZLAh41mljQmxFOtz7v
+	pTwIpxsQaVFnyOSmNpeGG0B2kvMGVztJICO5wSiVWh03myroi7NLrA/0oVZuvS3D5cN1Dp
+	JxiNzVo7fx1SW/Fm8XfPjxSLSE9mZ4omSp0FEQv5G7aOMHjYOctxI/8i3GlLHI4677xEXB
+	741IaHTCLApKE6sYGdJAGov80H7V0l9AXTG2AM4GH8mS/gN9aDwUqKM9qYVAab8i4Ugb6I
+	Rj62aZYOPPuDkXIpu6RcrfNzCdijOZ6mm2RC8SWj9kp1L+9aAuV5KCwLK95ueA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752055061;
+	s=2020e; t=1752061080;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PFG+5lj6woKDfFrHgOMp1GNT/frw1rtZLhl2zuTQS+A=;
-	b=ffyItNbp2SzgocXZuYlWMBuMJXK1W78kT8s678f0fnDgMKc5/FHPP2ucOIc35venLI5gn+
-	Ow54j/i9ivfyPeCg==
-From:
- tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
+	bh=pQ/FyDJSiGA6TA+ud5XGfY1EFfdC9QJcR+VoS1anZ9w=;
+	b=yZ9XNvbi8KYt9yE9DhxJO5+2CT8TQRnJGUNfrY4xalJX1Z7bTi/1QUL/BMXpN88riLrgM8
+	RF66JFqeEh7Ys4Ag==
+From: "tip-bot2 for Greg Kroah-Hartman" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/ptp] vdso/vsyscall: Introduce a helper to fill clock
- configurations
-Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/microcode] x86/microcode: Move away from using a fake
+ platform device
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Sohil Mehta <sohil.mehta@intel.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250701-vdso-auxclock-v1-2-df7d9f87b9b8@linutronix.de>
-References: <20250701-vdso-auxclock-v1-2-df7d9f87b9b8@linutronix.de>
+In-Reply-To: <2025070121-omission-small-9308@gregkh>
+References: <2025070121-omission-small-9308@gregkh>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175205506093.406.3971514362419734380.tip-bot2@tip-bot2>
+Message-ID: <175206107968.406.11106963441390730546.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the timers/ptp branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     6fedaf682a5e1866efdaddc70ff0ada329825d53
-Gitweb:        https://git.kernel.org/tip/6fedaf682a5e1866efdaddc70ff0ada3298=
-25d53
-Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Tue, 01 Jul 2025 10:57:56 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 09 Jul 2025 11:52:34 +02:00
+Commit-ID:     9b355cdb63b1e43434d7ac57430d3e68de58338d
+Gitweb:        https://git.kernel.org/tip/9b355cdb63b1e43434d7ac57430d3e68de58338d
+Author:        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+AuthorDate:    Tue, 01 Jul 2025 12:54:22 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 09 Jul 2025 13:12:08 +02:00
 
-vdso/vsyscall: Introduce a helper to fill clock configurations
+x86/microcode: Move away from using a fake platform device
 
-The logic to configure a 'struct vdso_clock' from a
-'struct tk_read_base' is copied two times.
-Split it into a shared function to reduce the duplication,
-especially as another user will be added for auxiliary clocks.
+Downloading firmware needs a device to hang off of, and so a platform device
+seemed like the simplest way to do this.  Now that we have a faux device
+interface, use that instead as this "microcode device" is not anything
+resembling a platform device at all.
 
-Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250701-vdso-auxclock-v1-2-df7d9f87b9b8@li=
-nutronix.de
-
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Link: https://lore.kernel.org/2025070121-omission-small-9308@gregkh
 ---
- kernel/time/vsyscall.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ arch/x86/kernel/cpu/microcode/core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
-index 32ef27c..d655df2 100644
---- a/kernel/time/vsyscall.c
-+++ b/kernel/time/vsyscall.c
-@@ -15,26 +15,25 @@
-=20
- #include "timekeeping_internal.h"
-=20
-+static inline void fill_clock_configuration(struct vdso_clock *vc, const str=
-uct tk_read_base *base)
-+{
-+	vc->cycle_last	=3D base->cycle_last;
-+#ifdef CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
-+	vc->max_cycles	=3D base->clock->max_cycles;
-+#endif
-+	vc->mask	=3D base->mask;
-+	vc->mult	=3D base->mult;
-+	vc->shift	=3D base->shift;
-+}
-+
- static inline void update_vdso_time_data(struct vdso_time_data *vdata, struc=
-t timekeeper *tk)
- {
- 	struct vdso_clock *vc =3D vdata->clock_data;
- 	struct vdso_timestamp *vdso_ts;
- 	u64 nsec, sec;
-=20
--	vc[CS_HRES_COARSE].cycle_last	=3D tk->tkr_mono.cycle_last;
--#ifdef CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
--	vc[CS_HRES_COARSE].max_cycles	=3D tk->tkr_mono.clock->max_cycles;
--#endif
--	vc[CS_HRES_COARSE].mask		=3D tk->tkr_mono.mask;
--	vc[CS_HRES_COARSE].mult		=3D tk->tkr_mono.mult;
--	vc[CS_HRES_COARSE].shift	=3D tk->tkr_mono.shift;
--	vc[CS_RAW].cycle_last		=3D tk->tkr_raw.cycle_last;
--#ifdef CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
--	vc[CS_RAW].max_cycles		=3D tk->tkr_raw.clock->max_cycles;
--#endif
--	vc[CS_RAW].mask			=3D tk->tkr_raw.mask;
--	vc[CS_RAW].mult			=3D tk->tkr_raw.mult;
--	vc[CS_RAW].shift		=3D tk->tkr_raw.shift;
-+	fill_clock_configuration(&vc[CS_HRES_COARSE],	&tk->tkr_mono);
-+	fill_clock_configuration(&vc[CS_RAW],		&tk->tkr_raw);
-=20
- 	/* CLOCK_MONOTONIC */
- 	vdso_ts		=3D &vc[CS_HRES_COARSE].basetime[CLOCK_MONOTONIC];
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
+index fe50eb5..b92e09a 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -17,8 +17,8 @@
+ 
+ #define pr_fmt(fmt) "microcode: " fmt
+ 
+-#include <linux/platform_device.h>
+ #include <linux/stop_machine.h>
++#include <linux/device/faux.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/miscdevice.h>
+ #include <linux/capability.h>
+@@ -249,7 +249,7 @@ static void reload_early_microcode(unsigned int cpu)
+ }
+ 
+ /* fake device for request_firmware */
+-static struct platform_device	*microcode_pdev;
++static struct faux_device *microcode_fdev;
+ 
+ #ifdef CONFIG_MICROCODE_LATE_LOADING
+ /*
+@@ -690,7 +690,7 @@ static int load_late_locked(void)
+ 	if (!setup_cpus())
+ 		return -EBUSY;
+ 
+-	switch (microcode_ops->request_microcode_fw(0, &microcode_pdev->dev)) {
++	switch (microcode_ops->request_microcode_fw(0, &microcode_fdev->dev)) {
+ 	case UCODE_NEW:
+ 		return load_late_stop_cpus(false);
+ 	case UCODE_NEW_SAFE:
+@@ -841,9 +841,9 @@ static int __init microcode_init(void)
+ 	if (early_data.new_rev)
+ 		pr_info_once("Updated early from: 0x%08x\n", early_data.old_rev);
+ 
+-	microcode_pdev = platform_device_register_simple("microcode", -1, NULL, 0);
+-	if (IS_ERR(microcode_pdev))
+-		return PTR_ERR(microcode_pdev);
++	microcode_fdev = faux_device_create("microcode", NULL, NULL);
++	if (!microcode_fdev)
++		return -ENODEV;
+ 
+ 	dev_root = bus_get_dev_root(&cpu_subsys);
+ 	if (dev_root) {
+@@ -862,7 +862,7 @@ static int __init microcode_init(void)
+ 	return 0;
+ 
+  out_pdev:
+-	platform_device_unregister(microcode_pdev);
++	faux_device_destroy(microcode_fdev);
+ 	return error;
+ 
+ }
 
