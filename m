@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6056-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6057-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3340B0024A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jul 2025 14:46:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C04DB0024C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jul 2025 14:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60723B8EBC
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jul 2025 12:45:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB9D916412B
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jul 2025 12:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0570711CA0;
-	Thu, 10 Jul 2025 12:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606B01684B0;
+	Thu, 10 Jul 2025 12:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IKvLjKfp";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b2QSx0JW"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UeHqyMdh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TFtl/Rie"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F43195FE8;
-	Thu, 10 Jul 2025 12:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1629239E9B;
+	Thu, 10 Jul 2025 12:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752151574; cv=none; b=UEk7qv9pyQ8fnZu+jsBBdxpIpW6YuQ/JGpYIPRvmAXauaSVosMRL9ggwhI9p1vimfaQKg7eDkuRxYhjFmKuZRZZvtvradEwLktB5l7nlkXp/+cU1BoGXgi/YJWOd5/JVQ27mVWHTvq6K/sWAIgY0jtqR1uD4qC6VZNsNPR6OIFw=
+	t=1752151595; cv=none; b=nTc2+qnQX1RNLd3aX2H2hx5xyKllcM6b15giTG5yexwh4aP1b495AbmW7eiwa9Q0/XxvoKwbMWWevbDK1wgoyW0AxbickPsBvEhU1hTZcpPa3gtjbHXHYsuSCGDye+duUIRYBlnJeRL88BEWuK+fJCiyf7tGsufp427OpByI0vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752151574; c=relaxed/simple;
-	bh=jRSjBPiMGPq/h1rUkqrtXAs73AlE4m5U5MCfnsGsVjU=;
+	s=arc-20240116; t=1752151595; c=relaxed/simple;
+	bh=Z9KH7u4TAQ4NcC0M8FsuW0LCLT31ApZ4+JcRHIOeUTU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=FWcRR956xOa0algMXdp5+x2BMSr5dCPUUE+Zt3pFqI1WeL5UjvJ34PirreevEWGnutyuM41mX1WVb+AuvhE0hg9nGmQGPYnC36csxB8X80I3rFjSzgjdn22j8tGIwiRCXfMsIYA0rvuoLiME1U+4jFJNuUPe63i1AqPlQJipjMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IKvLjKfp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b2QSx0JW; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=MG2SGXDeDxqf2LF1TUoFkN0qCVonUUlV02Zi5aYbNxVGEhG8w/pS75IjFN0jEAQtxR+KV4b8dEHf2LSu3RcF/m/a0ogn6u5dwr68/LHwouc0kxRu3f7yhYsfPUl+RVDPJlWQnGoPKLQEgEkbSNQn+Zseehe6KF4DH9g1kMf+FAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UeHqyMdh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TFtl/Rie; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 10 Jul 2025 12:46:09 -0000
+Date: Thu, 10 Jul 2025 12:46:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752151571;
+	s=2020; t=1752151591;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6GpoaO58hsCkN19WFhqBzJSOFJ0U0XhMGcD93MD3UWI=;
-	b=IKvLjKfpkwVCQNw8egGy7sBCkuL4t3oMAQgCQTbOZp0V7JWct3/r2f6JMcrGBurgkvf66I
-	rbpcyARNF+buIU8tRWlUY2K6kVpE/usV++ry2dr01a7f/jfYYc7nC8nvc+3jeUJwITuoip
-	28s5DVY+z89d32uEfyEIq2m3MMl3zphx1HBg9cYQ050egVs6I9DsJrLYrXavYMhOyyjUPD
-	dDkFefWUNe3bA24KpnAQb2ord9LegcZvwQ1inMWe5AShEighDoGp3IKnI6lb8YiEUyOUrZ
-	dUMb0JvHV5v2C2XBmJ6huzQRbmPl+LBES/AVJmvaYTNfbDQAUz8v3k2/AXC4PQ==
+	bh=UNCgkguc4K17ftjsbExUmDwTu5KoCk7+tDdsgBUdwtQ=;
+	b=UeHqyMdhuerWaCk0chtpgj/kxbxTbplhIxKzIF2065LpTEE8ypBdJw8z80tYmK7AFsWS/3
+	G4EA1gTt+YEEzOOwm5ZF46yp0FN4mWYi+n7ktbBZOdxjf0tj49D8tUxCL79CGdX/BydGUQ
+	LTXOnutq2qzTuILU4bT2tOCL6V1VTIXBTRZ/5casU3NcHoHFk7wiHUyc06/P+KYcBbvaz6
+	30IuvzYpKOsn/xRWmHZkGdoIpUc5Mw3damxLD0LRy3w3StjQzhTE541HHvGvSGKDyH/OeV
+	lRhz1nlRtuQQmsoGTeFIXgJMBbejkwyIkVRcveAZPMbnyn8N8LmAyX7wd5mjog==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752151571;
+	s=2020e; t=1752151591;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6GpoaO58hsCkN19WFhqBzJSOFJ0U0XhMGcD93MD3UWI=;
-	b=b2QSx0JWgYWtl7OgtuU1iu4MZr26ZVqkzSEDRp53qOdvVXs6Fl76YqolmHefPCSzf53FbY
-	Nh4rOVxXk+cYR6CQ==
-From: "tip-bot2 for Tetsuo Handa" <tip-bot2@linutronix.de>
+	bh=UNCgkguc4K17ftjsbExUmDwTu5KoCk7+tDdsgBUdwtQ=;
+	b=TFtl/RiefvIbnNlVDKAp3SQYUBoTFvl2lcvy1FyPvMKFEHqlgJKtlE8yFFAG7MoWGp1z2C
+	pOp2VXlWkq9cvaBw==
+From: "tip-bot2 for Vincent Guittot" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/core: Fix WARN in perf_sigtrap()
-Cc: syzbot <syzbot+2fe61cb2a86066be6985@syzkaller.appspotmail.com>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+Subject: [tip: sched/core] sched/fair: Always trigger resched at the end of a
+ protected period
+Cc: Vincent Guittot <vincent.guittot@linaro.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <b1c224bd-97f9-462c-a3e3-125d5e19c983@I-love.SAKURA.ne.jp>
-References: <b1c224bd-97f9-462c-a3e3-125d5e19c983@I-love.SAKURA.ne.jp>
+In-Reply-To: <20250708165630.1948751-7-vincent.guittot@linaro.org>
+References: <20250708165630.1948751-7-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175215156980.406.5266536077191342299.tip-bot2@tip-bot2>
+Message-ID: <175215159074.406.16844859757255541211.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,60 +80,56 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     3da6bb419750f3ad834786d6ba7c9d5d062c770b
-Gitweb:        https://git.kernel.org/tip/3da6bb419750f3ad834786d6ba7c9d5d062c770b
-Author:        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-AuthorDate:    Wed, 09 Jul 2025 20:27:52 +09:00
+Commit-ID:     0b9ca2dcabc3c8816a6ee75599cab7bef3330609
+Gitweb:        https://git.kernel.org/tip/0b9ca2dcabc3c8816a6ee75599cab7bef3330609
+Author:        Vincent Guittot <vincent.guittot@linaro.org>
+AuthorDate:    Tue, 08 Jul 2025 18:56:30 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 09 Jul 2025 13:40:17 +02:00
+CommitterDate: Wed, 09 Jul 2025 13:40:23 +02:00
 
-perf/core: Fix WARN in perf_sigtrap()
+sched/fair: Always trigger resched at the end of a protected period
 
-Since exit_task_work() runs after perf_event_exit_task_context() updated
-ctx->task to TASK_TOMBSTONE, perf_sigtrap() from perf_pending_task() might
-observe event->ctx->task == TASK_TOMBSTONE.
+Always trigger a resched after a protected period even if the entity is
+still eligible. It can happen that an entity remains eligible at the end
+of the protected period but must let an entity with a shorter slice to run
+in order to keep its lag shorter than slice. This is particulalry true
+with run to parity which tries to maximize the lag.
 
-Swap the early exit tests in order not to hit WARN_ON_ONCE().
-
-Closes: https://syzkaller.appspot.com/bug?extid=2fe61cb2a86066be6985
-Reported-by: syzbot <syzbot+2fe61cb2a86066be6985@syzkaller.appspotmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/b1c224bd-97f9-462c-a3e3-125d5e19c983@I-love.SAKURA.ne.jp
+Link: https://lkml.kernel.org/r/20250708165630.1948751-7-vincent.guittot@linaro.org
 ---
- kernel/events/core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ kernel/sched/fair.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 0db36b2..22fdf0c 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7204,18 +7204,18 @@ void perf_event_wakeup(struct perf_event *event)
- static void perf_sigtrap(struct perf_event *event)
- {
- 	/*
--	 * We'd expect this to only occur if the irq_work is delayed and either
--	 * ctx->task or current has changed in the meantime. This can be the
--	 * case on architectures that do not implement arch_irq_work_raise().
-+	 * Both perf_pending_task() and perf_pending_irq() can race with the
-+	 * task exiting.
- 	 */
--	if (WARN_ON_ONCE(event->ctx->task != current))
-+	if (current->flags & PF_EXITING)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 1660960..20a8456 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -1182,14 +1182,6 @@ static inline void update_curr_task(struct task_struct *p, s64 delta_exec)
+ 	cgroup_account_cputime(p, delta_exec);
+ }
+ 
+-static inline bool resched_next_slice(struct cfs_rq *cfs_rq, struct sched_entity *curr)
+-{
+-	if (protect_slice(curr))
+-		return false;
+-
+-	return !entity_eligible(cfs_rq, curr);
+-}
+-
+ /*
+  * Used by other classes to account runtime.
+  */
+@@ -1250,7 +1242,7 @@ static void update_curr(struct cfs_rq *cfs_rq)
+ 	if (cfs_rq->nr_queued == 1)
  		return;
  
- 	/*
--	 * Both perf_pending_task() and perf_pending_irq() can race with the
--	 * task exiting.
-+	 * We'd expect this to only occur if the irq_work is delayed and either
-+	 * ctx->task or current has changed in the meantime. This can be the
-+	 * case on architectures that do not implement arch_irq_work_raise().
- 	 */
--	if (current->flags & PF_EXITING)
-+	if (WARN_ON_ONCE(event->ctx->task != current))
- 		return;
- 
- 	send_sig_perf((void __user *)event->pending_addr,
+-	if (resched || resched_next_slice(cfs_rq, curr)) {
++	if (resched || !protect_slice(curr)) {
+ 		resched_curr_lazy(rq);
+ 		clear_buddies(cfs_rq, curr);
+ 	}
 
