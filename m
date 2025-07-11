@@ -1,124 +1,147 @@
-Return-Path: <linux-tip-commits+bounces-6071-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6072-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA3D8B00E3D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jul 2025 23:56:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5BC4B01687
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Jul 2025 10:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1EB21C8657B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 10 Jul 2025 21:56:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA62C1CA40E9
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 11 Jul 2025 08:38:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC735290092;
-	Thu, 10 Jul 2025 21:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FD61F582F;
+	Fri, 11 Jul 2025 08:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="31wMQMwB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0khRk/Sk"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NpkcMjHQ"
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BA928DF27;
-	Thu, 10 Jul 2025 21:56:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30F2202976
+	for <linux-tip-commits@vger.kernel.org>; Fri, 11 Jul 2025 08:37:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752184586; cv=none; b=uBI0PgbFInD9eK/9xlelFwWOSREM+TqHGyZiGRDHoknfmBHLKbtASOqr9ugkZA9J8COi9Gt19scwRBrB60kMoE1+zNkREmG6mqXM+G/HGeDZzAE47EYui2sQT33vIHVbxY3yVIMovReWpsB45cV8J/nllCPNHtD5jOGP4ZZDVAQ=
+	t=1752223041; cv=none; b=dEIvraCjSQ0T0MvW9cXq4wr/3J/aYu3RaLcMnCUhV8i961PnM/DGphC5cFOJCLlmAH9CIN6X4sUU7wenTEOtfs0wOEVpFBC/4xp7hqYNYvrtNid5NSRUUhnvz32Z+sufkmrb8THGOSlj7kSDPr9YiaAF/IGh+eW6RecuA2WDOv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752184586; c=relaxed/simple;
-	bh=QHNBja283vzdVpy070jqNyFysgvX9DvQT90Xk9Kdmfw=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Mu+qv25ETNoIxiAqu93/YeUCqoiLsksi92Vsen9Ibpiabga582G2Lt5gS5bpgzjfVbKIA6llhFsnXBy+vtnDmmu+UBVgP8g8uZwaaPUHmSxxr943Nar9NjdSBrapkZXfApBOhBAKcCYyTG+xZdwrUq37svLGnai+sBbKteJQ/Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=31wMQMwB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0khRk/Sk; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 10 Jul 2025 21:56:21 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752184583;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QUPnAwJVipvlnYGY44ZfC/0a45hH1uK/2owJhHlfmvE=;
-	b=31wMQMwBHEERrSm49/OcVHRn3R2fTTSXV3DlYLHcUIASlIzu5i7bQ0e5TVcm7bQUi3pB2Z
-	6BEF2FiTioJPZLb2Go4GDdlYbDokiVmIPWkcdhID8svD/naXEFtVmzEWrInnaNYFZd7ZTD
-	fCvFjGX/RFX2j0mK3b0ACTd7JAgghyhlQNBodorQg1FXbKWhapcWRqwjWG76Vg69zm1DAf
-	lYQUNs2IrjO4XmVUdKvpY3hV+Zn85AcMLsSwzG7NTaZssQm4QT1k7NTTMQ7zY72idgHPwf
-	hA1FEGgg0jbGjr9IpwF3tmuPD8EVqX8eXMl/vR+dId4Tt23yqOREbDl45qrmKA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752184583;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QUPnAwJVipvlnYGY44ZfC/0a45hH1uK/2owJhHlfmvE=;
-	b=0khRk/SkfbRCqTVgB/JL4VGWAxjpzNClVQHl29PrYwakP13lfushRMEj6m5cP4nUnggGOi
-	BZIxXDxkrsR58cDA==
-From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1752223041; c=relaxed/simple;
+	bh=wBexerGmlSLuT4Q9x+PLy9NOWI2IGyv0KV2h3EhUVYI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CJ6AuhWTEmKgruqLsj6pkMn+OBr8260FLqEUk49wFPjxHdk/qTIHR6e2VgfvJzJrvB/mT0QoBoprYKe/NTfBHf5ONrib8e5Nz5MTVR6zKfrJ/Ijprh6pPFrga1JmF/pvohRrvYJekqIMMXpL0emSrwsUvYDYt2IoIASJv1wYrrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NpkcMjHQ; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-747fba9f962so1651581b3a.0
+        for <linux-tip-commits@vger.kernel.org>; Fri, 11 Jul 2025 01:37:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1752223037; x=1752827837; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6XUXolZ3NZrlkUNZw/zJhmIC6NkFxml120UZ5EcTK7M=;
+        b=NpkcMjHQBE45xveVkrdNY2V8QcdYKsBT/+BIaKnhA0PERLLc/6TOOOhWYK41ZtjxCs
+         bzc+3bcZ9y/HWnISV4b7E33TtThGwWeubjJ9RVrpDUcbazOy/YxSNIjN8qi4Zj+SXf80
+         Ru2YWb8+oz7WWpayPjbw6XTVZUiSW3K5BkJy1f6hP9T+pn8eTmoTeOpRMHw3BVKTjDm5
+         9dy6CmmPfT43r+eLA2n4Ba1w8DkZj2/Qj+adQv2f8vwBJFFg5f1w3JeF2YqyLKgUQdNj
+         wlNTf2P//Q3Ig8sb8Zcrdiy5fJlkiyYYPLfzh0BNSYkXe6NJsTYzGaIKh9wJ17Bb4HLN
+         1Lpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1752223037; x=1752827837;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6XUXolZ3NZrlkUNZw/zJhmIC6NkFxml120UZ5EcTK7M=;
+        b=Hwn573HMhnVeYVvgactlMciMuAOkriyRvrZDHlk7tMbrGIfFcq7mvds6ppDDRQAP6o
+         1RaMDrcVlI6YQxfQNxF6uhORwxejDdIRu/bC8ofpVnFpJz0TWeto6auprfxft5BZmDSG
+         ynfnNZDci1Hs8lc/zZ2VTGkS/3FY8nWdfEqy2E8CxAuwCbkeEDBxs8V0Csb4DSqoJ1Fi
+         6i8ViIO7A01YOyc2FRExEmFq4bjveRCqUAdFicx20iRL76Cm+sl9diaE7G/bDqfWnuOw
+         5CG1DrIJ7bFY8l5RMNfZJwMr8KyJUAiYCw1KtrZjfvg0W+/spkc+ErKH/1H1xpkBbj83
+         7H0w==
+X-Gm-Message-State: AOJu0YyYm5s+imkDFk89faB1HHbqitRtbL9pSWsM6ZJVrzZHlwwLMYRV
+	TS5x4C46XSN0wZdQHqf0+/avNeWwXKxtyhOaGijr5c+zMC/FldvcHEIrtNKH1ey3CtY=
+X-Gm-Gg: ASbGncsr7zMRTCblMt8IgtMtsxtIYd4pcU7cWGTbzrqcLU1/vn7P4UO/eZGvmWbXbXx
+	vB3l60qGdY19Ik5MW5eo45q+n16RY4brnMTST4j1g+syjGtQd5+qImQe2tXQvtuQSMCjIkseSi7
+	TcBO6h1LQyst3aW+4rlrNzmU+b1MiSPEH6ofvI2yw8RFxZt2JSwA/ve8HYsP6VbkTsQswDNUPoi
+	8wfwJCR+QQ3lJg4pEO1bDmS0EWHA5HC5yfzK7fMNAqlTGndFvjmFWQliw9FqS+6zksBGC2ZlNVs
+	Euc7QLvuqyFgGaFncOIAnD806kZYwmyzA+bhw4fY6XRmBMC022xxBPcxWZEBiH8itaAPr54HFKW
+	8zRQ2UWaZQ/Eg/grnoBzOoM385A==
+X-Google-Smtp-Source: AGHT+IHJaibR0audMDMA5x4+vGsGHVE1SoOIJ5lm3hCiQGqL/7q5s8HuBJWb4ZxBknCzgINI9eRfGQ==
+X-Received: by 2002:a05:6a00:6d58:10b0:746:1d29:5892 with SMTP id d2e1a72fcca58-74eb593d0bemr6718891b3a.4.1752223037105;
+        Fri, 11 Jul 2025 01:37:17 -0700 (PDT)
+Received: from localhost ([36.110.131.181])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74eb9e06c72sm4976880b3a.66.2025.07.11.01.37.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Jul 2025 01:37:16 -0700 (PDT)
+From: Julian Sun <sunjunchao2870@gmail.com>
+X-Google-Original-From: Julian Sun <sunjunchao@bytedance.com>
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/irq-msi-lib: Fix build with PCI disabled
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@linutronix.de>,
- Marc Zyngier <maz@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250710080021.2303640-1-arnd@kernel.org>
-References: <20250710080021.2303640-1-arnd@kernel.org>
+Cc: mingo@kernel.org,
+	Julian Sun <sunjunchao@bytedance.com>
+Subject: [PATCH] x86/fpu: Fix null-ptr-deref in x86_task_fpu()
+Date: Fri, 11 Jul 2025 16:37:12 +0800
+Message-Id: <20250711083712.39121-1-sunjunchao@bytedance.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175218458197.406.10894224254556298432.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following bug was triggered by LTP:
+[ 1042.859480] ------------[ cut here ]------------
+[ 1042.865432] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[ 1042.868409] RIP: 0010:proc_pid_arch_status+0x25/0x90
+...
+[ 1042.873200] Call Trace:
+[ 1042.874107]  <TASK>
+[ 1042.874222] PKRU: 55555554
+[ 1042.874752]  proc_pid_arch_status+0x1e/0x90
+[ 1042.875256] Call Trace:
+[ 1042.875257]  <TASK>
+[ 1042.875259]  proc_single_show+0x5d/0xe0
+[ 1042.875263]  seq_read_iter+0x132/0x4d0
+[ 1042.875790]  proc_single_show+0x5d/0xe0
+[ 1042.876284]  seq_read+0xf9/0x130
+[ 1042.876288]  vfs_read+0xbc/0x350
+[ 1042.876510]  seq_read_iter+0x132/0x4d0
+[ 1042.877019]  ? putname+0x63/0x80
+[ 1042.877612]  seq_read+0xf9/0x130
+[ 1042.878020]  ksys_read+0x73/0xf0
+[ 1042.878212]  vfs_read+0xbc/0x350
+[ 1042.878723]  __x64_sys_read+0x1d/0x30
+[ 1042.878888]  ? putname+0x63/0x80
+[ 1042.879089]  x64_sys_call+0x1e55/0x1fa0
+[ 1042.879092]  do_syscall_64+0x65/0x290
+[ 1042.879410]  ksys_read+0x73/0xf0
+[ 1042.879598]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 1042.879761]  __x64_sys_read+0x1d/0x30
+[ 1042.880043] RIP: 0033:0x7f9cf0d4d25d
 
-Commit-ID:     a8b289f0f2dcbadd8c207ad8f33cf7ba2b4eb088
-Gitweb:        https://git.kernel.org/tip/a8b289f0f2dcbadd8c207ad8f33cf7ba2b4eb088
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Thu, 10 Jul 2025 10:00:12 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 10 Jul 2025 23:46:05 +02:00
+This issue can be easily reproduced using kirk --run-suite fs.
 
-irqchip/irq-msi-lib: Fix build with PCI disabled
+The problem can be fixed by only printing a warning in x86_task_fpu()
+instead of returning a null pointer.
 
-The armada-370-xp irqchip fails in some randconfig builds because
-of a missing declaration:
-
-In file included from drivers/irqchip/irq-armada-370-xp.c:23:
-include/linux/irqchip/irq-msi-lib.h:25:39: error: 'struct msi_domain_info' declared inside parameter list will not be visible outside of this definition or declaration [-Werror]
-
-Add a forward declaration for the msi_domain_info structure.
-
-[ tglx: Fixed up the subsystem prefix. Is it really that hard to get right? ]
-
-Fixes: e51b27438a10 ("irqchip: Make irq-msi-lib.h globally available")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/all/20250710080021.2303640-1-arnd@kernel.org
-
+Fixes: 22aafe3bcb67 ("x86/fpu: Remove init_task FPU state dependencies, add debugging warning for PF_KTHREAD tasks")
+Signed-off-by: Julian Sun <sunjunchao@bytedance.com>
 ---
- include/linux/irqchip/irq-msi-lib.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/fpu/core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/irqchip/irq-msi-lib.h b/include/linux/irqchip/irq-msi-lib.h
-index dd8d1d1..224ac28 100644
---- a/include/linux/irqchip/irq-msi-lib.h
-+++ b/include/linux/irqchip/irq-msi-lib.h
-@@ -17,6 +17,7 @@
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index ea138583dd92..632ddd73f845 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -58,8 +58,7 @@ DEFINE_PER_CPU(struct fpu *, fpu_fpregs_owner_ctx);
+ #ifdef CONFIG_X86_DEBUG_FPU
+ struct fpu *x86_task_fpu(struct task_struct *task)
+ {
+-	if (WARN_ON_ONCE(task->flags & PF_KTHREAD))
+-		return NULL;
++	WARN_ON_ONCE(task->flags & PF_KTHREAD);
  
- #define MATCH_PLATFORM_MSI	BIT(DOMAIN_BUS_PLATFORM_MSI)
- 
-+struct msi_domain_info;
- int msi_lib_irq_domain_select(struct irq_domain *d, struct irq_fwspec *fwspec,
- 			      enum irq_domain_bus_token bus_token);
- 
+ 	return (void *)task + sizeof(*task);
+ }
+-- 
+2.39.5
+
 
