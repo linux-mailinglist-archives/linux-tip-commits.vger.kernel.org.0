@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6131-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6132-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5FEB0A3A9
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jul 2025 13:56:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E801FB0A3AD
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jul 2025 13:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A8B85A7397
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jul 2025 11:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A047A8080B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 18 Jul 2025 11:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0922D9789;
-	Fri, 18 Jul 2025 11:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EE92D97B4;
+	Fri, 18 Jul 2025 11:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Hm805RFo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kc5oho2W"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M4bzwoFn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XUycdV1Y"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95704221297;
-	Fri, 18 Jul 2025 11:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493BD29824B;
+	Fri, 18 Jul 2025 11:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752839787; cv=none; b=rg153Ijuv+UH5DalkiI/eKb+0WX7UNLkJesDNGZwFGjQivrh4TjVst0Za5bQNoGwZPcVVPy5QwTpYS/qGBpiVrC729V3A7uKYTUBY7an8K83wKfmFzXY6fnNoykNHvD0Zi+M3z3hR8+MK8dWrmzEFMc/pKkY/ychtq0GQ5IQi4Q=
+	t=1752839787; cv=none; b=lVkfyHkMBQkfORb3Omos8xYY7gjA4j91Ie080uj3nMUDVlM7TpQqtSljvEHqzTv0oLTCqCnVEf52oF9j7b80mAPrL/9kdWRMxj4JiAaG3SbYxYJRWkxiQV2aNFZE7904S4s+4rIq5ip4bWMs2X+c2VCDwe+uan8jgf00MxJn6qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1752839787; c=relaxed/simple;
-	bh=az0q3YAkoWd3U1XV188ciWjnQaSclO9oA8lk22XofQs=;
+	bh=7xm7d8HOadHiopHEhQfScjxhEX0qAzX6XDjyd1DDFOc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=GZk6CTmvW64ueRm15aVxMBNJHWvb3lLZvTqCguzGNGpezo/qK15SWwY/EXmDfhLnQvYeO+BuXsgJ8ugNl8HNJPb7JVeU+qhw2FlNfNSEX/6Nd2A/5PAjX08xIzzRuD/dUv0DvK2EhahBr8BVt5+RjJvKn3fkwYv9uXafM44kVOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Hm805RFo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kc5oho2W; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AmoYhNvFehQbZs1WkHUAr6O+Y8SfbL41JDGmiONVQ0g3evLyJNLa2xYgnPxO3snzCfG5QdY6OJgDmRe9CVkbaburVO2rWt5nuZyODeeN6fIPlHXZui9zVFoKNXUv6ePV+NJlteMXLDQ7VNxGgHXFcaoRylx7k9LNeEihjj4scCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M4bzwoFn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XUycdV1Y; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 18 Jul 2025 11:56:22 -0000
+Date: Fri, 18 Jul 2025 11:56:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1752839783;
+	s=2020; t=1752839784;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u/Mln5SvSw8RDBiAjJ/76BOLXbzGi0rWP62Hnk194fs=;
-	b=Hm805RFoWhdejSjcVfbDOFfhfKAHbCxMNpt5/0aKd9DauhEhE0hvsegVdrm/2AF9j5Vzy3
-	xq6KOckAmx1h+xdAMlQ/Qjgp0I8yoiVwVFkKMiXD/+xP7QkdoLzE/vFixlLrqK3GdoTkxy
-	gZTd4JijK0GkQjGNOSckbKbj0S+hPh76y6oiQ4C+EtNN5w2G8Se/m25BTtBrJpI7iqMAP+
-	E/Mt/DTfO4mNfhjyYW8bpzTuFFDwdVDpoh4hi29WtXGP4IfslYnLOrH9AjGN5aeCJAiNA8
-	pd/WvYY2QjjiiZl+gUq00HeHzLwNMtOiWmHrVAFNitdKp48RzDuATklu6TJVKQ==
+	bh=d5+aRtIlHW3mgOzoLMVcpfPDPexLf8eNtR92PNz4mCU=;
+	b=M4bzwoFnt/5xE3iQisju0+Ch5sJgI3/5PbcCVzU35LekIC5hNbl0c+i96BWgOPDGTFOPSE
+	JL6rfr0PE444kcbrm+fRAdnKPO+eh/LSaRUBk+hiW7UVguKUY/eSioZYz6HwO+Lj7eMYMJ
+	ucEGhbTEKFpatJfFey9F8M2KTrQV8l92aOdITQkqpUACz+5cC7eSDAo/BSrYaEfmRD/ll1
+	qMazUPWE7fch+jNmUopAiQfbZ+PTRTW1Nk3Rt/wE2Oqdszx5mwaoZwjZwo/WupjjAp5hr3
+	yBVUnLSh5Dteaw5ZCQn9qey434cCJSv3iIVlFEGU4+Nxunhc7rTsVocmFOavmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1752839783;
+	s=2020e; t=1752839784;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u/Mln5SvSw8RDBiAjJ/76BOLXbzGi0rWP62Hnk194fs=;
-	b=kc5oho2WZOmgM/ATE3ePEdDsVqJS87vPwLj2Ew+m3BBZn4zU02W7BYSBtxI869prWKAM5w
-	BqHSGlOUVnXvJRCA==
+	bh=d5+aRtIlHW3mgOzoLMVcpfPDPexLf8eNtR92PNz4mCU=;
+	b=XUycdV1YkbD8IgTlWUyduxaZJd08NCf7jPMGTJDTOF7oX4z6oSuEmrYlM+w5++VvIbq8XY
+	WE0bF7shASEG6FBg==
 From:
  tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/ptp] vdso/gettimeofday: Add support for auxiliary clocks
+Subject:
+ [tip: timers/ptp] vdso/vsyscall: Update auxiliary clock data in the datapage
 Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250701-vdso-auxclock-v1-12-df7d9f87b9b8@linutronix.de>
-References: <20250701-vdso-auxclock-v1-12-df7d9f87b9b8@linutronix.de>
+In-Reply-To: <20250701-vdso-auxclock-v1-11-df7d9f87b9b8@linutronix.de>
+References: <20250701-vdso-auxclock-v1-11-df7d9f87b9b8@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175283978207.406.5236820210383914428.tip-bot2@tip-bot2>
+Message-ID: <175283978326.406.7698924529339590205.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,143 +82,181 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the timers/ptp branch of tip:
 
-Commit-ID:     5b8c75d424fad4d7b295f50021e9fd9c1022e6a8
-Gitweb:        https://git.kernel.org/tip/5b8c75d424fad4d7b295f50021e9fd9c102=
-2e6a8
+Commit-ID:     380b84e168e57c54d0a9e053a5558fddc43f0c1a
+Gitweb:        https://git.kernel.org/tip/380b84e168e57c54d0a9e053a5558fddc43=
+f0c1a
 Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Tue, 01 Jul 2025 10:58:06 +02:00
+AuthorDate:    Tue, 01 Jul 2025 10:58:05 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 18 Jul 2025 13:45:33 +02:00
 
-vdso/gettimeofday: Add support for auxiliary clocks
+vdso/vsyscall: Update auxiliary clock data in the datapage
 
-Expose the auxiliary clocks through the vDSO.
+Expose the auxiliary clock data so it can be read from the vDSO.
 
 Architectures not using the generic vDSO time framework,
 namely SPARC64, are not supported.
 
 Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250701-vdso-auxclock-v1-12-df7d9f87b9b8@l=
+Link: https://lore.kernel.org/all/20250701-vdso-auxclock-v1-11-df7d9f87b9b8@l=
 inutronix.de
 
 ---
- include/vdso/datapage.h |  2 ++-
- lib/vdso/gettimeofday.c | 49 +++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 50 insertions(+), 1 deletion(-)
+ include/linux/timekeeper_internal.h |  6 ++++-
+ include/vdso/datapage.h             |  3 ++-
+ kernel/time/namespace.c             |  5 ++++-
+ kernel/time/timekeeping.c           | 12 ++++++++-
+ kernel/time/vsyscall.c              | 40 ++++++++++++++++++++++++++++-
+ 5 files changed, 66 insertions(+)
 
+diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper_i=
+nternal.h
+index ca79938..c27aac6 100644
+--- a/include/linux/timekeeper_internal.h
++++ b/include/linux/timekeeper_internal.h
+@@ -190,4 +190,10 @@ static inline void update_vsyscall_tz(void)
+ }
+ #endif
+=20
++#if defined(CONFIG_GENERIC_GETTIMEOFDAY) && defined(CONFIG_POSIX_AUX_CLOCKS)
++extern void vdso_time_update_aux(struct timekeeper *tk);
++#else
++static inline void vdso_time_update_aux(struct timekeeper *tk) { }
++#endif
++
+ #endif /* _LINUX_TIMEKEEPER_INTERNAL_H */
 diff --git a/include/vdso/datapage.h b/include/vdso/datapage.h
-index f4c96d9..0253303 100644
+index 1864e76..f4c96d9 100644
 --- a/include/vdso/datapage.h
 +++ b/include/vdso/datapage.h
-@@ -5,6 +5,7 @@
- #ifndef __ASSEMBLY__
+@@ -38,6 +38,7 @@ struct vdso_arch_data {
+ #endif
 =20
- #include <linux/compiler.h>
-+#include <uapi/linux/bits.h>
- #include <uapi/linux/time.h>
- #include <uapi/linux/types.h>
- #include <uapi/asm-generic/errno-base.h>
-@@ -46,6 +47,7 @@ struct vdso_arch_data {
- #define VDSO_COARSE	(BIT(CLOCK_REALTIME_COARSE)	| \
- 			 BIT(CLOCK_MONOTONIC_COARSE))
- #define VDSO_RAW	(BIT(CLOCK_MONOTONIC_RAW))
-+#define VDSO_AUX	__GENMASK(CLOCK_AUX_LAST, CLOCK_AUX)
+ #define VDSO_BASES	(CLOCK_TAI + 1)
++#define VDSO_BASE_AUX	0
+ #define VDSO_HRES	(BIT(CLOCK_REALTIME)		| \
+ 			 BIT(CLOCK_MONOTONIC)		| \
+ 			 BIT(CLOCK_BOOTTIME)		| \
+@@ -117,6 +118,7 @@ struct vdso_clock {
+  * @arch_data:		architecture specific data (optional, defaults
+  *			to an empty struct)
+  * @clock_data:		clocksource related data (array)
++ * @aux_clock_data:	auxiliary clocksource related data (array)
+  * @tz_minuteswest:	minutes west of Greenwich
+  * @tz_dsttime:		type of DST correction
+  * @hrtimer_res:	hrtimer resolution
+@@ -133,6 +135,7 @@ struct vdso_time_data {
+ 	struct arch_vdso_time_data	arch_data;
 =20
- #define CS_HRES_COARSE	0
- #define CS_RAW		1
-diff --git a/lib/vdso/gettimeofday.c b/lib/vdso/gettimeofday.c
-index fc0038e..487e345 100644
---- a/lib/vdso/gettimeofday.c
-+++ b/lib/vdso/gettimeofday.c
-@@ -2,6 +2,7 @@
- /*
-  * Generic userspace implementations of gettimeofday() and similar.
-  */
-+#include <vdso/auxclock.h>
- #include <vdso/datapage.h>
- #include <vdso/helpers.h>
+ 	struct vdso_clock		clock_data[CS_BASES];
++	struct vdso_clock		aux_clock_data[MAX_AUX_CLOCKS];
 =20
-@@ -74,7 +75,7 @@ static inline bool vdso_cycles_ok(u64 cycles)
- static __always_inline bool vdso_clockid_valid(clockid_t clock)
- {
- 	/* Check for negative values or invalid clocks */
--	return likely((u32) clock < MAX_CLOCKS);
-+	return likely((u32) clock < CLOCK_AUX_LAST);
- }
-=20
- /*
-@@ -268,6 +269,48 @@ bool do_coarse(const struct vdso_time_data *vd, const st=
-ruct vdso_clock *vc,
- 	return true;
- }
-=20
-+static __always_inline
-+bool do_aux(const struct vdso_time_data *vd, clockid_t clock, struct __kerne=
-l_timespec *ts)
-+{
-+	const struct vdso_clock *vc;
-+	u32 seq, idx;
-+	u64 sec, ns;
-+
-+	if (!IS_ENABLED(CONFIG_POSIX_AUX_CLOCKS))
-+		return false;
-+
-+	idx =3D clock - CLOCK_AUX;
-+	vc =3D &vd->aux_clock_data[idx];
-+
-+	do {
-+		/*
-+		 * Open coded function vdso_read_begin() to handle
-+		 * VDSO_CLOCK_TIMENS. See comment in do_hres().
-+		 */
-+		while ((seq =3D READ_ONCE(vc->seq)) & 1) {
-+			if (IS_ENABLED(CONFIG_TIME_NS) && vc->clock_mode =3D=3D VDSO_CLOCKMODE_TI=
-MENS) {
-+				vd =3D __arch_get_vdso_u_timens_data(vd);
-+				vc =3D &vd->aux_clock_data[idx];
-+				/* Re-read from the real time data page */
-+				continue;
-+			}
-+			cpu_relax();
-+		}
-+		smp_rmb();
-+
-+		/* Auxclock disabled? */
-+		if (vc->clock_mode =3D=3D VDSO_CLOCKMODE_NONE)
-+			return false;
-+
-+		if (!vdso_get_timestamp(vd, vc, VDSO_BASE_AUX, &sec, &ns))
-+			return false;
-+	} while (unlikely(vdso_read_retry(vc, seq)));
-+
-+	vdso_set_timespec(ts, sec, ns);
-+
-+	return true;
-+}
-+
- static __always_inline bool
- __cvdso_clock_gettime_common(const struct vdso_time_data *vd, clockid_t cloc=
+ 	s32				tz_minuteswest;
+ 	s32				tz_dsttime;
+diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
+index e364227..6674527 100644
+--- a/kernel/time/namespace.c
++++ b/kernel/time/namespace.c
+@@ -242,6 +242,11 @@ static void timens_set_vvar_page(struct task_struct *tas=
 k,
- 			     struct __kernel_timespec *ts)
-@@ -289,6 +332,8 @@ __cvdso_clock_gettime_common(const struct vdso_time_data =
-*vd, clockid_t clock,
- 		return do_coarse(vd, &vc[CS_HRES_COARSE], clock, ts);
- 	else if (msk & VDSO_RAW)
- 		vc =3D &vc[CS_RAW];
-+	else if (msk & VDSO_AUX)
-+		return do_aux(vd, clock, ts);
- 	else
- 		return false;
+ 	for (i =3D 0; i < CS_BASES; i++)
+ 		timens_setup_vdso_clock_data(&vc[i], ns);
 =20
-@@ -433,6 +478,8 @@ bool __cvdso_clock_getres_common(const struct vdso_time_d=
-ata *vd, clockid_t cloc
- 		 * Preserves the behaviour of posix_get_coarse_res().
- 		 */
- 		ns =3D LOW_RES_NSEC;
-+	} else if (msk & VDSO_AUX) {
-+		ns =3D aux_clock_resolution_ns();
- 	} else {
- 		return false;
++	if (IS_ENABLED(CONFIG_POSIX_AUX_CLOCKS)) {
++		for (i =3D 0; i < ARRAY_SIZE(vdata->aux_clock_data); i++)
++			timens_setup_vdso_clock_data(&vdata->aux_clock_data[i], ns);
++	}
++
+ out:
+ 	mutex_unlock(&offset_lock);
+ }
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index cbcf090..243fe25 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -66,11 +66,21 @@ static inline bool tk_get_aux_ts64(unsigned int tkid, str=
+uct timespec64 *ts)
+ {
+ 	return ktime_get_aux_ts64(CLOCK_AUX + tkid - TIMEKEEPER_AUX_FIRST, ts);
+ }
++
++static inline bool tk_is_aux(const struct timekeeper *tk)
++{
++	return tk->id >=3D TIMEKEEPER_AUX_FIRST && tk->id <=3D TIMEKEEPER_AUX_LAST;
++}
+ #else
+ static inline bool tk_get_aux_ts64(unsigned int tkid, struct timespec64 *ts)
+ {
+ 	return false;
+ }
++
++static inline bool tk_is_aux(const struct timekeeper *tk)
++{
++	return false;
++}
+ #endif
+=20
+ /* flag for if timekeeping is suspended */
+@@ -719,6 +729,8 @@ static void timekeeping_update_from_shadow(struct tk_data=
+ *tkd, unsigned int act
+=20
+ 		update_fast_timekeeper(&tk->tkr_mono, &tk_fast_mono);
+ 		update_fast_timekeeper(&tk->tkr_raw,  &tk_fast_raw);
++	} else if (tk_is_aux(tk)) {
++		vdso_time_update_aux(tk);
  	}
+=20
+ 	if (action & TK_CLOCK_WAS_SET)
+diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
+index df6bada..8ba8b0d 100644
+--- a/kernel/time/vsyscall.c
++++ b/kernel/time/vsyscall.c
+@@ -136,6 +136,46 @@ void update_vsyscall_tz(void)
+ 	__arch_sync_vdso_time_data(vdata);
+ }
+=20
++#ifdef CONFIG_POSIX_AUX_CLOCKS
++void vdso_time_update_aux(struct timekeeper *tk)
++{
++	struct vdso_time_data *vdata =3D vdso_k_time_data;
++	struct vdso_timestamp *vdso_ts;
++	struct vdso_clock *vc;
++	s32 clock_mode;
++	u64 nsec;
++
++	vc =3D &vdata->aux_clock_data[tk->id - TIMEKEEPER_AUX_FIRST];
++	vdso_ts =3D &vc->basetime[VDSO_BASE_AUX];
++	clock_mode =3D tk->tkr_mono.clock->vdso_clock_mode;
++	if (!tk->clock_valid)
++		clock_mode =3D VDSO_CLOCKMODE_NONE;
++
++	/* copy vsyscall data */
++	vdso_write_begin_clock(vc);
++
++	vc->clock_mode =3D clock_mode;
++
++	if (clock_mode !=3D VDSO_CLOCKMODE_NONE) {
++		fill_clock_configuration(vc, &tk->tkr_mono);
++
++		vdso_ts->sec	=3D tk->xtime_sec;
++
++		nsec =3D tk->tkr_mono.xtime_nsec >> tk->tkr_mono.shift;
++		nsec +=3D tk->offs_aux;
++		vdso_ts->sec +=3D __iter_div_u64_rem(nsec, NSEC_PER_SEC, &nsec);
++		nsec =3D nsec << tk->tkr_mono.shift;
++		vdso_ts->nsec =3D nsec;
++	}
++
++	__arch_update_vdso_clock(vc);
++
++	vdso_write_end_clock(vc);
++
++	__arch_sync_vdso_time_data(vdata);
++}
++#endif
++
+ /**
+  * vdso_update_begin - Start of a VDSO update section
+  *
 
