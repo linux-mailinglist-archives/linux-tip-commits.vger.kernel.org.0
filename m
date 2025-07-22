@@ -1,76 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6154-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6155-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D20ECB0D5BE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jul 2025 11:20:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F253B0D5FB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jul 2025 11:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2A7176229
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jul 2025 09:20:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D11E93A6C72
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 22 Jul 2025 09:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2702DCF43;
-	Tue, 22 Jul 2025 09:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AB62DCBE2;
+	Tue, 22 Jul 2025 09:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fBBqhM69";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XfUk3igr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WdQtm57j";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="S9rb3WN5"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA24D2DAFC1;
-	Tue, 22 Jul 2025 09:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90652DCBEC;
+	Tue, 22 Jul 2025 09:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753176009; cv=none; b=lRqHdpu5sWkcYCH9QDQr5P2HGR6yVupOgeJPsDAO5p1IAZkht8CjC6FgARnbvQHKWuN7+/J39+yBfng+IcUWSodbNCCEtwI8TDpErKQ0tnFn5HGz6o1rnMisJX9eA86z5dSLWsl+SXn3PBjWOrvlg82omSPurOSsjgVftYQv3Vs=
+	t=1753176570; cv=none; b=C+8eNXO9dVbPAq6Tep9hFrZfHrsSyfKQbNAek0PQ7YdxSBP5DDPOwnbdHD3qVW7yjEWNLJsUZDlR5CQWCUxLqsQeXRoxncg9pBoI9eHOdxIwzUqVdp4iNGxbnQtMte/8JPOSg8NeVSroHiUBx6bC3X9IBxTWgGbAfHy8o2dn514=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753176009; c=relaxed/simple;
-	bh=GQ7aUZteCZupCARROJAkrgkzAlNnwNkip843/jexfGI=;
+	s=arc-20240116; t=1753176570; c=relaxed/simple;
+	bh=dpvoSwf+sTIPvv23actFJfg1YhNNuo4V8BfYc+jojnY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=F2T5BBMKZq85jGqI+8o9DvbqHr9Tc0Wr5x2Pm1eDsARYsqA33ZumT3KD5KTpM8kE4Ve9YvrHbH5lKcC0o+rMqFsThNSMA/fJVGaUfQkBgd8J8bNUJgNHohQmBpgACoeMjA5KnkwGG6Pg0yRpPjUz07YxYYA8sL5LOrHzPtfg29k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fBBqhM69; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XfUk3igr; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=p7j7a2r8qqTl9KtyQQue+mS1pyasLws8z7dTti+xzIiClGFJcPy/RZnFk/+wFRc9FBk4+7fDppHFAtVKDgAnA5kzFp8MIcO6g82lpPnE97ANX9bfqLKuFNC5OcVXErBy+bYdwyULJGP9QmeG5o8UZH5Fvp5FALGeDLFCSud5tKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WdQtm57j; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=S9rb3WN5; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 22 Jul 2025 09:20:04 -0000
+Date: Tue, 22 Jul 2025 09:29:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753176005;
+	s=2020; t=1753176566;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uhY9yHhrsUq8+kCfxK6mh8qD5dOSU1tprBc8CHj94Zo=;
-	b=fBBqhM69oWMZ2GgTxG3eNrcZTOlQ5KiwKgatWtBgIM2biD4Ix1qU6ruX9xs/NE9HE8rCbT
-	NhAsuRESGSgx40AGkAVP3C6owJa6Fnh5M0FZTv+egrqpizrqeItTFJ1PK8xhFQxYysoF0n
-	qhxbBkqOmumc4bbaYGltynS0bg2sO5KZQ/eLWJsDxPT10+BKVYdMzBy791YyNqOmEVjNJx
-	9CNbogKK1wStIojE1AB+HCz6bGNlfV//lACh5TJGqp5mrf3qj0/0Jx29VtuOqW+tSBr+Tt
-	lehs9FwNSWnNRkI8IAqktdf2FnlYkxsc78eYowzaoLHUu7qwnYRhTmQhax9MVQ==
+	bh=qh/PDDSJ/kPRKma5VsJ5bV8KcMM+faYORFyeh6rjU0Y=;
+	b=WdQtm57jXWfn+Z6o6yzMvOhKQhLXh6bZvbvWvExCQ9VXnreuyQnxI4ubbK2UjrZcTwKJsz
+	ml3NRSY+vOTiTGFnZqNkDCrUWoaIVVM/C9TjW/Wp+izpIwt0YnoNQNKgALnZQyqzlghFnX
+	dtGrv2+/drHZ8qRCDxzyYKUs39mQziwBUHDzFs9+Kw9F2nF837LPv0n2VOXj15mBQeMswe
+	iy5cLV0czeIIj7rG1DzmzyJS2TgumssekLX450T4AJBkMWIlR5NyUp5dNaySD1iU+AVDaf
+	OTwQirU20Sbd0NyFgGS2E1un/E1Naq3TAfxPSpxqrBW8kYFWG5agk0k4d8RufQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753176005;
+	s=2020e; t=1753176566;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uhY9yHhrsUq8+kCfxK6mh8qD5dOSU1tprBc8CHj94Zo=;
-	b=XfUk3igrmCNsG0wNRShz/GUCbC8Q6reHCrGcWa76E4EcGX/jBZ5wffO98YuRBvniA4eMZB
-	7Ryf7U5rZaJvygDw==
-From: "tip-bot2 for Feng Lee" <tip-bot2@linutronix.de>
+	bh=qh/PDDSJ/kPRKma5VsJ5bV8KcMM+faYORFyeh6rjU0Y=;
+	b=S9rb3WN5pa2Nya0x546zb07BfWfec6q+H3CZKS5l+HCmsknP1dYQ8WLzg/Tfvc/49/HjCF
+	I5UUAQol7nmFGwAw==
+From: "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/idle: Remove play_idle()
-Cc: Feng Lee <379943137@qq.com>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_C3E0BD9B812C27A30FC49F1EA6A4B1352707@qq.com>
-References: <tencent_C3E0BD9B812C27A30FC49F1EA6A4B1352707@qq.com>
+Subject: [tip: locking/futex] selftests/futex: Fix spelling mistake
+ "Succeffuly" -> "Successfully"
+Cc: Colin Ian King <colin.i.king@gmail.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250715130627.1907017-1-colin.i.king@gmail.com>
+References: <20250715130627.1907017-1-colin.i.king@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175317600420.1420.1846913174693376674.tip-bot2@tip-bot2>
+Message-ID: <175317656537.1420.8667684723514409693.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,43 +80,42 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the locking/futex branch of tip:
 
-Commit-ID:     1b5f1454091e9e9fb5c944b3161acf4ec0894d0d
-Gitweb:        https://git.kernel.org/tip/1b5f1454091e9e9fb5c944b3161acf4ec08=
-94d0d
-Author:        Feng Lee <379943137@qq.com>
-AuthorDate:    Mon, 21 Jul 2025 16:04:35 +08:00
+Commit-ID:     e40892214b454c8734350d82374f46c2e495a4d2
+Gitweb:        https://git.kernel.org/tip/e40892214b454c8734350d82374f46c2e49=
+5a4d2
+Author:        Colin Ian King <colin.i.king@gmail.com>
+AuthorDate:    Tue, 15 Jul 2025 14:06:26 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 22 Jul 2025 11:10:43 +02:00
+CommitterDate: Tue, 22 Jul 2025 11:18:43 +02:00
 
-sched/idle: Remove play_idle()
+selftests/futex: Fix spelling mistake "Succeffuly" -> "Successfully"
 
-play_idle() is no longer in use, so delete it.
+There is a spelling mistake in a ksft_exit_fail_msg() message. Fix it.
 
-Signed-off-by: Feng Lee <379943137@qq.com>
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/tencent_C3E0BD9B812C27A30FC49F1EA6A4B135270=
-7@qq.com
+Link: https://lore.kernel.org/all/20250715130627.1907017-1-colin.i.king@gmail=
+.com
 
 ---
- include/linux/cpu.h | 5 -----
- 1 file changed, 5 deletions(-)
+ tools/testing/selftests/futex/functional/futex_priv_hash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/cpu.h b/include/linux/cpu.h
-index 6378370..8b1abbf 100644
---- a/include/linux/cpu.h
-+++ b/include/linux/cpu.h
-@@ -187,11 +187,6 @@ static inline void arch_cpu_finalize_init(void) { }
+diff --git a/tools/testing/selftests/futex/functional/futex_priv_hash.c b/too=
+ls/testing/selftests/futex/functional/futex_priv_hash.c
+index a9cedc3..aea001a 100644
+--- a/tools/testing/selftests/futex/functional/futex_priv_hash.c
++++ b/tools/testing/selftests/futex/functional/futex_priv_hash.c
+@@ -122,7 +122,7 @@ static void futex_dummy_op(void)
+ 	}
+ 	ret =3D pthread_mutex_timedlock(&lock, &timeout);
+ 	if (ret =3D=3D 0)
+-		ksft_exit_fail_msg("Succeffuly locked an already locked mutex.\n");
++		ksft_exit_fail_msg("Successfully locked an already locked mutex.\n");
 =20
- void play_idle_precise(u64 duration_ns, u64 latency_ns);
-=20
--static inline void play_idle(unsigned long duration_us)
--{
--	play_idle_precise(duration_us * NSEC_PER_USEC, U64_MAX);
--}
--
- #ifdef CONFIG_HOTPLUG_CPU
- void cpuhp_report_idle_dead(void);
- #else
+ 	if (ret !=3D ETIMEDOUT)
+ 		ksft_exit_fail_msg("pthread_mutex_timedlock() did not timeout: %d.\n", ret=
+);
 
