@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-6209-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6211-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0860B11C82
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Jul 2025 12:35:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71CFB11C89
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Jul 2025 12:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94EA64E17AB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Jul 2025 10:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871A21CE555B
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 25 Jul 2025 10:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76EF2EBDD6;
-	Fri, 25 Jul 2025 10:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E912ECD0C;
+	Fri, 25 Jul 2025 10:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rhrVvtC4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rtBmhtZY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="w3LmZQdh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yaNWDGL7"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F152EBB80;
-	Fri, 25 Jul 2025 10:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63CE2EBBB8;
+	Fri, 25 Jul 2025 10:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753439515; cv=none; b=k4sGJWivBRaW53cv9M7bwUS+9oOxsp/kNOTj8d9yje7TsZUzbvBU84uLCOGg36EzzOyLUHSOGKqPeXvlJqiE+G43PYx48cYzYoaBcteD0eBIyBld1CNa2+3BYZRGAxh30+t5YE2tHOHNh8L/Yq+epTY7a5xS7hBE4IH9olposYQ=
+	t=1753439517; cv=none; b=Wvcuc/AmtQLjxBV8AYOwVR1vt4PH7BF5OLx9BwNMx90i79sxb7Gin0ulGlxdLWXZH0PDRUX+v2LAVri5pAsUee2RvGEYNGGpeMP6ijbXfeoD8V68XI5jtnXDIhvZNWgRmbNPPh6L90e95FClh9S8YmIqt2feAVpXFn9Uvz6WOL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753439515; c=relaxed/simple;
-	bh=Dh4pWqG5E/qhJ5H4g4bjNEyKYRq7ksiMK2fVg4Z6bAc=;
+	s=arc-20240116; t=1753439517; c=relaxed/simple;
+	bh=c6DXZyvnUHuyx452sWKlUVPkrzVbdd6K4XmlGQ+cYuk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=AjvILUcTFM1/Ko7aZ06p15OfGtHIHML8WfG0OCLeu9hHV/WixkMCzP/9nVi8HBkc+6mpXpsph6WJjzkbIzgbjqS6FU+2+u94T6X1Nm+K+iPnFuIqHcNAmdc0/njjb7ZR+g7Hm2twmXWeBHxNoWSyNiSdQBTRHSIA0qDZ1hVEc8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rhrVvtC4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rtBmhtZY; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=UebpEniMX8sO/v7mScf15kZXmH7hqnrFpFZtMNf3SPC96enp7jIEUQ2MoihjqJ8SaicaftwF6R4FxY8WueWZzva0J7P2fZpKxwRG5KxR9k9zrCkA9TaUSo/wX+fSquvC/1VmmhuH0IkKJUCRQBMTJttTLQ1WWoF0EieaWzITpAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=w3LmZQdh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yaNWDGL7; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 25 Jul 2025 10:31:51 -0000
+Date: Fri, 25 Jul 2025 10:31:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1753439512;
+	s=2020; t=1753439514;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R5T6HfQr9CJm8+OTTaV/BfU2pJ6bcFI6pvTXGHXM6yQ=;
-	b=rhrVvtC4h+38qVAR15+8/9AbzhScVBciwZavMyRuxq4KA17x5oQm4QyGYTGPzgQt9/vhhP
-	7XWqw0h4MMTNhGTmYollsOGeaOHxe40YrO9/XqSbKTDNiDrcTYPfXUP3a5zaycMjhrktir
-	RkW0TrCFeI+UioDbyIl/m47e4W1UyDnypcoRuTeNPFiMuD2DmGyX/1SHNNRv6ds1uRN+vp
-	s/HlSDOgNEkyaHBCaQHaLQaQRTto3U5NrEzV1tvCF6GlHUgXb7v/xG5O2ArFHnRdPFouiC
-	NxwSWz4BfKZFYnlHWyXxr/hukAOPahTzAbNX0jqCEwe/3Y8m3nbOhGMa1FVl1w==
+	bh=9XRUpkApwfKnCH8K6garaX+h1FTeOFeEOM2L3DF04g8=;
+	b=w3LmZQdhuc1lBDXoBVopczl9BGRTKVolzo+03LEgjx36Rmv6dqe/2PdQp3wno7dSL8kO2b
+	9rUXNTnYL16GFHcd0yqtuYcAEh67vHy7xEjVm7WBjselfFsdWH4qA6wd4tu3pjZ5rR7RU1
+	hUgCSBvD13vCdqFDUjM4fulfz1gcOnXipHCBUQkSX+f1bn9LsNIJRZJS6+my1Id4SdHre7
+	g4HrYV2ga2N/0N9EnWC3hP3rIXeCSr8MBqAojevcxEjLJ4hNg0p8D8CkzU/Eg1ug35eGww
+	sZ1ksfLpCJWNqYoa82BXFUnpTj18CA2W+bEylVeTU6kKbQZNAT3VznvvneoTFQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1753439512;
+	s=2020e; t=1753439514;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R5T6HfQr9CJm8+OTTaV/BfU2pJ6bcFI6pvTXGHXM6yQ=;
-	b=rtBmhtZYwrC+NnRwcY4JYg7hzM/Rok8scqJY0hwR8BgmDa6nQar479GApxptkC3PCl5ILe
-	7ip4CVSaQuAmoYAA==
+	bh=9XRUpkApwfKnCH8K6garaX+h1FTeOFeEOM2L3DF04g8=;
+	b=yaNWDGL7v07F/qQ2XmOlknJVtOe+/R4Kd9xXP41BjRoTSq1mWUj6VENU5kSJyWirzKiqqB
+	zmv/CulRC5n6EEBQ==
 From: "tip-bot2 for Daniel Lezcano" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: timers/clocksource] clocksource/drivers/cs5535: Add module owner
+Subject: [tip: timers/clocksource] clocksource/drivers/stm: Add module owner
 Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, Ingo Molnar <mingo@kernel.org>,
  Will McVicker <willmcvicker@google.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250602151853.1942521-7-daniel.lezcano@linaro.org>
-References: <20250602151853.1942521-7-daniel.lezcano@linaro.org>
+In-Reply-To: <20250602151853.1942521-6-daniel.lezcano@linaro.org>
+References: <20250602151853.1942521-6-daniel.lezcano@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175343951163.1420.12437468970723093021.tip-bot2@tip-bot2>
+Message-ID: <175343951273.1420.8610641249031154822.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,15 +82,15 @@ Content-Transfer-Encoding: quoted-printable
 The following commit has been merged into the timers/clocksource branch of ti=
 p:
 
-Commit-ID:     667b41e7364742120484ed5cca73d7cd77f3b10e
-Gitweb:        https://git.kernel.org/tip/667b41e7364742120484ed5cca73d7cd77f=
-3b10e
+Commit-ID:     7a449b9d1dfad2a0163d4d4b0d817e09e564648e
+Gitweb:        https://git.kernel.org/tip/7a449b9d1dfad2a0163d4d4b0d817e09e56=
+4648e
 Author:        Daniel Lezcano <daniel.lezcano@linaro.org>
-AuthorDate:    Mon, 02 Jun 2025 17:18:50 +02:00
+AuthorDate:    Mon, 02 Jun 2025 17:18:49 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Fri, 25 Jul 2025 11:43:38 +02:00
+CommitterDate: Fri, 25 Jul 2025 11:43:32 +02:00
 
-clocksource/drivers/cs5535: Add module owner
+clocksource/drivers/stm: Add module owner
 
 The conversion to modules requires a correct handling of the module
 refcount in order to prevent to unload it if it is in use. That is
@@ -108,23 +107,33 @@ module.
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20250602151853.1942521-7-daniel.lezcano@linar=
+Link: https://lore.kernel.org/r/20250602151853.1942521-6-daniel.lezcano@linar=
 o.org
 ---
- drivers/clocksource/timer-cs5535.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clocksource/timer-nxp-stm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clocksource/timer-cs5535.c b/drivers/clocksource/timer-c=
-s5535.c
-index d47acfe..8af666c 100644
---- a/drivers/clocksource/timer-cs5535.c
-+++ b/drivers/clocksource/timer-cs5535.c
-@@ -101,6 +101,7 @@ static struct clock_event_device cs5535_clockevent =3D {
- 	.tick_resume =3D mfgpt_shutdown,
- 	.set_next_event =3D mfgpt_next_event,
- 	.rating =3D 250,
-+	.owner =3D THIS_MODULE,
- };
+diff --git a/drivers/clocksource/timer-nxp-stm.c b/drivers/clocksource/timer-=
+nxp-stm.c
+index d7ccf90..bbc4062 100644
+--- a/drivers/clocksource/timer-nxp-stm.c
++++ b/drivers/clocksource/timer-nxp-stm.c
+@@ -201,6 +201,7 @@ static int __init nxp_stm_clocksource_init(struct device =
+*dev, struct stm_timer=20
+ 	stm_timer->cs.resume =3D nxp_stm_clocksource_resume;
+ 	stm_timer->cs.mask =3D CLOCKSOURCE_MASK(32);
+ 	stm_timer->cs.flags =3D CLOCK_SOURCE_IS_CONTINUOUS;
++	stm_timer->cs.owner =3D THIS_MODULE;
 =20
- static irqreturn_t mfgpt_tick(int irq, void *dev_id)
+ 	ret =3D clocksource_register_hz(&stm_timer->cs, stm_timer->rate);
+ 	if (ret)
+@@ -314,6 +315,7 @@ static int __init nxp_stm_clockevent_per_cpu_init(struct =
+device *dev, struct stm
+ 	stm_timer->ced.cpumask =3D cpumask_of(cpu);
+ 	stm_timer->ced.rating =3D 460;
+ 	stm_timer->ced.irq =3D irq;
++	stm_timer->ced.owner =3D THIS_MODULE;
+=20
+ 	per_cpu(stm_timers, cpu) =3D stm_timer;
+=20
 
