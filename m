@@ -1,162 +1,123 @@
-Return-Path: <linux-tip-commits+bounces-6225-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6226-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EFF4B1514C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Jul 2025 18:27:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8C4B185F1
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Aug 2025 18:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D8FF3B46B4
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 29 Jul 2025 16:27:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB4561898052
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  1 Aug 2025 16:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F56C19644B;
-	Tue, 29 Jul 2025 16:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9363D1A0712;
+	Fri,  1 Aug 2025 16:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xz3JdEo1"
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dbUbXoog";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nFiKbOZq"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814BE226CFF
-	for <linux-tip-commits@vger.kernel.org>; Tue, 29 Jul 2025 16:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C348823AD;
+	Fri,  1 Aug 2025 16:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753806475; cv=none; b=lcwbS4uPf0GKGaaISALwjNsL8nZSbhDTQnpG6Kb4vjKMqoyMHMbV68W6zoZM9Mlk2LebmcY7/tZzbLzIUTnabV6nSPB8io8CtxxBWwr6LEZOeVZ8gozYYXcdWVP5R9FEJG4Ijow/AQ6wIG3nHoyzYDKSY+2iGlV44AMpf5B8o4s=
+	t=1754066583; cv=none; b=MlahCx3VojvLglXAfL+t2Iz4yN/VjuNS5TRByGFcFvINth3X5iofL7IDD5ElkFZD64FW442XmktUhd4uam6+0iQoeGsplRf6JX/Nd5Ymo9V7qijy3QzyN6rcvBczsneZ5Oov+4IqUlI0YOpfb3rW1GcDcairXE0GlCZHrsZ/0pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753806475; c=relaxed/simple;
-	bh=PtfTh9/5EjYP7cCIAc8vupIcGt9u0ol0XId1dZQt8dY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aKtuxesa1VvxW3tKyQr/2jfVxQM6yx3/b+lvkBYX8B1geC5j5hPHYIyA53B9iWx2Mp7KpjdYS3IlRQFTJ4YZ2v1FVIoCEn2k/cTtOODLhv+7L3aUrdbaJY1gix2mlUS2K2nFleUA4qgBU/G1V4MC9qIkcf7aWdeaBxLxVcu/oPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xz3JdEo1; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4560d176f97so59950435e9.0
-        for <linux-tip-commits@vger.kernel.org>; Tue, 29 Jul 2025 09:27:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1753806472; x=1754411272; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7A7RLDUsOcYWlXRCgS940bPzn/qiZ8ZUn6ZRMAh3pp0=;
-        b=Xz3JdEo1vTiVV1LUV3aFRg5RmxDY0xrWmb7ZCOnKPz6FpBTcmlAOMDbRSamldghP5Y
-         XgrZBBGUg9PDCWJd/e1B4mevc/vtv1CgX69PXY/pTAgt8vDH210LYlpwjUEv5kw5Ow97
-         rPVKcS2FivD7Y4aqGpjNEpiQiTQzz8qIFTuQnoXBKscVZaKgiDMbHf4X//aT5D3L3/lA
-         h3jHXfES+R9+fylB52mDCfm0V8YiKZcT7tPsuwz3N5O6qbX/J6agT5yPs1P9zNpqG6DE
-         4oyTS5LwxsVHUJohxeLwXJeqRotF52CNGeDf+a4S1W49Kb9vHDP316EN+E0D1uORIa3g
-         RBCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753806472; x=1754411272;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7A7RLDUsOcYWlXRCgS940bPzn/qiZ8ZUn6ZRMAh3pp0=;
-        b=Pu3Z5ZcYujcuA82nZY6Rg4BG6LhrepaD8R5633wuHv4b4AmATs8cC0KHB5UTEt4VZU
-         pbOV5ebTlhV87U64ciG6mzLjjjQ/0UfX1jin4JhsY7U7qYXgctOwlcv/tRlKnuyhghK8
-         kwFLOv8YCEFb7E2i7fPt3BbnhBfEPUlsk7cqgDQjho7QPoRWLLa0XeyHQv06OUpTegCx
-         Fl5XxMnDhMcm54lv50DnFbqWweTy9eBl5Y4s15zv/jUnw7IfsH6jr3HeTRcpSm+jLK8v
-         LEYNLecNSZ9wx8gT0y8V2Xnzdc6UEl3afQcd/050b8v42rYpWBjWhkmiuln2hzn3vf7V
-         IeGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUln1VrolgOAhyaK43aAZ/GFCf7iTb5ndUCp5sYWGeor2BLILf+iXHguRFDtg8mstv5BOubTB/hE7RO6XDO9K6KGQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQIyDXoJS2KOlJi4G9bsCpFWkXdPr35lYqYg7tIvDXNwqlyXYT
-	5dni88IzjV/y0msJE82tC231x8sgA/3vlvI5ggKbs+l37aOCKLIqFtHCp5ZmRO3Dk5Y=
-X-Gm-Gg: ASbGnctYMO++z0v6lodRKarITKAb0XVLnWBF5xHXPzkIVMgb3AcF83eskQh2i3/nINW
-	yAshEv079fV4mdO8LkIgkobsBYrgXyQRCm0QFNqHP6Koox8nUHgEklOi1ro0BlTPaLOn8wVK5Fs
-	+WkQrC1X6t1NEDkfgb9pb3G2Q/XagXhu3XKO9jExuAkRYQ3n0Gl8aZPXQ6bGxRGVU+QhtdaFZ10
-	mz7tHpnwSkzQ7ZwOZaZEzXHaOo0UwWoUp+hAuHIZwFwY+uyf9t8Be6yVZdlk/lJhFhTeT3gSbRZ
-	CohtAW/Gc37zc3A4Z+f32CpkDg/H+NCDkSdwb8vnaBPNbVW23Ih4YFD8mth5RrHKuzaKUDv8yxi
-	pzHviQXMphgK3UK9yAh3nVKmLBz0aTJVuw2IGFR6+2zw6clMYbM8+kBsRlyXTJg==
-X-Google-Smtp-Source: AGHT+IHp9Zc3/dVoGDvaHUfbhAcLiJnGhZKm5gZA3joiIGW+r5lfXTxBNZ3YixZSGe6e8hK+NWThpQ==
-X-Received: by 2002:a05:600c:5195:b0:456:1c4a:82b2 with SMTP id 5b1f17b1804b1-45892b9da2dmr5059105e9.10.1753806471744;
-        Tue, 29 Jul 2025 09:27:51 -0700 (PDT)
-Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-458705ce685sm202071465e9.30.2025.07.29.09.27.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Jul 2025 09:27:51 -0700 (PDT)
-Message-ID: <f66b5f8e-da7b-4a24-b87c-7b563d9f14dc@linaro.org>
-Date: Tue, 29 Jul 2025 18:27:50 +0200
+	s=arc-20240116; t=1754066583; c=relaxed/simple;
+	bh=DGtK1iyj7wvSoVOqHvbrfVNGwmUEG/R34k7uB/IHsvI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=jHuucVAyZ85JX/fPBvvCHq0VkLezGKutLNMPa0I3gooC9a3m4ebdivRVzKXtRH5xZFnXDfGB6vFriRLPUJcpPwPES52qmqx7vq4/KMGoKi6TRGBOnJx7C3hc2Ap8OemLaqeLDW87nrPYiX1W2uNnMioBmNRJDKaE4QN9Cu19uyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dbUbXoog; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nFiKbOZq; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 01 Aug 2025 16:42:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1754066577;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pkkdj39T+WAHHDnfSrAolZKP+9KWdnSKEIIW7bwNi1c=;
+	b=dbUbXoogxiKeosOSY1fbLkA7yVQ05baCugKFWleKyCisQugbO65dLXyNuJ+cIp/5c+QwyO
+	e6TJM71Y2LLNoE73iXYLcRNCrNFO9kJ/70UUN/FynYi5CMSubUSrbpeN1oTGhxt8p1hVDU
+	IkDLE6NF6adOelu59iqsCS0va2uSNyaJDolzydGOxh7bHiwzFtLrErUGCJC06IoLbWflJ1
+	d6RcOafMeIZP6p4ekwh2w3JN/FbxcuhqOWIpxHs/Riu72bWg3BhChZogQKbGu9mlbjxQlg
+	Jp9uqtFUvMgNtsV7nEasa7bWexSuOQATKRQtq8BKOnPaziwru0lOd8WR6WtGBw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1754066577;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pkkdj39T+WAHHDnfSrAolZKP+9KWdnSKEIIW7bwNi1c=;
+	b=nFiKbOZqXShqThk+Vzm5+5nkjw0xrk3h3WZE74Q+kZpMvBeM6KpmsHixwZ2o0ici2iQRiW
+	8iwANGTxqa4lRCCw==
+From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu: Add new Intel CPU model numbers for
+ Wildcatlake and Novalake
+Cc: Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250730150437.4701-1-tony.luck@intel.com>
+References: <20250730150437.4701-1-tony.luck@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: timers/clocksource] clocksource/drivers/exynos_mct: Don't
- register as a sched_clock on arm64
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
- Donghoon Yu <hoony.yu@samsung.com>, Youngmin Nam <youngmin.nam@samsung.com>,
- John Stultz <jstultz@google.com>, Will McVicker <willmcvicker@google.com>,
- x86@kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Arnd Bergmann <arnd@kernel.org>
-References: <20250620181719.1399856-3-willmcvicker@google.com>
- <175325504976.1420.2666973232153470630.tip-bot2@tip-bot2>
- <aIHBnFESZwjpXzjr@gmail.com>
- <a5628c87-0dcd-4992-a59a-15550a017766@linaro.org>
- <aINdu_hrz6zJnBGb@gmail.com>
- <8a0662b7-2801-47a2-9c91-4eb0e7ef307b@linaro.org>
- <162ef225-51d5-48f5-bc00-36e00e905023@linaro.org> <87qzxznzjp.ffs@tglx>
- <920c5a0c-6ac2-49a1-8dbe-17761379765e@linaro.org> <87frefj7pd.ffs@tglx>
-Content-Language: en-US
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
-In-Reply-To: <87frefj7pd.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Message-ID: <175406657359.1420.1839409256517255125.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 29/07/2025 18:13, Thomas Gleixner wrote:
-> On Tue, Jul 29 2025 at 11:13, Daniel Lezcano wrote:
->> On 29/07/2025 10:58, Thomas Gleixner wrote:
->>> On Tue, Jul 29 2025 at 09:58, Daniel Lezcano wrote:
->>>> just a gentle ping for the question below about dropping the two patches.
->>>>
->>>> On 25/07/2025 15:15, Daniel Lezcano wrote:
->>>>
->>>> [ ... ]
->>>>
->>>>>> So I got no answer for this question, but I suppose my assumption is
->>>>>> correct - so I've rebased the tip:timers/clocksource commits to fix the
->>>>>> misattribution and a number of other problems, and also fixed various
->>>>>> typos, spelling mistakes and inconsistencies in the changelogs while at
->>>>>> it. Let me know if I got something wrong.
->>>>>
->>>>> If the rebase is possible, I suggest to take the opportunity to remove
->>>>> the following patches:
->>>>>
->>>>> commit 5d86e479193b - clocksource/drivers/exynos_mct: Add module support
->>>>> commit 7e477e9c4eb4 - clocksource/drivers/exynos_mct: Fix section
->>>>> mismatch from the module conversion
->>>>>
->>>>> Because of:
->>>>>
->>>>> [1] https://lore.kernel.org/all/20250725090349.87730-2-
->>>>> krzysztof.kozlowski@linaro.org/
->>>>>
->>>>> [2] https://lore.kernel.org/all/bccb77b9-7cdc-4965-
->>>>> aa05-05836466f81f@app.fastmail.com/
->>>
->>> Grrr.
->>>
->>> I've already sent the pull request for the pile. Let me ask Linus not to
->>> pull and I revert them on top.
->>>
->>> Also please reset your clockevents branch so next does not have the
->>> conflicting SHAs
->>
->> There is revert otherwise above [1]
-> 
-> It's incomplete :)
-> 
-> I just reverted all three exynos mct related changes on top of the
-> timers/clocksource branch and pushed the result out.
+The following commit has been merged into the x86/urgent branch of tip:
 
+Commit-ID:     49f848788a4d157bb6648a57963cb060fed3d56e
+Gitweb:        https://git.kernel.org/tip/49f848788a4d157bb6648a57963cb060fed=
+3d56e
+Author:        Tony Luck <tony.luck@intel.com>
+AuthorDate:    Wed, 30 Jul 2025 08:04:37 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 01 Aug 2025 18:22:34 +02:00
 
-Thanks, sorry for the mess
+x86/cpu: Add new Intel CPU model numbers for Wildcatlake and Novalake
 
+Wildcatlake is a mobile CPU. Novalake has both desktop and mobile
+versions.
 
--- 
-<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+  [ bp: Merge into a single patch. ]
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250730150437.4701-1-tony.luck@intel.com
+---
+ arch/x86/include/asm/intel-family.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel=
+-family.h
+index be10c18..e345dbd 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -150,6 +150,11 @@
+=20
+ #define INTEL_PANTHERLAKE_L		IFM(6, 0xCC) /* Cougar Cove / Crestmont */
+=20
++#define INTEL_WILDCATLAKE_L		IFM(6, 0xD5)
++
++#define INTEL_NOVALAKE			IFM(18, 0x01)
++#define INTEL_NOVALAKE_L		IFM(18, 0x03)
++
+ /* "Small Core" Processors (Atom/E-Core) */
+=20
+ #define INTEL_ATOM_BONNELL		IFM(6, 0x1C) /* Diamondville, Pineview */
 
