@@ -1,77 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-6241-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6244-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A112B21310
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Aug 2025 19:25:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48197B216A1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Aug 2025 22:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3C8762632E
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Aug 2025 17:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52BD3190842A
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 11 Aug 2025 20:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E8D2C21FF;
-	Mon, 11 Aug 2025 17:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5427A1ABED9;
+	Mon, 11 Aug 2025 20:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ll2i+Ebo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q9+7FIYv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="a72cdbaK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h2Ar8NoK"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6652929BDB8;
-	Mon, 11 Aug 2025 17:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F13F4EB38;
+	Mon, 11 Aug 2025 20:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754933114; cv=none; b=jV8f4+wNWc78enIhYCJod/1ODDyk+zPibjnMCmEWQz2CYO1innAlLWu2irnHyMjuf0sV8DSWI7DBWBn5kZ1A1/4z6hehfqawy4PZLAuTUnjVXC4lZKkfzBHlUpXnH3dHYbzdQNmBstmM6VneYF9+ZQZdZLgaJhezh3JmAOW31Kg=
+	t=1754944825; cv=none; b=bRtAXVSZ3Y/oSUx2pTN8Ab3YeCaPXnNA+8WX8P+w/0LaBpYJQqUg/dQO96puFVVPCTAH1Y5HdHmvmyxhKSELM+DtoBbs8dL8AtZT7gq0G3y3qg7l8R6s5G5LtfIyj+kabI4O+LNJGg/p4ngRHiSKa0Hfh+mO56yM78ClAtXowTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754933114; c=relaxed/simple;
-	bh=lvhkMu0W1b5OC5e9sXMMahIDxfFt5PSt4ywN015JGAo=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Ju5HAEXEFVs8QJHegO/vejNm5aGUd2S3ZqYuTY2NpEUKbLmg6YVRMiel1GFEVt4PnfNiMsDdBH62AaT+CTo4vQKmRJtZTZZiSJRuzJxs7593mGy3NoKo4AS5pRDTHiG2q23LudtZpxrzIyAyXLgYBybxHLPxUyMh+Q4qdQSZYUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ll2i+Ebo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q9+7FIYv; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1754944825; c=relaxed/simple;
+	bh=4yIQRxdr5LK+GyTABnsJhF50za0tC4FBDtqXTzYbio4=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=NJIHo+IUZpQR5hJbKh77NSMuS4g5uB9RbokmRkGMYZhDgjjJhL8TTKTHapMjTZkaEuBY6K87LBV1vr2y+uZxf0SBqwMg/eMyPjL9HvFJ4PiTWynKRzE++lXSdkdv0Y1klei6dorLBsuzvaiht59rAcWUBkZFKkGatUlP6xajhhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=a72cdbaK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h2Ar8NoK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 11 Aug 2025 15:58:01 -0000
+Date: Mon, 11 Aug 2025 20:40:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1754933111;
+	s=2020; t=1754944820;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eicc9bv7E8hw8eiH/Xiu7qBfBTipp6bu/QoYdC/hMDU=;
-	b=Ll2i+Ebo2Lb5AOqf/R12xnnuYKrfQIn0U14py/nhpLCWtL+pmdPS7CGllxcSDbBk/kmUOR
-	NCq/dOmp5gZi8iTUbL9uFfUHYQH83V5GQvNF1tVdNVFGVC/+oWkicumCD92tEEjNBaHwBr
-	HqQkVSlhd7WTodiNlfwkKRAlVqLc380BAkkHQ/NYErmlv2ZpvHI8OWZ4MTbvlVmV3c3LYT
-	dGFgteDaxh4CVf3XcaJedAg8z6BEkLr4FmLCO6YF3BIzs6Vl5WD0vUpwr7k58ZBbcFJN5G
-	vzu9Dw6uQVhLeIn/ykCNXhaPYSLoceW2bOadhA7dqnsdq3dbUzpgOGk8iIyLKw==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=YSaeji+ngrHjZZCopR4Eapy73qXsXyF5LS4tG0kO0Ac=;
+	b=a72cdbaKS0TgTdc9/r9Cs9e/38ABXAt/cqqyrXgO1sRN0IEfKo+x6PntTqNemXydsY8PSZ
+	FJvAlRN0svYMjyjJ3N5kuErzh2pnspHwa0hAbSswT0xd+0owKGi5qHOWY/lZJrSisYnNbz
+	O96Sa5FEYN1rmA4oL4XuHJr6X+IaTA+CDlVnkiNo83Dbf6YxFKB+VT3qYmyu4ntG8u4Z7y
+	K25aeovcn4FHwnXGzOO9iMFbqT4ju8plJY4Nd062H0o4xzsg5i0NojFA4KXhXf6cJPRefu
+	K6xOvg8hkc3gZQoA1HBSsWoqww5dY/BKddwWY3NGTaVHoIXpc4QOIVtI87ozvA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1754933111;
+	s=2020e; t=1754944820;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eicc9bv7E8hw8eiH/Xiu7qBfBTipp6bu/QoYdC/hMDU=;
-	b=q9+7FIYvqWxZNaL3T+Eak4sUeZNlVfK4n4bU6jMtw1adDE02TIpjrve75IW0zrSd/YKaEV
-	6QZ5aFRZClw9gTCw==
-From: "tip-bot2 for Waiman Long" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=YSaeji+ngrHjZZCopR4Eapy73qXsXyF5LS4tG0kO0Ac=;
+	b=h2Ar8NoK+/JA2TVox3ySIZLJfm5NYYcLBgyktvLHL0A5LAvuLa2x8A58ngkKZmbKcxK8xg
+	hJV8UEK/oZ/LeECw==
+From: "tip-bot2 for Fushuai Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Use user_write_access_begin/_end() in
- futex_put_value()
-Cc: Waiman Long <longman@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250811141147.322261-1-longman@redhat.com>
-References: <20250811141147.322261-1-longman@redhat.com>
+Subject: [tip: x86/urgent] x86/fpu: Fix NULL dereference in avx512_status()
+Cc: Sohil Mehta <sohil.mehta@intel.com>, Fushuai Wang <wangfushuai@baidu.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175492788185.1420.501184708577751287.tip-bot2@tip-bot2>
+Message-ID: <175494481915.1420.11907322564960386974.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,58 +72,92 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     dfb36e4a8db0cd56f92d4cb445f54e85a9b40897
-Gitweb:        https://git.kernel.org/tip/dfb36e4a8db0cd56f92d4cb445f54e85a9b=
-40897
-Author:        Waiman Long <longman@redhat.com>
-AuthorDate:    Mon, 11 Aug 2025 10:11:47 -04:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 11 Aug 2025 17:53:21 +02:00
+Commit-ID:     31cd31c9e17ece125aad27259501a2af69ccb020
+Gitweb:        https://git.kernel.org/tip/31cd31c9e17ece125aad27259501a2af69c=
+cb020
+Author:        Fushuai Wang <wangfushuai@baidu.com>
+AuthorDate:    Mon, 11 Aug 2025 11:50:44 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 11 Aug 2025 13:28:07 -07:00
 
-futex: Use user_write_access_begin/_end() in futex_put_value()
+x86/fpu: Fix NULL dereference in avx512_status()
 
-Commit cec199c5e39b ("futex: Implement FUTEX2_NUMA") introduced the
-futex_put_value() helper to write a value to the given user
-address.
+Problem
+-------
+With CONFIG_X86_DEBUG_FPU enabled, reading /proc/[kthread]/arch_status
+causes a warning and a NULL pointer dereference.
 
-However, it uses user_read_access_begin() before the write. For
-architectures that differentiate between read and write accesses, like
-PowerPC, futex_put_value() fails with -EFAULT.
+This is because the AVX-512 timestamp code uses x86_task_fpu() but
+doesn't check it for NULL. CONFIG_X86_DEBUG_FPU addles that function
+for kernel threads (PF_KTHREAD specifically), making it return NULL.
 
-Fix that by using the user_write_access_begin/user_write_access_end() pair
-instead.
+The point of the warning was to ensure that kernel threads only access
+task->fpu after going through kernel_fpu_begin()/_end(). Note: all
+kernel tasks exposed in /proc have a valid task->fpu.
 
-Fixes: cec199c5e39b ("futex: Implement FUTEX2_NUMA")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Solution
+--------
+One option is to silence the warning and check for NULL from
+x86_task_fpu(). However, that warning is fairly fresh and seems like a
+defense against misuse of the FPU state in kernel threads.
+
+Instead, stop outputting AVX-512_elapsed_ms for kernel threads
+altogether. The data was garbage anyway because avx512_timestamp is
+only updated for user threads, not kernel threads.
+
+If anyone ever wants to track kernel thread AVX-512 use, they can come
+back later and do it properly, separate from this bug fix.
+
+[ dhansen: mostly rewrite changelog ]
+
+Fixes: 22aafe3bcb67 ("x86/fpu: Remove init_task FPU state dependencies, add d=
+ebugging warning for PF_KTHREAD tasks")
+Co-developed-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Fushuai Wang <wangfushuai@baidu.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250811141147.322261-1-longman@redhat.com
+Link: https://lore.kernel.org/all/20250811185044.2227268-1-sohil.mehta%40inte=
+l.com
 ---
- kernel/futex/futex.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/fpu/xstate.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/futex/futex.h b/kernel/futex/futex.h
-index c74eac5..2cd5709 100644
---- a/kernel/futex/futex.h
-+++ b/kernel/futex/futex.h
-@@ -319,13 +319,13 @@ static __always_inline int futex_put_value(u32 val, u32=
- __user *to)
+diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
+index 12ed75c..28e4fd6 100644
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -1881,19 +1881,20 @@ long fpu_xstate_prctl(int option, unsigned long arg2)
+ #ifdef CONFIG_PROC_PID_ARCH_STATUS
+ /*
+  * Report the amount of time elapsed in millisecond since last AVX512
+- * use in the task.
++ * use in the task. Report -1 if no AVX-512 usage.
+  */
+ static void avx512_status(struct seq_file *m, struct task_struct *task)
  {
- 	if (can_do_masked_user_access())
- 		to =3D masked_user_access_begin(to);
--	else if (!user_read_access_begin(to, sizeof(*to)))
-+	else if (!user_write_access_begin(to, sizeof(*to)))
- 		return -EFAULT;
- 	unsafe_put_user(val, to, Efault);
--	user_read_access_end();
-+	user_write_access_end();
- 	return 0;
- Efault:
--	user_read_access_end();
-+	user_write_access_end();
- 	return -EFAULT;
- }
+-	unsigned long timestamp =3D READ_ONCE(x86_task_fpu(task)->avx512_timestamp);
+-	long delta;
++	unsigned long timestamp;
++	long delta =3D -1;
 =20
+-	if (!timestamp) {
+-		/*
+-		 * Report -1 if no AVX512 usage
+-		 */
+-		delta =3D -1;
+-	} else {
++	/* AVX-512 usage is not tracked for kernel threads. Don't report anything. =
+*/
++	if (task->flags & (PF_KTHREAD | PF_USER_WORKER))
++		return;
++
++	timestamp =3D READ_ONCE(x86_task_fpu(task)->avx512_timestamp);
++
++	if (timestamp) {
+ 		delta =3D (long)(jiffies - timestamp);
+ 		/*
+ 		 * Cap to LONG_MAX if time difference > LONG_MAX
 
