@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-6252-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6253-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EC67B27E08
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Aug 2025 12:13:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB8CB282DE
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Aug 2025 17:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A9A5189AE49
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Aug 2025 10:11:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E764CAC0144
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 15 Aug 2025 15:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20292FCC1F;
-	Fri, 15 Aug 2025 10:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB852C0323;
+	Fri, 15 Aug 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XaIoCn3R";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+14F+ukF"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TIHv+2op";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WxoIyMcs"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49ADB2FCBE6;
-	Fri, 15 Aug 2025 10:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E3C4291C38;
+	Fri, 15 Aug 2025 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755252689; cv=none; b=OBZdPV/1ouh5qteCvIjwAICaG3NVemcWjRjRXAZ4Zv/GPpF4NG5DVlp1ziO+30a/bA8+desieZKiHfiKS65NA5mnt0wTuXVX0ZrWKSYjtpuZSCGv5VBBiuooYtpvAVEMKrHB+2xif6mPbVWKcMFo8WD+0UKcF2+vl312e4a4bfo=
+	t=1755271342; cv=none; b=R7sTrCVG9yK09uCCCU9VAjLnhffD+kWzCFrqi5ClI1wOw3FQD6itwTfEm/XZsp1BJqW06oqD6pEwwmvf3rNjYanERjFuewZkAr11pMEguBZyKLdcdlLmEDLXf31wU7RAH7OyYViu4bTzr4u4hjYoaunW2BlDvT25jL1HTzoG47U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755252689; c=relaxed/simple;
-	bh=PBoXPGnAOWb+fVOrpPhlTiRaZSoZ2vCeniL2WaMcJtA=;
+	s=arc-20240116; t=1755271342; c=relaxed/simple;
+	bh=W7duCh9vwStWYND2FGfRWdyPnr1VbWzyqp8PVEU9Y6w=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=j3iEbD7eCLant/azoR6CYkn/bkPxYlUU0ls6bcVleanKvKlXZPt1L0Nk2zVvJRMi4HRYvKMvmlGjo+Zfoph89q6WYzAI+N6w5Z7s4RT1hGH95AZ52FiSwOip8kK4LYFlQXGBCY3DSL9nz7DqZnKHiaRMO5EiGaj0Ggo6Cd2MfNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XaIoCn3R; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+14F+ukF; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nxAEB+xpCSuczjKteR9KcuF71sdcmEgx9YTuonatxpgmvZxyq0363P71w+Ddeh0Ik9fYDV2YkmluIWRDmduZQ447vYM6UQxPzvLJeOyE0QZ5LdZo0gfvC2tNBrfllHuVJ3ekZJpROYAp6NuvbwiwPDuRwz0zYfvTon/jnOXS0kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TIHv+2op; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WxoIyMcs; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 15 Aug 2025 10:11:25 -0000
+Date: Fri, 15 Aug 2025 15:22:16 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755252686;
+	s=2020; t=1755271338;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n4z+FAvE9V+jZF6k+PmGBnuf6ZsMfp0E49fCaBJdqvk=;
-	b=XaIoCn3RDiqdz+yK20K3ExdlswzBitkgr/ESp8tNB/rE5NK7XcOcdNASgAIfZU0wTJiMB6
-	HTPoeKylaewiO4pfWZVTUpKkPXcKQALz5OpXqGQQTj0q4b1aNiXW8IxzBXQVqbTCRf2+Jv
-	vBQUx3jiQPCBlFvI3CVETvrQpOsn9BBI2HBzvxRWuiemtXQyTF6PR2sW6ssCEinyCIjBEm
-	Sh8L2m/VOfXRW+Gllpgv9JymNuBwRkfP0UPCNTE7dAAi39gf5QYlBcou7dFH2v7YlDl8k6
-	UECSXnA5WgY1TOGd5QvOUewhoVH2/G9Ye5g6uQHFN5inydhKSIlwxofBE7c4uA==
+	bh=sKC+2cAb2bXUpps4iXYctWhXv6D5E9MG9vfYvoBWHsI=;
+	b=TIHv+2opCaN8wxpJ4dsJxCzQLVVbrh84frB16VUDw304fCC4K5oY6G6c/9DUgHDNI1L1X4
+	ZsvMMBnNZTTjKUBFtAVzDmXoNtOrFp99/p88Z4usApsD2nnMBTz1DrLHDDOmyAP8dyUsIt
+	Ep3KvHQkxRmuSV9jKCl/gp6bmfdL0yul5JEr1UMcarFDqQaTNYDAhY4FfsmsRjw/4A5rSk
+	NR0Z9CQeIBIUlXCTbeQROIDHiHFZnGqGbcWld7tu0lphtMmqJlVT+Vje3FK5glgYjsGYEo
+	V1H7a7aZvyWKjZweTMGoxXp4F0Vpxa3YBzj/I5rq+LO4al7nBqsFJOepStaOeg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755252686;
+	s=2020e; t=1755271338;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n4z+FAvE9V+jZF6k+PmGBnuf6ZsMfp0E49fCaBJdqvk=;
-	b=+14F+ukFTNaChJpadn2z/svs9gPmqGLIERhJ2r1LvL6OxxFcp7S9iQgB42veWR89jquq/r
-	AuaCqtZpOZ9KYyBA==
+	bh=sKC+2cAb2bXUpps4iXYctWhXv6D5E9MG9vfYvoBWHsI=;
+	b=WxoIyMcsemLYmT1+jsUaAZ4MNZTpRO0eqp8yaiT3dDIFeGs3L069AjGrcZc2JTMOVCHuI/
+	AW4RO3oydQQmpMBw==
 From: "tip-bot2 for Ahmed S. Darwish" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -71,7 +71,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175525268515.1420.17935032400077427387.tip-bot2@tip-bot2>
+Message-ID: <175527133652.1420.12101759486360166993.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,13 +81,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     f6d34f02ebf8eb27f209efb821df998333a29339
-Gitweb:        https://git.kernel.org/tip/f6d34f02ebf8eb27f209efb821df998333a=
-29339
+Commit-ID:     ed6c4b657bca3b39f7b11cba1405931aeb490f3d
+Gitweb:        https://git.kernel.org/tip/ed6c4b657bca3b39f7b11cba1405931aeb4=
+90f3d
 Author:        Ahmed S. Darwish <darwi@linutronix.de>
 AuthorDate:    Fri, 15 Aug 2025 09:01:54 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 15 Aug 2025 11:46:47 +02:00
+CommitterDate: Fri, 15 Aug 2025 17:06:23 +02:00
 
 x86/cpuid: Remove transitional <asm/cpuid.h> header
 
