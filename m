@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6275-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6276-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55ABB29F19
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Aug 2025 12:27:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF905B29F1B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Aug 2025 12:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB23E2A61E6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Aug 2025 10:24:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E3E617A1B6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 18 Aug 2025 10:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A112C2358;
-	Mon, 18 Aug 2025 10:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5269D258EC5;
+	Mon, 18 Aug 2025 10:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hRALGA47";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jO+rx8Ot"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CKDcelTq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8GFGlsaA"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DB82765FB;
-	Mon, 18 Aug 2025 10:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32E4258EC2;
+	Mon, 18 Aug 2025 10:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755512557; cv=none; b=MUvvNPy97K8xMrdF5knpIMyVYP0NM/tKdP+3fkCQ//k0AUF8cuTTQFLkr+DiGNcTuRx1nzVuaDhdzP0zUhfUJ6haCwSemQzKVWdtnA/rjcJZmi4cnvdn4zqF2ZfbNjL6JTm64D7it9FGwQzaxGjUThje89stnDbs+uHV5ik/G0w=
+	t=1755512606; cv=none; b=W94KJvv+H7XqOYWHnPhzqQX0e53qKMSjmss1wJ1kH48MJrH6KwoqtwpEeMUgw+6cZ6bFcQj3fxdOyMMaOo+8F7bR1oh2lT3R3d0/JwD+Q4dFZy60swvQ+Pphaw4XX3Y0UR31sQbHQpJjSqi/Gi9UhtkphmFVKM73xzXf3HqegOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755512557; c=relaxed/simple;
-	bh=9rQfe9oowcm9KV1qYtyEf9iCf0IEpjTH3mveQktEvs0=;
+	s=arc-20240116; t=1755512606; c=relaxed/simple;
+	bh=iwq7xfVKmXNZ6vmO13Crnqc/DcK+UMp/M84NBhPW1zo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=RWWUefsgF1xYotkZoeZWiOmYtt4Wvq2AVSL1rE4sNAi7cppMqWWSxsbDcBrUEbzl1QXkopj1IpW1/BuP7pA4+fY+koNOQsSEj502SSjd/YTBCVDU/CWZIxm7P38Hl029Da7v1F2I0Q1NBf+/CrF8luMrc6APXt6pzg82yq0g5Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hRALGA47; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jO+rx8Ot; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gINRpo1ZIShL9PqlO+P3IXP5N8KGootPTpZBKaLwrKRhXkYDn0f8QM2A1dYcew5bJoLW7/x4KgUBVulfRO5G5CUjlj8+jykMP/XlsxMkMCW+SP4u6saSkUnq2z6YePtrJeLzeobw9MCxbXR8a7GsP174T0BxQwBscTltJMTySzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CKDcelTq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8GFGlsaA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 18 Aug 2025 10:22:33 -0000
+Date: Mon, 18 Aug 2025 10:22:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755512555;
+	s=2020; t=1755512603;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9rh2DKgtGVg8KZ15FbUVvXFY8jG0x4wWEAwWGAHrE74=;
-	b=hRALGA47l2jx6JGOebvuJGF2uitRhLGRTL4+cID2l68AV9dGpTUDzUil4X1jmq3jr6TYX5
-	tneWvgvZrpPR+tAByhKMzu6N2CrIQPGLjiKNZsFxz88nDzlCMy+Poi2q43ju/hPnFpVUzl
-	pZ6i+ke7F4rSIYBLDviCAwrLQjZwDH+2JsU8LBflrNGS9QE0TCTmDJW1T4IBu/wY+Gulpf
-	AyGV2uat5IsQThnC4p9eBOvAsNZnUkhI7xTkyTOy7Tbh1HOltOS/6YSPscS8zhnDferesJ
-	9e7XrGoGuFCkDXzArOVc8TTv7nBgA6bmmXmTSKMkWj2yxMfODujywBbQUHDM5g==
+	bh=xpBhaowErr9gwukZs04zMAzGRt5+vaOWTx2c4Pu+bNU=;
+	b=CKDcelTq+jmk8TGzQWhI45l4M3oe+DbrcVXlt5QQkZCVTS09H1Zq8WytzRAJXt6uo+hn0U
+	YIUR0RZxcsV05j+oVPp7wPI89Lepfef6ZG1VT2+N2Dhyz/SSxkn7N1VD0rqbAREyf7rGoE
+	oHxCRrsWCZTwjZ37veaqu+SYdeUHJdI0yCbij/xAr+W1FSK51sitH4Nmnq7jSaToSJcfAt
+	ErnK5LMcvIHzrneoU5lojtige9e5Lj8kqikaxZlvudq5dQC+tUX3QKfaxRviI7d13egKxG
+	SV8XH4acxOVgQrzxU2NMFZhrVAaj+srKSl7RkWpk/2hi5ojbUoD3NMDVrt/c3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755512555;
+	s=2020e; t=1755512603;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9rh2DKgtGVg8KZ15FbUVvXFY8jG0x4wWEAwWGAHrE74=;
-	b=jO+rx8OtzX6XPMF+ZdBm2C+mXX6odHKiqV5nohDaF2L7JeHri694Jkn7GDMdJ2T+b/42EO
-	4sSHnMv7PW1GlSAw==
+	bh=xpBhaowErr9gwukZs04zMAzGRt5+vaOWTx2c4Pu+bNU=;
+	b=8GFGlsaAHOsnr/wnLrVCymhE1bMpYm1sDXvC1LYaADs8EWPJKNS8DgLFMnjbeV6UBPYl57
+	IX3NdleO6BtzerCw==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Split out VM accounting
+Subject: [tip: perf/core] perf: Split out mlock limit handling
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250812104018.660347811@infradead.org>
-References: <20250812104018.660347811@infradead.org>
+In-Reply-To: <20250812104018.541975109@infradead.org>
+References: <20250812104018.541975109@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175551255390.1420.14980120167011972513.tip-bot2@tip-bot2>
+Message-ID: <175551255507.1420.5370344802361337547.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,66 +82,131 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     1ea3e3b0dadc06c5e6c1bdf5312e70ee861b1ba0
-Gitweb:        https://git.kernel.org/tip/1ea3e3b0dadc06c5e6c1bdf5312e70ee861=
-b1ba0
+Commit-ID:     81e026ca47b386e4213c1beff069038a3ba8bb76
+Gitweb:        https://git.kernel.org/tip/81e026ca47b386e4213c1beff069038a3ba=
+8bb76
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 12 Aug 2025 12:39:01 +02:00
+AuthorDate:    Tue, 12 Aug 2025 12:39:00 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 15 Aug 2025 13:12:59 +02:00
+CommitterDate: Fri, 15 Aug 2025 13:12:58 +02:00
 
-perf: Split out VM accounting
+perf: Split out mlock limit handling
 
-Similarly to the mlock limit calculation the VM accounting is required for
-both the ringbuffer and the AUX buffer allocations.
+To prepare for splitting the buffer allocation out into separate functions
+for the ring buffer and the AUX buffer, split out mlock limit handling into
+a helper function, which can be called from both.
 
-To prepare for splitting them out into separate functions, move the
-accounting into a helper function.
+No functional change intended.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Link: https://lore.kernel.org/r/20250812104018.660347811@infradead.org
+Link: https://lore.kernel.org/r/20250812104018.541975109@infradead.org
 ---
- kernel/events/core.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ kernel/events/core.c | 75 +++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 37 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f629901..f908471 100644
+index eea3a7d..f629901 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -6962,10 +6962,17 @@ static bool perf_mmap_calc_limits(struct vm_area_stru=
-ct *vma, long *user_extra,=20
- 	return locked <=3D lock_limit || !perf_is_paranoid() || capable(CAP_IPC_LOC=
-K);
+@@ -6927,17 +6927,49 @@ static int map_range(struct perf_buffer *rb, struct v=
+m_area_struct *vma)
+ 	return err;
  }
 =20
-+static void perf_mmap_account(struct vm_area_struct *vma, long user_extra, l=
-ong extra)
++static bool perf_mmap_calc_limits(struct vm_area_struct *vma, long *user_ext=
+ra, long *extra)
 +{
++	unsigned long user_locked, user_lock_limit, locked, lock_limit;
 +	struct user_struct *user =3D current_user();
 +
-+	atomic_long_add(user_extra, &user->locked_vm);
-+	atomic64_add(extra, &vma->vm_mm->pinned_vm);
++	user_lock_limit =3D sysctl_perf_event_mlock >> (PAGE_SHIFT - 10);
++	/* Increase the limit linearly with more CPUs */
++	user_lock_limit *=3D num_online_cpus();
++
++	user_locked =3D atomic_long_read(&user->locked_vm);
++
++	/*
++	 * sysctl_perf_event_mlock may have changed, so that
++	 *     user->locked_vm > user_lock_limit
++	 */
++	if (user_locked > user_lock_limit)
++		user_locked =3D user_lock_limit;
++	user_locked +=3D *user_extra;
++
++	if (user_locked > user_lock_limit) {
++		/*
++		 * charge locked_vm until it hits user_lock_limit;
++		 * charge the rest from pinned_vm
++		 */
++		*extra =3D user_locked - user_lock_limit;
++		*user_extra -=3D *extra;
++	}
++
++	lock_limit =3D rlimit(RLIMIT_MEMLOCK);
++	lock_limit >>=3D PAGE_SHIFT;
++	locked =3D atomic64_read(&vma->vm_mm->pinned_vm) + *extra;
++
++	return locked <=3D lock_limit || !perf_is_paranoid() || capable(CAP_IPC_LOC=
+K);
 +}
 +
  static int perf_mmap(struct file *file, struct vm_area_struct *vma)
  {
  	struct perf_event *event =3D file->private_data;
--	struct user_struct *user =3D current_user();
- 	unsigned long vma_size, nr_pages;
- 	long user_extra =3D 0, extra =3D 0;
+-	unsigned long user_locked, user_lock_limit;
+ 	struct user_struct *user =3D current_user();
++	unsigned long vma_size, nr_pages;
++	long user_extra =3D 0, extra =3D 0;
  	struct mutex *aux_mutex =3D NULL;
-@@ -7136,9 +7143,7 @@ static int perf_mmap(struct file *file, struct vm_area_=
-struct *vma)
+ 	struct perf_buffer *rb =3D NULL;
+-	unsigned long locked, lock_limit;
+-	unsigned long vma_size;
+-	unsigned long nr_pages;
+-	long user_extra =3D 0, extra =3D 0;
+ 	int ret, flags =3D 0;
+ 	mapped_f mapped;
 =20
- unlock:
- 	if (!ret) {
--		atomic_long_add(user_extra, &user->locked_vm);
--		atomic64_add(extra, &vma->vm_mm->pinned_vm);
+@@ -7063,38 +7095,7 @@ static int perf_mmap(struct file *file, struct vm_area=
+_struct *vma)
+ 		}
+ 	}
+=20
+-	user_lock_limit =3D sysctl_perf_event_mlock >> (PAGE_SHIFT - 10);
 -
-+		perf_mmap_account(vma, user_extra, extra);
- 		atomic_inc(&event->mmap_count);
- 	} else if (rb) {
- 		/* AUX allocation failed */
+-	/*
+-	 * Increase the limit linearly with more CPUs:
+-	 */
+-	user_lock_limit *=3D num_online_cpus();
+-
+-	user_locked =3D atomic_long_read(&user->locked_vm);
+-
+-	/*
+-	 * sysctl_perf_event_mlock may have changed, so that
+-	 *     user->locked_vm > user_lock_limit
+-	 */
+-	if (user_locked > user_lock_limit)
+-		user_locked =3D user_lock_limit;
+-	user_locked +=3D user_extra;
+-
+-	if (user_locked > user_lock_limit) {
+-		/*
+-		 * charge locked_vm until it hits user_lock_limit;
+-		 * charge the rest from pinned_vm
+-		 */
+-		extra =3D user_locked - user_lock_limit;
+-		user_extra -=3D extra;
+-	}
+-
+-	lock_limit =3D rlimit(RLIMIT_MEMLOCK);
+-	lock_limit >>=3D PAGE_SHIFT;
+-	locked =3D atomic64_read(&vma->vm_mm->pinned_vm) + extra;
+-
+-	if ((locked > lock_limit) && perf_is_paranoid() &&
+-		!capable(CAP_IPC_LOCK)) {
++	if (!perf_mmap_calc_limits(vma, &user_extra, &extra)) {
+ 		ret =3D -EPERM;
+ 		goto unlock;
+ 	}
 
