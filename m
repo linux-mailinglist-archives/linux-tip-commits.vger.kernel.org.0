@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6300-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6301-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180FCB2D925
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Aug 2025 11:50:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E8CB2E2C5
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Aug 2025 18:59:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEC96A078B5
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Aug 2025 09:46:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AEAC165C9F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 20 Aug 2025 16:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCB02DEA70;
-	Wed, 20 Aug 2025 09:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1934E32778E;
+	Wed, 20 Aug 2025 16:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4paGCzZu";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZZbcKkWE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Tp3rSuev";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SPoWI5mm"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209B32DD608;
-	Wed, 20 Aug 2025 09:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A7C57C9F;
+	Wed, 20 Aug 2025 16:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755682814; cv=none; b=vFmr049xxsTt65HS6XLUfTELoRVCiydQBTZpiaf1/wU9Subd4Fw6dvd/qMmbOz1DlqUrkzsN30RnKV39rBq7vs9n0ikOuizU3s9vR1rhkcsTtEQyGknhpSET7xL0K7s883AboBW5pFUvIEabmTUpRgXwh//vkV9c/ua10z++WqI=
+	t=1755709101; cv=none; b=qy8IQoBcXWOiPrq4Bt++k9Q5e+73IvmTnDQmas7TMPORbYmho3PZiEwTx/F+Eqmn/+sYUU9HpZL/UgAJM5MgYR7K4ySyglDRt1u5RqGoGV6onL8SSpY208vfMSU7nlXomuv0gDeMJaDrXxloMkDvvSwYWVuX7BttJZ8q4Ahzu7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755682814; c=relaxed/simple;
-	bh=2CIc3f2A5uq61+fkOPrjcfh3YxbLhuliW4QrN3LVpwA=;
+	s=arc-20240116; t=1755709101; c=relaxed/simple;
+	bh=zFit5RnosLTRx8J5sxAPztAFATI0JhtRZhWuAE2Kmxg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=D0wUx0nYjNyrfm/Nj7xnkxsSPgrHmgoOa+oYvNjAmIwe7k3X/lRvXjf+ASMwh39DZfv5OgXiX/jf8uXFrYvNslH9x7hB0/dRBtYWsWOZoG+4nHqBLoCkbIcompzajjFPPjkePW0LocnffRL6jReWpJkQg6EEBFapex7oOjTRXKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4paGCzZu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZZbcKkWE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Fi5q4nvrxqG7Ji85zH5f3xhPw3gMHSrt+eem7s39kJmlml1hpMZBT0dEj1fFW6I5j4HVONPvaZPfe3yl6OipMBSamxMwscX7fjcbFWnwJGVkrFoXm5JYKgOsRrRtebigIm5JZfMAtAaOTFtFRcPNpCO9VhRurxdPatHg+Uhf0Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Tp3rSuev; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SPoWI5mm; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 20 Aug 2025 09:39:21 -0000
+Date: Wed, 20 Aug 2025 16:58:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755682810;
+	s=2020; t=1755709097;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AvwK+IJssjhYvlynSmUHIZBVaRcciKf2IHsQKsrvHKw=;
-	b=4paGCzZudxh3ViRY//M1S3cgn6y8CmeSGEOuLOYlEiqSLEI0PFOMDRlol6XeP57piP73Et
-	ScIHC9Wec051zkMcEXU29K8hdl1WibwiHA0MqJzvAKGTEWSjgTWowvUDMriqm29tW9JX6i
-	w4y8Uz/cSsqciXqCfruS7h05C0Ca0UoltGc/xKlIdkaNcpZCkGv+XRSHE8BHGndOX1RXAO
-	eQ5aJ8HWaPEXzYq4avDlCxVuQI/G4d7ZnjVd0yISY/e4+XWn2gpZGk6/EjoDLxu/77FRvP
-	gVVYxbb9mWUYi2mp4EhwnvhZoaVCn8tACGciywPtDEgRc5aiDasrMhPC8iBo4g==
+	bh=nXtuvnYgySowG7Wg0s3LkLu/Mt9yJWpNfUfy0OEXynM=;
+	b=Tp3rSuev+ZxIhJOU6ssdOEXSesIYLIe72y+Hz6Qm41VNUhgpPmpcxa7JQGXdH7Yx57aSUq
+	AEEuVSKcQ3vTl4sUiRNHojHafd0MFwYXv1UBY76XR2SitvodQRpKvcHD50IcCzcCIzPJaW
+	ax5J5spiMe8aH9m4vvNdzduCDCfuVo/ntHiiZS3GXd5C5g7UeJnpejTBUmRFzeoCSJ9e0u
+	iisTnY9nJPh5Mn6fl+Y/Kes7K9RRcDmBLFlD7pTOHPFH7/lqSsdLvJp+fz9L4dS4UXC066
+	fylOva0p9/Et8RP02ORiGP3nLdHEE3Zj+HuGuHnLNti5zKI7+4hzim+i0lFaYw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755682810;
+	s=2020e; t=1755709097;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AvwK+IJssjhYvlynSmUHIZBVaRcciKf2IHsQKsrvHKw=;
-	b=ZZbcKkWEKV1oPi4GRskH3Q+nkbDCK252jWhk3cDEDBylKRlutjavowhMoGIZE5bFyW4Y/3
-	BwX40c5KJxj1FMAg==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=nXtuvnYgySowG7Wg0s3LkLu/Mt9yJWpNfUfy0OEXynM=;
+	b=SPoWI5mm5Jhtt5TSooGCCotrOrA10gRHzQLWTnANs900mP747vbARppCcXASHup0TlxjvI
+	mrd9ZielIvAUscAg==
+From: "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] KVM: x86: Implement test_cc() in C
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Sean Christopherson <seanjc@google.com>, x86@kernel.org,
+Subject:
+ [tip: x86/cleanups] x86/kconfig: Drop unused and needless config X86_64_SMP
+Cc: Lukas Bulwahn <lukas.bulwahn@redhat.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250714103439.637049932@infradead.org>
-References: <20250714103439.637049932@infradead.org>
+In-Reply-To: <20250723071211.622802-1-lukas.bulwahn@redhat.com>
+References: <20250723071211.622802-1-lukas.bulwahn@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175568276176.1420.8431160984457501313.tip-bot2@tip-bot2>
+Message-ID: <175570909600.1420.10792869791326478252.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,139 +80,51 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/core branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     0cb6f1e436accba7882bb3115408d1474c1e14af
-Gitweb:        https://git.kernel.org/tip/0cb6f1e436accba7882bb3115408d1474c1=
-e14af
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 01 Dec 2023 18:53:40 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 18 Aug 2025 14:23:04 +02:00
+Commit-ID:     03777dbd8c9d825fc6f792e4e85be9e4ce4c7f8f
+Gitweb:        https://git.kernel.org/tip/03777dbd8c9d825fc6f792e4e85be9e4ce4=
+c7f8f
+Author:        Lukas Bulwahn <lukas.bulwahn@redhat.com>
+AuthorDate:    Wed, 23 Jul 2025 09:12:11 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 20 Aug 2025 18:34:56 +02:00
 
-KVM: x86: Implement test_cc() in C
+x86/kconfig: Drop unused and needless config X86_64_SMP
 
-Current test_cc() uses the fastop infrastructure to test flags using
-SETcc instructions. However, int3_emulate_jcc() already fully
-implements the flags->CC mapping, use that.
+As part of
 
-Removes a pile of gnarly asm.
+  38a4968b3190 ("x86/percpu/64: Remove INIT_PER_CPU macros"),
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://lkml.kernel.org/r/20250714103439.637049932@infradead.org
+the only use of the config option X86_64_SMP in the kernel tree is removed. As
+this config option X86_64_SMP is just equivalent to X86_64 && SMP, the source
+code in the tree just uses that expression in the few places where needed. No=
+te
+further that this option cannot be explicitly enabled or disabled when
+configuring the kernel build configuration.
+
+Drop this needless and unused config option. No functional change.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250723071211.622802-1-lukas.bulwahn@redhat.com
 ---
- arch/x86/include/asm/text-patching.h | 20 ++++++++++------
- arch/x86/kvm/emulate.c               | 34 +--------------------------
- 2 files changed, 15 insertions(+), 39 deletions(-)
+ arch/x86/Kconfig | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/text-patching.h b/arch/x86/include/asm/text=
--patching.h
-index 5337f1b..f2d142a 100644
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -178,9 +178,9 @@ void int3_emulate_ret(struct pt_regs *regs)
- }
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 58d890f..2eb3bb6 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -410,10 +410,6 @@ config HAVE_INTEL_TXT
+ 	def_bool y
+ 	depends on INTEL_IOMMU && ACPI
 =20
- static __always_inline
--void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigne=
-d long disp)
-+bool __emulate_cc(unsigned long flags, u8 cc)
- {
--	static const unsigned long jcc_mask[6] =3D {
-+	static const unsigned long cc_mask[6] =3D {
- 		[0] =3D X86_EFLAGS_OF,
- 		[1] =3D X86_EFLAGS_CF,
- 		[2] =3D X86_EFLAGS_ZF,
-@@ -193,15 +193,21 @@ void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsi=
-gned long ip, unsigned lo
- 	bool match;
-=20
- 	if (cc < 0xc) {
--		match =3D regs->flags & jcc_mask[cc >> 1];
-+		match =3D flags & cc_mask[cc >> 1];
- 	} else {
--		match =3D ((regs->flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
--			((regs->flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
-+		match =3D ((flags & X86_EFLAGS_SF) >> X86_EFLAGS_SF_BIT) ^
-+			((flags & X86_EFLAGS_OF) >> X86_EFLAGS_OF_BIT);
- 		if (cc >=3D 0xe)
--			match =3D match || (regs->flags & X86_EFLAGS_ZF);
-+			match =3D match || (flags & X86_EFLAGS_ZF);
- 	}
-=20
--	if ((match && !invert) || (!match && invert))
-+	return (match && !invert) || (!match && invert);
-+}
-+
-+static __always_inline
-+void int3_emulate_jcc(struct pt_regs *regs, u8 cc, unsigned long ip, unsigne=
-d long disp)
-+{
-+	if (__emulate_cc(regs->flags, cc))
- 		ip +=3D disp;
-=20
- 	int3_emulate_jmp(regs, ip);
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 1349e27..9526d69 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -26,6 +26,7 @@
- #include <asm/debugreg.h>
- #include <asm/nospec-branch.h>
- #include <asm/ibt.h>
-+#include <asm/text-patching.h>
-=20
- #include "x86.h"
- #include "tss.h"
-@@ -416,31 +417,6 @@ static int fastop(struct x86_emulate_ctxt *ctxt, fastop_=
-t fop);
- 	ON64(FOP3E(op##q, rax, rdx, cl)) \
- 	FOP_END
-=20
--/* Special case for SETcc - 1 instruction per cc */
--#define FOP_SETCC(op) \
--	FOP_FUNC(op) \
--	#op " %al \n\t" \
--	FOP_RET(op)
+-config X86_64_SMP
+-	def_bool y
+-	depends on X86_64 && SMP
 -
--FOP_START(setcc)
--FOP_SETCC(seto)
--FOP_SETCC(setno)
--FOP_SETCC(setc)
--FOP_SETCC(setnc)
--FOP_SETCC(setz)
--FOP_SETCC(setnz)
--FOP_SETCC(setbe)
--FOP_SETCC(setnbe)
--FOP_SETCC(sets)
--FOP_SETCC(setns)
--FOP_SETCC(setp)
--FOP_SETCC(setnp)
--FOP_SETCC(setl)
--FOP_SETCC(setnl)
--FOP_SETCC(setle)
--FOP_SETCC(setnle)
--FOP_END;
--
- FOP_START(salc)
- FOP_FUNC(salc)
- "pushf; sbb %al, %al; popf \n\t"
-@@ -1068,13 +1044,7 @@ static int em_bsr_c(struct x86_emulate_ctxt *ctxt)
+ config ARCH_SUPPORTS_UPROBES
+ 	def_bool y
 =20
- static __always_inline u8 test_cc(unsigned int condition, unsigned long flag=
-s)
- {
--	u8 rc;
--	void (*fop)(void) =3D (void *)em_setcc + FASTOP_SIZE * (condition & 0xf);
--
--	flags =3D (flags & EFLAGS_MASK) | X86_EFLAGS_IF;
--	asm("push %[flags]; popf; " CALL_NOSPEC
--	    : "=3Da"(rc), ASM_CALL_CONSTRAINT : [thunk_target]"r"(fop), [flags]"r"(=
-flags));
--	return rc;
-+	return __emulate_cc(flags, condition & 0xf);
- }
-=20
- static void fetch_register_operand(struct operand *op)
 
