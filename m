@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6327-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6328-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BC4B32BA7
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Aug 2025 21:30:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77EF0B32BBB
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Aug 2025 21:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0327456717A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Aug 2025 19:30:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33923683652
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 23 Aug 2025 19:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613102EBBAB;
-	Sat, 23 Aug 2025 19:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2121B21B9DA;
+	Sat, 23 Aug 2025 19:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XuSsfYFQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O25tj2w/"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rqCwiQnI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/CqxUERT"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D803E2EACEE;
-	Sat, 23 Aug 2025 19:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A281F130B;
+	Sat, 23 Aug 2025 19:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755977430; cv=none; b=F+5BU7v29MFpPBykT4RWKfqAV3GAp/r0CaZDFQl8aGA/QVGN+VlQJcxM7xOHzLsSsz6FOEhU+Tdr2PQLuVNbSs93AsLSzkXSEL/qRTf8ya10tX/YW7SY5QlzFM2sExgRgrHtLT/ta7xxZaWXFAu+zGBvdSLRhIdZIvkP69+VtYs=
+	t=1755978759; cv=none; b=roQtDCe67aiX0YTXYUBMcHjNxkYaeYrNplvRCdpUz25WbBJs+7QDtFsIgkfDsbLEj2ZQowT5kwZOrg+b+lD0wa+6+l8ZHmWKNfXc8QdyKgHbr6aSORBQk/f6AC8393sIuppPl31Xb1zRxbSAYXp+QoMj6IaogMmcsHpEcwyArbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755977430; c=relaxed/simple;
-	bh=cqhbZliEgCw06LWjb4Etn6caGoDfjS1O8wgS/RxBbQA=;
+	s=arc-20240116; t=1755978759; c=relaxed/simple;
+	bh=v1wEZO56GummziL9neBU05SCWlnDR9yrnpOCiGuKjSI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=M6WF1Rrrxky1EsbntJHRDjQXdMd4/8JB96UEt6ZAVfugY2moKh4Hw3cpb37BZ2fJ3H+/hgwchh0FBQcD2PgNYQbwCVPkyEu48lwHjgNURPuR55l9SAjjV76QGrppk0J84rniedZP/TfE0NGKqLnZz1gUCw24/Zq8duDAw4tXcfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XuSsfYFQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O25tj2w/; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ZLdOREDkj3q41skLd2010BQXSiX4Lqw1OHQIEZoAH2m3hMi4D+zEec98qnZl91KA8CwSQULRjzzpABmqJAttzJOnC+uk8nQ7+x7LFTgHuVxljdQA+THf14VtXkXT9BYhaounB7FzzAFHsFTacersAwZqPC2WnKlgPX3qR8isCu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rqCwiQnI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/CqxUERT; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 23 Aug 2025 19:30:24 -0000
+Date: Sat, 23 Aug 2025 19:52:34 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1755977425;
+	s=2020; t=1755978755;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oO8oVBpDtIm03zfRBASenoVtH2C2/4GMbx6IwR5Dhdc=;
-	b=XuSsfYFQzEZJBcQFsdU4Cw5bU3rQrN8ZF0c7cnYmjqkR60wCKE6fqrsDxn2kBfnna81p1k
-	l4/XmCnk3zp99ZMT0dT0VyQbdrmee40IBmqa2K7OQGpROErBkEqeP0FBnvNWYGvCw2d6mv
-	+l0m4QRzkgDzlAH+pJWkaz56iNBsw3h7jS52pa4xCaElC3tJoCVsu+T9R76Ft18xbxV5EN
-	ZB6TmUcLN65vU53jNzK3Tw73wYwzrxkVRpnyUHN3/gXVV0krF3PH94H6JmIfARcFZ1qlsm
-	VUT/Cn2ivDmf+LTknpk7sURAplxxQrFvoQpZCPdBFK9nAMTb9t7RNOo7KZQkUQ==
+	bh=372pLaahYYJmldtEcJ4oI81lqSmNiu7/wEcN5YmqmXs=;
+	b=rqCwiQnI+Vo8G1DyP/9+29utVopncvk/SM/g8s72fyausDi33QlAcR82glTcumKPRbmlI3
+	ZVzo0Wwh+gdptcMt0OHJi/C64rpoZa5IUSiBDDukXGkZ2JI0Ni4dJNapFHCVbApPfLSQo2
+	9UviUvzeqnF3b/B+qXsKdjJva9RfQ81dKIlarJNVBJ+y0XL5K7UiHcwwOdGDtoI6TFSxk5
+	ogne/gnMf4+hS/2cshih8EJmT7pgnAYD+fGlHj0HxmKFnxJxAVdKaaCdw2EnU/Wopyhr7F
+	BWIQ7ikl0tQfcz55/wEp7AwfPxcmURZqaH1TKC5MPQ5dp5NCIyLHzZnpyu6nSQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1755977425;
+	s=2020e; t=1755978755;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=oO8oVBpDtIm03zfRBASenoVtH2C2/4GMbx6IwR5Dhdc=;
-	b=O25tj2w/p8BX45iILiWf66v00wjmUvy13wSMSsHYZHxU0hPrdicBdMavkRuVeeWV/It6/h
-	It50wqj1Ho3VF/Cg==
-From: "tip-bot2 for Inochi Amaoto" <tip-bot2@linutronix.de>
+	bh=372pLaahYYJmldtEcJ4oI81lqSmNiu7/wEcN5YmqmXs=;
+	b=/CqxUERTfY+jAUZ+fuE399HVXrv2UhhHenJXmTkPKLFpwPIQlqfsOEfmITfjURpay5nvnD
+	3ChgbosKQdSCjIBQ==
+From: "tip-bot2 for Edgar Bonet" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: irq/drivers] PCI/MSI: Add startup/shutdown for per device domains
-Cc: Thomas Gleixner <tglx@linutronix.de>, Inochi Amaoto <inochiama@gmail.com>,
- Chen Wang <unicorn_wang@outlook.com>, Bjorn Helgaas <bhelgaas@google.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250813232835.43458-3-inochiama@gmail.com>
-References: <20250813232835.43458-3-inochiama@gmail.com>
+ [tip: irq/urgent] irqchip/atmel-aic[5]: Fix incorrect lock guard conversion
+Cc: Edgar Bonet <bonet@grenoble.cnrs.fr>, Thomas Gleixner <tglx@linutronix.de>,
+ Geert Uytterhoeven <geert+renesas@glider.be>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <280dd506-e1fc-4d2e-bdc4-98dd9dca6138@grenoble.cnrs.fr>
+References: <280dd506-e1fc-4d2e-bdc4-98dd9dca6138@grenoble.cnrs.fr>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175597742445.1420.15698772971358170313.tip-bot2@tip-bot2>
+Message-ID: <175597875409.1420.7808650911707523725.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,149 +80,71 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/drivers branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     54f45a30c0d0153d2be091ba2d683ab6db6d1d5b
-Gitweb:        https://git.kernel.org/tip/54f45a30c0d0153d2be091ba2d683ab6db6=
-d1d5b
-Author:        Inochi Amaoto <inochiama@gmail.com>
-AuthorDate:    Thu, 14 Aug 2025 07:28:32 +08:00
+Commit-ID:     c2bac68067bba5edda09112c09f2f670792dcdc8
+Gitweb:        https://git.kernel.org/tip/c2bac68067bba5edda09112c09f2f670792=
+dcdc8
+Author:        Edgar Bonet <bonet@grenoble.cnrs.fr>
+AuthorDate:    Thu, 14 Aug 2025 14:59:42 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 23 Aug 2025 21:21:13 +02:00
+CommitterDate: Sat, 23 Aug 2025 21:41:07 +02:00
 
-PCI/MSI: Add startup/shutdown for per device domains
+irqchip/atmel-aic[5]: Fix incorrect lock guard conversion
 
-As the RISC-V PLIC cannot apply affinity settings without invoking
-irq_enable(), it will make the interrupt unavailble when used as an
-underlying interrupt chip for the MSI controller.
+Commit b00bee8afaca ("irqchip: Convert generic irqchip locking to guards")
+replaced calls to irq_gc_lock_irq{save,restore}() with
+guard(raw_spinlock_irq).
 
-Implement the irq_startup() and irq_shutdown() callbacks for the PCI MSI
-and MSI-X templates.
+However, in irq-atmel-aic5.c and irq-atmel-aic.c, the xlate callback is
+used in the early boot process, before interrupts are initially enabled.
+As its destructor enables interrupts, this triggers the warning in
+start_kernel():
 
-For chips that specify MSI_FLAG_PCI_MSI_STARTUP_PARENT, the parent startup
-and shutdown functions are invoked. That allows the interrupt on the parent
-chip to be enabled if the interrupt has not been enabled during
-allocation. This is necessary for MSI controllers which use PLIC as
-underlying parent interrupt chip.
+    WARNING: CPU: 0 PID: 0 at init/main.c:1024 start_kernel+0x4d0/0x5dc
+    Interrupts were enabled early
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+Fix this by using guard(raw_spinlock_irqsave) instead.
+
+[ tglx: Folded the equivivalent fix for atmel-aic ]
+
+Fixes: b00bee8afaca ("irqchip: Convert generic irqchip locking to guards")
+Signed-off-by: Edgar Bonet <bonet@grenoble.cnrs.fr>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Chen Wang <unicorn_wang@outlook.com> # Pioneerbox
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/all/20250813232835.43458-3-inochiama@gmail.com
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/all/280dd506-e1fc-4d2e-bdc4-98dd9dca6138@grenob=
+le.cnrs.fr
 
 ---
- drivers/pci/msi/irqdomain.c | 52 ++++++++++++++++++++++++++++++++++++-
- include/linux/msi.h         |  2 +-
- 2 files changed, 54 insertions(+)
+ drivers/irqchip/irq-atmel-aic.c  | 2 +-
+ drivers/irqchip/irq-atmel-aic5.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/msi/irqdomain.c b/drivers/pci/msi/irqdomain.c
-index 0938ef7..e0a800f 100644
---- a/drivers/pci/msi/irqdomain.c
-+++ b/drivers/pci/msi/irqdomain.c
-@@ -148,6 +148,23 @@ static void pci_device_domain_set_desc(msi_alloc_info_t =
-*arg, struct msi_desc *d
- 	arg->hwirq =3D desc->msi_index;
- }
+diff --git a/drivers/irqchip/irq-atmel-aic.c b/drivers/irqchip/irq-atmel-aic.c
+index 03aeed3..1dcc527 100644
+--- a/drivers/irqchip/irq-atmel-aic.c
++++ b/drivers/irqchip/irq-atmel-aic.c
+@@ -188,7 +188,7 @@ static int aic_irq_domain_xlate(struct irq_domain *d,
 =20
-+static void cond_shutdown_parent(struct irq_data *data)
-+{
-+	struct msi_domain_info *info =3D data->domain->host_data;
-+
-+	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_STARTUP_PARENT))
-+		irq_chip_shutdown_parent(data);
-+}
-+
-+static unsigned int cond_startup_parent(struct irq_data *data)
-+{
-+	struct msi_domain_info *info =3D data->domain->host_data;
-+
-+	if (unlikely(info->flags & MSI_FLAG_PCI_MSI_STARTUP_PARENT))
-+		return irq_chip_startup_parent(data);
-+	return 0;
-+}
-+
- static __always_inline void cond_mask_parent(struct irq_data *data)
- {
- 	struct msi_domain_info *info =3D data->domain->host_data;
-@@ -164,6 +181,23 @@ static __always_inline void cond_unmask_parent(struct ir=
-q_data *data)
- 		irq_chip_unmask_parent(data);
- }
+ 	gc =3D dgc->gc[idx];
 =20
-+static void pci_irq_shutdown_msi(struct irq_data *data)
-+{
-+	struct msi_desc *desc =3D irq_data_get_msi_desc(data);
-+
-+	pci_msi_mask(desc, BIT(data->irq - desc->irq));
-+	cond_shutdown_parent(data);
-+}
-+
-+static unsigned int pci_irq_startup_msi(struct irq_data *data)
-+{
-+	struct msi_desc *desc =3D irq_data_get_msi_desc(data);
-+	unsigned int ret =3D cond_startup_parent(data);
-+
-+	pci_msi_unmask(desc, BIT(data->irq - desc->irq));
-+	return ret;
-+}
-+
- static void pci_irq_mask_msi(struct irq_data *data)
- {
- 	struct msi_desc *desc =3D irq_data_get_msi_desc(data);
-@@ -194,6 +228,8 @@ static void pci_irq_unmask_msi(struct irq_data *data)
- static const struct msi_domain_template pci_msi_template =3D {
- 	.chip =3D {
- 		.name			=3D "PCI-MSI",
-+		.irq_startup		=3D pci_irq_startup_msi,
-+		.irq_shutdown		=3D pci_irq_shutdown_msi,
- 		.irq_mask		=3D pci_irq_mask_msi,
- 		.irq_unmask		=3D pci_irq_unmask_msi,
- 		.irq_write_msi_msg	=3D pci_msi_domain_write_msg,
-@@ -210,6 +246,20 @@ static const struct msi_domain_template pci_msi_template=
- =3D {
- 	},
- };
+-	guard(raw_spinlock_irq)(&gc->lock);
++	guard(raw_spinlock_irqsave)(&gc->lock);
+ 	smr =3D irq_reg_readl(gc, AT91_AIC_SMR(*out_hwirq));
+ 	aic_common_set_priority(intspec[2], &smr);
+ 	irq_reg_writel(gc, smr, AT91_AIC_SMR(*out_hwirq));
+diff --git a/drivers/irqchip/irq-atmel-aic5.c b/drivers/irqchip/irq-atmel-aic=
+5.c
+index 60b00d2..1f14b40 100644
+--- a/drivers/irqchip/irq-atmel-aic5.c
++++ b/drivers/irqchip/irq-atmel-aic5.c
+@@ -279,7 +279,7 @@ static int aic5_irq_domain_xlate(struct irq_domain *d,
+ 	if (ret)
+ 		return ret;
 =20
-+static void pci_irq_shutdown_msix(struct irq_data *data)
-+{
-+	pci_msix_mask(irq_data_get_msi_desc(data));
-+	cond_shutdown_parent(data);
-+}
-+
-+static unsigned int pci_irq_startup_msix(struct irq_data *data)
-+{
-+	unsigned int ret =3D cond_startup_parent(data);
-+
-+	pci_msix_unmask(irq_data_get_msi_desc(data));
-+	return ret;
-+}
-+
- static void pci_irq_mask_msix(struct irq_data *data)
- {
- 	pci_msix_mask(irq_data_get_msi_desc(data));
-@@ -234,6 +284,8 @@ EXPORT_SYMBOL_GPL(pci_msix_prepare_desc);
- static const struct msi_domain_template pci_msix_template =3D {
- 	.chip =3D {
- 		.name			=3D "PCI-MSIX",
-+		.irq_startup		=3D pci_irq_startup_msix,
-+		.irq_shutdown		=3D pci_irq_shutdown_msix,
- 		.irq_mask		=3D pci_irq_mask_msix,
- 		.irq_unmask		=3D pci_irq_unmask_msix,
- 		.irq_write_msi_msg	=3D pci_msi_domain_write_msg,
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index e5e86a8..3111ba9 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -568,6 +568,8 @@ enum {
- 	MSI_FLAG_PARENT_PM_DEV		=3D (1 << 8),
- 	/* Support for parent mask/unmask */
- 	MSI_FLAG_PCI_MSI_MASK_PARENT	=3D (1 << 9),
-+	/* Support for parent startup/shutdown */
-+	MSI_FLAG_PCI_MSI_STARTUP_PARENT	=3D (1 << 10),
-=20
- 	/* Mask for the generic functionality */
- 	MSI_GENERIC_FLAGS_MASK		=3D GENMASK(15, 0),
+-	guard(raw_spinlock_irq)(&bgc->lock);
++	guard(raw_spinlock_irqsave)(&bgc->lock);
+ 	irq_reg_writel(bgc, *out_hwirq, AT91_AIC5_SSR);
+ 	smr =3D irq_reg_readl(bgc, AT91_AIC5_SMR);
+ 	aic_common_set_priority(intspec[2], &smr);
 
