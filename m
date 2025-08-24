@@ -1,77 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6334-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6335-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B32B32F22
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Aug 2025 12:57:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191C4B32F3B
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Aug 2025 13:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3063483338
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Aug 2025 10:56:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91751B263BB
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 24 Aug 2025 11:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D513275AF9;
-	Sun, 24 Aug 2025 10:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D972F27D786;
+	Sun, 24 Aug 2025 11:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sMEYOGff";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dHrYiPIb"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mCXKFmUM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uMdUT4VD"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9E3275865;
-	Sun, 24 Aug 2025 10:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4AE257836;
+	Sun, 24 Aug 2025 11:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756032923; cv=none; b=ayKTpcy9nDlhcU+n/3uEp1hRZv8FDhDSwLhLJcg5J0VLR3tNxWv7lF8zH7Ypgw0YwkdKo3xmsSR/w56kmqM03r3BfMsbSXKn8yZ2D3U9a8RT2ywbTc755rDYe+R4NuRvebo4cy0bKJm00/2HZjnfmsbRkFs4RKMbsQV1vPIPR3o=
+	t=1756033581; cv=none; b=Sbv4X06mhayBG0rSmKyO4SSYGYlVkX4X3gKyY+qnDisJ3oQwP27J5/h3NJ34cBEO1RrYtmhM/J2ZeaBeoDSlsFI5ozwRlmNnjeQRlO5GzPospfgOvNkEwUpjxILP38C3nUmtJGelK4429Ly7htNWVqsK0mfKDP8dBBrZWJlKXnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756032923; c=relaxed/simple;
-	bh=WheYIEuzYybFK2AmJ0z3SgypUmoUtssKomjMkLH+NUU=;
+	s=arc-20240116; t=1756033581; c=relaxed/simple;
+	bh=84KNwSgXjJkOaHAuv0Q93GPY0XaATXyaEz1gETvBZho=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gYteLTVBRLb6LMJoqsaJDEHunq5tzCfqqyHL/D38YRgH7WYXeD1wQ71ikkqUU65Y5gdoHn5FtEWKzxmHLvNPLcRsA99/5OjN4TyK/PUz3TDLgmFTXzIm5ebfjp+RDCc3VtUWOEsurEFfT92WZCGPTrMpBtOpsk5DXkna8XXPb9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sMEYOGff; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dHrYiPIb; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Nl7cZqKBUz7DEENAfpv2rcyPzybMgPoaUS1lyNeQZUM/q3vjF9WlwII0bLH2g+ngeUtIJPx7T9I9As9mN7r0AtFnQnPuONuRykyoIepntMDtgh2qM+IIAQgtM/kYShYT5zFgqhh16STa9OM4UAaCYs/RjnC2vSHCMD3aRVD2LlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mCXKFmUM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uMdUT4VD; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 24 Aug 2025 10:55:18 -0000
+Date: Sun, 24 Aug 2025 11:06:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756032919;
+	s=2020; t=1756033577;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TedkKtZz0ht92ILDvZav+rWZii9opD0TU847JkHELG0=;
-	b=sMEYOGffKB7M4D8ZL3IeIp8F4cMoRYBV6L5iw7NW3hW7l39DMwSJVaQlRIHJLGhDscASCO
-	HVmuVSYFjyS0NFySREwj1BqXffVHP1Lr5sWrhX4zty6ov8nyhZeXdy4aVMJ7SEWPSrF++M
-	yiED1Jt+Sda7EHq716hRNZ0hof7alEfj5xRo7FazM7Y+KalhNAHGHIN0KomsZskrS0qzP1
-	7PzJV7TuHIolgstFXEdTP3zesblkGqw1NUoyIRsYcQYu9NsYUkBHrVf/QUQTY3DQStL5C6
-	0mr6kbWZv+4QKry04dLJbmtDhAJzdEAz37UlmL0S46WCoDL64tMajnNdHLysZg==
+	bh=MXWvizYW2qL44uYnYLB+P86tlHlv+1VAjG3QXoA2Abc=;
+	b=mCXKFmUMonnPnEytWeHahoNl/i0w6bPyTu3I8zOy/DOugiM7jko/xtJfg2mEZKYY7qQciU
+	XHD0jwayQz9jVkNW+QxG3QMnvgTH3RenNf/ZwduNzIz1437xQ/El57atFrvMzOlLJl+u1N
+	2f2u3kARB8lUaR2M2XZa90PnXv0WwTI2Bnfx4Z7uzJ3afKEWD/okY6nSq6rQZ0zMbOvwfV
+	36HEVJE7VCl4Dr+k3TysG6/23i0hoOVT/G7a4lJYocBVvPlfZ/ddbpDkap0IRYtiDhbdOt
+	gTYOO++DrfJfSa79UbNKjXBLfgB9BuN6OMcHdCPdKdbObCY7o/PNZWKUkyCbig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756032919;
+	s=2020e; t=1756033577;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TedkKtZz0ht92ILDvZav+rWZii9opD0TU847JkHELG0=;
-	b=dHrYiPIbZvG0kxO2AKaU8HhTy+sMCeRcHBX77yP1uTlhi0gMvm5D+EXMch+9YyDnd05Rnq
-	7zajE8ZgDLFZNHDA==
-From: "tip-bot2 for Bibo Mao" <tip-bot2@linutronix.de>
+	bh=MXWvizYW2qL44uYnYLB+P86tlHlv+1VAjG3QXoA2Abc=;
+	b=uMdUT4VDuu5pr6EkzpHLk46BzDcXhtgQ64IDsuZ4LgpG/gvDcqtTRfLcsPlAB4nmb8jAmW
+	Fhm+w/fDcq/47ODA==
+From: "tip-bot2 for Pan Chuang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/loongson-eiointc: Route interrupt parsed
- from bios table
-Cc: Bibo Mao <maobibo@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250804081946.1456573-2-maobibo@loongson.cn>
-References: <20250804081946.1456573-2-maobibo@loongson.cn>
+Subject:
+ [tip: irq/core] genirq/devres: Add error handling in devm_request_*_irq()
+Cc: Yangtao Li <frank.li@vivo.com>, Pan Chuang <panchuang@vivo.com>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20250805092922.135500-2-panchuang@vivo.com>
+References: <20250805092922.135500-2-panchuang@vivo.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175603291811.1420.17542644389668984685.tip-bot2@tip-bot2>
+Message-ID: <175603357604.1420.7104360767892405362.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,107 +80,205 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/drivers branch of tip:
+The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     7fb83eb664e9b3a0438dd28859e9f0fd49d4c165
-Gitweb:        https://git.kernel.org/tip/7fb83eb664e9b3a0438dd28859e9f0fd49d=
-4c165
-Author:        Bibo Mao <maobibo@loongson.cn>
-AuthorDate:    Mon, 04 Aug 2025 16:19:45 +08:00
+Commit-ID:     55b48e23f5c4b6f5ca9b7ab09599b17dcf501c10
+Gitweb:        https://git.kernel.org/tip/55b48e23f5c4b6f5ca9b7ab09599b17dcf5=
+01c10
+Author:        Pan Chuang <panchuang@vivo.com>
+AuthorDate:    Tue, 05 Aug 2025 17:29:22 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 24 Aug 2025 12:51:04 +02:00
+CommitterDate: Sun, 24 Aug 2025 13:00:45 +02:00
 
-irqchip/loongson-eiointc: Route interrupt parsed from bios table
+genirq/devres: Add error handling in devm_request_*_irq()
 
-Interrupt controller eiointc routes interrupts to CPU interface IP0 - IP7.
+devm_request_threaded_irq() and devm_request_any_context_irq() currently
+don't print any error message when interrupt registration fails.
 
-It is currently hard-coded that eiointc routes interrupts to the CPU
-starting from IP1, but it should base that decision on the parent
-interrupt, which is provided by ACPI or DTS.
+This forces each driver to implement redundant error logging - over 2,000
+lines of error messages exist across drivers. Additionally, when
+upper-layer functions propagate these errors without logging, critical
+debugging information is lost.
 
-Retrieve the parent's hardware interrupt number and store it in the
-descriptor of the eointc instance, so that the routing function can utilize
-it for the correct route settings.
+Add devm_request_result() helper to unify error reporting via dev_err_probe(),
 
-[ tglx: Massaged change log ]
+Use it in devm_request_threaded_irq() and devm_request_any_context_irq()
+printing device name, IRQ number, handler functions, and error code on failure
+automatically.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Co-developed-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Pan Chuang <panchuang@vivo.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250804081946.1456573-2-maobibo@loongson.cn
+Link: https://lore.kernel.org/all/20250805092922.135500-2-panchuang@vivo.com
 
 ---
- drivers/irqchip/irq-loongson-eiointc.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ kernel/irq/devres.c | 127 +++++++++++++++++++++++++++++--------------
+ 1 file changed, 87 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/irqchip/irq-loongson-eiointc.c b/drivers/irqchip/irq-loo=
-ngson-eiointc.c
-index b2860eb..baa4069 100644
---- a/drivers/irqchip/irq-loongson-eiointc.c
-+++ b/drivers/irqchip/irq-loongson-eiointc.c
-@@ -68,6 +68,7 @@ struct eiointc_priv {
- 	struct fwnode_handle	*domain_handle;
- 	struct irq_domain	*eiointc_domain;
- 	int			flags;
-+	irq_hw_number_t		parent_hwirq;
- };
+diff --git a/kernel/irq/devres.c b/kernel/irq/devres.c
+index eb16a58..b411886 100644
+--- a/kernel/irq/devres.c
++++ b/kernel/irq/devres.c
+@@ -30,29 +30,22 @@ static int devm_irq_match(struct device *dev, void *res, =
+void *data)
+ 	return this->irq =3D=3D match->irq && this->dev_id =3D=3D match->dev_id;
+ }
 =20
- static struct eiointc_priv *eiointc_priv[MAX_IO_PICS];
-@@ -211,7 +212,12 @@ static int eiointc_router_init(unsigned int cpu)
- 		}
-=20
- 		for (i =3D 0; i < eiointc_priv[0]->vec_count / 32 / 4; i++) {
--			bit =3D BIT(1 + index); /* Route to IP[1 + index] */
-+			/*
-+			 * Route to interrupt pin, relative offset used here
-+			 * Offset 0 means routing to IP0 and so on
-+			 * Every 32 vector routing to one interrupt pin
-+			 */
-+			bit =3D BIT(eiointc_priv[index]->parent_hwirq - INT_HWI0);
- 			data =3D bit | (bit << 8) | (bit << 16) | (bit << 24);
- 			iocsr_write32(data, EIOINTC_REG_IPMAP + i * 4);
- 		}
-@@ -495,7 +501,7 @@ int __init eiointc_acpi_init(struct irq_domain *parent,
-=20
- 	priv->vec_count =3D VEC_COUNT;
- 	priv->node =3D acpi_eiointc->node;
--
-+	priv->parent_hwirq =3D acpi_eiointc->cascade;
- 	parent_irq =3D irq_create_mapping(parent, acpi_eiointc->cascade);
-=20
- 	ret =3D eiointc_init(priv, parent_irq, acpi_eiointc->node_map);
-@@ -527,8 +533,9 @@ out_free_priv:
- static int __init eiointc_of_init(struct device_node *of_node,
- 				  struct device_node *parent)
- {
--	int parent_irq, ret;
- 	struct eiointc_priv *priv;
-+	struct irq_data *irq_data;
-+	int parent_irq, ret;
-=20
- 	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
-@@ -544,6 +551,12 @@ static int __init eiointc_of_init(struct device_node *of=
-_node,
- 	if (ret < 0)
- 		goto out_free_priv;
-=20
-+	irq_data =3D irq_get_irq_data(parent_irq);
-+	if (!irq_data) {
-+		ret =3D -ENODEV;
-+		goto out_free_priv;
-+	}
+-/**
+- *	devm_request_threaded_irq - allocate an interrupt line for a managed devi=
+ce
+- *	@dev: device to request interrupt for
+- *	@irq: Interrupt line to allocate
+- *	@handler: Function to be called when the IRQ occurs
+- *	@thread_fn: function to be called in a threaded interrupt context. NULL
+- *		    for devices which handle everything in @handler
+- *	@irqflags: Interrupt type flags
+- *	@devname: An ascii name for the claiming device, dev_name(dev) if NULL
+- *	@dev_id: A cookie passed back to the handler function
+- *
+- *	Except for the extra @dev argument, this function takes the
+- *	same arguments and performs the same function as
+- *	request_threaded_irq().  IRQs requested with this function will be
+- *	automatically freed on driver detach.
+- *
+- *	If an IRQ allocated with this function needs to be freed
+- *	separately, devm_free_irq() must be used.
+- */
+-int devm_request_threaded_irq(struct device *dev, unsigned int irq,
+-			      irq_handler_t handler, irq_handler_t thread_fn,
+-			      unsigned long irqflags, const char *devname,
+-			      void *dev_id)
++static int devm_request_result(struct device *dev, int rc, unsigned int irq,
++			       irq_handler_t handler, irq_handler_t thread_fn,
++			       const char *devname)
++{
++	if (rc >=3D 0)
++		return rc;
 +
- 	/*
- 	 * In particular, the number of devices supported by the LS2K0500
- 	 * extended I/O interrupt vector is 128.
-@@ -552,7 +565,7 @@ static int __init eiointc_of_init(struct device_node *of_=
-node,
- 		priv->vec_count =3D 128;
- 	else
- 		priv->vec_count =3D VEC_COUNT;
--
-+	priv->parent_hwirq =3D irqd_to_hwirq(irq_data);
- 	priv->node =3D 0;
- 	priv->domain_handle =3D of_fwnode_handle(of_node);
++	return dev_err_probe(dev, rc, "request_irq(%u) %ps %ps %s\n",
++			     irq, handler, thread_fn, devname ? : "");
++}
++
++static int __devm_request_threaded_irq(struct device *dev, unsigned int irq,
++				       irq_handler_t handler,
++				       irq_handler_t thread_fn,
++				       unsigned long irqflags,
++				       const char *devname, void *dev_id)
+ {
+ 	struct irq_devres *dr;
+ 	int rc;
+@@ -78,28 +71,48 @@ int devm_request_threaded_irq(struct device *dev, unsigne=
+d int irq,
 =20
+ 	return 0;
+ }
+-EXPORT_SYMBOL(devm_request_threaded_irq);
+=20
+ /**
+- *	devm_request_any_context_irq - allocate an interrupt line for a managed d=
+evice
+- *	@dev: device to request interrupt for
+- *	@irq: Interrupt line to allocate
+- *	@handler: Function to be called when the IRQ occurs
+- *	@irqflags: Interrupt type flags
+- *	@devname: An ascii name for the claiming device, dev_name(dev) if NULL
+- *	@dev_id: A cookie passed back to the handler function
++ * devm_request_threaded_irq - allocate an interrupt line for a managed devi=
+ce with error logging
++ * @dev:	Device to request interrupt for
++ * @irq:	Interrupt line to allocate
++ * @handler:	Function to be called when the interrupt occurs
++ * @thread_fn:	Function to be called in a threaded interrupt context. NULL
++ *		for devices which handle everything in @handler
++ * @irqflags:	Interrupt type flags
++ * @devname:	An ascii name for the claiming device, dev_name(dev) if NULL
++ * @dev_id:	A cookie passed back to the handler function
+  *
+- *	Except for the extra @dev argument, this function takes the
+- *	same arguments and performs the same function as
+- *	request_any_context_irq().  IRQs requested with this function will be
+- *	automatically freed on driver detach.
++ * Except for the extra @dev argument, this function takes the same
++ * arguments and performs the same function as request_threaded_irq().
++ * Interrupts requested with this function will be automatically freed on
++ * driver detach.
++ *
++ * If an interrupt allocated with this function needs to be freed
++ * separately, devm_free_irq() must be used.
++ *
++ * When the request fails, an error message is printed with contextual
++ * information (device name, interrupt number, handler functions and
++ * error code). Don't add extra error messages at the call sites.
+  *
+- *	If an IRQ allocated with this function needs to be freed
+- *	separately, devm_free_irq() must be used.
++ * Return: 0 on success or a negative error number.
+  */
+-int devm_request_any_context_irq(struct device *dev, unsigned int irq,
+-			      irq_handler_t handler, unsigned long irqflags,
+-			      const char *devname, void *dev_id)
++int devm_request_threaded_irq(struct device *dev, unsigned int irq,
++			      irq_handler_t handler, irq_handler_t thread_fn,
++			      unsigned long irqflags, const char *devname,
++			      void *dev_id)
++{
++	int rc =3D __devm_request_threaded_irq(dev, irq, handler, thread_fn,
++					     irqflags, devname, dev_id);
++
++	return devm_request_result(dev, rc, irq, handler, thread_fn, devname);
++}
++EXPORT_SYMBOL(devm_request_threaded_irq);
++
++static int __devm_request_any_context_irq(struct device *dev, unsigned int i=
+rq,
++					  irq_handler_t handler,
++					  unsigned long irqflags,
++					  const char *devname, void *dev_id)
+ {
+ 	struct irq_devres *dr;
+ 	int rc;
+@@ -124,6 +137,40 @@ int devm_request_any_context_irq(struct device *dev, uns=
+igned int irq,
+=20
+ 	return rc;
+ }
++
++/**
++ * devm_request_any_context_irq - allocate an interrupt line for a managed d=
+evice with error logging
++ * @dev:	Device to request interrupt for
++ * @irq:	Interrupt line to allocate
++ * @handler:	Function to be called when the interrupt occurs
++ * @irqflags:	Interrupt type flags
++ * @devname:	An ascii name for the claiming device, dev_name(dev) if NULL
++ * @dev_id:	A cookie passed back to the handler function
++ *
++ * Except for the extra @dev argument, this function takes the same
++ * arguments and performs the same function as request_any_context_irq().
++ * Interrupts requested with this function will be automatically freed on
++ * driver detach.
++ *
++ * If an interrupt allocated with this function needs to be freed
++ * separately, devm_free_irq() must be used.
++ *
++ * When the request fails, an error message is printed with contextual
++ * information (device name, interrupt number, handler functions and
++ * error code). Don't add extra error messages at the call sites.
++ *
++ * Return: IRQC_IS_HARDIRQ or IRQC_IS_NESTED on success, or a negative error
++ * number.
++ */
++int devm_request_any_context_irq(struct device *dev, unsigned int irq,
++				 irq_handler_t handler, unsigned long irqflags,
++				 const char *devname, void *dev_id)
++{
++	int rc =3D __devm_request_any_context_irq(dev, irq, handler, irqflags,
++						devname, dev_id);
++
++	return devm_request_result(dev, rc, irq, handler, NULL, devname);
++}
+ EXPORT_SYMBOL(devm_request_any_context_irq);
+=20
+ /**
 
