@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6391-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6392-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96268B37FF3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 12:34:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48DEBB38120
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 13:34:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 963A01BA5455
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 10:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD03F4603E9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 11:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25C8223301;
-	Wed, 27 Aug 2025 10:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F5A283FD9;
+	Wed, 27 Aug 2025 11:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O9Qgak1A";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UMqebvip"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PFiz7UoO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N69GlANA"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD9472610;
-	Wed, 27 Aug 2025 10:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571EE21B9DA;
+	Wed, 27 Aug 2025 11:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756290866; cv=none; b=bh2R5phUsUm18FPa5AXTHGcQFWoTjYpz7TT58poMJF9gPf0W2TxPvH6/+hiLbhSeS6xv398hIViS7XAOu/iUIBnrNXU4jKJaQz/1R17SUKsp/6WZllBeTG6898RUTxIHMFS6laB/OHkOoAIsQT4MRdeJ2PrlvGQYCi7Ed3ijCPk=
+	t=1756294448; cv=none; b=qyGYBvfXdTMmArRxgBmnKBiglbTmsHu0uCotUMbQT1DRo8wfcau+2BkrIMXYKehBmzRBqiwOyVRJwXNDZLTqLq843dsSjUzd9/u9MwjZlt5s1IKrN9Vq23+AMjvCVYEu9M6NhOInKeqAjXqlsO3fWvNIbaAh91tPBRF+Ftdm0CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756290866; c=relaxed/simple;
-	bh=eCS5hfcdjbm9MfUiUc4bZbE/VT9m5NWcWjRKXD0X2sc=;
+	s=arc-20240116; t=1756294448; c=relaxed/simple;
+	bh=JTCLdwV6AhV3aIm6pEI5xgVSzzAB94MTjFT8CfFqxFM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=sXxmlQNTf9fZk/SViiI9Z1cNVtRF3wzt0foWjrW0FviwT6o9LLBsFWUTr0dpsEdgo1kez3GE5TQKGC1SCHe9cPN6bSY9RrqH1x6QigXNkb1clw0ikPQD6rvd+5myVfbeX2gZ6rXzMeaiN5qYEac7OWRBX22mamobHPWhbLRZqqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O9Qgak1A; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UMqebvip; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=u2ZyLPOkx2PGBEcL8sULpQwh5y9QEPDf+aG+egJcy7ej810s1QGzp8MhzjJN6GpZXmaapp3MPR0fSiZsLYuYO2v43W3y8c8rL1VfvnKcFfj6Hf5vLME8Fus0Q1XIkWJOoxqh4wkCaTkSQjjBc2clKio5Ky8qJUGsMNZgnj3xQ+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PFiz7UoO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N69GlANA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 27 Aug 2025 10:34:20 -0000
+Date: Wed, 27 Aug 2025 11:34:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756290862;
+	s=2020; t=1756294444;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QvnPT4kzFsPVxOt5kvlxt5NOPOn31/A8mkcFHiFNlVw=;
-	b=O9Qgak1AVROpVDbGWi4x2Y6Mqx3w+vqYspv1MNlFVjA5hXKInfUSJ7kxWrtVBJjX2HpIls
-	A4xMKbq439I3vfle6tTTvrbI/SMsFpGFTGD9NxZCeo4D7V4+O3Q2p5zt6fV8XC7WXEDQcI
-	5bLGJcQNeCXpDYxlbpkhWH+Jc0arxmxGSpOqUUVdVu5etwmjxfmBp1pTYkSWMcJ88+H4Hr
-	i2s2dIuO/d6XFotg2q6y7UqpuFFqjkPyE0S5ZH8xLFW+8fNNbdK2dl9sIIRDivhbxIK70g
-	pPk6ickzkCV3HCs4jLJtNFmvOJBqbl70WUUBrngrqMem8boAN0M6lReGz5nBpw==
+	bh=zD+OtJBmghzk1Zog9Mw2J6n21NPGJQ4Ayxs0I+UPf8o=;
+	b=PFiz7UoOyd8O00CU8sFFnkIVhsHbThqCG0/eVHzygeAJzofUsGDl2pxJq5qsSf2IXqMCMz
+	dlJWr2h3RtSt2C2tSPCHqNorS4klMN7RRRsaaX8EVq2cG6abKmXs/fa2dQuTxptOsGRmxD
+	MCAXKDqPD490iECXsNhlPq1vN1WWfhjI/HGmpddRkG2HzT4G5aO4YuvbjQO5uUNSFCRzz3
+	O0JSO59IqAcoiuSBmiKzwqU2PbLdlvw2OjIIGU6Gnp+p65PXeGQHJNk8Xm9zhoaX6qPagd
+	qm0LL0KsRYsNQo8AuW4fBFy04VMUQZgK7vqMYzKGhhZrGrpqOuBX7kghuQ5UyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756290862;
+	s=2020e; t=1756294444;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QvnPT4kzFsPVxOt5kvlxt5NOPOn31/A8mkcFHiFNlVw=;
-	b=UMqebvipgte7Z9VhwLX8/d9RR9qcat/37YtXGiAgeGRpLjRadx0JKlBXqH4OCUmJSIUVjy
-	4nwOSGsb58O7SWDA==
-From: "tip-bot2 for K Prateek Nayak" <tip-bot2@linutronix.de>
+	bh=zD+OtJBmghzk1Zog9Mw2J6n21NPGJQ4Ayxs0I+UPf8o=;
+	b=N69GlANAg5RJPqu3FC98TlHMvO/XUgl75vzICBsfzgEFQXP5dJPRXqVoHAiX5r/mWzGaJz
+	8s10+/pV/HnApcBw==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu/topology: Use initial APIC ID from
- XTOPOLOGY leaf on AMD/HYGON
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- K Prateek Nayak <kprateek.nayak@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- "Naveen N Rao (AMD)" <naveen@kernel.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250825075732.10694-2-kprateek.nayak@amd.com>
-References: <20250825075732.10694-2-kprateek.nayak@amd.com>
+Subject: [tip: locking/urgent] futex: Move futex_hash_free() back to __mmput()
+Cc: Jakub Kicinski <kuba@kernel.org>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250822141238.PfnkTjFb@linutronix.de>
+References: <20250822141238.PfnkTjFb@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175629086019.1920.18385757222899714519.tip-bot2@tip-bot2>
+Message-ID: <175629444293.1920.10534434095766806192.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,125 +80,108 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the locking/urgent branch of tip:
 
-Commit-ID:     c2415c407a2cde01290d52ce2a1f81b0616379a3
-Gitweb:        https://git.kernel.org/tip/c2415c407a2cde01290d52ce2a1f81b0616=
-379a3
-Author:        K Prateek Nayak <kprateek.nayak@amd.com>
-AuthorDate:    Mon, 25 Aug 2025 07:57:29=20
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 27 Aug 2025 11:31:11 +02:00
+Commit-ID:     1b708b38414d32838baa39c9dee59d40731ed202
+Gitweb:        https://git.kernel.org/tip/1b708b38414d32838baa39c9dee59d40731=
+ed202
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Fri, 22 Aug 2025 16:12:38 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 27 Aug 2025 13:31:07 +02:00
 
-x86/cpu/topology: Use initial APIC ID from XTOPOLOGY leaf on AMD/HYGON
+futex: Move futex_hash_free() back to __mmput()
 
-Prior to the topology parsing rewrite and the switchover to the new parsing
-logic for AMD processors in
+To avoid a memory leak via mm_alloc() + mmdrop() the futex cleanup code
+has been moved to __mmdrop(). This resulted in a warnings if the futex
+hash table has been allocated via vmalloc() the mmdrop() was invoked
+from atomic context.
+The free path must stay in __mmput() to ensure it is invoked from
+preemptible context.
 
-  c749ce393b8f ("x86/cpu: Use common topology code for AMD"),
+In order to avoid the memory leak, delay the allocation of
+mm_struct::mm->futex_ref to futex_hash_allocate(). This works because
+neither the per-CPU counter nor the private hash has been allocated and
+therefore
+- futex_private_hash() callers (such as exit_pi_state_list()) don't
+  acquire reference if there is no private hash yet. There is also no
+  reference put.
 
-the initial_apicid on these platforms was:
+- Regular callers (futex_hash()) fallback to global hash. No reference
+  counting here.
 
-- First initialized to the LocalApicId from CPUID leaf 0x1 EBX[31:24].
+The futex_ref member can be allocated in futex_hash_allocate() before
+the private hash itself is allocated. This happens either while the
+first thread is created or on request. In both cases the process has
+just a single thread so there can be either futex operation in progress
+or the request to create a private hash.
 
-- Then overwritten by the ExtendedLocalApicId in CPUID leaf 0xb
-  EDX[31:0] on processors that supported topoext.
+Move futex_hash_free() back to __mmput();
+Move the allocation of mm_struct::futex_ref to futex_hash_allocate().
 
-With the new parsing flow introduced in
-
-  f7fb3b2dd92c ("x86/cpu: Provide an AMD/HYGON specific topology parser"),
-
-parse_8000_001e() now unconditionally overwrites the initial_apicid already
-parsed during cpu_parse_topology_ext().
-
-Although this has not been a problem on baremetal platforms, on virtualized A=
-MD
-guests that feature more than 255 cores, QEMU zeros out the CPUID leaf
-0x8000001e on CPUs with CoreID > 255 to prevent collision of these IDs in
-EBX[7:0] which can only represent a maximum of 255 cores [1].
-
-This results in the following FW_BUG being logged when booting a guest
-with more than 255 cores:
-
-    [Firmware Bug]: CPU 512: APIC ID mismatch. CPUID: 0x0000 APIC: 0x0200
-
-AMD64 Architecture Programmer's Manual Volume 2: System Programming Pub.
-24593 Rev. 3.42 [2] Section 16.12 "x2APIC_ID" mentions the Extended
-Enumeration leaf 0xb (Fn0000_000B_EDX[31:0])(which was later superseded by the
-extended leaf 0x80000026) provides the full x2APIC ID under all circumstances
-unlike the one reported by CPUID leaf 0x8000001e EAX which depends on the mode
-in which APIC is configured.
-
-Rely on the APIC ID parsed during cpu_parse_topology_ext() from CPUID leaf
-0x80000026 or 0xb and only use the APIC ID from leaf 0x8000001e if
-cpu_parse_topology_ext() failed (has_topoext is false).
-
-On platforms that support the 0xb leaf (Zen2 or later, AMD guests on
-QEMU) or the extended leaf 0x80000026 (Zen4 or later), the
-initial_apicid is now set to the value parsed from EDX[31:0].
-
-On older AMD/Hygon platforms that do not support the 0xb leaf but support the
-TOPOEXT extension (families 0x15, 0x16, 0x17[Zen1], and Hygon), retain current
-behavior where the initial_apicid is set using the 0x8000001e leaf.
-
-Issue debugged by Naveen N Rao (AMD) <naveen@kernel.org> and Sairaj Kodilkar
-<sarunkod@amd.com>.
-
-  [ bp: Massage commit message. ]
-
-Fixes: c749ce393b8f ("x86/cpu: Use common topology code for AMD")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://github.com/qemu/qemu/commit/35ac5dfbcaa4b [1]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D206537 [2]
-Link: https://lore.kernel.org/20250825075732.10694-2-kprateek.nayak@amd.com
+Fixes:  e703b7e247503 ("futex: Move futex cleanup to __mmdrop()")
+Closes: https://lore.kernel.org/all/20250821102721.6deae493@kernel.org/
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250822141238.PfnkTjFb@linutronix.de
 ---
- arch/x86/kernel/cpu/topology_amd.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ kernel/fork.c       |  2 +-
+ kernel/futex/core.c | 15 +++++++++++----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/topology_amd.c b/arch/x86/kernel/cpu/topolog=
-y_amd.c
-index 843b165..827dd0d 100644
---- a/arch/x86/kernel/cpu/topology_amd.c
-+++ b/arch/x86/kernel/cpu/topology_amd.c
-@@ -81,20 +81,25 @@ static bool parse_8000_001e(struct topo_scan *tscan, bool=
- has_topoext)
+diff --git a/kernel/fork.c b/kernel/fork.c
+index af67385..c4ada32 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -689,7 +689,6 @@ void __mmdrop(struct mm_struct *mm)
+ 	mm_pasid_drop(mm);
+ 	mm_destroy_cid(mm);
+ 	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+-	futex_hash_free(mm);
 =20
- 	cpuid_leaf(0x8000001e, &leaf);
+ 	free_mm(mm);
+ }
+@@ -1138,6 +1137,7 @@ static inline void __mmput(struct mm_struct *mm)
+ 	if (mm->binfmt)
+ 		module_put(mm->binfmt->module);
+ 	lru_gen_del_mm(mm);
++	futex_hash_free(mm);
+ 	mmdrop(mm);
+ }
 =20
--	tscan->c->topo.initial_apicid =3D leaf.ext_apic_id;
--
- 	/*
--	 * If leaf 0xb is available, then the domain shifts are set
--	 * already and nothing to do here. Only valid for family >=3D 0x17.
-+	 * If leaf 0xb/0x26 is available, then the APIC ID and the domain
-+	 * shifts are set already.
- 	 */
--	if (!has_topoext && tscan->c->x86 >=3D 0x17) {
-+	if (!has_topoext) {
-+		tscan->c->topo.initial_apicid =3D leaf.ext_apic_id;
-+
- 		/*
--		 * Leaf 0x80000008 set the CORE domain shift already.
--		 * Update the SMT domain, but do not propagate it.
-+		 * Leaf 0x8000008 sets the CORE domain shift but not the
-+		 * SMT domain shift. On CPUs with family >=3D 0x17, there
-+		 * might be hyperthreads.
- 		 */
--		unsigned int nthreads =3D leaf.core_nthreads + 1;
-+		if (tscan->c->x86 >=3D 0x17) {
-+			/* Update the SMT domain, but do not propagate it. */
-+			unsigned int nthreads =3D leaf.core_nthreads + 1;
+diff --git a/kernel/futex/core.c b/kernel/futex/core.c
+index d9bb556..fb63c13 100644
+--- a/kernel/futex/core.c
++++ b/kernel/futex/core.c
+@@ -1724,10 +1724,6 @@ int futex_mm_init(struct mm_struct *mm)
+ 	/* futex-ref */
+ 	atomic_long_set(&mm->futex_atomic, 0);
+ 	mm->futex_batches =3D get_state_synchronize_rcu();
+-	mm->futex_ref =3D alloc_percpu(unsigned int);
+-	if (!mm->futex_ref)
+-		return -ENOMEM;
+-	this_cpu_inc(*mm->futex_ref); /* 0 -> 1 */
+ 	return 0;
+ }
 =20
--		topology_update_dom(tscan, TOPO_SMT_DOMAIN, get_count_order(nthreads), nth=
-reads);
-+			topology_update_dom(tscan, TOPO_SMT_DOMAIN,
-+					    get_count_order(nthreads), nthreads);
-+		}
+@@ -1801,6 +1797,17 @@ static int futex_hash_allocate(unsigned int hash_slots=
+, unsigned int flags)
+ 		}
  	}
 =20
- 	store_node(tscan, leaf.nnodes_per_socket + 1, leaf.node_id);
++	if (!mm->futex_ref) {
++		/*
++		 * This will always be allocated by the first thread and
++		 * therefore requires no locking.
++		 */
++		mm->futex_ref =3D alloc_percpu(unsigned int);
++		if (!mm->futex_ref)
++			return -ENOMEM;
++		this_cpu_inc(*mm->futex_ref); /* 0 -> 1 */
++	}
++
+ 	fph =3D kvzalloc(struct_size(fph, queues, hash_slots),
+ 		       GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
+ 	if (!fph)
 
