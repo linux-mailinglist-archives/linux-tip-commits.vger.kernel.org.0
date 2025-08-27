@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6379-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6381-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C4BB37AA8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 08:46:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B65BB37AAB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 08:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1D3363756
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 06:45:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CCDF1B62693
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 06:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5A8313E0A;
-	Wed, 27 Aug 2025 06:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2772F3148CF;
+	Wed, 27 Aug 2025 06:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2Hm4dtKH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9BuzbUAw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2Q6jAeyX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bvHBw3mO"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D181131353D;
-	Wed, 27 Aug 2025 06:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BD93148BB;
+	Wed, 27 Aug 2025 06:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756277129; cv=none; b=RivxoSODuLVPI7UM6l8yxZBbPsHtXY+bkRiF1eV6+js0qm1pVHrBcJZysXZWDzDRbv6fKAy6BCwYLXiE1el9oxrM4hlnGHtkiV8HIHzoVpfjpoVfr+XzxKI7/p3ue4aAC3uKAcCzhWGdpakBY4WF+m0uV5zilWOlepDfnNayg84=
+	t=1756277139; cv=none; b=uptoPMLkUmSGdrwoRMF/bBTS8v4DF4bB/2O1Z9UXNmpkd5R3bZnnHN0dTscUftTmg4ag8Gjjy3IzdWgIVdbpeVF8tD4CzYhuDyGeuZ4sdIxFq3fmG0fELs2ZQtSNhT5+1aroHIXgCPqy3ZskN5P59im6Upnkz6OBAy6jItVBoJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756277129; c=relaxed/simple;
-	bh=GWDIt5Yd1geTLSFXEC8aLwv7wIDg4c3CJlqjZMGs24M=;
+	s=arc-20240116; t=1756277139; c=relaxed/simple;
+	bh=pi5LxpwMX8Rx9f1KQgmR7jQ5qTqEbXRhwaUbf9f4v/A=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JxPqo+t4eQieGh8nlai+D6JK2Ijt1P07pslY5rHHPY5afKxQs12Up5xAqVWlPqdxIspmiex3DStFpCNrDboJKTRFOY2yFMnVfo7d5hETGOYaXutyHmDp9E7cYq6zOSy4ZUAs2XpG5oY6bPtpDrgdf+kQeyReBXqcSaFbzCqx6Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2Hm4dtKH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9BuzbUAw; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=eo9kPuKrNqgUu9UM2tSXSdDn+I7qDlIOuMrZHhgPlNnSVMK2gaN/LRWEMY+u0zVy7sIqaShPh6ojpY+GVD5tPinWey3g281oZHvOK9JjktECTHQNEHwiAhBqyOjlvxHsy1lfd0HycA0K/Nkxa/V1fdNfFvsJfY6x+o2TKR+X03w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2Q6jAeyX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bvHBw3mO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 27 Aug 2025 06:45:24 -0000
+Date: Wed, 27 Aug 2025 06:45:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756277126;
+	s=2020; t=1756277133;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K8Ukqyvd+OGeKePNxCH4M4TJFM6rCXhz+TBBoMGRuXU=;
-	b=2Hm4dtKHKbI3thjLOUCpzYZdUB7CjXQUHYMRk9LcklaEx4Cr8Pau+GRRcmruT9n1C9oJ7s
-	NBwSyHdhww9CUMRHbFNlCrksirA8QrLkXEVXM4TafzaqdgRpbbh6GQZC5aY4I3Rsf4eMI+
-	/CcW/PAzNyyINc1yfLqxHD6mpsfLmOGrTe3EhCK4cfJ1DZ65MqVfciaYqYOqWFeh8Ti9bh
-	HNpm5E9tyVmdCRtNN8Vzxrm5uGG8ySezwTHU0AUsiEnvo5TNhaVffTAQByE33GO8WCv/xs
-	GDdTpYo/0/za1XopmT4+BZ6jJQZ9frQZyjy2fB28Qo6s7d0Ox4GUE6+R6Sq1GA==
+	bh=x59VxfJDeU9E+F4dbvaWyjlhU3peDkbKsePZI5Mw2uM=;
+	b=2Q6jAeyXXTZwT5+FlSPvi6kVHQuDLes50kx8oydvpb7Rgn/7X7ntMtFCY+74oxlGiOmcDh
+	I7EOfIccQyw9vEweD/tJ6PR2IbPAbFPIHOUDgnfsguQ9RAbaThM9E4Uuaqurkzkf6tcZLc
+	EKSz9FDkSVWyN2QXeO1FBDQIbDD3UH51ogZwd+YC3ov4CtG15RC0cCgNZxfh6kN7yjThic
+	PG+2+5bexebksWgZbLVKTiEUyRJXyWxQsazNxTMOJMavgXZCmMcTYslWbN++sFHE5v6DOi
+	/DPMH6f6A7T1TWdHEZQB2UIDj2v+aQP9p/DEHXvJVq4s8teF7Ks7alW+DVrMVQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756277126;
+	s=2020e; t=1756277133;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K8Ukqyvd+OGeKePNxCH4M4TJFM6rCXhz+TBBoMGRuXU=;
-	b=9BuzbUAwWXRqXKgpkV+WJNXkep02jbe1qlVEZaoLfL62LPBl6+3THttzoM98FiupTpxzfw
-	A6dGGlK8URYZbEBQ==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+	bh=x59VxfJDeU9E+F4dbvaWyjlhU3peDkbKsePZI5Mw2uM=;
+	b=bvHBw3mOGneqWZiqMaE1FDrRLwvqlMQR+o2uEXpfp1CEKTBeEQuFKHt2YwzO1XoXvglip7
+	vr6Fk9w5scVU+/Cw==
+From: "tip-bot2 for Yicong Yang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf: Remove get_perf_callchain() init_nr argument
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Namhyung Kim <Namhyung@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250820180428.259565081@kernel.org>
-References: <20250820180428.259565081@kernel.org>
+Subject: [tip: sched/urgent] sched/deadline: Don't count nr_running for
+ dl_server proxy tasks
+Cc: Yicong Yang <yangyicong@hisilicon.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250627035420.37712-1-yangyicong@huawei.com>
+References: <20250627035420.37712-1-yangyicong@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175627712412.1920.4086929344484646307.tip-bot2@tip-bot2>
+Message-ID: <175627713060.1920.2801355896821571010.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,119 +80,73 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     e649bcda25b5ae1a30a182cc450f928a0b282c93
-Gitweb:        https://git.kernel.org/tip/e649bcda25b5ae1a30a182cc450f928a0b2=
-82c93
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Wed, 20 Aug 2025 14:03:39 -04:00
+Commit-ID:     52d15521eb75f9b521744db675bee61025d2fa52
+Gitweb:        https://git.kernel.org/tip/52d15521eb75f9b521744db675bee61025d=
+2fa52
+Author:        Yicong Yang <yangyicong@hisilicon.com>
+AuthorDate:    Fri, 27 Jun 2025 11:54:20 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 26 Aug 2025 09:51:12 +02:00
+CommitterDate: Tue, 26 Aug 2025 10:46:01 +02:00
 
-perf: Remove get_perf_callchain() init_nr argument
+sched/deadline: Don't count nr_running for dl_server proxy tasks
 
-The 'init_nr' argument has double duty: it's used to initialize both the
-number of contexts and the number of stack entries.  That's confusing
-and the callers always pass zero anyway.  Hard code the zero.
+On CPU offline the kernel stalled with below call trace:
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+  INFO: task kworker/0:1:11 blocked for more than 120 seconds.
+
+cpuhp hold the cpu hotplug lock endless and stalled vmstat_shepherd.
+This is because we count nr_running twice on cpuhp enqueuing and failed
+the wait condition of cpuhp:
+
+  enqueue_task_fair() // pick cpuhp from idle, rq->nr_running =3D 0
+    dl_server_start()
+      [...]
+      add_nr_running() // rq->nr_running =3D 1
+    add_nr_running() // rq->nr_running =3D 2
+  [switch to cpuhp, waiting on balance_hotplug_wait()]
+  rcuwait_wait_event(rq->nr_running =3D=3D 1 && ...) // failed, rq->nr_runnin=
+g=3D2
+    schedule() // wait again
+
+It doesn't make sense to count the dl_server towards runnable tasks,
+since it runs other tasks.
+
+Fixes: 63ba8422f876 ("sched/deadline: Introduce deadline servers")
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Namhyung Kim <Namhyung@kernel.org>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/r/20250820180428.259565081@kernel.org
+Link: https://lore.kernel.org/r/20250627035420.37712-1-yangyicong@huawei.com
 ---
- include/linux/perf_event.h |  2 +-
- kernel/bpf/stackmap.c      |  4 ++--
- kernel/events/callchain.c  | 12 ++++++------
- kernel/events/core.c       |  2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ kernel/sched/deadline.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index bfbf9ea..fd1d910 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -1719,7 +1719,7 @@ DECLARE_PER_CPU(struct perf_callchain_entry, perf_callc=
-hain_entry);
- extern void perf_callchain_user(struct perf_callchain_entry_ctx *entry, stru=
-ct pt_regs *regs);
- extern void perf_callchain_kernel(struct perf_callchain_entry_ctx *entry, st=
-ruct pt_regs *regs);
- extern struct perf_callchain_entry *
--get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
-+get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
- 		   u32 max_stack, bool crosstask, bool add_mark);
- extern int get_callchain_buffers(int max_stack);
- extern void put_callchain_buffers(void);
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index 3615c06..ec3a57a 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -314,7 +314,7 @@ BPF_CALL_3(bpf_get_stackid, struct pt_regs *, regs, struc=
-t bpf_map *, map,
- 	if (max_depth > sysctl_perf_event_max_stack)
- 		max_depth =3D sysctl_perf_event_max_stack;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 88c3bd6..f253012 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1851,7 +1851,9 @@ void inc_dl_tasks(struct sched_dl_entity *dl_se, struct=
+ dl_rq *dl_rq)
+ 	u64 deadline =3D dl_se->deadline;
 =20
--	trace =3D get_perf_callchain(regs, 0, kernel, user, max_depth,
-+	trace =3D get_perf_callchain(regs, kernel, user, max_depth,
- 				   false, false);
+ 	dl_rq->dl_nr_running++;
+-	add_nr_running(rq_of_dl_rq(dl_rq), 1);
++
++	if (!dl_server(dl_se))
++		add_nr_running(rq_of_dl_rq(dl_rq), 1);
 =20
- 	if (unlikely(!trace))
-@@ -451,7 +451,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct =
-task_struct *task,
- 	else if (kernel && task)
- 		trace =3D get_callchain_entry_for_task(task, max_depth);
- 	else
--		trace =3D get_perf_callchain(regs, 0, kernel, user, max_depth,
-+		trace =3D get_perf_callchain(regs, kernel, user, max_depth,
- 					   crosstask, false);
-=20
- 	if (unlikely(!trace) || trace->nr < skip) {
-diff --git a/kernel/events/callchain.c b/kernel/events/callchain.c
-index 6c83ad6..b0f5bd2 100644
---- a/kernel/events/callchain.c
-+++ b/kernel/events/callchain.c
-@@ -217,7 +217,7 @@ static void fixup_uretprobe_trampoline_entries(struct per=
-f_callchain_entry *entr
+ 	inc_dl_deadline(dl_rq, deadline);
  }
-=20
- struct perf_callchain_entry *
--get_perf_callchain(struct pt_regs *regs, u32 init_nr, bool kernel, bool user,
-+get_perf_callchain(struct pt_regs *regs, bool kernel, bool user,
- 		   u32 max_stack, bool crosstask, bool add_mark)
+@@ -1861,7 +1863,9 @@ void dec_dl_tasks(struct sched_dl_entity *dl_se, struct=
+ dl_rq *dl_rq)
  {
- 	struct perf_callchain_entry *entry;
-@@ -228,11 +228,11 @@ get_perf_callchain(struct pt_regs *regs, u32 init_nr, b=
-ool kernel, bool user,
- 	if (!entry)
- 		return NULL;
+ 	WARN_ON(!dl_rq->dl_nr_running);
+ 	dl_rq->dl_nr_running--;
+-	sub_nr_running(rq_of_dl_rq(dl_rq), 1);
++
++	if (!dl_server(dl_se))
++		sub_nr_running(rq_of_dl_rq(dl_rq), 1);
 =20
--	ctx.entry     =3D entry;
--	ctx.max_stack =3D max_stack;
--	ctx.nr	      =3D entry->nr =3D init_nr;
--	ctx.contexts       =3D 0;
--	ctx.contexts_maxed =3D false;
-+	ctx.entry		=3D entry;
-+	ctx.max_stack		=3D max_stack;
-+	ctx.nr			=3D entry->nr =3D 0;
-+	ctx.contexts		=3D 0;
-+	ctx.contexts_maxed	=3D false;
-=20
- 	if (kernel && !user_mode(regs)) {
- 		if (add_mark)
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ea35704..bade8e0 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -8210,7 +8210,7 @@ perf_callchain(struct perf_event *event, struct pt_regs=
- *regs)
- 	if (!kernel && !user)
- 		return &__empty_callchain;
-=20
--	callchain =3D get_perf_callchain(regs, 0, kernel, user,
-+	callchain =3D get_perf_callchain(regs, kernel, user,
- 				       max_stack, crosstask, true);
- 	return callchain ?: &__empty_callchain;
+ 	dec_dl_deadline(dl_rq, dl_se->deadline);
  }
 
