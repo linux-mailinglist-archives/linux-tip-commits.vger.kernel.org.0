@@ -1,186 +1,120 @@
-Return-Path: <linux-tip-commits+bounces-6374-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6375-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32812B35053
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Aug 2025 02:38:16 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C500B37A9F
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 08:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F571A86AD9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 26 Aug 2025 00:38:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 787FC4E03E1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 27 Aug 2025 06:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DA9252904;
-	Tue, 26 Aug 2025 00:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553CF2701C2;
+	Wed, 27 Aug 2025 06:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uIbJhtSE"
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lb/pgR+a";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jB5my3d5"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5E820C00C
-	for <linux-tip-commits@vger.kernel.org>; Tue, 26 Aug 2025 00:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AA41E520C;
+	Wed, 27 Aug 2025 06:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756168692; cv=none; b=GFS2mMblF8TFPzk8QlPg0mQGQanpUDPHSnLAkpoL5cpi1LdKg5p07MJ7JPuXuSL2cROd20d4NQxowyHvjoYGBBGv9YMwZEOz1IDy0OnsWv+/IneduMSY+WN/R8uvyXU4SxWf9/AZY/GHiRy2hFdjcZMTLiRFqIr+qMdWxTXFR9k=
+	t=1756277123; cv=none; b=jEB4lEDNfyhpTQbzHZitD7qxeqLkTcvTuwOvBgt2N6uQ8zQ/451jr3+yisFMljD9qGOf/Ck0Bth5BAXz9HpdVwc+t6br2i6CORAhDVG1sJCZ3FpkiC8MsVtgEDX7/JysFMJDIQfHdxcD76pPReD+3hnTo0ulKOoqGToaa5N6ivc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756168692; c=relaxed/simple;
-	bh=F8O4uuGyc45cL0cysumSaSMgLtUGTGrex1L3O0+8uwY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e2RhZO2nfhh2il4XuCwQvR2TtTVBFs5TOjltFq83oCaUA29eNZw5gFg2NesgO9mCS7kdNVjH98jZk46pXrK9qB+KunjuvUnUk1WOEBKjH3MtF2ZL0RMtD/tlHL8rr0z2eH2avCKhsFEPsjEPtYRypUdfewPLuoiakQHPscpwr/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uIbJhtSE; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-244581ce13aso92001175ad.2
-        for <linux-tip-commits@vger.kernel.org>; Mon, 25 Aug 2025 17:38:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1756168690; x=1756773490; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Ja19CII3soTCgdFZTDoPMsFNvClcQAgJ1x0OG5AuLw=;
-        b=uIbJhtSEx7NnQe81F3u3dNOX3SSkDJWjh2sl214D4NREkcqzjuxeviGGzeSf8U2+DF
-         xfwOUS3Xd+y4/pJ4s2JAchgCKursNFtswR1/cb6+h0+FQRrc0EdFZerZd4T1ia3OdvTD
-         wSR8Vz5xjIYS1lkgaX3thp1Xr6r/gb/FSlXQkgQ2nY5m0DoEZHCKlg4Zh7lIq966XSG/
-         PtoMN3gHcJZjXqzvQgJiYmFfw/8YPBLewwBQE1bvzXj1nwEziV/2sbBHwKo3ws2rWctU
-         vcRvJYEnbJfUmrI388dNlj/DCEDiJquduJalFpkZjkWf+tVu8IkKzxwD6jubegNWtupp
-         BzgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756168690; x=1756773490;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Ja19CII3soTCgdFZTDoPMsFNvClcQAgJ1x0OG5AuLw=;
-        b=nVYJqMWQVb/lmNQWSTVJU5HbnE9ENVmPiuTSlmeKbCZQnCfuHoIPuliH3vieo1cw55
-         Za71IKfGhPkGWtIYSWlqGpiZIEYYYbrjPu9M+mddg2LXkA7tXdg5u/kSG0Z6Fj/gZP/E
-         /eu2pBOMlC9pql8XuUQ0WfzGH8oYE1TfddZVj2LOOIR01x+trLelENv2/zFqh2wCp9e1
-         19wnHe4Kswix3SRBrDI2oG8C1JG5eOvreGiEyLlx2NSlvOzTHtTdm/2vif8G0C2jHso0
-         kM7TqWR/DF/vCpOgwqkhBg0vRJbbvmC899OlhpnkaFp4GIZRD/IGjeOEtnpujQviB2rb
-         p7eQ==
-X-Gm-Message-State: AOJu0YyZ32EQ/MMxFjaH3i3jsKAav8iNLy/pvDyssApOOdgCJ4YP2qSR
-	+Q+j0xE0QtwA8OPDxoOR2TnwLo3xIQWXLic1PDqOfHcSDyCUSqjtfaSF0JmUJ3RlNazQ7kzKCZB
-	n8t3i7g==
-X-Google-Smtp-Source: AGHT+IETJeR6nD3PSgpec9/wZ7wI/Qckb2cpn8I3+Z9UM8W9OjG4XLxXewOAM+UsSAlFRp/8SbfP/K1pUa0=
-X-Received: from pjka22.prod.google.com ([2002:a17:90a:6d96:b0:325:3ada:baa0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:db0c:b0:240:6406:c471
- with SMTP id d9443c01a7336-2462ee0b897mr181336805ad.10.1756168689912; Mon, 25
- Aug 2025 17:38:09 -0700 (PDT)
-Date: Mon, 25 Aug 2025 17:38:08 -0700
-In-Reply-To: <aJ_vEP2EHj6l0xRT@google.com>
+	s=arc-20240116; t=1756277123; c=relaxed/simple;
+	bh=4n3vCaPQp28RW2Mt27NfChjc+Yb5lJV4y6AosBbYjCI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=sYO1uDpLv2JcsOzLVUt5b6G0NFNkvukOB+fGbHiMI/UhLJqGmNycHp6wO9dnfUxsx3YUB1mgyLgtN5uPy9XytuLTPsizQHpNPv6wxBpVJyZ+89IVChMG3G9Isas+W5n+kDDnK7YiCqW+zKb7/d4PjKhJuCiVTIZH878/MwNGnWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lb/pgR+a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jB5my3d5; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 27 Aug 2025 06:45:14 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1756277119;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=psdguZ1Ssn+7A0tSYTSIx/6mRmbLjMtDHpA1rG9guqM=;
+	b=Lb/pgR+a8sjew7VkX9clWGXNH6mD0TdyybQWEff05dc3fi2c7dwEwhwUTTMEQkVHkqC4Nz
+	ZkQWnbzXcYuTS2sKdNLdpdi/MsVjPlxSimweb24quE1Vw7sDAbRVlKIRMrqkLnL4isoufk
+	o4C31NYztneQ2NwAnaeZwhOt6CzGtAHdjKdIO+zzdlm04fetrBFc4JRDqo2AUo3ic61vML
+	ywSUvl1b8mYWEnoTpz777h4GgU6f4k9sayZ6kN7AWWRaw5KDrNy2qKdyW+HjDHMJGMPeRy
+	kP1jjqQkMXs1KGsLMkzEutDVRSTktwnFL4HOFStNdJN5frmKbigYyyCRsWXKNg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1756277119;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=psdguZ1Ssn+7A0tSYTSIx/6mRmbLjMtDHpA1rG9guqM=;
+	b=jB5my3d5BtZtXMEDtKoMdztPp1SQACxOiaKg/Xr3d5wIrxC1r3le7wzHcdHsaskSqmswvQ
+	AnGVDZ+BSfXCmdAQ==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: perf/core] perf: Skip user unwind if the task is a kernel thread
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+ "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250820180428.930791978@kernel.org>
+References: <20250820180428.930791978@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250710110011.384614-3-bigeasy@linutronix.de>
- <175225881640.406.2875698205071601878.tip-bot2@tip-bot2> <aJ_vEP2EHj6l0xRT@google.com>
-Message-ID: <aK0B8IYKIH1IHyDj@google.com>
-Subject: Re: [tip: locking/futex] futex: Use RCU-based per-CPU reference
- counting instead of rcuref_t
-From: Sean Christopherson <seanjc@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, x86@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Message-ID: <175627711485.1920.5265767868281233884.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 15, 2025, Sean Christopherson wrote:
-> On Fri, Jul 11, 2025, tip-bot2 for Peter Zijlstra wrote:
-> > The following commit has been merged into the locking/futex branch of tip:
-> > 
-> > Commit-ID:     56180dd20c19e5b0fa34822997a9ac66b517e7b3
-> > Gitweb:        https://git.kernel.org/tip/56180dd20c19e5b0fa34822997a9ac66b517e7b3
-> > Author:        Peter Zijlstra <peterz@infradead.org>
-> > AuthorDate:    Thu, 10 Jul 2025 13:00:07 +02:00
-> > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > CommitterDate: Fri, 11 Jul 2025 16:02:00 +02:00
-> > 
-> > futex: Use RCU-based per-CPU reference counting instead of rcuref_t
-> > 
-> > The use of rcuref_t for reference counting introduces a performance bottleneck
-> > when accessed concurrently by multiple threads during futex operations.
-> > 
-> > Replace rcuref_t with special crafted per-CPU reference counters. The
-> > lifetime logic remains the same.
-> > 
-> > The newly allocate private hash starts in FR_PERCPU state. In this state, each
-> > futex operation that requires the private hash uses a per-CPU counter (an
-> > unsigned int) for incrementing or decrementing the reference count.
-> > 
-> > When the private hash is about to be replaced, the per-CPU counters are
-> > migrated to a atomic_t counter mm_struct::futex_atomic.
-> > The migration process:
-> > - Waiting for one RCU grace period to ensure all users observe the
-> >   current private hash. This can be skipped if a grace period elapsed
-> >   since the private hash was assigned.
-> > 
-> > - futex_private_hash::state is set to FR_ATOMIC, forcing all users to
-> >   use mm_struct::futex_atomic for reference counting.
-> > 
-> > - After a RCU grace period, all users are guaranteed to be using the
-> >   atomic counter. The per-CPU counters can now be summed up and added to
-> >   the atomic_t counter. If the resulting count is zero, the hash can be
-> >   safely replaced. Otherwise, active users still hold a valid reference.
-> > 
-> > - Once the atomic reference count drops to zero, the next futex
-> >   operation will switch to the new private hash.
-> > 
-> > call_rcu_hurry() is used to speed up transition which otherwise might be
-> > delay with RCU_LAZY. There is nothing wrong with using call_rcu(). The
-> > side effects would be that on auto scaling the new hash is used later
-> > and the SET_SLOTS prctl() will block longer.
-> > 
-> > [bigeasy: commit description + mm get/ put_async]
-> > 
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Link: https://lore.kernel.org/r/20250710110011.384614-3-bigeasy@linutronix.de
-> > ---
-> 
-> This is causing explosions on my test systems, in code that doesn't obviously
-> have anything to do with futex.
+The following commit has been merged into the perf/core branch of tip:
 
-Closing the loop, this turned out to be a KVM bug[*].  Why the futex changes
-exposed the bug and caused explosions, I have no idea, but nothing suggests that
-this patch is buggy.
+Commit-ID:     16ed389227651330879e17bd83d43bd234006722
+Gitweb:        https://git.kernel.org/tip/16ed389227651330879e17bd83d43bd2340=
+06722
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 20 Aug 2025 14:03:43 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 26 Aug 2025 09:51:13 +02:00
 
-[*] https://lore.kernel.org/all/20250825160406.ZVcVPStz@linutronix.de
+perf: Skip user unwind if the task is a kernel thread
 
+If the task is not a user thread, there's no user stack to unwind.
 
-> The most common symptom is a #GP on this code in try_to_wake_up():
-> 
-> 		/* Link @node into the waitqueue. */
-> 		WRITE_ONCE(prev->next, node);
-> 
-> although on systems with 5-level paging I _think_ it just manifests as hard
-> hanges (I assume because prev->next is corrupted, but is still canonical with
-> LA57?  But that's a wild guess).
-> 
-> The failure always occurs when userspace writes /sys/module/kvm/parameters/nx_huge_pages,
-> but I don't think there's anything KVM specific about the issue.  Simply writing
-> the param doesn't explode, the problem only arises when I'm running tests in
-> parallel (but then failure is almost immediate), so presumably there's a task
-> migration angle or something?
-> 
-> Manually disabling CONFIG_FUTEX_PRIVATE_HASH makes the problem go away, and
-> running with CONFIG_FUTEX_PRIVATE_HASH=y prior to this rework is also fine.  So
-> it appears that the problem is specifically in the new code.
-> 
-> I can provide more info as needed next week.
-> 
-> Oops: general protection fault, probably for non-canonical address 0xff0e899fa1566052: 0000 [#1] SMP
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250820180428.930791978@kernel.org
+---
+ kernel/events/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-...
-
-> Call Trace:
->  <TASK>
->  _raw_spin_lock_irqsave+0x50/0x60
->  try_to_wake_up+0x4f/0x5d0
->  set_nx_huge_pages+0xe4/0x1c0 [kvm]
->  param_attr_store+0x89/0xf0
->  module_attr_store+0x1e/0x30
->  kernfs_fop_write_iter+0xe4/0x160
->  vfs_write+0x2cb/0x420
->  ksys_write+0x7f/0xf0
->  do_syscall_64+0x6f/0x1f0
->  ? arch_exit_to_user_mode_prepare+0x9/0x50
->  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index f880cec..28de3ba 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -8198,7 +8198,8 @@ struct perf_callchain_entry *
+ perf_callchain(struct perf_event *event, struct pt_regs *regs)
+ {
+ 	bool kernel =3D !event->attr.exclude_callchain_kernel;
+-	bool user   =3D !event->attr.exclude_callchain_user;
++	bool user   =3D !event->attr.exclude_callchain_user &&
++		!(current->flags & (PF_KTHREAD | PF_USER_WORKER));
+ 	/* Disallow cross-task user callchains. */
+ 	bool crosstask =3D event->ctx->task && event->ctx->task !=3D current;
+ 	const u32 max_stack =3D event->attr.sample_max_stack;
 
