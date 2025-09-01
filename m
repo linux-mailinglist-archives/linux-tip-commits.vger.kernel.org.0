@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-6394-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6395-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8038DB3D2CF
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Aug 2025 14:24:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24806B3E71A
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Sep 2025 16:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42A9B179BB4
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 31 Aug 2025 12:24:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CC9717DACE
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Sep 2025 14:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE561684B4;
-	Sun, 31 Aug 2025 12:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4308E34164E;
+	Mon,  1 Sep 2025 14:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KK/wfnK4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q/INEAt6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Uu8ef1LB";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nyLkk+oE"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 961B525785C;
-	Sun, 31 Aug 2025 12:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F262340D94;
+	Mon,  1 Sep 2025 14:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756643043; cv=none; b=f00M1Py/yMEg7DK2JPe9DB2vHDmLZ6RwHjtKxh1iw04nc172tOd3NvTxHgHH6R8SgzLAuY/YQlBDIBLCv5Cp6Y32jfhpHeQs8QUfhib1nSxU2l7t+7tRI0J8FlRJfFrKzr0kr5KO0c2hougyiG3i5IOj89163fkKGhUQfj9bjyw=
+	t=1756736895; cv=none; b=aFqKQ7VGQ8ayod87TEt1RjHiK7Gyxj+cnbfE3kj9TQEnTMIvWnySkTFRKGF4ixwIWkBxYISFJ6NBNEnRXFOw6cWVbgUTyTNA4amEtRXHtaxDbkDt/QTHSJtp9utnDfk2s7+k7f1wP6aTyKlUEfqsQB+twH+tNrGEjad3uXGw/bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756643043; c=relaxed/simple;
-	bh=TkwWDfkc2V4ryy0AWFtUjVoTAYL21FJ1M/VQVsrWIL4=;
+	s=arc-20240116; t=1756736895; c=relaxed/simple;
+	bh=xqMlFxYoV1s3mw2QAz/F5yAu/vAD9+0kVbNtBgynCF8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KDxCIW/QV9w3XXNSFep+yL95H0EjUx7rHSkSexl4qokmer0uh9t1uO+2gWpP08U+Wo78STGtRMFmDRZEEY2Tv8ColxpfS8oaavaXdbspY+FxvshIYUsVDhYoX1zJJYFNeBr93V6ExjhDHEJS1RsGJhhx6b7sXMINppJqWOQ+pt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KK/wfnK4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q/INEAt6; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=IzGeearC8An6PreJytp+uCRhWU4cu2HP98NjJgYT/8Z+X4jK1lhMN79EfuXA4JgGfgaTjqXu8l9EPPpKnukiUxUF994uauRVpcrxP2p7qjiRE8Bka3BDfH2k/23gYRiFyBlCqobvYIZbG+muB2GlPbJcKD05JZQNwguo3B2kmn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Uu8ef1LB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nyLkk+oE; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 31 Aug 2025 12:23:57 -0000
+Date: Mon, 01 Sep 2025 14:28:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756643039;
+	s=2020; t=1756736891;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RUx1wjLxLywXDHDPhrV5rYxI8zpC1+Ce2rYLWx0Q2c4=;
-	b=KK/wfnK4OkOt1WYMeYWs+QHT26koO8ljW8ppkGUav31V5UG80Yp+HkKSYN435YJMoedBO6
-	i5kFabIGj3ZPYHbLY2KEg34Zc/EJKOYK54bmOMCXR8kTTPQwEYAeLFJ+vZJW0SGocGEcBG
-	r20+PdM/naJR7G3p8SSAIc7J8wLuflb1cAu68nNmuYaBMGBoORj4hNFAgDtx9wMciILymE
-	wKC4zudX0ycQrf7/c+O7z5nlySOWqGDtrQQCRsAK1ScSgUXoh4ksOdEyD0JPrBoVsYLsiF
-	Hg5w7WfAye/LwqesC3aktOzUABsDDG3t87glVWgUjnGJzZiNgucLaDQFUismig==
+	bh=9QpWB6jPNwc2gpFpoc1NM9kYgcVr+ajJ+IvJUIpI1FE=;
+	b=Uu8ef1LB1GtHZ09/ZJlevvsiWAl4SveuGctzW6AF7j5NsncAjaAn6zYSbl23UEYV5LgIUL
+	c+2/UOUtTAgC5VkDBZY955N0DfYWFyReLP6i8fizfybdISSsUCh3YgtNreMDmJyu+apgLo
+	uMP2It9ZKGbymAFkMjQfLMicJ8SnY0FQBK5842EzGV8LuM6d4w20xOrBQ4/HPh2StZrlkA
+	hVELOuSw+r8rHzM9P08su/1AL7lqxeV35Jm6FxpxCR4lHaE3FMqWZKa51A+nQg2kAEOflt
+	9FVwt4TXo+jny8BRLwgsYMWlYyQMFtDayarmLOZhNUmy3cXHwD4+colBdbYdvw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756643039;
+	s=2020e; t=1756736891;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RUx1wjLxLywXDHDPhrV5rYxI8zpC1+Ce2rYLWx0Q2c4=;
-	b=Q/INEAt6U1eCifGM0jHVJV6rIsgBVssV5Oab3Uv5qlpqYF/w8wbGECP12MjQjo/e9rcKYM
-	BQ4quI/n3/FbUDAg==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+	bh=9QpWB6jPNwc2gpFpoc1NM9kYgcVr+ajJ+IvJUIpI1FE=;
+	b=nyLkk+oEb97i82bSicaPjT6QN7/YU+BLVxeZlTUApWllz8piteK9nq/v+Bo4gLhguTpQBQ
+	oXvHK4JxZm5I7TAQ==
+From: "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Move futex_hash_free() back to __mmput()
-Cc: Jakub Kicinski <kuba@kernel.org>,
+Subject: [tip: locking/futex] selftests/futex: Fix futex_wait() for 32bit ARM
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, andrealmeid@igalia.com,
+ Anders Roxell <anders.roxell@linaro.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250822141238.PfnkTjFb@linutronix.de>
-References: <20250822141238.PfnkTjFb@linutronix.de>
+In-Reply-To: <20250827130011.677600-6-bigeasy@linutronix.de>
+References: <20250827130011.677600-6-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175664303766.1920.13212322629796216488.tip-bot2@tip-bot2>
+Message-ID: <175673688994.1920.3268727903650888597.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,115 +81,83 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the locking/futex branch of tip:
 
-Commit-ID:     d9b05321e21e4b218de4ce8a590bf375f58b6346
-Gitweb:        https://git.kernel.org/tip/d9b05321e21e4b218de4ce8a590bf375f58=
-b6346
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Fri, 22 Aug 2025 16:12:38 +02:00
+Commit-ID:     237bfb76c90b184f57bb18fe35ff366c19393dc8
+Gitweb:        https://git.kernel.org/tip/237bfb76c90b184f57bb18fe35ff366c193=
+93dc8
+Author:        Dan Carpenter <dan.carpenter@linaro.org>
+AuthorDate:    Wed, 27 Aug 2025 15:00:11 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sun, 31 Aug 2025 11:48:19 +02:00
+CommitterDate: Mon, 01 Sep 2025 16:26:55 +02:00
 
-futex: Move futex_hash_free() back to __mmput()
+selftests/futex: Fix futex_wait() for 32bit ARM
 
-To avoid a memory leak via mm_alloc() + mmdrop() the futex cleanup code
-has been moved to __mmdrop(). This resulted in a warnings if the futex
-hash table has been allocated via vmalloc() the mmdrop() was invoked
-from atomic context.
-The free path must stay in __mmput() to ensure it is invoked from
-preemptible context.
+On 32bit ARM systems gcc-12 will use 32bit timestamps while gcc-13 and later
+will use 64bit timestamps.  The problem is that SYS_futex will continue
+pointing at the 32bit system call.  This makes the futex_wait test fail like
+this:
 
-In order to avoid the memory leak, delay the allocation of
-mm_struct::mm->futex_ref to futex_hash_allocate(). This works because
-neither the per-CPU counter nor the private hash has been allocated and
-therefore
-- futex_private_hash() callers (such as exit_pi_state_list()) don't
-  acquire reference if there is no private hash yet. There is also no
-  reference put.
+  waiter failed errno 110
+  not ok 1 futex_wake private returned: 0 Success
+  waiter failed errno 110
+  not ok 2 futex_wake shared (page anon) returned: 0 Success
+  waiter failed errno 110
+  not ok 3 futex_wake shared (file backed) returned: 0 Success
 
-- Regular callers (futex_hash()) fallback to global hash. No reference
-  counting here.
+Instead of compiling differently depending on the gcc version, use the
+-D_FILE_OFFSET_BITS=3D64 -D_TIME_BITS=3D64 options to ensure that 64bit times=
+tamps
+are used.  Then use ifdefs to make SYS_futex point to the 64bit system call.
 
-The futex_ref member can be allocated in futex_hash_allocate() before
-the private hash itself is allocated. This happens either while the
-first thread is created or on request. In both cases the process has
-just a single thread so there can be either futex operation in progress
-or the request to create a private hash.
-
-Move futex_hash_free() back to __mmput();
-Move the allocation of mm_struct::futex_ref to futex_hash_allocate().
-
-  [ bp: Fold a follow-up fix to prevent a use-after-free:
-    https://lore.kernel.org/r/20250830213806.sEKuuGSm@linutronix.de ]
-
-Fixes:  e703b7e247503 ("futex: Move futex cleanup to __mmdrop()")
-Closes: https://lore.kernel.org/all/20250821102721.6deae493@kernel.org/
-Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lkml.kernel.org/r/20250822141238.PfnkTjFb@linutronix.de
+Reviewed-by: Andr=C3=A9 Almeida <andrealmeid@igalia.com>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Link: https://lore.kernel.org/20250827130011.677600-6-bigeasy@linutronix.de
 ---
- kernel/fork.c       |  2 +-
- kernel/futex/core.c | 16 ++++++++++++----
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ tools/testing/selftests/futex/functional/Makefile |  2 +-
+ tools/testing/selftests/futex/include/futextest.h | 11 +++++++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index af67385..c4ada32 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -689,7 +689,6 @@ void __mmdrop(struct mm_struct *mm)
- 	mm_pasid_drop(mm);
- 	mm_destroy_cid(mm);
- 	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
--	futex_hash_free(mm);
+diff --git a/tools/testing/selftests/futex/functional/Makefile b/tools/testin=
+g/selftests/futex/functional/Makefile
+index 8cfb87f..ddfa61d 100644
+--- a/tools/testing/selftests/futex/functional/Makefile
++++ b/tools/testing/selftests/futex/functional/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ INCLUDES :=3D -I../include -I../../ $(KHDR_INCLUDES)
+-CFLAGS :=3D $(CFLAGS) -g -O2 -Wall -pthread $(INCLUDES) $(KHDR_INCLUDES)
++CFLAGS :=3D $(CFLAGS) -g -O2 -Wall -pthread -D_FILE_OFFSET_BITS=3D64 -D_TIME=
+_BITS=3D64 $(INCLUDES) $(KHDR_INCLUDES)
+ LDLIBS :=3D -lpthread -lrt -lnuma
 =20
- 	free_mm(mm);
- }
-@@ -1138,6 +1137,7 @@ static inline void __mmput(struct mm_struct *mm)
- 	if (mm->binfmt)
- 		module_put(mm->binfmt->module);
- 	lru_gen_del_mm(mm);
-+	futex_hash_free(mm);
- 	mmdrop(mm);
- }
+ LOCAL_HDRS :=3D \
+diff --git a/tools/testing/selftests/futex/include/futextest.h b/tools/testin=
+g/selftests/futex/include/futextest.h
+index 7a5fd1d..3d48e97 100644
+--- a/tools/testing/selftests/futex/include/futextest.h
++++ b/tools/testing/selftests/futex/include/futextest.h
+@@ -58,6 +58,17 @@ typedef volatile u_int32_t futex_t;
+ #define SYS_futex SYS_futex_time64
+ #endif
 =20
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index d9bb556..125804f 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -1722,12 +1722,9 @@ int futex_mm_init(struct mm_struct *mm)
- 	RCU_INIT_POINTER(mm->futex_phash, NULL);
- 	mm->futex_phash_new =3D NULL;
- 	/* futex-ref */
-+	mm->futex_ref =3D NULL;
- 	atomic_long_set(&mm->futex_atomic, 0);
- 	mm->futex_batches =3D get_state_synchronize_rcu();
--	mm->futex_ref =3D alloc_percpu(unsigned int);
--	if (!mm->futex_ref)
--		return -ENOMEM;
--	this_cpu_inc(*mm->futex_ref); /* 0 -> 1 */
- 	return 0;
- }
-=20
-@@ -1801,6 +1798,17 @@ static int futex_hash_allocate(unsigned int hash_slots=
-, unsigned int flags)
- 		}
- 	}
-=20
-+	if (!mm->futex_ref) {
-+		/*
-+		 * This will always be allocated by the first thread and
-+		 * therefore requires no locking.
-+		 */
-+		mm->futex_ref =3D alloc_percpu(unsigned int);
-+		if (!mm->futex_ref)
-+			return -ENOMEM;
-+		this_cpu_inc(*mm->futex_ref); /* 0 -> 1 */
-+	}
++/*
++ * On 32bit systems if we use "-D_FILE_OFFSET_BITS=3D64 -D_TIME_BITS=3D64" o=
+r if
++ * we are using a newer compiler then the size of the timestamps will be 64b=
+it,
++ * however, the SYS_futex will still point to the 32bit futex system call.
++ */
++#if __SIZEOF_POINTER__ =3D=3D 4 && defined(SYS_futex_time64) && \
++	defined(_TIME_BITS) && _TIME_BITS =3D=3D 64
++# undef SYS_futex
++# define SYS_futex SYS_futex_time64
++#endif
 +
- 	fph =3D kvzalloc(struct_size(fph, queues, hash_slots),
- 		       GFP_KERNEL_ACCOUNT | __GFP_NOWARN);
- 	if (!fph)
+ /**
+  * futex() - SYS_futex syscall wrapper
+  * @uaddr:	address of first futex
 
