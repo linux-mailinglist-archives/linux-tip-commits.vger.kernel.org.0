@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6415-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6416-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3420FB3FCC7
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Sep 2025 12:39:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A12B3FCCC
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Sep 2025 12:39:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19DF44E3BF6
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Sep 2025 10:38:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DC7F170D9B
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Sep 2025 10:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80EA2F9C3D;
-	Tue,  2 Sep 2025 10:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326162FB978;
+	Tue,  2 Sep 2025 10:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PUWT5dYH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lx0DlH9J"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zpfTV8Lt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fdQUhqTb"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092492F360F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D0E2FABF0;
 	Tue,  2 Sep 2025 10:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756809413; cv=none; b=ja1hRGiSwJo/sGzkIdEdKBN7wqlvoQ7yc69n3hCX65nAslNdPMaCEYiqM4fK60D5dp29H4IDwI6E0gfvvLsMYcaVz4XJcrcLtaDtwB/dUcs2ezGoPiEsROWF9C/J85+jDkfFC8eBc7kfaoyS3meDKuquH1Dq1glQWXxZoUBuf6c=
+	t=1756809415; cv=none; b=DN1SQd9/9Zsja1UI4NIig/Rt12XzElYwc/zbi06sNwHT9pw6K4LGxJ922oVdMsDomkND5DxcCBZNn3d2TGoEP+tI9ckTh2LgEcE3dGqxJqGMMYfLHmxLXtKKMEQU/hT9/AiEospHVzMsVA/vLUQMwYSbrjiT8Dsiev0YGN5FyCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756809413; c=relaxed/simple;
-	bh=XXHIvLEUkJ9F0asjedoAg2bEusjv8ODLv48e29iwp70=;
+	s=arc-20240116; t=1756809415; c=relaxed/simple;
+	bh=FDGBjFW3rWFtkWQMaiGlBYCsWBSqmwUI390lRUrRqJI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ie7MTMvWEVJ/lUy4HrTJ47AO6y4SLGGcaxyuvsZvG1oYoDfdOEl+DdhYaakYv3yNYQvmrESgHLahb7jDiVYjRq8m/QsuEZxjIzbr0uoGvWnshjLQcXa5lhyOTnJpxA6lHkZFX1uaNYT+SoZFXzSTmYs8pKR8VOgdfLaJpeKZQz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PUWT5dYH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lx0DlH9J; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=e/1ibndDV7AxPNEQhnykB7vE9mhk8wkCsOqLCfOKfUwARFhTYTHcysTeck09aiYhKK4Ja4NOYVK+ETsfzJ3J5SmD9gvCghPn7DCmTl3OzANXqxO7Qbqzds4VlwsMPAoKR3xCzkagspYcy1yb13xMm5i91edutctH5f/ummMMf1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zpfTV8Lt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fdQUhqTb; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 02 Sep 2025 10:36:48 -0000
+Date: Tue, 02 Sep 2025 10:36:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756809410;
+	s=2020; t=1756809411;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sKSURIpUKEGwpmTic3tWcu2zTATX2OK2vK1gizdC1nE=;
-	b=PUWT5dYH5jSljKL0vUFOXUsY5FcNKepvNm5Wknuv76y1u9dNE63rYnoT2q9TBW2hpWNvE0
-	B8oL8hKhDGPtPW2OzMSNqFFAG0OZc2nUbAFNGVd7rIMsBt0GWmESe+YkaC6aM9gF+WcD/m
-	gF0R+/7zMJLLnBcSeIeEokFfyRucBJf5maPJ/Kcjcaw8PSmH0TeDL1tlvUGI1TfXCwao+Y
-	S3PS4AIPtmFeDpzMFXbJm69prCkVQbkKN4pbZ0T3iVRwoABLk6D8Bm+FwJuktwzXXpr0Ab
-	KtgzcQpKrcZKi9JaWCiCCMfxZ1J143FnlHrD67x1IkUe3vFWdFyDnZZBH/lWQQ==
+	bh=cb+RHd2fIjxZBADhk651E+w5WH37KTsTNwqv96KmKd0=;
+	b=zpfTV8LtzYJb9YtvvbWitFQ72rUUvYU/zCdxth21IXsg4Xo0BtnxvMmiUM87p6jphBPI2t
+	/QHnz2S7O1+ZOU7SDnWuKe32yI+2aaYlSYWsJthfiv0m/B9hP3HWk0Pyv0wPRggM88KC7B
+	OpzUydUMF4akIjYqMDXSE8mgvDxgbPXYBdp4ClTci0lzkkg/jQ91ZWX+eGNDLYecF+bwHd
+	PP0d9/DB0UrZs0Lfsp/9uB7+vY//T6J+cpllsSODpWZrY/bNrg+GjoS6X8Rt8xnpMhSjG3
+	+0GJLIDvt5+USn7sTbVrwqlxIgsUt4PqV3ZsYIE1kOpC509oIdX9a9Sf/bAfzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756809410;
+	s=2020e; t=1756809411;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sKSURIpUKEGwpmTic3tWcu2zTATX2OK2vK1gizdC1nE=;
-	b=lx0DlH9JMyJzYUgImd0bgywCCiu3rJl2YUcFbClQ9NK6WYnyxiQTRrgESI1gqntU8s6g3X
-	zNNYfxRdjU03ncAw==
+	bh=cb+RHd2fIjxZBADhk651E+w5WH37KTsTNwqv96KmKd0=;
+	b=fdQUhqTbBr/ZzdDoGeeiGsziZj6bT3QGjaqsxuG/K4FLiNHZq3woTOZOXHG4+qzPQdtT6J
+	0ZQbIqOxG7rn1bAw==
 From: "tip-bot2 for Neeraj Upadhyay" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic: Populate .read()/.write() callbacks of
- Secure AVIC driver
+Subject: [tip: x86/apic] x86/apic: Initialize Secure AVIC APIC backing page
 Cc: Kishon Vijay Abraham I <kvijayab@amd.com>,
  Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
  "Borislav Petkov (AMD)" <bp@alien8.de>, Tianyu Lan <tiala@microsoft.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250828110255.208779-1-Neeraj.Upadhyay@amd.com>
-References: <20250828110255.208779-1-Neeraj.Upadhyay@amd.com>
+In-Reply-To: <20250828070334.208401-3-Neeraj.Upadhyay@amd.com>
+References: <20250828070334.208401-3-Neeraj.Upadhyay@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175680940884.1920.2159466177340458638.tip-bot2@tip-bot2>
+Message-ID: <175680941004.1920.5315092237227767830.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,34 +82,27 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/apic branch of tip:
 
-Commit-ID:     c822f58a4fab25944ba66768c1d6c563aa6ac077
-Gitweb:        https://git.kernel.org/tip/c822f58a4fab25944ba66768c1d6c563aa6=
-ac077
+Commit-ID:     b8c3c9f5d0505905e21c03731d1665c67053b47e
+Gitweb:        https://git.kernel.org/tip/b8c3c9f5d0505905e21c03731d1665c6705=
+3b47e
 Author:        Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-AuthorDate:    Thu, 28 Aug 2025 16:32:40 +05:30
+AuthorDate:    Thu, 28 Aug 2025 12:33:18 +05:30
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sun, 31 Aug 2025 22:07:35 +02:00
+CommitterDate: Sun, 31 Aug 2025 21:59:07 +02:00
 
-x86/apic: Populate .read()/.write() callbacks of Secure AVIC driver
+x86/apic: Initialize Secure AVIC APIC backing page
 
-Add read() and write() APIC callback functions to read and write the x2APIC
-registers directly from the guest APIC backing page of a vCPU.
+With Secure AVIC, the APIC backing page is owned and managed by the guest.
+Allocate and initialize APIC backing page for all guest CPUs.
 
-The x2APIC registers are mapped at an offset within the guest APIC backing
-page which is the same as their x2APIC MMIO offset. Secure AVIC adds new
-registers such as ALLOWED_IRRs (which are at 4-byte offset within the IRR
-register offset range) and NMI_REQ to the APIC register space.
+The NPT entry for a vCPU's APIC backing page must always be present when the
+vCPU is running in order for Secure AVIC to function. A VMEXIT_BUSY is
+returned on VMRUN and the vCPU cannot be resumed otherwise.
 
-When Secure AVIC is enabled, accessing the guest's APIC registers through
-RD/WRMSR results in a #VC exception (for non-accelerated register accesses)
-with error code VMEXIT_AVIC_NOACCEL.
-
-The #VC exception handler can read/write the x2APIC register in the guest APIC
-backing page to complete the RDMSR/WRMSR. Since doing this would increase the
-latency of accessing the x2APIC registers, instead of doing RDMSR/WRMSR based
-register accesses and handling reads/writes in the #VC exception, directly
-read/write the APIC registers from/to the guest APIC backing page of the vCPU
-in read() and write() callbacks of the Secure AVIC APIC driver.
+To handle this, notify GPA of the vCPU's APIC backing page to the hypervisor
+by using the SVM_VMGEXIT_SECURE_AVIC GHCB protocol event. Before executing
+VMRUN, the hypervisor makes use of this information to make sure the APIC
+backing page is mapped in the NPT.
 
   [ bp: Massage commit message. ]
 
@@ -119,173 +111,182 @@ Signed-off-by: Kishon Vijay Abraham I <kvijayab@amd.com>
 Signed-off-by: Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Tianyu Lan <tiala@microsoft.com>
-Link: https://lore.kernel.org/20250828110255.208779-1-Neeraj.Upadhyay@amd.com
+Link: https://lore.kernel.org/20250828070334.208401-3-Neeraj.Upadhyay@amd.com
 ---
- arch/x86/include/asm/apicdef.h      |   2 +-
- arch/x86/kernel/apic/x2apic_savic.c | 122 ++++++++++++++++++++++++++-
- 2 files changed, 122 insertions(+), 2 deletions(-)
+ arch/x86/coco/sev/core.c            | 22 ++++++++++++++++++-
+ arch/x86/include/asm/apic.h         |  1 +-
+ arch/x86/include/asm/sev.h          |  2 ++-
+ arch/x86/include/uapi/asm/svm.h     |  4 +++-
+ arch/x86/kernel/apic/apic.c         |  3 ++-
+ arch/x86/kernel/apic/x2apic_savic.c | 35 ++++++++++++++++++++++++++++-
+ 6 files changed, 67 insertions(+)
 
-diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
-index 094106b..be39a54 100644
---- a/arch/x86/include/asm/apicdef.h
-+++ b/arch/x86/include/asm/apicdef.h
-@@ -135,6 +135,8 @@
- #define		APIC_TDR_DIV_128	0xA
- #define	APIC_EFEAT	0x400
- #define	APIC_ECTRL	0x410
-+#define APIC_SEOI	0x420
-+#define APIC_IER	0x480
- #define APIC_EILVTn(n)	(0x500 + 0x10 * n)
- #define		APIC_EILVT_NR_AMD_K8	1	/* # of extended interrupts */
- #define		APIC_EILVT_NR_AMD_10H	4
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index f7a549f..7669aaf 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -1108,6 +1108,28 @@ int __init sev_es_efi_map_ghcbs_cas(pgd_t *pgd)
+ 	return 0;
+ }
+=20
++enum es_result savic_register_gpa(u64 gpa)
++{
++	struct ghcb_state state;
++	struct es_em_ctxt ctxt;
++	enum es_result res;
++	struct ghcb *ghcb;
++
++	guard(irqsave)();
++
++	ghcb =3D __sev_get_ghcb(&state);
++	vc_ghcb_invalidate(ghcb);
++
++	ghcb_set_rax(ghcb, SVM_VMGEXIT_SAVIC_SELF_GPA);
++	ghcb_set_rbx(ghcb, gpa);
++	res =3D sev_es_ghcb_hv_call(ghcb, &ctxt, SVM_VMGEXIT_SAVIC,
++				  SVM_VMGEXIT_SAVIC_REGISTER_GPA, 0);
++
++	__sev_put_ghcb(&state);
++
++	return res;
++}
++
+ static void snp_register_per_cpu_ghcb(void)
+ {
+ 	struct sev_es_runtime_data *data;
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 07ba493..44b4080 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -305,6 +305,7 @@ struct apic {
+=20
+ 	/* Probe, setup and smpboot functions */
+ 	int	(*probe)(void);
++	void	(*setup)(void);
+ 	int	(*acpi_madt_oem_check)(char *oem_id, char *oem_table_id);
+=20
+ 	void	(*init_apic_ldr)(void);
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 0223696..9036122 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -533,6 +533,7 @@ int snp_svsm_vtpm_send_command(u8 *buffer);
+=20
+ void __init snp_secure_tsc_prepare(void);
+ void __init snp_secure_tsc_init(void);
++enum es_result savic_register_gpa(u64 gpa);
+=20
+ static __always_inline void vc_ghcb_invalidate(struct ghcb *ghcb)
+ {
+@@ -605,6 +606,7 @@ static inline int snp_send_guest_request(struct snp_msg_d=
+esc *mdesc,
+ static inline int snp_svsm_vtpm_send_command(u8 *buffer) { return -ENODEV; }
+ static inline void __init snp_secure_tsc_prepare(void) { }
+ static inline void __init snp_secure_tsc_init(void) { }
++static inline enum es_result savic_register_gpa(u64 gpa) { return ES_UNSUPPO=
+RTED; }
+=20
+ #endif	/* CONFIG_AMD_MEM_ENCRYPT */
+=20
+diff --git a/arch/x86/include/uapi/asm/svm.h b/arch/x86/include/uapi/asm/svm.h
+index 9c640a5..650e325 100644
+--- a/arch/x86/include/uapi/asm/svm.h
++++ b/arch/x86/include/uapi/asm/svm.h
+@@ -118,6 +118,10 @@
+ #define SVM_VMGEXIT_AP_CREATE			1
+ #define SVM_VMGEXIT_AP_DESTROY			2
+ #define SVM_VMGEXIT_SNP_RUN_VMPL		0x80000018
++#define SVM_VMGEXIT_SAVIC			0x8000001a
++#define SVM_VMGEXIT_SAVIC_REGISTER_GPA		0
++#define SVM_VMGEXIT_SAVIC_UNREGISTER_GPA	1
++#define SVM_VMGEXIT_SAVIC_SELF_GPA		~0ULL
+ #define SVM_VMGEXIT_HV_FEATURES			0x8000fffd
+ #define SVM_VMGEXIT_TERM_REQUEST		0x8000fffe
+ #define SVM_VMGEXIT_TERM_REASON(reason_set, reason_code)	\
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index ff4029b..7874284 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1501,6 +1501,9 @@ static void setup_local_APIC(void)
+ 		return;
+ 	}
+=20
++	if (apic->setup)
++		apic->setup();
++
+ 	/*
+ 	 * If this comes from kexec/kcrash the APIC might be enabled in
+ 	 * SPIV. Soft disable it before doing further initialization.
 diff --git a/arch/x86/kernel/apic/x2apic_savic.c b/arch/x86/kernel/apic/x2api=
 c_savic.c
-index 948d894..5479605 100644
+index bea844f..948d894 100644
 --- a/arch/x86/kernel/apic/x2apic_savic.c
 +++ b/arch/x86/kernel/apic/x2apic_savic.c
-@@ -9,6 +9,7 @@
+@@ -8,17 +8,47 @@
+  */
 =20
  #include <linux/cc_platform.h>
- #include <linux/percpu-defs.h>
-+#include <linux/align.h>
++#include <linux/percpu-defs.h>
 =20
  #include <asm/apic.h>
  #include <asm/sev.h>
-@@ -26,6 +27,123 @@ static int savic_acpi_madt_oem_check(char *oem_id, char *=
-oem_table_id)
+=20
+ #include "local.h"
+=20
++struct secure_avic_page {
++	u8 regs[PAGE_SIZE];
++} __aligned(PAGE_SIZE);
++
++static struct secure_avic_page __percpu *savic_page __ro_after_init;
++
+ static int savic_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
+ {
  	return x2apic_enabled() && cc_platform_has(CC_ATTR_SNP_SECURE_AVIC);
  }
 =20
-+#define SAVIC_ALLOWED_IRR	0x204
-+
-+/*
-+ * When Secure AVIC is enabled, RDMSR/WRMSR of the APIC registers
-+ * result in #VC exception (for non-accelerated register accesses)
-+ * with VMEXIT_AVIC_NOACCEL error code. The #VC exception handler
-+ * can read/write the x2APIC register in the guest APIC backing page.
-+ *
-+ * Since doing this would increase the latency of accessing x2APIC
-+ * registers, instead of doing RDMSR/WRMSR based accesses and
-+ * handling the APIC register reads/writes in the #VC exception handler,
-+ * the read() and write() callbacks directly read/write the APIC register
-+ * from/to the vCPU's APIC backing page.
-+ */
-+static u32 savic_read(u32 reg)
++static void savic_setup(void)
 +{
 +	void *ap =3D this_cpu_ptr(savic_page);
++	enum es_result res;
++	unsigned long gpa;
 +
-+	switch (reg) {
-+	case APIC_LVTT:
-+	case APIC_TMICT:
-+	case APIC_TMCCT:
-+	case APIC_TDCR:
-+	case APIC_ID:
-+	case APIC_LVR:
-+	case APIC_TASKPRI:
-+	case APIC_ARBPRI:
-+	case APIC_PROCPRI:
-+	case APIC_LDR:
-+	case APIC_SPIV:
-+	case APIC_ESR:
-+	case APIC_LVTTHMR:
-+	case APIC_LVTPC:
-+	case APIC_LVT0:
-+	case APIC_LVT1:
-+	case APIC_LVTERR:
-+	case APIC_EFEAT:
-+	case APIC_ECTRL:
-+	case APIC_SEOI:
-+	case APIC_IER:
-+	case APIC_EILVTn(0) ... APIC_EILVTn(3):
-+		return apic_get_reg(ap, reg);
-+	case APIC_ICR:
-+		return (u32)apic_get_reg64(ap, reg);
-+	case APIC_ISR ... APIC_ISR + 0x70:
-+	case APIC_TMR ... APIC_TMR + 0x70:
-+		if (WARN_ONCE(!IS_ALIGNED(reg, 16),
-+			      "APIC register read offset 0x%x not aligned at 16 bytes", reg))
-+			return 0;
-+		return apic_get_reg(ap, reg);
-+	/* IRR and ALLOWED_IRR offset range */
-+	case APIC_IRR ... APIC_IRR + 0x74:
-+		/*
-+		 * Valid APIC_IRR/SAVIC_ALLOWED_IRR registers are at 16 bytes strides from
-+		 * their respective base offset. APIC_IRRs are in the range
-+		 *
-+		 * (0x200, 0x210,  ..., 0x270)
-+		 *
-+		 * while the SAVIC_ALLOWED_IRR range starts 4 bytes later, in the range
-+		 *
-+		 * (0x204, 0x214, ..., 0x274).
-+		 *
-+		 * Filter out everything else.
-+		 */
-+		if (WARN_ONCE(!(IS_ALIGNED(reg, 16) ||
-+				IS_ALIGNED(reg - 4, 16)),
-+			      "Misaligned APIC_IRR/ALLOWED_IRR APIC register read offset 0x%x", r=
-eg))
-+			return 0;
-+		return apic_get_reg(ap, reg);
-+	default:
-+		pr_err("Error reading unknown Secure AVIC reg offset 0x%x\n", reg);
-+		return 0;
-+	}
++	gpa =3D __pa(ap);
++
++	/*
++	 * The NPT entry for a vCPU's APIC backing page must always be
++	 * present when the vCPU is running in order for Secure AVIC to
++	 * function. A VMEXIT_BUSY is returned on VMRUN and the vCPU cannot
++	 * be resumed if the NPT entry for the APIC backing page is not
++	 * present. Notify GPA of the vCPU's APIC backing page to the
++	 * hypervisor by calling savic_register_gpa(). Before executing
++	 * VMRUN, the hypervisor makes use of this information to make sure
++	 * the APIC backing page is mapped in NPT.
++	 */
++	res =3D savic_register_gpa(gpa);
++	if (res !=3D ES_OK)
++		snp_abort();
 +}
 +
-+#define SAVIC_NMI_REQ		0x278
-+
-+static void savic_write(u32 reg, u32 data)
-+{
-+	void *ap =3D this_cpu_ptr(savic_page);
-+
-+	switch (reg) {
-+	case APIC_LVTT:
-+	case APIC_LVT0:
-+	case APIC_LVT1:
-+	case APIC_TMICT:
-+	case APIC_TDCR:
-+	case APIC_SELF_IPI:
-+	case APIC_TASKPRI:
-+	case APIC_EOI:
-+	case APIC_SPIV:
-+	case SAVIC_NMI_REQ:
-+	case APIC_ESR:
-+	case APIC_LVTTHMR:
-+	case APIC_LVTPC:
-+	case APIC_LVTERR:
-+	case APIC_ECTRL:
-+	case APIC_SEOI:
-+	case APIC_IER:
-+	case APIC_EILVTn(0) ... APIC_EILVTn(3):
-+		apic_set_reg(ap, reg, data);
-+		break;
-+	case APIC_ICR:
-+		apic_set_reg64(ap, reg, (u64)data);
-+		break;
-+	/* ALLOWED_IRR offsets are writable */
-+	case SAVIC_ALLOWED_IRR ... SAVIC_ALLOWED_IRR + 0x70:
-+		if (IS_ALIGNED(reg - 4, 16)) {
-+			apic_set_reg(ap, reg, data);
-+			break;
-+		}
-+		fallthrough;
-+	default:
-+		pr_err("Error writing unknown Secure AVIC reg offset 0x%x\n", reg);
-+	}
-+}
-+
- static void savic_setup(void)
+ static int savic_probe(void)
  {
- 	void *ap =3D this_cpu_ptr(savic_page);
-@@ -88,8 +206,8 @@ static struct apic apic_x2apic_savic __ro_after_init =3D {
+ 	if (!cc_platform_has(CC_ATTR_SNP_SECURE_AVIC))
+@@ -30,6 +60,10 @@ static int savic_probe(void)
+ 		/* unreachable */
+ 	}
 =20
- 	.nmi_to_offline_cpu		=3D true,
++	savic_page =3D alloc_percpu(struct secure_avic_page);
++	if (!savic_page)
++		snp_abort();
++
+ 	return 1;
+ }
 =20
--	.read				=3D native_apic_msr_read,
--	.write				=3D native_apic_msr_write,
-+	.read				=3D savic_read,
-+	.write				=3D savic_write,
- 	.eoi				=3D native_apic_msr_eoi,
- 	.icr_read			=3D native_x2apic_icr_read,
- 	.icr_write			=3D native_x2apic_icr_write,
+@@ -38,6 +72,7 @@ static struct apic apic_x2apic_savic __ro_after_init =3D {
+ 	.name				=3D "secure avic x2apic",
+ 	.probe				=3D savic_probe,
+ 	.acpi_madt_oem_check		=3D savic_acpi_madt_oem_check,
++	.setup				=3D savic_setup,
+=20
+ 	.dest_mode_logical		=3D false,
+=20
 
