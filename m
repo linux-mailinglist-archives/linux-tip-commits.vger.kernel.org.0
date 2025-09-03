@@ -1,73 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6427-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6426-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5C7B417DB
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 10:06:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53E9B417DD
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 10:06:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82C414E4AA1
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 08:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEC591A85B24
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 08:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D842EBB9D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E512EB5CE;
 	Wed,  3 Sep 2025 08:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LGxg0p97";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H0Alduuo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yYhhpIlf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5KjdlbL2"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDAF2EA468;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD3C2EA177;
 	Wed,  3 Sep 2025 08:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756886721; cv=none; b=e0QwAvPgNTy0RSGl83cwCEWuwqgKIV0uNSfJ3r0QsqR7fe59QU/E8itaGse717xJ9nHgliF8ZbX3Jcft/lXlTAV+JMRUmvV8VGXufO7G4g3ahfGsF/LNVZqzWHa0D5KTaYt9hir70FH5ocC+bfU1r5J2RqXOMfGEowSZAbb+atY=
+	t=1756886720; cv=none; b=Rku/uuzEwAS2k+aoXyk29tKJtSOUhj1Sxs+HpMYEubmysixj1c2GeUwconigwCtNKMmffMnlCXSLcMbu/F7+cGZeomKiKXbLISmKZg5vCNK65k9y0ik9ZU6pEHvBkYbg8gU0Uqj939fIxxvWFTNWnGAYOqkl+HRmOjU1lJ7r3n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756886721; c=relaxed/simple;
-	bh=WPpOnvivfX2k/PvAix92EWryXFSKamRwvRAcpQsReKQ=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=pfREJA/ZZeFvFSpt2+3253e+S81fRVFymRl82asW7W7aa+UcthkjhXMaBEZ8FNyL7QThkuPsb6+OGW5iPg8f1cjMlP1IHmcpmRwuelkvc4GQCvZfKbQNvd62qm6YtpL4V5YgrXxoq1SxIT24mT4mE1HRfF15VAwAjPUrr+MEDWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LGxg0p97; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H0Alduuo; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1756886720; c=relaxed/simple;
+	bh=vAKMzthvTmNzP83D+Oo4xnVUd1DxYI3MOi0i/ReSx+U=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=k08fkBy0nmiJe9viJygqIOyeB0G6iWJcztxHWX+MRM4ydIGUWAcZMJQI/kTfClSpOUDqVdOXmFwRCEVUVbS5+hmBoUAcfyGJJp/O3p7P3mY592/F8M6cDcl/qZaQZfDBmgzKcqrq1Rfn/4FUR4CxTxXigMoWTKICDMzhhIxyRhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yYhhpIlf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5KjdlbL2; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 03 Sep 2025 08:05:14 -0000
+Date: Wed, 03 Sep 2025 08:05:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756886715;
+	s=2020; t=1756886716;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=bjPlNPEM84ha1Y2tGTN1A6SojpH7FRL+KjUd6CKcC4k=;
-	b=LGxg0p97Q/JROfCOHHspq0OTf6wHLwID7GOm4CE7yQPtyQh73teVu72Q/nHl679RDAwj/h
-	UVclflC0BpI7jF/59diQHpDL3S0myoT8wnOUyYGQvheDuP8cTSjEAFu/Vzo+SOVqQfaB+o
-	MQHH8ohzmdWduzg5Es9eRunzFFugnBxRd1ILTanRkKW+VaDl7uEReMl8ypxSttxPJ+Zk5H
-	3SONxv565vtSevolKxfRj5O4NXkRRPe3bxYFIiHygOTX3ya/vDtDEvAyoAdPe4NwOY5/xU
-	CtYklm+2KWlf2tbSk3xmwK0mKHwgqSalq0UQ+SUDYQMS0Da+uiyCgm6sIIOdlA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9rdgIMEA4RB3bTpHF1svAS5TamVoQVCAqRA+g/XO6+8=;
+	b=yYhhpIlfadJAhHkOM9LsfNIAdAZki8fbXWzfeUqYRfuLPjzg/LK2NaEC3fA9LAi2k4HZe2
+	73nFOmdxHIrNRyKP6Ci84XACF8zHRO0DdbNIBXXeqABoYw40mPPaa7bVjlNsGPmMXITCHR
+	8E4g95/VkWu3Ilalqm8oHQPjxb2TBfL6unsZuMhw2mDFuYCiAMzyPxw+krELHmJbkmjTsx
+	CsD5N16uV2lTjk9pU0FYxmKXBB6bezC4vUesHADqQClpjbX/V7RmknoA+EtEW9LK6e20Ur
+	D6PdNMtg+mtEgmsjR2syQeD99ciEyjRt3QhPNUTJaD6pk1cuoPLR5lxzShq31g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756886715;
+	s=2020e; t=1756886716;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=bjPlNPEM84ha1Y2tGTN1A6SojpH7FRL+KjUd6CKcC4k=;
-	b=H0AlduuoD8YoVNIir1eljDBGLxH6Gm6kq6VppEa0vphi/N+Xgnn5Uz+1Ntm/QG6RSumcDy
-	w5LeTdk8NQ9Z2cAw==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9rdgIMEA4RB3bTpHF1svAS5TamVoQVCAqRA+g/XO6+8=;
+	b=5KjdlbL2nSbuoUUknNPcN/TTks05HIzqhVYYHIPCE+J1eVh0wVldYSkosAybDFc97uGJRq
+	14M5Gs5NhTbgGlAA==
+From: "tip-bot2 for Harshit Agarwal" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Get rid of sched_domains_curr_level
- hack for tl->cpumask()
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Leon Romanovsky <leon@kernel.org>, K Prateek Nayak <kprateek.nayak@amd.com>,
- Valentin Schneider <vschneid@redhat.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, x86@kernel.org,
+Subject: [tip: sched/core] sched/deadline: Fix race in push_dl_task()
+Cc: Harshit Agarwal <harshit@nutanix.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
+In-Reply-To: <20250408045021.3283624-1-harshit@nutanix.com>
+References: <20250408045021.3283624-1-harshit@nutanix.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175688671425.1920.13690753997160836570.tip-bot2@tip-bot2>
+Message-ID: <175688671542.1920.13477788815006763572.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,504 +82,146 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     661f951e371cc134ea31c84238dbdc9a898b8403
-Gitweb:        https://git.kernel.org/tip/661f951e371cc134ea31c84238dbdc9a898=
-b8403
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 25 Aug 2025 12:02:44=20
+Commit-ID:     8fd5485fb4f3d9da3977fd783fcb8e5452463420
+Gitweb:        https://git.kernel.org/tip/8fd5485fb4f3d9da3977fd783fcb8e54524=
+63420
+Author:        Harshit Agarwal <harshit@nutanix.com>
+AuthorDate:    Tue, 08 Apr 2025 04:50:21=20
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 03 Sep 2025 10:03:12 +02:00
 
-sched/fair: Get rid of sched_domains_curr_level hack for tl->cpumask()
+sched/deadline: Fix race in push_dl_task()
 
-Leon [1] and Vinicius [2] noted a topology_span_sane() warning during
-their testing starting from v6.16-rc1. Debug that followed pointed to
-the tl->mask() for the NODE domain being incorrectly resolved to that of
-the highest NUMA domain.
+When a CPU chooses to call push_dl_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_later_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
+Please go through the original rt change for more details on the issue.
 
-tl->mask() for NODE is set to the sd_numa_mask() which depends on the
-global "sched_domains_curr_level" hack. "sched_domains_curr_level" is
-set to the "tl->numa_level" during tl traversal in build_sched_domains()
-calling sd_init() but was not reset before topology_span_sane().
+To fix this, after the lock is obtained inside the find_lock_later_rq,
+it ensures that the task is still at the head of pushable tasks list.
+Also removed some checks that are no longer needed with the addition of
+this new check.
+However, the new check of pushable tasks list only applies when
+find_lock_later_rq is called by push_dl_task. For the other caller i.e.
+dl_task_offline_migration, existing checks are used.
 
-Since "tl->numa_level" still reflected the old value from
-build_sched_domains(), topology_span_sane() for the NODE domain trips
-when the span of the last NUMA domain overlaps.
-
-Instead of replicating the "sched_domains_curr_level" hack, get rid of
-it entirely and instead, pass the entire "sched_domain_topology_level"
-object to tl->cpumask() function to prevent such mishap in the future.
-
-sd_numa_mask() now directly references "tl->numa_level" instead of
-relying on the global "sched_domains_curr_level" hack to index into
-sched_domains_numa_masks[].
-
-The original warning was reproducible on the following NUMA topology
-reported by Leon:
-
-    $ sudo numactl -H
-    available: 5 nodes (0-4)
-    node 0 cpus: 0 1
-    node 0 size: 2927 MB
-    node 0 free: 1603 MB
-    node 1 cpus: 2 3
-    node 1 size: 3023 MB
-    node 1 free: 3008 MB
-    node 2 cpus: 4 5
-    node 2 size: 3023 MB
-    node 2 free: 3007 MB
-    node 3 cpus: 6 7
-    node 3 size: 3023 MB
-    node 3 free: 3002 MB
-    node 4 cpus: 8 9
-    node 4 size: 3022 MB
-    node 4 free: 2718 MB
-    node distances:
-    node   0   1   2   3   4
-      0:  10  39  38  37  36
-      1:  39  10  38  37  36
-      2:  38  38  10  37  36
-      3:  37  37  37  10  36
-      4:  36  36  36  36  10
-
-The above topology can be mimicked using the following QEMU cmd that was
-used to reproduce the warning and test the fix:
-
-     sudo qemu-system-x86_64 -enable-kvm -cpu host \
-     -m 20G -smp cpus=3D10,sockets=3D10 -machine q35 \
-     -object memory-backend-ram,size=3D4G,id=3Dm0 \
-     -object memory-backend-ram,size=3D4G,id=3Dm1 \
-     -object memory-backend-ram,size=3D4G,id=3Dm2 \
-     -object memory-backend-ram,size=3D4G,id=3Dm3 \
-     -object memory-backend-ram,size=3D4G,id=3Dm4 \
-     -numa node,cpus=3D0-1,memdev=3Dm0,nodeid=3D0 \
-     -numa node,cpus=3D2-3,memdev=3Dm1,nodeid=3D1 \
-     -numa node,cpus=3D4-5,memdev=3Dm2,nodeid=3D2 \
-     -numa node,cpus=3D6-7,memdev=3Dm3,nodeid=3D3 \
-     -numa node,cpus=3D8-9,memdev=3Dm4,nodeid=3D4 \
-     -numa dist,src=3D0,dst=3D1,val=3D39 \
-     -numa dist,src=3D0,dst=3D2,val=3D38 \
-     -numa dist,src=3D0,dst=3D3,val=3D37 \
-     -numa dist,src=3D0,dst=3D4,val=3D36 \
-     -numa dist,src=3D1,dst=3D0,val=3D39 \
-     -numa dist,src=3D1,dst=3D2,val=3D38 \
-     -numa dist,src=3D1,dst=3D3,val=3D37 \
-     -numa dist,src=3D1,dst=3D4,val=3D36 \
-     -numa dist,src=3D2,dst=3D0,val=3D38 \
-     -numa dist,src=3D2,dst=3D1,val=3D38 \
-     -numa dist,src=3D2,dst=3D3,val=3D37 \
-     -numa dist,src=3D2,dst=3D4,val=3D36 \
-     -numa dist,src=3D3,dst=3D0,val=3D37 \
-     -numa dist,src=3D3,dst=3D1,val=3D37 \
-     -numa dist,src=3D3,dst=3D2,val=3D37 \
-     -numa dist,src=3D3,dst=3D4,val=3D36 \
-     -numa dist,src=3D4,dst=3D0,val=3D36 \
-     -numa dist,src=3D4,dst=3D1,val=3D36 \
-     -numa dist,src=3D4,dst=3D2,val=3D36 \
-     -numa dist,src=3D4,dst=3D3,val=3D36 \
-     ...
-
-  [ prateek: Moved common functions to include/linux/sched/topology.h,
-    reuse the common bits for s390 and ppc, commit message ]
-
-Closes: https://lore.kernel.org/lkml/20250610110701.GA256154@unreal/ [1]
-Fixes: ccf74128d66c ("sched/topology: Assert non-NUMA topology masks don't (p=
-artially) overlap") # ce29a7da84cd, f55dac1dafb3
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reported-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Valentin Schneider <vschneid@redhat.com>
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Tested-by: Valentin Schneider <vschneid@redhat.com> # x86
-Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com> # powerpc
-Link: https://lore.kernel.org/lkml/a3de98387abad28592e6ab591f3ff6107fe01dc1.1=
-755893468.git.tim.c.chen@linux.intel.com/ [2]
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250408045021.3283624-1-harshit@nutanix.com
 ---
- arch/powerpc/Kconfig                |  4 ++++-
- arch/powerpc/include/asm/topology.h |  2 ++-
- arch/powerpc/kernel/smp.c           | 27 +++++++++++----------------
- arch/s390/kernel/topology.c         | 20 +++++++-------------
- arch/x86/kernel/smpboot.c           |  8 ++++----
- include/linux/sched/topology.h      | 28 +++++++++++++++++++++++++++-
- include/linux/topology.h            |  2 +-
- kernel/sched/topology.c             | 28 ++++++++++------------------
- 8 files changed, 66 insertions(+), 53 deletions(-)
+ kernel/sched/deadline.c | 73 ++++++++++++++++++++++++++--------------
+ 1 file changed, 49 insertions(+), 24 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 93402a1..e51a595 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -971,6 +971,10 @@ config SCHED_SMT
- 	  when dealing with POWER5 cpus at a cost of slightly increased
- 	  overhead in some places. If unsure say N here.
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index f253012..5b64bc6 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2580,6 +2580,25 @@ static int find_later_rq(struct task_struct *task)
+ 	return -1;
+ }
 =20
-+config SCHED_MC
-+	def_bool y
-+	depends on SMP
++static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
++{
++	struct task_struct *p;
 +
- config PPC_DENORMALISATION
- 	bool "PowerPC denormalisation exception handling"
- 	depends on PPC_BOOK3S_64
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/t=
-opology.h
-index da15b5e..f19ca44 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -131,6 +131,8 @@ static inline int cpu_to_coregroup_id(int cpu)
- #ifdef CONFIG_SMP
- #include <asm/cputable.h>
-=20
-+struct cpumask *cpu_coregroup_mask(int cpu);
++	if (!has_pushable_dl_tasks(rq))
++		return NULL;
 +
- #ifdef CONFIG_PPC64
- #include <asm/smp.h>
-=20
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index f59e4b9..68edb66 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1028,19 +1028,19 @@ static int powerpc_shared_proc_flags(void)
-  * We can't just pass cpu_l2_cache_mask() directly because
-  * returns a non-const pointer and the compiler barfs on that.
-  */
--static const struct cpumask *shared_cache_mask(int cpu)
-+static const struct cpumask *tl_cache_mask(struct sched_domain_topology_leve=
-l *tl, int cpu)
++	p =3D __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
++
++	WARN_ON_ONCE(rq->cpu !=3D task_cpu(p));
++	WARN_ON_ONCE(task_current(rq, p));
++	WARN_ON_ONCE(p->nr_cpus_allowed <=3D 1);
++
++	WARN_ON_ONCE(!task_on_rq_queued(p));
++	WARN_ON_ONCE(!dl_task(p));
++
++	return p;
++}
++
+ /* Locks the rq it finds */
+ static struct rq *find_lock_later_rq(struct task_struct *task, struct rq *rq)
  {
- 	return per_cpu(cpu_l2_cache_map, cpu);
+@@ -2607,12 +2626,37 @@ static struct rq *find_lock_later_rq(struct task_stru=
+ct *task, struct rq *rq)
+=20
+ 		/* Retry if something changed. */
+ 		if (double_lock_balance(rq, later_rq)) {
+-			if (unlikely(task_rq(task) !=3D rq ||
++			/*
++			 * double_lock_balance had to release rq->lock, in the
++			 * meantime, task may no longer be fit to be migrated.
++			 * Check the following to ensure that the task is
++			 * still suitable for migration:
++			 * 1. It is possible the task was scheduled,
++			 *    migrate_disabled was set and then got preempted,
++			 *    so we must check the task migration disable
++			 *    flag.
++			 * 2. The CPU picked is in the task's affinity.
++			 * 3. For throttled task (dl_task_offline_migration),
++			 *    check the following:
++			 *    - the task is not on the rq anymore (it was
++			 *      migrated)
++			 *    - the task is not on CPU anymore
++			 *    - the task is still a dl task
++			 *    - the task is not queued on the rq anymore
++			 * 4. For the non-throttled task (push_dl_task), the
++			 *    check to ensure that this task is still at the
++			 *    head of the pushable tasks list is enough.
++			 */
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(later_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !dl_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     (task->dl.dl_throttled &&
++				      (task_rq(task) !=3D rq ||
++				       task_on_cpu(rq, task) ||
++				       !dl_task(task) ||
++				       !task_on_rq_queued(task))) ||
++				     (!task->dl.dl_throttled &&
++				      task !=3D pick_next_pushable_dl_task(rq)))) {
++
+ 				double_unlock_balance(rq, later_rq);
+ 				later_rq =3D NULL;
+ 				break;
+@@ -2635,25 +2679,6 @@ static struct rq *find_lock_later_rq(struct task_struc=
+t *task, struct rq *rq)
+ 	return later_rq;
  }
 =20
- #ifdef CONFIG_SCHED_SMT
--static const struct cpumask *smallcore_smt_mask(int cpu)
-+static const struct cpumask *tl_smallcore_smt_mask(struct sched_domain_topol=
-ogy_level *tl, int cpu)
- {
- 	return cpu_smallcore_mask(cpu);
- }
- #endif
-=20
--static struct cpumask *cpu_coregroup_mask(int cpu)
-+struct cpumask *cpu_coregroup_mask(int cpu)
- {
- 	return per_cpu(cpu_coregroup_map, cpu);
- }
-@@ -1054,11 +1054,6 @@ static bool has_coregroup_support(void)
- 	return coregroup_enabled;
- }
-=20
--static const struct cpumask *cpu_mc_mask(int cpu)
+-static struct task_struct *pick_next_pushable_dl_task(struct rq *rq)
 -{
--	return cpu_coregroup_mask(cpu);
+-	struct task_struct *p;
+-
+-	if (!has_pushable_dl_tasks(rq))
+-		return NULL;
+-
+-	p =3D __node_2_pdl(rb_first_cached(&rq->dl.pushable_dl_tasks_root));
+-
+-	WARN_ON_ONCE(rq->cpu !=3D task_cpu(p));
+-	WARN_ON_ONCE(task_current(rq, p));
+-	WARN_ON_ONCE(p->nr_cpus_allowed <=3D 1);
+-
+-	WARN_ON_ONCE(!task_on_rq_queued(p));
+-	WARN_ON_ONCE(!dl_task(p));
+-
+-	return p;
 -}
 -
- static int __init init_big_cores(void)
- {
- 	int cpu;
-@@ -1448,7 +1443,7 @@ static bool update_mask_by_l2(int cpu, cpumask_var_t *m=
-ask)
- 		return false;
- 	}
-=20
--	cpumask_and(*mask, cpu_online_mask, cpu_cpu_mask(cpu));
-+	cpumask_and(*mask, cpu_online_mask, cpu_node_mask(cpu));
-=20
- 	/* Update l2-cache mask with all the CPUs that are part of submask */
- 	or_cpumasks_related(cpu, cpu, submask_fn, cpu_l2_cache_mask);
-@@ -1538,7 +1533,7 @@ static void update_coregroup_mask(int cpu, cpumask_var_=
-t *mask)
- 		return;
- 	}
-=20
--	cpumask_and(*mask, cpu_online_mask, cpu_cpu_mask(cpu));
-+	cpumask_and(*mask, cpu_online_mask, cpu_node_mask(cpu));
-=20
- 	/* Update coregroup mask with all the CPUs that are part of submask */
- 	or_cpumasks_related(cpu, cpu, submask_fn, cpu_coregroup_mask);
-@@ -1601,7 +1596,7 @@ static void add_cpu_to_masks(int cpu)
-=20
- 	/* If chip_id is -1; limit the cpu_core_mask to within PKG */
- 	if (chip_id =3D=3D -1)
--		cpumask_and(mask, mask, cpu_cpu_mask(cpu));
-+		cpumask_and(mask, mask, cpu_node_mask(cpu));
-=20
- 	for_each_cpu(i, mask) {
- 		if (chip_id =3D=3D cpu_to_chip_id(i)) {
-@@ -1701,22 +1696,22 @@ static void __init build_sched_topology(void)
- 	if (has_big_cores) {
- 		pr_info("Big cores detected but using small core scheduling\n");
- 		powerpc_topology[i++] =3D
--			SDTL_INIT(smallcore_smt_mask, powerpc_smt_flags, SMT);
-+			SDTL_INIT(tl_smallcore_smt_mask, powerpc_smt_flags, SMT);
- 	} else {
--		powerpc_topology[i++] =3D SDTL_INIT(cpu_smt_mask, powerpc_smt_flags, SMT);
-+		powerpc_topology[i++] =3D SDTL_INIT(tl_smt_mask, powerpc_smt_flags, SMT);
- 	}
- #endif
- 	if (shared_caches) {
- 		powerpc_topology[i++] =3D
--			SDTL_INIT(shared_cache_mask, powerpc_shared_cache_flags, CACHE);
-+			SDTL_INIT(tl_cache_mask, powerpc_shared_cache_flags, CACHE);
- 	}
-=20
- 	if (has_coregroup_support()) {
- 		powerpc_topology[i++] =3D
--			SDTL_INIT(cpu_mc_mask, powerpc_shared_proc_flags, MC);
-+			SDTL_INIT(tl_mc_mask, powerpc_shared_proc_flags, MC);
- 	}
-=20
--	powerpc_topology[i++] =3D SDTL_INIT(cpu_cpu_mask, powerpc_shared_proc_flags=
-, PKG);
-+	powerpc_topology[i++] =3D SDTL_INIT(tl_pkg_mask, powerpc_shared_proc_flags,=
- PKG);
-=20
- 	/* There must be one trailing NULL entry left.  */
- 	BUG_ON(i >=3D ARRAY_SIZE(powerpc_topology) - 1);
-diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
-index 46569b8..1594c80 100644
---- a/arch/s390/kernel/topology.c
-+++ b/arch/s390/kernel/topology.c
-@@ -509,33 +509,27 @@ int topology_cpu_init(struct cpu *cpu)
- 	return rc;
- }
-=20
--static const struct cpumask *cpu_thread_mask(int cpu)
--{
--	return &cpu_topology[cpu].thread_mask;
--}
--
--
- const struct cpumask *cpu_coregroup_mask(int cpu)
- {
- 	return &cpu_topology[cpu].core_mask;
- }
-=20
--static const struct cpumask *cpu_book_mask(int cpu)
-+static const struct cpumask *tl_book_mask(struct sched_domain_topology_level=
- *tl, int cpu)
- {
- 	return &cpu_topology[cpu].book_mask;
- }
-=20
--static const struct cpumask *cpu_drawer_mask(int cpu)
-+static const struct cpumask *tl_drawer_mask(struct sched_domain_topology_lev=
-el *tl, int cpu)
- {
- 	return &cpu_topology[cpu].drawer_mask;
- }
-=20
- static struct sched_domain_topology_level s390_topology[] =3D {
--	SDTL_INIT(cpu_thread_mask, cpu_smt_flags, SMT),
--	SDTL_INIT(cpu_coregroup_mask, cpu_core_flags, MC),
--	SDTL_INIT(cpu_book_mask, NULL, BOOK),
--	SDTL_INIT(cpu_drawer_mask, NULL, DRAWER),
--	SDTL_INIT(cpu_cpu_mask, NULL, PKG),
-+	SDTL_INIT(tl_smt_mask, cpu_smt_flags, SMT),
-+	SDTL_INIT(tl_mc_mask, cpu_core_flags, MC),
-+	SDTL_INIT(tl_book_mask, NULL, BOOK),
-+	SDTL_INIT(tl_drawer_mask, NULL, DRAWER),
-+	SDTL_INIT(tl_pkg_mask, NULL, PKG),
- 	{ NULL, },
- };
-=20
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 33e166f..eb289ab 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -479,14 +479,14 @@ static int x86_cluster_flags(void)
- static bool x86_has_numa_in_package;
-=20
- static struct sched_domain_topology_level x86_topology[] =3D {
--	SDTL_INIT(cpu_smt_mask, cpu_smt_flags, SMT),
-+	SDTL_INIT(tl_smt_mask, cpu_smt_flags, SMT),
- #ifdef CONFIG_SCHED_CLUSTER
--	SDTL_INIT(cpu_clustergroup_mask, x86_cluster_flags, CLS),
-+	SDTL_INIT(tl_cls_mask, x86_cluster_flags, CLS),
- #endif
- #ifdef CONFIG_SCHED_MC
--	SDTL_INIT(cpu_coregroup_mask, x86_core_flags, MC),
-+	SDTL_INIT(tl_mc_mask, x86_core_flags, MC),
- #endif
--	SDTL_INIT(cpu_cpu_mask, x86_sched_itmt_flags, PKG),
-+	SDTL_INIT(tl_pkg_mask, x86_sched_itmt_flags, PKG),
- 	{ NULL },
- };
-=20
-diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
-index 5263746..a3a24e1 100644
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -30,11 +30,19 @@ struct sd_flag_debug {
- };
- extern const struct sd_flag_debug sd_flag_debug[];
-=20
-+struct sched_domain_topology_level;
-+
- #ifdef CONFIG_SCHED_SMT
- static inline int cpu_smt_flags(void)
- {
- 	return SD_SHARE_CPUCAPACITY | SD_SHARE_LLC;
- }
-+
-+static inline const
-+struct cpumask *tl_smt_mask(struct sched_domain_topology_level *tl, int cpu)
-+{
-+	return cpu_smt_mask(cpu);
-+}
- #endif
-=20
- #ifdef CONFIG_SCHED_CLUSTER
-@@ -42,6 +50,12 @@ static inline int cpu_cluster_flags(void)
- {
- 	return SD_CLUSTER | SD_SHARE_LLC;
- }
-+
-+static inline const
-+struct cpumask *tl_cls_mask(struct sched_domain_topology_level *tl, int cpu)
-+{
-+	return cpu_clustergroup_mask(cpu);
-+}
- #endif
-=20
- #ifdef CONFIG_SCHED_MC
-@@ -49,8 +63,20 @@ static inline int cpu_core_flags(void)
- {
- 	return SD_SHARE_LLC;
- }
-+
-+static inline const
-+struct cpumask *tl_mc_mask(struct sched_domain_topology_level *tl, int cpu)
-+{
-+	return cpu_coregroup_mask(cpu);
-+}
- #endif
-=20
-+static inline const
-+struct cpumask *tl_pkg_mask(struct sched_domain_topology_level *tl, int cpu)
-+{
-+	return cpu_node_mask(cpu);
-+}
-+
- #ifdef CONFIG_NUMA
- static inline int cpu_numa_flags(void)
- {
-@@ -172,7 +198,7 @@ bool cpus_equal_capacity(int this_cpu, int that_cpu);
- bool cpus_share_cache(int this_cpu, int that_cpu);
- bool cpus_share_resources(int this_cpu, int that_cpu);
-=20
--typedef const struct cpumask *(*sched_domain_mask_f)(int cpu);
-+typedef const struct cpumask *(*sched_domain_mask_f)(struct sched_domain_top=
-ology_level *tl, int cpu);
- typedef int (*sched_domain_flags_f)(void);
-=20
- struct sd_data {
-diff --git a/include/linux/topology.h b/include/linux/topology.h
-index 33b7fda..6575af3 100644
---- a/include/linux/topology.h
-+++ b/include/linux/topology.h
-@@ -260,7 +260,7 @@ static inline bool topology_is_primary_thread(unsigned in=
-t cpu)
-=20
- #endif
-=20
--static inline const struct cpumask *cpu_cpu_mask(int cpu)
-+static inline const struct cpumask *cpu_node_mask(int cpu)
- {
- 	return cpumask_of_node(cpu_to_node(cpu));
- }
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 977e133..18889bd 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1591,7 +1591,6 @@ static void claim_allocations(int cpu, struct sched_dom=
-ain *sd)
- enum numa_topology_type sched_numa_topology_type;
-=20
- static int			sched_domains_numa_levels;
--static int			sched_domains_curr_level;
-=20
- int				sched_max_numa_distance;
- static int			*sched_domains_numa_distance;
-@@ -1632,14 +1631,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	int sd_id, sd_weight, sd_flags =3D 0;
- 	struct cpumask *sd_span;
-=20
--#ifdef CONFIG_NUMA
--	/*
--	 * Ugly hack to pass state to sd_numa_mask()...
--	 */
--	sched_domains_curr_level =3D tl->numa_level;
--#endif
--
--	sd_weight =3D cpumask_weight(tl->mask(cpu));
-+	sd_weight =3D cpumask_weight(tl->mask(tl, cpu));
-=20
- 	if (tl->sd_flags)
- 		sd_flags =3D (*tl->sd_flags)();
-@@ -1677,7 +1669,7 @@ sd_init(struct sched_domain_topology_level *tl,
- 	};
-=20
- 	sd_span =3D sched_domain_span(sd);
--	cpumask_and(sd_span, cpu_map, tl->mask(cpu));
-+	cpumask_and(sd_span, cpu_map, tl->mask(tl, cpu));
- 	sd_id =3D cpumask_first(sd_span);
-=20
- 	sd->flags |=3D asym_cpu_capacity_classify(sd_span, cpu_map);
-@@ -1737,17 +1729,17 @@ sd_init(struct sched_domain_topology_level *tl,
-  */
- static struct sched_domain_topology_level default_topology[] =3D {
- #ifdef CONFIG_SCHED_SMT
--	SDTL_INIT(cpu_smt_mask, cpu_smt_flags, SMT),
-+	SDTL_INIT(tl_smt_mask, cpu_smt_flags, SMT),
- #endif
-=20
- #ifdef CONFIG_SCHED_CLUSTER
--	SDTL_INIT(cpu_clustergroup_mask, cpu_cluster_flags, CLS),
-+	SDTL_INIT(tl_cls_mask, cpu_cluster_flags, CLS),
- #endif
-=20
- #ifdef CONFIG_SCHED_MC
--	SDTL_INIT(cpu_coregroup_mask, cpu_core_flags, MC),
-+	SDTL_INIT(tl_mc_mask, cpu_core_flags, MC),
- #endif
--	SDTL_INIT(cpu_cpu_mask, NULL, PKG),
-+	SDTL_INIT(tl_pkg_mask, NULL, PKG),
- 	{ NULL, },
- };
-=20
-@@ -1769,9 +1761,9 @@ void __init set_sched_topology(struct sched_domain_topo=
-logy_level *tl)
-=20
- #ifdef CONFIG_NUMA
-=20
--static const struct cpumask *sd_numa_mask(int cpu)
-+static const struct cpumask *sd_numa_mask(struct sched_domain_topology_level=
- *tl, int cpu)
- {
--	return sched_domains_numa_masks[sched_domains_curr_level][cpu_to_node(cpu)];
-+	return sched_domains_numa_masks[tl->numa_level][cpu_to_node(cpu)];
- }
-=20
- static void sched_numa_warn(const char *str)
-@@ -2411,7 +2403,7 @@ static bool topology_span_sane(const struct cpumask *cp=
-u_map)
- 		 * breaks the linking done for an earlier span.
- 		 */
- 		for_each_cpu(cpu, cpu_map) {
--			const struct cpumask *tl_cpu_mask =3D tl->mask(cpu);
-+			const struct cpumask *tl_cpu_mask =3D tl->mask(tl, cpu);
- 			int id;
-=20
- 			/* lowest bit set in this mask is used as a unique id */
-@@ -2419,7 +2411,7 @@ static bool topology_span_sane(const struct cpumask *cp=
-u_map)
-=20
- 			if (cpumask_test_cpu(id, id_seen)) {
- 				/* First CPU has already been seen, ensure identical spans */
--				if (!cpumask_equal(tl->mask(id), tl_cpu_mask))
-+				if (!cpumask_equal(tl->mask(tl, id), tl_cpu_mask))
- 					return false;
- 			} else {
- 				/* First CPU hasn't been seen before, ensure it's a completely new span =
-*/
+ /*
+  * See if the non running -deadline tasks on this rq
+  * can be sent to some other CPU where they can preempt
 
