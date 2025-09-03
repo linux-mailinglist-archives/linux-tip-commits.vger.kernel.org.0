@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6428-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6429-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11649B41827
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 10:16:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D20B41AE7
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 11:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 910703BDF24
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 08:16:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 518FD7A6494
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Sep 2025 09:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FC82DECC2;
-	Wed,  3 Sep 2025 08:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FF626B95B;
+	Wed,  3 Sep 2025 09:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GJT96RRo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vfh3UxXn"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wqrhYnMW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hM7Zv5F5"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D9D16FF37;
-	Wed,  3 Sep 2025 08:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D23F1B3935;
+	Wed,  3 Sep 2025 09:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756887372; cv=none; b=OJwFAbwRFrKX7hKVTvyKkrOSCAr3E144eHeoN6F/YKIzkthyWbxvT+dJ3gibxPUF40PCX4SXCuMVjeTHjXZTABDGn/BFBoUNbzXOKSUhpkce7h+Cyt7dSFaTq2o7J37U9/tTioM1gI3ilNLNfbfvx3usDdR19m9RyjfBTKHPKKo=
+	t=1756893540; cv=none; b=a6O2oWCGLYzKI4MKCxRJ5xkRTtffCULvNGxY1PBzFS/aQyJy04mO3ytMi+ZDRJoh7ieEcoi3eGMHTCwIv9/xTDpHAyNSKL1dsPlRe9NNaD43SILrfTlrK7WQjfGJa7nSPKIQa40ZbXh3XCTtrQMQLO+gAlokcVddlWqmGw5u2uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756887372; c=relaxed/simple;
-	bh=ZZW1QJ9cApbJYvCqSQ30eEBa2jpGyXAN9jGlT7L01wI=;
+	s=arc-20240116; t=1756893540; c=relaxed/simple;
+	bh=3UiHMYeM4GHtOQtohxHdrM63uaJ52zzDf0Ia/szXyvE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KzccnltRCy+rVFQ+p3OK91fP6wpBzg2g78gHPGNjFyDcdjBsFIhLhQ/mjUj15l1h+RJz8wJc59H+h/VsRhn1I9y7oW3lCm7RmrXTtwI3vKfbip4TAnK9LRMsoNyqsDKZ265L6Gbm3nVu/+LAEqnmro1sJdawR8u1pPgn7Rf5Kuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GJT96RRo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vfh3UxXn; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=iQ8GfBUAfW5sanO3Jkkvbv+YqHTDyQyGChlBCfCSx/CRamBcz9JDKQ62SkaiyKGsCzWia9ik+gdtpL/4mEi7evuO1bthITAwjZBQO2ISVE4q9sG0vRWSGvmxOCFpx1Cu541TNfYg/FRh9DiwXUwDRDKgHnaS5ITl4vMMsz36N0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wqrhYnMW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hM7Zv5F5; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 03 Sep 2025 08:16:08 -0000
+Date: Wed, 03 Sep 2025 09:58:53 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1756887369;
+	s=2020; t=1756893534;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sV7X87U4aeZhdE4WwSESmlaSklS7xixQO49yvBM4j4g=;
-	b=GJT96RRouZ3gqXG71Alu86uvPbhM121lomAZIG4y2KzIa122gSNJULOolbb7KZs2yGndg1
-	pY0VcqrLYUECUsmpJSXeek+P6uhjJ5ijGOKpuTL+SdEkIwZAISCM32DtrDiInqhVGeDE4D
-	0yAlMh5rBRDVKxIW63gpwPi4v4DOnVKXEfjUENjZ+OmSeI/BN1FeaXoHg80J5vKmjIA5lz
-	+nNlydA8odjAgXCF0eTEn1r6jjnKUe5z2BcskDHyKMb0yHgJ8qlw0FX3ByVyFhgCG7+W4o
-	a6J0Zcumzs1bxl7z3wjMBbFTff4HU7TUWta0C13j5avZ4fl0hmjZSNxyBpfulQ==
+	bh=YMY5Rw67Zd5ivqpebc2I+pt11+SaGI/36GCSjD2kg3s=;
+	b=wqrhYnMWSTn2UFyb8ex5iqCoh4YYel4wCa+EoVRgWD2S3Ar3fBbZAh1ko8+F7iB76dJcuQ
+	gt4zNJDWcioR7v6w7u3w0ulM1W0tZEgKQ4AQK/O4olljmnswEmuvGWxPsOcVhfTxhzV1Hs
+	RevF8PPONdKyGlkHeK/h0Xs6vpcT8H61qj9DxHqWSFyZlXy4NZi2vEMcSI7qg/DiY+SFyf
+	08/QGrqXrCYZkeDENwwJ8UIwh0iWeTL7ELR9zZioYRMxVAfeufvQOtM9yHSAxuB1y8z/ko
+	4WY8eENo6dq3clSGvsQLCCW55h+xZucTwC4CATUVpIcxpLp9EQjHLzDwX5SNdA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1756887369;
+	s=2020e; t=1756893534;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sV7X87U4aeZhdE4WwSESmlaSklS7xixQO49yvBM4j4g=;
-	b=vfh3UxXnHJBsf2YHCfT9B2mKOJ//88Wx4aOEs1RGDOq777+DchtcqDMox5dT23jGeqtcuf
-	4qD94wxHJWih+sAw==
-From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+	bh=YMY5Rw67Zd5ivqpebc2I+pt11+SaGI/36GCSjD2kg3s=;
+	b=hM7Zv5F5+KlCE5hu0ud4zVwbcvacr58qNTy1gvlyXkfcp3RiWIGJcdk+dFJfl6cpNop54Q
+	VMYbD4vkyIKi6NCQ==
+From: tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf: Fix the POLL_HUP delivery breakage
-Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>,
- Kan Liang <kan.liang@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: timers/urgent] vdso/vsyscall: Avoid slow division loop in
+ auxiliary clock update
+Cc: Miroslav Lichvar <mlichvar@redhat.com>, thomas.weissschuh@linutronix.de,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250811182644.1305952-1-kan.liang@linux.intel.com>
-References: <20250811182644.1305952-1-kan.liang@linux.intel.com>
+In-Reply-To: <20250825-vdso-auxclock-division-v1-1-a1d32a16a313@linutronix.de>
+References: <20250825-vdso-auxclock-division-v1-1-a1d32a16a313@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175688736802.1920.7630470115367445255.tip-bot2@tip-bot2>
+Message-ID: <175689353303.1920.4835241898909824126.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,54 +80,134 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the perf/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     18dbcbfabfffc4a5d3ea10290c5ad27f22b0d240
-Gitweb:        https://git.kernel.org/tip/18dbcbfabfffc4a5d3ea10290c5ad27f22b=
-0d240
-Author:        Kan Liang <kan.liang@linux.intel.com>
-AuthorDate:    Mon, 11 Aug 2025 11:26:44 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 03 Sep 2025 10:10:59 +02:00
+Commit-ID:     762af5a2aa0ad18da1316666dae30d369268d44c
+Gitweb:        https://git.kernel.org/tip/762af5a2aa0ad18da1316666dae30d36926=
+8d44c
+Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+AuthorDate:    Mon, 25 Aug 2025 15:26:35 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Wed, 03 Sep 2025 11:55:11 +02:00
 
-perf: Fix the POLL_HUP delivery breakage
+vdso/vsyscall: Avoid slow division loop in auxiliary clock update
 
-The event_limit can be set by the PERF_EVENT_IOC_REFRESH to limit the
-number of events. When the event_limit reaches 0, the POLL_HUP signal
-should be sent. But it's missed.
+The call to __iter_div_u64_rem() in vdso_time_update_aux() is a wrapper
+around subtraction. It cannot be used to divide large numbers, as that
+introduces long, computationally expensive delays.  A regular u64 division
+is also not possible in the timekeeper update path as it can be too slow.
 
-The corresponding counter should be stopped when the event_limit reaches
-0. It was implemented in the ARCH-specific code. However, since the
-commit 9734e25fbf5a ("perf: Fix the throttle logic for a group"), all
-the ARCH-specific code has been moved to the generic code. The code to
-handle the event_limit was lost.
+Instead of splitting the ktime_t offset into into second and subsecond
+components during the timekeeper update fast-path, do it together with the
+adjustment of tk->offs_aux in the slow-path. Equivalent to the handling of
+offs_boot and monotonic_to_boot.
 
-Add the event->pmu->stop(event, 0); back.
+Reuse the storage of monotonic_to_boot for the new field, as it is not used
+by auxiliary timekeepers.
 
-Fixes: 9734e25fbf5a ("perf: Fix the throttle logic for a group")
-Closes: https://lore.kernel.org/lkml/aICYAqM5EQUlTqtX@li-2b55cdcc-350b-11b2-a=
-85c-a78bff51fc11.ibm.com/
-Reported-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20250811182644.1305952-1-kan.liang@linux.inte=
-l.com
+Fixes: 380b84e168e5 ("vdso/vsyscall: Update auxiliary clock data in the datap=
+age")
+Reported-by: Miroslav Lichvar <mlichvar@redhat.com>
+Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250825-vdso-auxclock-division-v1-1-a1d32a=
+16a313@linutronix.de
+Closes: https://lore.kernel.org/lkml/aKwsNNWsHJg8IKzj@localhost/
 ---
- kernel/events/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/timekeeper_internal.h |  9 ++++++++-
+ kernel/time/timekeeping.c           | 10 ++++++++--
+ kernel/time/vsyscall.c              |  4 ++--
+ 3 files changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 872122e..8201275 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -10330,6 +10330,7 @@ static int __perf_event_overflow(struct perf_event *e=
-vent,
- 		ret =3D 1;
- 		event->pending_kill =3D POLL_HUP;
- 		perf_event_disable_inatomic(event);
-+		event->pmu->stop(event, 0);
+diff --git a/include/linux/timekeeper_internal.h b/include/linux/timekeeper_i=
+nternal.h
+index c27aac6..b8ae89e 100644
+--- a/include/linux/timekeeper_internal.h
++++ b/include/linux/timekeeper_internal.h
+@@ -76,6 +76,7 @@ struct tk_read_base {
+  * @cs_was_changed_seq:		The sequence number of clocksource change events
+  * @clock_valid:		Indicator for valid clock
+  * @monotonic_to_boot:		CLOCK_MONOTONIC to CLOCK_BOOTTIME offset
++ * @monotonic_to_aux:		CLOCK_MONOTONIC to CLOCK_AUX offset
+  * @cycle_interval:		Number of clock cycles in one NTP interval
+  * @xtime_interval:		Number of clock shifted nano seconds in one NTP
+  *				interval.
+@@ -117,6 +118,9 @@ struct tk_read_base {
+  * @offs_aux is used by the auxiliary timekeepers which do not utilize any
+  * of the regular timekeeper offset fields.
+  *
++ * @monotonic_to_aux is a timespec64 representation of @offs_aux to
++ * accelerate the VDSO update for CLOCK_AUX.
++ *
+  * The cacheline ordering of the structure is optimized for in kernel usage =
+of
+  * the ktime_get() and ktime_get_ts64() family of time accessors. Struct
+  * timekeeper is prepended in the core timekeeping code with a sequence coun=
+t,
+@@ -159,7 +163,10 @@ struct timekeeper {
+ 	u8			cs_was_changed_seq;
+ 	u8			clock_valid;
+=20
+-	struct timespec64	monotonic_to_boot;
++	union {
++		struct timespec64	monotonic_to_boot;
++		struct timespec64	monotonic_to_aux;
++	};
+=20
+ 	u64			cycle_interval;
+ 	u64			xtime_interval;
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 059fa8b..b6974fc 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -83,6 +83,12 @@ static inline bool tk_is_aux(const struct timekeeper *tk)
+ }
+ #endif
+=20
++static inline void tk_update_aux_offs(struct timekeeper *tk, ktime_t offs)
++{
++	tk->offs_aux =3D offs;
++	tk->monotonic_to_aux =3D ktime_to_timespec64(offs);
++}
++
+ /* flag for if timekeeping is suspended */
+ int __read_mostly timekeeping_suspended;
+=20
+@@ -1506,7 +1512,7 @@ static int __timekeeping_inject_offset(struct tk_data *=
+tkd, const struct timespe
+ 			timekeeping_restore_shadow(tkd);
+ 			return -EINVAL;
+ 		}
+-		tks->offs_aux =3D offs;
++		tk_update_aux_offs(tks, offs);
  	}
 =20
- 	if (event->attr.sigtrap) {
+ 	timekeeping_update_from_shadow(tkd, TK_UPDATE_ALL);
+@@ -2937,7 +2943,7 @@ static int aux_clock_set(const clockid_t id, const stru=
+ct timespec64 *tnew)
+ 	 * xtime ("realtime") is not applicable for auxiliary clocks and
+ 	 * kept in sync with "monotonic".
+ 	 */
+-	aux_tks->offs_aux =3D ktime_sub(timespec64_to_ktime(*tnew), tnow);
++	tk_update_aux_offs(aux_tks, ktime_sub(timespec64_to_ktime(*tnew), tnow));
+=20
+ 	timekeeping_update_from_shadow(aux_tkd, TK_UPDATE_ALL);
+ 	return 0;
+diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
+index 8ba8b0d..aa59919 100644
+--- a/kernel/time/vsyscall.c
++++ b/kernel/time/vsyscall.c
+@@ -159,10 +159,10 @@ void vdso_time_update_aux(struct timekeeper *tk)
+ 	if (clock_mode !=3D VDSO_CLOCKMODE_NONE) {
+ 		fill_clock_configuration(vc, &tk->tkr_mono);
+=20
+-		vdso_ts->sec	=3D tk->xtime_sec;
++		vdso_ts->sec =3D tk->xtime_sec + tk->monotonic_to_aux.tv_sec;
+=20
+ 		nsec =3D tk->tkr_mono.xtime_nsec >> tk->tkr_mono.shift;
+-		nsec +=3D tk->offs_aux;
++		nsec +=3D tk->monotonic_to_aux.tv_nsec;
+ 		vdso_ts->sec +=3D __iter_div_u64_rem(nsec, NSEC_PER_SEC, &nsec);
+ 		nsec =3D nsec << tk->tkr_mono.shift;
+ 		vdso_ts->nsec =3D nsec;
 
