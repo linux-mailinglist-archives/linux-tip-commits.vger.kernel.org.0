@@ -1,73 +1,73 @@
-Return-Path: <linux-tip-commits+bounces-6497-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6498-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8E1B463AC
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Sep 2025 21:33:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676E7B463AE
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Sep 2025 21:33:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F4711CC50A8
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Sep 2025 19:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C403CA66E35
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  5 Sep 2025 19:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132BA285406;
-	Fri,  5 Sep 2025 19:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DE328AB0B;
+	Fri,  5 Sep 2025 19:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="StWaeHnG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eJBpq242"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pSoBXtVf";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xzo2lF/u"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E8D27EFFE;
-	Fri,  5 Sep 2025 19:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B24283121;
+	Fri,  5 Sep 2025 19:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757100793; cv=none; b=UFegAt/MI1ysdpPQt5ZNq1BT5visCBUxkhpU8kk2DM4YNhKfFsUmEsNru7Uy+LLV5/7Aaslh9T79WzMng56FSo0T7BdVQQFsQzDeJC53dZbRpLIs5EDGiC3rXulVinknKwE4X59Qqlzv9LM8uDEApufHwkTkj9Vk7yKSWUNsUOE=
+	t=1757100794; cv=none; b=T+By8o48iNjaiD56f6sBhncMLtqIpaA565iSEAb2elIXdK/X2OoJLOfVEgV2PdWZ/TUB017JBD60splmlutjWmiEbbwoSu/uJTtpbE69Mt/ulPTWWpdMyhH1i4J/qV8n1QU3lQBNIO4JYMxBR+ma6DjfjaABtAsioA/5IwGmPVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757100793; c=relaxed/simple;
-	bh=zAHEq0lspdjy2xtVN/EPSx9RUhZ3jfe9h+dE+fvieFE=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=CirEp/NMMMIJVyseu2czb4GwZEbPr4pY8QVQDzMGnhlHyY2LjcJFHIvsGfK9KRmElKslttz7B4kWVvDbpRak7DA0rVh4WxI5qwLlZHiWEfZJ7bD0g0H06cuD0ncxFh/TsE5shBSyAOVS3dZpWsfjokB3Rc8DyYuPv9jdabVe/zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=StWaeHnG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eJBpq242; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1757100794; c=relaxed/simple;
+	bh=ev2KC7ZZK+f3qP9BD5zXcfrdWRFOKWPbHzXrYxU/Cbc=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=jUXzXw752LrnX97YDQ6LGGdzhvFhmKnbaKwWOz96Z9lFY34z4yxJQr3xPblCUIMP2jYo/TMBop20rAeB5vhmZLfYLSyHVsHYQJby9fOJ+MGmyy+ZB5obA+wdwdPkoaYvd7Zr37PcVlq0Om07FJtBTvoMj9OKOWen5+eyoYzanO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pSoBXtVf; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xzo2lF/u; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 05 Sep 2025 19:33:08 -0000
+Date: Fri, 05 Sep 2025 19:33:09 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757100789;
+	s=2020; t=1757100790;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ONmnaAHRfgS0AZBgbZZ7mIdw6X4VEjaShR0dXd2QL4w=;
-	b=StWaeHnGHiYSBtBHWRI2j3AwOlrQr+8rvu2NUj9AgdHcCdtzt43kf7KgQtQkihkNjG6bdx
-	9Ikd4tpzOcTLjBU0DIwqHcDC6bNYdeV0y7UFOd6/YFMcKUzTA6fS44lr0eIDjOKOhz5ozA
-	s/+1ZCDRKEMmHzgoxQpe3zP8SbpyuBPeoOptCTULAedv+OZM8QSNl3JqV8dGESRe4LfuBC
-	iOOUAdPFPbKv+mU6XfAyZ9nsU67xpI1fBDdgV6vwM/hCQTHEu8Ute0zVKletfozod+W2W7
-	rQKGKnW7XEc9S7HbkTbrRnnbPazfkY/jrO7TKdp1u8y097UU0Yt9dNPyLzlxtQ==
+	bh=lplGP9C938IELlEBa/Z7ptlveSnKAjjCsC6m1X1drqo=;
+	b=pSoBXtVfaJkt5RgxPLgDhoJLhxAdf+QvAQxpHjXvP0sCyCxS7ov6HbzJxG9V5wYjHfbXiX
+	S1aW3X9V/BUXc/fhX90SaK7UR1iGkTvIKzHmLX8Wsmh5y1Nljv3rII+SjuqyHGwfDo4M2X
+	dHrxalidnxcudOAv4lL2Xio5xwdbsz4oNcoIH6cWDsfvQ8fZ8BgXiOcJnx/TEZF0PIVK7R
+	koNjvx+5LW0M3PXXFHlX9uGsMleh8iSwACCTkTATctEPM1KDwWH20yaBzNVoJzKxrcmNp3
+	/uydzuZp6oozudI/aK9N1CyXkl9xmAmFSGesdkfpndB/tAVb9zUF4THcIn/dDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757100789;
+	s=2020e; t=1757100790;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=ONmnaAHRfgS0AZBgbZZ7mIdw6X4VEjaShR0dXd2QL4w=;
-	b=eJBpq242PzmEtQSJ6K1WsrLNwehoyVvrB86YfWIc69W8bW/sqdO0RX+9+gG4yR5URIveUg
-	Bxf39q1l5IcpcpDw==
+	bh=lplGP9C938IELlEBa/Z7ptlveSnKAjjCsC6m1X1drqo=;
+	b=xzo2lF/u9hVLmHJJRRqybdS4NxNY+912aJnR8BkNEPPdZIFUI2aqAj6Jds/q865JIrYfkT
+	lYSmGMNyXiAWGBDg==
 From: "tip-bot2 for Kai Huang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/tdx] x86/kexec: Disable kexec/kdump on platforms with TDX
- partial write erratum
+Subject: [tip: x86/tdx] x86/virt/tdx: Mark memory cache state incoherent when
+ making SEAMCALL
 Cc: Kai Huang <kai.huang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Chao Gao <chao.gao@intel.com>,
  Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Binbin Wu <binbin.wu@linux.intel.com>, Farrah Chen <farrah.chen@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+ Farrah Chen <farrah.chen@intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175710078826.1920.7156049761470343023.tip-bot2@tip-bot2>
+Message-ID: <175710078939.1920.2435501533692486043.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,90 +77,134 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/tdx branch of tip:
 
-Commit-ID:     b18651f70ce0e45d52b9e66d9065b831b3f30784
-Gitweb:        https://git.kernel.org/tip/b18651f70ce0e45d52b9e66d9065b831b3f=
-30784
+Commit-ID:     10df8607bf1a22249d21859f56eeb61e9a033313
+Gitweb:        https://git.kernel.org/tip/10df8607bf1a22249d21859f56eeb61e9a0=
+33313
 Author:        Kai Huang <kai.huang@intel.com>
-AuthorDate:    Mon, 01 Sep 2025 18:09:27 +02:00
+AuthorDate:    Mon, 01 Sep 2025 18:09:26 +02:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Fri, 05 Sep 2025 10:40:40 -07:00
 
-x86/kexec: Disable kexec/kdump on platforms with TDX partial write erratum
+x86/virt/tdx: Mark memory cache state incoherent when making SEAMCALL
 
-Some early TDX-capable platforms have an erratum: A kernel partial
-write (a write transaction of less than cacheline lands at memory
-controller) to TDX private memory poisons that memory, and a subsequent
-read triggers a machine check.
+On TDX platforms, dirty cacheline aliases with and without encryption
+bits can coexist, and the cpu can flush them back to memory in random
+order.  During kexec, the caches must be flushed before jumping to the
+new kernel otherwise the dirty cachelines could silently corrupt the
+memory used by the new kernel due to different encryption property.
 
-On those platforms, the old kernel must reset TDX private memory before
-jumping to the new kernel, otherwise the new kernel may see unexpected
-machine check.  Currently the kernel doesn't track which page is a TDX
-private page.  For simplicity just fail kexec/kdump for those platforms.
+A percpu boolean is used to mark whether the cache of a given CPU may be
+in an incoherent state, and the kexec performs WBINVD on the CPUs with
+that boolean turned on.
 
-Leverage the existing machine_kexec_prepare() to fail kexec/kdump by
-adding the check of the presence of the TDX erratum (which is only
-checked for if the kernel is built with TDX host support).  This rejects
-kexec/kdump when the kernel is loading the kexec/kdump kernel image.
+For TDX, only the TDX module or the TDX guests can generate dirty
+cachelines of TDX private memory, i.e., they are only generated when the
+kernel does a SEAMCALL.
 
-The alternative is to reject kexec/kdump when the kernel is jumping to
-the new kernel.  But for kexec this requires adding a new check (e.g.,
-arch_kexec_allowed()) in the common code to fail kernel_kexec() at early
-stage.  Kdump (crash_kexec()) needs similar check, but it's hard to
-justify because crash_kexec() is not supposed to abort.
+Set that boolean when the kernel does SEAMCALL so that kexec can flush
+the cache correctly.
 
-It's feasible to further relax this limitation, i.e., only fail kexec
-when TDX is actually enabled by the kernel.  But this is still a half
-measure compared to resetting TDX private memory so just do the simplest
-thing for now.
+The kernel provides both the __seamcall*() assembly functions and the
+seamcall*() wrapper ones which additionally handle running out of
+entropy error in a loop.  Most of the SEAMCALLs are called using the
+seamcall*(), except TDH.VP.ENTER and TDH.PHYMEM.PAGE.RDMD which are
+called using __seamcall*() variant directly.
 
-The impact to userspace is the users will get an error when loading the
-kexec/kdump kernel image:
+To cover the two special cases, add a new __seamcall_dirty_cache()
+helper which only sets the percpu boolean and calls the __seamcall*(),
+and change the special cases to use the new helper.  To cover all other
+SEAMCALLs, change seamcall*() to call the new helper.
 
-  kexec_load failed: Operation not supported
-
-This might be confusing to the users, thus also print the reason in the
-dmesg:
-
-  [..] kexec: Not allowed on platform with tdx_pw_mce bug.
+For the SEAMCALLs invoked via seamcall*(), they can be made from both
+task context and IRQ disabled context.  Given SEAMCALL is just a lengthy
+instruction (e.g., thousands of cycles) from kernel's point of view and
+preempt_{disable|enable}() is cheap compared to it, just unconditionally
+disable preemption during setting the boolean and making SEAMCALL.
 
 Signed-off-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
 Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 Tested-by: Farrah Chen <farrah.chen@intel.com>
-Link: https://lore.kernel.org/all/20250901160930.1785244-5-pbonzini%40redhat.=
+Link: https://lore.kernel.org/all/20250901160930.1785244-4-pbonzini%40redhat.=
 com
 ---
- arch/x86/kernel/machine_kexec_64.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/x86/include/asm/tdx.h  | 25 ++++++++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.c |  4 ++--
+ 2 files changed, 26 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/machine_kexec_64.c b/arch/x86/kernel/machine_kex=
-ec_64.c
-index dfb9109..15088d1 100644
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -347,6 +347,22 @@ int machine_kexec_prepare(struct kimage *image)
- 	unsigned long reloc_end =3D (unsigned long)__relocate_kernel_end;
- 	int result;
+diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+index 57b46f0..c178360 100644
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -102,10 +102,31 @@ u64 __seamcall_ret(u64 fn, struct tdx_module_args *args=
+);
+ u64 __seamcall_saved_ret(u64 fn, struct tdx_module_args *args);
+ void tdx_init(void);
 =20
-+	/*
-+	 * Some early TDX-capable platforms have an erratum.  A kernel
-+	 * partial write (a write transaction of less than cacheline
-+	 * lands at memory controller) to TDX private memory poisons that
-+	 * memory, and a subsequent read triggers a machine check.
-+	 *
-+	 * On those platforms the old kernel must reset TDX private
-+	 * memory before jumping to the new kernel otherwise the new
-+	 * kernel may see unexpected machine check.  For simplicity
-+	 * just fail kexec/kdump on those platforms.
-+	 */
-+	if (boot_cpu_has_bug(X86_BUG_TDX_PW_MCE)) {
-+		pr_info_once("Not allowed on platform with tdx_pw_mce bug\n");
-+		return -EOPNOTSUPP;
-+	}
++#include <linux/preempt.h>
+ #include <asm/archrandom.h>
++#include <asm/processor.h>
+=20
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+=20
++static __always_inline u64 __seamcall_dirty_cache(sc_func_t func, u64 fn,
++						  struct tdx_module_args *args)
++{
++	lockdep_assert_preemption_disabled();
 +
- 	/* Setup the identity mapped 64bit page table */
- 	result =3D init_pgtable(image, __pa(control_page));
- 	if (result)
++	/*
++	 * SEAMCALLs are made to the TDX module and can generate dirty
++	 * cachelines of TDX private memory.  Mark cache state incoherent
++	 * so that the cache can be flushed during kexec.
++	 *
++	 * This needs to be done before actually making the SEAMCALL,
++	 * because kexec-ing CPU could send NMI to stop remote CPUs,
++	 * in which case even disabling IRQ won't help here.
++	 */
++	this_cpu_write(cache_state_incoherent, true);
++
++	return func(fn, args);
++}
++
+ static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+ 			   struct tdx_module_args *args)
+ {
+@@ -113,7 +134,9 @@ static __always_inline u64 sc_retry(sc_func_t func, u64 f=
+n,
+ 	u64 ret;
+=20
+ 	do {
+-		ret =3D func(fn, args);
++		preempt_disable();
++		ret =3D __seamcall_dirty_cache(func, fn, args);
++		preempt_enable();
+ 	} while (ret =3D=3D TDX_RND_NO_ENTROPY && --retry);
+=20
+ 	return ret;
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 8238503..2abf53e 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1268,7 +1268,7 @@ static bool paddr_is_tdx_private(unsigned long phys)
+ 		return false;
+=20
+ 	/* Get page type from the TDX module */
+-	sret =3D __seamcall_ret(TDH_PHYMEM_PAGE_RDMD, &args);
++	sret =3D __seamcall_dirty_cache(__seamcall_ret, TDH_PHYMEM_PAGE_RDMD, &args=
+);
+=20
+ 	/*
+ 	 * The SEAMCALL will not return success unless there is a
+@@ -1524,7 +1524,7 @@ noinstr __flatten u64 tdh_vp_enter(struct tdx_vp *td, s=
+truct tdx_module_args *ar
+ {
+ 	args->rcx =3D tdx_tdvpr_pa(td);
+=20
+-	return __seamcall_saved_ret(TDH_VP_ENTER, args);
++	return __seamcall_dirty_cache(__seamcall_saved_ret, TDH_VP_ENTER, args);
+ }
+ EXPORT_SYMBOL_GPL(tdh_vp_enter);
+=20
 
