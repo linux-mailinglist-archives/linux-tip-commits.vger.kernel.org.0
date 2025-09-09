@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-6520-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6521-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A2DB4A8DD
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Sep 2025 11:53:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96260B4A900
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Sep 2025 11:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE9D01722A8
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Sep 2025 09:53:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C742188F5B6
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Sep 2025 09:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AAB2D5426;
-	Tue,  9 Sep 2025 09:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543602D63F9;
+	Tue,  9 Sep 2025 09:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lx/o1FXn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gf4EH5ge"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hVq5xB0t";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ARzOCHq3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDEA2D3EEE;
-	Tue,  9 Sep 2025 09:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA722D4B66;
+	Tue,  9 Sep 2025 09:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757411523; cv=none; b=AVVugVx2Uqvzz5AMtzMXqkF6XBMYvqveAcM4lt3/V0VzufiHcd3/Oa/pHL/DbKDyu9IQnQ8s+6nXna8wHCRzuT1sktLSmXDgzwpDUomdlWsAvJl5BVXBRwbMcYDTGGKz9Tni813R4LvM7p8aAJs0GRLa8TV3t6jzb49VGcvTzFs=
+	t=1757411524; cv=none; b=Q0O1UuUrhm1YRgU+uh0ZqD+tOgZqCu3cLNS1opinyU0fDLG1NSuwxHkwZ2rFExatV5vX9P3eYqFEylAx1CU4YcSZ5ywjusUwjx47LOr30SpEdYGPqvWz6NOUhs9jD9fMMDeqRlBqedF9Z/iFIp6Xigjn/NX9wLqacCyfDuCqvPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757411523; c=relaxed/simple;
-	bh=QP/aBIPQSbnVcdKKUXJvpPZF/QKZMFi6CbXoEKsJvh4=;
+	s=arc-20240116; t=1757411524; c=relaxed/simple;
+	bh=7SbH784b9dn3tZhEB6RZBofvTLsnnd9wVrSACaDfTV0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=gulzORF3wcYHt/SqtFRbyVNt0/UVsm237sl4kr0VuGyjX0RgD/2du2omkO8pOxaXu7MMhSgnoqmcP8OtEql+T/jdho45kbd0EHcLJx1WG8WLCApkN+uFeInb10LE3y7HEU/PumeEPWQ/qYs5EgVoB05o82+YKPlEac6V+jv1qnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lx/o1FXn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gf4EH5ge; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=RA6DlO9YPzcD7sJPwKlj9+SGGCkxiSJb0tY/DBLbWj5RgxvllKWnM6zzTxcd6NFeCX3ualpQ3mx79OTZW8cGJKsSiFI8CKOrAfPzjGYnrQyIHGQeZPkjmF8ylfBmwRNwsMd+gr3FkGaAKki/XzNz/n5tT26g2Hze3loFtJGrWLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hVq5xB0t; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ARzOCHq3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 09 Sep 2025 09:51:50 -0000
+Date: Tue, 09 Sep 2025 09:51:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757411519;
+	s=2020; t=1757411520;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Htl9VYOpJyLZ/63WFSvnVtkxGtnkVobts9X9O+GZEek=;
-	b=lx/o1FXnbStQ37jrUmws6+N2iFJ/JjPCOJMI/7Unwqm0V5As1RFSn7OORZVmMB0Helh4ym
-	J+D8qF6HEEGlr+iUazKqC/8FL67bqg5nB24TA0DGM8xnGxaOxImBwz9LA2950DxZH9WTuF
-	Qwg8dUllSA038evp4ockVQr0LiXUlgiLqtKADlzFxkfzwctj1p4Mz2KOoIjoaJkduWX2yh
-	yA6xQ9PlgajcYpgrUknmkc8gPIAuNIM+JBCndNvdCEgYO75ZO3Y6eHLTM4daGpebqyHigT
-	GpXL5/M5dGqShonZwTVCV3LfWaJq2LPRKV42eMzdDn7RjUwdcjEm0TXvmTZdrg==
+	bh=Imt5LeJHKsdko2mt6/SdLhFWi+KJddkQpHLarvrcEt0=;
+	b=hVq5xB0toZQmV/wurOUCZhaJ3ASzHRvl5Xzd5a9SSMdwlbV50NHQpJo8FQtXirVJgqOun9
+	UD0R9YYGpWBAqInoDzAj9mZHKmF2x3VmB/6bnk2GJ9ZTzEGuc2IzkGxf6hlQoIcbiBblMb
+	yz3uBxE7a9HShAtoOKZCY/TcJ1SrEq4FSU0A2DuywruNsdjDXg+k6hwcxC/fj8dotveItD
+	caEJN+xWfkxkKOg55OHbgcKRJenmuQm4DHkHP5qk6WA5AXeyZBEoj4+xZhqlc6ZRXuWheq
+	fj3ktSevfZ5J/1UNOqUU2R83gekkB9JjA9h3mo1E6IooKGt8bYiPg9n9SY0dPg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757411519;
+	s=2020e; t=1757411520;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Htl9VYOpJyLZ/63WFSvnVtkxGtnkVobts9X9O+GZEek=;
-	b=Gf4EH5ge4LX10BPnnzTEvDRomotQflEjtBzgKYfJ9ByI+vTaacOwClSlSq7VaqW5+2FpJK
-	TBO8jwR2BFj3OSCw==
+	bh=Imt5LeJHKsdko2mt6/SdLhFWi+KJddkQpHLarvrcEt0=;
+	b=ARzOCHq3bMvOPYUq/0PM7jGO3OU+ay1LhbtczXDdewdJ4a9iOd0tvz5rWniyazhACQH04O
+	/klsSeaBkjEeBHAA==
 From: "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/gic-v5: Fix error handling in
- gicv5_its_irq_domain_alloc()
+Subject: [tip: irq/drivers] irqchip/gic-v5: Fix loop in
+ gicv5_its_create_itt_two_level() cleanup path
 Cc: Dan Carpenter <dan.carpenter@linaro.org>,
  Lorenzo Pieralisi <lpieralisi@kernel.org>,
  Thomas Gleixner <tglx@linutronix.de>, Zenghui Yu <yuzenghui@huawei.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250908082745.113718-4-lpieralisi@kernel.org>
-References: <20250908082745.113718-4-lpieralisi@kernel.org>
+In-Reply-To: <20250908082745.113718-3-lpieralisi@kernel.org>
+References: <20250908082745.113718-3-lpieralisi@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175741151009.1920.16587083303795597560.tip-bot2@tip-bot2>
+Message-ID: <175741151932.1920.14765779051949167224.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,25 +83,18 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     a186120c780e21e4cfd186a925e34f718e30de88
-Gitweb:        https://git.kernel.org/tip/a186120c780e21e4cfd186a925e34f718e3=
-0de88
+Commit-ID:     bfcd1fdaae92faa8cae880eb4c3aaaa60c54bf0d
+Gitweb:        https://git.kernel.org/tip/bfcd1fdaae92faa8cae880eb4c3aaaa60c5=
+4bf0d
 Author:        Dan Carpenter <dan.carpenter@linaro.org>
-AuthorDate:    Mon, 08 Sep 2025 10:27:45 +02:00
+AuthorDate:    Mon, 08 Sep 2025 10:27:44 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 09 Sep 2025 11:51:09 +02:00
 
-irqchip/gic-v5: Fix error handling in gicv5_its_irq_domain_alloc()
+irqchip/gic-v5: Fix loop in gicv5_its_create_itt_two_level() cleanup path
 
-Code in gicv5_its_irq_domain_alloc() has two issues:
-
- - it checks the wrong return value/variable when calling gicv5_alloc_lpi()
-
- - The cleanup code does not take previous loop iterations into account
-
-Fix both issues at once by adding the right gicv5_alloc_lpi() variable
-check and by reworking the function cleanup code to take into account
-current and previous iterations.
+The "i" variable in gicv5_its_create_itt_two_level() needs to be signed
+otherwise it can cause a forever loop in the function's cleanup path.
 
 [ lpieralisi: Reworded commit message ]
 
@@ -110,57 +103,29 @@ Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Link: https://lore.kernel.org/all/20250908082745.113718-4-lpieralisi@kernel.o=
+Link: https://lore.kernel.org/all/20250908082745.113718-3-lpieralisi@kernel.o=
 rg
 
 ---
- drivers/irqchip/irq-gic-v5-its.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/irqchip/irq-gic-v5-its.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/irqchip/irq-gic-v5-its.c b/drivers/irqchip/irq-gic-v5-it=
 s.c
-index dcdf8bc..554485f 100644
+index 81d813c..dcdf8bc 100644
 --- a/drivers/irqchip/irq-gic-v5-its.c
 +++ b/drivers/irqchip/irq-gic-v5-its.c
-@@ -947,15 +947,18 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain=
- *domain, unsigned int vi
- 	device_id =3D its_dev->device_id;
+@@ -191,9 +191,9 @@ static int gicv5_its_create_itt_two_level(struct gicv5_it=
+s_chip_data *its,
+ 					  unsigned int num_events)
+ {
+ 	unsigned int l1_bits, l2_bits, span, events_per_l2_table;
+-	unsigned int i, complete_tables, final_span, num_ents;
++	unsigned int complete_tables, final_span, num_ents;
+ 	__le64 *itt_l1, *itt_l2, **l2ptrs;
+-	int ret;
++	int i, ret;
+ 	u64 val;
 =20
- 	for (i =3D 0; i < nr_irqs; i++) {
--		lpi =3D gicv5_alloc_lpi();
-+		ret =3D gicv5_alloc_lpi();
- 		if (ret < 0) {
- 			pr_debug("Failed to find free LPI!\n");
--			goto out_eventid;
-+			goto out_free_irqs;
- 		}
-+		lpi =3D ret;
-=20
- 		ret =3D irq_domain_alloc_irqs_parent(domain, virq + i, 1, &lpi);
--		if (ret)
--			goto out_free_lpi;
-+		if (ret) {
-+			gicv5_free_lpi(lpi);
-+			goto out_free_irqs;
-+		}
-=20
- 		/*
- 		 * Store eventid and deviceid into the hwirq for later use.
-@@ -975,8 +978,13 @@ static int gicv5_its_irq_domain_alloc(struct irq_domain =
-*domain, unsigned int vi
-=20
- 	return 0;
-=20
--out_free_lpi:
--	gicv5_free_lpi(lpi);
-+out_free_irqs:
-+	while (--i >=3D 0) {
-+		irqd =3D irq_domain_get_irq_data(domain, virq + i);
-+		gicv5_free_lpi(irqd->parent_data->hwirq);
-+		irq_domain_reset_irq_data(irqd);
-+		irq_domain_free_irqs_parent(domain, virq + i, 1);
-+	}
- out_eventid:
- 	gicv5_its_free_eventid(its_dev, event_id_base, nr_irqs);
- 	return ret;
+ 	ret =3D gicv5_its_l2sz_to_l2_bits(itt_l2sz);
 
