@@ -1,71 +1,72 @@
-Return-Path: <linux-tip-commits+bounces-6563-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6564-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552FCB52E5A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Sep 2025 12:30:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74098B52E59
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Sep 2025 12:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D68281890E43
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Sep 2025 10:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03E9E3A58EA
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 11 Sep 2025 10:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39A5313E16;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3BD313E23;
 	Thu, 11 Sep 2025 10:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KceqD+LH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/oma/NNo"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XLdcD+sp";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bKPKvChg"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51D431352D;
-	Thu, 11 Sep 2025 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10567313532;
+	Thu, 11 Sep 2025 10:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757586543; cv=none; b=nErqXvt2pEg5OPcEHrIxT6/LesNH6z8gwlIZmtFgBKc7DnQLO1pY8xnz9EjW/6fybCQ90sg5Oqqt8JiqTqnDRy1oMSDafphVE3BPbruRo5phjM/6RLXZQPWVweDYtDFjuAHItZ7dnrhD11MzyapXnlU+MFwqVH6NrF0Uo0+d9us=
+	t=1757586543; cv=none; b=YjSBY4PEPQ25xhXd2SVPzMXd2CVeot+y7mnSvVZBXIEk3XVBrMjS1wX/weHWYlGJE3mV77iLuuWo5xXNbVb2YmBRzqICdTNO3q4hlULJ8xlX+tmsukXU7q62I2/mDDhtR/YFiSPxW1kd8cmISvk3TzSQuiDDYIdivdLJ3RDXVrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1757586543; c=relaxed/simple;
-	bh=ver00Z+/WDvOfDS4QM+SRSXiUZDzjdEaFJkDsaTYtcI=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Xen8nw3vCrSCFxzmqAKYJXM8QNplOMr4Idmv7jKxcM2kj00RRoMM5fvwEoDcki/zdkF7Aqe4QfJX0FXSbTAktCbNAVbuxYuFEuUZNdWUxorl7khpEuIi2Nq5+FS3KXjFpJIYhzBgRhTle3qizKYKEsjES5UFwW1shlqbGs4aq7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KceqD+LH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/oma/NNo; arc=none smtp.client-ip=193.142.43.55
+	bh=JoQE42PndkYh2ZpH5Z/I4EBYdqTQ/rC/Pi07KeUpUAw=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=DY1M+Yy3jNyKR5NfNAPocTbjZQBp1gE1PeiDYj30yLAV+5QQux/bw8qyks68ZCXW7tDbDeqrdUUIvuObKUdGBsrv3n+BNhnSwtB6Coq/MXeIQHOU025io4R+ehX+c0vI2yX2zIVvN2IU06CmQPdK9d9AvqeGnYlI8I2v/5s4SWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XLdcD+sp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bKPKvChg; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 11 Sep 2025 10:28:58 -0000
+Date: Thu, 11 Sep 2025 10:28:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757586539;
+	s=2020; t=1757586540;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=3LUDvG+OOMD79GnjMC3DeJSd/V8x/lg4iGXk4H/RbwQ=;
-	b=KceqD+LHWrR01o3aix75/9RTNw4dDtEp/qBsYZyZjvhWQiItFz5noZj1s4aNRykU1b8cwr
-	zNP9Uw3YQysASDFJRnPl3K6N2yyqyAwEskF3hxAAp3EDpS/cHAVmAI3DaRBhn0vO/OxJPq
-	v++gvWYdPjcTf+LHMWQswJI91dz57kkp1ZnRi9n5IhDJos3gv1F4elWcpaymhDbayZmBee
-	zH1yPF0LLT03GDRDRCY1FKOflEC1ss07Vwzw38pWP+REkZ+fAJHBXvYNph7+vbHM0CoX04
-	86S3BUWHrnNOtod4XTn90IKbVIZNDlN08J+fZR5E5C2fMwBHZr6MNesqkOmnLg==
+	bh=g5WhIfJRvCyVG8NUvrewQT8NwvgG7N7trn54du6Ooxg=;
+	b=XLdcD+sp8ARyZpxB1NTjKTjtKY6kXovhwIvZ1Ssrta7qSpvOdYFcrVJA7GkLRSvmPwm1Ja
+	hEjqnace3Y9kOa7zTuwfqYNgwnXW2nkvAPnK6e0bY6Z2iq33qk3wBLHWBgg1aSiZ9Q0BPo
+	2ur/kPX1Nu11zwracGrAt4hz7zP6fkXtgwPQ49lYF2fQcjRr8qwK1RJddTe1AQ1NuLNitd
+	xa9YYef//efQYXn32Jtij7dAke0978ut8bNsAGcwAqo6odBOU77afSXtHh5H8yHno5A3Xr
+	CP0HW75z4o9cvBRN7gplnZ8hztacXw5/l+6OvCKccfqCYJu8BoB33PxhlwgE9A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757586539;
+	s=2020e; t=1757586540;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=3LUDvG+OOMD79GnjMC3DeJSd/V8x/lg4iGXk4H/RbwQ=;
-	b=/oma/NNokgww5Q/zfEdvE4YbSAzrUzQnHs0CFTEqnoxEs460CnRpXrFRFLCpxwhkAholLF
-	1NN8XE82TN6UBqDA==
+	bh=g5WhIfJRvCyVG8NUvrewQT8NwvgG7N7trn54du6Ooxg=;
+	b=bKPKvChgtZeJJCl2+i0hZPPibiVaJKQRIGbHcMd50bXu6+FKNutll1lRM/1LT8o7gVn+bS
+	WFmaTlsp3fws5fCA==
 From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce: Add a clear_bank() helper
+Subject: [tip: ras/core] x86/mce: Move machine_check_poll() status checks to
+ helper functions
 Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Nikolay Borisov <nik.borisov@suse.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Tony Luck <tony.luck@intel.com>, Nikolay Borisov <nik.borisov@suse.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175758653807.709179.9583676711429503136.tip-bot2@tip-bot2>
+Message-ID: <175758653917.709179.7141514378637292570.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,122 +76,144 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     5c6f123c419b6e20f84ac1683089a52f449273aa
-Gitweb:        https://git.kernel.org/tip/5c6f123c419b6e20f84ac1683089a52f449=
-273aa
+Commit-ID:     91af6842e9945d064401ed2d6e91539a619760d1
+Gitweb:        https://git.kernel.org/tip/91af6842e9945d064401ed2d6e91539a619=
+760d1
 Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Mon, 08 Sep 2025 15:40:36=20
+AuthorDate:    Mon, 08 Sep 2025 15:40:35=20
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 11 Sep 2025 12:23:30 +02:00
+CommitterDate: Thu, 11 Sep 2025 12:23:22 +02:00
 
-x86/mce: Add a clear_bank() helper
+x86/mce: Move machine_check_poll() status checks to helper functions
 
-Add a helper at the end of the MCA polling function to collect vendor and/or
-feature actions.
+There are a number of generic and vendor-specific status checks in
+machine_check_poll(). These are used to determine if an error should be
+skipped.
 
-Start with a basic skeleton for now. Actions for AMD thresholding and deferred
-errors will be added later.
-
-  [ bp: Drop the obvious comment too. ]
+Move these into helper functions. Future vendor-specific checks will be
+added to the helpers.
 
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
 Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Tested-by: Tony Luck <tony.luck@intel.com>
 Link: https://lore.kernel.org/20250908-wip-mca-updates-v6-0-eef5d6c74b9c@amd.=
 com
 ---
- arch/x86/kernel/cpu/mce/amd.c      |  5 +++++
- arch/x86/kernel/cpu/mce/core.c     | 15 ++++++++++-----
- arch/x86/kernel/cpu/mce/internal.h |  3 +++
- 3 files changed, 18 insertions(+), 5 deletions(-)
+ arch/x86/kernel/cpu/mce/core.c | 88 ++++++++++++++++++---------------
+ 1 file changed, 48 insertions(+), 40 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index b8aed0a..d690644 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -955,6 +955,11 @@ static void amd_threshold_interrupt(void)
- 	}
- }
-=20
-+void amd_clear_bank(struct mce *m)
-+{
-+	mce_wrmsrq(mca_msr_reg(m->bank, MCA_STATUS), 0);
-+}
-+
- /*
-  * Sysfs Interface
-  */
 diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 5dec0da..460e90a 100644
+index 7fd86c8..5dec0da 100644
 --- a/arch/x86/kernel/cpu/mce/core.c
 +++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -423,7 +423,7 @@ noinstr u64 mce_rdmsrq(u32 msr)
- 	return EAX_EDX_VAL(val, low, high);
- }
+@@ -715,6 +715,52 @@ static noinstr void mce_read_aux(struct mce_hw_err *err,=
+ int i)
+ DEFINE_PER_CPU(unsigned, mce_poll_count);
 =20
--static noinstr void mce_wrmsrq(u32 msr, u64 v)
-+noinstr void mce_wrmsrq(u32 msr, u64 v)
- {
- 	u32 low, high;
-=20
-@@ -760,6 +760,14 @@ static bool should_log_poll_error(enum mcp_flags flags, =
-struct mce_hw_err *err)
- 	return true;
- }
-=20
-+static void clear_bank(struct mce *m)
+ /*
++ * Newer Intel systems that support software error
++ * recovery need to make additional checks. Other
++ * CPUs should skip over uncorrected errors, but log
++ * everything else.
++ */
++static bool ser_should_log_poll_error(struct mce *m)
 +{
-+	if (m->cpuvendor =3D=3D X86_VENDOR_AMD)
-+		return amd_clear_bank(m);
++	/* Log "not enabled" (speculative) errors */
++	if (!(m->status & MCI_STATUS_EN))
++		return true;
 +
-+	mce_wrmsrq(mca_msr_reg(m->bank, MCA_STATUS), 0);
++	/*
++	 * Log UCNA (SDM: 15.6.3 "UCR Error Classification")
++	 * UC =3D=3D 1 && PCC =3D=3D 0 && S =3D=3D 0
++	 */
++	if (!(m->status & MCI_STATUS_PCC) && !(m->status & MCI_STATUS_S))
++		return true;
++
++	return false;
 +}
 +
- /*
++static bool should_log_poll_error(enum mcp_flags flags, struct mce_hw_err *e=
+rr)
++{
++	struct mce *m =3D &err->m;
++
++	/* If this entry is not valid, ignore it. */
++	if (!(m->status & MCI_STATUS_VAL))
++		return false;
++
++	/*
++	 * If we are logging everything (at CPU online) or this
++	 * is a corrected error, then we must log it.
++	 */
++	if ((flags & MCP_UC) || !(m->status & MCI_STATUS_UC))
++		return true;
++
++	if (mca_cfg.ser)
++		return ser_should_log_poll_error(m);
++
++	if (m->status & MCI_STATUS_UC)
++		return false;
++
++	return true;
++}
++
++/*
   * Poll for corrected events or events that happened before reset.
   * Those are just logged through /dev/mcelog.
-@@ -831,10 +839,7 @@ void machine_check_poll(enum mcp_flags flags, mce_banks_=
-t *b)
- 			mce_log(&err);
+  *
+@@ -765,48 +811,10 @@ void machine_check_poll(enum mcp_flags flags, mce_banks=
+_t *b)
+ 		if (!mca_cfg.cmci_disabled)
+ 			mce_track_storm(m);
 =20
- clear_it:
+-		/* If this entry is not valid, ignore it */
+-		if (!(m->status & MCI_STATUS_VAL))
++		/* Verify that the error should be logged based on hardware conditions. */
++		if (!should_log_poll_error(flags, &err))
+ 			continue;
+=20
 -		/*
--		 * Clear state for this bank.
+-		 * If we are logging everything (at CPU online) or this
+-		 * is a corrected error, then we must log it.
 -		 */
--		mce_wrmsrq(mca_msr_reg(i, MCA_STATUS), 0);
-+		clear_bank(m);
- 	}
-=20
- 	/*
-diff --git a/arch/x86/kernel/cpu/mce/internal.h b/arch/x86/kernel/cpu/mce/int=
-ernal.h
-index 6cb2995..b0e00ec 100644
---- a/arch/x86/kernel/cpu/mce/internal.h
-+++ b/arch/x86/kernel/cpu/mce/internal.h
-@@ -269,6 +269,7 @@ void mce_threshold_create_device(unsigned int cpu);
- void mce_threshold_remove_device(unsigned int cpu);
- extern bool amd_filter_mce(struct mce *m);
- bool amd_mce_usable_address(struct mce *m);
-+void amd_clear_bank(struct mce *m);
-=20
- /*
-  * If MCA_CONFIG[McaLsbInStatusSupported] is set, extract ErrAddr in bits
-@@ -300,6 +301,7 @@ static inline void mce_threshold_create_device(unsigned i=
-nt cpu)	{ }
- static inline void mce_threshold_remove_device(unsigned int cpu)	{ }
- static inline bool amd_filter_mce(struct mce *m) { return false; }
- static inline bool amd_mce_usable_address(struct mce *m) { return false; }
-+static inline void amd_clear_bank(struct mce *m) { }
- static inline void smca_extract_err_addr(struct mce *m) { }
- static inline void smca_bsp_init(void) { }
- #endif
-@@ -319,6 +321,7 @@ static __always_inline void winchip_machine_check(struct =
-pt_regs *regs) {}
- #endif
-=20
- noinstr u64 mce_rdmsrq(u32 msr);
-+noinstr void mce_wrmsrq(u32 msr, u64 v);
-=20
- static __always_inline u32 mca_msr_reg(int bank, enum mca_msr reg)
- {
+-		if ((flags & MCP_UC) || !(m->status & MCI_STATUS_UC))
+-			goto log_it;
+-
+-		/*
+-		 * Newer Intel systems that support software error
+-		 * recovery need to make additional checks. Other
+-		 * CPUs should skip over uncorrected errors, but log
+-		 * everything else.
+-		 */
+-		if (!mca_cfg.ser) {
+-			if (m->status & MCI_STATUS_UC)
+-				continue;
+-			goto log_it;
+-		}
+-
+-		/* Log "not enabled" (speculative) errors */
+-		if (!(m->status & MCI_STATUS_EN))
+-			goto log_it;
+-
+-		/*
+-		 * Log UCNA (SDM: 15.6.3 "UCR Error Classification")
+-		 * UC =3D=3D 1 && PCC =3D=3D 0 && S =3D=3D 0
+-		 */
+-		if (!(m->status & MCI_STATUS_PCC) && !(m->status & MCI_STATUS_S))
+-			goto log_it;
+-
+-		/*
+-		 * Skip anything else. Presumption is that our read of this
+-		 * bank is racing with a machine check. Leave the log alone
+-		 * for do_machine_check() to deal with it.
+-		 */
+-		continue;
+-
+-log_it:
+ 		mce_read_aux(&err, i);
+ 		m->severity =3D mce_severity(m, NULL, NULL, false);
+ 		/*
 
