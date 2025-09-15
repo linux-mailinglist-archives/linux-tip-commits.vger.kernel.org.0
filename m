@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-6598-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6599-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF96B571F1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 09:50:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 530C2B571F2
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 09:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 172A27AB79C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 07:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00A1017B597
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 07:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8622EB85F;
-	Mon, 15 Sep 2025 07:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819762EBB9D;
+	Mon, 15 Sep 2025 07:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FgHRN+a+";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iSsNljpR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B4wXFjoU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9okFIxag"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D803F2EAB93;
-	Mon, 15 Sep 2025 07:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977D32EB5A4;
+	Mon, 15 Sep 2025 07:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757922533; cv=none; b=GGRJTP1dcTS+Fbf9GUQ0er2/iKEWkza+5RINeZcv77AK2AQ0wn2xtEYO6pKggJx9EIDyKHKXUWfmDYGqwPOvAriYgE/Cw+vm/mGB/hJSdlTPKDMRccznaGN9EyOvg0bWCZeMMDW3tZIPa2wQLzCQuEL/8D6DtpEL6BOdv0Ee97U=
+	t=1757922534; cv=none; b=lVRGx5qRvY/xTxr6fQaHciBjEQ7MC+8yBG0UaEPogWahwGaDlfEn94HA/TUF74mZUjFcM6WNoXST+pLoPTWW3JCfTsohrcJ+U1Ak7iUVb6c6xWZhKDQ91uBtNSbJjwG7V+K8uNgVWVeIRkTJlndEe3Q8d3Y/ZblRn+a2mH7sTAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757922533; c=relaxed/simple;
-	bh=vO0SxqKbSWzVeS9lhr9Eg/t6J/AAvpRRwovRFY+/AGw=;
+	s=arc-20240116; t=1757922534; c=relaxed/simple;
+	bh=2tigha7ajmtdrYvmPqme9aIozA1ZplKp2lX+gQopnhA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=E1wGNXaP7ywnnabKAklAjSQP+T5mDT5I9JTKmdZnvcjZbptp5S/W0d7c70MKIkvpZ9XVRe42Kv4moOPcDaM+Vo+DNhWy9YUZlrMeEduG0rnbABVPEj5Ucng9zF7tsXSmUEFbEqnkMYh+l1XcJY2EvEj1V3ZPKCTs3OQ0AXPAptQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FgHRN+a+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iSsNljpR; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=fXbG2VzWaXWr4jhEVh317djZ/o5sXxMKQpZboApihj9zCuBIVznP7s2kYCU2P842s6xUGOLvXj/cABp9L8rOw9Ft3oPe/4khKBqei/d9wZsFxejCDhsAPiWna0JJOhr6/3RUE7musIQ29q0b5LyobHP2Ge6Mv9u6JulLbn/pp6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=B4wXFjoU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9okFIxag; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 15 Sep 2025 07:48:48 -0000
+Date: Mon, 15 Sep 2025 07:48:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757922530;
+	s=2020; t=1757922531;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Oj+8Y857E6u7tyqzdtymXrntvD1bf8Gg1URniL2bUOg=;
-	b=FgHRN+a+99Xu4XJVbO0LRcg6FeJ+8CFx3swMnHLeIWIUGCJjO5cxefac8cwu9+YpD0Z7ms
-	LVb52mbfpW0rcLEjFnibMPB9JhSTHBavFlWp+Y+EEt89Gu3XbjOU+wsH6BygB5PcYgKxPj
-	TQcdFee/6XNO2ZF9R3mmnbQ5+1+a6WZkoKuWxBVoxjXDNOehudKWJfyq7YFGLhOdTuUlw/
-	oTz76sHD2CHm678faCxGRIgKexs7K70dwrnqMkj5YjddsEvVQU0FwB7AlqYQNoKc4IlTsP
-	lsXdzUeIWWtdJx1c8fDzrbtLNdl/uvCpMKgZX8T8bk7dx3i8T6k7PZXjClU7qg==
+	bh=FBx2nKUC9gOALLhDmPZaieABye6r7u0yK+o4sMZD17E=;
+	b=B4wXFjoUwwCdLqQIp/BuOyPP071iIJILLFK5hCtmWP6X/Y3xsQX46v/UwOQSnxWvff4Hz4
+	tLK9qJ+Tut7/SLbMo7o+PSf6ljvzXSyBODMHHNwK3TMvDk2/hYQJPwhcUWkn3BeY1Q7CPb
+	FnaWtQpegQKgO6bNT6QJ2isel7OCOxKsdwG9XKt+gEum5q4UNGqbAxzl/2abyLY+yNujuL
+	zcMBmim3XtTYGvhF2I+RPWMvOJQIvnD1ACObo/0MfHzH5+0E084bU+ZJyQhAmE7IT0ZAEX
+	TiP001Fx3VOitITSojkf582NVDmZGSf+i4bmgnn+ANsGwu995vxIo8DoECOqRQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757922530;
+	s=2020e; t=1757922531;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Oj+8Y857E6u7tyqzdtymXrntvD1bf8Gg1URniL2bUOg=;
-	b=iSsNljpR68CcealJtFpgTqaXj4ZZ/CDV9GxGDDGxMBwbJRDQOLGJNZQKy89hxPOwOB2ekZ
-	0wUoUBmMChJHfnDA==
+	bh=FBx2nKUC9gOALLhDmPZaieABye6r7u0yK+o4sMZD17E=;
+	b=9okFIxagT6vvlCtTIavo0t3rKwwZ5vJGTK8Yc7dg9dd4CATJIsx/EfJSMgHPHThujTeQpJ
+	fCNVhWrR8D/yRDAg==
 From: "tip-bot2 for Boqun Feng" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rust: sync: atomic: Add the framework of
- arithmetic operations
+Subject:
+ [tip: locking/core] rust: sync: atomic: Add atomic {cmp,}xchg operations
 Cc: Boqun Feng <boqun.feng@gmail.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Alice Ryhl <aliceryhl@google.com>, Benno Lossin <lossin@kernel.org>,
  Elle Rhumsaa <elle@weathered-steel.dev>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250905044141.77868-7-boqun.feng@gmail.com>
-References: <20250905044141.77868-7-boqun.feng@gmail.com>
+In-Reply-To: <20250905044141.77868-6-boqun.feng@gmail.com>
+References: <20250905044141.77868-6-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175792252882.709179.13917839095322287316.tip-bot2@tip-bot2>
+Message-ID: <175792252993.709179.3712518922239054913.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,205 +84,245 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     d132054360baf0d127a463bbf853e43dd6eb0dd9
-Gitweb:        https://git.kernel.org/tip/d132054360baf0d127a463bbf853e43dd6e=
-b0dd9
+Commit-ID:     b606a532c01380ac282fd0a0858e3e8ea01ad904
+Gitweb:        https://git.kernel.org/tip/b606a532c01380ac282fd0a0858e3e8ea01=
+ad904
 Author:        Boqun Feng <boqun.feng@gmail.com>
-AuthorDate:    Thu, 04 Sep 2025 21:41:33 -07:00
+AuthorDate:    Thu, 04 Sep 2025 21:41:32 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 15 Sep 2025 09:38:34 +02:00
+CommitterDate: Mon, 15 Sep 2025 09:38:33 +02:00
 
-rust: sync: atomic: Add the framework of arithmetic operations
+rust: sync: atomic: Add atomic {cmp,}xchg operations
 
-One important set of atomic operations is the arithmetic operations,
-i.e. add(), sub(), fetch_add(), add_return(), etc. However it may not
-make senses for all the types that `AtomicType` to have arithmetic
-operations, for example a `Foo(u32)` may not have a reasonable add() or
-sub(), plus subword types (`u8` and `u16`) currently don't have
-atomic arithmetic operations even on C side and might not have them in
-the future in Rust (because they are usually suboptimal on a few
-architecures). Therefore the plan is to add a few subtraits of
-`AtomicType` describing which types have and can do atomic arithemtic
-operations.
+xchg() and cmpxchg() are basic operations on atomic. Provide these based
+on C APIs.
 
-One trait `AtomicAdd` is added, and only add() and fetch_add() are
-added. The rest will be added in the future.
+Note that cmpxchg() use the similar function signature as
+compare_exchange() in Rust std: returning a `Result`, `Ok(old)` means
+the operation succeeds and `Err(old)` means the operation fails.
 
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Reviewed-by: Benno Lossin <lossin@kernel.org>
 Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
-Link: https://lore.kernel.org/all/20250719030827.61357-7-boqun.feng@gmail.com/
+Link: https://lore.kernel.org/all/20250719030827.61357-6-boqun.feng@gmail.com/
 ---
- rust/kernel/sync/atomic.rs           | 94 ++++++++++++++++++++++++++-
- rust/kernel/sync/atomic/predefine.rs | 14 ++++-
- 2 files changed, 106 insertions(+), 2 deletions(-)
+ rust/kernel/sync/atomic.rs | 168 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 167 insertions(+), 1 deletion(-)
 
 diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-index 4c32d12..016a6bc 100644
+index ea5782b..4c32d12 100644
 --- a/rust/kernel/sync/atomic.rs
 +++ b/rust/kernel/sync/atomic.rs
-@@ -16,7 +16,6 @@
- //!
- //! [`LKMM`]: srctree/tools/memory-model/
-=20
--#[allow(dead_code, unreachable_pub)]
- mod internal;
- pub mod ordering;
- mod predefine;
-@@ -25,7 +24,7 @@ pub use internal::AtomicImpl;
+@@ -25,7 +25,7 @@ pub use internal::AtomicImpl;
  pub use ordering::{Acquire, Full, Relaxed, Release};
 =20
  use crate::build_error;
--use internal::{AtomicBasicOps, AtomicExchangeOps, AtomicRepr};
-+use internal::{AtomicArithmeticOps, AtomicBasicOps, AtomicExchangeOps, Atomi=
-cRepr};
+-use internal::{AtomicBasicOps, AtomicRepr};
++use internal::{AtomicBasicOps, AtomicExchangeOps, AtomicRepr};
  use ordering::OrderingType;
 =20
  /// A memory location which can be safely modified from multiple execution c=
 ontexts.
-@@ -112,6 +111,19 @@ pub unsafe trait AtomicType: Sized + Send + Copy {
-     type Repr: AtomicImpl;
- }
-=20
-+/// Types that support atomic add operations.
-+///
-+/// # Safety
-+///
-+// TODO: Properly defines `wrapping_add` in the following comment.
-+/// `wrapping_add` any value of type `Self::Repr::Delta` obtained by [`Self:=
-:rhs_into_delta()`] to
-+/// any value of type `Self::Repr` obtained through transmuting a value of t=
-ype `Self` to must
-+/// yield a value with a bit pattern also valid for `Self`.
-+pub unsafe trait AtomicAdd<Rhs =3D Self>: AtomicType {
-+    /// Converts `Rhs` into the `Delta` type of the atomic implementation.
-+    fn rhs_into_delta(rhs: Rhs) -> <Self::Repr as AtomicImpl>::Delta;
-+}
-+
- #[inline(always)]
- const fn into_repr<T: AtomicType>(v: T) -> T::Repr {
-     // SAFETY: Per the safety requirement of `AtomicType`, `T` is round-trip=
- transmutable to
-@@ -459,3 +471,81 @@ where
-         ret
+@@ -293,3 +293,169 @@ where
+         }
      }
  }
 +
 +impl<T: AtomicType> Atomic<T>
 +where
-+    T::Repr: AtomicArithmeticOps,
++    T::Repr: AtomicExchangeOps,
 +{
-+    /// Atomic add.
++    /// Atomic exchange.
 +    ///
-+    /// Atomically updates `*self` to `(*self).wrapping_add(v)`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::sync::atomic::{Atomic, Relaxed};
-+    ///
-+    /// let x =3D Atomic::new(42);
-+    ///
-+    /// assert_eq!(42, x.load(Relaxed));
-+    ///
-+    /// x.add(12, Relaxed);
-+    ///
-+    /// assert_eq!(54, x.load(Relaxed));
-+    /// ```
-+    #[inline(always)]
-+    pub fn add<Rhs>(&self, v: Rhs, _: ordering::Relaxed)
-+    where
-+        T: AtomicAdd<Rhs>,
-+    {
-+        let v =3D T::rhs_into_delta(v);
-+
-+        // INVARIANT: `self.0` is a valid `T` after `atomic_add()` due to sa=
-fety requirement of
-+        // `AtomicAdd`.
-+        T::Repr::atomic_add(&self.0, v);
-+    }
-+
-+    /// Atomic fetch and add.
-+    ///
-+    /// Atomically updates `*self` to `(*self).wrapping_add(v)`, and returns=
- the value of `*self`
-+    /// before the update.
++    /// Atomically updates `*self` to `v` and returns the old value of `*sel=
+f`.
 +    ///
 +    /// # Examples
 +    ///
 +    /// ```
-+    /// use kernel::sync::atomic::{Atomic, Acquire, Full, Relaxed};
++    /// use kernel::sync::atomic::{Atomic, Acquire, Relaxed};
 +    ///
 +    /// let x =3D Atomic::new(42);
 +    ///
-+    /// assert_eq!(42, x.load(Relaxed));
-+    ///
-+    /// assert_eq!(54, { x.fetch_add(12, Acquire); x.load(Relaxed) });
-+    ///
-+    /// let x =3D Atomic::new(42);
-+    ///
-+    /// assert_eq!(42, x.load(Relaxed));
-+    ///
-+    /// assert_eq!(54, { x.fetch_add(12, Full); x.load(Relaxed) } );
++    /// assert_eq!(42, x.xchg(52, Acquire));
++    /// assert_eq!(52, x.load(Relaxed));
 +    /// ```
++    #[doc(alias("atomic_xchg", "atomic64_xchg", "swap"))]
 +    #[inline(always)]
-+    pub fn fetch_add<Rhs, Ordering: ordering::Ordering>(&self, v: Rhs, _: Or=
-dering) -> T
-+    where
-+        T: AtomicAdd<Rhs>,
-+    {
-+        let v =3D T::rhs_into_delta(v);
++    pub fn xchg<Ordering: ordering::Ordering>(&self, v: T, _: Ordering) -> T=
+ {
++        let v =3D into_repr(v);
 +
-+        // INVARIANT: `self.0` is a valid `T` after `atomic_fetch_add*()` du=
-e to safety requirement
-+        // of `AtomicAdd`.
++        // INVARIANT: `self.0` is a valid `T` after `atomic_xchg*()` because=
+ `v` is transmutable to
++        // `T`.
 +        let ret =3D {
 +            match Ordering::TYPE {
-+                OrderingType::Full =3D> T::Repr::atomic_fetch_add(&self.0, v=
-),
-+                OrderingType::Acquire =3D> T::Repr::atomic_fetch_add_acquire=
-(&self.0, v),
-+                OrderingType::Release =3D> T::Repr::atomic_fetch_add_release=
-(&self.0, v),
-+                OrderingType::Relaxed =3D> T::Repr::atomic_fetch_add_relaxed=
-(&self.0, v),
++                OrderingType::Full =3D> T::Repr::atomic_xchg(&self.0, v),
++                OrderingType::Acquire =3D> T::Repr::atomic_xchg_acquire(&sel=
+f.0, v),
++                OrderingType::Release =3D> T::Repr::atomic_xchg_release(&sel=
+f.0, v),
++                OrderingType::Relaxed =3D> T::Repr::atomic_xchg_relaxed(&sel=
+f.0, v),
 +            }
 +        };
 +
-+        // SAFETY: `ret` comes from reading `self.0`, which is a valid `T` p=
-er type invariants.
++        // SAFETY: `ret` comes from reading `*self`, which is a valid `T` pe=
+r type invariants.
 +        unsafe { from_repr(ret) }
 +    }
-+}
-diff --git a/rust/kernel/sync/atomic/predefine.rs b/rust/kernel/sync/atomic/p=
-redefine.rs
-index 33356de..a6e5883 100644
---- a/rust/kernel/sync/atomic/predefine.rs
-+++ b/rust/kernel/sync/atomic/predefine.rs
-@@ -8,8 +8,22 @@ unsafe impl super::AtomicType for i32 {
-     type Repr =3D i32;
- }
-=20
-+// SAFETY: The wrapping add result of two `i32`s is a valid `i32`.
-+unsafe impl super::AtomicAdd<i32> for i32 {
-+    fn rhs_into_delta(rhs: i32) -> i32 {
-+        rhs
++
++    /// Atomic compare and exchange.
++    ///
++    /// If `*self` =3D=3D `old`, atomically updates `*self` to `new`. Otherw=
+ise, `*self` is not
++    /// modified.
++    ///
++    /// Compare: The comparison is done via the byte level comparison betwee=
+n `*self` and `old`.
++    ///
++    /// Ordering: When succeeds, provides the corresponding ordering as the =
+`Ordering` type
++    /// parameter indicates, and a failed one doesn't provide any ordering, =
+the load part of a
++    /// failed cmpxchg is a [`Relaxed`] load.
++    ///
++    /// Returns `Ok(value)` if cmpxchg succeeds, and `value` is guaranteed t=
+o be equal to `old`,
++    /// otherwise returns `Err(value)`, and `value` is the current value of =
+`*self`.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::sync::atomic::{Atomic, Full, Relaxed};
++    ///
++    /// let x =3D Atomic::new(42);
++    ///
++    /// // Checks whether cmpxchg succeeded.
++    /// let success =3D x.cmpxchg(52, 64, Relaxed).is_ok();
++    /// # assert!(!success);
++    ///
++    /// // Checks whether cmpxchg failed.
++    /// let failure =3D x.cmpxchg(52, 64, Relaxed).is_err();
++    /// # assert!(failure);
++    ///
++    /// // Uses the old value if failed, probably re-try cmpxchg.
++    /// match x.cmpxchg(52, 64, Relaxed) {
++    ///     Ok(_) =3D> { },
++    ///     Err(old) =3D> {
++    ///         // do something with `old`.
++    ///         # assert_eq!(old, 42);
++    ///     }
++    /// }
++    ///
++    /// // Uses the latest value regardlessly, same as atomic_cmpxchg() in C.
++    /// let latest =3D x.cmpxchg(42, 64, Full).unwrap_or_else(|old| old);
++    /// # assert_eq!(42, latest);
++    /// assert_eq!(64, x.load(Relaxed));
++    /// ```
++    ///
++    /// [`Relaxed`]: ordering::Relaxed
++    #[doc(alias(
++        "atomic_cmpxchg",
++        "atomic64_cmpxchg",
++        "atomic_try_cmpxchg",
++        "atomic64_try_cmpxchg",
++        "compare_exchange"
++    ))]
++    #[inline(always)]
++    pub fn cmpxchg<Ordering: ordering::Ordering>(
++        &self,
++        mut old: T,
++        new: T,
++        o: Ordering,
++    ) -> Result<T, T> {
++        // Note on code generation:
++        //
++        // try_cmpxchg() is used to implement cmpxchg(), and if the helper f=
+unctions are inlined,
++        // the compiler is able to figure out that branch is not needed if t=
+he users don't care
++        // about whether the operation succeeds or not. One exception is on =
+x86, due to commit
++        // 44fe84459faf ("locking/atomic: Fix atomic_try_cmpxchg() semantics=
+"), the
++        // atomic_try_cmpxchg() on x86 has a branch even if the caller doesn=
+'t care about the
++        // success of cmpxchg and only wants to use the old value. For examp=
+le, for code like:
++        //
++        //     let latest =3D x.cmpxchg(42, 64, Full).unwrap_or_else(|old| o=
+ld);
++        //
++        // It will still generate code:
++        //
++        //     movl    $0x40, %ecx
++        //     movl    $0x34, %eax
++        //     lock
++        //     cmpxchgl        %ecx, 0x4(%rsp)
++        //     jne     1f
++        //     2:
++        //     ...
++        //     1:  movl    %eax, %ecx
++        //     jmp 2b
++        //
++        // This might be "fixed" by introducing a try_cmpxchg_exclusive() th=
+at knows the "*old"
++        // location in the C function is always safe to write.
++        if self.try_cmpxchg(&mut old, new, o) {
++            Ok(old)
++        } else {
++            Err(old)
++        }
 +    }
-+}
 +
- // SAFETY: `i64` has the same size and alignment with itself, and is round-t=
-rip transmutable to
- // itself.
- unsafe impl super::AtomicType for i64 {
-     type Repr =3D i64;
- }
++    /// Atomic compare and exchange and returns whether the operation succee=
+ds.
++    ///
++    /// If `*self` =3D=3D `old`, atomically updates `*self` to `new`. Otherw=
+ise, `*self` is not
++    /// modified, `*old` is updated to the current value of `*self`.
++    ///
++    /// "Compare" and "Ordering" part are the same as [`Atomic::cmpxchg()`].
++    ///
++    /// Returns `true` means the cmpxchg succeeds otherwise returns `false`.
++    #[inline(always)]
++    fn try_cmpxchg<Ordering: ordering::Ordering>(&self, old: &mut T, new: T,=
+ _: Ordering) -> bool {
++        let mut tmp =3D into_repr(*old);
++        let new =3D into_repr(new);
 +
-+// SAFETY: The wrapping add result of two `i64`s is a valid `i64`.
-+unsafe impl super::AtomicAdd<i64> for i64 {
-+    fn rhs_into_delta(rhs: i64) -> i64 {
-+        rhs
++        // INVARIANT: `self.0` is a valid `T` after `atomic_try_cmpxchg*()` =
+because `new` is
++        // transmutable to `T`.
++        let ret =3D {
++            match Ordering::TYPE {
++                OrderingType::Full =3D> T::Repr::atomic_try_cmpxchg(&self.0,=
+ &mut tmp, new),
++                OrderingType::Acquire =3D> {
++                    T::Repr::atomic_try_cmpxchg_acquire(&self.0, &mut tmp, n=
+ew)
++                }
++                OrderingType::Release =3D> {
++                    T::Repr::atomic_try_cmpxchg_release(&self.0, &mut tmp, n=
+ew)
++                }
++                OrderingType::Relaxed =3D> {
++                    T::Repr::atomic_try_cmpxchg_relaxed(&self.0, &mut tmp, n=
+ew)
++                }
++            }
++        };
++
++        // SAFETY: `tmp` comes from reading `*self`, which is a valid `T` pe=
+r type invariants.
++        *old =3D unsafe { from_repr(tmp) };
++
++        ret
 +    }
 +}
 
