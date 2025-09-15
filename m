@@ -1,80 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-6593-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6594-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6779B571E7
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 09:49:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C408AB571E9
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 09:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8BD173010
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 07:49:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46EBF440EB3
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Sep 2025 07:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2313D2EA147;
-	Mon, 15 Sep 2025 07:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7252EA726;
+	Mon, 15 Sep 2025 07:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RjS55T9c";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t5ZE/Xhe"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xsbPI1hJ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eqLO0GS3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7178A2E62C0;
-	Mon, 15 Sep 2025 07:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD022E9EC6;
+	Mon, 15 Sep 2025 07:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757922528; cv=none; b=bl2jmoyO3UM5m1BD5gUQDpPnjxTtq/eXnmRR/wJ7Genh20NwHpb6eLXGiqaikEw9OrVuxfoq2hOoNbPDrbH1xF99LPAJvOwg4a9tP0g+5hwfiBsHcnoMsR1dqxJBkI9g+D6PGcZGGSd83c+p6ZPtUi4U4HLMHPIv19UFjRZydJo=
+	t=1757922530; cv=none; b=aTOOH53iXLfQXVxYZ8HfzRn2Z+CaMcPmt0/KJDxa/Hf3u+2weRRiGMgRyZL1Ox3yxF7GUK3Z8qOQdu+zkBTFlWlyhPkFqGTBJLRNOAXA0vw4oh9wBsGgWjVtaR4ffgFD3GoHG5XECNyXJv3OvgSDVhRKAXMWAbgPqtxdKVW+Dck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757922528; c=relaxed/simple;
-	bh=PE2IuOjESfFpotEp0L0OEXppTC4zRGqOAX4giiJNQQA=;
+	s=arc-20240116; t=1757922530; c=relaxed/simple;
+	bh=cRFeacIdV+vke4gYAty0BrVIG51RRaumIUUuVC+ZHeM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=FMgnUc8RcR8v+L/PaQrowWnAfdUt/4KwtH+qLCB3IVF2OHtGwQikdmF2ZvR2HKhWX5dRrx+2wANVew2fuNZg2iS65b8UC8mj83z94sHWmNy+sdkygKqI2iFOxEEsJNLwmCmA+ICiNVEtfbCNyIZ5UV7WEY0ANwpvwV5GKMYdIa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RjS55T9c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t5ZE/Xhe; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ie8r4CPK9HjG9OwSETFrbg8FsRWCgCbUVnt3lWijzfAY4drm4Oo0WdMJqg35QHGmCiM06pO6KaIFVWtlpLIUJrmbbm3FmlxWUOJUIwNdOz1928XJa9yIxcel8+44XXQMn23x9x0OhbybsBm1mrBjR5ooOvUeqka7VCiUBiY/oYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xsbPI1hJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eqLO0GS3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 15 Sep 2025 07:48:43 -0000
+Date: Mon, 15 Sep 2025 07:48:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1757922524;
+	s=2020; t=1757922525;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zG6BTM6jvvUylJi0dJDuOoICizOCFo6GiXgTDCZmyyc=;
-	b=RjS55T9cRlg7TJyDCBZKT5sDeDxchXANlW9OZDanTYFHw73Vzd0VJKmme4dg2kxSi1HWmp
-	0BEo47yEcHGmJEvbrdVZkIQLfxLvSWY/+MXRFP53qjd/oeVlzhhChjwfPtZpx6lc5IsvMB
-	d1nalMqBo7cCeYYn/Uo/VFsBCHk1Ie22+1i99R/MDS0H9NVB8IdNzJBtlg22cHfFC1yFf2
-	09K7klc6NxfcA7uqp5SrVKe6CWyHcwHq2LPU+MZ4GzeNiqU7g9Sq+uacPgeuxOpEPLC6+o
-	sPOmc0Fbcc2+GzOnmVp4EW+7tMjHF+0nWOt2UUc7hOzSMGL92Bxxp3kcEvC/aA==
+	bh=/NsnudQlIGip7aI27dISnQT82YSMpmb5P05hkUNHbho=;
+	b=xsbPI1hJMnd8GCpBjGOpdjZSUlT39LvGJqU/r2Nnsnbll2EpA2nap/jIVnmFdSeSvJ7q5p
+	CLWRWGKignW6LaPzepSU8xAdN0oCxUTmXERWc8Umy17pSRS9crYeJXg1eqJAvNmtYo7kz/
+	DU9ywQmDPwyk6cUPvn4dLnLxXVjgMAt/w8pGYvSrv2+BQGFa3TpMowRDQFX/ZaaJMWjAbj
+	M92rl2LVKhlBCjmafw976cw/TD9e1hj9FRDWMjIAkODEMslbDLqtrosyZAUXjvTbzlThpo
+	hizbpR4tifeVYA4U4LDcUtm4xfc+Cd4VNFRYzH38SFkzeU+9dZx/C+swHCQFIA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1757922524;
+	s=2020e; t=1757922525;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zG6BTM6jvvUylJi0dJDuOoICizOCFo6GiXgTDCZmyyc=;
-	b=t5ZE/XheWMWsLXX3iceGMrSI7r0rwWyOBDUK7W3naVHHVaKzJMt6EOSFDBoXF0ER19K1vh
-	wW+0yd+DTNTwArBA==
+	bh=/NsnudQlIGip7aI27dISnQT82YSMpmb5P05hkUNHbho=;
+	b=eqLO0GS3xjbM7ArbkRvJsvGqP6gRVnRdsp/yUhB7iVjpIYdZs6AFwyh9niEmsV6Zq/Kspr
+	JqumTuVSO+gZTTDg==
 From: "tip-bot2 for Gary Guo" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: locking/core] rust: make `Arc::into_unique_or_drop` associated function
+Subject: [tip: locking/core] rust: implement `kernel::sync::Refcount`
 Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Benno Lossin <lossin@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
- Elle Rhumsaa <elle@weathered-steel.dev>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250905044141.77868-12-boqun.feng@gmail.com>
-References: <20250905044141.77868-12-boqun.feng@gmail.com>
+ Alice Ryhl <aliceryhl@google.com>, Fiona Behrens <me@kloenk.dev>,
+ Benno Lossin <lossin@kernel.org>, Elle Rhumsaa <elle@weathered-steel.dev>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250905044141.77868-11-boqun.feng@gmail.com>
+References: <20250905044141.77868-11-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175792252340.709179.8168286407716631890.tip-bot2@tip-bot2>
+Message-ID: <175792252445.709179.5852196525061515505.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,84 +83,198 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     7487645f0b2d1a30590bafa7a977dc6661006d4f
-Gitweb:        https://git.kernel.org/tip/7487645f0b2d1a30590bafa7a977dc66610=
-06d4f
+Commit-ID:     bb38f35b35f9de0cebc4d62ea73482454e38cef3
+Gitweb:        https://git.kernel.org/tip/bb38f35b35f9de0cebc4d62ea73482454e3=
+8cef3
 Author:        Gary Guo <gary@garyguo.net>
-AuthorDate:    Thu, 04 Sep 2025 21:41:38 -07:00
+AuthorDate:    Thu, 04 Sep 2025 21:41:37 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 15 Sep 2025 09:38:35 +02:00
 
-rust: make `Arc::into_unique_or_drop` associated function
+rust: implement `kernel::sync::Refcount`
 
-Make `Arc::into_unique_or_drop` to become a mere associated function
-instead of a method (i.e. removing the `self` receiver).
+This is a wrapping layer of `include/linux/refcount.h`. Currently the
+kernel refcount has already been used in `Arc`, however it calls into
+FFI directly.
 
-It's a general convention for Rust smart pointers to avoid having
-methods defined on them, because if the pointee type has a method of the
-same name, then it is shadowed. This is normally for avoiding semver
-breakage, which isn't an issue for kernel codebase, but it's still
-generally a good practice to follow this rule, so that `ptr.foo()` would
-always be calling a method on the pointee type.
-
+[boqun: Add the missing <> for the link in comment]
 Signed-off-by: Gary Guo <gary@garyguo.net>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
 Reviewed-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
 Reviewed-by: Elle Rhumsaa <elle@weathered-steel.dev>
-Link: https://lore.kernel.org/r/20250723233312.3304339-3-gary@kernel.org
+Link: https://lore.kernel.org/r/20250723233312.3304339-2-gary@kernel.org
 ---
- rust/kernel/sync/arc.rs | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ rust/helpers/refcount.c      | 10 ++++-
+ rust/kernel/sync.rs          |  2 +-
+ rust/kernel/sync/refcount.rs | 98 +++++++++++++++++++++++++++++++++++-
+ 3 files changed, 110 insertions(+)
+ create mode 100644 rust/kernel/sync/refcount.rs
 
-diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-index 63a6676..4ee155b 100644
---- a/rust/kernel/sync/arc.rs
-+++ b/rust/kernel/sync/arc.rs
-@@ -321,7 +321,7 @@ impl<T: ?Sized> Arc<T> {
-     /// use kernel::sync::{Arc, UniqueArc};
-     ///
-     /// let arc =3D Arc::new(42, GFP_KERNEL)?;
--    /// let unique_arc =3D arc.into_unique_or_drop();
-+    /// let unique_arc =3D Arc::into_unique_or_drop(arc);
-     ///
-     /// // The above conversion should succeed since refcount of `arc` is 1.
-     /// assert!(unique_arc.is_some());
-@@ -337,18 +337,18 @@ impl<T: ?Sized> Arc<T> {
-     /// let arc =3D Arc::new(42, GFP_KERNEL)?;
-     /// let another =3D arc.clone();
-     ///
--    /// let unique_arc =3D arc.into_unique_or_drop();
-+    /// let unique_arc =3D Arc::into_unique_or_drop(arc);
-     ///
-     /// // The above conversion should fail since refcount of `arc` is >1.
-     /// assert!(unique_arc.is_none());
-     ///
-     /// # Ok::<(), Error>(())
-     /// ```
--    pub fn into_unique_or_drop(self) -> Option<Pin<UniqueArc<T>>> {
-+    pub fn into_unique_or_drop(this: Self) -> Option<Pin<UniqueArc<T>>> {
-         // We will manually manage the refcount in this method, so we disabl=
-e the destructor.
--        let me =3D ManuallyDrop::new(self);
-+        let this =3D ManuallyDrop::new(this);
-         // SAFETY: We own a refcount, so the pointer is still valid.
--        let refcount =3D unsafe { me.ptr.as_ref() }.refcount.get();
-+        let refcount =3D unsafe { this.ptr.as_ref() }.refcount.get();
+diff --git a/rust/helpers/refcount.c b/rust/helpers/refcount.c
+index d6adbd2..d175898 100644
+--- a/rust/helpers/refcount.c
++++ b/rust/helpers/refcount.c
+@@ -7,11 +7,21 @@ refcount_t rust_helper_REFCOUNT_INIT(int n)
+ 	return (refcount_t)REFCOUNT_INIT(n);
+ }
 =20
-         // If the refcount reaches a non-zero value, then we have destroyed =
-this `Arc` and will
-         // return without further touching the `Arc`. If the refcount reache=
-s zero, then there are
-@@ -365,7 +365,7 @@ impl<T: ?Sized> Arc<T> {
-             // must pin the `UniqueArc` because the values was previously in=
- an `Arc`, and they pin
-             // their values.
-             Some(Pin::from(UniqueArc {
--                inner: ManuallyDrop::into_inner(me),
-+                inner: ManuallyDrop::into_inner(this),
-             }))
-         } else {
-             None
++void rust_helper_refcount_set(refcount_t *r, int n)
++{
++	refcount_set(r, n);
++}
++
+ void rust_helper_refcount_inc(refcount_t *r)
+ {
+ 	refcount_inc(r);
+ }
+=20
++void rust_helper_refcount_dec(refcount_t *r)
++{
++	refcount_dec(r);
++}
++
+ bool rust_helper_refcount_dec_and_test(refcount_t *r)
+ {
+ 	return refcount_dec_and_test(r);
+diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+index bf8943c..cf5b638 100644
+--- a/rust/kernel/sync.rs
++++ b/rust/kernel/sync.rs
+@@ -19,6 +19,7 @@ pub mod lock;
+ mod locked_by;
+ pub mod poll;
+ pub mod rcu;
++mod refcount;
+=20
+ pub use arc::{Arc, ArcBorrow, UniqueArc};
+ pub use completion::Completion;
+@@ -27,6 +28,7 @@ pub use lock::global::{global_lock, GlobalGuard, GlobalLock=
+, GlobalLockBackend,=20
+ pub use lock::mutex::{new_mutex, Mutex, MutexGuard};
+ pub use lock::spinlock::{new_spinlock, SpinLock, SpinLockGuard};
+ pub use locked_by::LockedBy;
++pub use refcount::Refcount;
+=20
+ /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
+ #[repr(transparent)]
+diff --git a/rust/kernel/sync/refcount.rs b/rust/kernel/sync/refcount.rs
+new file mode 100644
+index 0000000..cc1a80a
+--- /dev/null
++++ b/rust/kernel/sync/refcount.rs
+@@ -0,0 +1,98 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Atomic reference counting.
++//!
++//! C header: [`include/linux/refcount.h`](srctree/include/linux/refcount.h)
++
++use crate::build_assert;
++use crate::types::Opaque;
++
++/// Atomic reference counter.
++///
++/// This type is conceptually an atomic integer, but provides saturation sem=
+antics compared to
++/// normal atomic integers. Values in the negative range when viewed as a si=
+gned integer are
++/// saturation (bad) values. For details about the saturation semantics, ple=
+ase refer to top of
++/// [`include/linux/refcount.h`](srctree/include/linux/refcount.h).
++///
++/// Wraps the kernel's C `refcount_t`.
++#[repr(transparent)]
++pub struct Refcount(Opaque<bindings::refcount_t>);
++
++impl Refcount {
++    /// Construct a new [`Refcount`] from an initial value.
++    ///
++    /// The initial value should be non-saturated.
++    #[inline]
++    pub fn new(value: i32) -> Self {
++        build_assert!(value >=3D 0, "initial value saturated");
++        // SAFETY: There are no safety requirements for this FFI call.
++        Self(Opaque::new(unsafe { bindings::REFCOUNT_INIT(value) }))
++    }
++
++    #[inline]
++    fn as_ptr(&self) -> *mut bindings::refcount_t {
++        self.0.get()
++    }
++
++    /// Set a refcount's value.
++    #[inline]
++    pub fn set(&self, value: i32) {
++        // SAFETY: `self.as_ptr()` is valid.
++        unsafe { bindings::refcount_set(self.as_ptr(), value) }
++    }
++
++    /// Increment a refcount.
++    ///
++    /// It will saturate if overflows and `WARN`. It will also `WARN` if the=
+ refcount is 0, as this
++    /// represents a possible use-after-free condition.
++    ///
++    /// Provides no memory ordering, it is assumed that caller already has a=
+ reference on the
++    /// object.
++    #[inline]
++    pub fn inc(&self) {
++        // SAFETY: self is valid.
++        unsafe { bindings::refcount_inc(self.as_ptr()) }
++    }
++
++    /// Decrement a refcount.
++    ///
++    /// It will `WARN` on underflow and fail to decrement when saturated.
++    ///
++    /// Provides release memory ordering, such that prior loads and stores a=
+re done
++    /// before.
++    #[inline]
++    pub fn dec(&self) {
++        // SAFETY: `self.as_ptr()` is valid.
++        unsafe { bindings::refcount_dec(self.as_ptr()) }
++    }
++
++    /// Decrement a refcount and test if it is 0.
++    ///
++    /// It will `WARN` on underflow and fail to decrement when saturated.
++    ///
++    /// Provides release memory ordering, such that prior loads and stores a=
+re done
++    /// before, and provides an acquire ordering on success such that memory=
+ deallocation
++    /// must come after.
++    ///
++    /// Returns true if the resulting refcount is 0, false otherwise.
++    ///
++    /// # Notes
++    ///
++    /// A common pattern of using `Refcount` is to free memory when the refe=
+rence count reaches
++    /// zero. This means that the reference to `Refcount` could become inval=
+id after calling this
++    /// function. This is fine as long as the reference to `Refcount` is no =
+longer used when this
++    /// function returns `false`. It is not necessary to use raw pointers in=
+ this scenario, see
++    /// <https://github.com/rust-lang/rust/issues/55005>.
++    #[inline]
++    #[must_use =3D "use `dec` instead if you do not need to test if it is 0"]
++    pub fn dec_and_test(&self) -> bool {
++        // SAFETY: `self.as_ptr()` is valid.
++        unsafe { bindings::refcount_dec_and_test(self.as_ptr()) }
++    }
++}
++
++// SAFETY: `refcount_t` is thread-safe.
++unsafe impl Send for Refcount {}
++
++// SAFETY: `refcount_t` is thread-safe.
++unsafe impl Sync for Refcount {}
 
