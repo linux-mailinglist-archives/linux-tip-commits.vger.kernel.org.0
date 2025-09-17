@@ -1,80 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-6669-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6670-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CD5B7CA17
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Sep 2025 14:06:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E14B7CFAC
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Sep 2025 14:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41422323997
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Sep 2025 09:39:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE06E487BBE
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Sep 2025 11:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9782330DD28;
-	Wed, 17 Sep 2025 09:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8A82F5A2A;
+	Wed, 17 Sep 2025 11:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zcwWvb6k";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bZthe3oi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OAJzNkEC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ASGw3wUD"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75592D879A;
-	Wed, 17 Sep 2025 09:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8F4BA45;
+	Wed, 17 Sep 2025 11:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758101935; cv=none; b=XLp9jT0WqgL5hw/rfrudFZ5lnKJhm09nwrzqH7TfA3s93OSIJgMKYY54D7IA/7TEatiQ3o+ioez/qgKUjvswU9b5DCaV27TnpPK3I462rj82CxxGVXQopeJOPopLfS5CpcTKS931K8N62EJD04IMhPVl8XoPPLaL6BH1vCz++io=
+	t=1758109132; cv=none; b=jGIFkwaKcGRZxLeO9ItkCb9pbNgumaiv4PCk9/VSX36VSJ403mbTZtcVjl2YaJ8cE0Uafa6dcge77ytp7cueXxhkk+k2QAzJRX1vH6Jq4929DAV3duxoCaR3l4d19EtFhcPiKx+P1UZ2CRSCEHqgKYFtL2X74Vbt82g/v+BFDW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758101935; c=relaxed/simple;
-	bh=rX1dgYtKBUMjgmyK/uM4zn2/OjNpqCLEsKzNYMkddfU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=rUCMqiK+VuphAmDg8ltKOOvDOYyc5Q1dlWqdQ8gex29DrIbAUI3zb05Eu3Cen6mlR1atnHuvp5GIjpu100IVY5Ezsy5bhdaZ2007zKLqwfCHcyt0+QIhB+ZedYmwI8SzSgkEyyULsqY5iLYfCsa0dE+I1QvaQOLEUmwb54X5Zlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zcwWvb6k; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bZthe3oi; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1758109132; c=relaxed/simple;
+	bh=Fu294uvDHkvaxx9vtTFd3tnCDy6Uee/EKf+YTIELVlw=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=oZWhSAm5wuJv2LjcTsYoY0KaV654iObYjzOZP/vpyO8TQFw8fThGxlrDT53ednyXltmYDuHsFMDAVDE98/fKsmdBY2/JaydTpkOQ0TsWn4TqgpRFzHmS92XcTjBTQW4ZcveI/jXhTHu9hAGVwXSHBMB3EIjvc2K/sRr3Ui6kocw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OAJzNkEC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ASGw3wUD; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 17 Sep 2025 09:38:48 -0000
+Date: Wed, 17 Sep 2025 11:38:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758101930;
+	s=2020; t=1758109128;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwfAbh3Lrqs081eg/UWoHGxmf2ckmF7L05dKh2iA0Uo=;
-	b=zcwWvb6kUsalzJzNgnIINnBnLFygJw50/JxJIwREMd5qfTejqhRxQGU5d18oauo4BLd/VG
-	hyYTHPa3N1pyK5QDOxFuPjH0CMi+/KDNjRdXXKjzW3j+NtuOwWkvqGPFYUfz5P+rEbn2Ep
-	aeq+4dZm83r15u7ZVviC7A/ORzkXmUyDXB5LybcqqhYOSuFAcREoSwOPxuaH/aSNZQAn8u
-	DNh6Tkl7vAOMMt5/suFrMEcDVhPtTmNr/3AK8N0WRxkgQ+CDDk+1i/1/LFA94Wjv6eCt3k
-	Q9ZKokV+BtujfJFqGz5AmhtiITInWKqL559o83Exqm9TYl7exRDzuwtjWo04Eg==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=+RsCEHSSq0tvUC9rutGfPfSrwIgdcINQECQvTyB3HeA=;
+	b=OAJzNkEChMKviWKo2yxY80rX3YUr/9FnsagXr+xi4n+/MV+kw0tSuvNzvoiH7Br0sgAjvD
+	5x+itlLDW6O7lnzvOgKhtaAx9EVtKZ1wQNcLkuHjKNl/wHsNppG3izfL92gMiwgxjnPDAD
+	r3+8Cl3JmPHzwv7Ij8attrzjDtVB7GYDoBLh9o1Mt66u5LLF0bhsnSSbDpR7VEpy3x6+l8
+	rh9bbktZetzZIqydVYt13StSKLyVUw36ssg2RA+XBgExCXILx3HWYXaP4EK+tEu2Wr0Qrk
+	xQ+qa0THyHaNs8PzemZHpGzuA7h5Kg4bYCH6DcU4UjUXHSLOJr+gdatLlY0okQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758101930;
+	s=2020e; t=1758109128;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jwfAbh3Lrqs081eg/UWoHGxmf2ckmF7L05dKh2iA0Uo=;
-	b=bZthe3oiZtEg9hnaG8vhaO5ONc0hCuE76PoRWXfFtzYw6xRfTnjxSN065rxjE/K6CpiggQ
-	214rOYm3ihF3NOBQ==
-From: "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=+RsCEHSSq0tvUC9rutGfPfSrwIgdcINQECQvTyB3HeA=;
+	b=ASGw3wUDIxEvC9VrjxGR/032dOMDTbpSim6DOgEyeBHDQkreLnD937h5vk/mRsliVPS5au
+	X5S2A5Pac9QDXeDg==
+From: "tip-bot2 for Fernand Sieber" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] fs/resctrl: Fix counter auto-assignment on mkdir
- with mbm_event enabled
-Cc: Babu Moger <babu.moger@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
+Subject: [tip: sched/urgent] sched/fair: Forfeit vruntime on yield()
+Cc: Fernand Sieber <sieberf@amazon.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To:
- <9788ef37c17a9559a08019b694d2a47b507aa4ac.1758043391.git.babu.moger@amd.com>
-References:
- <9788ef37c17a9559a08019b694d2a47b507aa4ac.1758043391.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175810192896.709179.16893129735281399809.tip-bot2@tip-bot2>
+Message-ID: <175810912711.709179.3678143545870319102.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,68 +72,53 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/cache branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     dd86b69d20fb9fa7e941ed01ff05f1e662fcc3ff
-Gitweb:        https://git.kernel.org/tip/dd86b69d20fb9fa7e941ed01ff05f1e662f=
-cc3ff
-Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Tue, 16 Sep 2025 12:25:49 -05:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 17 Sep 2025 11:31:12 +02:00
+Commit-ID:     78f8764d34c0a1912ce209bb2a428a94d062707f
+Gitweb:        https://git.kernel.org/tip/78f8764d34c0a1912ce209bb2a428a94d06=
+2707f
+Author:        Fernand Sieber <sieberf@amazon.com>
+AuthorDate:    Tue, 16 Sep 2025 16:02:28 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 16 Sep 2025 16:44:12 +02:00
 
-fs/resctrl: Fix counter auto-assignment on mkdir with mbm_event enabled
+sched/fair: Forfeit vruntime on yield()
 
-rdt_resource::resctrl_mon::mbm_assign_on_mkdir determines if a counter will
-automatically be assigned to an RMID, MBM event pair when its associated
-monitor group is created via mkdir.
+If a task yields, the scheduler may decide to pick it again. The task in
+turn may decide to yield immediately or shortly after, leading to a tight
+loop of yields.
 
-Testing shows that counters are always automatically assigned to new monitor
-groups, whether mbm_assign_on_mkdir is set or not.
+If there's another runnable task as this point, the deadline will be
+increased by the slice at each loop. This can cause the deadline to runaway
+pretty quickly, and subsequent elevated run delays later on as the task
+doesn't get picked again. The reason the scheduler can pick the same task
+again and again despite its deadline increasing is because it may be the
+only eligible task at that point.
 
-To support automatic counter assignment the check for mbm_assign_on_mkdir
-should be in rdtgroup_assign_cntrs() that assigns counters during monitor
-group creation. Instead, the check for mbm_assign_on_mkdir is in
-rdtgroup_unassign_cntrs() that is called on monitor group deletion from where
-counters should always be unassigned, whether mbm_assign_on_mkdir is set or
-not.
+Fix this by making the task forfeiting its remaining vruntime and pushing
+the deadline one slice ahead. This implements yield behavior more
+authentically.
 
-Fix automatic counter assignment by moving the mbm_assign_on_mkdir check from
-rdtgroup_unassign_cntrs() to rdtgroup_assign_cntrs().
-
-  [ bp: Replace commit message with Reinette's version. ]
-
-Fixes: ef712fe97ec57 ("fs/resctrl: Auto assign counters on mkdir and clean up=
- on group removal")
-Signed-off-by: Babu Moger <babu.moger@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Fixes: 147f3efaa24182 ("sched/fair: Implement an EEVDF-like scheduling  polic=
+y")
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250401123622.584018-1-sieberf@amazon.com
+Link: https://lore.kernel.org/r/20250911095113.203439-1-sieberf@amazon.com
 ---
- fs/resctrl/monitor.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/sched/fair.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/resctrl/monitor.c b/fs/resctrl/monitor.c
-index 50c2446..4076336 100644
---- a/fs/resctrl/monitor.c
-+++ b/fs/resctrl/monitor.c
-@@ -1200,7 +1200,8 @@ void rdtgroup_assign_cntrs(struct rdtgroup *rdtgrp)
- {
- 	struct rdt_resource *r =3D resctrl_arch_get_resource(RDT_RESOURCE_L3);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index b173a05..c4d91e8 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8921,6 +8921,7 @@ static void yield_task_fair(struct rq *rq)
+ 	 */
+ 	rq_clock_skip_update(rq);
 =20
--	if (!r->mon_capable || !resctrl_arch_mbm_cntr_assign_enabled(r))
-+	if (!r->mon_capable || !resctrl_arch_mbm_cntr_assign_enabled(r) ||
-+	    !r->mon.mbm_assign_on_mkdir)
- 		return;
++	se->vruntime =3D se->deadline;
+ 	se->deadline +=3D calc_delta_fair(se->slice, se);
+ }
 =20
- 	if (resctrl_is_mon_event_enabled(QOS_L3_MBM_TOTAL_EVENT_ID))
-@@ -1258,8 +1259,7 @@ void rdtgroup_unassign_cntrs(struct rdtgroup *rdtgrp)
- {
- 	struct rdt_resource *r =3D resctrl_arch_get_resource(RDT_RESOURCE_L3);
-=20
--	if (!r->mon_capable || !resctrl_arch_mbm_cntr_assign_enabled(r) ||
--	    !r->mon.mbm_assign_on_mkdir)
-+	if (!r->mon_capable || !resctrl_arch_mbm_cntr_assign_enabled(r))
- 		return;
-=20
- 	if (resctrl_is_mon_event_enabled(QOS_L3_MBM_TOTAL_EVENT_ID))
 
