@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-6676-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6677-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2C6B8339D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Sep 2025 08:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E01A1B833A0
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Sep 2025 08:57:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A8CF1B2865D
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Sep 2025 06:57:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0578E1B28652
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Sep 2025 06:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C401917ED;
-	Thu, 18 Sep 2025 06:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3BC2DE6EE;
+	Thu, 18 Sep 2025 06:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vNEeGii1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0+3iP3ua"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DRUCXd14";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/HRnhurr"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FCC2E2EF2;
-	Thu, 18 Sep 2025 06:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E65B2E2EF8;
+	Thu, 18 Sep 2025 06:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758178622; cv=none; b=tevV74QnlAw5lUzcbC/zI9CSz+Yge+Euj6CLcIzXCqHn405jW4LISSuYqL2wiDxydVNpRL8WiRsitGR29SILv34z2nC9DeXN/uPe0cyGxAnHCulz7YzxmO/85fIAzE7ZLSCUjIxO4TsLM1NjXy5mMHL0kEjbh9iIIzXOnzBl+rE=
+	t=1758178623; cv=none; b=bBtvddyObno3YE2zf9uxB00nvJBtLtR1kdJhASvpEARDzETATQgXKH3zwixVcM27Xqz+MpX5/ypaUsteBebV1OX6UwIuvnpw7EQf5W6FDw2MA1EqJp5QX7/JkRfaqaiaqWQ+9gC6iaicmJr0H8q9amPPhd24NyUiMAB58F48IjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758178622; c=relaxed/simple;
-	bh=zAYD7tDV592qw+j/krJ5rgIfIarGsWgaoXlOQYMUJPE=;
+	s=arc-20240116; t=1758178623; c=relaxed/simple;
+	bh=GYBvo8kuRGh+wdARuJtmqGpzVW5iaIuxfzugwLVhiS8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=BGmxwI4VlhJAFxsxvd5nak6H1EM3igHQpZAUyDV9PEbK4zy/aQiBOeCmrD1METHezuLoH7003TjFOvNFWw69FNebhrucBagFeuYwFN1IVRbfQRsBGyTSS4rs7HFPfDsck0Yt2s+6Izi7MgG8zpsTG0EVZpotK3mbEY9luOYZFNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vNEeGii1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0+3iP3ua; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Yg5R6gy7BsTRmV9KnAPpFkD96cItdxeuo0Q/hpwLFmcPqEUOQfVE6/w4CthvbQTzh3PRhNcprCnF/VoeY8+e2C7uH3EJqW7swj2+gBacl32CPl5hi3XLyJDUmeWsGQN70BUBHNpUf2f+ZqsbP5Yl5DExMz0NQ9GBuYQnlf3pC5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DRUCXd14; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/HRnhurr; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 18 Sep 2025 06:56:54 -0000
+Date: Thu, 18 Sep 2025 06:56:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758178618;
+	s=2020; t=1758178619;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ABM4Nf7Z+UJub0iX30CSyN2pItTmPzPPfM7EMbQPMi8=;
-	b=vNEeGii1fHEI6SsYsDhHzK3nP8CD9h3Wwi44oZx0Xg3PTs0nMA8nHL8iejeDmj82LZgeEz
-	8Y7VdNBkdH64WaAhoa2pZb5aJF6UlPzgsawrhZCCjqfllaFReI7zaq/ibpag2XcD0HI0a2
-	4a33BL3GxiQnHXDX3H38hdEr5pz+hmSViQwegLoCQl9FBE3y/p8Lewqu3YUiCBUnYiv5GE
-	b9dGOZ45+6Wvr0ugFYTWCxBY/afaM58BlcALcrTyj113yLPGhS21vRCueAgOjPVVdEI0lk
-	IqEzGT8vHdv390d+2Kv4C+dEEEHXcWDWTZHmhMR+SvEdmg7Q+bcHRo5tlP/Ltg==
+	bh=mdrnKjbboSxyPICJLeXJidWy75qw+5AXlMOdmsPBku0=;
+	b=DRUCXd14PMbcu7e2sIs6a8Nc8wngnoX969U/tnESrNvowp4UYtWrGfDciAx5rorYFjoWme
+	pTbQnM/ibpLaNyXh3MccEd4BlQSH8MTTTiTttiS7gXOpMKLuk+ZabjIwmst/ek/jkLcl1Y
+	c0WeMZu3ZfnBpT4EjYcSHsy6MFNyyHYod6+nFBlMNzHmP0c4xsOUGc2xKt3Z7ADEqLfiib
+	m+SSJ6+wcWOgOg14nwMO+qz6CGXuHsnozvI+gWGKm6/07Nsc9E2KpZeg7Tch6PLjhSn9Ni
+	TJ6t11fa4/rBafFhbd9l0tXTFR3pDvYx6t5cxokKj+o+Jfs5mfAhstPHppc0Yg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758178618;
+	s=2020e; t=1758178619;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ABM4Nf7Z+UJub0iX30CSyN2pItTmPzPPfM7EMbQPMi8=;
-	b=0+3iP3ualFtTbpWcgElTLILSK5PVmu+p9sZYazq7e71ReiLfs6Q67beltpfZCkNrH5Sf1d
-	0rKHSzSm0UIw7UBA==
+	bh=mdrnKjbboSxyPICJLeXJidWy75qw+5AXlMOdmsPBku0=;
+	b=/HRnhurrP2Q4GlSdAO4OPeG3yvdhokHc9Ibw9io11sal2lP2jhiFdAhsBbAWK3qcD96c9R
+	iVDcykkvuPhjy4AA==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/deadline: Fix dl_server behaviour
+Subject: [tip: sched/urgent] sched/deadline: Fix dl_server getting stuck
 Cc: John Stultz <jstultz@google.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250917122616.GG1386988@noisy.programming.kicks-ass.net>
-References: <20250917122616.GG1386988@noisy.programming.kicks-ass.net>
+In-Reply-To: <20250916110155.GH3245006@noisy.programming.kicks-ass.net>
+References: <20250916110155.GH3245006@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175817861437.709179.10913499403372809816.tip-bot2@tip-bot2>
+Message-ID: <175817861820.709179.10538516755307778527.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,35 +81,43 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     2dcbcce9bfac6ddc2e2f9243fa846a875371de79
-Gitweb:        https://git.kernel.org/tip/2dcbcce9bfac6ddc2e2f9243fa846a87537=
-1de79
+Commit-ID:     077e1e2e0015e5ba6538d1c5299fb299a3a92d60
+Gitweb:        https://git.kernel.org/tip/077e1e2e0015e5ba6538d1c5299fb299a3a=
+92d60
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 17 Sep 2025 12:03:20 +02:00
+AuthorDate:    Tue, 16 Sep 2025 23:02:41 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 18 Sep 2025 08:50:05 +02:00
 
-sched/deadline: Fix dl_server behaviour
+sched/deadline: Fix dl_server getting stuck
 
-John reported undesirable behaviour with the dl_server since commit:
-cccb45d7c4295 ("sched/deadline: Less agressive dl_server handling").
+John found it was easy to hit lockup warnings when running locktorture
+on a 2 CPU VM, which he bisected down to: commit cccb45d7c429
+("sched/deadline: Less agressive dl_server handling").
 
-When starving fair tasks on purpose (starting spinning FIFO tasks),
-his fair workload, which often goes (briefly) idle, would delay fair
-invocations for a second, running one invocation per second was both
-unexpected and terribly slow.
+While debugging it seems there is a chance where we end up with the
+dl_server dequeued, with dl_se->dl_server_active. This causes
+dl_server_start() to return without enqueueing the dl_server, thus it
+fails to run when RT tasks starve the cpu.
 
-The reason this happens is that when dl_se->server_pick_task() returns
-NULL, indicating no runnable tasks, it would yield, pushing any later
-jobs out a whole period (1 second).
+When this happens, dl_server_timer() catches the
+'!dl_se->server_has_tasks(dl_se)' case, which then calls
+replenish_dl_entity() and dl_server_stopped() and finally return
+HRTIMER_NO_RESTART.
 
-Instead simply stop the server. This should restore behaviour in that
-a later wakeup (which restarts the server) will be able to continue
-running (subject to the CBS wakeup rules).
+This ends in no new timer and also no enqueue, leaving the dl_server
+'dead', allowing starvation.
 
-Notably, this does not re-introduce the behaviour cccb45d7c4295 set
-out to solve, any start/stop cycle is naturally throttled by the timer
-period (no active cancel).
+What should have happened is for the bandwidth timer to start the
+zero-laxity timer, which in turn would enqueue the dl_server and cause
+dl_se->server_pick_task() to be called -- which will stop the
+dl_server if no fair tasks are observed for a whole period.
+
+IOW, it is totally irrelevant if there are fair tasks at the moment of
+bandwidth refresh.
+
+This removes all dl_se->server_has_tasks() users, so remove the whole
+thing.
 
 Fixes: cccb45d7c4295 ("sched/deadline: Less agressive dl_server handling")
 Reported-by: John Stultz <jstultz@google.com>
@@ -117,121 +125,127 @@ Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: John Stultz <jstultz@google.com>
 ---
  include/linux/sched.h   |  1 -
- kernel/sched/deadline.c | 23 ++---------------------
- kernel/sched/sched.h    | 33 +++++++++++++++++++++++++++++++--
- 3 files changed, 33 insertions(+), 24 deletions(-)
+ kernel/sched/deadline.c | 12 +-----------
+ kernel/sched/fair.c     |  7 +------
+ kernel/sched/sched.h    |  4 ----
+ 4 files changed, 2 insertions(+), 22 deletions(-)
 
 diff --git a/include/linux/sched.h b/include/linux/sched.h
-index f89313b..e4ce0a7 100644
+index f8188b8..f89313b 100644
 --- a/include/linux/sched.h
 +++ b/include/linux/sched.h
-@@ -706,7 +706,6 @@ struct sched_dl_entity {
- 	unsigned int			dl_defer	  : 1;
- 	unsigned int			dl_defer_armed	  : 1;
- 	unsigned int			dl_defer_running  : 1;
--	unsigned int			dl_server_idle    : 1;
+@@ -733,7 +733,6 @@ struct sched_dl_entity {
+ 	 * runnable task.
+ 	 */
+ 	struct rq			*rq;
+-	dl_server_has_tasks_f		server_has_tasks;
+ 	dl_server_pick_f		server_pick_task;
 =20
- 	/*
- 	 * Bandwidth enforcement timer. Each -deadline task has its
+ #ifdef CONFIG_RT_MUTEXES
 diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 5a5080b..72c1f72 100644
+index f253012..5a5080b 100644
 --- a/kernel/sched/deadline.c
 +++ b/kernel/sched/deadline.c
-@@ -1571,10 +1571,8 @@ void dl_server_update_idle_time(struct rq *rq, struct =
-task_struct *p)
- void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec)
+@@ -875,7 +875,7 @@ static void replenish_dl_entity(struct sched_dl_entity *d=
+l_se)
+ 	 */
+ 	if (dl_se->dl_defer && !dl_se->dl_defer_running &&
+ 	    dl_time_before(rq_clock(dl_se->rq), dl_se->deadline - dl_se->runtime)) {
+-		if (!is_dl_boosted(dl_se) && dl_se->server_has_tasks(dl_se)) {
++		if (!is_dl_boosted(dl_se)) {
+=20
+ 			/*
+ 			 * Set dl_se->dl_defer_armed and dl_throttled variables to
+@@ -1152,8 +1152,6 @@ static void __push_dl_task(struct rq *rq, struct rq_fla=
+gs *rf)
+ /* a defer timer will not be reset if the runtime consumed was < dl_server_m=
+in_res */
+ static const u64 dl_server_min_res =3D 1 * NSEC_PER_MSEC;
+=20
+-static bool dl_server_stopped(struct sched_dl_entity *dl_se);
+-
+ static enum hrtimer_restart dl_server_timer(struct hrtimer *timer, struct sc=
+hed_dl_entity *dl_se)
  {
- 	/* 0 runtime =3D fair server disabled */
--	if (dl_se->dl_runtime) {
--		dl_se->dl_server_idle =3D 0;
-+	if (dl_se->dl_runtime)
- 		update_curr_dl_se(dl_se->rq, dl_se, delta_exec);
--	}
+ 	struct rq *rq =3D rq_of_dl_se(dl_se);
+@@ -1171,12 +1169,6 @@ static enum hrtimer_restart dl_server_timer(struct hrt=
+imer *timer, struct sched_
+ 		if (!dl_se->dl_runtime)
+ 			return HRTIMER_NORESTART;
+=20
+-		if (!dl_se->server_has_tasks(dl_se)) {
+-			replenish_dl_entity(dl_se);
+-			dl_server_stopped(dl_se);
+-			return HRTIMER_NORESTART;
+-		}
+-
+ 		if (dl_se->dl_defer_armed) {
+ 			/*
+ 			 * First check if the server could consume runtime in background.
+@@ -1625,11 +1617,9 @@ static bool dl_server_stopped(struct sched_dl_entity *=
+dl_se)
  }
 =20
- void dl_server_start(struct sched_dl_entity *dl_se)
-@@ -1602,20 +1600,6 @@ void dl_server_stop(struct sched_dl_entity *dl_se)
- 	dl_se->dl_server_active =3D 0;
- }
-=20
--static bool dl_server_stopped(struct sched_dl_entity *dl_se)
--{
--	if (!dl_se->dl_server_active)
--		return true;
--
--	if (dl_se->dl_server_idle) {
--		dl_server_stop(dl_se);
--		return true;
--	}
--
--	dl_se->dl_server_idle =3D 1;
--	return false;
--}
--
  void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
+-		    dl_server_has_tasks_f has_tasks,
  		    dl_server_pick_f pick_task)
  {
-@@ -2384,10 +2368,7 @@ again:
- 	if (dl_server(dl_se)) {
- 		p =3D dl_se->server_pick_task(dl_se);
- 		if (!p) {
--			if (!dl_server_stopped(dl_se)) {
--				dl_se->dl_yielded =3D 1;
--				update_curr_dl_se(rq, dl_se, 0);
--			}
-+			dl_server_stop(dl_se);
- 			goto again;
- 		}
- 		rq->dl_server =3D dl_se;
+ 	dl_se->rq =3D rq;
+-	dl_se->server_has_tasks =3D has_tasks;
+ 	dl_se->server_pick_task =3D pick_task;
+ }
+=20
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index c4d91e8..59d7dc9 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8859,11 +8859,6 @@ static struct task_struct *__pick_next_task_fair(struc=
+t rq *rq, struct task_stru
+ 	return pick_next_task_fair(rq, prev, NULL);
+ }
+=20
+-static bool fair_server_has_tasks(struct sched_dl_entity *dl_se)
+-{
+-	return !!dl_se->rq->cfs.nr_queued;
+-}
+-
+ static struct task_struct *fair_server_pick_task(struct sched_dl_entity *dl_=
+se)
+ {
+ 	return pick_task_fair(dl_se->rq);
+@@ -8875,7 +8870,7 @@ void fair_server_init(struct rq *rq)
+=20
+ 	init_dl_entity(dl_se);
+=20
+-	dl_server_init(dl_se, rq, fair_server_has_tasks, fair_server_pick_task);
++	dl_server_init(dl_se, rq, fair_server_pick_task);
+ }
+=20
+ /*
 diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index f10d627..cf2109b 100644
+index be9745d..f10d627 100644
 --- a/kernel/sched/sched.h
 +++ b/kernel/sched/sched.h
-@@ -371,10 +371,39 @@ extern s64 dl_scaled_delta_exec(struct rq *rq, struct s=
-ched_dl_entity *dl_se, s6
-  *   dl_server_update() -- called from update_curr_common(), propagates runt=
-ime
-  *                         to the server.
+@@ -365,9 +365,6 @@ extern s64 dl_scaled_delta_exec(struct rq *rq, struct sch=
+ed_dl_entity *dl_se, s6
   *
-- *   dl_server_start()
-- *   dl_server_stop()  -- start/stop the server when it has (no) tasks.
-+ *   dl_server_start() -- start the server when it has tasks; it will stop
-+ *			  automatically when there are no more tasks, per
-+ *			  dl_se::server_pick() returning NULL.
-+ *
-+ *   dl_server_stop() -- (force) stop the server; use when updating
-+ *                       parameters.
+  *   dl_se::rq -- runqueue we belong to.
   *
-  *   dl_server_init() -- initializes the server.
-+ *
-+ * When started the dl_server will (per dl_defer) schedule a timer for its
-+ * zero-laxity point -- that is, unlike regular EDF tasks which run ASAP, a
-+ * server will run at the very end of its period.
-+ *
-+ * This is done such that any runtime from the target class can be accounted
-+ * against the server -- through dl_server_update() above -- such that when =
-it
-+ * becomes time to run, it might already be out of runtime and get deferred
-+ * until the next period. In this case dl_server_timer() will alternate
-+ * between defer and replenish but never actually enqueue the server.
-+ *
-+ * Only when the target class does not manage to exhaust the server's runtime
-+ * (there's actualy starvation in the given period), will the dl_server get =
-on
-+ * the runqueue. Once queued it will pick tasks from the target class and run
-+ * them until either its runtime is exhaused, at which point its back to
-+ * dl_server_timer, or until there are no more tasks to run, at which point
-+ * the dl_server stops itself.
-+ *
-+ * By stopping at this point the dl_server retains bandwidth, which, if a new
-+ * task wakes up imminently (starting the server again), can be used --
-+ * subject to CBS wakeup rules -- without having to wait for the next period.
-+ *
-+ * Additionally, because of the dl_defer behaviour the start/stop behaviour =
-is
-+ * naturally thottled to once per period, avoiding high context switch
-+ * workloads from spamming the hrtimer program/cancel paths.
-  */
- extern void dl_server_update(struct sched_dl_entity *dl_se, s64 delta_exec);
+- *   dl_se::server_has_tasks() -- used on bandwidth enforcement; we 'stop' t=
+he
+- *                                server when it runs out of tasks to run.
+- *
+  *   dl_se::server_pick() -- nested pick_next_task(); we yield the period if=
+ this
+  *                           returns NULL.
+  *
+@@ -383,7 +380,6 @@ extern void dl_server_update(struct sched_dl_entity *dl_s=
+e, s64 delta_exec);
  extern void dl_server_start(struct sched_dl_entity *dl_se);
+ extern void dl_server_stop(struct sched_dl_entity *dl_se);
+ extern void dl_server_init(struct sched_dl_entity *dl_se, struct rq *rq,
+-		    dl_server_has_tasks_f has_tasks,
+ 		    dl_server_pick_f pick_task);
+ extern void sched_init_dl_servers(void);
+=20
 
