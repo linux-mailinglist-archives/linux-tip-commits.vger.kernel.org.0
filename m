@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-6682-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6683-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF404B86E84
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Sep 2025 22:26:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A3AB8B262
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Sep 2025 21:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3E657C2B2E
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Sep 2025 20:26:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43F31C83804
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Sep 2025 19:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FD831D72D;
-	Thu, 18 Sep 2025 20:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEA22C1596;
+	Fri, 19 Sep 2025 19:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mxz9Zawq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JqDlXbjL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qwsDmjJq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7yvfUDxo"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3364E31D371;
-	Thu, 18 Sep 2025 20:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F950189;
+	Fri, 19 Sep 2025 19:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758227131; cv=none; b=JgIZ06BVbhJlVncizvBxbhkjjc/LVD0ROUFwmw85pQ6SIvP9n++TZpFLM8GsHXg73sBtH7K7m91zccmFLmcWtTrUZunnz0MujnE4w82Wvn2haxdaMZJ73/wpqFrLC3cMJx1ATuZesB6Nxg/SUhnrnr8fpjzKTdmRG+RrNwFetvc=
+	t=1758311745; cv=none; b=KyahAbznxKLnwbT4nuU/i6Vd0xGqMUs0+aG2syN+mfxlLhcaBDR9sIWfohrqw4o4zxZUMY+UIRZFcGu/J8BN7o5CS6ATJ29jdIxJo0/CBfuEPtPmip5dezu4xtVGiSrFtfxGAE8cnCQ17+akTcsO2vbjzSA6fLofUZHCTxL9Y5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758227131; c=relaxed/simple;
-	bh=eovftIg+1hbkFUmKtdbfedihd5Xy9fKFb36JzuVuCg0=;
+	s=arc-20240116; t=1758311745; c=relaxed/simple;
+	bh=4QByUP6xaTZF3iAphfZDqGgSRee9RWGjtopVvDIu74g=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=q9XrLB34I1UCwXZzSYVZoUow720dse+J3nVM5cFc3Jotefa4twU63tjGAChBsjGqueFs0vQHyvjeNl475Lupl/oUVg2rOBRoFIkoUFnzbqqrjtb7TidjIN4xl7N5D7OyNukqT+XXUQe0fnPa4JzKkxmqKqK+4chp86tAvhvxycw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mxz9Zawq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JqDlXbjL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=hvEG8We3Uwq8pTjZ5zHvsg+hr0Yxmu3yHXTgf+Ce9JRKmDKycklr8tnglVEK5Je2Rq0L4k1/Ixygq1ZSIdHPJ4xBM3ZjfyGOan5wzuI+aEje67KQVspN8cUQAjr9BMGbiJubbg/5vvNljtzaP+qjZ/+ZizhG4HZYkQJRXWF7MJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qwsDmjJq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7yvfUDxo; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 18 Sep 2025 20:25:25 -0000
+Date: Fri, 19 Sep 2025 19:55:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758227128;
+	s=2020; t=1758311741;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xNdasAameuEoTSW0ZPoaUG6eBRjtOAa4bdYSR51TChk=;
-	b=mxz9ZawqcuURV5V7PUjvN4uDsoWXkAcXZRvvCYQHxCd7DIeaF6/axL0r5TNfisrh1ozf5I
-	IXOnc7aV4uizuFoxRMZI61ffUfjP+Z7CVDr15JNxjbtlVy2f6xsKtoCI1IszAaT7O36+gA
-	4rUwiwEYRNZmTm8/qdQtrFgc3UGjLk9rQqCtqMkOM9oHhRoVv8LGsk9tFfPXt1ezEPKdpK
-	Lz752Uo1zBX5+NvN8pdcVlRZtKI8pp1H5Blfonss5jbIyL5WAI8vHvrAydx5kB9Yq+8pQs
-	h+JlhU0ryHXQ47XCAaHf+/i79rO12rNUnKNUUlxqbqidEvBX+d7tfXUgvgI1Gw==
+	bh=TAtcQIJI/HoNJ6uRpiF874pXefIxXUFzrtLGzPJy7iY=;
+	b=qwsDmjJqRxFBBgAq0T68BmFcVBHAWhs4ze7QW5w3xNrmAqFe+6lqId9j2Lae96BSHba7ba
+	s876Uc3m8qVmDpVvAHrOBGMpQ4+vh5u6+BbMvDRj6nz9+i5OrinT5373SOMrPwjbW4wzhN
+	AnMp2Sn6BKTNTSSpadLFOjNom0BFr4OIyZ9lvWUZKSM5XzOdL5TaFAh7oPvOIRGc5T8pw3
+	ykGnwb6pBgc86kgi4hkw5HrVtkjNI+s9KltP4rgQGEkmz22FvIQQoUB7KRr75gQ+GWwTO/
+	Y0LxXDSa7zqSyRLf8kzvLsZOhsAf1Xdy/syTVZQ19hP/j/fYS+3pdqMI1Kvt3A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758227128;
+	s=2020e; t=1758311741;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xNdasAameuEoTSW0ZPoaUG6eBRjtOAa4bdYSR51TChk=;
-	b=JqDlXbjL36XrzAhHwLYPvJO7qAyOKhUmbKEVXAaqy3+JNbesw0vsNho/purpnShyT7BSpi
-	rxj2G6cOb/ak9sAA==
-From: "tip-bot2 for Rafael J. Wysocki" <tip-bot2@linutronix.de>
+	bh=TAtcQIJI/HoNJ6uRpiF874pXefIxXUFzrtLGzPJy7iY=;
+	b=7yvfUDxo4D/J7ET8iXfZmPVf9qsu0lhK/BOB0scAXtjrigy/YaD0/1c0Eo3mK/QZPaeQg7
+	beG3m7ghlplPeXCQ==
+From: "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: smp/core] smp: Fix up and expand the smp_call_function_many() kerneldoc
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <6191405.lOV4Wx5bFT@rafael.j.wysocki>
-References: <6191405.lOV4Wx5bFT@rafael.j.wysocki>
+Subject: [tip: x86/cpu] x86/umip: Fix decoding of register forms of 0F 01
+ (SGDT and SIDT aliases)
+Cc: Sean Christopherson <seanjc@google.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250808172358.1938974-3-seanjc@google.com>
+References: <20250808172358.1938974-3-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175822712533.709179.8869554095732242608.tip-bot2@tip-bot2>
+Message-ID: <175831173709.709179.11826475048283663530.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,56 +81,56 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the smp/core branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     ccf09357ffef2ab472369ab9cdf470c9bc9b821a
-Gitweb:        https://git.kernel.org/tip/ccf09357ffef2ab472369ab9cdf470c9bc9=
-b821a
-Author:        Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-AuthorDate:    Tue, 09 Sep 2025 13:44:14 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 18 Sep 2025 22:21:28 +02:00
+Commit-ID:     27b1fd62012dfe9d3eb8ecde344d7aa673695ecf
+Gitweb:        https://git.kernel.org/tip/27b1fd62012dfe9d3eb8ecde344d7aa6736=
+95ecf
+Author:        Sean Christopherson <seanjc@google.com>
+AuthorDate:    Fri, 08 Aug 2025 10:23:57 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 19 Sep 2025 21:34:48 +02:00
 
-smp: Fix up and expand the smp_call_function_many() kerneldoc
+x86/umip: Fix decoding of register forms of 0F 01 (SGDT and SIDT aliases)
 
-The smp_call_function_many() kerneldoc comment got out of sync with the
-function definition (bool parameter "wait" is incorrectly described as a
-bitmask in it), so fix it up by copying the "wait" description from the
-smp_call_function() kerneldoc and add information regarding the handling
-of the local CPU to it.
+Filter out the register forms of 0F 01 when determining whether or not to
+emulate in response to a potential UMIP violation #GP, as SGDT and SIDT only
+accept memory operands.  The register variants of 0F 01 are used to encode
+instructions for things like VMX and SGX, i.e. not checking the Mod field
+would cause the kernel to incorrectly emulate on #GP, e.g. due to a CPL
+violation on VMLAUNCH.
 
-Fixes: 49b3bd213a9f ("smp: Fix all kernel-doc warnings")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 1e5db223696a ("x86/umip: Add emulation code for UMIP instructions")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
 ---
- kernel/smp.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/x86/kernel/umip.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/kernel/smp.c b/kernel/smp.c
-index 56f83aa..02f5229 100644
---- a/kernel/smp.c
-+++ b/kernel/smp.c
-@@ -884,16 +884,15 @@ static void smp_call_function_many_cond(const struct cp=
-umask *mask,
-  * @mask: The set of cpus to run on (only runs on online subset).
-  * @func: The function to run. This must be fast and non-blocking.
-  * @info: An arbitrary pointer to pass to the function.
-- * @wait: Bitmask that controls the operation. If %SCF_WAIT is set, wait
-- *        (atomically) until function has completed on other CPUs. If
-- *        %SCF_RUN_LOCAL is set, the function will also be run locally
-- *        if the local CPU is set in the @cpumask.
-- *
-- * If @wait is true, then returns once @func has returned.
-+ * @wait: If true, wait (atomically) until function has completed
-+ *        on other CPUs.
-  *
-  * You must not call this function with disabled interrupts or from a
-  * hardware interrupt handler or from a bottom half handler. Preemption
-  * must be disabled when calling this function.
-+ *
-+ * @func is not called on the local CPU even if @mask contains it.  Consider
-+ * using on_each_cpu_cond_mask() instead if this is not desirable.
-  */
- void smp_call_function_many(const struct cpumask *mask,
- 			    smp_call_func_t func, void *info, bool wait)
+diff --git a/arch/x86/kernel/umip.c b/arch/x86/kernel/umip.c
+index 406ac01..d432f38 100644
+--- a/arch/x86/kernel/umip.c
++++ b/arch/x86/kernel/umip.c
+@@ -163,8 +163,19 @@ static int identify_insn(struct insn *insn)
+ 	if (insn->opcode.bytes[1] =3D=3D 0x1) {
+ 		switch (X86_MODRM_REG(insn->modrm.value)) {
+ 		case 0:
++			/* The reg form of 0F 01 /0 encodes VMX instructions. */
++			if (X86_MODRM_MOD(insn->modrm.value) =3D=3D 3)
++				return -EINVAL;
++
+ 			return UMIP_INST_SGDT;
+ 		case 1:
++			/*
++			 * The reg form of 0F 01 /1 encodes MONITOR/MWAIT,
++			 * STAC/CLAC, and ENCLS.
++			 */
++			if (X86_MODRM_MOD(insn->modrm.value) =3D=3D 3)
++				return -EINVAL;
++
+ 			return UMIP_INST_SIDT;
+ 		case 4:
+ 			return UMIP_INST_SMSW;
 
