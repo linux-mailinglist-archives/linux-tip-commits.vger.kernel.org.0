@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-6704-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6705-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7E2B8D744
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 21 Sep 2025 10:06:23 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF041B91D97
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Sep 2025 17:08:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60683A69E3
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 21 Sep 2025 08:06:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79AF74E01FD
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 22 Sep 2025 15:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26FA654791;
-	Sun, 21 Sep 2025 08:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220F327B357;
+	Mon, 22 Sep 2025 15:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SyG74xaK";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wvUogs5p"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e2pmWWJH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NomrlLZ0"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF7DF50F;
-	Sun, 21 Sep 2025 08:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDC02472A5;
+	Mon, 22 Sep 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758441980; cv=none; b=s+xdLYkUw5TsT/OqGt/+eDlUe7Rb4S5HwRUXM2XpOOzAgfFpaUs0QEvy+tMkXze3iHFsjgr+0pL7Ao7ZywhC+uQjLZdMNSH9XZs/y4xMtE/XVIatSCa+w80BASCD/XUNUo2gLk1yrK938VCxxE/2D4tdycPxJIhDOjNl/RAB0lg=
+	t=1758553719; cv=none; b=V2CPdoTqfTPze7crkCBkB+UwroZh7tfCeajbYRr27XTBPIN87iLkoSTAnuOeH91BsM+ztuwV3JCYTUjK3+qfiIvYC9MaVys4l4PWh6fvayfUBVyMCUWPQRJLNEO15I7A1PHAZMC30FwGmXtgAsEyo4djp3dgI0TlUaevJ/q3snA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758441980; c=relaxed/simple;
-	bh=YNXO5wsfg46AgY6IvDzyZBiJiGKQm1HTV2DSzXRcSBs=;
+	s=arc-20240116; t=1758553719; c=relaxed/simple;
+	bh=LnaYjDNVDDpRfnQ+0cx0wyO+3y5HGPz+Eo2XZYOsIwE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=uO//zf7Omq7DXYRKl+ZsFYs34tO5ckIBwNMO21SoKgfw2idwFYr9N/N6AMnMZwMEHaduwlJfNg08/4mmFKbTQYLofH0TzGaFIB/pqrY7q0F9xY0J66g7sFNOyvqi3iJZu8a4wjlMoWZMDUIvxzVQ7docNYhn/E81/udHo02vPZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SyG74xaK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wvUogs5p; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=eX23W8GbAXemJdgpjfqZpoypH19J/zZiCCWTgRdvd3JCcWfpJfif6DgzHExZ5ambi0jT+/VyLE5/pboTP8GvpbehqscjJrbMUEd7vAKKfYLJdjNZBFbPy8cCqv3WKqLb6qNQeAV64Do3bNSAU/Fc9Y/wt+aCJ523zrfrQykwBNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e2pmWWJH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NomrlLZ0; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 21 Sep 2025 08:06:11 -0000
+Date: Mon, 22 Sep 2025 15:08:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758441976;
+	s=2020; t=1758553714;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P4pultIsHG+iGzVxn1N2xaxNRWujRasgdlTN5QSfgfA=;
-	b=SyG74xaKGzP5JKUcQAYc4mGK88gUh+4DlEUXIXSeZ/4T2mL8xMPDZjGLUkO2MekMOE6khX
-	J+OtojLI32wuL2QDWJOkfcXOk932f/YslvSGseBvPXgYqtYN71Kagli329SXfOGNMlAdzT
-	Q08DKgGt0ZbJD2w0xAyRpWnX1IsX5IQMKJ/dLQd6BpWSya3aUrl0UrnXiMeoladsqfkCAv
-	1rBegIIBFqeOCiCNoP1sap5gzZA6ZDOE/XDGkBJIKJk8ujoew4bNV4mSciJ2Vx7t5/V487
-	1sNRvAT2fBS+GwdVmCc7SqwX8NRMWLiVvu1aV1pOxcwLIF3+jfcCEnIn8r0bNg==
+	bh=uqHx+FCqfW/ilWKgNBamj/Qr2VHNuXNAIDaLW+7mwcs=;
+	b=e2pmWWJH8ayqh10B6L+YlCcdXrUXbSI9egovU72VgF2akzfNV9XCcC7mysqku/nmT57JDS
+	tqVrov2FH15sIW2mnmRmfppLepRpPCZi6BaQAzYynwau6dUdn8JDwIfKVb/Pm6fxQy7/vN
+	53z5TrWTLcvkvuK8T61mPbqJbMNwlepmQMh+X3ksHNd8YozfwCrS9cedTH5IeivczgEDLd
+	YheknEKsBAT+dVdRZm0fdU/1fq24ZKAOH/8GSWM5yvVKbmaUAf8mjja/gY5/uCPbzldxGs
+	U94WLL2hsj76HV75aJA8/EDHUTr2vxpwtUyblO6ADpiBhgvp6o2agzpWAZsRfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758441976;
+	s=2020e; t=1758553714;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P4pultIsHG+iGzVxn1N2xaxNRWujRasgdlTN5QSfgfA=;
-	b=wvUogs5p5hMv2tAD7BZsWzpyUmoDrKJhRGHPBJQN7nuCVvRlvhzp6RhH+G8BCnhXyA9eWK
-	8k44H4na9UfhJzBw==
-From: "tip-bot2 for Haofeng Li" <tip-bot2@linutronix.de>
+	bh=uqHx+FCqfW/ilWKgNBamj/Qr2VHNuXNAIDaLW+7mwcs=;
+	b=NomrlLZ0xFnGr84vqheRUSavDwqr6TL4XtEuV3Tyh38r/v8RBlSvzMkYKhUaCJHZEHZheP
+	81iaetAQ1xgZjgCQ==
+From: "tip-bot2 for Alexander Popov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/core] time: Fix spelling mistakes in comments
-Cc: Haofeng Li <lihaofeng@kylinos.cn>, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: x86/urgent] x86/Kconfig: Reenable PTDUMP on i386
+Cc: Alexander Popov <alex.popov@linux.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_943DD74006B627A4CC01A3DE6AD98A769207@qq.com>
-References: <tencent_943DD74006B627A4CC01A3DE6AD98A769207@qq.com>
+In-Reply-To: <20250921205819.332773-1-alex.popov@linux.com>
+References: <20250921205819.332773-1-alex.popov@linux.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175844197200.709179.14745138242148511323.tip-bot2@tip-bot2>
+Message-ID: <175855371001.709179.12697961090213182246.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,84 +79,60 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     391253b25f078d2fe5657a1dedd360396d186407
-Gitweb:        https://git.kernel.org/tip/391253b25f078d2fe5657a1dedd360396d1=
-86407
-Author:        Haofeng Li <lihaofeng@kylinos.cn>
-AuthorDate:    Wed, 10 Sep 2025 17:37:03 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 21 Sep 2025 10:02:02 +02:00
+Commit-ID:     4f115596133fa168bac06bb34c6efd8f4d84c22e
+Gitweb:        https://git.kernel.org/tip/4f115596133fa168bac06bb34c6efd8f4d8=
+4c22e
+Author:        Alexander Popov <alex.popov@linux.com>
+AuthorDate:    Sun, 21 Sep 2025 23:58:15 +03:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 22 Sep 2025 14:40:17 +02:00
 
-time: Fix spelling mistakes in comments
+x86/Kconfig: Reenable PTDUMP on i386
 
-Correct several typos found in comments across various files in the
-kernel/time directory.
+The commit
 
-No functional changes are introduced by these corrections.
+  f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
 
-Signed-off-by: Haofeng Li <lihaofeng@kylinos.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+has broken PTDUMP and the Kconfig options that use it on ARCH=3Di386, includi=
+ng
+CONFIG_DEBUG_WX.
+
+CONFIG_GENERIC_PTDUMP was renamed into CONFIG_ARCH_HAS_PTDUMP, but it was
+mistakenly moved from "config X86" to "config X86_64". That made PTDUMP
+unavailable for i386.
+
+Move CONFIG_ARCH_HAS_PTDUMP back to "config X86" to fix it.
+
+  [ bp: Massage commit message. ]
+
+Fixes: f9aad622006bd64c ("mm: rename GENERIC_PTDUMP and PTDUMP_CORE")
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
 ---
- kernel/time/alarmtimer.c   | 2 +-
- kernel/time/clocksource.c  | 2 +-
- kernel/time/hrtimer.c      | 2 +-
- kernel/time/posix-timers.c | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/alarmtimer.c b/kernel/time/alarmtimer.c
-index 577f0e6..069d93b 100644
---- a/kernel/time/alarmtimer.c
-+++ b/kernel/time/alarmtimer.c
-@@ -35,7 +35,7 @@
-=20
- /**
-  * struct alarm_base - Alarm timer bases
-- * @lock:		Lock for syncrhonized access to the base
-+ * @lock:		Lock for synchronized access to the base
-  * @timerqueue:		Timerqueue head managing the list of events
-  * @get_ktime:		Function to read the time correlating to the base
-  * @get_timespec:	Function to read the namespace time correlating to the base
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 3edb01d..a1890a0 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -144,7 +144,7 @@ static u64 suspend_start;
-  * Default for maximum permissible skew when cs->uncertainty_margin is
-  * not specified, and the lower bound even when cs->uncertainty_margin
-  * is specified.  This is also the default that is used when registering
-- * clocks with unspecifed cs->uncertainty_margin, so this macro is used
-+ * clocks with unspecified cs->uncertainty_margin, so this macro is used
-  * even in CONFIG_CLOCKSOURCE_WATCHDOG=3Dn kernels.
-  */
- #define WATCHDOG_MAX_SKEW (MAX_SKEW_USEC * NSEC_PER_USEC)
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index f383df2..7e7b2b4 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -201,7 +201,7 @@ static bool hrtimer_suitable_target(struct hrtimer *timer=
-, struct hrtimer_clock_
- 	/*
- 	 * The offline local CPU can't be the default target if the
- 	 * next remote target event is after this timer. Keep the
--	 * elected new base. An IPI will we issued to reprogram
-+	 * elected new base. An IPI will be issued to reprogram
- 	 * it as a last resort.
- 	 */
- 	if (!hrtimer_base_is_online(this_cpu_base))
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index 2741f37..aa31201 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -534,7 +534,7 @@ static int do_timer_create(clockid_t which_clock, struct =
-sigevent *event,
- 		goto out;
- 	}
- 	/*
--	 * After succesful copy out, the timer ID is visible to user space
-+	 * After successful copy out, the timer ID is visible to user space
- 	 * now but not yet valid because new_timer::signal low order bit is 1.
- 	 *
- 	 * Complete the initialization with the clock specific create
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 52c8910..0588030 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -26,7 +26,6 @@ config X86_64
+ 	depends on 64BIT
+ 	# Options that are inherently 64-bit kernel only:
+ 	select ARCH_HAS_GIGANTIC_PAGE
+-	select ARCH_HAS_PTDUMP
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+@@ -99,6 +98,7 @@ config X86
+ 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 	select ARCH_HAS_PMEM_API		if X86_64
+ 	select ARCH_HAS_PREEMPT_LAZY
++	select ARCH_HAS_PTDUMP
+ 	select ARCH_HAS_PTE_SPECIAL
+ 	select ARCH_HAS_HW_PTE_YOUNG
+ 	select ARCH_HAS_NONLEAF_PMD_YOUNG	if PGTABLE_LEVELS > 2
 
