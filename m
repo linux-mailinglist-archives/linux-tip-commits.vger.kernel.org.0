@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-6713-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6714-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AACB98855
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Sep 2025 09:25:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1002B9890C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Sep 2025 09:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9702E3DD0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Sep 2025 07:25:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A552E45CB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 24 Sep 2025 07:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8162741DA;
-	Wed, 24 Sep 2025 07:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E936527C864;
+	Wed, 24 Sep 2025 07:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xl00O5BZ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cPHeNHtq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3Zq4tWPg";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="p5vn8pVU"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0417E2741A0;
-	Wed, 24 Sep 2025 07:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DD627B34E;
+	Wed, 24 Sep 2025 07:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758698709; cv=none; b=JvOOKp4wmmamQ26MazY260XO3dUuau9trHQLiOMb4yMg9ACQCyq3DGm8eX4C98fMEbY+RqelW20B42hXuZdOGpiOwffRdM2/cZ6mhi/Xw7PmTkwDkb53526kLJoYgUNEmpzwe1wP9TPcEaGJpFsMULpT3xCBGgyheYHb4Pqo32Y=
+	t=1758699372; cv=none; b=ZMgUOc/ftm/DsBEXSUHMEZP2AqjH5ODPlNOjU6pmFzrjgr0kmDopfFmrLAwnYrPks2lxJQQJXpK5jjXym9e8+0hXVkGp1cdj1cVotIoxq8zXPvci7OGj338cefygEJgxRVmol/YUlMCxs8me0pOpfnZEC7hZDWEd2Ng2c1Q99wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758698709; c=relaxed/simple;
-	bh=3Xf53nHR/n97vlqvgNQnY/Qdii8msVG0oxEiJF655kc=;
+	s=arc-20240116; t=1758699372; c=relaxed/simple;
+	bh=vlwNLMn4Df7qDS7z7hBxJ7Bm22dfyKwXqz4M+/V4neM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=udBh5MOvnlDg3P4ye4IOOhZPXYS8YCm0NI4sUPDZhVi4q900FdoGr0grauUwN66V+pyD6Zf5raWypVSqUun6gHUiDmQzhE7m1YdRqc+u8Wq4IZ7y8ake++nhbckd/0l021GqXIOr9QibCDeVBHsMgH2TBWZHUQx+GwK+v6g3Anw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xl00O5BZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cPHeNHtq; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nHZLvXMRybLLZtteO0lb9EghBGyoWRpXo/EJc0LV16Diq+aYbX3Y0pRGq+DGulN4LNitsNQl5j35JfHijAlZdoawWlNieOrWCdHDrSiLCVLejV8/ry4McUX3+ZyiQf29yEmPaHVpcLDdq7BHRRAalySuGl9WzqDXqiGzhzf8iIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3Zq4tWPg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=p5vn8pVU; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 24 Sep 2025 07:24:53 -0000
+Date: Wed, 24 Sep 2025 07:36:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758698698;
+	s=2020; t=1758699368;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S7wkPNUQqz+2PeDx+vdg3F0rD/CUoqYG/jHjM1ol0eQ=;
-	b=xl00O5BZlqXOIJerJ7RDCGOaOEp0yP52rNV2L39nZ36w2PSTVjNR/ky/Mps+sJ2bY7FY3J
-	x9ZtWrVTvKJGS0v3NLSy/DA/BmuWdDTLCji6oeNxsPBKBraC+DqUZp6MXS7VdBnOiJlb80
-	Psz/QpyBJg3c9ISRMcW3XsY7FVUEA4kQJDMY52FJtdKic5GnmbiYi4vCjwYGIHO8wiYclz
-	wEuqGSva99JSk0EWXop1KBBdbfWj1oKJTw/c0/iS3nduv+WBV/DSRDtpA8II82enu3CTQX
-	2dxGWHoXlsm4RSEFhnsz5fffTfk4QUGJn0RFIxrsyIZPPC8+opl76ql6CGIyng==
+	bh=9/srcOAjzIc7FkWkSN9CbHIlNte0ITmznxjbxIe35sI=;
+	b=3Zq4tWPgEoUHsxiO2VvZxz1T8QhKYT5WzjWReUFyx6jcIxMVgXXoPyIN/NEeSs1wGKEh8a
+	zxxc3HTr+v6vG4FnsKYLycOSGZnYy1CWIx5FhtpMhs1e94cTm0UggC9bEbaRivp49yjSm+
+	iVtDASz4640+s+8Un4eTgvWeQs47BUBQQ+GeX03RtPUjlz4f4KPbA8V//C2H70D9SFcTGg
+	mrBTSVJOrMcoJjuDhqZFLcHpMVYwrEH4T/SzRlEfg0ac7WNixG1cIVZ6pKZxsBBlTTbExo
+	TlEXhGDJjHy3fmG4ux8ZaZWpsjS2b7oqrgwNRxWT35U/q6GgOPJ5HGqW6qib5Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758698698;
+	s=2020e; t=1758699368;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S7wkPNUQqz+2PeDx+vdg3F0rD/CUoqYG/jHjM1ol0eQ=;
-	b=cPHeNHtqGJlCEqd1c3GegDPoqKraT7v6IqEFWgqoejpodjVhlc1YHDgPOQv5EwH7EYWff0
-	DDdbQZM3Zd083oDg==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+	bh=9/srcOAjzIc7FkWkSN9CbHIlNte0ITmznxjbxIe35sI=;
+	b=p5vn8pVULJ+mpEdQ4b0Lpe0IOp1+Sy+4DgGLgeqet9NyBUs00Lp798Vz2UxSpor5MczXKN
+	XEB5fbg8VgpT91Aw==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Use correct exit on failure from
- futex_hash_allocate_default()
-Cc: syzbot+80cb3cc5c14fad191a10@syzkaller.appspotmail.com,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Thomas Gleixner <tglx@linutronix.de>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>, x86@kernel.org,
+Subject:
+ [tip: core/urgent] kbuild: Disable CC_HAS_ASM_GOTO_OUTPUT on clang < 17
+Cc: Nathan Chancellor <nathan@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250918130945.-7SIRk8Z@linutronix.de>
-References: <20250918130945.-7SIRk8Z@linutronix.de>
+In-Reply-To: <87frcm9kvv.ffs@tglx>
+References: <87frcm9kvv.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175869869389.709179.4541234801013742071.tip-bot2@tip-bot2>
+Message-ID: <175869936727.709179.123691710197377219.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,52 +80,110 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the core/urgent branch of tip:
 
-Commit-ID:     4ec3c15462b9f44562f45723a92e2807746ba7d1
-Gitweb:        https://git.kernel.org/tip/4ec3c15462b9f44562f45723a92e2807746=
-ba7d1
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Thu, 18 Sep 2025 15:09:45 +02:00
+Commit-ID:     e2ffa15b9baa447e444d654ffd47123ba6443ae4
+Gitweb:        https://git.kernel.org/tip/e2ffa15b9baa447e444d654ffd47123ba64=
+43ae4
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 16 Sep 2025 15:21:51 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 24 Sep 2025 09:20:02 +02:00
+CommitterDate: Wed, 24 Sep 2025 09:29:15 +02:00
 
-futex: Use correct exit on failure from futex_hash_allocate_default()
+kbuild: Disable CC_HAS_ASM_GOTO_OUTPUT on clang < 17
 
-copy_process() uses the wrong error exit path from futex_hash_allocate_defaul=
-t().
-After exiting from futex_hash_allocate_default(), neither tasklist_lock
-nor siglock has been acquired. The exit label bad_fork_core_free unlocks
-both of these locks which is wrong.
+clang < 17 fails to use scope local labels with CONFIG_CC_HAS_ASM_GOTO_OUTPUT=
+=3Dy:
 
-The next exit label, bad_fork_cancel_cgroup, is the correct exit.
-sched_cgroup_fork() did not allocate any resources that need to freed.
+     {
+     	__label__ local_lbl;
+	...
+	unsafe_get_user(uval, uaddr, local_lbl);
+	...
+	return 0;
+	local_lbl:
+		return -EFAULT;
+     }
 
-Use bad_fork_cancel_cgroup on error exit from futex_hash_allocate_default().
+when two such scopes exist in the same function:
 
-Fixes: 7c4f75a21f636 ("futex: Allow automatic allocation of process wide fute=
-x hash")
-Reported-by: syzbot+80cb3cc5c14fad191a10@syzkaller.appspotmail.com
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+  error: cannot jump from this asm goto statement to one of its possible targ=
+ets
+
+There are other failure scenarios. Shuffling code around slightly makes it
+worse and fail even with one instance.
+
+That issue prevents using local labels for a cleanup based user access
+mechanism.
+
+After failed attempts to provide a simple enough test case for the 'depends
+on' test in Kconfig, the initial cure was to mark ASM goto broken on clang
+versions < 17 to get this road block out of the way.
+
+But Nathan pointed out that this is a known clang issue and indeed affects
+clang < version 17 in combination with cleanup(). It's not even required to
+use local labels for that.
+
+The clang issue tracker has a small enough test case, which can be used as
+a test in the 'depends on' section of CC_HAS_ASM_GOTO_OUTPUT:
+
+void bar(void **);
+void* baz(void);
+
+int  foo (void) {
+    {
+	    asm goto("jmp %l0"::::l0);
+	    return 0;
+l0:
+	    return 1;
+    }
+    void *x __attribute__((cleanup(bar))) =3D baz();
+    {
+	    asm goto("jmp %l0"::::l1);
+	    return 42;
+l1:
+	    return 0xff;
+    }
+}
+
+Add another dependency to config CC_HAS_ASM_GOTO_OUTPUT for it and use the
+clang issue tracker test case for detection by condensing it to obfuscated
+C-code contest format. This reliably catches the problem on clang < 17 and
+did not show any issues on the non broken GCC versions.
+
+That test might be sufficient to catch all issues and therefore could
+replace the existing test, but keeping that around does no harm either.
+
+Thanks to Nathan for pointing to the relevant clang issue!
+
+Suggested-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/all/68cb1cbd.050a0220.2ff435.0599.GAE@google.=
-com
+Cc: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1886
+Link: https://github.com/llvm/llvm-project/commit/f023f5cdb2e6c19026f04a15b5a=
+935c041835d14
 ---
- kernel/fork.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index c4ada32..6ca8689 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2295,7 +2295,7 @@ __latent_entropy struct task_struct *copy_process(
- 	if (need_futex_hash_allocate_default(clone_flags)) {
- 		retval =3D futex_hash_allocate_default();
- 		if (retval)
--			goto bad_fork_core_free;
-+			goto bad_fork_cancel_cgroup;
- 		/*
- 		 * If we fail beyond this point we don't free the allocated
- 		 * futex hash map. We assume that another thread will be created
+diff --git a/init/Kconfig b/init/Kconfig
+index e3eb63e..ecddb94 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -99,7 +99,10 @@ config GCC_ASM_GOTO_OUTPUT_BROKEN
+ config CC_HAS_ASM_GOTO_OUTPUT
+ 	def_bool y
+ 	depends on !GCC_ASM_GOTO_OUTPUT_BROKEN
++	# Detect basic support
+ 	depends on $(success,echo 'int foo(int x) { asm goto ("": "=3Dr"(x) ::: bar=
+); return x; bar: return 0; }' | $(CC) -x c - -c -o /dev/null)
++	# Detect clang (< v17) scoped label issues
++	depends on $(success,echo 'void b(void **);void* c(void);int f(void){{asm g=
+oto("jmp %l0"::::l0);return 0;l0:return 1;}void *x __attribute__((cleanup(b))=
+)=3Dc();{asm goto("jmp %l0"::::l1);return 2;l1:return 3;}}' | $(CC) -x c - -c=
+ -o /dev/null)
+=20
+ config CC_HAS_ASM_GOTO_TIED_OUTPUT
+ 	depends on CC_HAS_ASM_GOTO_OUTPUT
 
