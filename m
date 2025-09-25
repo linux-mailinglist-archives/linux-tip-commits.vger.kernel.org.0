@@ -1,61 +1,61 @@
-Return-Path: <linux-tip-commits+bounces-6763-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6762-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4A9BA19BA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Sep 2025 23:40:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA94EBA19D5
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Sep 2025 23:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58DD332053A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Sep 2025 21:40:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B5EE3A4AEF
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 25 Sep 2025 21:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37AE032F472;
-	Thu, 25 Sep 2025 21:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA349321296;
+	Thu, 25 Sep 2025 21:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4V+KhPyk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DysMg/Ob"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gvmyKz+b";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1C3uorPt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5981C322C9C;
-	Thu, 25 Sep 2025 21:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2239D32ED3C;
+	Thu, 25 Sep 2025 21:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758836031; cv=none; b=m5vx1Exlj5fnjoPxioPleROaa3SeNgbGRjhslofyD9LKQYsJVPX1SNsgIRXzpXfwAGBDUAR1OqNWW3LYKjYgdRQMpq4q4mqmaOSQ+pF8OGsHW8u8WfyJUnLLVsIxhozw0g1Dak+Ht9StyQnPDzumpZK6f4fnuPm0As3WlFh8hO0=
+	t=1758836030; cv=none; b=hxxi6YPDZ89Klvit9jJlYKbkWIrmZmXps5PeynkfRcUXJm963LlXKdySLVfitaT0bMmXGEzyliaXwLmHuFwpKy4vYWpDMU04ZKq5/sSJ6GzUNSFexrv36b5phZlmo1ZHQ/0kuadsC1i0Tl96MTSA9Dqqglu3CKc49Qy2CcNWwUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758836031; c=relaxed/simple;
-	bh=matcRG/+tK/iX24Mh7LJ+1kenJO+3ybhCKgDb8pw2Yg=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=oq47uNwegEalRyF0nmSTSdC/8RgXj010jblqivfCvbIKtk0IyIMjzLZto0JUF1bOHckUAUHrLcEuApeiYU6mM6EespfpCUzvmLBmgsoLNDUbWqGeEh5ZAtSl9jeZKRRQT5I6CKNpPDzC/JCO57lC9V1jp04tSvcVFtQrb/7aSuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4V+KhPyk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DysMg/Ob; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1758836030; c=relaxed/simple;
+	bh=KStaUfcnuaadi42LGJp7BEcV+aLuJCVLGBnEdjmKG5c=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=bpVYd9sDF/ESKF+gWOJp82/4EjbUj3+OimEpyWCIIsVGKp5Nszi2y/9J9iUJ2NhjcSbE+czMZjv7r0wMSiB1nQKNHq+NfPSufJgLx+E/IgUqRFfMaidMZIu+JL9emzBpyVgZhBiZs5BbRLid2MjIwbN7Bk7bmMzRLU9jAqWt674=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gvmyKz+b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1C3uorPt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 25 Sep 2025 21:33:45 -0000
+Date: Thu, 25 Sep 2025 21:33:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1758836026;
+	s=2020; t=1758836027;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vIq1AxfyLLvO7v9/qeAnBRoQBL/WHpbKTlFDLsp0GhU=;
-	b=4V+KhPykQj87EcuNtTAA7iH9OXb6bDMzQNFwEqI+cdP3K/5fWHEv5nHh08pc+Ed5cq6al0
-	7peWdqy/+WEPk04Ppq1nhb696Iz0R6Pf9RbSwOE5ZmgPvfIp4rAT4SZDsX723vw43/iPAG
-	DxSpNxXIGqLlD8DloN6+x/SbpLx5CVAdzpTIwS5HA7pDKZ3NuIvaZF3ZKy91yGcasbEVB4
-	mdp6YSAboF4Eebick1PfqVHIMGgU61DWSQoCiNF2lnafrkjr1DyTF86pCwFEqtNCAZInlS
-	Hkkviu/Zt2npBAjZTLobA02VttesNkQnPTnZMxoBGGuB9k6hCOUSfUhOL0fcnA==
+	bh=TbB/L3GNC+E/AVwHKWD6XnIEeamG8gXOIRNc/B17K7o=;
+	b=gvmyKz+bV98R4Mz+XM4Wadsa/5rIQACFh2UjKAT0gM7/ZOJTfg/LB/2NaRryaZNfpzvb8U
+	lmdH+88zunDl35z2ngJPMgYYfo23ZIIoVOF5MU7REFmwmbRmceZc6AlI9ZSX2WVewORQz+
+	TivXV1a+rkVBQu6Eltyb7fwQYFuSUcNVRsEWkY+JYVy3MowinEgQSQa7KFrxs9Z8IwVri/
+	l+I2BF8kP9uiSbgyDJmQIsoyFxUqNHtUJP/w2q2nyL+xoEs6e3UKjZXmqyS7c5LpzWYmwf
+	TDTrEj/5R528UlGa1oyRaG2cEpERFGYSPNehTaTqhIFax7FodBENx93zuk1peg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1758836026;
+	s=2020e; t=1758836027;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=vIq1AxfyLLvO7v9/qeAnBRoQBL/WHpbKTlFDLsp0GhU=;
-	b=DysMg/Ob1p90K0pSoGvQA4UVwO+tTt1DdtpcuSkCgzPQ/DrYTY/6TXvS7inUiZfG06nhdw
-	/5NJU3rOC31fPtDw==
+	bh=TbB/L3GNC+E/AVwHKWD6XnIEeamG8gXOIRNc/B17K7o=;
+	b=1C3uorPtXJFT698FxveUKHfTCYYToHxAHgxW6Z1gwA0NuEt5MEVJnbNt9b3vv5TmXzN+Zw
+	s+Be520OQy69o5CA==
 From: "tip-bot2 for Guenter Roeck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/clocksource] clocksource/drivers/timer-tegra186:
- Simplify calculating timeleft
+Subject: [tip: timers/clocksource] clocksource/drivers/timer-tegra186: Avoid
+ 64-bit divide operation
 Cc: Guenter Roeck <linux@roeck-us.net>,
  Daniel Lezcano <daniel.lezcano@linaro.org>, Jon Hunter <jonathanh@nvidia.com>,
  Pohsun Su <pohsuns@nvidia.com>, Robert Lin <robelin@nvidia.com>,
@@ -66,7 +66,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <175883602529.709179.10128651335321896499.tip-bot2@tip-bot2>
+Message-ID: <175883602648.709179.10589873692601492232.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,81 +77,53 @@ Content-Transfer-Encoding: quoted-printable
 The following commit has been merged into the timers/clocksource branch of ti=
 p:
 
-Commit-ID:     7f3abae5b447a7f8458a0f58a003c11c46aade99
-Gitweb:        https://git.kernel.org/tip/7f3abae5b447a7f8458a0f58a003c11c46a=
-ade99
+Commit-ID:     916aa36042db8ee230543ffe0d192f900e8b8c9f
+Gitweb:        https://git.kernel.org/tip/916aa36042db8ee230543ffe0d192f900e8=
+b8c9f
 Author:        Guenter Roeck <linux@roeck-us.net>
-AuthorDate:    Sat, 14 Jun 2025 10:55:56 -07:00
+AuthorDate:    Sat, 14 Jun 2025 10:55:55 -07:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Tue, 23 Sep 2025 10:54:58 +02:00
+CommitterDate: Tue, 23 Sep 2025 10:54:29 +02:00
 
-clocksource/drivers/timer-tegra186: Simplify calculating timeleft
+clocksource/drivers/timer-tegra186: Avoid 64-bit divide operation
 
-It is not necessary to use 64-bit operations to calculate the
-remaining watchdog timeout. Simplify to use 32-bit operations,
-and add comments explaining why there will be no overflow.
+Building the driver on xtensa fails with
 
+tensa-linux-ld: drivers/clocksource/timer-tegra186.o:
+	in function `tegra186_timer_remove':
+timer-tegra186.c:(.text+0x350):
+	undefined reference to `__udivdi3'
+
+Avoid the problem by rearranging the offending code to avoid the 64-bit
+divide operation.
+
+Fixes: 28c842c8b0f5 ("clocksource/drivers/timer-tegra186: Add WDIOC_GETTIMELE=
+FT support")
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
 Cc: Pohsun Su <pohsuns@nvidia.com>
 Cc: Robert Lin <robelin@nvidia.com>
-Link: https://lore.kernel.org/r/20250614175556.922159-2-linux@roeck-us.net
+Link: https://lore.kernel.org/r/20250614175556.922159-1-linux@roeck-us.net
 ---
- drivers/clocksource/timer-tegra186.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/clocksource/timer-tegra186.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/clocksource/timer-tegra186.c b/drivers/clocksource/timer=
 -tegra186.c
-index 76a5481..d403a3f 100644
+index 56a5342..76a5481 100644
 --- a/drivers/clocksource/timer-tegra186.c
 +++ b/drivers/clocksource/timer-tegra186.c
-@@ -231,7 +231,7 @@ static unsigned int tegra186_wdt_get_timeleft(struct watc=
+@@ -267,7 +267,7 @@ static unsigned int tegra186_wdt_get_timeleft(struct watc=
 hdog_device *wdd)
- {
- 	struct tegra186_wdt *wdt =3D to_tegra186_wdt(wdd);
- 	u32 expiration, val;
--	u64 timeleft;
-+	u32 timeleft;
-=20
- 	if (!watchdog_active(&wdt->base)) {
- 		/* return zero if the watchdog timer is not activated. */
-@@ -266,21 +266,26 @@ static unsigned int tegra186_wdt_get_timeleft(struct wa=
-tchdog_device *wdd)
- 	 * Calculate the time remaining by adding the time for the
  	 * counter value to the time of the counter expirations that
  	 * remain.
-+	 * Note: Since wdt->base.timeout is bound to 255, the maximum
-+	 * value added to timeleft is
-+	 *   255 * (1,000,000 / 5) * 4
-+	 * =3D 255 * 200,000 * 4
-+	 * =3D 204,000,000
-+	 * TMRSR_PCV is a 29-bit field.
-+	 * Its maximum value is 0x1fffffff =3D 536,870,911.
-+	 * 204,000,000 + 536,870,911 =3D 740,870,911 =3D 0x2C28CAFF.
-+	 * timeleft can therefore not overflow, and 64-bit calculations
-+	 * are not necessary.
  	 */
--	timeleft +=3D ((u64)wdt->base.timeout * (USEC_PER_SEC / 5)) * (4 - expirati=
+-	timeleft +=3D (((u64)wdt->base.timeout * USEC_PER_SEC) / 5) * (4 - expirati=
 on);
-+	timeleft +=3D (wdt->base.timeout * (USEC_PER_SEC / 5)) * (4 - expiration);
++	timeleft +=3D ((u64)wdt->base.timeout * (USEC_PER_SEC / 5)) * (4 - expirati=
+on);
 =20
  	/*
  	 * Convert the current counter value to seconds,
--	 * rounding up to the nearest second. Cast u64 to
--	 * u32 under the assumption that no overflow happens
--	 * when coverting to seconds.
-+	 * rounding to the nearest second.
- 	 */
--	timeleft =3D DIV_ROUND_CLOSEST_ULL(timeleft, USEC_PER_SEC);
-+	timeleft =3D DIV_ROUND_CLOSEST(timeleft, USEC_PER_SEC);
-=20
--	if (WARN_ON_ONCE(timeleft > U32_MAX))
--		return U32_MAX;
--
--	return lower_32_bits(timeleft);
-+	return timeleft;
- }
-=20
- static const struct watchdog_ops tegra186_wdt_ops =3D {
 
