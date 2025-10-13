@@ -1,71 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-6787-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6788-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B461BD6502
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Oct 2025 23:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62427BD650B
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Oct 2025 23:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31BD18A81B9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Oct 2025 21:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15AF819201AA
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Oct 2025 21:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A7F281508;
-	Mon, 13 Oct 2025 21:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7274F2EA17B;
+	Mon, 13 Oct 2025 21:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vcLE2CbN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7nmA8+s7"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="t59nrPVL";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MxBZT0+D"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB722367CF;
-	Mon, 13 Oct 2025 21:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EC62571A5;
+	Mon, 13 Oct 2025 21:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760389231; cv=none; b=HZiKVpsJ9eZ7vHnwIKgpz6Nj2uy4fu7U28nMYZVvLdqkKFbZyox7Yjs8l0pmddectsRQFCuxaPKoaRpFBQNMdKXDObt8XQEtKQ75GiNeycYukjXL4VHY2QO/8a7ep+uNa/C29rIi6wcQn0WnUIz97kgZewWlwfwAvk+Jaa5JzW4=
+	t=1760389234; cv=none; b=nC/rNFUmXRZOCSa/zw4NEOFJosvddvqPOfwEpG+ib1Pr6vl95W2Qg+zkNxL/X+NGlZAHoGTkcuUC68yGBGAK70F1vhpYYwpIk4AyOawAqNCbuSVlsSWueWSPxgcRLun6HA2qbbGZcyY3KSDoEu1h50FsgCx4ZCW4ZT0F4N9Jw/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760389231; c=relaxed/simple;
-	bh=+QCJ2Eioke85KtBzJkAOKqxeKTxeVaViEeiRMt3P1H4=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=jHkENXErZLRTFJgjK3NX4Qyuw9LUKZnRZtbdJE56LrbPoePXrpUGKqpxoiRALbLE3YdjYEK0utfkWq3xHMCSk+3HYADlDC080nJKnzxJvs6OrlrEJQkQ5OR1Ogv0PzrdHmrRNrotOu6QCmxIrKJ7HFJ/f5M9/NdJiZp69dou0c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vcLE2CbN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7nmA8+s7; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1760389234; c=relaxed/simple;
+	bh=yLw39X9C42bfFbLTXGU21nPEpgd+DYuZn5uYirK4gTY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=dWDR355NJE8cCnEXMI8/n4nn8Az/SvL4j/gG80whvv5f7dVXj65hz+vBIA2lEsYag4vQeUxea6eJmQ9xd1/620mKKDv8nFEp8T/WmtlfLu0YDCh0jFlGdTDa+WVm1wDqnneNIiab5j9Df9frQpNvD1qErU4npBOR1B6cyW8tShc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=t59nrPVL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MxBZT0+D; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 13 Oct 2025 21:00:24 -0000
+Date: Mon, 13 Oct 2025 21:00:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760389227;
+	s=2020; t=1760389229;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=nHmyiSPQoY/7v+Wd4W9Az86IbaGLcGUBEN6d67ts+pU=;
-	b=vcLE2CbN6aTJY/CtvwQXkqXf6VSwoeXv4DxMnA+7p+uLeWBT245zDr54lAZGCKCei7/iki
-	rnrZiHp8I5THXoktZTVPXD308DweMlgVGBIMLZH7bj8Bp96LvP/DZoyBwgLAp+xuliOhu4
-	UPT/97+6s/0DSuuTnpKqNfsdwlmKFX3eRTUA0Uv98kkmg2ZypKzweT31U3n+nyTEt0cNAw
-	hmYapYgFIJZjvpyqdxA8MuFHVjotUpeTplGR9M087fxOGwWxkTYSeaWM0eVxbY30oWti4y
-	ALBERpP+Z1faciQFkAfHzuJ/FAsfarEon3FISQr5hIId+qnFO95ZfrRb4EFebg==
+	bh=R24TJO4afjKKCWHFfvG5FnAjeh2pGX1RZRyT3wsG1l0=;
+	b=t59nrPVLKe5OAy35lq5efVblCtUAGzxcrQ0SYrzUKnaJiCe8X/aWm3urEw55lcac/99CBy
+	odclafEEW9R2xfL/m80inH6Uw8+61zPn57rnbxRVwKNasndjJYXi/rlE4Y+tIZAgURV75R
+	f1JBvlo5RZIP32GB3zCcKUvQZw3hUoNJ8PF+9XApJgIdaZuuATCRAZ3oNiYtfPdFnqw70t
+	rSXnXOdqdNzTApqVaL8663yfPHwIPUx2k5/UoElO3NAbJcuVplI84arRQDXCNYnEavmrwF
+	Bl1iwshdidnDbnc1cHc5hUXJgBdHn96Eq28FuInOUoImbMcGWwK8UO+YgXEmeQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760389227;
+	s=2020e; t=1760389229;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=nHmyiSPQoY/7v+Wd4W9Az86IbaGLcGUBEN6d67ts+pU=;
-	b=7nmA8+s7clqsSezugSsOZTpmCUlKrn+UAhC7WGsVIniu68w/iX8UmpEZhoUiyzYFhDjYB/
-	kkr9xOnjJg2FHXBQ==
-From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+	bh=R24TJO4afjKKCWHFfvG5FnAjeh2pGX1RZRyT3wsG1l0=;
+	b=MxBZT0+D7GlQf7y1hP5u5OHpt7rwvvvdtssgZe2FDbZ5QRdcxDwM2l+32b+GDbwaCypwfl
+	xS9V/XSFAQgWjwBA==
+From: "tip-bot2 for Rik van Riel" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm: Fix SMP ordering in switch_mm_irqs_off()
-Cc: Stephen Dolan <sdolan@janestreet.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: x86/urgent] x86/mm: Fix overflow in __cpa_addr()
+Cc: syzbot+afec6555eef563c66c97@syzkaller.appspotmail.com,
+ Rik van Riel <riel@surriel.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Kiryl Shutsemau <kas@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176038922445.709179.9913480594037934552.tip-bot2@tip-bot2>
+Message-ID: <176038922777.709179.9638250242820548802.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,73 +75,59 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     83b0177a6c4889b3a6e865da5e21b2c9d97d0551
-Gitweb:        https://git.kernel.org/tip/83b0177a6c4889b3a6e865da5e21b2c9d97=
-d0551
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Fri, 16 May 2025 15:43:04 +02:00
+Commit-ID:     f25785f9b088ed65089dd0d0034da52858417839
+Gitweb:        https://git.kernel.org/tip/f25785f9b088ed65089dd0d0034da528584=
+17839
+Author:        Rik van Riel <riel@surriel.com>
+AuthorDate:    Sun, 05 Oct 2025 23:48:05 -04:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 13 Oct 2025 13:55:53 -07:00
+CommitterDate: Mon, 13 Oct 2025 13:55:48 -07:00
 
-x86/mm: Fix SMP ordering in switch_mm_irqs_off()
+x86/mm: Fix overflow in __cpa_addr()
 
-Stephen noted that it is possible to not have an smp_mb() between
-the loaded_mm store and the tlb_gen load in switch_mm(), meaning the
-ordering against flush_tlb_mm_range() goes out the window, and it
-becomes possible for switch_mm() to not observe a recent tlb_gen
-update and fail to flush the TLBs.
+The change to have cpa_flush() call flush_kernel_pages() introduced
+a bug where __cpa_addr() can access an address one larger than the
+largest one in the cpa->pages array.
 
-[ dhansen: merge conflict fixed by Ingo ]
+KASAN reports the issue like this:
 
-Fixes: 209954cbc7d0 ("x86/mm/tlb: Update mm_cpumask lazily")
-Reported-by: Stephen Dolan <sdolan@janestreet.com>
-Closes: https://lore.kernel.org/all/CAHDw0oGd0B4=3Duuv8NGqbUQ_ZVmSheU2bN70e4Q=
-hFXWvuAZdt2w@mail.gmail.com/
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+BUG: KASAN: slab-out-of-bounds in __cpa_addr arch/x86/mm/pat/set_memory.c:309=
+ [inline]
+BUG: KASAN: slab-out-of-bounds in __cpa_addr+0x1d3/0x220 arch/x86/mm/pat/set_=
+memory.c:306
+Read of size 8 at addr ffff88801f75e8f8 by task syz.0.17/5978
+
+This bug could cause cpa_flush() to not properly flush memory,
+which somehow never showed any symptoms in my tests, possibly
+because cpa_flush() is called so rarely, but could potentially
+cause issues for other people.
+
+Fix the issue by directly calculating the flush end address
+from the start address.
+
+Fixes: 86e6815b316e ("x86/mm: Change cpa_flush() to call flush_kernel_range()=
+ directly")
+Reported-by: syzbot+afec6555eef563c66c97@syzkaller.appspotmail.com
+Signed-off-by: Rik van Riel <riel@surriel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+Link: https://lore.kernel.org/all/68e2ff90.050a0220.2c17c1.0038.GAE@google.co=
+m/
 ---
- arch/x86/mm/tlb.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 39f8011..5d22170 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -911,11 +911,31 @@ void switch_mm_irqs_off(struct mm_struct *unused, struc=
-t mm_struct *next,
- 		 * CR3 and cpu_tlbstate.loaded_mm are not all in sync.
- 		 */
- 		this_cpu_write(cpu_tlbstate.loaded_mm, LOADED_MM_SWITCHING);
--		barrier();
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index d2d54b8..9709818 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -446,7 +446,7 @@ static void cpa_flush(struct cpa_data *cpa, int cache)
+ 	}
 =20
--		/* Start receiving IPIs and then read tlb_gen (and LAM below) */
-+		/*
-+		 * Make sure this CPU is set in mm_cpumask() such that we'll
-+		 * receive invalidation IPIs.
-+		 *
-+		 * Rely on the smp_mb() implied by cpumask_set_cpu()'s atomic
-+		 * operation, or explicitly provide one. Such that:
-+		 *
-+		 * switch_mm_irqs_off()				flush_tlb_mm_range()
-+		 *   smp_store_release(loaded_mm, SWITCHING);     atomic64_inc_return(tlb_=
-gen)
-+		 *   smp_mb(); // here                            // smp_mb() implied
-+		 *   atomic64_read(tlb_gen);                      this_cpu_read(loaded_mm);
-+		 *
-+		 * we properly order against flush_tlb_mm_range(), where the
-+		 * loaded_mm load can happen in mative_flush_tlb_multi() ->
-+		 * should_flush_tlb().
-+		 *
-+		 * This way switch_mm() must see the new tlb_gen or
-+		 * flush_tlb_mm_range() must see the new loaded_mm, or both.
-+		 */
- 		if (next !=3D &init_mm && !cpumask_test_cpu(cpu, mm_cpumask(next)))
- 			cpumask_set_cpu(cpu, mm_cpumask(next));
-+		else
-+			smp_mb();
-+
- 		next_tlb_gen =3D atomic64_read(&next->context.tlb_gen);
+ 	start =3D fix_addr(__cpa_addr(cpa, 0));
+-	end =3D   fix_addr(__cpa_addr(cpa, cpa->numpages));
++	end =3D   start + cpa->numpages * PAGE_SIZE;
+ 	if (cpa->force_flush_all)
+ 		end =3D TLB_FLUSH_ALL;
 =20
- 		ns =3D choose_new_asid(next, next_tlb_gen);
 
