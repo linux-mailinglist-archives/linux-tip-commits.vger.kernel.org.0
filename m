@@ -1,109 +1,119 @@
-Return-Path: <linux-tip-commits+bounces-6783-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6784-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70840BCE9C0
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Oct 2025 23:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7150BD5287
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Oct 2025 18:43:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60F3A4E1A99
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 10 Oct 2025 21:23:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 09DAD4F3EE4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 13 Oct 2025 15:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251FA26B76C;
-	Fri, 10 Oct 2025 21:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF926F44C;
+	Mon, 13 Oct 2025 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="KVIxqDZG"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kAwPLe2F";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kkPoOZRk"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB28F237A4F;
-	Fri, 10 Oct 2025 21:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F183E23BCE7;
+	Mon, 13 Oct 2025 15:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760131405; cv=none; b=f1LrI9C4oZ2XmkKenA1PtCqZsDQI+budOaqd7/OFQM7DFCVZIg5Z8ESepg06v341Vr1QX+AVCjoaEKf57hfrZEI0s4srtGj7/0s/FGOMehQ4nnhhfP0YKp3IUCIR07+aIAWE3Sw6SWRIUTpSL2JHNbCgU46C8yBmZuCpzCNbVzE=
+	t=1760369298; cv=none; b=BbyQMrdpwrhkj/dLK9lO3i6tfDHy+Gl4BhgxiUrlz9ISwNQ7X/UjkccrJPMggmmBoARS2I6Mwzea3BfnOUNARu/Q8d4YFiUvcJTnr2TwIRYTociApCcGEHaIHAN20/RCcoS0b2BSfCkz7W68NDtGI57Ts7F2V7TK4MezA+BzcAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760131405; c=relaxed/simple;
-	bh=Nkr3uJp5OqnDjljCPLtTh4RSl6GNhT46w1+67dI/zNI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E6q7GRB/D5dSL85n/iIR+9l53wKIyNHoz0EOZQ7vafwy5g8u1yS1Oyw+j5CyZxTa+zQe+4pVzCGIRiS7NWD7EZkdo+MH5pTPa2HNXiz7LNdUa6LohG1GpxHpEh9fTVvaYlRXbmfXLRrL3R2AXA4SiyovoPRMsX+/6UZeFwXQdqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=KVIxqDZG; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 39E2040E016D;
-	Fri, 10 Oct 2025 21:23:12 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id I8IXORZg4TQ6; Fri, 10 Oct 2025 21:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1760131387; bh=qySDLascQ+yEC/QoOhS2+2VgA0BDmGIVzu4wiCJpGlc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KVIxqDZGlLlU7IW1hC0/qbB10VYeoGJ6k9FwRMRCBHgy32I2rVKesuC3q3VlysSG8
-	 d6v9vEyxBl7QwhFNe/VkdZC4dtZSYffraJi9Dk69dVw5arCFpWHLDCGsMcp4nN2DMG
-	 2AHkfg+X7uMe2vXJ+Mnj/YKcX8CgjuetqZ9v7qcqWJJF/UurWt4JF8/Qo/OuuDLbh2
-	 jK+dSL0DCicwiJiQ8/n8Ss7rUgLzUo0pUFq6/sg/zl9m7qJaYq71bKHkN8xgLymylQ
-	 NV8rWwmRCWmcbHiNwCWV4iypocXzhztDCaX4rzzc5cVAd2lNAc8/1Q6SwBqhD4NZT9
-	 wDeHtoW+IFmDS7ZGRj5PEmAyNNdS5fdptvfkwHhXtljs4xnrEkq/8MeoeztSsDTi2b
-	 RCRt6gG8HzcxHA1825eJtXUMuKU7UkaO6OOQp7yHwB0QhsXwUcXIIuua0Qv4Y304Pt
-	 bcJQ/4HC5t409TPu1Xuy4oET+UzfTecWK6JABXiCAJe3uRBMeVGLDUIQdvNlYQy6wY
-	 frcXYJ9suYF+/C7YgJRbNn/u3bTvT12+kktaYPElvg30bD0lIcP2ObGE7eEuU2Iom2
-	 fVHgnSXsUK20YxCbrRiLblvYQ662rTXOyQP/i5Zc8zM7yFlW0Kd5sT8FIm8vuWOvet
-	 JeHDo9M3HdDGo5FQlg//LbTY=
-Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 7F39240E015F;
-	Fri, 10 Oct 2025 21:23:01 +0000 (UTC)
-Date: Fri, 10 Oct 2025 23:22:51 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>, x86@kernel.org
-Subject: Re: [tip: x86/cleanups] crypto: X86 - Remove CONFIG_AS_VAES
-Message-ID: <20251010212251.GAaOl5K1M2UOdqNzYP@fat_crate.local>
-References: <20250819085855.333380-2-ubizjak@gmail.com>
- <175577973263.1420.12918884895191770948.tip-bot2@tip-bot2>
- <20251010202122.GA2922@quark>
+	s=arc-20240116; t=1760369298; c=relaxed/simple;
+	bh=Z+NapRVvLUj4KbketkmIt9DRSD2RYzUsU9ILjcnOaCg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ISqPKYmn+pevjGdvfVck91ZHvEAKv5VCyk8RNYub4/v1dkul24flSmidiLB+uxT5nc23Q9a6nekGK8R+UVfqWyPJIjxFT2hZRjT7rdUgBOwamUNB8AInXvj3GCvoIXAUNWqUFVod4rSvhciEIn84pqtmzLu/vsVmVa5bnAuq75Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kAwPLe2F; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kkPoOZRk; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 13 Oct 2025 15:28:08 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1760369293;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I8AdlPFIQ6z4PgveYjJ4xH2nQ9V2dwDtkHDP2mWAIvc=;
+	b=kAwPLe2FttfmXsqrMxLt5Qb5sm/EasUnxc6K9zgum25fxHWE+oDxy6qzG3bWm1T+n6br4b
+	58w9apV1vmJ3wvdeT70Seooo0XjFJ2E6l/0H/hmYLE5vE71fSCPqW2ihRxWSmhZaimYFQm
+	ge3vfeMMayrETx/LqZIhiI9TduIZ8lYAuUnzHGOnP6zfuBeBBs+kBBLYJI2PkvCDYoCYLn
+	K0InaPn5Ro+8M0AHhg4HTgB4PV6eSbbNaRwq7NpwB5CWOnmSqoC/Gcar38d53oqSHOTXB3
+	0g6cXqW2/knEDWka3srIcrk1u5Bdc/s6sXbn79KwkDil0FUZLmDUUPsN1YhLXw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1760369293;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I8AdlPFIQ6z4PgveYjJ4xH2nQ9V2dwDtkHDP2mWAIvc=;
+	b=kkPoOZRkHT6MVaO4Z9WZ7/IJXLfwUIOLk9MMzhPP8hdZOeJUjqIl5B8ZXXQKRgDxzoD8jm
+	QQ3wCAGTurk6/ADg==
+From: "tip-bot2 for Chen Yu" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cache] x86/resctrl: Support Sub-NUMA Cluster (SNC) mode on
+ Clearwater Forest
+Cc: Chen Yu <yu.c.chen@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Reinette Chatre <reinette.chatre@intel.com>, Tony Luck <tony.luck@intel.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250926041722.510371-1-yu.c.chen@intel.com>
+References: <20250926041722.510371-1-yu.c.chen@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251010202122.GA2922@quark>
+Message-ID: <176036928904.709179.3903914566187770863.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 10, 2025 at 01:21:22PM -0700, Eric Biggers wrote:
-> On Thu, Aug 21, 2025 at 12:35:31PM -0000, tip-bot2 for Uros Bizjak wrote:
-> > The following commit has been merged into the x86/cleanups branch of tip:
-> > 
-> > Commit-ID:     4593311290006793a38a9cbd91d4a65b63cd7b76
-> > Gitweb:        https://git.kernel.org/tip/4593311290006793a38a9cbd91d4a65b63cd7b76
-> > Author:        Uros Bizjak <ubizjak@gmail.com>
-> > AuthorDate:    Tue, 19 Aug 2025 10:57:50 +02:00
-> > Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> > CommitterDate: Thu, 21 Aug 2025 12:23:28 +02:00
-> > 
-> > crypto: X86 - Remove CONFIG_AS_VAES
-> 
-> Hi!  Just wanted to confirm that this is going to make it into an x86
-> pull request for 6.18?
+The following commit has been merged into the x86/cache branch of tip:
 
-Bah, looks like one of us went on vacation after sending a bunch of pull
-requests expecting the others to send that one. Oh well, it hasn't happened.
+Commit-ID:     a0a0999507752574b80d7fbd179cce052c92791b
+Gitweb:        https://git.kernel.org/tip/a0a0999507752574b80d7fbd179cce052c9=
+2791b
+Author:        Chen Yu <yu.c.chen@intel.com>
+AuthorDate:    Fri, 26 Sep 2025 12:17:22 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 13 Oct 2025 16:59:55 +02:00
 
-Thanks for letting me know, I'll send them tomorrow.
+x86/resctrl: Support Sub-NUMA Cluster (SNC) mode on Clearwater Forest
 
--- 
-Regards/Gruss,
-    Boris.
+Clearwater Forest supports SNC mode. Add it to the snc_cpu_ids[] table.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Acked-by: Tony Luck <tony.luck@intel.com>
+---
+ arch/x86/kernel/cpu/resctrl/monitor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/kernel/cpu/resctrl/monitor.c b/arch/x86/kernel/cpu/resc=
+trl/monitor.c
+index c894561..93f4c2d 100644
+--- a/arch/x86/kernel/cpu/resctrl/monitor.c
++++ b/arch/x86/kernel/cpu/resctrl/monitor.c
+@@ -355,6 +355,7 @@ static const struct x86_cpu_id snc_cpu_ids[] __initconst =
+=3D {
+ 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X, 0),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X, 0),
+ 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X, 0),
++	X86_MATCH_VFM(INTEL_ATOM_DARKMONT_X, 0),
+ 	{}
+ };
+=20
 
