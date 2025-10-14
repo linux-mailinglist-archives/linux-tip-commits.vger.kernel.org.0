@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-6794-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6795-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48885BD83E0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 10:44:14 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52715BD83E9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 10:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B53504FC12D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 08:43:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 19E314E3638
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 08:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576BC30FF1C;
-	Tue, 14 Oct 2025 08:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A241C31076C;
+	Tue, 14 Oct 2025 08:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ywiHOtKU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rQMgxQPO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HBzDMGVe";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dwa7YSwT"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7749330FF1E;
-	Tue, 14 Oct 2025 08:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C901430FC2C;
+	Tue, 14 Oct 2025 08:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431359; cv=none; b=uzzHsAlKaFywilT5TkhJFMOugPhPYmenMAYi/0Uw5LZbpTL6PsXyASqFOyDmqIFAy1f96ulBT/bG35m0+qJANJtQJB6jn+/vTBm8HNIs7nC1M49kYJ5Xo2fw+fWoIasG8lQu5YToGkh73pYoqzFq2+l3/dUDy1Ftct+Jh1tpq5Y=
+	t=1760431360; cv=none; b=uMhesCSe+/yq7KVFCci/1MPrD1McY5b+um9Eab5xs1G/x9z3gQHm4Mmh0wR3NSwITxap3HF3q1ExBaTjJj+NW0KooLAEYOhYIiaONWirDzpBdAgwW/h/wP6JhDkmi2FjD4w6JyQvrjAbZToyW1Pa9HKaWIH/+dViLhQl8Ayx8S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431359; c=relaxed/simple;
-	bh=ofetTIjST2/q5MFo4UTNlzlcM2AqB0N5fPsUCqIFq7k=;
+	s=arc-20240116; t=1760431360; c=relaxed/simple;
+	bh=kVhvOv4HQB55yfpTiXaG6J/q6JHEzukVPdcBOiz1YD0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=GHDAkbwCVB2KwBvHY5Ax8YX2G7B0HKJ6G6Pfs/SWy189YxQ3664cfmKrKaOi8OTyPFdQSB7bsR+tu12vD32v0emHLwNDcKw/PHBO+RJQKb5LYWiZmyYKIBRHCo4XlLjgxkQd6ty5Ntsdak5IPKaimJjVrI/8VjgN6whHCTjvUOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ywiHOtKU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rQMgxQPO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=GUVmmj0rLMQ81ieyTfvTxau+SGIgoHVzcpQpaRdFxczDDGM11gMbdogjfmlpCuMAkmQqWvNfp2S9uZAO2Oj8FJ5JSrBu0Jm3sV5ToeJrrcA0LhmxlXIVBqldYDu/UtRuAtCzEsOkOPNvNAPKREWNUI88z/9v/VFAMZOPbD8L31Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HBzDMGVe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dwa7YSwT; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 14 Oct 2025 08:42:34 -0000
+Date: Tue, 14 Oct 2025 08:42:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760431355;
+	s=2020; t=1760431357;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vRPd44Y/gynMcsUwSZsbFrZufYssZc3UEU1c5oBj26c=;
-	b=ywiHOtKUeb97oLPnqJ2J3OY0p+I+08Gk3ZizlTZFOYq30Aw2mVVx9Aw8GoIE0FJB5XkFAB
-	MbbfYwZmR/8ThPnkGvbEI/newBq8Zv0JNCk4EImNINP95X0Ro8XiC8A2gyuDY5BmOWJQy5
-	+v3zllKTLi9ET8fswfPS+J0YdOZr0FbsLyY7yiadZ1EQPVoxOAQBLpw+dxwJsaq/7oDTff
-	uJe1S7YOfoNnoE9aS3orJinTQLz6aPulK3Mu6oO3zbv6NhWYGWtaodHZCspZCMmBvx33R1
-	Yls1H4g/ZAsCnw4/wmrhY//Lxa0IHuPaSb29yC2dV6xO6NlhK1BTH592fvp4DQ==
+	bh=b5D/5DkrLWN6Zy8CmWUQeLfnDv6qGUq7pbUvhyssgDI=;
+	b=HBzDMGVetIMHPvNOWgSSuU8CL8mJfHiJShOW6moPtI1uE176uA9xeGE7HPOyd431V0fiNT
+	CAyojUg2GkLnFYd+u9BlPlpENoSLdri3hyAFH2w4uOiCjxmYLUKFGVsUXZQvzeoxQmnL/4
+	KpU6G1khaXNoA5fcZQmnTX7vxIN9BuCeSdjBYbQ/GPESbyT0UmE2HOzMpwrJAzb581m64I
+	irz/3U9uPZZ/qbGX1uD5d4dUZHdjSK5sRmzVd46kG9g37qxN/qQa+/yg37Mrr4+dI7q5KI
+	ANSv346/AzysI8J+K2rMJEdhdAQTws8x0dD9IWNijp2dxonn6DATVms1G7RVRg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760431355;
+	s=2020e; t=1760431357;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vRPd44Y/gynMcsUwSZsbFrZufYssZc3UEU1c5oBj26c=;
-	b=rQMgxQPO9pbYjQ1/x0UjE8bfdy1CXQhEJek66rlaOeJ3o939OET7doGEs8RvZJ/eJFklEP
-	KHFM9zj4W8zpZ1DA==
+	bh=b5D/5DkrLWN6Zy8CmWUQeLfnDv6qGUq7pbUvhyssgDI=;
+	b=dwa7YSwTUQIc9EoAxCSHEDPdLGXDTIYGUx+v/YuMU9hEzuJSu/6T+9eyKMlsP7nXvQpyfj
+	hKqzedlZ9vqfRyCA==
 From: "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/alternative: Patch a single alternative location
- only once
+Subject: [tip: x86/core] x86/alternative: Refactor apply_alternatives()
 Cc: Juergen Gross <jgross@suse.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250929112947.27267-4-jgross@suse.com>
-References: <20250929112947.27267-4-jgross@suse.com>
+In-Reply-To: <20250929112947.27267-3-jgross@suse.com>
+References: <20250929112947.27267-3-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176043135449.709179.18067035380831847643.tip-bot2@tip-bot2>
+Message-ID: <176043135576.709179.11168250550408236671.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,94 +81,137 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     a17e1039874831c49d3c15d699a65a8f8130dbb5
-Gitweb:        https://git.kernel.org/tip/a17e1039874831c49d3c15d699a65a8f813=
-0dbb5
+Commit-ID:     9f6a53b4ecc6800b0db5463071ce95a0afab6746
+Gitweb:        https://git.kernel.org/tip/9f6a53b4ecc6800b0db5463071ce95a0afa=
+b6746
 Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Mon, 29 Sep 2025 13:29:47 +02:00
+AuthorDate:    Mon, 29 Sep 2025 13:29:46 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 14 Oct 2025 10:38:11 +02:00
 
-x86/alternative: Patch a single alternative location only once
+x86/alternative: Refactor apply_alternatives()
 
-Instead of patching a single location potentially multiple times in
-case of nested ALTERNATIVE()s, do the patching only after having
-evaluated all alt_instr instances for that location.
+Refactor apply_alternatives() by splitting out patching of a single
+alt_instr instance into a sub-function.
 
-This has multiple advantages:
-
-- In case of replacing an indirect with a direct call using the
-  ALT_FLAG_DIRECT_CALL flag, there is no longer the need to have that
-  instance before any other instances at the same location (the
-  original instruction is needed for finding the target of the direct
-  call).
-
-- In case of nested ALTERNATIVE()s there is no intermediate replacement
-  visible. This avoids any problems in case e.g. an interrupt is
-  happening between the single instances and the patched location is
-  used during handling the interrupt.
+Keep the final text_poke_early() call in apply_alternatives() in
+order to prepare merging multiple alternative patching instances of
+the same location.
 
 Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ---
- arch/x86/kernel/alternative.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ arch/x86/kernel/alternative.c | 60 ++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 28 deletions(-)
 
 diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index d86a012..90c0d16 100644
+index 4f3ea50..d86a012 100644
 --- a/arch/x86/kernel/alternative.c
 +++ b/arch/x86/kernel/alternative.c
-@@ -648,6 +648,8 @@ void __init_or_module noinline apply_alternatives(struct =
+@@ -604,6 +604,34 @@ static inline u8 * instr_va(struct alt_instr *i)
+ 	return (u8 *)&i->instr_offset + i->instr_offset;
+ }
+=20
++static void __init_or_module apply_one_alternative(u8 *instr, u8 *insn_buff,
++						   struct alt_instr *a)
++{
++	u8 *replacement =3D (u8 *)&a->repl_offset + a->repl_offset;
++	unsigned int insn_buff_sz;
++
++	DPRINTK(ALT, "feat: %d*32+%d, old: (%pS (%px) len: %d), repl: (%px, len: %d=
+) flags: 0x%x",
++		a->cpuid >> 5,
++		a->cpuid & 0x1f,
++		instr, instr, a->instrlen,
++		replacement, a->replacementlen, a->flags);
++
++	memcpy(insn_buff, replacement, a->replacementlen);
++	insn_buff_sz =3D a->replacementlen;
++
++	if (a->flags & ALT_FLAG_DIRECT_CALL)
++		insn_buff_sz =3D alt_replace_call(instr, insn_buff, a);
++
++	for (; insn_buff_sz < a->instrlen; insn_buff_sz++)
++		insn_buff[insn_buff_sz] =3D 0x90;
++
++	text_poke_apply_relocation(insn_buff, instr, a->instrlen, replacement, a->r=
+eplacementlen);
++
++	DUMP_BYTES(ALT, instr, a->instrlen, "%px:   old_insn: ", instr);
++	DUMP_BYTES(ALT, replacement, a->replacementlen, "%px:   rpl_insn: ", replac=
+ement);
++	DUMP_BYTES(ALT, insn_buff, insn_buff_sz, "%px: final_insn: ", instr);
++}
++
+ /*
+  * Replace instructions with better alternatives for this CPU type. This runs
+  * before SMP is initialized to avoid SMP problems with self modifying code.
+@@ -618,7 +646,7 @@ void __init_or_module noinline apply_alternatives(struct =
 alt_instr *start,
+ 						  struct alt_instr *end)
+ {
  	u8 insn_buff[MAX_PATCH_LEN];
- 	u8 *instr;
+-	u8 *instr, *replacement;
++	u8 *instr;
  	struct alt_instr *a, *b;
-+	unsigned int instances =3D 0;
-+	bool patched =3D false;
 =20
  	DPRINTK(ALT, "alt table %px, -> %px", start, end);
-=20
-@@ -677,9 +679,13 @@ void __init_or_module noinline apply_alternatives(struct=
- alt_instr *start,
- 		 * padding for all alt_instr entries for this site (nested
- 		 * alternatives result in consecutive entries).
- 		 */
--		for (b =3D a+1; b < end && instr_va(b) =3D=3D instr_va(a); b++) {
--			u8 len =3D max(a->instrlen, b->instrlen);
--			a->instrlen =3D b->instrlen =3D len;
-+		if (!instances) {
-+			for (b =3D a+1; b < end && instr_va(b) =3D=3D instr_va(a); b++) {
-+				u8 len =3D max(a->instrlen, b->instrlen);
-+				a->instrlen =3D b->instrlen =3D len;
-+			}
-+			instances =3D b - a;
-+			patched =3D false;
+@@ -643,8 +671,6 @@ void __init_or_module noinline apply_alternatives(struct =
+alt_instr *start,
+ 	 * order.
+ 	 */
+ 	for (a =3D start; a < end; a++) {
+-		unsigned int insn_buff_sz =3D 0;
+-
+ 		/*
+ 		 * In case of nested ALTERNATIVE()s the outer alternative might
+ 		 * add more padding. To ensure consistent patching find the max
+@@ -657,7 +683,6 @@ void __init_or_module noinline apply_alternatives(struct =
+alt_instr *start,
  		}
 =20
  		instr =3D instr_va(a);
-@@ -692,14 +698,19 @@ void __init_or_module noinline apply_alternatives(struc=
+-		replacement =3D (u8 *)&a->repl_offset + a->repl_offset;
+ 		BUG_ON(a->instrlen > sizeof(insn_buff));
+ 		BUG_ON(a->cpuid >=3D (NCAPINTS + NBUGINTS) * 32);
+=20
+@@ -670,32 +695,11 @@ void __init_or_module noinline apply_alternatives(struc=
 t alt_instr *start,
- 		 * - feature not present but ALT_FLAG_NOT is set to mean,
- 		 *   patch if feature is *NOT* present.
- 		 */
--		if (!boot_cpu_has(a->cpuid) =3D=3D !(a->flags & ALT_FLAG_NOT)) {
--			memcpy(insn_buff, instr, a->instrlen);
--			optimize_nops(instr, insn_buff, a->instrlen);
--		} else {
-+		if (!boot_cpu_has(a->cpuid) !=3D !(a->flags & ALT_FLAG_NOT)) {
- 			apply_one_alternative(instr, insn_buff, a);
-+			patched =3D true;
+ 		if (!boot_cpu_has(a->cpuid) =3D=3D !(a->flags & ALT_FLAG_NOT)) {
+ 			memcpy(insn_buff, instr, a->instrlen);
+ 			optimize_nops(instr, insn_buff, a->instrlen);
+-			text_poke_early(instr, insn_buff, a->instrlen);
+-			continue;
++		} else {
++			apply_one_alternative(instr, insn_buff, a);
  		}
 =20
--		text_poke_early(instr, insn_buff, a->instrlen);
-+		instances--;
-+		if (!instances) {
-+			if (!patched) {
-+				memcpy(insn_buff, instr, a->instrlen);
-+				optimize_nops(instr, insn_buff, a->instrlen);
-+			}
-+			text_poke_early(instr, insn_buff, a->instrlen);
-+		}
+-		DPRINTK(ALT, "feat: %d*32+%d, old: (%pS (%px) len: %d), repl: (%px, len: %=
+d) flags: 0x%x",
+-			a->cpuid >> 5,
+-			a->cpuid & 0x1f,
+-			instr, instr, a->instrlen,
+-			replacement, a->replacementlen, a->flags);
+-
+-		memcpy(insn_buff, replacement, a->replacementlen);
+-		insn_buff_sz =3D a->replacementlen;
+-
+-		if (a->flags & ALT_FLAG_DIRECT_CALL)
+-			insn_buff_sz =3D alt_replace_call(instr, insn_buff, a);
+-
+-		for (; insn_buff_sz < a->instrlen; insn_buff_sz++)
+-			insn_buff[insn_buff_sz] =3D 0x90;
+-
+-		text_poke_apply_relocation(insn_buff, instr, a->instrlen, replacement, a->=
+replacementlen);
+-
+-		DUMP_BYTES(ALT, instr, a->instrlen, "%px:   old_insn: ", instr);
+-		DUMP_BYTES(ALT, replacement, a->replacementlen, "%px:   rpl_insn: ", repla=
+cement);
+-		DUMP_BYTES(ALT, insn_buff, insn_buff_sz, "%px: final_insn: ", instr);
+-
+-		text_poke_early(instr, insn_buff, insn_buff_sz);
++		text_poke_early(instr, insn_buff, a->instrlen);
  	}
 =20
  	kasan_enable_current();
