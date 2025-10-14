@@ -1,268 +1,106 @@
-Return-Path: <linux-tip-commits+bounces-6810-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6811-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63D5BD9FCD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 16:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F95FBD9FD6
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 16:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC67B5432D9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 14:26:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D56B542A70
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 14:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1462A21FF49;
-	Tue, 14 Oct 2025 14:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F51213237;
+	Tue, 14 Oct 2025 14:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="nL4NN+rI";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="nL4NN+rI"
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="ePda4F7t"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE722877DE
-	for <linux-tip-commits@vger.kernel.org>; Tue, 14 Oct 2025 14:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7643B347C7;
+	Tue, 14 Oct 2025 14:27:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760451972; cv=none; b=ieJbD0RUxGpFa3kO5SelaV4yLM6gcoPZH6lbgXYAFstnCS8Gc1EQI3Fge6M8184CP09feCsFqBtCtVd0qOfN+yqexGdnAAumzhrYyv3rygWsXxVR//ygg9W/m6phb9OltkFU2FJHgWoVFeZK1pGDA8HZHy0pa+y6eWJVS/KttyQ=
+	t=1760452030; cv=none; b=jzr5ALKp1wLsdAXEQFhcy3UOkIbyvxOENwqJ/hNNWq4C4h1CFpDNGiymLxWgeqd96He5T3ax0qYjdEKgHkJjHZ+RempVF9eV+nSTaCUtyQsbgtqspi2XJjrr4zAfzxCJt/+JUrbyynay1xq5C5QM3q/nhFt/IsV0aX4WT1Igl74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760451972; c=relaxed/simple;
-	bh=fFewbtlsy0iZf92HQsgRg1p9gHZlFOyIxnJg+C+FUvQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ioETY/P8Rly8ftZsYvpqlmfjyc5lp9rR4daETvpFjdaYdpIYYH9/aRHk5AClipFchxW4jNELXPRpmrlK4At/+gOy2iLqZ6CIokktFPPAbJH2Ut9b+Y26bdnHXL4APr2FOHzSIMKLFVb/H/lhe7dAa6mGnh9oObhlbAzhkGT3cx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=nL4NN+rI; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=nL4NN+rI; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	s=arc-20240116; t=1760452030; c=relaxed/simple;
+	bh=seupb5DrLHsju2xeaNcxxC7Uuxgzr4BGHmZKTsn/MsA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uj9mGCIyXPJmEsGzalL6E9DUeqQBcIP+Qgi9ktAxFQ36v+OP2S+1VHBC5g32MmBztAarug3XpUpfq1p0VTYgC7FN9iZNz+aOZVWXTWeKEprM30FDbWi7gNFB67SAfDYe7xbPWuWqmj8v3hd1TJZYhbndZ6hdHeSt4u5+m99Ssj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=fail (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=ePda4F7t reason="signature verification failed"; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0028C40E019F;
+	Tue, 14 Oct 2025 14:27:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
+	reason="fail (body has been altered)" header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id L-aqnWkEPUHu; Tue, 14 Oct 2025 14:27:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1760452022; bh=NlHapNuYf4frbBMVk1vzqhFQvkUKHEiFf2+FjM++m0g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ePda4F7t3YL8xhN55SbiCIwagNFxlnqBOX5theakP7v7c0m/QuK0hpmm++NUDLW2Q
+	 rZ0YAkNlu/GdwdcsD0S2MUisl4l/dCv8yyic8iJMtgjxmUBYsnFAksp4MJTvf/smIi
+	 70TlEYfEvK62LrDiZciUYIAUeEu8FsDuHVODkW3jvvHxajbCRabaJ9W2UZ5Dh2dvdN
+	 nOY62IFK7C4FiT7C1oFJ3ondp7ObnfJm71NLiMkEnmch8lVExhkwIo2iY+LtWRjS4w
+	 rYjIDXFgsgKKViGj9nMRF++5zliijyEQ5pmWiYGQAb/XASTpdRIKr8IYWlhz8Bhpp2
+	 wJ/DRV3id/FSBj+h1G+wZR6kZYlTwxzsteiacZ202K8eWzJkWj9r0639x4xWD8kgS8
+	 aNqdxXK930ZSvM46q7AoP5mKkWVwharOnO0NNj6IOHzt+/BIJZuKkTlQv1Zd/2OURd
+	 mhK4I8GhY0mFN7POAoFnFrCyVUbm0e87ZK6gEKzQsOVvzXjrD8vccpPLyQ2fIO8hVh
+	 u2EI/1Uobg5RUOPWZj3ruNJrSyg1Tk27H5rWHvJTgyaqHKn/WeYl32OCDxoJRPtQYH
+	 TaHT9ujmfBhXUGHD1jVmv4mrloRLRdAa/9yRVisC95mdeMg2erBP7Xv4SF4vNplF3/
+	 86sUdzw2Vw47YMAqHyjfoB08=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 26AA3222C4;
-	Tue, 14 Oct 2025 14:26:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1760451968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fFewbtlsy0iZf92HQsgRg1p9gHZlFOyIxnJg+C+FUvQ=;
-	b=nL4NN+rI5EFwIIZYltIbXoTL80xOeQNp6BJRPR5DtBnOsfdmCgbBHIIuzCGhr/qmhg7b0T
-	k/Q+SMOGKcg0DSXrPH1H6N5che2dGRdS4Eznu5z21MPL/k4IedOcXPlkAnHSzd0ELODOiH
-	U+LOM76G8Od5naetanPDIbEZL4j19Xw=
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1760451968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=fFewbtlsy0iZf92HQsgRg1p9gHZlFOyIxnJg+C+FUvQ=;
-	b=nL4NN+rI5EFwIIZYltIbXoTL80xOeQNp6BJRPR5DtBnOsfdmCgbBHIIuzCGhr/qmhg7b0T
-	k/Q+SMOGKcg0DSXrPH1H6N5che2dGRdS4Eznu5z21MPL/k4IedOcXPlkAnHSzd0ELODOiH
-	U+LOM76G8Od5naetanPDIbEZL4j19Xw=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E7F9813A44;
-	Tue, 14 Oct 2025 14:26:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xTWxNn9d7mgYeQAAD6G6ig
-	(envelope-from <jgross@suse.com>); Tue, 14 Oct 2025 14:26:07 +0000
-Message-ID: <ff687fb4-56b3-49ee-bf9e-7bf5442cc64b@suse.com>
-Date: Tue, 14 Oct 2025 16:26:07 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 259DB40E016A;
+	Tue, 14 Oct 2025 14:26:57 +0000 (UTC)
+Date: Tue, 14 Oct 2025 16:26:56 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org
+Subject: Re: [tip: x86/core] x86/alternative: Patch a single alternative
+ location only once
+Message-ID: <20251014142656.GFaO5dsDlJ6d_WY_fk@fat_crate.local>
+References: <20250929112947.27267-4-jgross@suse.com>
+ <176043135449.709179.18067035380831847643.tip-bot2@tip-bot2>
+ <20251014125909.GAaO5JHU_cgsPgstc_@fat_crate.local>
+ <4fd058ac-3af5-4778-842c-9a185d828c9d@suse.com>
+ <20251014141245.GCaO5aXSQqglFrT9Iy@fat_crate.local>
+ <c0fb45d5-c4a0-498d-8378-dd96ec261c8c@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: x86/core] x86/alternative: Patch a single alternative
- location only once
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org,
- linux-tip-commits@vger.kernel.org, x86@kernel.org
-References: <20250929112947.27267-4-jgross@suse.com>
- <176043135449.709179.18067035380831847643.tip-bot2@tip-bot2>
- <20251014125909.GAaO5JHU_cgsPgstc_@fat_crate.local>
- <20251014132544.GBaO5PWEbKfbQFCXdB@fat_crate.local>
- <ddb38d36-0194-414c-8614-1f37b1f38283@suse.com>
- <20251014141856.GA3245006@noisy.programming.kicks-ass.net>
-Content-Language: en-US
-From: Juergen Gross <jgross@suse.com>
-Autocrypt: addr=jgross@suse.com; keydata=
- xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
- ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
- dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
- NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
- XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
- AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
- CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
- mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
- G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
- kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
- Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
- RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
- vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
- sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
- aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
- w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
- auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
- 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
- fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
- HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
- QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
- ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
-In-Reply-To: <20251014141856.GA3245006@noisy.programming.kicks-ass.net>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------H9F1QUxFl18CtytOXjzw50nc"
-X-Spam-Level: 
-X-Spamd-Result: default: False [-6.20 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SIGNED_PGP(-2.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_UNKNOWN(0.10)[application/pgp-keys];
-	MIME_BASE64_TEXT(0.10)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+,4:~,5:~];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,imap1.dmz-prg2.suse.org:helo];
-	HAS_ATTACHMENT(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -6.20
-
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------H9F1QUxFl18CtytOXjzw50nc
-Content-Type: multipart/mixed; boundary="------------JPMp5EAP8sTpY1hFStHmw4ak";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Borislav Petkov <bp@alien8.de>, linux-kernel@vger.kernel.org,
- linux-tip-commits@vger.kernel.org, x86@kernel.org
-Message-ID: <ff687fb4-56b3-49ee-bf9e-7bf5442cc64b@suse.com>
-Subject: Re: [tip: x86/core] x86/alternative: Patch a single alternative
- location only once
-References: <20250929112947.27267-4-jgross@suse.com>
- <176043135449.709179.18067035380831847643.tip-bot2@tip-bot2>
- <20251014125909.GAaO5JHU_cgsPgstc_@fat_crate.local>
- <20251014132544.GBaO5PWEbKfbQFCXdB@fat_crate.local>
- <ddb38d36-0194-414c-8614-1f37b1f38283@suse.com>
- <20251014141856.GA3245006@noisy.programming.kicks-ass.net>
-In-Reply-To: <20251014141856.GA3245006@noisy.programming.kicks-ass.net>
-
---------------JPMp5EAP8sTpY1hFStHmw4ak
-Content-Type: multipart/mixed; boundary="------------PxcWkBpykB8G8I7LZDbY2b8G"
-
---------------PxcWkBpykB8G8I7LZDbY2b8G
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-T24gMTQuMTAuMjUgMTY6MTgsIFBldGVyIFppamxzdHJhIHdyb3RlOg0KPiBPbiBUdWUsIE9j
-dCAxNCwgMjAyNSBhdCAwNDoxMzoxMVBNICswMjAwLCBKw7xyZ2VuIEdyb8OfIHdyb3RlOg0K
-PiANCj4+IENvdWxkIHRha2Ugc29tZSB0aW1lLCB2YWNhdGlvbiBpcyBjb21pbmcgdXAuLi4N
-Cj4gDQo+IEVuam95ISBUaGlzIHBhdGNoIGhhcyBtZWFud2hpbGUgZ29uZSBhd2F5Lg0KPiAN
-Cg0KSSdtIG5vdCBzdXJlIHRoZSAieDg2L2FsdGVybmF0aXZlOiBSZWZhY3RvciBhcHBseV9h
-bHRlcm5hdGl2ZXMoKSINCnBhdGNoIHdpbGwgc3RheSB0aGUgd2F5IGl0IGlzIG5vdy4gTWF5
-YmUgYmV0dGVyIHRvIHJlbW92ZSBpdCwgdG9vLg0KDQoieDg2L2FsdGVybmF0aXZlOiBEcm9w
-IG5vdCBuZWVkZWQgdGVzdCBhZnRlciBjYWxsIG9mIGFsdF9yZXBsYWNlX2NhbGwoKSINCndv
-bid0IGJlIGNoYW5nZWQsIHNvIGl0IGNhbiBiZSBrZXB0IElNSE8uDQoNCg0KSnVlcmdlbg0K
-
---------------PxcWkBpykB8G8I7LZDbY2b8G
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c0fb45d5-c4a0-498d-8378-dd96ec261c8c@suse.com>
 Content-Transfer-Encoding: quoted-printable
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+On Tue, Oct 14, 2025 at 04:22:09PM +0200, J=C3=BCrgen Gro=C3=9F wrote:
+> I really ran into issues while writing my paravirt MSR series, as I had
+> an ALTERNATIVE3() invocation modifying the original instruction (the
+> indirect paravirt call) with an WRMSR and then trying to turn the no
+> longer existing indirect call into a direct one.
 
-xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjri
-oyspZKOBycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2
-kaV2KL9650I1SJvedYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i
-1TXkH09XSSI8mEQ/ouNcMvIJNwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/B
-BLUVbDa4+gmzDC9ezlZkTZG2t14zWPvxXP3FAp2pkW0xqG7/377qptDmrk42GlSK
-N4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEBAAHNHEp1ZXJnZW4gR3Jvc3Mg
-PGpnQHBmdXBmLm5ldD7CwHkEEwECACMFAlOMcBYCGwMHCwkIBwMCAQYVCAIJCgsE
-FgIDAQIeAQIXgAAKCRCw3p3WKL8TL0KdB/93FcIZ3GCNwFU0u3EjNbNjmXBKDY4F
-UGNQH2lvWAUy+dnyThpwdtF/jQ6j9RwE8VP0+NXcYpGJDWlNb9/JmYqLiX2Q3Tye
-vpB0CA3dbBQp0OW0fgCetToGIQrg0MbD1C/sEOv8Mr4NAfbauXjZlvTj30H2jO0u
-+6WGM6nHwbh2l5O8ZiHkH32iaSTfN7Eu5RnNVUJbvoPHZ8SlM4KWm8rG+lIkGurq
-qu5gu8q8ZMKdsdGC4bBxdQKDKHEFExLJK/nRPFmAuGlId1E3fe10v5QL+qHI3EIP
-tyfE7i9Hz6rVwi7lWKgh7pe0ZvatAudZ+JNIlBKptb64FaiIOAWDCx1SzR9KdWVy
-Z2VuIEdyb3NzIDxqZ3Jvc3NAc3VzZS5jb20+wsB5BBMBAgAjBQJTjHCvAhsDBwsJ
-CAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/Ey/HmQf/RtI7kv5A2PS4
-RF7HoZhPVPogNVbC4YA6lW7DrWf0teC0RR3MzXfy6pJ+7KLgkqMlrAbN/8Dvjoz7
-8X+5vhH/rDLa9BuZQlhFmvcGtCF8eR0T1v0nC/nuAFVGy+67q2DH8As3KPu0344T
-BDpAvr2uYM4tSqxK4DURx5INz4ZZ0WNFHcqsfvlGJALDeE0LhITTd9jLzdDad1pQ
-SToCnLl6SBJZjDOX9QQcyUigZFtCXFst4dlsvddrxyqT1f17+2cFSdu7+ynLmXBK
-7abQ3rwJY8SbRO2iRulogc5vr/RLMMlscDAiDkaFQWLoqHHOdfO9rURssHNN8WkM
-nQfvUewRz80hSnVlcmdlbiBHcm9zcyA8amdyb3NzQG5vdmVsbC5jb20+wsB5BBMB
-AgAjBQJTjHDXAhsDBwsJCAcDAgEGFQgCCQoLBBYCAwECHgECF4AACgkQsN6d1ii/
-Ey8PUQf/ehmgCI9jB9hlgexLvgOtf7PJnFOXgMLdBQgBlVPO3/D9R8LtF9DBAFPN
-hlrsfIG/SqICoRCqUcJ96Pn3P7UUinFG/I0ECGF4EvTE1jnDkfJZr6jrbjgyoZHi
-w/4BNwSTL9rWASyLgqlA8u1mf+c2yUwcGhgkRAd1gOwungxcwzwqgljf0N51N5Jf
-VRHRtyfwq/ge+YEkDGcTU6Y0sPOuj4Dyfm8fJzdfHNQsWq3PnczLVELStJNdapwP
-OoE+lotufe3AM2vAEYJ9rTz3Cki4JFUsgLkHFqGZarrPGi1eyQcXeluldO3m91NK
-/1xMI3/+8jbO0tsn1tqSEUGIJi7ox80eSnVlcmdlbiBHcm9zcyA8amdyb3NzQHN1
-c2UuZGU+wsB5BBMBAgAjBQJTjHDrAhsDBwsJCAcDAgEGFQgCCQoLBBYCAwECHgEC
-F4AACgkQsN6d1ii/Ey+LhQf9GL45eU5vOowA2u5N3g3OZUEBmDHVVbqMtzwlmNC4
-k9Kx39r5s2vcFl4tXqW7g9/ViXYuiDXb0RfUpZiIUW89siKrkzmQ5dM7wRqzgJpJ
-wK8Bn2MIxAKArekWpiCKvBOB/Cc+3EXE78XdlxLyOi/NrmSGRIov0karw2RzMNOu
-5D+jLRZQd1Sv27AR+IP3I8U4aqnhLpwhK7MEy9oCILlgZ1QZe49kpcumcZKORmzB
-TNh30FVKK1EvmV2xAKDoaEOgQB4iFQLhJCdP1I5aSgM5IVFdn7v5YgEYuJYx37Io
-N1EblHI//x/e2AaIHpzK5h88NEawQsaNRpNSrcfbFmAg987ATQRTjHAWAQgAyzH6
-AOODMBjgfWE9VeCgsrwH3exNAU32gLq2xvjpWnHIs98ndPUDpnoxWQugJ6MpMncr
-0xSwFmHEgnSEjK/PAjppgmyc57BwKII3sV4on+gDVFJR6Y8ZRwgnBC5mVM6JjQ5x
-Dk8WRXljExRfUX9pNhdE5eBOZJrDRoLUmmjDtKzWaDhIg/+1Hzz93X4fCQkNVbVF
-LELU9bMaLPBG/x5q4iYZ2k2ex6d47YE1ZFdMm6YBYMOljGkZKwYde5ldM9mo45mm
-we0icXKLkpEdIXKTZeKDO+Hdv1aqFuAcccTg9RXDQjmwhC3yEmrmcfl0+rPghO0I
-v3OOImwTEe4co3c1mwARAQABwsBfBBgBAgAJBQJTjHAWAhsMAAoJELDendYovxMv
-Q/gH/1ha96vm4P/L+bQpJwrZ/dneZcmEwTbe8YFsw2V/Buv6Z4Mysln3nQK5ZadD
-534CF7TDVft7fC4tU4PONxF5D+/tvgkPfDAfF77zy2AH1vJzQ1fOU8lYFpZXTXIH
-b+559UqvIB8AdgR3SAJGHHt4RKA0F7f5ipYBBrC6cyXJyyoprT10EMvU8VGiwXvT
-yJz3fjoYsdFzpWPlJEBRMedCot60g5dmbdrZ5DWClAr0yau47zpWj3enf1tLWaqc
-suylWsviuGjKGw7KHQd3bxALOknAp4dN3QwBYCKuZ7AddY9yjynVaD5X7nF9nO5B
-jR/i1DG86lem3iBDXzXsZDn8R3/CwO0EGAEIACAWIQSFEmdy6PYElKXQl/ew3p3W
-KL8TLwUCWt3w0AIbAgCBCRCw3p3WKL8TL3YgBBkWCAAdFiEEUy2wekH2OPMeOLge
-gFxhu0/YY74FAlrd8NAACgkQgFxhu0/YY75NiwD/fQf/RXpyv9ZX4n8UJrKDq422
-bcwkujisT6jix2mOOwYBAKiip9+mAD6W5NPXdhk1XraECcIspcf2ff5kCAlG0DIN
-aTUH/RIwNWzXDG58yQoLdD/UPcFgi8GWtNUp0Fhc/GeBxGipXYnvuWxwS+Qs1Qay
-7/Nbal/v4/eZZaWs8wl2VtrHTS96/IF6q2o0qMey0dq2AxnZbQIULiEndgR625EF
-RFg+IbO4ldSkB3trsF2ypYLij4ZObm2casLIP7iB8NKmQ5PndL8Y07TtiQ+Sb/wn
-g4GgV+BJoKdDWLPCAlCMilwbZ88Ijb+HF/aipc9hsqvW/hnXC2GajJSAY3Qs9Mib
-4Hm91jzbAjmp7243pQ4bJMfYHemFFBRaoLC7ayqQjcsttN2ufINlqLFPZPR/i3IX
-kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
-=3DeeAB
------END PGP PUBLIC KEY BLOCK-----
+So put *that* in the commit message. Along with a detailed example of wha=
+t
+you were seeing. This is bazillion miles more useful than some hypothetic=
+ally,
+potentially ... case.
 
---------------PxcWkBpykB8G8I7LZDbY2b8G--
+Thx.
 
---------------JPMp5EAP8sTpY1hFStHmw4ak--
+--=20
+Regards/Gruss,
+    Boris.
 
---------------H9F1QUxFl18CtytOXjzw50nc
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmjuXX8FAwAAAAAACgkQsN6d1ii/Ey/y
-Awf+PN5MAmZXnH7fU+y+iK6PRsHRiAUjbCb947dGjRKVATuzlknz9TIGNfyfiiuIkvseJRWmMDEU
-mqdaoWNg3oaEBBG2EfVqVRLt6kKnRParooVk+GVv849OpXrwM+PjsWQSqNrg7oa/Gvs5X7qh0zHc
-/mRKA+6aGvKzlaAv6Nf8isk7ooQsQC1LHvuQmRbUU+fzm1kGN9aQQViIRJM768RwOIo/OZhvcjzD
-Kb72Jku44jdE4SXiMDkeJXicqd5t0KN+gCEKKJGd6UPxgcwWsrI0HZZTh6rYMb3YUylt3g9+c3XP
-HDHz802J+Do9tNrI5ZGigDoWoP0ZGW1miPHcIrT98w==
-=Rf/0
------END PGP SIGNATURE-----
-
---------------H9F1QUxFl18CtytOXjzw50nc--
+https://people.kernel.org/tglx/notes-about-netiquette
 
