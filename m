@@ -1,81 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-6792-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6793-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE81BD83BC
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 10:42:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BB5BD83C2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 10:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FCBC18A44F0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 08:42:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D974264F1
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 08:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD7930FF01;
-	Tue, 14 Oct 2025 08:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11803101A3;
+	Tue, 14 Oct 2025 08:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aproOJg5";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ajoRuPr1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iRnnjCkz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nN4O7qc3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E8D189F43;
-	Tue, 14 Oct 2025 08:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4A730FC3A;
+	Tue, 14 Oct 2025 08:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760431344; cv=none; b=brybYGXLbmbXw/qkReRWml1Q4kBGbT7ecu1nfjQDvA+aKt3Boeday/E3wPNMzT/SXLK9Reflu3oHiVcIgcCS0Z3ZUFdhkhb3jAqFE2xXLmJon+pPo6rbp5ua/3jAx2Gp67bDR4M0PccYc/PUiZL4hbP9A9xFo43bhDjjgzuokE0=
+	t=1760431346; cv=none; b=XYXcE32RlcO7zTG2W9LVNobfF5jiGUlGxI0tHXia3G2HKXsj8MYJagUkTg0JSJD7DEgPgIFXZb9xEoTwa1NjptPP8KahMNX78JjuLGYDrA6LlJVpefabbZC3eA21sr/oXrXRncQYgnniZeXiZ7SLcntMCBgWJNRgQFhF8lZ3peo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760431344; c=relaxed/simple;
-	bh=YS5XJeSWQqc+vm3Wm1SQnwAWP7yFFRbq6T6QGqvmAok=;
+	s=arc-20240116; t=1760431346; c=relaxed/simple;
+	bh=Y4WKRCy1le6eD5rF/jjqoQ7qUyjPL0ertBEJ/6yplX8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iAWvLmtFx1xJBwbWoSDjBeoQ436nm95l+jMqrPOV7bxSdIHLeQlglHJLOY9TWVDc0ON2gIxbZljwqvJm7LGIexeuCX8dxmrlcaakxG51Ez5QiGqTT9t+bCV0/MojOmzx3cLP9rsEp3Xx0xdGV2RUuEXuglLxmkeLBP6uTKoP158=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aproOJg5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ajoRuPr1; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=DylEq6fxj7Nb58rFLvLCCq67WNHsOf6uVIm9qris0Fl8Mjx/+F+9ttwf33wRjqKFe40STMxhmxDAytUVZkSF36x2QMWobRmvuWFp4kitSfY/YQ72hj+om0TtMB/4TQA0/gP6YMciiHmedOgqH9PYh2uW5Xj1qzN0xeuJ/wTYUSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iRnnjCkz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nN4O7qc3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 14 Oct 2025 08:42:19 -0000
+Date: Tue, 14 Oct 2025 08:42:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760431341;
+	s=2020; t=1760431342;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MhPOfcGRAKbkRlEHJSBfosIxcIIlidJsPE2T2uStmNA=;
-	b=aproOJg5BeDJBz7De5O5Yo+Q53hhSxSndj3KNMTieB9cKwVhiUHpSUfvwl0L4cvvEuXz2y
-	i5Ajd67atbSLrRpCJf4iXDxXI9lqcIYpQm3b4iEmwuccF5cRgd8H93SI0sixpJCI75B0VG
-	AYMhy1/rm9WLO7bPv9sJ1sup+Yv3nlFppbtXIjhLjp2OW28sFxfgz7TXLB704k1zhJyima
-	mSnKxe/RCxyS375waqJN62C/iGop+Qnacm7iJLA4SMYcGj4qOZOGlANxBpejcTZpeWaUwt
-	+Ma/PcEvM1k6n59YlEofvYf8iIALGl0iVe8ec+jbIZ2aRKs0am+8+zXF2P4+sw==
+	bh=bIaZ6Rp9/Ohao0EAOOvMzpcZsuafuitBB8hp3XEwhxc=;
+	b=iRnnjCkzWP+dHMdOx9p4DX5Ci6bC+U0bPbrJSE0BCt3cpe7xu1QHoygTbM9YJdrqtAxS9B
+	4zPV+SEZf/Elz/TxUUY9HQ7lnOlAMuubFjijKX1ewGurtnVRjT/hG+BgHbdrrHRG/WEVXM
+	QbkB4SO/X9c5+B6xbhaBHodV2DfNGXWhqXkp4D9+kQ0Wcy2cZ/0U0g8eQEKCvExKUdasTI
+	9LINuTqThfU5fnfxxaG1RJUdjXOHD34XhvbGvzYk669d2vLSkE75Ipwr9RY/1Y1EJm0wCB
+	yu/YDkkRYEnnMAULLryzekESKa0pyTVmRPOSvTPMEmPlMYQ944yfrwNOekMXLg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760431341;
+	s=2020e; t=1760431342;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MhPOfcGRAKbkRlEHJSBfosIxcIIlidJsPE2T2uStmNA=;
-	b=ajoRuPr1bzTCndXlp0lr3sJtdXDW3RKx7GS4Q9zYKqc/ifSmzrau+/DzYUjdRDuiLkXBc6
-	Hnj83tscmC0EmVCg==
-From: "tip-bot2 for Adrian Hunter" <tip-bot2@linutronix.de>
+	bh=bIaZ6Rp9/Ohao0EAOOvMzpcZsuafuitBB8hp3XEwhxc=;
+	b=nN4O7qc3XW5A9VVYmuKGCkCl0ekeUXIuGk1GEByPYVgs2cyOyShYIwRUmBfG++6cNT0UBu
+	1VmZQwZNORGsqxCQ==
+From: "tip-bot2 for Jiri Olsa" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/urgent] perf/core: Fix address filter match with backing files
-Cc: Edd Barrett <edd@theunixzoo.co.uk>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Amir Goldstein <amir73il@gmail.com>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.8@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251013072244.82591-2-adrian.hunter@intel.com>
-References: <20251013072244.82591-2-adrian.hunter@intel.com>
+Subject: [tip: perf/urgent] uprobe: Move arch_uprobe_optimize right after
+ handlers execution
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Jiri Olsa <jolsa@kernel.org>, "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251001132449.178759-1-jolsa@kernel.org>
+References: <20251001132449.178759-1-jolsa@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176043133968.709179.15062959887826741046.tip-bot2@tip-bot2>
+Message-ID: <176043134107.709179.3423388679418556938.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,97 +84,52 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     ebfc8542ad62d066771e46c8aa30f5624b89cad8
-Gitweb:        https://git.kernel.org/tip/ebfc8542ad62d066771e46c8aa30f5624b8=
-9cad8
-Author:        Adrian Hunter <adrian.hunter@intel.com>
-AuthorDate:    Mon, 13 Oct 2025 10:22:42 +03:00
+Commit-ID:     62685ab071de7c39499212bff19f1b5bc0148bc7
+Gitweb:        https://git.kernel.org/tip/62685ab071de7c39499212bff19f1b5bc01=
+48bc7
+Author:        Jiri Olsa <jolsa@kernel.org>
+AuthorDate:    Wed, 01 Oct 2025 15:24:49 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 14 Oct 2025 10:38:09 +02:00
 
-perf/core: Fix address filter match with backing files
+uprobe: Move arch_uprobe_optimize right after handlers execution
 
-It was reported that Intel PT address filters do not work in Docker
-containers.  That relates to the use of overlayfs.
+It's less confusing to optimize uprobe right after handlers execution
+and before we do the check for changed ip register to avoid situations
+where changed ip register would skip uprobe optimization.
 
-overlayfs records the backing file in struct vm_area_struct vm_file,
-instead of the user file that the user mmapped.  In order for an address
-filter to match, it must compare to the user file inode.  There is an
-existing helper file_user_inode() for that situation.
-
-Use file_user_inode() instead of file_inode() to get the inode for address
-filter matching.
-
-Example:
-
-  Setup:
-
-    # cd /root
-    # mkdir test ; cd test ; mkdir lower upper work merged
-    # cp `which cat` lower
-    # mount -t overlay overlay -olowerdir=3Dlower,upperdir=3Dupper,workdir=3D=
-work merged
-    # perf record --buildid-mmap -e intel_pt//u --filter 'filter * @ /root/te=
-st/merged/cat' -- /root/test/merged/cat /proc/self/maps
-    ...
-    55d61d246000-55d61d2e1000 r-xp 00018000 00:1a 3418                       =
-/root/test/merged/cat
-    ...
-    [ perf record: Woken up 1 times to write data ]
-    [ perf record: Captured and wrote 0.015 MB perf.data ]
-    # perf buildid-cache --add /root/test/merged/cat
-
-  Before:
-
-    Address filter does not match so there are no control flow packets
-
-    # perf script --itrace=3De
-    # perf script --itrace=3Db | wc -l
-    0
-    # perf script -D | grep 'TIP.PGE' | wc -l
-    0
-    #
-
-  After:
-
-    Address filter does match so there are control flow packets
-
-    # perf script --itrace=3De
-    # perf script --itrace=3Db | wc -l
-    235
-    # perf script -D | grep 'TIP.PGE' | wc -l
-    57
-    #
-
-With respect to stable kernels, overlayfs mmap function ovl_mmap() was
-added in v4.19 but file_user_inode() was not added until v6.8 and never
-back-ported to stable kernels.  FMODE_BACKING that it depends on was added
-in v6.5.  This issue has gone largely unnoticed, so back-porting before
-v6.8 is probably not worth it, so put 6.8 as the stable kernel prerequisite
-version, although in practice the next long term kernel is 6.12.
-
-Closes: https://lore.kernel.org/linux-perf-users/aBCwoq7w8ohBRQCh@fremen.lan
-Reported-by: Edd Barrett <edd@theunixzoo.co.uk>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org # 6.8
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
 ---
- kernel/events/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/uprobes.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 7541f6f..cd63ec8 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9492,7 +9492,7 @@ static bool perf_addr_filter_match(struct perf_addr_fil=
-ter *filter,
- 	if (!filter->path.dentry)
- 		return false;
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 8709c69..f11ceb8 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -2765,6 +2765,9 @@ static void handle_swbp(struct pt_regs *regs)
 =20
--	if (d_inode(filter->path.dentry) !=3D file_inode(file))
-+	if (d_inode(filter->path.dentry) !=3D file_user_inode(file))
- 		return false;
+ 	handler_chain(uprobe, regs);
 =20
- 	if (filter->offset > offset + size)
++	/* Try to optimize after first hit. */
++	arch_uprobe_optimize(&uprobe->arch, bp_vaddr);
++
+ 	/*
+ 	 * If user decided to take execution elsewhere, it makes little sense
+ 	 * to execute the original instruction, so let's skip it.
+@@ -2772,9 +2775,6 @@ static void handle_swbp(struct pt_regs *regs)
+ 	if (instruction_pointer(regs) !=3D bp_vaddr)
+ 		goto out;
+=20
+-	/* Try to optimize after first hit. */
+-	arch_uprobe_optimize(&uprobe->arch, bp_vaddr);
+-
+ 	if (arch_uprobe_skip_sstep(&uprobe->arch, regs))
+ 		goto out;
+=20
 
