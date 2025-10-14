@@ -1,124 +1,146 @@
-Return-Path: <linux-tip-commits+bounces-6801-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6802-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18F3BD91B6
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 13:50:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21219BD97CF
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 14:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAA89544132
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 11:48:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AED21893EAD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 14 Oct 2025 12:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356E93112B8;
-	Tue, 14 Oct 2025 11:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B011DDA24;
+	Tue, 14 Oct 2025 12:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pP1tfXN7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gFNHLXzq"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="QEWCF3cO"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790FA3101D4;
-	Tue, 14 Oct 2025 11:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD9E31354B;
+	Tue, 14 Oct 2025 12:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760442485; cv=none; b=amoVhynbo8Chdfc1ISXttxX9XjqtwfWIngvpc12nH6gsJ/Wv6F6ZBSt0syl3PljEfTntwJSMoGnNP0v/6UYP2OkYsY1dkBY1hQ9nKd8iUqMq0v6q+wKbSP04vfpxlrLwVvZe/VUcjx/vdVwZkwyslMPO7uYSvkggDMe97iYC1Ps=
+	t=1760446772; cv=none; b=EmGadCu/st3AZxVKf/8x31P3L1meXI39YZTCufU7f5m729HTZ8jOUHNXzI6s3kYcLTDiz8BX10u+27wZMzKsdL94GuVJV3HEyn49Ab3U2BZY4YUPd0+k08qdbsmOVJpCZwz+DwdDwLk+wtaYm8jNEFiIKLDActf9f+1ZLpFLPfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760442485; c=relaxed/simple;
-	bh=BmojH/UDBqBHXL27Degxuqg1aXonJBEFF28NTYP/vTA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PN3UQL4M67YJUZ6IYcJew0E/BQbQ/RrY1G5akIGVEhXRERhfnNh6S+G1UKGsRW1aPCuSINTmDuOi9zM7mkVUDOn3cD59npgvhfeE3pMKZKL95wVPMjzleerFcQDoU0gmTryRgh+X/VxlOnIMYv1bVJv/u/DO/o0vv7fEZbtGQSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pP1tfXN7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gFNHLXzq; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 14 Oct 2025 11:47:58 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760442479;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PmTj2SaJSRMejzNPzQjd8bNs8Ag1mXbPlxjacpozOt4=;
-	b=pP1tfXN7GFpsn0g662ng/ieKCkwl97RZklMU1v1kFqJTapREMEF21a9dfu/g0L8Nq+dwMz
-	4Q8aAzsh57xVUHYANhKtiiVZN1j2mh5zXcuKdpXbqDaMtpX7WcD9IzeD8S69ag04v/bRt4
-	NlpIeN+c9t/iiuEwwZ99TUxB9g5xUWVG/JvEJwm8b5OsEmPtY75hT6j+TL6Ycv1l71+VdT
-	jcWcZEi1GMi6heb+K1fZox4HjGEnom31pTdVd3KX/DeN8OJLi6TaMpRTRqiUjD+Wnb0S4C
-	W/UvsJsX7MWxDPSm4SG95Bu5sL9ZEcDC1RXYgoGpqJ4R5b57NFS8et4VD1j3YQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760442479;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PmTj2SaJSRMejzNPzQjd8bNs8Ag1mXbPlxjacpozOt4=;
-	b=gFNHLXzqD/1y5x1CLq2hdSgpuw/HFmxn/xQ3YfohM8tvaLwQklU12Bp6iIHaRFqdQ+EbK9
-	PEd9pR3mK4+FiIAQ==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool/x86: Remove 0xea hack
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Alexandre Chartre <alexandre.chartre@oracle.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250924134643.907226869@infradead.org>
-References: <20250924134643.907226869@infradead.org>
+	s=arc-20240116; t=1760446772; c=relaxed/simple;
+	bh=dA8ZO6ChYJ9c/RyoUIv5bvOV40QV/ycga8CfhphPEKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VNy7gEImJkIf3Oeu3XmUqVWIrsQ/eJINDZnqWU/K/LQ/xp78JXnKnJFb1uRrXE35irxAUexIgvwwfLsj0jLA+RDF5Fs+4ixXL+S8UeU7RXrZwaogSSFq8xWx6waKUCls4VUb14//ywlJ01EmnAXcBePoqEfItuLrQdSDQrvxb7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=QEWCF3cO; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6B0DE40E01AB;
+	Tue, 14 Oct 2025 12:59:24 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 44Ym9plS8O5S; Tue, 14 Oct 2025 12:59:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1760446760; bh=CRAm/96OhU1MWiQAAgFQeaQhfDFuGGKHReG3tVOvRds=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QEWCF3cOYhCsRumnVfUo0HdEP1854RnsFaKcAGAWUMOYOWCbZ6jhN7dNI0U79H6kA
+	 4rAti4K3TH9gI6vohOC+fj8fyenNbh7kcRth/oVOENuwsHDAhrQqRNqZY6KSj/M0Zi
+	 JEwqEROpLkHbI27UyFSA/CcE0d4DZn+JorHGTID1VXrfUY2BANjUpmvT4YDFy4B2xB
+	 4OZkC4qUUq2KgF/xfdhGWvtg5NSPkhIMGAWBqxftjjm5f1jBcl5DtHYZexStckF0tH
+	 uIcRktBDsfQMooTtqvrWI8/gGjK7FoTFIHX7/9ZOXvxOp5Rehpx7ZiWDraSzyRchzk
+	 FzzKwtLPwiGwmbsjFPLMKoDfmeQo1Q9VGSDVZ0ViSdeEqbvUvRh+cJ2FhMohAorkE5
+	 quQbP6oH/B0OGg4jTrVETO0YQNU3Zv9pFJnbbcdjljeYLmrtvVs3SPm4pTVRxZzF1g
+	 asy60+II+mmRNFgm/7zxDcMaE/KcLmIZaUislSsEGvyD1ZH+bwHHEE9muton/sUjIF
+	 yBPCOVuDdEUbrvB1eFae/+2oMBZQlSKBb+9j1LduuBTPIbSyE9/2KDEWw93/gz2CrY
+	 RCzjrZJwetKTNrn9kZSb3OSJmJ9D7nUGjamAfGidv0l4hx/OO6QiVaMF0t+Wfyd08J
+	 mbKOJqhJfrJwPpr8yXlgZL08=
+Received: from zn.tnic (p5de8ed27.dip0.t-ipconnect.de [93.232.237.39])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id B9B5740E019F;
+	Tue, 14 Oct 2025 12:59:15 +0000 (UTC)
+Date: Tue, 14 Oct 2025 14:59:09 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Juergen Gross <jgross@suse.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org
+Subject: Re: [tip: x86/core] x86/alternative: Patch a single alternative
+ location only once
+Message-ID: <20251014125909.GAaO5JHU_cgsPgstc_@fat_crate.local>
+References: <20250929112947.27267-4-jgross@suse.com>
+ <176043135449.709179.18067035380831847643.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176044247866.709179.12504013113809585079.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <176043135449.709179.18067035380831847643.tip-bot2@tip-bot2>
 
-The following commit has been merged into the objtool/core branch of tip:
+On Tue, Oct 14, 2025 at 08:42:34AM -0000, tip-bot2 for Juergen Gross wrote:
+> @@ -648,6 +648,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+>  	u8 insn_buff[MAX_PATCH_LEN];
+>  	u8 *instr;
+>  	struct alt_instr *a, *b;
+> +	unsigned int instances = 0;
+> +	bool patched = false;
 
-Commit-ID:     c5df4e1ab8c00c4dc13094fa44e219bc48d910f4
-Gitweb:        https://git.kernel.org/tip/c5df4e1ab8c00c4dc13094fa44e219bc48d=
-910f4
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 24 Sep 2025 15:22:46 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 14 Oct 2025 13:43:10 +02:00
+Except that we have the reverse fir tree rule in tip for function-local vars.
 
-objtool/x86: Remove 0xea hack
+The tip-tree preferred ordering of variable declarations at the
+beginning of a function is reverse fir tree order::
 
-Was properly fixed in the decoder with commit 4b626015e1bf ("x86/insn:
-Stop decoding i64 instructions in x86-64 mode at opcode")
+	struct long_struct_name *descriptive_name;
+	unsigned long foo, bar;
+	unsigned int tmp;
+	int ret;
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
----
- tools/objtool/arch/x86/decode.c |  9 ---------
- 1 file changed, 9 deletions(-)
+The above is faster to parse than the reverse ordering::
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 0ad5cc7..ce16fb2 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -189,15 +189,6 @@ int arch_decode_instruction(struct objtool_file *file, c=
-onst struct section *sec
- 	op2 =3D ins.opcode.bytes[1];
- 	op3 =3D ins.opcode.bytes[2];
-=20
--	/*
--	 * XXX hack, decoder is buggered and thinks 0xea is 7 bytes long.
--	 */
--	if (op1 =3D=3D 0xea) {
--		insn->len =3D 1;
--		insn->type =3D INSN_BUG;
--		return 0;
--	}
--
- 	if (ins.rex_prefix.nbytes) {
- 		rex =3D ins.rex_prefix.bytes[0];
- 		rex_w =3D X86_REX_W(rex) >> 3;
+	int ret;
+	unsigned int tmp;
+	unsigned long foo, bar;
+	struct long_struct_name *descriptive_name;
+
+And even more so than random ordering::
+
+	unsigned long foo, bar;
+	int ret;
+	struct long_struct_name *descriptive_name;
+	unsigned int tmp;
+
+> @@ -692,14 +698,19 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+>  		 * - feature not present but ALT_FLAG_NOT is set to mean,
+>  		 *   patch if feature is *NOT* present.
+>  		 */
+> -		if (!boot_cpu_has(a->cpuid) == !(a->flags & ALT_FLAG_NOT)) {
+> -			memcpy(insn_buff, instr, a->instrlen);
+> -			optimize_nops(instr, insn_buff, a->instrlen);
+> -		} else {
+> +		if (!boot_cpu_has(a->cpuid) != !(a->flags & ALT_FLAG_NOT)) {
+>  			apply_one_alternative(instr, insn_buff, a);
+> +			patched = true;
+>  		}
+>  
+> -		text_poke_early(instr, insn_buff, a->instrlen);
+> +		instances--;
+> +		if (!instances) {
+> +			if (!patched) {
+
+I don't see how this is making this code better - this is slowly turning into
+an unreadable mess with those magic "instances" and "patched".
+
+And frankly, the justification for this patch is also meh: an interrupt might
+use the location?!? If this is a real issue then we better disable IRQs around
+it. But not make the code yucky.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
