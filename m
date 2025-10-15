@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-6820-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6821-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26818BDFC2C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Oct 2025 18:52:57 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A5ABDFC51
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Oct 2025 18:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BAAD19A7ECA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Oct 2025 16:53:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 45B395064D4
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 15 Oct 2025 16:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918EC33EAF5;
-	Wed, 15 Oct 2025 16:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C080F340D83;
+	Wed, 15 Oct 2025 16:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dvdt0I3z";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G5rKn/WR"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iva6iIkI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Iv/YmYfv"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0C333CEAE;
-	Wed, 15 Oct 2025 16:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0A033EAFD;
+	Wed, 15 Oct 2025 16:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760547146; cv=none; b=tLPExFrDdLDCoHn9bWb+XS7zEyVJRhgQn6Ma9l1L0NJu5EbuOuyEwL0rELBn5GKm3t9KDjvSBzLSXmoR3lmMJQdXqSXatyajev3x9WWZLZj6BRvQOS0D0GQtarKr5ZgcEs6SAG0vRZfebYtBTF81GBtosiXmbPndBi4x1bzQkeU=
+	t=1760547148; cv=none; b=iIJ24G0N0YZrvcOj8urtSg/qn87z3rLr8JWO6uZiyozzDnKt8OZRR76cw9VtBxCYpbDzsb6oZWEhC5HrN5QESBSBg2EGZ35iPVccuyrmfCDYmSYXf/CesIBi0V63lVLHvNIQADTMSMAf/RVMaZzKhJKMHW+cgLRsqbPQ3BDL9sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760547146; c=relaxed/simple;
-	bh=pUmsdKuAaRqaXjsorztxq71Pb1kxuhmeCQIkVmIkAtk=;
+	s=arc-20240116; t=1760547148; c=relaxed/simple;
+	bh=4/oyh28nfyNljV3OUuF37t6MwqZ9TG500Dw9PS+I9z4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WdayJEQWNmw3xYxM6mF8deHgNuKDJ8A0L3Cy1S3hc9vz0id3e/pYynw+2IHMKrBQDDrG6deF+o3BEO7EeYGVBea7KxwEnlQOJ7GUgMm8j63cVpOrumFvpQME7+KuZulrTXlQg5sTqbg5Bb46JEyWNcc9ZfgIsulYnE6jysgArtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dvdt0I3z; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G5rKn/WR; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Vln5wNdFCvAUwIS9Qfd9XL+qTORrRofIfl5EIzMqRKd7klIp/+qrX9uq6Z5Wueliq/FecoyHTMajlhTQbz3Q4KQq0GDKmRb24HXmrHj99PUvGEOkLzQJjSMW0O+67Ed8QeaZPayhvhnDU/Xc2DIaGOFL9Bt7nC8Op/ilZU+e5MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iva6iIkI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Iv/YmYfv; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 15 Oct 2025 16:52:21 -0000
+Date: Wed, 15 Oct 2025 16:52:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760547143;
+	s=2020; t=1760547144;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cWlroYMp53RM7QmspvGwuCnWczlanVr1dmAQFd71g0s=;
-	b=dvdt0I3zvXCJw6vQGWNxYGHkzMx9NiwWToZYgTM415XkUvChQ0Nokvg59COJUsQt7gywhp
-	t3mVKdU8nIAzAwq6BkQ0efEe60hVVB8j46shx7pwAziATBSG+Mttv3OFQez4Acb78z8G1a
-	xRlRWjflDTKA/cNmXsNS/e0RgA9WApjSwcEiWwoIVAp2LZVb/pLJn3oJ+Q9mzqP/P3NGHg
-	Nxl9u8Ys/KATzrXQeEX+qbOwSc7zAoFKXuLpulfLcGIozV9E7G60y54bYEMsgcx9ePAaH8
-	FKMp7vfQbGCJBIncTYtnkXb/yNRUqEkSS2zjebfuGttfInAauXoGca2fuDtp3Q==
+	bh=sIhW0v6ukAcr5t9xvwFwtYRbmwYaUl9XLTeCP9AKLnE=;
+	b=iva6iIkIYTXvrWihfG091AV7rPvKtWSFgyeBPjC8Zl3piulX1oXOd67d4VwQK++qAXgN8g
+	9QA5p14mGqWfCwcGP+tihZxzokC8t+tDKLaRZYjHWaXDZRYRaeSUoJOPhKN9UfrPvq4e5a
+	+uD79+03BM/vej2FQilZYMev0QfEVdQdXZU3mNjO8BdJfsp/hlz8irnnvNw4pwHfEyqvs1
+	8DWKlo1Rj1yehpGW2mjDc741VIA83lb8HhfGdHxy33zg97bvpLl1A8vRxe4zzfcHijUdgi
+	aVTk5KTkncgtFItJTqhJ1Z4+OJ24ItVmrqB3ARPSzWaA8LcP7NhJrwFdyNcvAw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760547143;
+	s=2020e; t=1760547144;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cWlroYMp53RM7QmspvGwuCnWczlanVr1dmAQFd71g0s=;
-	b=G5rKn/WR+9nK3fkhBJ6gXRY5/9GMK1OcASduZI0xESNnx0j50pTBBNCr6snsm0WAmrTZvt
-	RDlY4UkJfu+TwrBg==
+	bh=sIhW0v6ukAcr5t9xvwFwtYRbmwYaUl9XLTeCP9AKLnE=;
+	b=Iv/YmYfvemjdjzrdd1wbimB/5L13tMQ3SlyiDuu9w9lDpE950Qn+np0tvbJm7SOs9Qbkpx
+	UHAMhR5DLn8NXXDw==
 From: "tip-bot2 for Chang S. Bae" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/microcode] x86/microcode/intel: Establish staging control logic
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- "Chang S. Bae" <chang.seok.bae@intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
- Anselm Busse <abusse@amazon.de>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250921224841.3545-4-chang.seok.bae@intel.com>
-References: <20250921224841.3545-4-chang.seok.bae@intel.com>
+Subject: [tip: x86/microcode] x86/microcode: Introduce staging step to reduce
+ late-loading time
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Chao Gao <chao.gao@intel.com>,
+ Tony Luck <tony.luck@intel.com>, Anselm Busse <abusse@amazon.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250921224841.3545-3-chang.seok.bae@intel.com>
+References: <20250921224841.3545-3-chang.seok.bae@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176054714162.709179.16748486101128898411.tip-bot2@tip-bot2>
+Message-ID: <176054714292.709179.17479072459906092168.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,127 +83,91 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     740144bc6bde9d44e3a6c224cee6fe971a08fbca
-Gitweb:        https://git.kernel.org/tip/740144bc6bde9d44e3a6c224cee6fe971a0=
-8fbca
+Commit-ID:     7cdda85ed90c1abaccaf5f05ec217acbc102c164
+Gitweb:        https://git.kernel.org/tip/7cdda85ed90c1abaccaf5f05ec217acbc10=
+2c164
 Author:        Chang S. Bae <chang.seok.bae@intel.com>
-AuthorDate:    Sun, 21 Sep 2025 15:48:37 -07:00
+AuthorDate:    Sun, 21 Sep 2025 15:48:36 -07:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 15 Oct 2025 16:47:20 +02:00
+CommitterDate: Wed, 15 Oct 2025 16:46:58 +02:00
 
-x86/microcode/intel: Establish staging control logic
+x86/microcode: Introduce staging step to reduce late-loading time
 
-When microcode staging is initiated, operations are carried out through
-an MMIO interface. Each package has a unique interface specified by the
-IA32_MCU_STAGING_MBOX_ADDR MSR, which maps to a set of 32-bit registers.
+As microcode patch sizes continue to grow, late-loading latency spikes can
+lead to timeouts and disruptions in running workloads. This trend of
+increasing patch sizes is expected to continue, so a foundational solution is
+needed to address the issue.
 
-Prepare staging with the following steps:
+To mitigate the problem, introduce a microcode staging feature. This option
+processes most of the microcode update (excluding activation) on
+a non-critical path, allowing CPUs to remain operational during the majority
+of the update. By offloading work from the critical path, staging can
+significantly reduce latency spikes.
 
-  1.  Ensure the microcode image is 32-bit aligned to match the MMIO
-      register size.
+Integrate staging as a preparatory step in late-loading. Introduce a new
+callback for staging, which is invoked at the beginning of
+load_late_stop_cpus(), before CPUs enter the rendezvous phase.
 
-  2.  Identify each MMIO interface based on its per-package scope.
+Staging follows an opportunistic model:
 
-  3.  Invoke the staging function for each identified interface, which
-      will be implemented separately.
+  *  If successful, it reduces CPU rendezvous time
+  *  Even though it fails, the process falls back to the legacy path to
+     finish the loading process but with potentially higher latency.
 
-  [ bp: Improve error logging. ]
+Extend struct microcode_ops to incorporate staging properties, which will be
+implemented in the vendor code separately.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
 Reviewed-by: Tony Luck <tony.luck@intel.com>
 Tested-by: Anselm Busse <abusse@amazon.de>
-Link: https://lore.kernel.org/all/871pznq229.ffs@tglx
+Link: https://lore.kernel.org/20250320234104.8288-1-chang.seok.bae@intel.com
 ---
- arch/x86/include/asm/msr-index.h      |  2 +-
- arch/x86/kernel/cpu/microcode/intel.c | 51 ++++++++++++++++++++++++++-
- 2 files changed, 53 insertions(+)
+ arch/x86/kernel/cpu/microcode/core.c     | 11 +++++++++++
+ arch/x86/kernel/cpu/microcode/internal.h |  4 +++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-inde=
-x.h
-index 9e1720d..2b4560b 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -1226,6 +1226,8 @@
- #define MSR_IA32_VMX_VMFUNC             0x00000491
- #define MSR_IA32_VMX_PROCBASED_CTLS3	0x00000492
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/micro=
+code/core.c
+index f75c140..d7baec8 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -589,6 +589,17 @@ static int load_late_stop_cpus(bool is_safe)
+ 		pr_err("You should switch to early loading, if possible.\n");
+ 	}
 =20
-+#define MSR_IA32_MCU_STAGING_MBOX_ADDR	0x000007a5
-+
- /* Resctrl MSRs: */
- /* - Intel: */
- #define MSR_IA32_L3_QOS_CFG		0xc81
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/micr=
-ocode/intel.c
-index 371ca6e..216595a 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -299,6 +299,56 @@ static __init struct microcode_intel *scan_microcode(voi=
-d *data, size_t size,
- 	return size ? NULL : patch;
- }
-=20
-+/*
-+ * Handle the staging process using the mailbox MMIO interface.
-+ * Return 0 on success or an error code on failure.
-+ */
-+static int do_stage(u64 mmio_pa)
-+{
-+	pr_debug_once("Staging implementation is pending.\n");
-+	return -EPROTONOSUPPORT;
-+}
-+
-+static void stage_microcode(void)
-+{
-+	unsigned int pkg_id =3D UINT_MAX;
-+	int cpu, err;
-+	u64 mmio_pa;
-+
-+	if (!IS_ALIGNED(get_totalsize(&ucode_patch_late->hdr), sizeof(u32))) {
-+		pr_err("Microcode image 32-bit misaligned (0x%x), staging failed.\n",
-+			get_totalsize(&ucode_patch_late->hdr));
-+		return;
-+	}
-+
-+	lockdep_assert_cpus_held();
-+
 +	/*
-+	 * The MMIO address is unique per package, and all the SMT
-+	 * primary threads are online here. Find each MMIO space by
-+	 * their package IDs to avoid duplicate staging.
++	 * Pre-load the microcode image into a staging device. This
++	 * process is preemptible and does not require stopping CPUs.
++	 * Successful staging simplifies the subsequent late-loading
++	 * process, reducing rendezvous time.
++	 *
++	 * Even if the transfer fails, the update will proceed as usual.
 +	 */
-+	for_each_cpu(cpu, cpu_primary_thread_mask) {
-+		if (topology_logical_package_id(cpu) =3D=3D pkg_id)
-+			continue;
++	if (microcode_ops->use_staging)
++		microcode_ops->stage_microcode();
 +
-+		pkg_id =3D topology_logical_package_id(cpu);
-+
-+		err =3D rdmsrq_on_cpu(cpu, MSR_IA32_MCU_STAGING_MBOX_ADDR, &mmio_pa);
-+		if (WARN_ON_ONCE(err))
-+			return;
-+
-+		err =3D do_stage(mmio_pa);
-+		if (err) {
-+			pr_err("Error: staging failed (%d) for CPU%d at package %u.\n",
-+			       err, cpu, pkg_id);
-+			return;
-+		}
-+	}
-+
-+	pr_info("Staging of patch revision 0x%x succeeded.\n", ucode_patch_late->hd=
-r.rev);
-+}
-+
- static enum ucode_state __apply_microcode(struct ucode_cpu_info *uci,
- 					  struct microcode_intel *mc,
- 					  u32 *cur_rev)
-@@ -627,6 +677,7 @@ static struct microcode_ops microcode_intel_ops =3D {
- 	.collect_cpu_info	=3D collect_cpu_info,
- 	.apply_microcode	=3D apply_microcode_late,
- 	.finalize_late_load	=3D finalize_late_load,
-+	.stage_microcode	=3D stage_microcode,
- 	.use_nmi		=3D IS_ENABLED(CONFIG_X86_64),
+ 	atomic_set(&late_cpus_in, num_online_cpus());
+ 	atomic_set(&offline_in_nmi, 0);
+ 	loops_per_usec =3D loops_per_jiffy / (TICK_NSEC / 1000);
+diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/m=
+icrocode/internal.h
+index ae8dbc2..a10b547 100644
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -31,10 +31,12 @@ struct microcode_ops {
+ 	 * See also the "Synchronization" section in microcode_core.c.
+ 	 */
+ 	enum ucode_state	(*apply_microcode)(int cpu);
++	void			(*stage_microcode)(void);
+ 	int			(*collect_cpu_info)(int cpu, struct cpu_signature *csig);
+ 	void			(*finalize_late_load)(int result);
+ 	unsigned int		nmi_safe	: 1,
+-				use_nmi		: 1;
++				use_nmi		: 1,
++				use_staging	: 1;
  };
 =20
+ struct early_load_data {
 
