@@ -1,98 +1,132 @@
-Return-Path: <linux-tip-commits+bounces-6945-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6946-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE219BE4618
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 17:57:33 +0200 (CEST)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FCCBE46BB
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 18:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AF4F54E35CA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 15:56:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E2682540188
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 16:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBC42E54B3;
-	Thu, 16 Oct 2025 15:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AC6393DEA;
+	Thu, 16 Oct 2025 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9qgMB13"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jC3mZXDi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dXU/ouSi"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BEF212566;
-	Thu, 16 Oct 2025 15:56:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929236CDF6;
+	Thu, 16 Oct 2025 15:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760630194; cv=none; b=tPCYCcIH+Ne1Fb5t40aEl1VQHWdnZpL2ROi4snBpFggXu3FR4FC2IFoiBrY1HnaIakk5h1fD5606eCJADRhr605CuOMQJQmTvX4dirm00zIHWKBzM39qlp18VdvFkq/IXXeOOMQWOfUq0wV4+OML6bR7oaupOMFb1H0X9RSmhCs=
+	t=1760630338; cv=none; b=HBuQYTcAA95c60iZ/6pV5IraGNqtLupQxv9ksvXrJ62dF1AeXl0siPUzxvAZCl4fgKtIIxxE2WtIOVRZvoVU6tfALPCewRmIA0BGYoa+Sd1NSTlRsIsUmgYS9rW6JmPFvSbx3JaDXZYU+GVozQ75tFBGc+WmXWnG7xqeFB3xzYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760630194; c=relaxed/simple;
-	bh=7J3mPyENrGUlXA7yZTXeYzgwf+inJngs5n5bTexBVXI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AyuFuU3LgkTvqUry7G+2s8B9XqB4ph/fik3v2ZzAjpWPh2baktwZWfUie52ulvOW8rHv5NnUycg5xfNim00FLcaG2znb0aUosp9BPpEFrGsz4h/0GjB/yAffLQ5SZu34bQADxFA3LLgk8ohuUVofp54VjHouqX42RTtfAT7apHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9qgMB13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AFCC4CEF1;
-	Thu, 16 Oct 2025 15:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760630194;
-	bh=7J3mPyENrGUlXA7yZTXeYzgwf+inJngs5n5bTexBVXI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V9qgMB13VEnNwjl7EvA+dUgxyZwb2I4J4GgJ9nG/1ycwqkN32YffG/k2+5ICDR3LZ
-	 dCu1F3ZgzcZq9z96GHL0mELFPsrpYjqVgdxqcB0u4jUQqPxgZH4L1CtY+YY8KZYpyW
-	 uGGAHyxMur//cSRazS+TdB70EhjZFMMJo1T+g1Y2O7QzyCsfisv16TUjeY48ttMti3
-	 Def3cM5sIaHTSHwK3JSo+9sFVcggrbU4CGYhBiwm7k5FhNOZ92JouSCITWmdodUeDp
-	 JzWXqiAOVhVcBbB5tiF+T9poiRPXNh/fcTluH7CIPtFGlCInUf+o2snbmSlhQVluO9
-	 Pl1/cT8kUcnvA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1v9QLE-000000007Qy-0TfP;
-	Thu, 16 Oct 2025 17:56:36 +0200
-Date: Thu, 16 Oct 2025 17:56:36 +0200
-From: Johan Hovold <johan@kernel.org>
-To: linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-tip-commits@vger.kernel.org,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Changhuang Liang <changhuang.liang@starfivetech.com>,
-	x86@kernel.org
-Subject: Re: [tip: irq/drivers] irqchip: Pass platform device to platform
- drivers
-Message-ID: <aPEVtDo1CHibAGxn@hovoldconsulting.com>
-References: <20251013094611.11745-12-johan@kernel.org>
- <176062960151.709179.10135307807179758941.tip-bot2@tip-bot2>
+	s=arc-20240116; t=1760630338; c=relaxed/simple;
+	bh=fmHieyP2zJEBcFA3pjxZxskLB0OOHygtlc2bxcJTA/c=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=GJt0eTCqL//aRfoMLRnalBzJyfIUAvGdR0vXEG1vvTEnDhlOEhV379IamMIktwFSJ50CwyuZuu+Kw40fAO9Us1gaXJRwsgQmhYpvH/ety8vkvwTPWCb+oL/QZoefLgJJklS2hG80J5BEzNvw9ucZAzbX5b+rrGuszCh5ZIiiNbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jC3mZXDi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dXU/ouSi; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 16 Oct 2025 15:58:53 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1760630335;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/pM9y3p8nu2SXGkdoIEhjPgaXRf//1gz91Ec3yTGaKg=;
+	b=jC3mZXDiF4e2aKkmmmq7UznYbnhLqnxuFeUkKeNf80aTpH6aFrLjeAznOFkcdMPjFFgeqU
+	DHg7J/akN1FL8A+QlBIWsBecggEW4c/fXWhO+MVWLc0bg8ImhDLLXoOPSaCZSB0PFKdnhk
+	iWNsJWF1eXd+jJefUxthYv1kSdE/b6ker/zatL+B9NY28kT6fLVNYZlkQ291H1kDu7nQbw
+	x1VecJcjZSBZd00KRVwhJwwxIb6LcDm8aT45m0lGWxave28unWgpUf23a7uALU7itLlURe
+	PSr8/NZtcFgS/W1mK2zZ/TUi9IHsBPvUZ8eBQIx/kWFBZ3v8NOSt+pUM8SmbXQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1760630335;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/pM9y3p8nu2SXGkdoIEhjPgaXRf//1gz91Ec3yTGaKg=;
+	b=dXU/ouSi8dvC5gqFOxJnCPY8I0zbMoDrXQ4ly58/hyXK69v5P0mBLOwtuvLlTs+2A+BPG0
+	FTFqV6fErXhzaxCA==
+From: "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/idtentry: Add missing '*' to kernel-doc lines
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251014030805.761181-1-rdunlap@infradead.org>
+References: <20251014030805.761181-1-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <176062960151.709179.10135307807179758941.tip-bot2@tip-bot2>
+Message-ID: <176063033312.709179.9451731172909082366.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 16, 2025 at 03:46:41PM -0000, tip-bot2 for Johan Hovold wrote:
-> The following commit has been merged into the irq/drivers branch of tip:
-> 
-> Commit-ID:     9a1926893b68931e2d1dbadec9435a7efef92d76
-> Gitweb:        https://git.kernel.org/tip/9a1926893b68931e2d1dbadec9435a7efef92d76
-> Author:        Johan Hovold <johan@kernel.org>
-> AuthorDate:    Mon, 13 Oct 2025 11:46:11 +02:00
-> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Thu, 16 Oct 2025 17:26:34 +02:00
-> 
-> irqchip: Pass platform device to platform drivers
+The following commit has been merged into the x86/cleanups branch of tip:
 
-> diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-msi.c
-> index 41df168..2370ab6 100644
-> --- a/drivers/irqchip/irq-imx-mu-msi.c
-> +++ b/drivers/irqchip/irq-imx-mu-msi.c
-> @@ -296,10 +296,9 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp = {
->  		  },
->  };
->  
-> -static int imx_mu_of_init(struct device_node *dn, struct device_node *parent,
-> -			  const struct imx_mu_dcfg *cfg)
-> +static int imx_mu_of_probe(struct platform_device *pdev, struct device_node *parent,
-> +			   const struct imx_mu_dcfg *cfg)
+Commit-ID:     762a3d1ca2cfe9965417d784cd044c702fda4aca
+Gitweb:        https://git.kernel.org/tip/762a3d1ca2cfe9965417d784cd044c702fd=
+a4aca
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Mon, 13 Oct 2025 20:08:05 -07:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Thu, 16 Oct 2025 17:45:42 +02:00
 
-There's still an editing mistake here; the new name should just be
-'imx_mu_probe'.
+x86/idtentry: Add missing '*' to kernel-doc lines
 
-Johan
+Fix kernel-doc warnings by adding the missing '*' to each line.
+
+  Warning: include/asm/idtentry.h:395 bad line:    when raised from kernel mo=
+de
+  Warning: include/asm/idtentry.h:405 bad line:    when raised from user mode
+
+Since this is in a kernel-doc block, these lines need a leading
+" *" on each line to prevent the warnings.
+
+Fixes: a13644f3a53d ("x86/entry/64: Add entry code for #VC handler")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+---
+ arch/x86/include/asm/idtentry.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
+index abd637e..3218770 100644
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -393,7 +393,7 @@ static __always_inline void __##func(struct pt_regs *regs)
+=20
+ /**
+  * DEFINE_IDTENTRY_VC_KERNEL - Emit code for VMM communication handler
+-			       when raised from kernel mode
++ *			       when raised from kernel mode
+  * @func:	Function name of the entry point
+  *
+  * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
+@@ -403,7 +403,7 @@ static __always_inline void __##func(struct pt_regs *regs)
+=20
+ /**
+  * DEFINE_IDTENTRY_VC_USER - Emit code for VMM communication handler
+-			     when raised from user mode
++ *			     when raised from user mode
+  * @func:	Function name of the entry point
+  *
+  * Maps to DEFINE_IDTENTRY_RAW_ERRORCODE
 
