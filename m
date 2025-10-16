@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-6881-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6874-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14F4BE28FA
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 11:56:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA634BE2925
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 11:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 05CD94FA7B1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 09:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0563B3148
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 09:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151F231BCAE;
-	Thu, 16 Oct 2025 09:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1410632C33B;
+	Thu, 16 Oct 2025 09:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2sxVKrxn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bRrUc9Qk"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0xdMx4p+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DRzyh7NP"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BAE31BCAB;
-	Thu, 16 Oct 2025 09:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2CA319871;
+	Thu, 16 Oct 2025 09:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760608374; cv=none; b=hEaERX5g9qqr8W3oKWOfs6Gj6h0OVK3vtB6am/U83ZMIJPpS5UgPI9VyLqb1ohVwYZXWa8p3/Tmmpdt64FJbmFrA9BxkbtqLldAJnphZiX2ruFyMgivdO+3gjRuotVurAjwknC00Nc++O5BKw3148ndTtm52DjFzwB4VAarnGos=
+	t=1760608362; cv=none; b=MpGPi+SHr5ZQMlp5a5tn0XxIHthQo4ZVySHHeZTllameJNoMHPrTYDgEGnPMil09ty2zVjB4c2GUdfAVcoNBVvevIIoWmDNeyVJE28oY4lRxs5vmCc4JRXh5NGJfXZ2/rFmK34R+wm8u0qLF+pcXw+0dIfDjx4docbfFNazjFKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760608374; c=relaxed/simple;
-	bh=+KPC+dbqrYeZRpwZ46Wpeu+qo3ZhsoVOwj1QshP7J0c=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=jMIqQpcFBFIUhbMWBifluQzezfWYXr9hw1KPyPpKLBK8xva+ITslXjXAAcwOtFFwqQxhuvobZpEXEPZxTLPMcu2GiY5miZqpRq/2h++eB1P0QhkqMzibOxRQoFD94M6Zfvtql/aagty6fkByy6n8l+jQWNisjjFEzezymA6eZuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2sxVKrxn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bRrUc9Qk; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1760608362; c=relaxed/simple;
+	bh=5frRLsPmGxDHGl0lvwhQqDKmY2OsGPxt//tTu2fT6Mk=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=dNeufNcwGAfQePk+ogL/rOlsZ/KvVkJsGPEL9s8qD6d/zi1/4elrePwPGvtIYokBGNvngdrtSQRyENuQxTSRried3tJx2V+tSZiism9ownrj/1LBjcWjKJ+YUL3EUOiJ9FD7QcNN3bJjQNvfYM2efSbD/XKMvGbOATnlTwlBwwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0xdMx4p+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DRzyh7NP; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 16 Oct 2025 09:52:24 -0000
+Date: Thu, 16 Oct 2025 09:52:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760608345;
+	s=2020; t=1760608346;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=x/jLEzS2OS2Bdbzmrcc3Jc2ZP8hLUfkwlZ2IRtAi7pE=;
-	b=2sxVKrxndmTizjO7wl9pYk5YMLV/sD4SO2X7woEzlSBpn/hmcvnSCq9MxDXq27H6hymgeN
-	iJQgl22RM+ZxJBsHf6A42dkJsyAGOTUf8ZeYLz4WmdebNUf42YQ4ZhQzsJ8SMI2915UdBO
-	GkWzdu9PNuiNYfbBiTIKYo2Gl64oq9pC5AyZa/8sLZx8XMCoc6U47Z2BtRyUrGN0OdpxJz
-	sT+lCKpcccwj7MHKpyCC96z3BknmnM7QEvdwl+/XuALNFbRQ/vhUTjkXw11THV53rKanjb
-	qOYxT7jNvWo8FGhUg768j0IYVQ3k7g/1qMHwg4BfyoyAWm6n0q7AFyMyh2EiSA==
+	bh=JkSkm2PnMaLOPshIt+784gMNVBB1GaOgkxzasPQS1AI=;
+	b=0xdMx4p+ZybPMBJOJOr6lZTkU3xEGbdnb4chWgg1cUhqtgqFBqNK/todRaNOl5fcLKRdOd
+	UCaWteGhHxiMLjrlgpzwGUVtzLYbIsJzJg08gVcNVf/cH6XwyNLpOPoK5hkUnA06bF0DPb
+	nbiBefhE6s7t1fELnN4pf94O4MrS2v5nKxOrMoyhiq0BojW5VnQulmIrF/oXdrJXxeWUFV
+	aethvcWmr+Mb+RXAkV5Kxkj1FtArVWhbIRIYeqNGrKpkZ4F1JMu4EFxW+TF5l79cT/4Kk0
+	pUHoUN3omJpwBcT3AE+DscK8VUvhiraz6HgAnmN6rYLIDf6WxV2fdREHK+GP2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760608345;
+	s=2020e; t=1760608346;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=x/jLEzS2OS2Bdbzmrcc3Jc2ZP8hLUfkwlZ2IRtAi7pE=;
-	b=bRrUc9QkNsXyT1WWw6YnV9pvF3sTKRnz0R7pH+fnsjH31bpbxDEhtvao9nUcbL/r6d3rMo
-	Wzq64JEeb4LNgiCA==
+	bh=JkSkm2PnMaLOPshIt+784gMNVBB1GaOgkxzasPQS1AI=;
+	b=DRzyh7NP6ZSNrBKraZNdZftTU+fb8kd2kBXGfuOD3HKQ9uxQsE+Ckfg9cj1Nuhl5/qaEjR
+	qiIyOAGb/XK1y4Dw==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Move ANNOTATE* macros to annotate.h
+Subject: [tip: objtool/core] objtool: Add annotype() helper
 Cc: Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
  Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
@@ -64,7 +64,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176060834420.709179.12104630429792124331.tip-bot2@tip-bot2>
+Message-ID: <176060834547.709179.306878811425430527.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,287 +74,216 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     d2c60bde1c0fcac8b140e527546f80749ccd9c67
-Gitweb:        https://git.kernel.org/tip/d2c60bde1c0fcac8b140e527546f80749cc=
-d9c67
+Commit-ID:     3b92486fa1a905cf4be81c0b65961f547fcf7be3
+Gitweb:        https://git.kernel.org/tip/3b92486fa1a905cf4be81c0b65961f547fc=
+f7be3
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Wed, 17 Sep 2025 09:03:53 -07:00
+AuthorDate:    Wed, 17 Sep 2025 09:03:52 -07:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Tue, 14 Oct 2025 14:49:20 -07:00
+CommitterDate: Tue, 14 Oct 2025 14:46:49 -07:00
 
-objtool: Move ANNOTATE* macros to annotate.h
+objtool: Add annotype() helper
 
-In preparation for using the objtool annotation macros in higher-level
-objtool.h macros like UNWIND_HINT, move them to their own file.
+... for reading annotation types.
 
 Acked-by: Petr Mladek <pmladek@suse.com>
 Tested-by: Joe Lawrence <joe.lawrence@redhat.com>
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- include/linux/annotate.h | 109 ++++++++++++++++++++++++++++++++++++++-
- include/linux/objtool.h  |  90 +-------------------------------
- 2 files changed, 110 insertions(+), 89 deletions(-)
- create mode 100644 include/linux/annotate.h
+ tools/objtool/arch/loongarch/orc.c         |  1 -
+ tools/objtool/arch/powerpc/decode.c        |  1 -
+ tools/objtool/arch/x86/decode.c            |  1 -
+ tools/objtool/arch/x86/orc.c               |  1 -
+ tools/objtool/check.c                      |  5 +----
+ tools/objtool/include/objtool/elf.h        | 13 +++++++++++++
+ tools/objtool/include/objtool/endianness.h |  9 ++++-----
+ tools/objtool/orc_dump.c                   |  1 -
+ tools/objtool/orc_gen.c                    |  1 -
+ tools/objtool/special.c                    |  1 -
+ 10 files changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/annotate.h b/include/linux/annotate.h
-new file mode 100644
-index 0000000..ccb4454
---- /dev/null
-+++ b/include/linux/annotate.h
-@@ -0,0 +1,109 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_ANNOTATE_H
-+#define _LINUX_ANNOTATE_H
-+
-+#include <linux/objtool_types.h>
-+
-+#ifdef CONFIG_OBJTOOL
-+
-+#ifndef __ASSEMBLY__
-+
-+#define __ASM_ANNOTATE(label, type)					\
-+	".pushsection .discard.annotate_insn,\"M\",@progbits,8\n\t"	\
-+	".long " __stringify(label) " - .\n\t"				\
-+	".long " __stringify(type) "\n\t"				\
-+	".popsection\n\t"
-+
-+#define ASM_ANNOTATE(type)						\
-+	"911:\n\t"							\
-+	__ASM_ANNOTATE(911b, type)
-+
-+#else /* __ASSEMBLY__ */
-+
-+.macro ANNOTATE type:req
-+.Lhere_\@:
-+	.pushsection .discard.annotate_insn,"M",@progbits,8
-+	.long	.Lhere_\@ - .
-+	.long	\type
-+	.popsection
-+.endm
-+
-+#endif /* __ASSEMBLY__ */
-+
-+#else /* !CONFIG_OBJTOOL */
-+#ifndef __ASSEMBLY__
-+#define __ASM_ANNOTATE(label, type) ""
-+#define ASM_ANNOTATE(type)
-+#else /* __ASSEMBLY__ */
-+.macro ANNOTATE type:req
-+.endm
-+#endif /* __ASSEMBLY__ */
-+#endif /* !CONFIG_OBJTOOL */
-+
-+#ifndef __ASSEMBLY__
-+
-+/*
-+ * Annotate away the various 'relocation to !ENDBR` complaints; knowing that
-+ * these relocations will never be used for indirect calls.
-+ */
-+#define ANNOTATE_NOENDBR		ASM_ANNOTATE(ANNOTYPE_NOENDBR)
-+#define ANNOTATE_NOENDBR_SYM(sym)	asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOENDBR))
-+
-+/*
-+ * This should be used immediately before an indirect jump/call. It tells
-+ * objtool the subsequent indirect jump/call is vouched safe for retpoline
-+ * builds.
-+ */
-+#define ANNOTATE_RETPOLINE_SAFE		ASM_ANNOTATE(ANNOTYPE_RETPOLINE_SAFE)
-+/*
-+ * See linux/instrumentation.h
-+ */
-+#define ANNOTATE_INSTR_BEGIN(label)	__ASM_ANNOTATE(label, ANNOTYPE_INSTR_BEG=
-IN)
-+#define ANNOTATE_INSTR_END(label)	__ASM_ANNOTATE(label, ANNOTYPE_INSTR_END)
-+/*
-+ * objtool annotation to ignore the alternatives and only consider the origi=
-nal
-+ * instruction(s).
-+ */
-+#define ANNOTATE_IGNORE_ALTERNATIVE	ASM_ANNOTATE(ANNOTYPE_IGNORE_ALTS)
-+/*
-+ * This macro indicates that the following intra-function call is valid.
-+ * Any non-annotated intra-function call will cause objtool to issue a warni=
-ng.
-+ */
-+#define ANNOTATE_INTRA_FUNCTION_CALL	ASM_ANNOTATE(ANNOTYPE_INTRA_FUNCTION_CA=
-LL)
-+/*
-+ * Use objtool to validate the entry requirement that all code paths do
-+ * VALIDATE_UNRET_END before RET.
-+ *
-+ * NOTE: The macro must be used at the beginning of a global symbol, otherwi=
-se
-+ * it will be ignored.
-+ */
-+#define ANNOTATE_UNRET_BEGIN		ASM_ANNOTATE(ANNOTYPE_UNRET_BEGIN)
-+/*
-+ * This should be used to refer to an instruction that is considered
-+ * terminating, like a noreturn CALL or UD2 when we know they are not -- eg
-+ * WARN using UD2.
-+ */
-+#define ANNOTATE_REACHABLE(label)	__ASM_ANNOTATE(label, ANNOTYPE_REACHABLE)
-+/*
-+ * This should not be used; it annotates away CFI violations. There are a few
-+ * valid use cases like kexec handover to the next kernel image, and there is
-+ * no security concern there.
-+ *
-+ * There are also a few real issues annotated away, like EFI because we can't
-+ * control the EFI code.
-+ */
-+#define ANNOTATE_NOCFI_SYM(sym)		asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOCFI))
-+
-+#else /* __ASSEMBLY__ */
-+#define ANNOTATE_NOENDBR		ANNOTATE type=3DANNOTYPE_NOENDBR
-+#define ANNOTATE_RETPOLINE_SAFE		ANNOTATE type=3DANNOTYPE_RETPOLINE_SAFE
-+/*	ANNOTATE_INSTR_BEGIN		ANNOTATE type=3DANNOTYPE_INSTR_BEGIN */
-+/*	ANNOTATE_INSTR_END		ANNOTATE type=3DANNOTYPE_INSTR_END */
-+#define ANNOTATE_IGNORE_ALTERNATIVE	ANNOTATE type=3DANNOTYPE_IGNORE_ALTS
-+#define ANNOTATE_INTRA_FUNCTION_CALL	ANNOTATE type=3DANNOTYPE_INTRA_FUNCTION=
-_CALL
-+#define ANNOTATE_UNRET_BEGIN		ANNOTATE type=3DANNOTYPE_UNRET_BEGIN
-+#define ANNOTATE_REACHABLE		ANNOTATE type=3DANNOTYPE_REACHABLE
-+#define ANNOTATE_NOCFI_SYM		ANNOTATE type=3DANNOTYPE_NOCFI
-+#endif /* __ASSEMBLY__ */
-+
-+#endif /* _LINUX_ANNOTATE_H */
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index 46ebaa4..1973e9f 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -3,11 +3,10 @@
- #define _LINUX_OBJTOOL_H
+diff --git a/tools/objtool/arch/loongarch/orc.c b/tools/objtool/arch/loongarc=
+h/orc.c
+index b58c5ff..ffd3a3c 100644
+--- a/tools/objtool/arch/loongarch/orc.c
++++ b/tools/objtool/arch/loongarch/orc.c
+@@ -5,7 +5,6 @@
+ #include <objtool/check.h>
+ #include <objtool/orc.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
+=20
+ int init_orc_entry(struct orc_entry *orc, struct cfi_state *cfi, struct inst=
+ruction *insn)
+ {
+diff --git a/tools/objtool/arch/powerpc/decode.c b/tools/objtool/arch/powerpc=
+/decode.c
+index d4cb021..3a9b748 100644
+--- a/tools/objtool/arch/powerpc/decode.c
++++ b/tools/objtool/arch/powerpc/decode.c
+@@ -7,7 +7,6 @@
+ #include <objtool/arch.h>
+ #include <objtool/warn.h>
+ #include <objtool/builtin.h>
+-#include <objtool/endianness.h>
+=20
+ int arch_ftrace_match(const char *name)
+ {
+diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
+index 6bb46d9..b2c320f 100644
+--- a/tools/objtool/arch/x86/decode.c
++++ b/tools/objtool/arch/x86/decode.c
+@@ -19,7 +19,6 @@
+ #include <objtool/elf.h>
+ #include <objtool/arch.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
+ #include <objtool/builtin.h>
+ #include <arch/elf.h>
+=20
+diff --git a/tools/objtool/arch/x86/orc.c b/tools/objtool/arch/x86/orc.c
+index 7176b9e..735e150 100644
+--- a/tools/objtool/arch/x86/orc.c
++++ b/tools/objtool/arch/x86/orc.c
+@@ -5,7 +5,6 @@
+ #include <objtool/check.h>
+ #include <objtool/orc.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
+=20
+ int init_orc_entry(struct orc_entry *orc, struct cfi_state *cfi, struct inst=
+ruction *insn)
+ {
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 65a359c..13ccfe0 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -14,7 +14,6 @@
+ #include <objtool/check.h>
+ #include <objtool/special.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
 =20
  #include <linux/objtool_types.h>
-+#include <linux/annotate.h>
+ #include <linux/hashtable.h>
+@@ -2273,9 +2272,7 @@ static int read_annotate(struct objtool_file *file,
+ 	}
 =20
- #ifdef CONFIG_OBJTOOL
-=20
--#include <asm/asm.h>
+ 	for_each_reloc(sec->rsec, reloc) {
+-		type =3D *(u32 *)(sec->data->d_buf + (reloc_idx(reloc) * sec->sh.sh_entsiz=
+e) + 4);
+-		type =3D bswap_if_needed(file->elf, type);
 -
- #ifndef __ASSEMBLY__
++		type =3D annotype(file->elf, sec, reloc);
+ 		offset =3D reloc->sym->offset + reloc_addend(reloc);
+ 		insn =3D find_insn(file, reloc->sym->sec, offset);
 =20
- #define UNWIND_HINT(type, sp_reg, sp_offset, signal)	\
-@@ -53,16 +52,6 @@
+diff --git a/tools/objtool/include/objtool/elf.h b/tools/objtool/include/objt=
+ool/elf.h
+index 9f135c2..814cfc0 100644
+--- a/tools/objtool/include/objtool/elf.h
++++ b/tools/objtool/include/objtool/elf.h
+@@ -13,10 +13,14 @@
+ #include <linux/hashtable.h>
+ #include <linux/rbtree.h>
+ #include <linux/jhash.h>
++
++#include <objtool/endianness.h>
+ #include <arch/elf.h>
 =20
- #define __ASM_BREF(label)	label ## b
+ #define SYM_NAME_LEN		512
 =20
--#define __ASM_ANNOTATE(label, type)					\
--	".pushsection .discard.annotate_insn,\"M\",@progbits,8\n\t"	\
--	".long " __stringify(label) " - .\n\t"			\
--	".long " __stringify(type) "\n\t"				\
--	".popsection\n\t"
--
--#define ASM_ANNOTATE(type)						\
--	"911:\n\t"						\
--	__ASM_ANNOTATE(911b, type)
--
- #else /* __ASSEMBLY__ */
++#define bswap_if_needed(elf, val) __bswap_if_needed(&elf->ehdr, val)
++
+ #ifdef LIBELF_USE_DEPRECATED
+ # define elf_getshdrnum    elf_getshnum
+ # define elf_getshdrstrndx elf_getshstrndx
+@@ -401,6 +405,15 @@ static inline void set_reloc_type(struct elf *elf, struc=
+t reloc *reloc, unsigned
+ 	mark_sec_changed(elf, reloc->sec, true);
+ }
+=20
++static inline unsigned int annotype(struct elf *elf, struct section *sec,
++				    struct reloc *reloc)
++{
++	unsigned int type;
++
++	type =3D *(u32 *)(sec->data->d_buf + (reloc_idx(reloc) * 8) + 4);
++	return bswap_if_needed(elf, type);
++}
++
+ #define RELOC_JUMP_TABLE_BIT 1UL
+=20
+ /* Does reloc mark the beginning of a jump table? */
+diff --git a/tools/objtool/include/objtool/endianness.h b/tools/objtool/inclu=
+de/objtool/endianness.h
+index 4d2aa9b..aebcd23 100644
+--- a/tools/objtool/include/objtool/endianness.h
++++ b/tools/objtool/include/objtool/endianness.h
+@@ -4,7 +4,6 @@
+=20
+ #include <linux/kernel.h>
+ #include <endian.h>
+-#include <objtool/elf.h>
 =20
  /*
-@@ -111,14 +100,6 @@
- #endif
- .endm
+  * Does a byte swap if target file endianness doesn't match the host, i.e. c=
+ross
+@@ -12,16 +11,16 @@
+  * To be used for multi-byte values conversion, which are read from / about
+  * to be written to a target native endianness ELF file.
+  */
+-static inline bool need_bswap(struct elf *elf)
++static inline bool need_bswap(GElf_Ehdr *ehdr)
+ {
+ 	return (__BYTE_ORDER =3D=3D __LITTLE_ENDIAN) ^
+-	       (elf->ehdr.e_ident[EI_DATA] =3D=3D ELFDATA2LSB);
++	       (ehdr->e_ident[EI_DATA] =3D=3D ELFDATA2LSB);
+ }
 =20
--.macro ANNOTATE type:req
--.Lhere_\@:
--	.pushsection .discard.annotate_insn,"M",@progbits,8
--	.long	.Lhere_\@ - .
--	.long	\type
--	.popsection
--.endm
--
- #endif /* __ASSEMBLY__ */
+-#define bswap_if_needed(elf, val)					\
++#define __bswap_if_needed(ehdr, val)					\
+ ({									\
+ 	__typeof__(val) __ret;						\
+-	bool __need_bswap =3D need_bswap(elf);				\
++	bool __need_bswap =3D need_bswap(ehdr);				\
+ 	switch (sizeof(val)) {						\
+ 	case 8:								\
+ 		__ret =3D __need_bswap ? bswap_64(val) : (val); break;	\
+diff --git a/tools/objtool/orc_dump.c b/tools/objtool/orc_dump.c
+index 1dd9fc1..5a979f5 100644
+--- a/tools/objtool/orc_dump.c
++++ b/tools/objtool/orc_dump.c
+@@ -8,7 +8,6 @@
+ #include <objtool/objtool.h>
+ #include <objtool/orc.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
 =20
- #else /* !CONFIG_OBJTOOL */
-@@ -128,84 +109,15 @@
- #define UNWIND_HINT(type, sp_reg, sp_offset, signal) "\n\t"
- #define STACK_FRAME_NON_STANDARD(func)
- #define STACK_FRAME_NON_STANDARD_FP(func)
--#define __ASM_ANNOTATE(label, type) ""
--#define ASM_ANNOTATE(type)
- #else
- .macro UNWIND_HINT type:req sp_reg=3D0 sp_offset=3D0 signal=3D0
- .endm
- .macro STACK_FRAME_NON_STANDARD func:req
- .endm
--.macro ANNOTATE type:req
--.endm
- #endif
+ int orc_dump(const char *filename)
+ {
+diff --git a/tools/objtool/orc_gen.c b/tools/objtool/orc_gen.c
+index 9d380ab..1045e13 100644
+--- a/tools/objtool/orc_gen.c
++++ b/tools/objtool/orc_gen.c
+@@ -12,7 +12,6 @@
+ #include <objtool/check.h>
+ #include <objtool/orc.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
 =20
- #endif /* CONFIG_OBJTOOL */
+ struct orc_list_entry {
+ 	struct list_head list;
+diff --git a/tools/objtool/special.c b/tools/objtool/special.c
+index fc2cf8d..e262af9 100644
+--- a/tools/objtool/special.c
++++ b/tools/objtool/special.c
+@@ -15,7 +15,6 @@
+ #include <objtool/builtin.h>
+ #include <objtool/special.h>
+ #include <objtool/warn.h>
+-#include <objtool/endianness.h>
 =20
--#ifndef __ASSEMBLY__
--/*
-- * Annotate away the various 'relocation to !ENDBR` complaints; knowing that
-- * these relocations will never be used for indirect calls.
-- */
--#define ANNOTATE_NOENDBR		ASM_ANNOTATE(ANNOTYPE_NOENDBR)
--#define ANNOTATE_NOENDBR_SYM(sym)	asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOENDBR))
--
--/*
-- * This should be used immediately before an indirect jump/call. It tells
-- * objtool the subsequent indirect jump/call is vouched safe for retpoline
-- * builds.
-- */
--#define ANNOTATE_RETPOLINE_SAFE		ASM_ANNOTATE(ANNOTYPE_RETPOLINE_SAFE)
--/*
-- * See linux/instrumentation.h
-- */
--#define ANNOTATE_INSTR_BEGIN(label)	__ASM_ANNOTATE(label, ANNOTYPE_INSTR_BEG=
-IN)
--#define ANNOTATE_INSTR_END(label)	__ASM_ANNOTATE(label, ANNOTYPE_INSTR_END)
--/*
-- * objtool annotation to ignore the alternatives and only consider the origi=
-nal
-- * instruction(s).
-- */
--#define ANNOTATE_IGNORE_ALTERNATIVE	ASM_ANNOTATE(ANNOTYPE_IGNORE_ALTS)
--/*
-- * This macro indicates that the following intra-function call is valid.
-- * Any non-annotated intra-function call will cause objtool to issue a warni=
-ng.
-- */
--#define ANNOTATE_INTRA_FUNCTION_CALL	ASM_ANNOTATE(ANNOTYPE_INTRA_FUNCTION_CA=
-LL)
--/*
-- * Use objtool to validate the entry requirement that all code paths do
-- * VALIDATE_UNRET_END before RET.
-- *
-- * NOTE: The macro must be used at the beginning of a global symbol, otherwi=
-se
-- * it will be ignored.
-- */
--#define ANNOTATE_UNRET_BEGIN		ASM_ANNOTATE(ANNOTYPE_UNRET_BEGIN)
--/*
-- * This should be used to refer to an instruction that is considered
-- * terminating, like a noreturn CALL or UD2 when we know they are not -- eg
-- * WARN using UD2.
-- */
--#define ANNOTATE_REACHABLE(label)	__ASM_ANNOTATE(label, ANNOTYPE_REACHABLE)
--/*
-- * This should not be used; it annotates away CFI violations. There are a few
-- * valid use cases like kexec handover to the next kernel image, and there is
-- * no security concern there.
-- *
-- * There are also a few real issues annotated away, like EFI because we can't
-- * control the EFI code.
-- */
--#define ANNOTATE_NOCFI_SYM(sym)		asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOCFI))
--
--#else
--#define ANNOTATE_NOENDBR		ANNOTATE type=3DANNOTYPE_NOENDBR
--#define ANNOTATE_RETPOLINE_SAFE		ANNOTATE type=3DANNOTYPE_RETPOLINE_SAFE
--/*	ANNOTATE_INSTR_BEGIN		ANNOTATE type=3DANNOTYPE_INSTR_BEGIN */
--/*	ANNOTATE_INSTR_END		ANNOTATE type=3DANNOTYPE_INSTR_END */
--#define ANNOTATE_IGNORE_ALTERNATIVE	ANNOTATE type=3DANNOTYPE_IGNORE_ALTS
--#define ANNOTATE_INTRA_FUNCTION_CALL	ANNOTATE type=3DANNOTYPE_INTRA_FUNCTION=
-_CALL
--#define ANNOTATE_UNRET_BEGIN		ANNOTATE type=3DANNOTYPE_UNRET_BEGIN
--#define ANNOTATE_REACHABLE		ANNOTATE type=3DANNOTYPE_REACHABLE
--#define ANNOTATE_NOCFI_SYM		ANNOTATE type=3DANNOTYPE_NOCFI
--#endif
--
- #if defined(CONFIG_NOINSTR_VALIDATION) && \
- 	(defined(CONFIG_MITIGATION_UNRET_ENTRY) || defined(CONFIG_MITIGATION_SRSO))
- #define VALIDATE_UNRET_BEGIN	ANNOTATE_UNRET_BEGIN
+ struct special_entry {
+ 	const char *sec;
 
