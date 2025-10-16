@@ -1,78 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-6826-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6827-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0E6BE2686
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 11:33:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14ECBE268C
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 11:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 20DEF4FAEE6
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 09:33:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4873C1A62391
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 09:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798DF319609;
-	Thu, 16 Oct 2025 09:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137B631A07B;
+	Thu, 16 Oct 2025 09:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yaERUeL6";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="7lCCNkJE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bEh4TSIj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KNM/34u8"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C2B3191D3;
-	Thu, 16 Oct 2025 09:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2338A31A052;
+	Thu, 16 Oct 2025 09:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760607199; cv=none; b=IDUIGHmOcxuIw0NhYA8RHpsz+IvRRgwEBt0qcbZi1eTiErTJ/GTHCJK61PPlt46uB0DAnLbpUFYbuC35c9vRKeCPWL6QsH/AFjlNXErsnbN98P/r1Rb7wlOi8mhhAuEO/WEDonpgAOPMQG46hSURIMjF6oDdO2sDDdxvWgak3pI=
+	t=1760607204; cv=none; b=dSsx+oHQ6yY2zSlf1KFaza+mwPDi+HZvawRwNfohjdd/Ra5l+4JgI99TnsJT6jaeKjmP1ct4a6/zpq5hxTcLyPFH2chacfr6YDtMpCjfX44YagCZkI17xUVo1yTruEndnYypRdnWrzLFV2Mi2POkZtemV/7zywBn46QQCDcRmyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760607199; c=relaxed/simple;
-	bh=fecNl9ISgBeTdRqlvQGM4Jt3pInY79zqrPwdq/52Bt8=;
+	s=arc-20240116; t=1760607204; c=relaxed/simple;
+	bh=/8PK8zAdDsQhDODSdcn4rRu6CnDFmmZAd9Rv5LbOU9M=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IhzvPfFH9souxuMCn1vZIEJVRgHm/YbPhxoZKnluKGCVadAQQFPI2YCuNxJMqNjCZS4Gpl2go3wDniv3wNZikWzP5dA7/wokxjuqdsR4akE4E9hNRyOJKwhuxw+XNaPxUgI2WMRLyxmcT9x5cQj9+5nXJ5wcnnzXTLFt0+NKl0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yaERUeL6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=7lCCNkJE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=io3MT+2Iy8a0fkjUuI9cdexrySEsZdtX59NXk6ZPX0lMMKHLS6gqVV9ozi+/GmFIFWkopG9vzfY+Xv2Oh/Ch7EUrgM/kySRKmC85TxuRE+IaUP9jfMOTOx8C0+5SWacXyJIhV27oLzTrHPhX4bb/ZvHVImOg/wuV/mQssy1GUSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bEh4TSIj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KNM/34u8; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 16 Oct 2025 09:33:14 -0000
+Date: Thu, 16 Oct 2025 09:33:19 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760607196;
+	s=2020; t=1760607200;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w13JJpdIn3Sz7wl1jYAHGKc5U/bRAM2Wa0lA3i1PugY=;
-	b=yaERUeL6GjZoQCXfER0+Vsxhx/TSt0RKunUoDQVBiVW75FaBfsKrhMpq4f1NtD3LG3uHAx
-	5dbrBMPsj9BnCG73N6GYyt89Z15y6yXwJ7Rif841kS9vrVJsoh6E5Ozuu4+P87j/yexpmg
-	gr7WdBU6rEPcFqDmno4l+q/AtTrLEV+NNJdKVfF/23EB1VhKV4C8+peI4+SM9MnjZ+2fYW
-	jIT21631SEAeaVyTv9LWyEhzQuH2kGSsJfuwCKGkeo1ZTeW7zYbfM/dR3ZXaORd5vLIsPR
-	hlkO9xdf79sSFcSrJoyUd/IMV+Snuo6fg/BBUSXyPthyoVJ3RiyCMZXmtNnU0g==
+	bh=6nrst6Z2nShJ9HzChKwWjTvR0p5U1ei/FhzHpuJI7TM=;
+	b=bEh4TSIjgkf4A2SfDKMkZJeEPRsCxmyjOyY49681WOnZ/HTJdFp3kK+kYwkNdXpJ8cgnJ4
+	LEVRTLWQIBHh3fL9ezCVkNWC+a3lZzetOHFakfDgEWGi6hmFhHZnJgKDAGW8ulPEiyrytX
+	VDH6/tA8LOUXWq9yuvXVY+roUnwkxcivOtN8shYAh/ccegNc5mPgny1CVP6CHIZU1lCi+Z
+	8WZRDFH/U3EWmxV4ru6N9rmT+DH4jCoMkOiGQnM8FQvCbkh/DJGiK3Dmu/ub05RzzfYg16
+	xHMHJyP/pByoDCKgyLH0qtijnL2LMZI/2XrmGyZTEoxaFGoiljb0wbazCo3XyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760607196;
+	s=2020e; t=1760607200;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=w13JJpdIn3Sz7wl1jYAHGKc5U/bRAM2Wa0lA3i1PugY=;
-	b=7lCCNkJEj0vgrMmTwdgycB5PRbPRYEVFhxLd+t6ErUyjXj+YpGfORiVxkM50xAGpdJBo2E
-	8oNInn8y7olPoABg==
-From: "tip-bot2 for George Kennedy" <tip-bot2@linutronix.de>
+	bh=6nrst6Z2nShJ9HzChKwWjTvR0p5U1ei/FhzHpuJI7TM=;
+	b=KNM/34u8cFB8BkVEHT0hfH2fZYieqz0+MDr5Wx0RgOAygokx+Ry45QnsOZd3TiMeOo9jD5
+	WwFoKIUP+BekhyAA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/amd: Check event before enable to avoid GPF
-Cc: syzkaller <syzkaller@googlegroups.com>,
- George Kennedy <george.kennedy@oracle.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <1728392453-18658-1-git-send-email-george.kennedy@oracle.com>
-References: <1728392453-18658-1-git-send-email-george.kennedy@oracle.com>
+Subject: [tip: sched/core] sched/ext: Fold balance_scx() into pick_task_scx()
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, Tejun Heo <tj@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251006105453.769281377@infradead.org>
+References: <20251006105453.769281377@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176060719457.709179.10142302566518648596.tip-bot2@tip-bot2>
+Message-ID: <176060719918.709179.4331838766243561085.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,86 +78,178 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     866cf36bfee4fba6a492d2dcc5133f857e3446b0
-Gitweb:        https://git.kernel.org/tip/866cf36bfee4fba6a492d2dcc5133f857e3=
-446b0
-Author:        George Kennedy <george.kennedy@oracle.com>
-AuthorDate:    Tue, 08 Oct 2024 08:00:53 -05:00
+Commit-ID:     4c95380701f58b8112f0b891de8d160e4199e19d
+Gitweb:        https://git.kernel.org/tip/4c95380701f58b8112f0b891de8d160e419=
+9e19d
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 01 Oct 2025 20:41:36 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 16 Oct 2025 11:13:47 +02:00
+CommitterDate: Thu, 16 Oct 2025 11:13:55 +02:00
 
-perf/x86/amd: Check event before enable to avoid GPF
+sched/ext: Fold balance_scx() into pick_task_scx()
 
-On AMD machines cpuc->events[idx] can become NULL in a subtle race
-condition with NMI->throttle->x86_pmu_stop().
+With pick_task() having an rf argument, it is possible to do the
+lock-break there, get rid of the weird balance/pick_task hack.
 
-Check event for NULL in amd_pmu_enable_all() before enable to avoid a GPF.
-This appears to be an AMD only issue.
-
-Syzkaller reported a GPF in amd_pmu_enable_all.
-
-INFO: NMI handler (perf_event_nmi_handler) took too long to run: 13.143
-    msecs
-Oops: general protection fault, probably for non-canonical address
-    0xdffffc0000000034: 0000  PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x00000000000001a0-0x00000000000001a7]
-CPU: 0 UID: 0 PID: 328415 Comm: repro_36674776 Not tainted 6.12.0-rc1-syzk
-RIP: 0010:x86_pmu_enable_event (arch/x86/events/perf_event.h:1195
-    arch/x86/events/core.c:1430)
-RSP: 0018:ffff888118009d60 EFLAGS: 00010012
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000034 RSI: 0000000000000000 RDI: 00000000000001a0
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: ffff88811802a440 R14: ffff88811802a240 R15: ffff8881132d8601
-FS:  00007f097dfaa700(0000) GS:ffff888118000000(0000) GS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200001c0 CR3: 0000000103d56000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
-amd_pmu_enable_all (arch/x86/events/amd/core.c:760 (discriminator 2))
-x86_pmu_enable (arch/x86/events/core.c:1360)
-event_sched_out (kernel/events/core.c:1191 kernel/events/core.c:1186
-    kernel/events/core.c:2346)
-__perf_remove_from_context (kernel/events/core.c:2435)
-event_function (kernel/events/core.c:259)
-remote_function (kernel/events/core.c:92 (discriminator 1)
-    kernel/events/core.c:72 (discriminator 1))
-__flush_smp_call_function_queue (./arch/x86/include/asm/jump_label.h:27
-    ./include/linux/jump_label.h:207 ./include/trace/events/csd.h:64
-    kernel/smp.c:135 kernel/smp.c:540)
-__sysvec_call_function_single (./arch/x86/include/asm/jump_label.h:27
-    ./include/linux/jump_label.h:207
-    ./arch/x86/include/asm/trace/irq_vectors.h:99 arch/x86/kernel/smp.c:272)
-sysvec_call_function_single (arch/x86/kernel/smp.c:266 (discriminator 47)
-    arch/x86/kernel/smp.c:266 (discriminator 47))
- </IRQ>
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Tejun Heo <tj@kernel.org>
 ---
- arch/x86/events/amd/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/sched/core.c  | 13 +-------
+ kernel/sched/ext.c   | 78 ++++++-------------------------------------
+ kernel/sched/sched.h |  1 +-
+ 3 files changed, 12 insertions(+), 80 deletions(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index b20661b..8868f5f 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -763,7 +763,12 @@ static void amd_pmu_enable_all(int added)
- 		if (!test_bit(idx, cpuc->active_mask))
- 			continue;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index a75d456..096e8d0 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5845,19 +5845,6 @@ static void prev_balance(struct rq *rq, struct task_st=
+ruct *prev,
+ 	const struct sched_class *start_class =3D prev->sched_class;
+ 	const struct sched_class *class;
 =20
--		amd_pmu_enable_event(cpuc->events[idx]);
-+		/*
-+		 * FIXME: cpuc->events[idx] can become NULL in a subtle race
-+		 * condition with NMI->throttle->x86_pmu_stop().
-+		 */
-+		if (cpuc->events[idx])
-+			amd_pmu_enable_event(cpuc->events[idx]);
- 	}
+-#ifdef CONFIG_SCHED_CLASS_EXT
+-	/*
+-	 * SCX requires a balance() call before every pick_task() including when
+-	 * waking up from SCHED_IDLE. If @start_class is below SCX, start from
+-	 * SCX instead. Also, set a flag to detect missing balance() call.
+-	 */
+-	if (scx_enabled()) {
+-		rq->scx.flags |=3D SCX_RQ_BAL_PENDING;
+-		if (sched_class_above(&ext_sched_class, start_class))
+-			start_class =3D &ext_sched_class;
+-	}
+-#endif
+-
+ 	/*
+ 	 * We must do the balancing pass before put_prev_task(), such
+ 	 * that when we release the rq->lock the task is in the same
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index dc743ca..49f4a9e 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2013,7 +2013,7 @@ static int balance_one(struct rq *rq, struct task_struc=
+t *prev)
+=20
+ 	lockdep_assert_rq_held(rq);
+ 	rq->scx.flags |=3D SCX_RQ_IN_BALANCE;
+-	rq->scx.flags &=3D ~(SCX_RQ_BAL_PENDING | SCX_RQ_BAL_KEEP);
++	rq->scx.flags &=3D ~SCX_RQ_BAL_KEEP;
+=20
+ 	if ((sch->ops.flags & SCX_OPS_HAS_CPU_PREEMPT) &&
+ 	    unlikely(rq->scx.cpu_released)) {
+@@ -2119,40 +2119,6 @@ has_tasks:
+ 	return true;
  }
 =20
+-static int balance_scx(struct rq *rq, struct task_struct *prev,
+-		       struct rq_flags *rf)
+-{
+-	int ret;
+-
+-	rq_unpin_lock(rq, rf);
+-
+-	ret =3D balance_one(rq, prev);
+-
+-#ifdef CONFIG_SCHED_SMT
+-	/*
+-	 * When core-sched is enabled, this ops.balance() call will be followed
+-	 * by pick_task_scx() on this CPU and the SMT siblings. Balance the
+-	 * siblings too.
+-	 */
+-	if (sched_core_enabled(rq)) {
+-		const struct cpumask *smt_mask =3D cpu_smt_mask(cpu_of(rq));
+-		int scpu;
+-
+-		for_each_cpu_andnot(scpu, smt_mask, cpumask_of(cpu_of(rq))) {
+-			struct rq *srq =3D cpu_rq(scpu);
+-			struct task_struct *sprev =3D srq->curr;
+-
+-			WARN_ON_ONCE(__rq_lockp(rq) !=3D __rq_lockp(srq));
+-			update_rq_clock(srq);
+-			balance_one(srq, sprev);
+-		}
+-	}
+-#endif
+-	rq_repin_lock(rq, rf);
+-
+-	return ret;
+-}
+-
+ static void process_ddsp_deferred_locals(struct rq *rq)
+ {
+ 	struct task_struct *p;
+@@ -2335,38 +2301,19 @@ static struct task_struct *first_local_task(struct rq=
+ *rq)
+ static struct task_struct *pick_task_scx(struct rq *rq, struct rq_flags *rf)
+ {
+ 	struct task_struct *prev =3D rq->curr;
++	bool keep_prev, kick_idle =3D false;
+ 	struct task_struct *p;
+-	bool keep_prev =3D rq->scx.flags & SCX_RQ_BAL_KEEP;
+-	bool kick_idle =3D false;
+=20
+-	/*
+-	 * WORKAROUND:
+-	 *
+-	 * %SCX_RQ_BAL_KEEP should be set iff $prev is on SCX as it must just
+-	 * have gone through balance_scx(). Unfortunately, there currently is a
+-	 * bug where fair could say yes on balance() but no on pick_task(),
+-	 * which then ends up calling pick_task_scx() without preceding
+-	 * balance_scx().
+-	 *
+-	 * Keep running @prev if possible and avoid stalling from entering idle
+-	 * without balancing.
+-	 *
+-	 * Once fair is fixed, remove the workaround and trigger WARN_ON_ONCE()
+-	 * if pick_task_scx() is called without preceding balance_scx().
+-	 */
+-	if (unlikely(rq->scx.flags & SCX_RQ_BAL_PENDING)) {
+-		if (prev->scx.flags & SCX_TASK_QUEUED) {
+-			keep_prev =3D true;
+-		} else {
+-			keep_prev =3D false;
+-			kick_idle =3D true;
+-		}
+-	} else if (unlikely(keep_prev &&
+-			    prev->sched_class !=3D &ext_sched_class)) {
+-		/*
+-		 * Can happen while enabling as SCX_RQ_BAL_PENDING assertion is
+-		 * conditional on scx_enabled() and may have been skipped.
+-		 */
++	rq_modified_clear(rq);
++	rq_unpin_lock(rq, rf);
++	balance_one(rq, prev);
++	rq_repin_lock(rq, rf);
++	if (rq_modified_above(rq, &ext_sched_class))
++		return RETRY_TASK;
++
++	keep_prev =3D rq->scx.flags & SCX_RQ_BAL_KEEP;
++	if (unlikely(keep_prev &&
++		     prev->sched_class !=3D &ext_sched_class)) {
+ 		WARN_ON_ONCE(scx_enable_state() =3D=3D SCX_ENABLED);
+ 		keep_prev =3D false;
+ 	}
+@@ -3243,7 +3190,6 @@ DEFINE_SCHED_CLASS(ext) =3D {
+=20
+ 	.wakeup_preempt		=3D wakeup_preempt_scx,
+=20
+-	.balance		=3D balance_scx,
+ 	.pick_task		=3D pick_task_scx,
+=20
+ 	.put_prev_task		=3D put_prev_task_scx,
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 8946294..e7718f1 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -779,7 +779,6 @@ enum scx_rq_flags {
+ 	 */
+ 	SCX_RQ_ONLINE		=3D 1 << 0,
+ 	SCX_RQ_CAN_STOP_TICK	=3D 1 << 1,
+-	SCX_RQ_BAL_PENDING	=3D 1 << 2, /* balance hasn't run yet */
+ 	SCX_RQ_BAL_KEEP		=3D 1 << 3, /* balance decided to keep current */
+ 	SCX_RQ_BYPASSING	=3D 1 << 4,
+ 	SCX_RQ_CLK_VALID	=3D 1 << 5, /* RQ clock is fresh and valid */
 
