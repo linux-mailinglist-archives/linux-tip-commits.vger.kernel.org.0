@@ -1,76 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-6857-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6897-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14140BE284C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 11:52:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A270DBE29AC
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 12:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 587704FDCF1
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 09:52:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AE163E26C9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 16 Oct 2025 09:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1017631D736;
-	Thu, 16 Oct 2025 09:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05EE3314A0;
+	Thu, 16 Oct 2025 09:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hIiiQwLw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="n9I+MU2s"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TlwotBtu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oTBMpEn2"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3877031BC94;
-	Thu, 16 Oct 2025 09:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D1731C561;
+	Thu, 16 Oct 2025 09:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760608330; cv=none; b=l4hXuMtUIFXg8q/4eGxw9twb9+oDhR3bSLTxWhU1prwglwJmat7qP3Hq4+b3PSHNlrgs7MrnAS+nZvscF8/P8z0eQ7B78iHUR/PWh8cP8OgellLC5w40rv/eFgb41h6og2Vx3u7EJObYvvfaSf6nHgdV2Mw1LXlnNq7dfje5SAo=
+	t=1760608387; cv=none; b=FZb5Z3tzMVQYiwu2LUtjMGbsvDwzdOrHr7vf3PiAsGo8ix7kGWayw5NYvf07mWvyqKAeHKXB99V7LJ78xOfeaP6mf3Tz87wIBQiZKbG0SIEFSSWkKt1/0S0e6S1qGccb1EpUqsXRWbRvo7bTNrTuBXlI/Jo2zL5CYdNhUfEamSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760608330; c=relaxed/simple;
-	bh=vkhaADwyDrPBnnQxuIJcrBF4ZKAXEQZu2cLLw2yjM9Q=;
+	s=arc-20240116; t=1760608387; c=relaxed/simple;
+	bh=paTSuig4hZUJE5k81oYINvCg/8JJGA6QUb0Mt8s7u+c=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=iEgOBdkNnbfyO0TUkLENsc8DwwaGl2Xh7hbc/xJqJEg2L1gXszT0k5yfRXBITJ6i/bfa2hbdXGccKDkbZ5Jk9DM/m+ENjGV85cYYeBB+jof5iMRoOfpD9Pa0c3tL0Y73nnuSuHb3B1stUz34oT79s5F5fh3vwPCA1beubbxafyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hIiiQwLw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=n9I+MU2s; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=DhUgW2AevNJ12dZLmma+24U0GFLywrTnGrHo4aDvdQCs1U4nvpkLRIbaJs3Q452Vb4o02SFcuzf8aUVWvyZz5R8tKdAaieLekUMQN+fY6qATsL8P/kNTag7p8fu3VCdRLYvQtnwbSe7nqaOS3qkFxoeyI4mOpPOAbCB/cI8SRqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TlwotBtu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oTBMpEn2; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 16 Oct 2025 09:51:38 -0000
+Date: Thu, 16 Oct 2025 09:51:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1760608299;
+	s=2020; t=1760608300;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1uVqSiPFhyg1BjqYvOBsfze/w8QkR/V6ERxIH4XpgPA=;
-	b=hIiiQwLwPKTYsOOVTSBnAeCB3k4z0Qb0Z4/DgvHdtF9tUEScppUgfo+pKAqkAJL7Zf2PZk
-	SXTWVfUzEDnSk/RtoQnQy7H8BT2HMg/tkf6MPWwxY5tG4gD9njNO6NLgwkHtcNYJtFLsk5
-	k4oC4LoxygPdhFNLfnHVE8LCZ3I1CKsOXhCZRiXjoL/WShRSsOciFsmL9n5cGyMPeVt+LH
-	Xoxdh51QGHCnD8pnOnTUve2+2e2KCRB9jiuoJbEOxAV5CgoE3DDkvq+kbPnrGHDROnR3su
-	NwzuXbivmBX2BktBSFq2MLGLgmOS8wEluQRKzF7/yaxP4GvIx7PcDsMcXMUj4Q==
+	bh=fh8BHeM/g+IVzhA27AvxEDmPprhCFR4sLNl0ydK7dQw=;
+	b=TlwotBtu6MHSU1PJTLyt9mgtJ+EpT7LHuBjuhukXin+thg2Qf8C2eGS/E2RxoGZEpQ4Yrs
+	f5KdVpTthDyVIXe7pSMwf7mUBfHsD5VHuYpHNYx1cm5C5XB6LwmXeSSO7t7RacR53MBHHc
+	GWDG+cxLwyuwaObyT/A2+GqH/dZYne2hIkHy7PIwt1GNakq0pnZj+mxIgQR15xA1BSREsb
+	ixHJCPfeH0BCgm9BBCQwlYpKoNI4YKwIfkMBCDKTsWT/ZZSssEDKavm4NDrr1Ba6Xodhwf
+	TQaF8BKSn7Ay1s9A/V4l72iZ2LpWLdZn6gzew96Tnzjr29XR9LcKlzbex5n8uw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1760608299;
+	s=2020e; t=1760608300;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1uVqSiPFhyg1BjqYvOBsfze/w8QkR/V6ERxIH4XpgPA=;
-	b=n9I+MU2skPEERtbUaoP2t+QcVle/9IgTgNir/n+ATz/Xp70DPxwPrBHyyl+Y86/Bw6/TKB
-	GcY/ZmifYTEkYaCg==
+	bh=fh8BHeM/g+IVzhA27AvxEDmPprhCFR4sLNl0ydK7dQw=;
+	b=oTBMpEn29I3XZDtlVPLrx2M/ESrleOfemPtnLPfrIGf6kjiCZAu/pzBc34i1/LlTmKdSdH
+	+BwnJdzu6Gp8HXDg==
 From: "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/imx-mu-msi: Fix section mismatch
+Subject: [tip: irq/drivers] irqchip/irq-brcmstb-l2: Fix section mismatch
 Cc: Johan Hovold <johan@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251013094611.11745-7-johan@kernel.org>
-References: <20251013094611.11745-7-johan@kernel.org>
+ Florian Fainelli <florian.fainelli@broadcom.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251013094611.11745-6-johan@kernel.org>
+References: <20251013094611.11745-6-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176060829803.709179.4558097304522095291.tip-bot2@tip-bot2>
+Message-ID: <176060829927.709179.13569055513100675809.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,68 +81,64 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     64acfd8e680ff8992c101fe19aadb112ce551072
-Gitweb:        https://git.kernel.org/tip/64acfd8e680ff8992c101fe19aadb112ce5=
-51072
+Commit-ID:     bbe1775924478e95372c2f896064ab6446000713
+Gitweb:        https://git.kernel.org/tip/bbe1775924478e95372c2f896064ab64460=
+00713
 Author:        Johan Hovold <johan@kernel.org>
-AuthorDate:    Mon, 13 Oct 2025 11:46:06 +02:00
+AuthorDate:    Mon, 13 Oct 2025 11:46:05 +02:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 16 Oct 2025 11:30:38 +02:00
+CommitterDate: Thu, 16 Oct 2025 11:30:37 +02:00
 
-irqchip/imx-mu-msi: Fix section mismatch
+irqchip/irq-brcmstb-l2: Fix section mismatch
 
 Platform drivers can be probed after their init sections have been
 discarded so the irqchip init callbacks must not live in init.
 
-Fixes: 70afdab904d2 ("irqchip: Add IMX MU MSI controller driver")
+Fixes: 51d9db5c8fbb ("irqchip/irq-brcmstb-l2: Switch to IRQCHIP_PLATFORM_DRIV=
+ER")
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 ---
- drivers/irqchip/irq-imx-mu-msi.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-brcmstb-l2.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-mu-msi.c b/drivers/irqchip/irq-imx-mu-ms=
-i.c
-index d2a4e8a..41df168 100644
---- a/drivers/irqchip/irq-imx-mu-msi.c
-+++ b/drivers/irqchip/irq-imx-mu-msi.c
-@@ -296,9 +296,8 @@ static const struct imx_mu_dcfg imx_mu_cfg_imx8ulp =3D {
- 		  },
- };
-=20
--static int __init imx_mu_of_init(struct device_node *dn,
--				 struct device_node *parent,
--				 const struct imx_mu_dcfg *cfg)
-+static int imx_mu_of_init(struct device_node *dn, struct device_node *parent,
-+			  const struct imx_mu_dcfg *cfg)
- {
- 	struct platform_device *pdev =3D of_find_device_by_node(dn);
- 	struct device_link *pd_link_a;
-@@ -416,20 +415,17 @@ static const struct dev_pm_ops imx_mu_pm_ops =3D {
- 			   imx_mu_runtime_resume, NULL)
- };
-=20
--static int __init imx_mu_imx7ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx7ulp_of_init(struct device_node *dn, struct device_node=
- *parent)
- {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx7ulp);
+diff --git a/drivers/irqchip/irq-brcmstb-l2.c b/drivers/irqchip/irq-brcmstb-l=
+2.c
+index 1bec5b2..53e67c6 100644
+--- a/drivers/irqchip/irq-brcmstb-l2.c
++++ b/drivers/irqchip/irq-brcmstb-l2.c
+@@ -138,10 +138,8 @@ static void brcmstb_l2_intc_resume(struct irq_data *d)
+ 	irq_reg_writel(gc, ~b->saved_mask, ct->regs.enable);
  }
 =20
--static int __init imx_mu_imx6sx_of_init(struct device_node *dn,
--					struct device_node *parent)
-+static int imx_mu_imx6sx_of_init(struct device_node *dn, struct device_node =
-*parent)
+-static int __init brcmstb_l2_intc_of_init(struct device_node *np,
+-					  struct device_node *parent,
+-					  const struct brcmstb_intc_init_params
+-					  *init_params)
++static int brcmstb_l2_intc_of_init(struct device_node *np, struct device_nod=
+e *parent,
++				   const struct brcmstb_intc_init_params *init_params)
  {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx6sx);
+ 	unsigned int clr =3D IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+ 	unsigned int set =3D 0;
+@@ -257,14 +255,12 @@ out_free:
+ 	return ret;
  }
 =20
--static int __init imx_mu_imx8ulp_of_init(struct device_node *dn,
--					 struct device_node *parent)
-+static int imx_mu_imx8ulp_of_init(struct device_node *dn, struct device_node=
- *parent)
+-static int __init brcmstb_l2_edge_intc_of_init(struct device_node *np,
+-	struct device_node *parent)
++static int brcmstb_l2_edge_intc_of_init(struct device_node *np, struct devic=
+e_node *parent)
  {
- 	return imx_mu_of_init(dn, parent, &imx_mu_cfg_imx8ulp);
+ 	return brcmstb_l2_intc_of_init(np, parent, &l2_edge_intc_init);
+ }
+=20
+-static int __init brcmstb_l2_lvl_intc_of_init(struct device_node *np,
+-	struct device_node *parent)
++static int brcmstb_l2_lvl_intc_of_init(struct device_node *np, struct device=
+_node *parent)
+ {
+ 	return brcmstb_l2_intc_of_init(np, parent, &l2_lvl_intc_init);
  }
 
