@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-6975-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6976-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCF1BF5CC9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Oct 2025 12:36:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF18BF5CD8
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Oct 2025 12:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F493BDE19
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Oct 2025 10:36:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15BBA1895335
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 21 Oct 2025 10:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF4A32E136;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B808632E68E;
 	Tue, 21 Oct 2025 10:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NhyqWo9M";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xy4yTGw4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q7iBdWou";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Xvz+ojos"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA05E32D433;
-	Tue, 21 Oct 2025 10:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4B732D7C8;
+	Tue, 21 Oct 2025 10:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761042934; cv=none; b=U13Hvw+eeHqh3mvV2BCIw0sAHmExVdUFbvdvszyS0THG21bEpSvcI80u8k5EyYQQRANC5mkwoKRdYSxGH+cywMsU3rjN+ypOUH9N1LPlDiGz7AxLbtG3pn+BbsjgcJXEnL2kVsrxOsCL+w1FYxRabnMsXsIEcmUNuKxDZ0Tmt8s=
+	t=1761042934; cv=none; b=au03tefWoswigIj8LHKGIrlcwmxaOyosQqcT4UoCZDW6xbjk2tG+j8THipl/NDwCs9VFiaBS504tT6uCaTWOZwa5nNb2AXMGYHDk1I/+zhlElJoM1svWP+qRcC2Fh7z0HaikoPFs1r/7MFZFxnlH3cgmq5LBIn5AkiPWwoatpwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761042934; c=relaxed/simple;
-	bh=t3ji9bh301gxX9EwwXuU415M2dcbSyaArmwo6aLVDYw=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=gv0kItyp4M9xJ7D5ZRdMCsa2+hStufigU9XR8dSNX6vO749zeQI/eaYxPFnwLgWtRKvpRyy4dbQxDnvHTl2rn6fVlMvOpltZy+BuIayLA3/0sJsUp0sOqUXHIo672M6a/Pj19SQjKS2gACNYpTRJRVxtuEsjEpOAzIDRb8GemxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NhyqWo9M; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xy4yTGw4; arc=none smtp.client-ip=193.142.43.55
+	bh=5XCEwYz6NxJvTmvQH5Jx5ugeq63lHPBUCNNfaMKQOQM=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=UxqkEDGm4iNhpf6t4VNFfG+tPloNxlo5X7A4ClAJn9rO7qHgfFmWtc+UhvXqGVcoxFQcbujyNcf5+8uMNXvGtKGnnsbmcU/NSOS9axNsu8l446H6vbb9KE/TSw2j/JVBAb8Kl1XXgkOKwzj/MlgxwUFnLAxKrbqkevu5JePe2Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q7iBdWou; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Xvz+ojos; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 21 Oct 2025 10:35:28 -0000
+Date: Tue, 21 Oct 2025 10:35:29 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761042930;
+	s=2020; t=1761042931;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=bh5Rn9MftIO5XGZ6RI7XJJYzh2nZBUj78IqcMqHsiL8=;
-	b=NhyqWo9MRXLt0zHuNmWHeSskpUcBFUxTMYyupcWh1T+gEVfJNgp9Lj+G/ogsa0Vw+vYFwz
-	EYLgBpvnzdDcROrFLNvw9OcfZc9ak2jxRhVT2whFVELgpIzX/plPrbK6Sp4WoU3P9rrW4s
-	nkHOLb6Q//dsQWDONG5lquNJoT8aIQvGqlVZYOHRnd+yR8pR4rRXgQMh3fYiN7NqsPsMga
-	aMbB6MvBLGm20OAASos8D8orG01Uy7QcUdiAg99JMghm1CuBK+w1/VgQO6AlFDsCf+4e61
-	bqRuuVWedcbgO78T82ZdpNodltL4SIjVryz/07J+A/BowLXLebzlGfoRXLt45A==
+	bh=DG7E58XxtHgj4OKu2OzFYeV0Bu4CJI3YSM9kLDHslHo=;
+	b=q7iBdWouK7nEpoL/ULSYhS10IHjV+PnqJvK9DXq6slWrVffQBW+gPirCwmwp9BfU/KVYFR
+	U3ySlUS8FcQ5KA6ZPHk57eZ00Wb8RMSjyL3il4OW3pIfShcdH5wFduibV0jKbAQ9vh9AoT
+	vAE2l3vqkmtXuKyurFqqaYSmEVbfxK6KbGi0WALFD/XG6KPS2S6m7JdwdGl3RJxpRkGH7n
+	eCS9Y6x+7GMK1PaJDyZsTpCszyKQMGM+BJYXs2GOgSMNH2ACxSH4n5f0Ukr/AOjncTJe0w
+	uZ2ptypw1/N3zDOrPvjxWgXLRvh9b2H0FmrmaGz+jAB0Yej5LSpWUcRYfIuG6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761042930;
+	s=2020e; t=1761042931;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=bh5Rn9MftIO5XGZ6RI7XJJYzh2nZBUj78IqcMqHsiL8=;
-	b=xy4yTGw4raALpWS1FSrGIxUgGxTHWm28bifebTgPEI1njVg4yxfqlT91UxfZhQKS0/GIMw
-	7C6G4fl4JrkTyrBg==
+	bh=DG7E58XxtHgj4OKu2OzFYeV0Bu4CJI3YSM9kLDHslHo=;
+	b=Xvz+ojos0fMjWmOhihnTObWJRXyZk9PgG3dXi9rNymTK7hAMd4r83HzvGJw7+BhzFFKW0t
+	VYgQcvBzVeGS7fAw==
 From: "tip-bot2 for Daniel Almeida" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] rust: lock: Pin the inner data
+Subject: [tip: locking/core] rust: lock: guard: Add T: Unpin bound to DerefMut
 Cc: Benno Lossin <lossin@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
  Daniel Almeida <daniel.almeida@collabora.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -66,7 +66,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176104292876.2601451.485431159015446694.tip-bot2@tip-bot2>
+Message-ID: <176104292997.2601451.15640432795343343471.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -76,23 +76,23 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     2497a7116ff9a051d0e78885a27a52213bc2841d
-Gitweb:        https://git.kernel.org/tip/2497a7116ff9a051d0e78885a27a52213bc=
-2841d
+Commit-ID:     da123f0ee40f0e5a3791bbaf58a1db1744c59f72
+Gitweb:        https://git.kernel.org/tip/da123f0ee40f0e5a3791bbaf58a1db1744c=
+59f72
 Author:        Daniel Almeida <daniel.almeida@collabora.com>
-AuthorDate:    Fri, 19 Sep 2025 11:12:40 +02:00
+AuthorDate:    Fri, 19 Sep 2025 11:12:39 +02:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Tue, 21 Oct 2025 12:31:55 +02:00
 
-rust: lock: Pin the inner data
+rust: lock: guard: Add T: Unpin bound to DerefMut
 
-In preparation to support Lock<T> where T is pinned, the first thing
-that needs to be done is to structurally pin the 'data' member. This
-switches the 't' parameter in Lock<T>::new() to take in an impl
-PinInit<T> instead of a plain T. This in turn uses the blanket
-implementation "impl PinInit<T> for T".
+A core property of pinned types is not handing a mutable reference to
+the inner data in safe code, as this trivially allows that data to be
+moved.
 
-Subsequent patches will touch on Guard<T>.
+Enforce this condition by adding a bound on lock::Guard's DerefMut
+implementation, so that it's only implemented for pinning-agnostic
+types.
 
 Suggested-by: Benno Lossin <lossin@kernel.org>
 Suggested-by: Boqun Feng <boqun.feng@gmail.com>
@@ -103,47 +103,43 @@ Reviewed-by: Benno Lossin <lossin@kernel.org>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Link: https://github.com/Rust-for-Linux/linux/issues/1181
 ---
- rust/kernel/sync/lock.rs | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ rust/kernel/sync/lock.rs        | 5 ++++-
+ rust/kernel/sync/lock/global.rs | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-index b482f34..9242790 100644
+index 27202be..b482f34 100644
 --- a/rust/kernel/sync/lock.rs
 +++ b/rust/kernel/sync/lock.rs
-@@ -11,7 +11,7 @@ use crate::{
-     types::{NotThreadSafe, Opaque, ScopeGuard},
- };
- use core::{cell::UnsafeCell, marker::PhantomPinned, pin::Pin};
--use pin_init::{pin_data, pin_init, PinInit};
-+use pin_init::{pin_data, pin_init, PinInit, Wrapper};
-=20
- pub mod mutex;
- pub mod spinlock;
-@@ -115,6 +115,7 @@ pub struct Lock<T: ?Sized, B: Backend> {
-     _pin: PhantomPinned,
-=20
-     /// The data protected by the lock.
-+    #[pin]
-     pub(crate) data: UnsafeCell<T>,
+@@ -251,7 +251,10 @@ impl<T: ?Sized, B: Backend> core::ops::Deref for Guard<'=
+_, T, B> {
+     }
  }
 =20
-@@ -127,9 +128,13 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for Lock<=
-T, B> {}
+-impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B> {
++impl<T: ?Sized, B: Backend> core::ops::DerefMut for Guard<'_, T, B>
++where
++    T: Unpin,
++{
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         // SAFETY: The caller owns the lock, so it is safe to deref the prot=
+ected data.
+         unsafe { &mut *self.lock.data.get() }
+diff --git a/rust/kernel/sync/lock/global.rs b/rust/kernel/sync/lock/global.rs
+index d65f94b..38b4480 100644
+--- a/rust/kernel/sync/lock/global.rs
++++ b/rust/kernel/sync/lock/global.rs
+@@ -106,7 +106,10 @@ impl<B: GlobalLockBackend> core::ops::Deref for GlobalGu=
+ard<B> {
+     }
+ }
 =20
- impl<T, B: Backend> Lock<T, B> {
-     /// Constructs a new lock initialiser.
--    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey>) -=
-> impl PinInit<Self> {
-+    pub fn new(
-+        t: impl PinInit<T>,
-+        name: &'static CStr,
-+        key: Pin<&'static LockClassKey>,
-+    ) -> impl PinInit<Self> {
-         pin_init!(Self {
--            data: UnsafeCell::new(t),
-+            data <- UnsafeCell::pin_init(t),
-             _pin: PhantomPinned,
-             // SAFETY: `slot` is valid while the closure is called and both =
-`name` and `key` have
-             // static lifetimes so they live indefinitely.
+-impl<B: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<B> {
++impl<B: GlobalLockBackend> core::ops::DerefMut for GlobalGuard<B>
++where
++    B::Item: Unpin,
++{
+     fn deref_mut(&mut self) -> &mut Self::Target {
+         &mut self.inner
+     }
 
