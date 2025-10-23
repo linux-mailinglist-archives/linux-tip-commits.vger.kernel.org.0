@@ -1,82 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-6985-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-6986-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FD3BFC2D6
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Oct 2025 15:35:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66998BFFC1F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Oct 2025 10:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A87B4543350
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 22 Oct 2025 13:29:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FC873A49A7
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 23 Oct 2025 08:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C800345CD5;
-	Wed, 22 Oct 2025 13:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47982E6CCD;
+	Thu, 23 Oct 2025 08:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mA+nzBVN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J7mzJ7up"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QXJOoCbn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="30++XHrh"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677A3347BB5;
-	Wed, 22 Oct 2025 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E762C257827;
+	Thu, 23 Oct 2025 08:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761139746; cv=none; b=s4m6Wcaenr5mCtBcrxYd2uNteyUYtA8feaED/Lku6DjGV8nwFJEMCGi6WtkqKwlG7kbw3JbVUo43fpbvZb9o4EI3G1I2VTu439kwXjgk8/90YFdh8dtfujY6m8Bj0KKeG/hs+EGESRfVouqd7+kKRt51d6Qkg1zxBN10SYou77g=
+	t=1761206461; cv=none; b=LF0Mo6JAdzEp4jPVJyP1J3ABKFSChjk0G3gDijLq0rodurTYEpxxAXpEqMIG/1c4GYhomN1Tx+USvZ2KbZ6OwyRP7TJUHqbc2r0R16KMbiuO1eVxhyu0yQ706XFCAS8oLQ+Ri37YZDPYfPl8g7t0QHIr+VHmd2+CYd+Gz6bBgts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761139746; c=relaxed/simple;
-	bh=lASrV+lg74tI5vkAZ1p8e1vRd8+2vg9y+XEuoj3s9Uw=;
+	s=arc-20240116; t=1761206461; c=relaxed/simple;
+	bh=xVl+OOG4pdgCh6L81H5p5tPKjQ1PAaXWAg20Ct+OGU0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SIRJTr22B/pjaUbdUBQIMVdLD/HRjZ4V4WeCWXx/GTlkr9x4neKcCs6v0TuNRWBqQL+O/c3YM6trsjWVT2sz5onmljRIT38WLafK+TV1q0XkIQ8Im6To98Pr6TGchNSRGN+FzgG9GBKaziT3JeaSQl+yT9BQ4YkAGV3HUULbYwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mA+nzBVN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J7mzJ7up; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jC9AnP5Kd2Mv4IZbLgpu4R6YDK+tOKzdsErPb8qgjSVnk/ACE+9Msru+hpODF/INBwLmwC7t15vCnxmIvIru0CjpZCiUKsPRh3n4JhCvcUGLbF+09zpUmtfpeSe7vNtmVfp//t7KXJEvTwgJhgu03ftYTLqAY+PvaEkNfZ9sv5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QXJOoCbn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=30++XHrh; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 22 Oct 2025 13:28:59 -0000
+Date: Thu, 23 Oct 2025 08:00:50 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761139740;
+	s=2020; t=1761206455;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L2nGgeh8WCh5wwSwOMhpS9Pzc4rU4sUJV1uqh4EHJzU=;
-	b=mA+nzBVNSLBZkuMhX1lxV1a0RM1BSrzV9l/hgZkLknPK+VtYHp3QxYY7NVM3u/iii6slue
-	M6wFHXnOZ/d1v6uTSShCGzouilbsSEEOFHHtjxHW2PPNgPIKrhW1pAHbZZ2UzeKK0WmtEP
-	ELrRZ4x5Cg8dod8LnOiiaPW5AICzF9IoGBGJ6PGDGVsftQBGzWiK1nsEfGAbUP7KU2BaHk
-	d0WmYvg8q3KsAXPU8eEUcSbepEa28TotSMjkRPD9WugoMW099rIuwpcWKdKq8kOii5+7Xv
-	Z2S+ij1TkhJn8beBJB80rplwAZHJqVM4kWJueT3t6zxZtWUKW7jxID5y8eLMkw==
+	bh=00Z8zJXcen6vBAxIwzWzqcCaxkxXun5gYD/COcx+fks=;
+	b=QXJOoCbnpewHBlDHjPxD/tyS18x+qAhMg+g38+iZ8BhctdIzQWoXWhwwLwEdhlti6ApiGF
+	3ZkGUIWn5gIBz6ahVCGfXy41WWYCQZ0n5VeoEzrpXEdmIf7NdNz0Y94P36LMQSNyqW3UC/
+	I/K9a6FhHttcWtYHlijlwzEddwyYXkpa5//vMxVposYW6qQYReh/FIXXQnej6UpaVp0dYu
+	WAsih+ozV5IeB9XYvEVOyP79mxw9mGFO0X0ULMlWSjvq1fyqZw3mhaXJHVsI76JwKZW1Sn
+	xwqHpGm/BCmwqmxpXOqtpZcxsYU9Jdnwx6oMuyvfAOb9DN4j7BhL/LrBp5/Jwg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761139740;
+	s=2020e; t=1761206455;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L2nGgeh8WCh5wwSwOMhpS9Pzc4rU4sUJV1uqh4EHJzU=;
-	b=J7mzJ7upEd8C4mSzAwDiwRinxvVbvlD9ZbVmQYrujjmBvaAfJsvpel+oy/vVoRlOhmy32N
-	Rm+eIF4vfjC89QAg==
-From: "tip-bot2 for Miguel Ojeda" <tip-bot2@linutronix.de>
+	bh=00Z8zJXcen6vBAxIwzWzqcCaxkxXun5gYD/COcx+fks=;
+	b=30++XHrhPBp+hpoNxRrEt6tW//6dWZgqGaCwc3pX5vBPx//da9ZQU55BaKNh4FKYNI17oJ
+	RFi0akzdlD2wxqAw==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: objtool/urgent] objtool/rust: add one more `noreturn` Rust function
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, Needed@tip-bot2.tec.linutronix.de,
-	in@tip-bot2.tec.linutronix.de, 6.12.y@tip-bot2.tec.linutronix.de,
-	and@tip-bot2.tec.linutronix.de, "later."@tip-bot2.tec.linutronix.de,
-	x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251020020714.2511718-1-ojeda@kernel.org>
-References: <20251020020714.2511718-1-ojeda@kernel.org>
+Subject: [tip: objtool/core] perf build: Fix perf build issues with fixdep
+Cc: Thorsten Leemhuis <linux@leemhuis.info>,
+ Josh Poimboeuf <jpoimboe@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To:
+ <8881bc3321bd9fa58802e4f36286eefe3667806b.1760992391.git.jpoimboe@kernel.org>
+References:
+ <8881bc3321bd9fa58802e4f36286eefe3667806b.1760992391.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176113973927.2601451.11243642514167472736.tip-bot2@tip-bot2>
+Message-ID: <176120645051.2601451.8884022531775648554.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,66 +82,85 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the objtool/urgent branch of tip:
+The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     dbdf2a7feb422f9bacfd12774e624cf26f503eb0
-Gitweb:        https://git.kernel.org/tip/dbdf2a7feb422f9bacfd12774e624cf26f5=
-03eb0
-Author:        Miguel Ojeda <ojeda@kernel.org>
-AuthorDate:    Mon, 20 Oct 2025 04:07:14 +02:00
+Commit-ID:     f6af8690d17d8621a6c8cdb24746c904adfc9465
+Gitweb:        https://git.kernel.org/tip/f6af8690d17d8621a6c8cdb24746c904adf=
+c9465
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Mon, 20 Oct 2025 13:33:15 -07:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 22 Oct 2025 15:21:54 +02:00
+CommitterDate: Thu, 23 Oct 2025 09:53:49 +02:00
 
-objtool/rust: add one more `noreturn` Rust function
+perf build: Fix perf build issues with fixdep
 
-Between Rust 1.79 and 1.86, under `CONFIG_RUST_KERNEL_DOCTESTS=3Dy`,
-`objtool` may report:
+Commit a808a2b35f66 ("tools build: Fix fixdep dependencies") broke the
+perf build ("make -C tools/perf") by introducing two inadvertent
+conflicts:
 
-    rust/doctests_kernel_generated.o: warning: objtool:
-    rust_doctest_kernel_alloc_kbox_rs_13() falls through to next
-    function rust_doctest_kernel_alloc_kvec_rs_0()
+  1) tools/build/Makefile includes tools/build/Makefile.include, which
+     defines a phony 'fixdep' target.  This conflicts with the $(FIXDEP)
+     file target in tools/build/Makefile when OUTPUT is empty, causing
+     make to report duplicate recipes for the same target.
 
-(as well as in rust_doctest_kernel_alloc_kvec_rs_0) due to calls to the
-`noreturn` symbol:
+  2) The FIXDEP variable in tools/build/Makefile conflicts with the
+     previously existing one in tools/perf/Makefile.perf.
 
-    core::option::expect_failed
+Remove the unnecessary include of tools/build/Makefile.include from
+tools/build/Makefile, and rename the FIXDEP variable in
+tools/perf/Makefile.perf to FIXDEP_BUILT.
 
-from code added in commits 779db37373a3 ("rust: alloc: kvec: implement
-AsPageIter for VVec") and 671618432f46 ("rust: alloc: kbox: implement
-AsPageIter for VBox").
-
-Thus add the mangled one to the list so that `objtool` knows it is
-actually `noreturn`.
-
-This can be reproduced as well in other versions by tweaking the code,
-such as the latest stable Rust (1.90.0).
-
-Stable does not have code that triggers this, but it could have it in
-the future. Downstream forks could too. Thus tag it for backport.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: a808a2b35f66 ("tools build: Fix fixdep dependencies")
+Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later.
-Link: https://patch.msgid.link/20251020020714.2511718-1-ojeda@kernel.org
+Tested-by: Thorsten Leemhuis <linux@leemhuis.info>
+Link: https://patch.msgid.link/8881bc3321bd9fa58802e4f36286eefe3667806b.17609=
+92391.git.jpoimboe@kernel.org
 ---
- tools/objtool/check.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/build/Makefile     | 2 --
+ tools/perf/Makefile.perf | 6 +++---
+ 2 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a577057..3c7ab91 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struct symbol *func)
- 	 * these come from the Rust standard library).
- 	 */
- 	return str_ends_with(func->name, "_4core5sliceSp15copy_from_slice17len_mism=
-atch_fail")		||
-+	       str_ends_with(func->name, "_4core6option13expect_failed")				||
- 	       str_ends_with(func->name, "_4core6option13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core6result13unwrap_failed")				||
- 	       str_ends_with(func->name, "_4core9panicking5panic")					||
+diff --git a/tools/build/Makefile b/tools/build/Makefile
+index a5b3c29..3a5a380 100644
+--- a/tools/build/Makefile
++++ b/tools/build/Makefile
+@@ -37,8 +37,6 @@ ifneq ($(wildcard $(TMP_O)),)
+ 	$(Q)$(MAKE) -C feature OUTPUT=3D$(TMP_O) clean >/dev/null
+ endif
+=20
+-include $(srctree)/tools/build/Makefile.include
+-
+ FIXDEP		:=3D $(OUTPUT)fixdep
+ FIXDEP_IN	:=3D $(OUTPUT)fixdep-in.o
+=20
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 47c906b..02f87c4 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -234,12 +234,12 @@ endif
+ # The fixdep build - we force fixdep tool to be built as
+ # the first target in the separate make session not to be
+ # disturbed by any parallel make jobs. Once fixdep is done
+-# we issue the requested build with FIXDEP=3D1 variable.
++# we issue the requested build with FIXDEP_BUILT=3D1 variable.
+ #
+ # The fixdep build is disabled for $(NON_CONFIG_TARGETS)
+ # targets, because it's not necessary.
+=20
+-ifdef FIXDEP
++ifdef FIXDEP_BUILT
+   force_fixdep :=3D 0
+ else
+   force_fixdep :=3D $(config)
+@@ -286,7 +286,7 @@ $(goals) all: sub-make
+=20
+ sub-make: fixdep
+ 	@./check-headers.sh
+-	$(Q)$(MAKE) FIXDEP=3D1 -f Makefile.perf $(goals)
++	$(Q)$(MAKE) FIXDEP_BUILT=3D1 -f Makefile.perf $(goals)
+=20
+ else # force_fixdep
+=20
 
