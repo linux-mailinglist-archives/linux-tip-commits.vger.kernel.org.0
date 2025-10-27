@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-7025-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7026-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB425C0F5C9
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Oct 2025 17:38:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B735C0F650
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Oct 2025 17:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79406189AC02
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Oct 2025 16:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08EC9484172
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 27 Oct 2025 16:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F70E313274;
-	Mon, 27 Oct 2025 16:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46E8320A32;
+	Mon, 27 Oct 2025 16:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2cVx43oM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Rf84S21h"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UA1RQzrj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pdob8Enc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F0131B800;
-	Mon, 27 Oct 2025 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569D630AD05;
+	Mon, 27 Oct 2025 16:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761582686; cv=none; b=C28+5qDoly1yNOOk4/PdTiBwJa2sP9ZjD7kXzh5QUYP2E83XsjCrcv9o0LMbrZF8LfRwZVPe0gP4cYHyhOaKIDb/gZ3+H/3/ZBefImW5deDpoCfr5rl+a4ACKVy8sVdIH5q40C5ieiLt94Iphm4L6wj4njPqiHqXARUJL7bJ+fA=
+	t=1761582687; cv=none; b=m50hau8MnJbc65yRGFY8fL+fNIwuLvj6U6or31WhmMRBjrA/wZINFQVVbS89FzJ+qvfE8iBUIiHnW9OluJEe28ndtwVm/WKdyObBvQDOiBQpcLDhOuI8l7bx05UP7JZq5iGgF5FGfVBkbNwjPFoG2Mg/oYY2teE/gz/18RQgL6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761582686; c=relaxed/simple;
-	bh=UOi4GzIhu50QZt7GKzISSQm4vPb1Ub9UUlsYXV0k2ng=;
+	s=arc-20240116; t=1761582687; c=relaxed/simple;
+	bh=s/0floMfv2onszxCMeNNs0Iu9+YtvNYjoM1HGbUJAkQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ETwVj0t87jeWGsnfbRxL4DyLh652udZvvD3ChKbvaFAJnt7yB3/Ob3dUPTgvoDWb4q2uINpVUEjmJN1aBkt+Z+SwNDTLs4pcGiihPS3barMiFsa1s74SuPXC+c2zfkKGthS1KZJlW7DbeDiUlcbFzqTx7wg5POU9U7vLzm8zS5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2cVx43oM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Rf84S21h; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=oeikm0Ud28YEZQWjrZjudv4oKpEkfSMyYql1QgoOOPVeMCMjHqLvSmwBjeX/npu+aDZHkJTSPCfCeC3yK1WC+Ef11/8Gd1KkdklfVsGowtslpL5ia9xRnynKqJg5CU5WNq++BZesV9hyY+90hjiNVXyKe0/h5E0lT7jw9AXoDLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UA1RQzrj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pdob8Enc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 27 Oct 2025 16:31:21 -0000
+Date: Mon, 27 Oct 2025 16:31:22 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761582682;
+	s=2020; t=1761582683;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zo/tz2LOMPHoQ2dRUV9xY/qXTRh/Opz2M7tUw0QrsEg=;
-	b=2cVx43oMbnleu25TYCRkwhCBLQFnRiwhwhXBl2m8PbqsA7YZQh8XSynn5ZypzwKf/7+pW7
-	TO1e/MCnSC7Tm04B77WNyEFa6Pq7ctw0tTRLp1xmmxT2SbBpKOtCJ3Lvf4G7zZOzuUGrSh
-	+VnUW1hAO/gjli4pF1VkR5tYrhQmdV2DGpMssualfELXir/NIU7GUfaNYq9ILGhaHejBi6
-	4hiT3P9hPy0mP1Jc5Mh5KwgOTVOboPDoW1OHaPUGzN3OM0axV7ObkqadZ8V5H24mvXEM7d
-	PeW63evgJc2LSXS0uzbaw4ndRw1Ia/0itFF90pycXWysNLuEQz48q+yhUaaNTQ==
+	bh=tM/QMafYYVvbsgGICg31uh5fs1D2fRZX3tkjyVleNrE=;
+	b=UA1RQzrjz+Dh9yy87Y6EGLforSSAm0ydUzSjvUKo4FvLIMVm+gc33uOvIWvUovEB++SLPE
+	TW/+2ScK5kb2cQhnthnCXnzPywa5N09txdjGhbs0KCqrhEBcbCU+KTIqZgVaGWT/AyXYRI
+	Bjyrmg+/zyuMC/8KTvQc+hAKfSnSPDeXvp7tJXjXewHG+ZF2voQ9aq3sqvaBYbntP4+F9A
+	dufYztSmPmFblmfbrXxAiltRZii+AoRI2BtcTFFlALowOVxb7+7mHPVkDBr/DgMzkLk8Vh
+	GnC28wZM5PT3fqjk6Abmx8L4jQDh/DTX1zbsF2PEx/3dFemuv4rAwOXcAc5eow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761582682;
+	s=2020e; t=1761582683;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zo/tz2LOMPHoQ2dRUV9xY/qXTRh/Opz2M7tUw0QrsEg=;
-	b=Rf84S21hJR22E5dW2ppJsjFJad5bXaimpvUw0Er4pOZSDSYwecuRK6klZTvm7Izk6rQ/OF
-	8pu4d8LHUXUfa9BA==
+	bh=tM/QMafYYVvbsgGICg31uh5fs1D2fRZX3tkjyVleNrE=;
+	b=pdob8Enc/ebFwroY8OE6914XYRldKBKzW8HNKcRQ9pjVgdfqPUu9fEKn6F6TNzCDgwsRK0
+	1k7D8D/h/JyeULCg==
 From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] ACPI: irq: Add interrupt affinity reporting interface
+Subject: [tip: irq/core] irqdomain: Add firmware info reporting interface
 Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  Will Deacon <will@kernel.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "Rafael J. Wysocki (Intel)" <rafael@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251020122944.3074811-3-maz@kernel.org>
-References: <20251020122944.3074811-3-maz@kernel.org>
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251020122944.3074811-2-maz@kernel.org>
+References: <20251020122944.3074811-2-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176158268117.2601451.3370006380098181189.tip-bot2@tip-bot2>
+Message-ID: <176158268239.2601451.11267754028108675159.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,88 +81,163 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     5324fe21ba9b77b299c02191645a97777cdd73ac
-Gitweb:        https://git.kernel.org/tip/5324fe21ba9b77b299c02191645a97777cd=
-d73ac
+Commit-ID:     87b0031f7f73dac2ebb874fc8f331a66ee3b5cbd
+Gitweb:        https://git.kernel.org/tip/87b0031f7f73dac2ebb874fc8f331a66ee3=
+b5cbd
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Mon, 20 Oct 2025 13:29:19 +01:00
+AuthorDate:    Mon, 20 Oct 2025 13:29:18 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Mon, 27 Oct 2025 17:16:32 +01:00
 
-ACPI: irq: Add interrupt affinity reporting interface
+irqdomain: Add firmware info reporting interface
 
-Plug the irq_populate_fwspec_info() helper into the ACPI layer to offer an
-interrupt affinity reporting function. This is currently only supported for
-the CONFIG_ACPI_GENERIC_GSI configurations, but could later be extended to
-legacy architectures if necessary.
+Add an irqdomain callback to report firmware-provided information that is
+otherwise not available in a generic way. This is reported using a new data
+structure (struct irq_fwspec_info).
+
+This callback is optional and the only information that can be reported
+currently is the affinity of an interrupt. However, the containing
+structure is designed to be extensible, allowing other potentially relevant
+information to be reported in the future.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Tested-by: Will Deacon <will@kernel.org>
 Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Acked-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Link: https://patch.msgid.link/20251020122944.3074811-3-maz@kernel.org
+Link: https://patch.msgid.link/20251020122944.3074811-2-maz@kernel.org
 ---
- drivers/acpi/irq.c   | 19 +++++++++++++++++++
- include/linux/acpi.h |  7 +++++++
- 2 files changed, 26 insertions(+)
+ include/linux/irqdomain.h | 27 +++++++++++++++++++++++++++
+ kernel/irq/irqdomain.c    | 32 +++++++++++++++++++++++++++-----
+ 2 files changed, 54 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/irq.c b/drivers/acpi/irq.c
-index 76a856c..d159515 100644
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -300,6 +300,25 @@ int acpi_irq_get(acpi_handle handle, unsigned int index,=
- struct resource *res)
- }
- EXPORT_SYMBOL_GPL(acpi_irq_get);
+diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
+index 4a86e6b..9d6a5e9 100644
+--- a/include/linux/irqdomain.h
++++ b/include/linux/irqdomain.h
+@@ -44,6 +44,23 @@ struct irq_fwspec {
+ 	u32			param[IRQ_DOMAIN_IRQ_SPEC_PARAMS];
+ };
 =20
-+const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-+					    unsigned int index)
-+{
-+	struct irq_fwspec_info info;
-+	struct irq_fwspec fwspec;
-+	unsigned long flags;
++/**
++ * struct irq_fwspec_info - firmware provided IRQ information structure
++ *
++ * @flags:		Information validity flags
++ * @cpumask:		Affinity mask for this interrupt
++ *
++ * This structure reports firmware-specific information about an
++ * interrupt. The only significant information is the affinity of a
++ * per-CPU interrupt, but this is designed to be extended as required.
++ */
++struct irq_fwspec_info {
++	unsigned long		flags;
++	const struct cpumask	*affinity;
++};
 +
-+	if (acpi_irq_parse_one(handle, index, &fwspec, &flags))
-+		return NULL;
++#define IRQ_FWSPEC_INFO_AFFINITY_VALID	BIT(0)
 +
-+	if (irq_populate_fwspec_info(&fwspec, &info))
-+		return NULL;
-+
-+	if (!(info.flags & IRQ_FWSPEC_INFO_AFFINITY_VALID))
-+		return NULL;
-+
-+	return info.affinity;
-+}
-+
- /**
-  * acpi_set_irq_model - Setup the GSI irqdomain information
-  * @model: the value assigned to acpi_irq_model
-diff --git a/include/linux/acpi.h b/include/linux/acpi.h
-index 5ff5d99..607db77 100644
---- a/include/linux/acpi.h
-+++ b/include/linux/acpi.h
-@@ -1509,12 +1509,19 @@ static inline int acpi_parse_spcr(bool enable_earlyco=
-n, bool enable_console)
-=20
- #if IS_ENABLED(CONFIG_ACPI_GENERIC_GSI)
- int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource *re=
-s);
-+const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-+					    unsigned int index);
- #else
- static inline
- int acpi_irq_get(acpi_handle handle, unsigned int index, struct resource *re=
-s)
- {
- 	return -EINVAL;
- }
-+static inline const struct cpumask *acpi_irq_get_affinity(acpi_handle handle,
-+							  unsigned int index)
-+{
-+	return NULL;
-+}
+ /* Conversion function from of_phandle_args fields to fwspec  */
+ void of_phandle_args_to_fwspec(struct device_node *np, const u32 *args,
+ 			       unsigned int count, struct irq_fwspec *fwspec);
+@@ -69,6 +86,9 @@ void of_phandle_args_to_fwspec(struct device_node *np, cons=
+t u32 *args,
+  * @translate:	Given @fwspec, decode the hardware irq number (@out_hwirq) and
+  *		linux irq type value (@out_type). This is a generalised @xlate
+  *		(over struct irq_fwspec) and is preferred if provided.
++ * @get_fwspec_info:
++ *		Given @fwspec, report additional firmware-provided information in
++ *		@info. Optional.
+  * @debug_show:	For domains to show specific data for an interrupt in debugf=
+s.
+  *
+  * Functions below are provided by the driver and called whenever a new mapp=
+ing
+@@ -96,6 +116,7 @@ struct irq_domain_ops {
+ 	void	(*deactivate)(struct irq_domain *d, struct irq_data *irq_data);
+ 	int	(*translate)(struct irq_domain *d, struct irq_fwspec *fwspec,
+ 			     unsigned long *out_hwirq, unsigned int *out_type);
++	int	(*get_fwspec_info)(struct irq_fwspec *fwspec, struct irq_fwspec_info *i=
+nfo);
  #endif
+ #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
+ 	void	(*debug_show)(struct seq_file *m, struct irq_domain *d,
+@@ -602,6 +623,8 @@ void irq_domain_free_irqs_parent(struct irq_domain *domai=
+n, unsigned int irq_bas
 =20
- #ifdef CONFIG_ACPI_LPIT
+ int irq_domain_disconnect_hierarchy(struct irq_domain *domain, unsigned int =
+virq);
+=20
++int irq_populate_fwspec_info(struct irq_fwspec *fwspec, struct irq_fwspec_in=
+fo *info);
++
+ static inline bool irq_domain_is_hierarchy(struct irq_domain *domain)
+ {
+ 	return domain->flags & IRQ_DOMAIN_FLAG_HIERARCHY;
+@@ -685,6 +708,10 @@ static inline bool irq_domain_is_msi_device(struct irq_d=
+omain *domain)
+ 	return false;
+ }
+=20
++static inline int irq_populate_fwspec_info(struct irq_fwspec *fwspec, struct=
+ irq_fwspec_info *info)
++{
++	return -EINVAL;
++}
+ #endif	/* CONFIG_IRQ_DOMAIN_HIERARCHY */
+=20
+ #ifdef CONFIG_GENERIC_MSI_IRQ
+diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
+index dc473fa..2652c4c 100644
+--- a/kernel/irq/irqdomain.c
++++ b/kernel/irq/irqdomain.c
+@@ -867,13 +867,9 @@ void of_phandle_args_to_fwspec(struct device_node *np, c=
+onst u32 *args,
+ }
+ EXPORT_SYMBOL_GPL(of_phandle_args_to_fwspec);
+=20
+-unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
++static struct irq_domain *fwspec_to_domain(struct irq_fwspec *fwspec)
+ {
+ 	struct irq_domain *domain;
+-	struct irq_data *irq_data;
+-	irq_hw_number_t hwirq;
+-	unsigned int type =3D IRQ_TYPE_NONE;
+-	int virq;
+=20
+ 	if (fwspec->fwnode) {
+ 		domain =3D irq_find_matching_fwspec(fwspec, DOMAIN_BUS_WIRED);
+@@ -883,6 +879,32 @@ unsigned int irq_create_fwspec_mapping(struct irq_fwspec=
+ *fwspec)
+ 		domain =3D irq_default_domain;
+ 	}
+=20
++	return domain;
++}
++
++#ifdef CONFIG_IRQ_DOMAIN_HIERARCHY
++int irq_populate_fwspec_info(struct irq_fwspec *fwspec, struct irq_fwspec_in=
+fo *info)
++{
++	struct irq_domain *domain =3D fwspec_to_domain(fwspec);
++
++	memset(info, 0, sizeof(*info));
++
++	if (!domain || !domain->ops->get_fwspec_info)
++		return 0;
++
++	return domain->ops->get_fwspec_info(fwspec, info);
++}
++#endif
++
++unsigned int irq_create_fwspec_mapping(struct irq_fwspec *fwspec)
++{
++	unsigned int type =3D IRQ_TYPE_NONE;
++	struct irq_domain *domain;
++	struct irq_data *irq_data;
++	irq_hw_number_t hwirq;
++	int virq;
++
++	domain =3D fwspec_to_domain(fwspec);
+ 	if (!domain) {
+ 		pr_warn("no irq domain found for %s !\n",
+ 			of_node_full_name(to_of_node(fwspec->fwnode)));
 
