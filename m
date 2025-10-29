@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7080-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7081-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4EEBC19C0E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 11:33:23 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4818C19BD8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 11:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C25474EA9C8
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 10:30:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A3BF357894
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 10:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E69347BB6;
-	Wed, 29 Oct 2025 10:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7427F348877;
+	Wed, 29 Oct 2025 10:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xxoDhWHH";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WtEVy7cd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pGEtRNWQ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cr/iiKsi"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327F2345753;
-	Wed, 29 Oct 2025 10:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AD8346E48;
+	Wed, 29 Oct 2025 10:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761733444; cv=none; b=o+i0kzSpg5i59OeDueROyQuk0we/ov4F2/1OACqP3DhX47DL28+JpUjJA+mKa9fxJEuKYg6Cd+n0ina21RpBDzh84iHNTQduFMvfR3ocpC6ckxcCrvT+sPmuq9g051PXpZdbCFd8BxAtEdIzuxXChVxbSPh7xZzALNMCFJwSOSg=
+	t=1761733445; cv=none; b=ehEKGv8iDQ3DIJpx/V9frhIa2yqL9WT+5O1UTya23E9CATLRwLi43x0TeayHsg5FhHHmVnWAFoFNRgj85DAAiza40kTWm6lZVnqVBjZICaP7BV9WNk7oWPCIzOECwx+sbOKPa0cvrSlbAqa6PM+TLGTfN8cuZK13vNUusN9HXfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761733444; c=relaxed/simple;
-	bh=ZUCh6RG8BEAIJUYwIvX4bTSVyyBbYcBrMXcnnafpfeA=;
+	s=arc-20240116; t=1761733445; c=relaxed/simple;
+	bh=z69L1ZkwjD2imSwb2rnUA9seq4szIYt9TSPf81UyZqc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=b/V8Fm3xFRaGd7KPoV8Yxf8hCigWfjQWR9i31pa5ZHnJRLStsRUFNFSU/bvZDMTeau3qhU57WFX8Otqq3X5nSvAYU5wKJwoXOixAUeBK+jCw6v74GmzRm3Y4Fhk/1c0pPc7zIjnu3XFgLvG0UC1S56oPFlMG7Py+WeUHDw+5V/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xxoDhWHH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WtEVy7cd; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AXwbZEtN/aALYSNrL6ck90LSKl5LKbfqxdL+YQnGhcf98qlX6hJbIDh9WIXRpP0PGG8KaxbkxLweXunHoBkmXbXYIYzDLDynAJdEGOglqq6/qfBjH9gTXAA5wVtYWbWaa+RYS7fvfA9P1YaC5H9dADgs9ckLdw2ceshlOEB65IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pGEtRNWQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cr/iiKsi; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 29 Oct 2025 10:23:59 -0000
+Date: Wed, 29 Oct 2025 10:24:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761733440;
+	s=2020; t=1761733442;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R8l5CMZTgbFpjP+N39/2E88BJhCF1EmbDnTbJeTrHOQ=;
-	b=xxoDhWHHdQZb4G8IqfUunMdPgDg0KP9reNZtCMpQryuyDVTy3f5gFH5D9RjmI55pftq1kN
-	GatcoPd7j43sTT+qIHWlys1mOGdb9O9nnHuEFZophmjQz1L13B5xzrVJIRDJ+eVni3GVgw
-	zDxNNr18bTcFfmUxY/GNchyzupAHFs7bgn7Z+8ELB+uw9UiGPdBHVt7Iw47KSBhDf61YN5
-	+V47DLWHIKhh+GLsOQBZu0p9VnMbQotKOJEt0kklLGN5G6vHWV1vv7qaVyQqdgh76UnQw/
-	rFBYuJ7YYubxGbZcSQrIkaG0JBowYkCqnvG2AyWD2BN8b0+rnqEzVa4jV11ukg==
+	bh=3BD0jed00eRo+jx9/JaGEwEJxgGO+mqbyQwP/gU78ks=;
+	b=pGEtRNWQxsTty2fTPlsCMMHqKEBiyvVQN8gCi7U3rgOOyooc0dQlLmu8sdjZwkvAgv6DGu
+	s1NPWLyw/YWn3z+YkAF9qwHsiGAi11QrGh2YGv65nt07giTMFcc7xs6/KbHZV/W02Pg1/4
+	8dHigh9WrVSu5FyMfj41YtPMNjZQKJqjX/dQRIdiTfCLNrDRadqaQi1FxwzSOrHaFXmjyW
+	eKx4bCjQmE/qXhKpDa0uVQoz+XLrgD3rg9jbszCsXbEIHjW6J7VaojUjLBwz3+nYFF6rvl
+	GSgCBUH4fadIr9Ty+tNKm4NtD44GXP+jG5TheDZewf5tRGJDEekjVLr3Z0eEKQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761733440;
+	s=2020e; t=1761733442;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R8l5CMZTgbFpjP+N39/2E88BJhCF1EmbDnTbJeTrHOQ=;
-	b=WtEVy7cd1Cyt4TIUVOExR00sq3eE73FX3/9mqFoj7rzj5lqJiVn1FJFLcZqX03aH5TEnp3
-	Hiy6xvYXoTjxUJBA==
+	bh=3BD0jed00eRo+jx9/JaGEwEJxgGO+mqbyQwP/gU78ks=;
+	b=cr/iiKsi1vq1vq0crX0fMLMwdXqOjdqka3xrdjtI2pyHwpKVbDYoqqoGVtU6yNieDQAFte
+	47KOWXlFn/XtkBCw==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rseq] rseq: Remove the ksig argument from
- rseq_handle_notify_resume()
+Subject: [tip: core/rseq] rseq: Move algorithm comment to top
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251027084306.211520245@linutronix.de>
-References: <20251027084306.211520245@linutronix.de>
+In-Reply-To: <20251027084306.149519580@linutronix.de>
+References: <20251027084306.149519580@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176173343931.2601451.5057970472600914752.tip-bot2@tip-bot2>
+Message-ID: <176173344067.2601451.3675867297761023558.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,73 +82,163 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the core/rseq branch of tip:
 
-Commit-ID:     dfd205204dd4c459d5911fd1cfb17f86cae80150
-Gitweb:        https://git.kernel.org/tip/dfd205204dd4c459d5911fd1cfb17f86cae=
-80150
+Commit-ID:     83bae0cfe44a8173bbdf94fbce776bc8f8ef8dee
+Gitweb:        https://git.kernel.org/tip/83bae0cfe44a8173bbdf94fbce776bc8f8e=
+f8dee
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 27 Oct 2025 09:44:22 +01:00
+AuthorDate:    Mon, 27 Oct 2025 09:44:20 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 29 Oct 2025 11:07:12 +01:00
+CommitterDate: Wed, 29 Oct 2025 11:07:11 +01:00
 
-rseq: Remove the ksig argument from rseq_handle_notify_resume()
+rseq: Move algorithm comment to top
 
-There is no point for this being visible in the resume_to_user_mode()
-handling.
+Move the comment which documents the RSEQ algorithm to the top of the file,
+so it does not create horrible diffs later when the actual implementation
+is fed into the mincer.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251027084306.211520245@linutronix.de
+Link: https://patch.msgid.link/20251027084306.149519580@linutronix.de
 ---
- include/linux/resume_user_mode.h |  2 +-
- include/linux/rseq.h             | 13 +++++++------
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ kernel/rseq.c | 119 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 59 insertions(+), 60 deletions(-)
 
-diff --git a/include/linux/resume_user_mode.h b/include/linux/resume_user_mod=
-e.h
-index e0135e0..dd3bf7d 100644
---- a/include/linux/resume_user_mode.h
-+++ b/include/linux/resume_user_mode.h
-@@ -59,7 +59,7 @@ static inline void resume_user_mode_work(struct pt_regs *re=
-gs)
- 	mem_cgroup_handle_over_high(GFP_KERNEL);
- 	blkcg_maybe_throttle_current();
+diff --git a/kernel/rseq.c b/kernel/rseq.c
+index 246319d..51fafc4 100644
+--- a/kernel/rseq.c
++++ b/kernel/rseq.c
+@@ -8,6 +8,65 @@
+  * Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+  */
 =20
--	rseq_handle_notify_resume(NULL, regs);
-+	rseq_handle_notify_resume(regs);
- }
++/*
++ * Restartable sequences are a lightweight interface that allows
++ * user-level code to be executed atomically relative to scheduler
++ * preemption and signal delivery. Typically used for implementing
++ * per-cpu operations.
++ *
++ * It allows user-space to perform update operations on per-cpu data
++ * without requiring heavy-weight atomic operations.
++ *
++ * Detailed algorithm of rseq user-space assembly sequences:
++ *
++ *                     init(rseq_cs)
++ *                     cpu =3D TLS->rseq::cpu_id_start
++ *   [1]               TLS->rseq::rseq_cs =3D rseq_cs
++ *   [start_ip]        ----------------------------
++ *   [2]               if (cpu !=3D TLS->rseq::cpu_id)
++ *                             goto abort_ip;
++ *   [3]               <last_instruction_in_cs>
++ *   [post_commit_ip]  ----------------------------
++ *
++ *   The address of jump target abort_ip must be outside the critical
++ *   region, i.e.:
++ *
++ *     [abort_ip] < [start_ip]  || [abort_ip] >=3D [post_commit_ip]
++ *
++ *   Steps [2]-[3] (inclusive) need to be a sequence of instructions in
++ *   userspace that can handle being interrupted between any of those
++ *   instructions, and then resumed to the abort_ip.
++ *
++ *   1.  Userspace stores the address of the struct rseq_cs assembly
++ *       block descriptor into the rseq_cs field of the registered
++ *       struct rseq TLS area. This update is performed through a single
++ *       store within the inline assembly instruction sequence.
++ *       [start_ip]
++ *
++ *   2.  Userspace tests to check whether the current cpu_id field match
++ *       the cpu number loaded before start_ip, branching to abort_ip
++ *       in case of a mismatch.
++ *
++ *       If the sequence is preempted or interrupted by a signal
++ *       at or after start_ip and before post_commit_ip, then the kernel
++ *       clears TLS->__rseq_abi::rseq_cs, and sets the user-space return
++ *       ip to abort_ip before returning to user-space, so the preempted
++ *       execution resumes at abort_ip.
++ *
++ *   3.  Userspace critical section final instruction before
++ *       post_commit_ip is the commit. The critical section is
++ *       self-terminating.
++ *       [post_commit_ip]
++ *
++ *   4.  <success>
++ *
++ *   On failure at [2], or if interrupted by preempt or signal delivery
++ *   between [1] and [3]:
++ *
++ *       [abort_ip]
++ *   F1. <failure>
++ */
++
+ #include <linux/sched.h>
+ #include <linux/uaccess.h>
+ #include <linux/syscalls.h>
+@@ -98,66 +157,6 @@ static int rseq_validate_ro_fields(struct task_struct *t)
+ 	unsafe_put_user(value, &t->rseq->field, error_label)
+ #endif
 =20
- #endif /* LINUX_RESUME_USER_MODE_H */
-diff --git a/include/linux/rseq.h b/include/linux/rseq.h
-index 21f875a..c06a8e5 100644
---- a/include/linux/rseq.h
-+++ b/include/linux/rseq.h
-@@ -37,19 +37,20 @@ static inline void rseq_set_notify_resume(struct task_str=
-uct *t)
-=20
- void __rseq_handle_notify_resume(struct ksignal *sig, struct pt_regs *regs);
-=20
--static inline void rseq_handle_notify_resume(struct ksignal *ksig,
--					     struct pt_regs *regs)
-+static inline void rseq_handle_notify_resume(struct pt_regs *regs)
+-/*
+- *
+- * Restartable sequences are a lightweight interface that allows
+- * user-level code to be executed atomically relative to scheduler
+- * preemption and signal delivery. Typically used for implementing
+- * per-cpu operations.
+- *
+- * It allows user-space to perform update operations on per-cpu data
+- * without requiring heavy-weight atomic operations.
+- *
+- * Detailed algorithm of rseq user-space assembly sequences:
+- *
+- *                     init(rseq_cs)
+- *                     cpu =3D TLS->rseq::cpu_id_start
+- *   [1]               TLS->rseq::rseq_cs =3D rseq_cs
+- *   [start_ip]        ----------------------------
+- *   [2]               if (cpu !=3D TLS->rseq::cpu_id)
+- *                             goto abort_ip;
+- *   [3]               <last_instruction_in_cs>
+- *   [post_commit_ip]  ----------------------------
+- *
+- *   The address of jump target abort_ip must be outside the critical
+- *   region, i.e.:
+- *
+- *     [abort_ip] < [start_ip]  || [abort_ip] >=3D [post_commit_ip]
+- *
+- *   Steps [2]-[3] (inclusive) need to be a sequence of instructions in
+- *   userspace that can handle being interrupted between any of those
+- *   instructions, and then resumed to the abort_ip.
+- *
+- *   1.  Userspace stores the address of the struct rseq_cs assembly
+- *       block descriptor into the rseq_cs field of the registered
+- *       struct rseq TLS area. This update is performed through a single
+- *       store within the inline assembly instruction sequence.
+- *       [start_ip]
+- *
+- *   2.  Userspace tests to check whether the current cpu_id field match
+- *       the cpu number loaded before start_ip, branching to abort_ip
+- *       in case of a mismatch.
+- *
+- *       If the sequence is preempted or interrupted by a signal
+- *       at or after start_ip and before post_commit_ip, then the kernel
+- *       clears TLS->__rseq_abi::rseq_cs, and sets the user-space return
+- *       ip to abort_ip before returning to user-space, so the preempted
+- *       execution resumes at abort_ip.
+- *
+- *   3.  Userspace critical section final instruction before
+- *       post_commit_ip is the commit. The critical section is
+- *       self-terminating.
+- *       [post_commit_ip]
+- *
+- *   4.  <success>
+- *
+- *   On failure at [2], or if interrupted by preempt or signal delivery
+- *   between [1] and [3]:
+- *
+- *       [abort_ip]
+- *   F1. <failure>
+- */
+-
+ static int rseq_update_cpu_node_id(struct task_struct *t)
  {
- 	if (current->rseq)
--		__rseq_handle_notify_resume(ksig, regs);
-+		__rseq_handle_notify_resume(NULL, regs);
- }
-=20
- static inline void rseq_signal_deliver(struct ksignal *ksig,
- 				       struct pt_regs *regs)
- {
--	scoped_guard(RSEQ_EVENT_GUARD)
--		__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
--	rseq_handle_notify_resume(ksig, regs);
-+	if (current->rseq) {
-+		scoped_guard(RSEQ_EVENT_GUARD)
-+			__set_bit(RSEQ_EVENT_SIGNAL_BIT, &current->rseq_event_mask);
-+		__rseq_handle_notify_resume(ksig, regs);
-+	}
- }
-=20
- /* rseq_preempt() requires preemption to be disabled. */
+ 	struct rseq __user *rseq =3D t->rseq;
 
