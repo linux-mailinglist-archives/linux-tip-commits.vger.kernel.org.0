@@ -1,78 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-7092-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7093-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32625C19C9E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 11:39:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61D7C19CC1
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 11:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 512481C87804
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 10:33:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D671CC00EB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 29 Oct 2025 10:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8114F3502B5;
-	Wed, 29 Oct 2025 10:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7DC350D6D;
+	Wed, 29 Oct 2025 10:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iiRIlid9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/aAVnafp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hl5NE4Uv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4vrKCHgE"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B712334FF46;
-	Wed, 29 Oct 2025 10:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA0D350A17;
+	Wed, 29 Oct 2025 10:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761733458; cv=none; b=pR462p/cMivJaUYzuk46OX62aHwNYvBYrwOFAr9BaThX5s5NSnJ/334V+1AueAJngCxawgl9HkZCGwIbsI9Z1dCujmzv2/OnGvRxdznXVc7nwnGIhDtpbFoINeZOK16TNKRnMnNJ4PJKWUaREV5erm8FA25ZzPyv4bNoer3yAyc=
+	t=1761733460; cv=none; b=ebugVl2xdl0/0XQdk8FsJIB3VF0omse8kHteJFN0MTe71QkKqrLzeFWiYrx7c8R4KDvMl9w0IReFvhi3Z2Hi1Kl7Bf5J6r5HcPnixSkO1NKheVH6Jc5Armu15PEdqVVhwWMqlCpAtve4TRsEplGC1vRUl7oO5JFTlU2J8Y03f6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761733458; c=relaxed/simple;
-	bh=tRUbCWLZwj6H4aEqqhAU+gsuiVHLApNyXKIEmawe1QE=;
+	s=arc-20240116; t=1761733460; c=relaxed/simple;
+	bh=4NoZjZxCNIp/NJMasuOzCM+W23YAD5L1gk5P9Oz01CM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ec4+GrbBS1YfjsZYRoUJgZv97ks4q84UZCnx7BvCrjdVbTlSmAOGw4Wr3iIWucHtQ8pmSpTjltLbvOtK6uhsDoJl2qI2XUtEm/ldJJpjjupkMjg28jv0ywHPZxjmnRVS/H1HMa7Rhi4YHrPSFZAsMs/caxqZ8pzXzc5Tp4z0VqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iiRIlid9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/aAVnafp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=q5OdX0xHFHkhvmYinXgqQ6/3lNrJTtskEEDDYmM+7tM8SGZptWAALBObNdlLcHq+nr/cvH9Arqbn7yPu7UJxQoFkQsVBhYCIs8eg8g8P+nAA8rSmmRcVINF94XQ5W9NOnrWd0FE2dR9zSzKy+K13Y9xlFYtp9YqFyCGfFis16kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hl5NE4Uv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4vrKCHgE; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 29 Oct 2025 10:24:13 -0000
+Date: Wed, 29 Oct 2025 10:24:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1761733455;
+	s=2020; t=1761733456;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GdS2KY5g61tbNWTHTMkOvKBLyiLy7tWYuDTx2lnxhAQ=;
-	b=iiRIlid9ADeTpoKCtyzhwP2GrwFqiiGBqQIF9MV+EQ66F630QHGxYBVGbxpKnCgMd3tNdy
-	NohWAre8WZeSrDe68Yk3H1hm0vlGlBxtkodcmIl2MWAHOMN167Dy7WI4IVNgDrzyJYWfg6
-	ZSRZjRd9vRhb6ijQrEc2TiptXBz4z34x/Q+GkQ0S80iG5eIvV+LfSiLJemyEj/ia6lYVLQ
-	8/9639gkmAMyiQeq4xD6K8UQb/NPwXjILF24eiLGQw7Tu8N3q5MsgYZusYZPpClLXMYljo
-	MbYUB/n6xo1mddM+57IrQBx6UoSw0Cstt3jCee0BkEOlaGeKsJiZJ5HkxpVcKw==
+	bh=yvIOI77pi1g3onsy0/ZuMdJaxqgHSKSZhXkeNZ9ge4w=;
+	b=hl5NE4UviNjB5xPDPFOCtMsQJ1k/hfZeVHpAjUSEkMJVUxms81YeLeqSZEtB+eDB4KPcBt
+	rpSQHZo7t8pYoFQxaU6yh+/PtUN8jCLM8rNLPNF9QPqJPwzxQ8I4tqYY1BYsjQh22nHx41
+	caHbdw2rKSwSpNW2XbdFmHJJrwPQxpX4gZ1RRXJAaaF0FIuNH6JpUR1kTQb8yWskKDkPf3
+	l3foXqJni+kIMIzORQD+gwlQrzouMb4ULzY00AbZQVNLFtBdWCu0YtguRlxsbwOwmUy+lO
+	u5w44AE/eh0fkkIIT+6BMtEQD0SzjfTv5QCSZ6rWZmZ2jV0NTIIrmFbdfrUamQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1761733455;
+	s=2020e; t=1761733456;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GdS2KY5g61tbNWTHTMkOvKBLyiLy7tWYuDTx2lnxhAQ=;
-	b=/aAVnafpSEscVYNyHFVR+J2zhAWNXQvUviCKgB2TNEDAZYuWsIkRf3UydSZUoWPISFa/PU
-	ENZP/5DSE0qSwaDw==
+	bh=yvIOI77pi1g3onsy0/ZuMdJaxqgHSKSZhXkeNZ9ge4w=;
+	b=4vrKCHgEpfIunD2XMU8UngCwHZ6932lUy+r+8Ip/uO09KbaPI1h9lXZTCMZHWU9wq8r9L3
+	JO23KyH0YCZu1PAw==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rseq] x86/uaccess: Use unsafe wrappers for ASM GOTO
-Cc: Thomas Gleixner <tglx@linutronix.de>,
+Subject:
+ [tip: core/rseq] uaccess: Provide ASM GOTO safe wrappers for unsafe_*_user()
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251027083745.294359925@linutronix.de>
-References: <20251027083745.294359925@linutronix.de>
+In-Reply-To: <877bweujtn.ffs@tglx>
+References: <877bweujtn.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176173345383.2601451.13741544185374027643.tip-bot2@tip-bot2>
+Message-ID: <176173345501.2601451.6200364080505850472.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,15 +84,15 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the core/rseq branch of tip:
 
-Commit-ID:     ed1346327dfe9f63de316acb18ae4b5faed8f37f
-Gitweb:        https://git.kernel.org/tip/ed1346327dfe9f63de316acb18ae4b5faed=
-8f37f
+Commit-ID:     5c449ff2a49dedb6390b674d12db432c8c7dd836
+Gitweb:        https://git.kernel.org/tip/5c449ff2a49dedb6390b674d12db432c8c7=
+dd836
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 27 Oct 2025 09:43:46 +01:00
+AuthorDate:    Wed, 29 Oct 2025 10:40:52 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 29 Oct 2025 11:07:08 +01:00
 
-x86/uaccess: Use unsafe wrappers for ASM GOTO
+uaccess: Provide ASM GOTO safe wrappers for unsafe_*_user()
 
 ASM GOTO is miscompiled by GCC when it is used inside a auto cleanup scope:
 
@@ -103,69 +105,182 @@ efault:
 	return false;
 }
 
-It ends up leaking the pagefault disable counter in the fault path. clang
-at least fails the build.
+ e80:	e8 00 00 00 00       	call   e85 <foo+0x5>
+ e85:	65 48 8b 05 00 00 00 00 mov    %gs:0x0(%rip),%rax
+ e8d:	83 80 04 14 00 00 01 	addl   $0x1,0x1404(%rax)   // pf_disable++
+ e94:	89 37                	mov    %esi,(%rdi)
+ e96:	83 a8 04 14 00 00 01 	subl   $0x1,0x1404(%rax)   // pf_disable--
+ e9d:	b8 01 00 00 00       	mov    $0x1,%eax           // success
+ ea2:	e9 00 00 00 00       	jmp    ea7 <foo+0x27>      // ret
+ ea7:	31 c0                	xor    %eax,%eax           // fail
+ ea9:	e9 00 00 00 00       	jmp    eae <foo+0x2e>      // ret
 
-Rename unsafe_*_user() to arch_unsafe_*_user() which makes the generic
-uaccess header wrap it with a local label that makes both compilers emit
-correct code. Same for the kernel_nofault() variants.
+which is broken as it leaks the pagefault disable counter on failure.
 
+Clang at least fails the build.
+
+Linus suggested to add a local label into the macro scope and let that
+jump to the actual caller supplied error label.
+
+       	__label__ local_label;                                  \
+        arch_unsafe_get_user(x, ptr, local_label);              \
+	if (0) {                                                \
+	local_label:                                            \
+		goto label;                                     \
+
+That works for both GCC and clang.
+
+clang:
+
+ c80:	0f 1f 44 00 00       	   nopl   0x0(%rax,%rax,1)
+ c85:	65 48 8b 0c 25 00 00 00 00 mov    %gs:0x0,%rcx
+ c8e:	ff 81 04 14 00 00    	   incl   0x1404(%rcx)	   // pf_disable++
+ c94:	31 c0                	   xor    %eax,%eax        // set retval to false
+ c96:	89 37                      mov    %esi,(%rdi)      // write
+ c98:	b0 01                	   mov    $0x1,%al         // set retval to true
+ c9a:	ff 89 04 14 00 00    	   decl   0x1404(%rcx)     // pf_disable--
+ ca0:	2e e9 00 00 00 00    	   cs jmp ca6 <foo+0x26>   // ret
+
+The exception table entry points correctly to c9a
+
+GCC:
+
+ f70:   e8 00 00 00 00          call   f75 <baz+0x5>
+ f75:   65 48 8b 05 00 00 00 00 mov    %gs:0x0(%rip),%rax
+ f7d:   83 80 04 14 00 00 01    addl   $0x1,0x1404(%rax)  // pf_disable++
+ f84:   8b 17                   mov    (%rdi),%edx
+ f86:   89 16                   mov    %edx,(%rsi)
+ f88:   83 a8 04 14 00 00 01    subl   $0x1,0x1404(%rax) // pf_disable--
+ f8f:   b8 01 00 00 00          mov    $0x1,%eax         // success
+ f94:   e9 00 00 00 00          jmp    f99 <baz+0x29>    // ret
+ f99:   83 a8 04 14 00 00 01    subl   $0x1,0x1404(%rax) // pf_disable--
+ fa0:   31 c0                   xor    %eax,%eax         // fail
+ fa2:   e9 00 00 00 00          jmp    fa7 <baz+0x37>    // ret
+
+The exception table entry points correctly to f99
+
+So both compilers optimize out the extra goto and emit correct and
+efficient code.
+
+Provide a generic wrapper to do that to avoid modifying all the affected
+architecture specific implementation with that workaround.
+
+The only change required for architectures is to rename unsafe_*_user() to
+arch_unsafe_*_user(). That's done in subsequent changes.
+
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251027083745.294359925@linutronix.de
+Link: https://patch.msgid.link/877bweujtn.ffs@tglx
 ---
- arch/x86/include/asm/uaccess.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/uaccess.h | 72 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 68 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 91a3fb8..367297b 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -528,18 +528,18 @@ static __must_check __always_inline bool user_access_be=
-gin(const void __user *pt
- #define user_access_save()	smap_save()
- #define user_access_restore(x)	smap_restore(x)
+diff --git a/include/linux/uaccess.h b/include/linux/uaccess.h
+index 1beb5b3..8aa82b1 100644
+--- a/include/linux/uaccess.h
++++ b/include/linux/uaccess.h
+@@ -518,7 +518,34 @@ long strncpy_from_user_nofault(char *dst, const void __u=
+ser *unsafe_addr,
+ 		long count);
+ long strnlen_user_nofault(const void __user *unsafe_addr, long count);
 =20
--#define unsafe_put_user(x, ptr, label)	\
-+#define arch_unsafe_put_user(x, ptr, label)	\
- 	__put_user_size((__typeof__(*(ptr)))(x), (ptr), sizeof(*(ptr)), label)
-=20
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define unsafe_get_user(x, ptr, err_label)					\
-+#define arch_unsafe_get_user(x, ptr, err_label)					\
- do {										\
- 	__inttype(*(ptr)) __gu_val;						\
- 	__get_user_size(__gu_val, (ptr), sizeof(*(ptr)), err_label);		\
- 	(x) =3D (__force __typeof__(*(ptr)))__gu_val;				\
+-#ifndef __get_kernel_nofault
++#ifdef arch_get_kernel_nofault
++/*
++ * Wrap the architecture implementation so that @label can be outside of a
++ * cleanup() scope. A regular C goto works correctly, but ASM goto does
++ * not. Clang rejects such an attempt, but GCC silently emits buggy code.
++ */
++#define __get_kernel_nofault(dst, src, type, label)		\
++do {								\
++	__label__ local_label;					\
++	arch_get_kernel_nofault(dst, src, type, local_label);	\
++	if (0) {						\
++	local_label:						\
++		goto label;					\
++	}							\
++} while (0)
++
++#define __put_kernel_nofault(dst, src, type, label)		\
++do {								\
++	__label__ local_label;					\
++	arch_put_kernel_nofault(dst, src, type, local_label);	\
++	if (0) {						\
++	local_label:						\
++		goto label;					\
++	}							\
++} while (0)
++
++#elif !defined(__get_kernel_nofault) /* arch_get_kernel_nofault */
++
+ #define __get_kernel_nofault(dst, src, type, label)	\
+ do {							\
+ 	type __user *p =3D (type __force __user *)(src);	\
+@@ -535,7 +562,8 @@ do {							\
+ 	if (__put_user(data, p))			\
+ 		goto label;				\
  } while (0)
- #else // !CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define unsafe_get_user(x, ptr, err_label)					\
-+#define arch_unsafe_get_user(x, ptr, err_label)					\
- do {										\
- 	int __gu_err;								\
- 	__inttype(*(ptr)) __gu_val;						\
-@@ -618,11 +618,11 @@ do {									\
- } while (0)
+-#endif
++
++#endif  /* !__get_kernel_nofault */
 =20
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define __get_kernel_nofault(dst, src, type, err_label)			\
-+#define arch_get_kernel_nofault(dst, src, type, err_label)		\
- 	__get_user_size(*((type *)(dst)), (__force type __user *)(src),	\
- 			sizeof(type), err_label)
- #else // !CONFIG_CC_HAS_ASM_GOTO_OUTPUT
--#define __get_kernel_nofault(dst, src, type, err_label)			\
-+#define arch_get_kernel_nofault(dst, src, type, err_label)			\
- do {									\
- 	int __kr_err;							\
- 									\
-@@ -633,7 +633,7 @@ do {									\
- } while (0)
- #endif // CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ /**
+  * get_kernel_nofault(): safely attempt to read from a location
+@@ -549,7 +577,42 @@ do {							\
+ 	copy_from_kernel_nofault(&(val), __gk_ptr, sizeof(val));\
+ })
 =20
--#define __put_kernel_nofault(dst, src, type, err_label)			\
-+#define arch_put_kernel_nofault(dst, src, type, err_label)		\
- 	__put_user_size(*((type *)(src)), (__force type __user *)(dst),	\
- 			sizeof(type), err_label)
-=20
+-#ifndef user_access_begin
++#ifdef user_access_begin
++
++#ifdef arch_unsafe_get_user
++/*
++ * Wrap the architecture implementation so that @label can be outside of a
++ * cleanup() scope. A regular C goto works correctly, but ASM goto does
++ * not. Clang rejects such an attempt, but GCC silently emits buggy code.
++ *
++ * Some architectures use internal local labels already, but this extra
++ * indirection here is harmless because the compiler optimizes it out
++ * completely in any case. This construct just ensures that the ASM GOTO
++ * target is always in the local scope. The C goto 'label' works correctly
++ * when leaving a cleanup() scope.
++ */
++#define unsafe_get_user(x, ptr, label)			\
++do {							\
++	__label__ local_label;				\
++	arch_unsafe_get_user(x, ptr, local_label);	\
++	if (0) {					\
++	local_label:					\
++		goto label;				\
++	}						\
++} while (0)
++
++#define unsafe_put_user(x, ptr, label)			\
++do {							\
++	__label__ local_label;				\
++	arch_unsafe_put_user(x, ptr, local_label);	\
++	if (0) {					\
++	local_label:					\
++		goto label;				\
++	}						\
++} while (0)
++#endif /* arch_unsafe_get_user */
++
++#else /* user_access_begin */
+ #define user_access_begin(ptr,len) access_ok(ptr, len)
+ #define user_access_end() do { } while (0)
+ #define unsafe_op_wrap(op, err) do { if (unlikely(op)) goto err; } while (0)
+@@ -559,7 +622,8 @@ do {							\
+ #define unsafe_copy_from_user(d,s,l,e) unsafe_op_wrap(__copy_from_user(d,s,l=
+),e)
+ static inline unsigned long user_access_save(void) { return 0UL; }
+ static inline void user_access_restore(unsigned long flags) { }
+-#endif
++#endif /* !user_access_begin */
++
+ #ifndef user_write_access_begin
+ #define user_write_access_begin user_access_begin
+ #define user_write_access_end user_access_end
 
