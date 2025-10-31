@@ -1,37 +1,37 @@
-Return-Path: <linux-tip-commits+bounces-7108-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7107-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC94C24AD9
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Oct 2025 12:04:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CB27C24AD6
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Oct 2025 12:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554E91894CE1
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Oct 2025 11:04:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 73F114E0F39
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 31 Oct 2025 11:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD55734403E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD75342169;
 	Fri, 31 Oct 2025 11:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PMf0OR7o";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="02+dcts2"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ILjlBkvz";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+yOVSahM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6323431F8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD14F332909;
 	Fri, 31 Oct 2025 11:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761908649; cv=none; b=a/KB98c102dzan4yrU8il0XVOGwRGUzHLHQ+jO+FIP0rC3lfGwVjVraXXb32qwSNNg5dDbkUfKv134osbijiKXkn4zNb/O8aOtA4zW6z492ESJKn6M3H6HEkAcAVNlQUgChg5PvMh6zTpt1lY/MqMZl1qBbldm7Oy882acgkCgA=
+	t=1761908649; cv=none; b=sdhrOBNBjobYIiHu6Eg9UzFLbafEdvkb7R0G7TsIzegBwqM1hBSJ5BOa8A56LPhCPhZ4kXDM6F0vDx4yATwHxguQnglPOaujfX19uE133M1tMriPVaeHFZBzdPVT0zapUhaJNIQ4eq7T53r3h7D73dvmj1zrN9MtiZfvBwRuly4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1761908649; c=relaxed/simple;
-	bh=nEhlBd7/EweDQf9gqY++lWHMs9KlgkonXkB18UdjcKk=;
+	bh=5/md+ArRGbXCxTf7vYNpPXqlG7jlhQz35hT8KIhg08c=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=axMZwrwXvp/xbbhuW6AeglfEbwnycxgfGqkqCTQQ6BeHh88FwR50YkK7xJv8X+I3JSnGfWmm9DqRctQZHL8j0iLD9nz+jbWexpQyJLkFB0gxmccwKNi6SjQFbS9MPwYkTz3oNMEfA3ewwNFELFtlWtMtEv74G7d61J+3FQSjSmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PMf0OR7o; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=02+dcts2; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=mAeEBZyGZyJTF2K7UBZvGQwy2MyNentQb2HMLAfiXRTV9pgDTIpB3bYLpHNvlEH4yGriz2q+F6B4mvRnEmZIO5lruk0GjBSQdnBSdlVbIy038RbS52+1BdOWIpHtR0EsSm8qCNDSdWLPHtpzwzjaB0ha+LzeWRfG5zO37iZ203k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ILjlBkvz; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+yOVSahM; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 31 Oct 2025 11:04:00 -0000
+Date: Fri, 31 Oct 2025 11:04:04 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1761908645;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -39,12 +39,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/Mu1dSbRCkITf72Z3tZ+DZSPMONsNtDOYBznnOAflyw=;
-	b=PMf0OR7o9jhRsdbASt3A2bXEtRp+YNs2OSaafMIg4Cjqo49pzCVx37wieBqL0clddm7gxL
-	0dwLCoJNNgVxLy2V1UQc1SXfAdhn4aMdx8WRwU7k4fDCKeBZrdDMg+cVWT6gbRbysR1UL/
-	4uQ9dkeeCevEGTsrrj6WpOR7IYzqFl+PAC29Z6bL8rCAReX/eqORqUBaxu5cMzVwu8NNfH
-	BALRWjwKdmdafORn+jhsjQwu2TTPhxE9HQZf5MMEmVRipVwYrdeCnRIXZagTDQDg50D5xX
-	NlvSxvjA9mX0colqIHOFOTzyIJJBEGib3wstu8zeX8qzM5npDgn6Jq9UyVKJaA==
+	bh=DTskQToT0TLQf2Env9XAbIAdx/FGCbYcmneukgzdSNw=;
+	b=ILjlBkvzeYiPxLlYI02+eiCyyitzfSwOveYdj8QbwNhu6u9SenQV2LldbiQJHFuwy2RbvU
+	d0tuLGecj9xHFeorHZOR/5p7A+UuqKnmah13iayK0QmBmov7G/2Ar+VcZMne8bEJPlxfSE
+	Mf8i9mOxVohNqBdcC8XUKmLsb3jMEOxRz4s07J6SpuLKlPQyqTTBzIuIug2Kl0sUNdEat6
+	JlXaPah6TcOKY/aJ4EkG8LIynEca6N5XGEQPf7sswG4Q9TuZNTLnn1bGD6mia6E04ghiYR
+	+UcESaNejCSu2Yixm7OnAwRSkSzQRzch+5IHIaTozT4TRh/iXayz2OQC8JRROA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1761908645;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -52,30 +52,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/Mu1dSbRCkITf72Z3tZ+DZSPMONsNtDOYBznnOAflyw=;
-	b=02+dcts25HrHKg3NMvqf2mqbidZH49nPU7JKm0DGi+ieWToqt2TQReX+aV/Rvt/LCPNXja
-	uIiWmfHmOY192UAQ==
-From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+	bh=DTskQToT0TLQf2Env9XAbIAdx/FGCbYcmneukgzdSNw=;
+	b=+yOVSahMm4kGoMtidABjxojp791tx2Ooj3izzP2t0KUq3yaiMxI7h8zSiMzR3MvWj5dbq/
+	pdBN1AKmbfZCQrAw==
+From: "tip-bot2 for Chen Ni" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] vmlinux.lds: Exclude .text.startup and .text.exit
- from TEXT_MAIN
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Josh Poimboeuf <jpoimboe@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To:
- <07f74b4e5c43872572b7def30f2eac45f28675d9.1761872421.git.jpoimboe@kernel.org>
-References:
- <07f74b4e5c43872572b7def30f2eac45f28675d9.1761872421.git.jpoimboe@kernel.org>
+Subject: [tip: objtool/core] objtool: Remove unneeded semicolon
+Cc: Chen Ni <nichen@iscas.ac.cn>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251020020916.1070369-1-nichen@iscas.ac.cn>
+References: <20251020020916.1070369-1-nichen@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176190864070.2601451.11865431354213171498.tip-bot2@tip-bot2>
+Message-ID: <176190864463.2601451.9843790301993405883.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,118 +80,37 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     6568f14cb5ae68cd6c612604ca0c89301cf3a0d0
-Gitweb:        https://git.kernel.org/tip/6568f14cb5ae68cd6c612604ca0c89301cf=
-3a0d0
-Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Thu, 30 Oct 2025 18:01:54 -07:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 31 Oct 2025 11:19:21 +01:00
+Commit-ID:     5eccd322390e20ca2385f4a4b34ab60e7258ad48
+Gitweb:        https://git.kernel.org/tip/5eccd322390e20ca2385f4a4b34ab60e725=
+8ad48
+Author:        Chen Ni <nichen@iscas.ac.cn>
+AuthorDate:    Mon, 20 Oct 2025 10:09:16 +08:00
+Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
+CommitterDate: Thu, 30 Oct 2025 08:29:46 -07:00
 
-vmlinux.lds: Exclude .text.startup and .text.exit from TEXT_MAIN
+objtool: Remove unneeded semicolon
 
-An ftrace warning was reported in ftrace_init_ool_stub():
+Remove unnecessary semicolons reported by Coccinelle/coccicheck and the
+semantic patch at scripts/coccinelle/misc/semicolon.cocci.
 
-   WARNING: arch/powerpc/kernel/trace/ftrace.c:234 at ftrace_init_ool_stub+0x=
-188/0x3f4, CPU#0: swapper/0
-
-The problem is that the linker script is placing .text.startup in .text
-rather than in .init.text, due to an inadvertent match of the TEXT_MAIN
-'.text.[0-9a-zA-Z_]*' pattern.
-
-This bug existed for some configurations before, but is only now coming
-to light due to the TEXT_MAIN macro unification in commit 1ba9f8979426
-("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related macros").
-
-The .text.startup section consists of constructors which are used by
-KASAN, KCSAN, and GCOV.  The constructors are only called during boot,
-so .text.startup is supposed to match the INIT_TEXT pattern so it can be
-placed in .init.text and freed after init.  But since INIT_TEXT comes
-*after* TEXT_MAIN in the linker script, TEXT_MAIN needs to manually
-exclude .text.startup.
-
-Update TEXT_MAIN to exclude .text.startup (and its .text.startup.*
-variant from -ffunction-sections), along with .text.exit and
-.text.exit.* which should match EXIT_TEXT.
-
-Specifically, use a series of more specific glob patterns to match
-generic .text.* sections (for -ffunction-sections) while explicitly
-excluding .text.startup[.*] and .text.exit[.*].
-
-Also update INIT_TEXT and EXIT_TEXT to explicitly match their
--ffunction-sections variants (.text.startup.* and .text.exit.*).
-
-Fixes: 1ba9f8979426 ("vmlinux.lds: Unify TEXT_MAIN, DATA_MAIN, and related ma=
-cros")
-Closes: https://lore.kernel.org/72469502-ca37-4287-90b9-a751cecc498c@linux.ib=
-m.com
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Debugged-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20251020020916.1070369-1-nichen@iscas.ac.cn
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Link: https://patch.msgid.link/07f74b4e5c43872572b7def30f2eac45f28675d9.17618=
-72421.git.jpoimboe@kernel.org
 ---
- include/asm-generic/vmlinux.lds.h | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ tools/objtool/elf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.=
-lds.h
-index 5facbc9..9de1d90 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -88,13 +88,29 @@
+diff --git a/tools/objtool/elf.c b/tools/objtool/elf.c
+index 5feeefc..3f20b25 100644
+--- a/tools/objtool/elf.c
++++ b/tools/objtool/elf.c
+@@ -451,7 +451,7 @@ static const char *demangle_name(struct symbol *sym)
+ 			str[i + 1] =3D '\0';
+ 			break;
+ 		}
+-	};
++	}
 =20
- /*
-  * Support -ffunction-sections by matching .text and .text.*,
-- * but exclude '.text..*'.
-+ * but exclude '.text..*', .text.startup[.*], and .text.exit[.*].
-  *
-- * Special .text.* sections that are typically grouped separately, such as
-+ * .text.startup and .text.startup.* are matched later by INIT_TEXT.
-+ * .text.exit and .text.exit.* are matched later by EXIT_TEXT.
-+ *
-+ * Other .text.* sections that are typically grouped separately, such as
-  * .text.unlikely or .text.hot, must be matched explicitly before using
-  * TEXT_MAIN.
-  */
--#define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
-+#define TEXT_MAIN							\
-+	.text								\
-+	.text.[_0-9A-Za-df-rt-z]*					\
-+	.text.s[_0-9A-Za-su-z]*						\
-+	.text.st[_0-9A-Zb-z]*						\
-+	.text.sta[_0-9A-Za-qs-z]*					\
-+	.text.star[_0-9A-Za-su-z]*					\
-+	.text.start[_0-9A-Za-tv-z]*					\
-+	.text.startu[_0-9A-Za-oq-z]*					\
-+	.text.startup[_0-9A-Za-z]*					\
-+	.text.e[_0-9A-Za-wy-z]*						\
-+	.text.ex[_0-9A-Za-hj-z]*					\
-+	.text.exi[_0-9A-Za-su-z]*					\
-+	.text.exit[_0-9A-Za-z]*
-=20
- /*
-  * Support -fdata-sections by matching .data, .data.*, and others,
-@@ -713,16 +729,16 @@
-=20
- #define INIT_TEXT							\
- 	*(.init.text .init.text.*)					\
--	*(.text.startup)
-+	*(.text.startup .text.startup.*)
-=20
- #define EXIT_DATA							\
- 	*(.exit.data .exit.data.*)					\
- 	*(.fini_array .fini_array.*)					\
--	*(.dtors .dtors.*)						\
-+	*(.dtors .dtors.*)
-=20
- #define EXIT_TEXT							\
- 	*(.exit.text)							\
--	*(.text.exit)							\
-+	*(.text.exit .text.exit.*)
-=20
- #define EXIT_CALL							\
- 	*(.exitcall.exit)
+ 	return str;
+ }
 
