@@ -1,359 +1,162 @@
-Return-Path: <linux-tip-commits+bounces-7170-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7171-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CCAC2B8FF
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 13:02:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B51FC2C4EC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 15:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E3EA3A860F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 12:02:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 63E944F4172
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 14:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C613081C8;
-	Mon,  3 Nov 2025 12:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCB23128CB;
+	Mon,  3 Nov 2025 13:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bru+4fCa";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GXHmBE+/"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b="GEfKXPQr"
+Received: from mail.ptr1337.dev (mail.ptr1337.dev [202.61.224.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E96F302754;
-	Mon,  3 Nov 2025 12:02:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6DC313E09;
+	Mon,  3 Nov 2025 13:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.61.224.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762171356; cv=none; b=jV9AxNwl2z6OdA5LJ52X5T8ya8rK7QFJBqBH5QF/O6X2S9lgM++RezLn2qr8rHCEXPPC15XINQAXDpoWVHKQZPjvklR0cTYDWtLPzJvFi9uVYtTaMXqQ0vvJfEMf5Q1vsL/CLd/cwMXlx9yNmJVxVRwypdYJXbjK4Z1jIK4Ci0A=
+	t=1762178363; cv=none; b=bOR/htdYPQm0Vr+2Y7tLn8W1BMTx6zal/GTvhgR1oVEHo5yEx0OgnMOiKWJKvt2G/Kd/8mH5K2WK1sA2/t5ZDWMC35PTigc7Ow9t2ukM86l+LIpPM2OvnQoC3pl5jB7Dioh2331Q8VH8KPpPjRIzpd2hi4RPNdlC9RmtnHh4SdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762171356; c=relaxed/simple;
-	bh=wjJ4GTW3ZQBiMGB3mOx2afmkgjth5bf2L/cJPHLs5m8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=PoT6P9blSzM9ILETL9Mkzr3nr3zVts65iru5JjjLG6RGl2PPmpmV94NzoTBv5RuFDt0kU3hnniVgrxAmL7p5JCmeCH7ViXpBzVJST5nrnTVvtBmRkiOSPVUFRGASLYnsALSBAzteixl2kukrVQO33i4LEdYRbBuRTjzJr7m1908=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bru+4fCa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GXHmBE+/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Nov 2025 12:02:28 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762171351;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4OiI8buPxg4k7SYM/WM1iRKna/Mk2uvO/kYkh7TIahw=;
-	b=bru+4fCaevpyfzlvHBz2pLcvJWtEdydO6dUFSYnvbDZ5GPpgfC7tvqHf/vqBEZQesP/YJp
-	E0kVlk8fgeh3PyIopeaOcFFfmvPMjJyV+FjuV8JNCiDF/WozZyMRGEGscaw8sBbBTs/xQH
-	qpsUp1QbYLN4kjHmbEdPNHnSfAIqPB40jG4BxyLjsag6H1ymCytZ4viQL8nZCyIGymiR5t
-	PaE1ADp5lPFJH4Fi38WKBvsd9kqLid5rd8Bgs7rJnIga8bHWWUlxm57on6VsXABT75keJC
-	IOOkQLtFnPMuVcWjiIzpFpNbczZIyO6Ir57u3zpwO4kOnY9xGu5vmfq/hfOZsg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762171351;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4OiI8buPxg4k7SYM/WM1iRKna/Mk2uvO/kYkh7TIahw=;
-	b=GXHmBE+/8Hgfu/kVYEcZ50iqKlupe0eV2kQWHEJnz3Z5Ckzkro5tW5ByEz0zLlLr8l5iIq
-	ZW+SUFljOYb2lkDg==
-From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/amd_node: Fix AMD root device caching
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251028-fix-amd-root-v2-1-843e38f8be2c@amd.com>
-References: <20251028-fix-amd-root-v2-1-843e38f8be2c@amd.com>
+	s=arc-20240116; t=1762178363; c=relaxed/simple;
+	bh=M01mIC/VTNf5sx9PsqT/xkduCCmmcdT+VQitzYUK5xg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JX9+tlC8YUfBBfik1AH1XruNhBLHKO9qJF1TwrPxFqsDuV2FUt6BIe/xe6QS+tnSzCd3g6YEDEO451QQzMfgrJJKeZ/dpfjbYdYnIJYaCKE1MzP1myi16iyc6a80tBFFMzhnZfqc/GXvc3eqkFMwwSovDWG2YuxappxKwfRSOWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org; spf=pass smtp.mailfrom=cachyos.org; dkim=pass (2048-bit key) header.d=cachyos.org header.i=@cachyos.org header.b=GEfKXPQr; arc=none smtp.client-ip=202.61.224.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cachyos.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cachyos.org
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D2123284517;
+	Mon,  3 Nov 2025 14:59:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cachyos.org; s=dkim;
+	t=1762178353; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=gle31eN9My17sC8D8ST/fOHC6I96gUMv9nuTZ5ksc/Y=;
+	b=GEfKXPQrOj68YuHKsvQcSn2lxGj3ONIs3yYNF5MlmbOGWzoJ3D4QYjP6f/C+0MhW5z6X82
+	Rqal6B/YZZJuSRnTppTvOCie2Ei6IjsLy3RXQi1vqR/gaPyrci/NdvL0CfwAdgB/OG3FfB
+	h6qN+eTpfBUsXI6UtxjGJhr2ysTXquLOqM0BEemlmUjoP+WsJrHMgHxQpTV8Qx0jg9yE1C
+	tCUoQcaHezjHRTWWl7JyTivYesSCfhQrs7j0ogEYArt8mD1lEe6UD2tV6DN8w0s4l5RPfS
+	CsIXqtLiXWtEUziWPs+LF/2dwQJMCC4KGjc2v3AvSkveqvR+IXlwZSr6hvOjQg==
+Message-ID: <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
+Date: Mon, 3 Nov 2025 14:59:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176217134946.2601451.211473792666059205.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
+To: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org
+Cc: stable@vger.kernel.org, Gregory Price <gourry@gourry.net>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
+References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
+Content-Language: en-US
+From: Peter Jung <ptr1337@cachyos.org>
+Organization: CachyOS
+In-Reply-To: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 10/28/25 13:01, tip-bot2 for Gregory Price wrote:
+> The following commit has been merged into the x86/urgent branch of tip:
+> 
+> Commit-ID:     607b9fb2ce248cc5b633c5949e0153838992c152
+> Gitweb:https://git.kernel.org/tip/607b9fb2ce248cc5b633c5949e0153838992c152
+> Author:        Gregory Price<gourry@gourry.net>
+> AuthorDate:    Mon, 20 Oct 2025 11:13:55 +02:00
+> Committer:     Borislav Petkov (AMD)<bp@alien8.de>
+> CommitterDate: Tue, 28 Oct 2025 12:37:49 +01:00
+> 
+> x86/CPU/AMD: Add RDSEED fix for Zen5
+> 
+> There's an issue with RDSEED's 16-bit and 32-bit register output
+> variants on Zen5 which return a random value of 0 "at a rate inconsistent
+> with randomness while incorrectly signaling success (CF=1)". Search the
+> web for AMD-SB-7055 for more detail.
+> 
+> Add a fix glue which checks microcode revisions.
+> 
+>    [ bp: Add microcode revisions checking, rewrite. ]
+> 
+> Cc:stable@vger.kernel.org
+> Signed-off-by: Gregory Price<gourry@gourry.net>
+> Signed-off-by: Borislav Petkov (AMD)<bp@alien8.de>
+> Link:https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.net
+> ---
+>   arch/x86/kernel/cpu/amd.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+> index ccaa51c..bc29be6 100644
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -1035,8 +1035,18 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
+>   	}
+>   }
+>   
+> +static const struct x86_cpu_id zen5_rdseed_microcode[] = {
+> +	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
+> +	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
+> +};
+> +
+>   static void init_amd_zen5(struct cpuinfo_x86 *c)
+>   {
+> +	if (!x86_match_min_microcode_rev(zen5_rdseed_microcode)) {
+> +		clear_cpu_cap(c, X86_FEATURE_RDSEED);
+> +		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
+> +		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
+> +	}
+>   }
+>   
+>   static void init_amd(struct cpuinfo_x86 *c)
+> 
 
-Commit-ID:     0a4b61d9c2e496b5f0a10e29e355a1465c8738bb
-Gitweb:        https://git.kernel.org/tip/0a4b61d9c2e496b5f0a10e29e355a1465c8=
-738bb
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 28 Oct 2025 21:35:42=20
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 03 Nov 2025 12:46:57 +01:00
+Hi all,
 
-x86/amd_node: Fix AMD root device caching
+This fix seems to break quite a bunch of users in CachyOS. There has 
+been now several users reporting that there system can not get properly 
+into the graphical interface.
 
-Recent AMD node rework removed the "search and count" method of caching AMD
-root devices. This depended on the value from a Data Fabric register that was
-expected to hold the PCI bus of one of the root devices attached to that
-fabric.
+CachyOS is compiling the packages with -march=znver5 and the GCC 
+compiler currently does pass RDSEED.
 
-However, this expectation is incorrect. The register, when read from PCI
-config space, returns the bitwise-OR of the buses of all attached root
-devices.
+This patch results into that also Client CPUs (Strix Point, Granite 
+Ridge), can not execute this. There has been a microcode fix deployed in 
+linux-firmware for Turin, but no other microcode changes seen yet.
 
-This behavior is benign on AMD reference design boards, since the bus numbers
-are aligned. This results in a bitwise-OR value matching one of the buses. For
-example, 0x00 | 0x40 | 0xA0 | 0xE0 =3D 0xE0.
+I think it would be possible to exclude clients or providing a fix for this.
 
-This behavior breaks on boards where the bus numbers are not exactly aligned.
-For example, 0x00 | 0x07 | 0xE0 | 0x15 =3D 0x1F.
 
-The examples above are for AMD node 0. The first root device on other nodes
-will not be 0x00. The first root device for other nodes will depend on the
-total number of root devices, the system topology, and the specific PCI bus
-number assignment.
+Example log:
 
-For example, a system with 2 AMD nodes could have this:
+Nov 03 13:37:33 hells drkonqi-coredump-processor[1073]: Incompatible 
+processor. This Qt build requires the following features:
+Nov 03 13:37:33 hells drkonqi-coredump-processor[1073]:     rdseed
+Nov 03 13:37:33 hells systemd-coredump[1077]: Process 1073 
+(drkonqi-coredum) of user 0 terminated abnormally with signal 6/ABRT, 
+processing...
+Nov 03 13:37:33 hells systemd[1]: Started Process Core Dump (PID 
+1077/UID 0).
+Nov 03 13:37:33 hells systemd[1]: Started Pass systemd-coredump journal 
+entries to relevant user for potential DrKonqi handling.
+Nov 03 13:37:33 hells drkonqi-coredump-processor[1079]: Incompatible 
+processor. This Qt build requires the following features:
+Nov 03 13:37:33 hells drkonqi-coredump-processor[1079]:     rdseed
+Nov 03 13:37:33 hells systemd-coredump[1082]: Process 1079 
+(drkonqi-coredum) of user 0 terminated abnormally with signal 6/ABRT, 
+processing...
+Nov 03 13:37:33 hells systemd-coredump[1071]: Process 1049 (sddm) of 
+user 0 dumped core.
 
-  Node 0 : 0x00 0x07 0x0e 0x15
-  Node 1 : 0x1c 0x23 0x2a 0x31
 
-The bus numbering style in the reference boards is not a requirement.  The
-numbering found in other boards is not incorrect. Therefore, the root device
-caching method needs to be adjusted.
+Best regards,
 
-Go back to the "search and count" method used before the recent rework.
-Search for root devices using PCI class code rather than fixed PCI IDs.
+Peter
 
-This keeps the goal of the rework (remove dependency on PCI IDs) while being
-able to support various board designs.
-
-Merge helper functions to reduce code duplication.
-
-  [ bp: Reflow comment. ]
-
-Fixes: 40a5f6ffdfc8 ("x86/amd_nb: Simplify root device search")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/all/20251028-fix-amd-root-v2-1-843e38f8be2c@am=
-d.com
----
- arch/x86/include/asm/amd/node.h |   1 +-
- arch/x86/kernel/amd_node.c      | 150 ++++++++++---------------------
- 2 files changed, 51 insertions(+), 100 deletions(-)
-
-diff --git a/arch/x86/include/asm/amd/node.h b/arch/x86/include/asm/amd/node.h
-index 23fe617..a672b87 100644
---- a/arch/x86/include/asm/amd/node.h
-+++ b/arch/x86/include/asm/amd/node.h
-@@ -23,7 +23,6 @@
- #define AMD_NODE0_PCI_SLOT	0x18
-=20
- struct pci_dev *amd_node_get_func(u16 node, u8 func);
--struct pci_dev *amd_node_get_root(u16 node);
-=20
- static inline u16 amd_num_nodes(void)
- {
-diff --git a/arch/x86/kernel/amd_node.c b/arch/x86/kernel/amd_node.c
-index a40176b..3d0a476 100644
---- a/arch/x86/kernel/amd_node.c
-+++ b/arch/x86/kernel/amd_node.c
-@@ -34,62 +34,6 @@ struct pci_dev *amd_node_get_func(u16 node, u8 func)
- 	return pci_get_domain_bus_and_slot(0, 0, PCI_DEVFN(AMD_NODE0_PCI_SLOT + nod=
-e, func));
- }
-=20
--#define DF_BLK_INST_CNT		0x040
--#define	DF_CFG_ADDR_CNTL_LEGACY	0x084
--#define	DF_CFG_ADDR_CNTL_DF4	0xC04
--
--#define DF_MAJOR_REVISION	GENMASK(27, 24)
--
--static u16 get_cfg_addr_cntl_offset(struct pci_dev *df_f0)
--{
--	u32 reg;
--
--	/*
--	 * Revision fields added for DF4 and later.
--	 *
--	 * Major revision of '0' is found pre-DF4. Field is Read-as-Zero.
--	 */
--	if (pci_read_config_dword(df_f0, DF_BLK_INST_CNT, &reg))
--		return 0;
--
--	if (reg & DF_MAJOR_REVISION)
--		return DF_CFG_ADDR_CNTL_DF4;
--
--	return DF_CFG_ADDR_CNTL_LEGACY;
--}
--
--struct pci_dev *amd_node_get_root(u16 node)
--{
--	struct pci_dev *root;
--	u16 cntl_off;
--	u8 bus;
--
--	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
--		return NULL;
--
--	/*
--	 * D18F0xXXX [Config Address Control] (DF::CfgAddressCntl)
--	 * Bits [7:0] (SecBusNum) holds the bus number of the root device for
--	 * this Data Fabric instance. The segment, device, and function will be 0.
--	 */
--	struct pci_dev *df_f0 __free(pci_dev_put) =3D amd_node_get_func(node, 0);
--	if (!df_f0)
--		return NULL;
--
--	cntl_off =3D get_cfg_addr_cntl_offset(df_f0);
--	if (!cntl_off)
--		return NULL;
--
--	if (pci_read_config_byte(df_f0, cntl_off, &bus))
--		return NULL;
--
--	/* Grab the pointer for the actual root device instance. */
--	root =3D pci_get_domain_bus_and_slot(0, bus, 0);
--
--	pci_dbg(root, "is root for AMD node %u\n", node);
--	return root;
--}
--
- static struct pci_dev **amd_roots;
-=20
- /* Protect the PCI config register pairs used for SMN. */
-@@ -274,51 +218,21 @@ DEFINE_SHOW_STORE_ATTRIBUTE(smn_node);
- DEFINE_SHOW_STORE_ATTRIBUTE(smn_address);
- DEFINE_SHOW_STORE_ATTRIBUTE(smn_value);
-=20
--static int amd_cache_roots(void)
--{
--	u16 node, num_nodes =3D amd_num_nodes();
--
--	amd_roots =3D kcalloc(num_nodes, sizeof(*amd_roots), GFP_KERNEL);
--	if (!amd_roots)
--		return -ENOMEM;
--
--	for (node =3D 0; node < num_nodes; node++)
--		amd_roots[node] =3D amd_node_get_root(node);
--
--	return 0;
--}
--
--static int reserve_root_config_spaces(void)
-+static struct pci_dev *get_next_root(struct pci_dev *root)
- {
--	struct pci_dev *root =3D NULL;
--	struct pci_bus *bus =3D NULL;
--
--	while ((bus =3D pci_find_next_bus(bus))) {
--		/* Root device is Device 0 Function 0 on each Primary Bus. */
--		root =3D pci_get_slot(bus, 0);
--		if (!root)
-+	while ((root =3D pci_get_class(PCI_CLASS_BRIDGE_HOST << 8, root))) {
-+		/* Root device is Device 0 Function 0. */
-+		if (root->devfn)
- 			continue;
-=20
- 		if (root->vendor !=3D PCI_VENDOR_ID_AMD &&
- 		    root->vendor !=3D PCI_VENDOR_ID_HYGON)
- 			continue;
-=20
--		pci_dbg(root, "Reserving PCI config space\n");
--
--		/*
--		 * There are a few SMN index/data pairs and other registers
--		 * that shouldn't be accessed by user space.
--		 * So reserve the entire PCI config space for simplicity rather
--		 * than covering specific registers piecemeal.
--		 */
--		if (!pci_request_config_region_exclusive(root, 0, PCI_CFG_SPACE_SIZE, NULL=
-)) {
--			pci_err(root, "Failed to reserve config space\n");
--			return -EEXIST;
--		}
-+		break;
- 	}
-=20
--	smn_exclusive =3D true;
--	return 0;
-+	return root;
- }
-=20
- static bool enable_dfs;
-@@ -332,7 +246,8 @@ __setup("amd_smn_debugfs_enable", amd_smn_enable_dfs);
-=20
- static int __init amd_smn_init(void)
- {
--	int err;
-+	u16 count, num_roots, roots_per_node, node, num_nodes;
-+	struct pci_dev *root;
-=20
- 	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
- 		return 0;
-@@ -342,13 +257,48 @@ static int __init amd_smn_init(void)
- 	if (amd_roots)
- 		return 0;
-=20
--	err =3D amd_cache_roots();
--	if (err)
--		return err;
-+	num_roots =3D 0;
-+	root =3D NULL;
-+	while ((root =3D get_next_root(root))) {
-+		pci_dbg(root, "Reserving PCI config space\n");
-=20
--	err =3D reserve_root_config_spaces();
--	if (err)
--		return err;
-+		/*
-+		 * There are a few SMN index/data pairs and other registers
-+		 * that shouldn't be accessed by user space. So reserve the
-+		 * entire PCI config space for simplicity rather than covering
-+		 * specific registers piecemeal.
-+		 */
-+		if (!pci_request_config_region_exclusive(root, 0, PCI_CFG_SPACE_SIZE, NULL=
-)) {
-+			pci_err(root, "Failed to reserve config space\n");
-+			return -EEXIST;
-+		}
-+
-+		num_roots++;
-+	}
-+
-+	pr_debug("Found %d AMD root devices\n", num_roots);
-+
-+	if (!num_roots)
-+		return -ENODEV;
-+
-+	num_nodes =3D amd_num_nodes();
-+	amd_roots =3D kcalloc(num_nodes, sizeof(*amd_roots), GFP_KERNEL);
-+	if (!amd_roots)
-+		return -ENOMEM;
-+
-+	roots_per_node =3D num_roots / num_nodes;
-+
-+	count =3D 0;
-+	node =3D 0;
-+	root =3D NULL;
-+	while (node < num_nodes && (root =3D get_next_root(root))) {
-+		/* Use one root for each node and skip the rest. */
-+		if (count++ % roots_per_node)
-+			continue;
-+
-+		pci_dbg(root, "is root for AMD node %u\n", node);
-+		amd_roots[node++] =3D root;
-+	}
-=20
- 	if (enable_dfs) {
- 		debugfs_dir =3D debugfs_create_dir("amd_smn", arch_debugfs_dir);
-@@ -358,6 +308,8 @@ static int __init amd_smn_init(void)
- 		debugfs_create_file("value",	0600, debugfs_dir, NULL, &smn_value_fops);
- 	}
-=20
-+	smn_exclusive =3D true;
-+
- 	return 0;
- }
-=20
 
