@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-7168-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7169-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2FAC2AE4F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 11:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B5EC2AEE5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 11:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 675A03B6E5C
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 09:58:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AD6D3AB308
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 10:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45FF32F9DB1;
-	Mon,  3 Nov 2025 09:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E41A2F1FEC;
+	Mon,  3 Nov 2025 10:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ly/ZVY8a";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WYhN+3ay"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WDTS+oto";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="c1jYj1FO"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FDA2D063F;
-	Mon,  3 Nov 2025 09:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE5F14A60F;
+	Mon,  3 Nov 2025 10:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762163890; cv=none; b=JOG35FNWVl7+AR0KsiggscQTjqt+EGDW2oYpntM/Wtd62uMq12duWk5hBk2IPeiIHiB5DLj+swIOQp008GhGcW3ReH0MeZZ6vPzyj11oTOoGfovq5xWi8A+MqauGpLEDCHpLwIEsvlZJaR4CpMaRkIHF0OGa55LHdhrDPQHng4I=
+	t=1762164614; cv=none; b=ahAAt0pb5gjWlpeYhY22vyLXPjUO7Ex8NerA6RSDOx28lpZVNrUTWHVV3iQBDl6Np/Bo0kiBWVtJ2mAsvOjO/vH5W7dkg429vC2OJSF12AZGxINGkr5fDC9ItWb4f/K+SmnfJ16oeHt6B1x0bkHQILQg0W55C/C3+oq/xxiB34M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762163890; c=relaxed/simple;
-	bh=oTyx8lZTGnO5kAyxDfkiz7g8wadcpAJCd6tHgCEvg5s=;
+	s=arc-20240116; t=1762164614; c=relaxed/simple;
+	bh=V9YvBpMPCeKQCzNbxg+VMyRL1o9qkLYfE8o0iwL3+zc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=J5lz87Xp2M7BTTqD+850ZdTfFbG58AuQhAEXOVilSztswvZR8QZmd9DXTpjTHA8wjeH082lPgnhMKV6pT9Lk77ICqsYBplzFmbiCa/phpff65dtx/ReFIuRAPkq0N+LLmMA3rMmu/kcl5Z/11ymzlKLL+UN2D4rzFr+VF5+15bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ly/ZVY8a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WYhN+3ay; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=dlSUYMoiv7kbrbjxoj4i3TqX4aa1nhcAjjw9owKkm75lK19yek4NUr0bSym1mTGFjBH1stjzk0B1roUqeKnnn9Mth5mmJus06rY4z8eKPwQASyQ8V0EhX6smKdJXsQ4FDIGViplOqAnIbDgSOyhFq9TWZ07jXk1dB1byTo7J6vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WDTS+oto; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=c1jYj1FO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Nov 2025 09:58:02 -0000
+Date: Mon, 03 Nov 2025 10:10:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762163884;
+	s=2020; t=1762164609;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wkXPHSOnuxIsMPG/HosVG7gmJ739D7YJxNUb2T5p00s=;
-	b=Ly/ZVY8ajsHGGXXviBLwDVAsQdxbrPbjJtY7iEMgwG/ftHFqApaNq2pec8q4c3ZrUeaFe6
-	TgdfxCLiPMOI11Mz+LBr5KIPGNBnwYzok09Ol65nIDCSCCmTc4x0r5GaV3qSMXy3Xnuthu
-	UkQinWtDne/TgDNJRaQbrLwWI50mSnNi3jz4iNqCkxMaq+YU/TZXmYtdqzqgLFESVxFs1W
-	NPFViVDWM1Z1dCSBUPAju7Ow2/0UroUWvk+frH3xJ/raAEwZ/Vv80Zubvp4QzyxcbUpHjB
-	6GKD9f5PZBFBAtKwvhvyfFFqRQ4FubMRDRwqEYbU8PnhZLhH3RWHi1h6kMkSkA==
+	bh=EVarb4so6O4MwXTO1StH9mqdDIEJ8bBowHieREy6Bmc=;
+	b=WDTS+otoJGs9JUVMwGDiZb4X9t2w66jh27JH1erGHwxnx1wyPzuaO8WSU8l1kZEC5iguiX
+	xi4xU2y9Zfde1f+VBvbW/4N+sSouNb5EDUmoHXUF9hlTClTpObqA9+6rbVVe3QfbyhURql
+	PXUJAavbS0miXeTsNhM+mbTeA7AORXFGLlbLCkFg4kTfwHcZKXQ67YGf5hFJdjEZWJ9Bau
+	/8FMxaTxp7urCpePoW+KMZ46zipujK/rdkCnRIqEUOuy7fKVdvh3kNrhDlU3+CJRamIVhv
+	MY87b+wSDItuQPyvifjY/hmgDlS0UefsXRFMRxf+vs6gOfR01LfWxlKVLVujyA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762163884;
+	s=2020e; t=1762164609;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wkXPHSOnuxIsMPG/HosVG7gmJ739D7YJxNUb2T5p00s=;
-	b=WYhN+3aywiCt2nY9zuunjp13+Xsf+dLNWbigsRbm8ELaGFlanPvIOOUV1sbyCoc7HcdZZE
-	p8GDBTbqRlXsVdDA==
+	bh=EVarb4so6O4MwXTO1StH9mqdDIEJ8bBowHieREy6Bmc=;
+	b=c1jYj1FOzfS2Oh+G+d4joM69VSOA1AcsXexEXnMzdyjI8aWvJR8QjHhD1LQK3N0AmfBOIf
+	Q/gU3DR1TFTX++BA==
 From: "tip-bot2 for Dapeng Mi" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -63,7 +63,8 @@ Subject:
  [tip: perf/urgent] perf/core: Fix system hang caused by cpu-clock usage
 Cc: Octavia Togami <octavia.togami@gmail.com>,
  Peter Zijlstra <peterz@infradead.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+ Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 In-Reply-To: <20251015051828.12809-1-dapeng1.mi@linux.intel.com>
 References: <20251015051828.12809-1-dapeng1.mi@linux.intel.com>
 Precedence: bulk
@@ -72,7 +73,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176216388242.2601451.15376301096762514312.tip-bot2@tip-bot2>
+Message-ID: <176216460800.2601451.733142302683512228.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,13 +83,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     e061eb22817cb15e65b91e46d3fa8cd5ae60f9f4
-Gitweb:        https://git.kernel.org/tip/e061eb22817cb15e65b91e46d3fa8cd5ae6=
-0f9f4
+Commit-ID:     eb3182ef0405ff2f6668fd3e5ff9883f60ce8801
+Gitweb:        https://git.kernel.org/tip/eb3182ef0405ff2f6668fd3e5ff9883f60c=
+e8801
 Author:        Dapeng Mi <dapeng1.mi@linux.intel.com>
 AuthorDate:    Wed, 15 Oct 2025 13:18:28 +08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 03 Nov 2025 10:52:10 +01:00
+CommitterDate: Mon, 03 Nov 2025 11:04:19 +01:00
 
 perf/core: Fix system hang caused by cpu-clock usage
 
@@ -121,6 +122,7 @@ Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Tested-by: Octavia Togami <octavia.togami@gmail.com>
+Cc: stable@vger.kernel.org
 Link: https://github.com/lucko/spark/issues/530
 Link: https://patch.msgid.link/20251015051828.12809-1-dapeng1.mi@linux.intel.=
 com
