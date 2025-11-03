@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7192-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7195-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEF0C2C9D6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 16:14:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2250C2C979
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 16:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8C9420F23
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 14:59:13 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2DF0F4F2AA8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 15:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97CA3195E3;
-	Mon,  3 Nov 2025 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDA031A7F0;
+	Mon,  3 Nov 2025 14:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FOeS3PFJ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T5Vqa8Im"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zPf5StGn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fuzlxxW1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B743191A1;
-	Mon,  3 Nov 2025 14:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCE331A058;
+	Mon,  3 Nov 2025 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762181265; cv=none; b=XhKZRY6s46+IxP3/z2UWcKbTbyMeeHJcUTZw0+iV38K0dBze+TYHCUsOMvwTJDMVLb92Lv675bwqCzMPlxqDep9uHDfwhFCpVU4yu4VOuX2t4vN36xTG+Wfkx5ry263J4GZSYy9yG23/pqMrLTB/ya3GnKXgda4yeOqEMN40+oQ=
+	t=1762181269; cv=none; b=BqxQDvE4bdonouXUF//4P6XKG1tkvXd9Hl/+lMkl8G94h3oUxWYAXqiDhO6AGN3qgjSFDUUon/sfnArz7mI7UJLWkArQRBmdHVpE2RnVPHwVP43SnRjrqNMBIvu/zqQOEMUwJsUxjoQL23S2h/dBGmJQj4pQlekA8zyRGG6z5X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762181265; c=relaxed/simple;
-	bh=GHmQ6b+yyzrS6L/niN9oyKqO8OdyFZHhhG0F7ASMZYo=;
+	s=arc-20240116; t=1762181269; c=relaxed/simple;
+	bh=l19ULmEcKH+MukSfCPlZJ+2DoccNh0tt7uTpc3qNnLU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Pxfv4Hkk1lWSi5MNmQZYLrlDiag1gfeGUE0uMxUgk0WgByEWuQ0uPIH/749KUVfQEk+5QozQJojVUccQ+Y3UwY+bPGivpwwmv6YT2mTPys2c7ffqK+8xR5Iq+bwXyKx1Llg7roskqfVIxERCvepppyESHPP7Fzuxma5fQ2yuTQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FOeS3PFJ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T5Vqa8Im; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=cl0ipsgQ6XlyEPmLsekc9B2gsgo5NBqEaCCRgVzZQZ/lxYKaW1karVePNlFnUS1GS62Xcl2LitgMCmd/3s0cVICVCFsS7m5xYBOBao3BGB2rhhCUqWNNnF4GI6YxkHo8dgVGWqf41rb+2pLj40yRocz1XZiC4UF3YBKyoEDwQWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zPf5StGn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fuzlxxW1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Nov 2025 14:47:41 -0000
+Date: Mon, 03 Nov 2025 14:47:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762181262;
+	s=2020; t=1762181266;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ofXW8Mrq4E9i6Dci9QkJeLUpqoSSlvOiSmBuXo7xK38=;
-	b=FOeS3PFJ9Y4GQ/+zyg7ArPlf1K2prbk4pz32a+LujGP6Fsfp3NZlnvtHZwQ/FRKkvf0m+g
-	grZnhcrxMDT5BfCuyVgPFzCcOlRf5pMJAR1v8pCffVc28Ju2pltWMqZ5mfQQU4qHlfhDAB
-	uKScW6FEmQU82hbY6F2KwKz2EiSjP210tUugNmXEUICcoqv85t2aUimfqQdo21VRMm4UuY
-	af4JzWyNuuKCff5XEDjI5Ys8IfYpcfYJPriKKxXlL+dJeWYMfdFexVG1W/sqU9KC0Psz6P
-	z2cvvEkGAEEkr0bDuFcsens5rZUvTMjrprAwB/A3d0187CB2MIXWl+nimCT0Wg==
+	bh=/JAxrdBB/3A6+WIWAsQaVXkwO4L6SxI69DRSHit9908=;
+	b=zPf5StGnX2iBofSk8Ni6GDAF+PQKSivgBYpxrh+ROnK7zjTf7b2gfXp5UONnvkA4WSbp/o
+	+qnPqQylQbLXQh1TiHY9JDwtRWnpOYPIEaGmz7W8zC5BcFckjeSOIR6CYOFEW42iqyLsLX
+	jhSO9kc7y2+oosUIsTzUV00uWm8icOZ3LEu5CkCzERlERsTNU/g11EqlkhDRgPJPeigEpn
+	phQ6G4zMPZEkpe5ysIg3r1aYfXe3U7tyZH7tjoIKxe/Ci/UqCRAd4YbDQ0bwWjuNx/2jRO
+	wc4IjLqCuT7dvvyL/ReCrh/CCjMF5iWX4wYggTs8QaNxye6cEINzxN/iVbMoyw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762181262;
+	s=2020e; t=1762181266;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ofXW8Mrq4E9i6Dci9QkJeLUpqoSSlvOiSmBuXo7xK38=;
-	b=T5Vqa8ImkLFD6MkG9WSxs16G/JUdybAbSLz22nxHYIEjuXR0biwBTq73qbh8LlgwLY/aQ9
-	SlseGI6VpESHvkDA==
+	bh=/JAxrdBB/3A6+WIWAsQaVXkwO4L6SxI69DRSHit9908=;
+	b=fuzlxxW10C41p8SdmPP10DcGLmZzosq3KeqCzd1hQ0LJbA24LUzM34LdEcohdjyN66izVu
+	TiEHieIse45pM2AQ==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rseq] rseq: Cache CPU ID and MM CID values
+Subject: [tip: core/rseq] entry: Remove syscall_enter_from_user_mode_prepare()
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251027084306.841964081@linutronix.de>
-References: <20251027084306.841964081@linutronix.de>
+In-Reply-To: <20251027084306.652839989@linutronix.de>
+References: <20251027084306.652839989@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176218126126.2601451.8371398531889772177.tip-bot2@tip-bot2>
+Message-ID: <176218126510.2601451.16654029709242286665.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,131 +82,119 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the core/rseq branch of tip:
 
-Commit-ID:     30c6409e123ce98429798c34595227dbe0496c1c
-Gitweb:        https://git.kernel.org/tip/30c6409e123ce98429798c34595227dbe04=
-96c1c
+Commit-ID:     5e7be1e23bd119d8403cbe3110cfe2ce40306ffe
+Gitweb:        https://git.kernel.org/tip/5e7be1e23bd119d8403cbe3110cfe2ce403=
+06ffe
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 27 Oct 2025 09:44:45 +01:00
+AuthorDate:    Mon, 27 Oct 2025 09:44:38 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 03 Nov 2025 15:26:16 +01:00
 
-rseq: Cache CPU ID and MM CID values
+entry: Remove syscall_enter_from_user_mode_prepare()
 
-In preparation for rewriting RSEQ exit to user space handling provide
-storage to cache the CPU ID and MM CID values which were written to user
-space. That prepares for a quick check, which avoids the update when
-nothing changed.
+Open code the only user in the x86 syscall code and reduce the zoo of
+functions.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251027084306.841964081@linutronix.de
+Link: https://patch.msgid.link/20251027084306.652839989@linutronix.de
 ---
- include/linux/rseq.h        |  7 +++++--
- include/linux/rseq_types.h  | 21 +++++++++++++++++++++
- include/trace/events/rseq.h |  4 ++--
- kernel/rseq.c               |  4 ++++
- 4 files changed, 32 insertions(+), 4 deletions(-)
+ arch/x86/entry/syscall_32.c   |  3 ++-
+ include/linux/entry-common.h  | 26 +++++---------------------
+ kernel/entry/syscall-common.c |  8 --------
+ 3 files changed, 7 insertions(+), 30 deletions(-)
 
-diff --git a/include/linux/rseq.h b/include/linux/rseq.h
-index ab91b1e..d315a92 100644
---- a/include/linux/rseq.h
-+++ b/include/linux/rseq.h
-@@ -57,6 +57,7 @@ static inline void rseq_virt_userspace_exit(void)
- static inline void rseq_reset(struct task_struct *t)
- {
- 	memset(&t->rseq, 0, sizeof(t->rseq));
-+	t->rseq.ids.cpu_cid =3D ~0ULL;
- }
+diff --git a/arch/x86/entry/syscall_32.c b/arch/x86/entry/syscall_32.c
+index 2b15ea1..a67a644 100644
+--- a/arch/x86/entry/syscall_32.c
++++ b/arch/x86/entry/syscall_32.c
+@@ -274,9 +274,10 @@ static noinstr bool __do_fast_syscall_32(struct pt_regs =
+*regs)
+ 	 * fetch EBP before invoking any of the syscall entry work
+ 	 * functions.
+ 	 */
+-	syscall_enter_from_user_mode_prepare(regs);
++	enter_from_user_mode(regs);
 =20
- static inline void rseq_execve(struct task_struct *t)
-@@ -70,10 +71,12 @@ static inline void rseq_execve(struct task_struct *t)
-  */
- static inline void rseq_fork(struct task_struct *t, u64 clone_flags)
- {
--	if (clone_flags & CLONE_VM)
-+	if (clone_flags & CLONE_VM) {
- 		rseq_reset(t);
--	else
-+	} else {
- 		t->rseq =3D current->rseq;
-+		t->rseq.ids.cpu_cid =3D ~0ULL;
-+	}
- }
+ 	instrumentation_begin();
++	local_irq_enable();
+ 	/* Fetch EBP from where the vDSO stashed it. */
+ 	if (IS_ENABLED(CONFIG_X86_64)) {
+ 		/*
+diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+index c585221..75b194c 100644
+--- a/include/linux/entry-common.h
++++ b/include/linux/entry-common.h
+@@ -45,23 +45,6 @@
+ 				 SYSCALL_WORK_SYSCALL_EXIT_TRAP	|	\
+ 				 ARCH_SYSCALL_WORK_EXIT)
 =20
- #else /* CONFIG_RSEQ */
-diff --git a/include/linux/rseq_types.h b/include/linux/rseq_types.h
-index f7a60c8..40901b0 100644
---- a/include/linux/rseq_types.h
-+++ b/include/linux/rseq_types.h
-@@ -31,17 +31,38 @@ struct rseq_event {
- };
+-/**
+- * syscall_enter_from_user_mode_prepare - Establish state and enable interru=
+pts
+- * @regs:	Pointer to currents pt_regs
+- *
+- * Invoked from architecture specific syscall entry code with interrupts
+- * disabled. The calling code has to be non-instrumentable. When the
+- * function returns all state is correct, interrupts are enabled and the
+- * subsequent functions can be instrumented.
+- *
+- * This handles lockdep, RCU (context tracking) and tracing state, i.e.
+- * the functionality provided by enter_from_user_mode().
+- *
+- * This is invoked when there is extra architecture specific functionality
+- * to be done between establishing state and handling user mode entry work.
+- */
+-void syscall_enter_from_user_mode_prepare(struct pt_regs *regs);
+-
+ long syscall_trace_enter(struct pt_regs *regs, long syscall, unsigned long w=
+ork);
 =20
  /**
-+ * struct rseq_ids - Cache for ids, which need to be updated
-+ * @cpu_cid:	Compound of @cpu_id and @mm_cid to make the
-+ *		compiler emit a single compare on 64-bit
-+ * @cpu_id:	The CPU ID which was written last to user space
-+ * @mm_cid:	The MM CID which was written last to user space
-+ *
-+ * @cpu_id and @mm_cid are updated when the data is written to user space.
-+ */
-+struct rseq_ids {
-+	union {
-+		u64		cpu_cid;
-+		struct {
-+			u32	cpu_id;
-+			u32	mm_cid;
-+		};
-+	};
-+};
-+
-+/**
-  * struct rseq_data - Storage for all rseq related data
-  * @usrptr:	Pointer to the registered user space RSEQ memory
-  * @len:	Length of the RSEQ region
-  * @sig:	Signature of critial section abort IPs
-  * @event:	Storage for event management
-+ * @ids:	Storage for cached CPU ID and MM CID
-  */
- struct rseq_data {
- 	struct rseq __user		*usrptr;
- 	u32				len;
- 	u32				sig;
- 	struct rseq_event		event;
-+	struct rseq_ids			ids;
- };
+@@ -71,8 +54,8 @@ long syscall_trace_enter(struct pt_regs *regs, long syscall=
+, unsigned long work)
+  * @syscall:	The syscall number
+  *
+  * Invoked from architecture specific syscall entry code with interrupts
+- * enabled after invoking syscall_enter_from_user_mode_prepare() and extra
+- * architecture specific work.
++ * enabled after invoking enter_from_user_mode(), enabling interrupts and
++ * extra architecture specific work.
+  *
+  * Returns: The original or a modified syscall number
+  *
+@@ -108,8 +91,9 @@ static __always_inline long syscall_enter_from_user_mode_w=
+ork(struct pt_regs *re
+  * function returns all state is correct, interrupts are enabled and the
+  * subsequent functions can be instrumented.
+  *
+- * This is combination of syscall_enter_from_user_mode_prepare() and
+- * syscall_enter_from_user_mode_work().
++ * This is the combination of enter_from_user_mode() and
++ * syscall_enter_from_user_mode_work() to be used when there is no
++ * architecture specific work to be done between the two.
+  *
+  * Returns: The original or a modified syscall number. See
+  * syscall_enter_from_user_mode_work() for further explanation.
+diff --git a/kernel/entry/syscall-common.c b/kernel/entry/syscall-common.c
+index 66e6ba7..940a597 100644
+--- a/kernel/entry/syscall-common.c
++++ b/kernel/entry/syscall-common.c
+@@ -63,14 +63,6 @@ long syscall_trace_enter(struct pt_regs *regs, long syscal=
+l,
+ 	return ret ? : syscall;
+ }
 =20
- #else /* CONFIG_RSEQ */
-diff --git a/include/trace/events/rseq.h b/include/trace/events/rseq.h
-index 823b47d..ce85d65 100644
---- a/include/trace/events/rseq.h
-+++ b/include/trace/events/rseq.h
-@@ -21,9 +21,9 @@ TRACE_EVENT(rseq_update,
- 	),
-=20
- 	TP_fast_assign(
--		__entry->cpu_id =3D raw_smp_processor_id();
-+		__entry->cpu_id =3D t->rseq.ids.cpu_id;
- 		__entry->node_id =3D cpu_to_node(__entry->cpu_id);
--		__entry->mm_cid =3D task_mm_cid(t);
-+		__entry->mm_cid =3D t->rseq.ids.mm_cid;
- 	),
-=20
- 	TP_printk("cpu_id=3D%d node_id=3D%d mm_cid=3D%d", __entry->cpu_id,
-diff --git a/kernel/rseq.c b/kernel/rseq.c
-index aae6266..ad1e7ce 100644
---- a/kernel/rseq.c
-+++ b/kernel/rseq.c
-@@ -184,6 +184,10 @@ static int rseq_update_cpu_node_id(struct task_struct *t)
- 	rseq_unsafe_put_user(t, node_id, node_id, efault_end);
- 	rseq_unsafe_put_user(t, mm_cid, mm_cid, efault_end);
-=20
-+	/* Cache the user space values */
-+	t->rseq.ids.cpu_id =3D cpu_id;
-+	t->rseq.ids.mm_cid =3D mm_cid;
-+
- 	/*
- 	 * Additional feature fields added after ORIG_RSEQ_SIZE
- 	 * need to be conditionally updated only if
+-noinstr void syscall_enter_from_user_mode_prepare(struct pt_regs *regs)
+-{
+-	enter_from_user_mode(regs);
+-	instrumentation_begin();
+-	local_irq_enable();
+-	instrumentation_end();
+-}
+-
+ /*
+  * If SYSCALL_EMU is set, then the only reason to report is when
+  * SINGLESTEP is set (i.e. PTRACE_SYSEMU_SINGLESTEP).  This syscall
 
