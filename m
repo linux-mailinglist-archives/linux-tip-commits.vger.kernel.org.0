@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7184-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7186-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF3FC2C8CE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 16:04:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8447DC2C889
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 16:01:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CD2C1889B6A
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 15:03:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E15F21897FFC
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 15:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97874316189;
-	Mon,  3 Nov 2025 14:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C1F3148D8;
+	Mon,  3 Nov 2025 14:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h1SFk7eo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IdrVw5B2"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x/P7uZJv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bsWELXvV"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD81F315D57;
-	Mon,  3 Nov 2025 14:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86378316196;
+	Mon,  3 Nov 2025 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762181255; cv=none; b=tQ8Bj6nBWV12y8+1lPTQhdaVUy9G+q97f3kpYBNYc/zkqiEqONwA4UKt4vwWla/d3qiMNObR3/zAY2OWznbK3weAjiKfXGVl/GJvRDYPf3xitshVtnlKl2RlM0CdvMG6qlI78juesaucrXPlmuVCAGbMBIFlo/vgFTGzeIjunuk=
+	t=1762181258; cv=none; b=EwV3792iEv2K5uabKzncTYb6scwXWtZFjX7EAxU7gTiJFbt/sZlWa72WkdstqXsjdbggcxJrfkdis9g9/wJZen7vHvpj3GR9sm78tcMrcFlPY9cVIinCfxGOG6oHVaRsABHKsqRG1GtOOhL4M4VxTvVlXYtXxuymR54fZlskVao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762181255; c=relaxed/simple;
-	bh=p1L6QOy2wyUr6qlqQEn1s4aTfdpG7cNlqMAysVPzOyQ=;
+	s=arc-20240116; t=1762181258; c=relaxed/simple;
+	bh=wg86WBD1K1dX8X005aMnsThOwNwV8rRIPIQbKIxx4nY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Vz/+9SJA8IIWoU+/tslirYyxsYZgcWGFG6Ok+jcl7DtDJ5HhEpaNRms8JKK+0UArEEwL/T7UHVXctzFW9qgu7IloS3PHfdrgLcjgRK7aHxZVYfuhJkf11ohYLxzZK0CnDbApHna7FwiXkBbfAqk1mZq4y80OYwCOJjiXcG/RxYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h1SFk7eo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IdrVw5B2; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=bKhZNaF71alJXVpddrfsR70uj8txnkgXvr0bXy627mGCUen9m6/fPh5Y9n0+yKEg/XOjo0k6T98uPWmTCFtiq4xB895ZgjUQRQZVXR04ny5nmkOj3lEO53Tc9v5amoipUBcyiSzJdx73ewSeqogo5YWlRNmnwKcIfH6HmYSC5UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x/P7uZJv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bsWELXvV; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 03 Nov 2025 14:47:30 -0000
+Date: Mon, 03 Nov 2025 14:47:33 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762181252;
+	s=2020; t=1762181254;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5XTX2KGV22GqrSv3EwsD/dxOPLaSlG7jp/P59jWnoZQ=;
-	b=h1SFk7eonun9PlOS2DrPKHHlSKYzR3RDtnztW3MYrcPevnb0fGaixFdoPPspIIIgYcORC1
-	NZpKV/1jWS7qvkA63a2xTwDMLdBgzDQQhblhB/eud2HbjIafRWkhpoSjpKX7dAFEN2w1oV
-	zi9dVUgrF1V+fYze4uErl7M3/YEX0PohWbZ+p6/xODCC/CaLhdKgtKjPt5AzjTKDgrLFEd
-	9qGCxS5wXhG30irT+2YmdbY/bNG7ZkjKfXb8Qp4S8BjSyxYB67MGWIxm8VcutN/Jxs2yQb
-	Psg0Fd3FjlKnN1OjBf532CKgN7A+AO50TyyZ97QE6+2GHzO4UtbMZLLl1oqi0A==
+	bh=xdMFm6lNDce/jrl75fp0eLG6/2h18qL8bPOJBWInoEo=;
+	b=x/P7uZJvFU8TlEgfJe512UasApFR/Fpd11FkV6ACiwl8aLZedid4riVnkneoqMn00NPqU/
+	GYjWfv1YkGVQDyfhQBMlFfTesr3QIQxS5Jm43AvCPxSHJcQcHVcDGrzpYzqoZK+K4EFHS1
+	ooZfSttnA9RX31hlr+zAHcyiiM8HB7TNNAILdOHuSMAUTsl4SbtctysZDOdn9Bw18kX94y
+	lAoRlQL7QPca3WszPLjxviTz6sZfFU+U7SLBaG598qcpSOd56/aoS4AybMYVXV4oU2Cvtf
+	Yb+Yxxooc8RaS9PS9YJRctMoaXpD0B0CrG/qC8iYBiTFp9/c8D+zUsaLKhvA7w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762181252;
+	s=2020e; t=1762181254;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5XTX2KGV22GqrSv3EwsD/dxOPLaSlG7jp/P59jWnoZQ=;
-	b=IdrVw5B2RiH4Ial0NnZzFkp2ntKY/uUvS9bC1zprxGi57yGKY/twsdUL0b2XLXy8e0sAab
-	BJ91TJgq8sPidoAg==
+	bh=xdMFm6lNDce/jrl75fp0eLG6/2h18qL8bPOJBWInoEo=;
+	b=bsWELXvV2qDzXDUllZGkYSkt11pPI9sTrqfhSoY9iv6g/I7vsRylp9F7wpS+763Y6dALnO
+	a04zgDJnLAAAAkCg==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rseq] rseq: Use static branch for syscall exit debug when
- GENERIC_IRQ_ENTRY=y
+Subject: [tip: core/rseq] rseq: Replace the original debug implementation
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251027084307.333440475@linutronix.de>
-References: <20251027084307.333440475@linutronix.de>
+In-Reply-To: <20251027084307.212510692@linutronix.de>
+References: <20251027084307.212510692@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176218125092.2601451.7793996735627821488.tip-bot2@tip-bot2>
+Message-ID: <176218125354.2601451.3559440362834085389.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,95 +82,125 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the core/rseq branch of tip:
 
-Commit-ID:     457dc0a3ef5b3cd51c1497638feccb4db5e7943c
-Gitweb:        https://git.kernel.org/tip/457dc0a3ef5b3cd51c1497638feccb4db5e=
-7943c
+Commit-ID:     502c6554c7c32040cd02ab1779a1eb1ffb371a2f
+Gitweb:        https://git.kernel.org/tip/502c6554c7c32040cd02ab1779a1eb1ffb3=
+71a2f
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Mon, 27 Oct 2025 09:45:05 +01:00
+AuthorDate:    Mon, 27 Oct 2025 09:45:00 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 03 Nov 2025 15:26:19 +01:00
+CommitterDate: Mon, 03 Nov 2025 15:26:18 +01:00
 
-rseq: Use static branch for syscall exit debug when GENERIC_IRQ_ENTRY=3Dy
+rseq: Replace the original debug implementation
 
-Make the syscall exit debug mechanism available via the static branch on
-architectures which utilize the generic entry code.
+Just utilize the new infrastructure and put the original one to rest.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251027084307.333440475@linutronix.de
+Link: https://patch.msgid.link/20251027084307.212510692@linutronix.de
 ---
- include/linux/entry-common.h |  2 +-
- include/linux/rseq_entry.h   |  9 +++++++++
- kernel/rseq.c                | 10 ++++++++--
- 3 files changed, 18 insertions(+), 3 deletions(-)
+ kernel/rseq.c | 81 +++++++-------------------------------------------
+ 1 file changed, 12 insertions(+), 69 deletions(-)
 
-diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
-index 75b194c..d967184 100644
---- a/include/linux/entry-common.h
-+++ b/include/linux/entry-common.h
-@@ -146,7 +146,7 @@ static __always_inline void syscall_exit_to_user_mode_wor=
-k(struct pt_regs *regs)
- 			local_irq_enable();
- 	}
-=20
--	rseq_syscall(regs);
-+	rseq_debug_syscall_return(regs);
-=20
- 	/*
- 	 * Do one-time syscall specific work. If these work items are
-diff --git a/include/linux/rseq_entry.h b/include/linux/rseq_entry.h
-index 5bdcf5b..fb53a6f 100644
---- a/include/linux/rseq_entry.h
-+++ b/include/linux/rseq_entry.h
-@@ -296,9 +296,18 @@ static __always_inline void rseq_exit_to_user_mode(void)
- 	ev->events =3D 0;
- }
-=20
-+void __rseq_debug_syscall_return(struct pt_regs *regs);
-+
-+static inline void rseq_debug_syscall_return(struct pt_regs *regs)
-+{
-+	if (static_branch_unlikely(&rseq_debug_enabled))
-+		__rseq_debug_syscall_return(regs);
-+}
-+
- #else /* CONFIG_RSEQ */
- static inline void rseq_note_user_irq_entry(void) { }
- static inline void rseq_exit_to_user_mode(void) { }
-+static inline void rseq_debug_syscall_return(struct pt_regs *regs) { }
- #endif /* !CONFIG_RSEQ */
-=20
- #endif /* _LINUX_RSEQ_ENTRY_H */
 diff --git a/kernel/rseq.c b/kernel/rseq.c
-index abd6bfa..9763155 100644
+index 12a9b6a..abd6bfa 100644
 --- a/kernel/rseq.c
 +++ b/kernel/rseq.c
-@@ -473,12 +473,11 @@ error:
- 	force_sigsegv(sig);
- }
+@@ -475,84 +475,27 @@ error:
 =20
--#ifdef CONFIG_DEBUG_RSEQ
+ #ifdef CONFIG_DEBUG_RSEQ
  /*
+- * Unsigned comparison will be true when ip >=3D start_ip, and when
+- * ip < start_ip + post_commit_offset.
+- */
+-static bool in_rseq_cs(unsigned long ip, struct rseq_cs *rseq_cs)
+-{
+-	return ip - rseq_cs->start_ip < rseq_cs->post_commit_offset;
+-}
+-
+-/*
+- * If the rseq_cs field of 'struct rseq' contains a valid pointer to
+- * user-space, copy 'struct rseq_cs' from user-space and validate its fields.
+- */
+-static int rseq_get_rseq_cs(struct task_struct *t, struct rseq_cs *rseq_cs)
+-{
+-	struct rseq __user *urseq =3D t->rseq.usrptr;
+-	struct rseq_cs __user *urseq_cs;
+-	u32 __user *usig;
+-	u64 ptr;
+-	u32 sig;
+-	int ret;
+-
+-	if (get_user(ptr, &rseq->rseq_cs))
+-		return -EFAULT;
+-
+-	/* If the rseq_cs pointer is NULL, return a cleared struct rseq_cs. */
+-	if (!ptr) {
+-		memset(rseq_cs, 0, sizeof(*rseq_cs));
+-		return 0;
+-	}
+-	/* Check that the pointer value fits in the user-space process space. */
+-	if (ptr >=3D TASK_SIZE)
+-		return -EINVAL;
+-	urseq_cs =3D (struct rseq_cs __user *)(unsigned long)ptr;
+-	if (copy_from_user(rseq_cs, urseq_cs, sizeof(*rseq_cs)))
+-		return -EFAULT;
+-
+-	if (rseq_cs->start_ip >=3D TASK_SIZE ||
+-	    rseq_cs->start_ip + rseq_cs->post_commit_offset >=3D TASK_SIZE ||
+-	    rseq_cs->abort_ip >=3D TASK_SIZE ||
+-	    rseq_cs->version > 0)
+-		return -EINVAL;
+-	/* Check for overflow. */
+-	if (rseq_cs->start_ip + rseq_cs->post_commit_offset < rseq_cs->start_ip)
+-		return -EINVAL;
+-	/* Ensure that abort_ip is not in the critical section. */
+-	if (rseq_cs->abort_ip - rseq_cs->start_ip < rseq_cs->post_commit_offset)
+-		return -EINVAL;
+-
+-	usig =3D (u32 __user *)(unsigned long)(rseq_cs->abort_ip - sizeof(u32));
+-	ret =3D get_user(sig, usig);
+-	if (ret)
+-		return ret;
+-
+-	if (current->rseq.sig !=3D sig) {
+-		printk_ratelimited(KERN_WARNING
+-			"Possible attack attempt. Unexpected rseq signature 0x%x, expecting 0x%x =
+(pid=3D%d, addr=3D%p).\n",
+-			sig, current->rseq.sig, current->pid, usig);
+-		return -EINVAL;
+-	}
+-	return 0;
+-}
+-
+-/*
   * Terminate the process if a syscall is issued within a restartable
   * sequence.
   */
--void rseq_syscall(struct pt_regs *regs)
-+void __rseq_debug_syscall_return(struct pt_regs *regs)
+ void rseq_syscall(struct pt_regs *regs)
  {
+-	unsigned long ip =3D instruction_pointer(regs);
  	struct task_struct *t =3D current;
- 	u64 csaddr;
-@@ -496,6 +495,13 @@ void rseq_syscall(struct pt_regs *regs)
- fail:
- 	force_sig(SIGSEGV);
+-	struct rseq_cs rseq_cs;
++	u64 csaddr;
+=20
+-	if (!t->rseq.usrptr)
++	if (!t->rseq.event.has_rseq)
+ 		return;
+-	if (rseq_get_rseq_cs(t, &rseq_cs) || in_rseq_cs(ip, &rseq_cs))
+-		force_sig(SIGSEGV);
++	if (get_user(csaddr, &t->rseq.usrptr->rseq_cs))
++		goto fail;
++	if (likely(!csaddr))
++		return;
++	if (unlikely(csaddr >=3D TASK_SIZE))
++		goto fail;
++	if (rseq_debug_update_user_cs(t, regs, csaddr))
++		return;
++fail:
++	force_sig(SIGSEGV);
  }
-+
-+#ifdef CONFIG_DEBUG_RSEQ
-+/* Kept around to keep GENERIC_ENTRY=3Dn architectures supported. */
-+void rseq_syscall(struct pt_regs *regs)
-+{
-+	__rseq_debug_syscall_return(regs);
-+}
+-
  #endif
 =20
  /*
