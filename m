@@ -1,119 +1,176 @@
-Return-Path: <linux-tip-commits+bounces-7172-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7173-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD42C2C68C
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 15:28:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5C9C2C790
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 03 Nov 2025 15:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 826C84E02EE
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 14:28:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D985C4EDEFA
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  3 Nov 2025 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A652311976;
-	Mon,  3 Nov 2025 14:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D44D310647;
+	Mon,  3 Nov 2025 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="DW3Hb58O"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e2o3ncUZ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nHgKlZKO"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AED3115A5;
-	Mon,  3 Nov 2025 14:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8E52459C6;
+	Mon,  3 Nov 2025 14:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762180101; cv=none; b=j2Qds3fSDqj2tU6UOMkM/uMWxuROeslehi9Uvsnc4/qciE0O3TcN9Ar6O8IBP2YDhczjLcberntuoSJhXbcUpVPCA5jYWRfzgpw2mykDuLsN5j+VhSQIan89+zVl37Lm9czy0XDNs8LIklphzVN+8NfMGOEfmOLFKuEtGt4wep8=
+	t=1762181229; cv=none; b=pMqXck9Gi3sA76O6OMtVfWSt2gNDeJ7OAXnC/NJ/tQkp/N/QYIvqv6q3VKYYUrtomuQ8vA3OEXfPaSoPjDkqPZieb89NLGw4iq+lkdILAH/ENAPKU19mM9I43ZnoCl/qodV9QA4ll+/nvBf53W46B2pbNxd7kvAghbzImZIbHBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762180101; c=relaxed/simple;
-	bh=NEmLnCxweseSAXUrFNHIvk7MkUMBwh9+saonIoa8t3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D1bK6e5x3mR1LWQi8C8huYOP1oisoEgNwZmUExKTGo5MzNK0y3uA15YhBJkX+0ksAbOgLjUQSYNNZP0lyUQuR4BHOWJxdv/iJpq/rRIdbgDL9W4CU6BqAPecCuOGmP37wqGqq5FpiNvEbacF8grTNYY6OuYYYhFYADQzg1Q2Mkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=DW3Hb58O; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 5ADA440E01A5;
-	Mon,  3 Nov 2025 14:28:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Aar49mkZkxOI; Mon,  3 Nov 2025 14:28:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1762180092; bh=z/fhKiHX76PNvIIe2VEepLKf3GmqcJpE4QLQk/h/lUI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DW3Hb58OYGdV7uxPS34QauHPWufFKAMK4w8g6s2FJ/IvgRerUJEI0snlZRvLxivgf
-	 IQ/KIIDaFwfYTQwl1ybKgeJgwsmATRRdkXFzX849eHaUFvjam3ZzBjdAOIxXnbIAy/
-	 DE+IHdSDCV9CWeR2L5L5IGGn5JlUII6lU/L3jyGm/iTahyI/HBAJZjihNjsVxmhRGO
-	 xavHT71gH8JGh48s4pNWICuPqjPro0hxGpYf01ghIvyzeTCSkdRtsutbVyx43lybXZ
-	 cFkefpD8uExZtVDFKm2LIAMMvoVhWaJ1yBVCKUXia7RmGM1zojTG1GqoeguYRMRWS+
-	 XexcoF7cwrpfxRDAMJDNeCJ1Zem3iJuSMWKgEhafetLwbrg7WzlQUuXEdjlzU8q3YZ
-	 JdXTOLRCfMQ0CPR4PeJ/NgCtQniFwiK/gYsU/0n6NUo2X5nPVBKbCC4SGjt79HFobe
-	 xAYFsZ7udgyXrthA4LKwXpS8B0/rRQ6aMexo6cXzqQZ2RfbswswAfxkWAi8TMIt8yn
-	 mjE7t4WiNEQAw4r/yq2jqTPjoFbudeYFRec08BsQGmEfObeoHepddkOjeTyuki2bEo
-	 k1QFCLQZ6+d/8T+4TrPzNo+Jpu6DTJPVb7SiyC+5LmheK66v/zgbz+a1XxrjJtXPHn
-	 XrLyRmxSLGajlFOJiHokhoHg=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id AE9A340E019D;
-	Mon,  3 Nov 2025 14:28:06 +0000 (UTC)
-Date: Mon, 3 Nov 2025 15:28:00 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Peter Jung <ptr1337@cachyos.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	stable@vger.kernel.org, Gregory Price <gourry@gourry.net>,
-	x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
-Message-ID: <20251103142800.GFaQi78AgT-qjY30r3@fat_crate.local>
-References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
- <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
+	s=arc-20240116; t=1762181229; c=relaxed/simple;
+	bh=8GbCpPnCgtTcskvKwvfzgwcFVu5wH1bYAuLrAQKM5mM=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=EioFg7An1AQpfPe9tmAqPRFTOwOyW2izPVlLxcw8fygISMqk7I4geahNgGxyZlVJFE2YyPWtPTHuQOr094+N3Pj8RHikQYszjsWlgaCo6n+VDKkK5h/k5pxbkYL/usnuG2igImldKxE9NY7heS7J2tEuvJMzbntbdJQJ9OL+xss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e2o3ncUZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nHgKlZKO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 03 Nov 2025 14:47:03 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1762181225;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GZERJU7yEjersZn6rwoEtg1STD0J9OzHqzWldw8TBbM=;
+	b=e2o3ncUZYvfw4MXJAYFUKtdkuVVIBWDkmWOFPGMGO3/tNxYFAjBeo6F3K28Ulxtq4vdxvq
+	i1//thf7nl1fuuUEBWRVGxMGGiewqRkiul1vW+jS2Qnvb2pr7IjN7b5VCBPR+mo1+pta60
+	LF08CwLg/ybD9o7hNCf1ozaPI5qNRAW6dYLMaAVlTTD1vM+rh1hf/+g2P+qLR2Ii2g7Zdy
+	wWuZP4T0+apS1dpoEiW0PCZH0v4SJzhBSGq9M1ie/2TTpSYf4bWiKAIV+VVEUtg0/KoOeW
+	oRHa7FUOxh/kdZvocrjrwg7ze7ImXm/8PyBl3fTGg4Kk3hWIuCNNu9Z/jIDANQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1762181225;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GZERJU7yEjersZn6rwoEtg1STD0J9OzHqzWldw8TBbM=;
+	b=nHgKlZKOkAbuDsHU1FazvoHDpZbXDLGyF0VLjreQw8wZpiYISOGfOVhwhejcyA/tEgwAL/
+	IYZoqTQsA94IdRDQ==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: core/rseq] x86/ptrace: Always inline trivial accessors
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251031105435.GU4068168@noisy.programming.kicks-ass.net>
+References: <20251031105435.GU4068168@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
+Message-ID: <176218122354.2601451.1498424816220367556.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Nov 03, 2025 at 02:59:11PM +0100, Peter Jung wrote:
-> CachyOS is compiling the packages with -march=znver5 and the GCC compiler
-> currently does pass RDSEED.
+The following commit has been merged into the core/rseq branch of tip:
 
-Yah, the compiler should not *pass* RDSEED, but issue code which checks
-whether RDSEED is there. Otherwise what's the point of CPUID flags?!
+Commit-ID:     139772de6a9857e60dc49ae1f7f75452847daede
+Gitweb:        https://git.kernel.org/tip/139772de6a9857e60dc49ae1f7f75452847=
+daede
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Fri, 31 Oct 2025 12:04:24 +01:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Mon, 03 Nov 2025 15:26:23 +01:00
 
-I guess this should make those boxes boot but damn, that ain't right:
+x86/ptrace: Always inline trivial accessors
 
+A KASAN build bloats these single load/store helpers such that
+it fails to inline them:
+
+  vmlinux.o: error: objtool: irqentry_exit+0x5e8: call to instruction_pointer=
+_set() with UACCESS enabled
+
+Make sure the compiler isn't allowed to do stupid.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20251031105435.GU4068168@noisy.programming.kic=
+ks-ass.net
 ---
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 8e36964a7721..810be49dad31 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1044,8 +1044,7 @@ static void init_amd_zen5(struct cpuinfo_x86 *c)
+ arch/x86/include/asm/ptrace.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index 50f7546..b5dec85 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -187,12 +187,12 @@ convert_ip_to_linear(struct task_struct *child, struct =
+pt_regs *regs);
+ extern void send_sigtrap(struct pt_regs *regs, int error_code, int si_code);
+=20
+=20
+-static inline unsigned long regs_return_value(struct pt_regs *regs)
++static __always_inline unsigned long regs_return_value(struct pt_regs *regs)
  {
- 	if (!x86_match_min_microcode_rev(zen5_rdseed_microcode)) {
- 		clear_cpu_cap(c, X86_FEATURE_RDSEED);
--		msr_clear_bit(MSR_AMD64_CPUID_FN_7, 18);
--		pr_emerg_once("RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
-+		WARN_ONCE(1, "RDSEED32 is broken. Disabling the corresponding CPUID bit.\n");
- 	}
+ 	return regs->ax;
  }
- 
-> This patch results into that also Client CPUs (Strix Point, Granite Ridge),
-> can not execute this. There has been a microcode fix deployed in
-> linux-firmware for Turin, but no other microcode changes seen yet.
-> 
-> I think it would be possible to exclude clients or providing a fix for this.
-
-Client fixes are getting ready but I can't tell you when they'll be there.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+=20
+-static inline void regs_set_return_value(struct pt_regs *regs, unsigned long=
+ rc)
++static __always_inline void regs_set_return_value(struct pt_regs *regs, unsi=
+gned long rc)
+ {
+ 	regs->ax =3D rc;
+ }
+@@ -277,34 +277,34 @@ static __always_inline bool ip_within_syscall_gap(struc=
+t pt_regs *regs)
+ }
+ #endif
+=20
+-static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
++static __always_inline unsigned long kernel_stack_pointer(struct pt_regs *re=
+gs)
+ {
+ 	return regs->sp;
+ }
+=20
+-static inline unsigned long instruction_pointer(struct pt_regs *regs)
++static __always_inline unsigned long instruction_pointer(struct pt_regs *reg=
+s)
+ {
+ 	return regs->ip;
+ }
+=20
+-static inline void instruction_pointer_set(struct pt_regs *regs,
+-		unsigned long val)
++static __always_inline
++void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
+ {
+ 	regs->ip =3D val;
+ }
+=20
+-static inline unsigned long frame_pointer(struct pt_regs *regs)
++static __always_inline unsigned long frame_pointer(struct pt_regs *regs)
+ {
+ 	return regs->bp;
+ }
+=20
+-static inline unsigned long user_stack_pointer(struct pt_regs *regs)
++static __always_inline unsigned long user_stack_pointer(struct pt_regs *regs)
+ {
+ 	return regs->sp;
+ }
+=20
+-static inline void user_stack_pointer_set(struct pt_regs *regs,
+-		unsigned long val)
++static __always_inline
++void user_stack_pointer_set(struct pt_regs *regs, unsigned long val)
+ {
+ 	regs->sp =3D val;
+ }
 
