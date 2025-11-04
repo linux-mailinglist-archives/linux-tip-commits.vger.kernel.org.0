@@ -1,78 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-7259-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7260-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1308BC32149
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 04 Nov 2025 17:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB95C3332C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 04 Nov 2025 23:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1ED3A4E6B
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Nov 2025 16:29:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 014B0464C72
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  4 Nov 2025 22:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC882264B1;
-	Tue,  4 Nov 2025 16:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBDE346E66;
+	Tue,  4 Nov 2025 22:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zfi4YtlL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vpHOZdNL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y8eZ8ANM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wiVmVgw3"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B103B3321B9;
-	Tue,  4 Nov 2025 16:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF4D346E56;
+	Tue,  4 Nov 2025 22:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762273797; cv=none; b=bZ5nYr9akCnFueO6KAImOI7sPnmNmsNy0HIux/589UBCposLCbAGyPRTy4Z5JHCOupxVVG8i1dK/xUjrBroPbu/NL2xTqnkN49NQMYYtcWunfeoCEefJ+TtV1Cb5sGNNiUbtAwybizXMom5In0ReR/daLKbOmjtVxZtLYSoFnnc=
+	t=1762294735; cv=none; b=XqeoeG3dU+Fh9XelcXZ5rHvWx10Oku+o81Jn9FAJjCrPN8KOS6Z5i+vVrK6tPj7fIykGrob5UuPupWnquzfHEdmNi7NTFmoIBO0h3ewpyZByYq0MUepgORW1Ix4JaUUvJ6XEsYIDOYIZXLWjsi/B8SeQrJXQMzXOHkm+Xac6Xf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762273797; c=relaxed/simple;
-	bh=p/wL15ltRQMA7xHQHlwW+F0Dn4OSM+rQzz+9sz7NPo8=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=AZhd2T6HefCVYTyT5xmOsD4Iom68vMhdqCSTtTYuWxj3ZXJ3l4uZNFLixhQNgBn/R5DToCKUyWhwhbbEOIQ20LtJDtdRLhSOMIDRqZSNOAanKvUEms8VOgIZ5XGtidxJTUcsWqCcXX1rhr9iNxetWx9Gq7m04E7lkU2pgJZHBtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zfi4YtlL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vpHOZdNL; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1762294735; c=relaxed/simple;
+	bh=6CwreT1eSkBW+I3M0vTY0Wb41BgXFFEQVGG7F3WYSXM=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=m7ETqiOjFTa3Csc8Mx1dEtQj0JA2qLzakMk5SeSfx6yTrX7HGGXVJF6QdASEuREDJsVTyoRhEkSJy9HzXL+Vd2wUpErKP9jVXNVAYJpzqs3CjQHyab8vMHpyNO8/BC813q3eziQCwEVij5XOd59fqVkGD8DnHWtyQSjpv+lC9sE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y8eZ8ANM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wiVmVgw3; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 04 Nov 2025 16:29:48 -0000
+Date: Tue, 04 Nov 2025 22:18:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762273794;
+	s=2020; t=1762294731;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LrXcUSoFJHKRTIVScdblOEvfsRgIkajExksL2bVTLmw=;
-	b=zfi4YtlLtmWWyx7KkWnx48k+vFcshRNuTkcAQUJ93Fsw1lhtfRBTIOjLhYqyT49fS395D1
-	3Dc5IRKTFxL8pEug+3ZH3ov45rPRhx46WMIzDk71xghtreLdLAlOoPmeAwZQmVkOMB4qy/
-	CqkFFkxGrukKIOgEFQmlFRekc3LoLJgq26xx7vKsPkSmu2HsS+L6dnWCIhuJz5Jidh5oEX
-	cCTrsX/r3v0Wnb2J05Haclxf81UtTfPvK11idJO47RqdUaHh9SHCl9JaDfsLQlSngg0YfW
-	DiwR/d3y/DaWxeVtftz5XqHaUCsPeaLwVXtv/oD570lZZ8I7s/sAVgb2uiYrkw==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=vaqxls2bXBrYwIpBpaR0v7OqmPIsH6Zf0Y5dBprU2UI=;
+	b=Y8eZ8ANMho0QLoDpb0+YU4rR8EdTRxHsSVh7nG/rQxY0WdLbRqM3tXaMcCUcLrJ1v1HMn4
+	TGtFm/YO/fIE9hKrUSOBwZhcapDQW9l7za3KffFnRa/bTUpdAhMmd/nF/UlJmqvoRNhM8N
+	QuMkHobz1CWkho5VqjgzrwTDatHTxGsdIpAyLX8Gn67JBr0HRUxBN75SelQrM1n1Z8tAV5
+	4HqTHwZH+kIS5y1S+5gLTHEnG1xwABWkM5BMJM1e3VQo/pTtQFbKnFPW55loLkRQ9ouxGi
+	q4qerBT8Ze443Hx78aGmv29xgn6zT3NvL4cs79JuMw4/f3ltsuH3XIlsM/PSIw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762273794;
+	s=2020e; t=1762294731;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LrXcUSoFJHKRTIVScdblOEvfsRgIkajExksL2bVTLmw=;
-	b=vpHOZdNLainHCeAucuhziOHskdqBWh9Kh3B1Bwcipub11dl0Y+2kReX2YEI0USW7cKzxii
-	CffeYwziDhvF+qAQ==
-From: "tip-bot2 for Mario Limonciello" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=vaqxls2bXBrYwIpBpaR0v7OqmPIsH6Zf0Y5dBprU2UI=;
+	b=wiVmVgw3KIMZ0pFn0xxJDNwd8y2VXIngr8sIFgpncSpU/XPKnQFaqMY+uVUqM23nT2XB81
+	naVL4Ew7JMphETCw==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/CPU/AMD: Add missing terminator for
- zen5_rdseed_microcode
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+Subject:
+ [tip: x86/cleanups] x86/cpufeatures: Correct LKGS feature flag description
+Cc: "Xin Li (Intel)" <xin@zytor.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251104161007.269885-1-mario.limonciello@amd.com>
-References: <20251104161007.269885-1-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176227378838.2601451.3901587952089036568.tip-bot2@tip-bot2>
+Message-ID: <176229472775.2601451.15031143628480729557.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,41 +72,69 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     f1fdffe0afea02ba783acfe815b6a60e7180df40
-Gitweb:        https://git.kernel.org/tip/f1fdffe0afea02ba783acfe815b6a60e718=
-0df40
-Author:        Mario Limonciello <mario.limonciello@amd.com>
-AuthorDate:    Tue, 04 Nov 2025 10:10:06 -06:00
+Commit-ID:     47955b58cf9b97fe4dc2b0d622b8ea3a2656bbf9
+Gitweb:        https://git.kernel.org/tip/47955b58cf9b97fe4dc2b0d622b8ea3a265=
+6bbf9
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Wed, 15 Oct 2025 12:35:48 +02:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 04 Nov 2025 17:16:14 +01:00
+CommitterDate: Tue, 04 Nov 2025 23:09:34 +01:00
 
-x86/CPU/AMD: Add missing terminator for zen5_rdseed_microcode
+x86/cpufeatures: Correct LKGS feature flag description
 
-Running x86_match_min_microcode_rev() on a Zen5 CPU trips up KASAN for an out
-of bounds access.
+Quotation marks in cpufeatures.h comments are special and when the
+comment begins with a quoted string, that string lands in /proc/cpuinfo,
+turning it into a user-visible one.
 
-Fixes: 607b9fb2ce248 ("x86/CPU/AMD: Add RDSEED fix for Zen5")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+The LKGS comment doesn't begin with a quoted string but just in case
+drop the quoted "kernel" in there to avoid confusion. And while at it,
+simply change the description into what the LKGS instruction does for
+more clarity.
+
+No functional changes.
+
+Reviewed-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251104161007.269885-1-mario.limonciello@amd.=
-com
+Link: https://lore.kernel.org/r/20251015103548.10194-1-bp@kernel.org
 ---
- arch/x86/kernel/cpu/amd.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/cpufeatures.h       | 2 +-
+ tools/arch/x86/include/asm/cpufeatures.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index 8e36964..2ba9f2d 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1038,6 +1038,7 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
- static const struct x86_cpu_id zen5_rdseed_microcode[] =3D {
- 	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
- 	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-+	{},
- };
-=20
- static void init_amd_zen5(struct cpuinfo_x86 *c)
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufea=
+tures.h
+index 4091a77..245cf6b 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -320,7 +320,7 @@
+ #define X86_FEATURE_FSRS		(12*32+11) /* Fast short REP STOSB */
+ #define X86_FEATURE_FSRC		(12*32+12) /* Fast short REP {CMPSB,SCASB} */
+ #define X86_FEATURE_FRED		(12*32+17) /* "fred" Flexible Return and Event Del=
+ivery */
+-#define X86_FEATURE_LKGS		(12*32+18) /* Load "kernel" (userspace) GS */
++#define X86_FEATURE_LKGS		(12*32+18) /* Like MOV_GS except MSR_KERNEL_GS_BAS=
+E =3D GS.base */
+ #define X86_FEATURE_WRMSRNS		(12*32+19) /* Non-serializing WRMSR */
+ #define X86_FEATURE_AMX_FP16		(12*32+21) /* AMX fp16 Support */
+ #define X86_FEATURE_AVX_IFMA            (12*32+23) /* Support for VPMADD52[H=
+,L]UQ */
+diff --git a/tools/arch/x86/include/asm/cpufeatures.h b/tools/arch/x86/includ=
+e/asm/cpufeatures.h
+index 06fc047..f61802f 100644
+--- a/tools/arch/x86/include/asm/cpufeatures.h
++++ b/tools/arch/x86/include/asm/cpufeatures.h
+@@ -320,7 +320,7 @@
+ #define X86_FEATURE_FSRS		(12*32+11) /* Fast short REP STOSB */
+ #define X86_FEATURE_FSRC		(12*32+12) /* Fast short REP {CMPSB,SCASB} */
+ #define X86_FEATURE_FRED		(12*32+17) /* "fred" Flexible Return and Event Del=
+ivery */
+-#define X86_FEATURE_LKGS		(12*32+18) /* Load "kernel" (userspace) GS */
++#define X86_FEATURE_LKGS		(12*32+18) /* Like MOV_GS except MSR_KERNEL_GS_BAS=
+E =3D GS.base */
+ #define X86_FEATURE_WRMSRNS		(12*32+19) /* Non-serializing WRMSR */
+ #define X86_FEATURE_AMX_FP16		(12*32+21) /* AMX fp16 Support */
+ #define X86_FEATURE_AVX_IFMA            (12*32+23) /* Support for VPMADD52[H=
+,L]UQ */
 
