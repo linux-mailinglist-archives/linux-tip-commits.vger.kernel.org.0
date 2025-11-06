@@ -1,71 +1,70 @@
-Return-Path: <linux-tip-commits+bounces-7270-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7273-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110B5C3B062
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 06 Nov 2025 13:58:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B8BC3B00E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 06 Nov 2025 13:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3895118941C6
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Nov 2025 12:53:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21DFD34AD2E
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Nov 2025 12:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E266B32E6AD;
-	Thu,  6 Nov 2025 12:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F2932ED48;
+	Thu,  6 Nov 2025 12:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TK4TDp25";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xuIGh3Nh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jHGNqUD+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pZQrq0W7"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE96F32C927;
-	Thu,  6 Nov 2025 12:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743D132D0D1;
+	Thu,  6 Nov 2025 12:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762433582; cv=none; b=nRbxRGsvYWfo6cYb09KfH0OFATaA9NGrEe2DYt52OjU1KZ/c2onieXKInFC5/QMfXij/CKgOHno0EkWdLnXODdReRc7vtjjS4los5r3kv3rGgxz4qWuoj2qDCYvTwc+FVPbVEUsE+SpTygAIOPG1YtvN/V4Qqx5wwlM6dIiqc8M=
+	t=1762433583; cv=none; b=ZT0T+qV/ow7vYS9ji+wpND1Jwpk8s5QaySoa3E95PETdDfY1SqDnVj5SuTZj+DuA8CUxRSxrPbK1iCupwUUhaIolqE1cE/hK0sHhfowSynMJqIDk1SDb8Y3Md5oEpret3d9Kk6MwLodTiC0wh3iCmYmzCEhJlx+o1C+8etZ0uqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762433582; c=relaxed/simple;
-	bh=L9ZzRq+34GWixMEzHhYo+imq2foHTnNNftImhU2AINM=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=M8q7UVF/f1A9KhkgHZhkQV2UHw0AJc0sOHhMEni2nHErlMIs7MByE4YmoT698xV9snjzo9CMlg5gRZhdT9RT8Jqv8claGr2BGK6+b/3vmxSxfo0FCh3aaRRGvwcuKyUqYjD4GhpyCq4776whv/xJNpS47yLOKfg3tLJcu9EwVAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TK4TDp25; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xuIGh3Nh; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1762433583; c=relaxed/simple;
+	bh=Q1lDQPBZEkicMnquQ1YOdFB0CXMBYHu3BjY3lArkrVY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Z7cRVdMku/qw5hIHF1HGoG8RNA81tz9GrBRsW+zAd/9egBPpnr8j3eVnzHaeJZZ4iCvgVJfgspOyPSx+H6746wrzVmM2OxYpF+6oL8rkQiTrMB7GIkV/w83CWV6Wb/JTbIsBONvsJ+UoAx3qnpUQhDXNkU0b+1JE2RMoYkQ2TQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jHGNqUD+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pZQrq0W7; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 06 Nov 2025 12:52:54 -0000
+Date: Thu, 06 Nov 2025 12:52:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762433576;
+	s=2020; t=1762433579;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=V4+wwWARy/AMPlRxr6ggcP9lTCzspS/BMHHLGBKhO64=;
-	b=TK4TDp25kQQSVSqiEkjlFPsS59mmNlOf9s9YT7Gjd2/USvB3CFkoJr9QPd9OxHLR1hjX5W
-	8YvZj6JsKqGLsffzLv6EgLCn94dtQ5QHMuZ+PrjkPnkz5GvTgzjWo+zdA/h/I38LozEKUo
-	+bJEoWPrrGZeWfJy9YtskaobqyU/3ec9jKDhhZrCwRfRb1aACunEQRArp4/RDpMV2GQY60
-	9PbADLGTyYtUErGUDWdkcusGXPynNcPxr83CzrfU+3gGRJwByRq0XIeZZxHOhWE3yHOb5K
-	mOOR+x8+qKdtDL7emlwzNE/0w3v6UsliaWJH0RBje9Rn0ob09FPitrx0VBrUTA==
+	bh=XjYbkBoHuWFIK2MCQLGU0gbyCCoY/9KpbxOKoefTGcw=;
+	b=jHGNqUD+L0Om06uQGksdVdrdvPBb+qF0io1DObyAQ7PMV+61b/n73jyLJgAb1x2Ij225m9
+	+LQgs3442uyeU+VR/0jZoXOzqUhhcGDdK+nn/hvHS6TjHPjAY7LcpNBp525et94qx2vh2w
+	tBqIKJkoeOl1EM5NNCyPcOfjj0P6+U1cWLgup8dyc7HjSxEX4SoWVrXxUwfSpKe3ohwsIC
+	dqOsgUaXxuFxit9NGmIVYxxU/fpJseh6UGxDgRHlaypeteMTtd1hEes5JHV2vlBau51siN
+	4g5HFQ6Lc+0LvwLKu1GH5tm34NS3A+uK5aXVtghe993qX9EjXksc8ErfmE5HfQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762433576;
+	s=2020e; t=1762433579;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=V4+wwWARy/AMPlRxr6ggcP9lTCzspS/BMHHLGBKhO64=;
-	b=xuIGh3NhZ+dBPL/WOdpNkoXepk0D+KPlaHGpGH7mdS+oE5KOBCK3q8bD3DGX3CQT0wAXIx
-	gUzz20mNtCyKU/Aw==
+	bh=XjYbkBoHuWFIK2MCQLGU0gbyCCoY/9KpbxOKoefTGcw=;
+	b=pZQrq0W7a+91Q7yghTFYRce+FSwahBivzvKXDqOyt/u8Ydcg214MX/fnDLM60w1bkFJkfB
+	b6+Zbf7SvokYI2AQ==
 From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: ras/core] x86/mce/amd: Enable interrupt vectors once per-CPU on
- SMCA systems
+Subject: [tip: ras/core] x86/mce: Unify AMD THR handler with MCA Polling
 Cc: Yazen Ghannam <yazen.ghannam@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176243357470.2601451.5972569206284327356.tip-bot2@tip-bot2>
+Message-ID: <176243357764.2601451.14090868024795844272.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -75,281 +74,152 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     134b1eabe6d9df8873bd018c9465994db8bff945
-Gitweb:        https://git.kernel.org/tip/134b1eabe6d9df8873bd018c9465994db8b=
-ff945
+Commit-ID:     34da4a5d6814ca4cd0116144e37433bf55cf0189
+Gitweb:        https://git.kernel.org/tip/34da4a5d6814ca4cd0116144e37433bf55c=
+f0189
 Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 04 Nov 2025 14:55:40=20
+AuthorDate:    Tue, 04 Nov 2025 14:55:38=20
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Wed, 05 Nov 2025 16:51:27 +01:00
+CommitterDate: Wed, 05 Nov 2025 13:41:18 +01:00
 
-x86/mce/amd: Enable interrupt vectors once per-CPU on SMCA systems
+x86/mce: Unify AMD THR handler with MCA Polling
 
-Scalable MCA systems have a per-CPU register that gives the APIC LVT offset
-for the thresholding and deferred error interrupts.
+AMD systems optionally support an MCA thresholding interrupt. The interrupt
+should be used as another signal to trigger MCA polling. This is similar to
+how the Intel Corrected Machine Check interrupt (CMCI) is handled.
 
-Currently, this register is read once to set up the deferred error interrupt
-and then read again for each thresholding block. Furthermore, the APIC LVT
-registers are configured each time, but they only need to be configured once
-per-CPU.
+AMD MCA thresholding is managed using the MCA_MISC registers within an MCA
+bank. The OS will need to modify the hardware error count field in order to
+reset the threshold limit and rearm the interrupt. Management of the MCA_MISC
+register should be done as a follow up to the basic MCA polling flow. It
+should not be the main focus of the interrupt handler.
 
-Move the APIC LVT setup to the early part of CPU init, so that the registers
-are set up once. Also, this ensures that the kernel is ready to service the
-interrupts before the individual error sources (each MCA bank) are enabled.
+Furthermore, future systems will have the ability to send an MCA thresholding
+interrupt to the OS even when the OS does not manage the feature, i.e.
+MCA_MISC registers are Read-as-Zero/Locked.
 
-Apply this change only to SMCA systems to avoid breaking any legacy behavior.
-The deferred error interrupt is technically advertised by the SUCCOR feature.
-However, this was first made available on SMCA systems.  Therefore, only set
-up the deferred error interrupt on SMCA systems and simplify the code.
+Call the common MCA polling function when handling the MCA thresholding
+interrupt. This will allow the OS to find any valid errors whether or not the
+MCA thresholding feature is OS-managed. Also, this allows the common MCA
+polling options and kernel parameters to apply to AMD systems.
 
-Guidance from hardware designers is that the LVT offsets provided from the
-platform should be used. The kernel should not try to enforce specific values.
-However, the kernel should check that an LVT offset is not reused for multiple
-sources.
-
-Therefore, remove the extra checking and value enforcement from the MCE code.
-The "reuse/conflict" case is already handled in setup_APIC_eilvt().
+Add a callback to the MCA polling function to check and reset any threshold
+blocks that have reached their threshold limit.
 
 Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
 Link: https://lore.kernel.org/20251104-wip-mca-updates-v8-0-66c8eacf67b9@amd.=
 com
 ---
- arch/x86/kernel/cpu/mce/amd.c | 121 ++++++++++++++-------------------
- 1 file changed, 53 insertions(+), 68 deletions(-)
+ arch/x86/kernel/cpu/mce/amd.c | 51 +++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 28 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index d9f9ee7..117165c 100644
+index d690644..ac6a98a 100644
 --- a/arch/x86/kernel/cpu/mce/amd.c
 +++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -43,9 +43,6 @@
- /* Deferred error settings */
- #define MSR_CU_DEF_ERR		0xC0000410
- #define MASK_DEF_LVTOFF		0x000000F0
--#define MASK_DEF_INT_TYPE	0x00000006
--#define DEF_LVT_OFF		0x2
--#define DEF_INT_TYPE_APIC	0x2
+@@ -54,6 +54,12 @@
 =20
- /* Scalable MCA: */
+ static bool thresholding_irq_en;
 =20
-@@ -57,6 +54,10 @@ static bool thresholding_irq_en;
- struct mce_amd_cpu_data {
- 	mce_banks_t     thr_intr_banks;
- 	mce_banks_t     dfr_intr_banks;
++struct mce_amd_cpu_data {
++	mce_banks_t     thr_intr_banks;
++};
 +
-+	u32		thr_intr_en: 1,
-+			dfr_intr_en: 1,
-+			__resv: 30;
- };
-=20
- static DEFINE_PER_CPU_READ_MOSTLY(struct mce_amd_cpu_data, mce_amd_data);
-@@ -271,6 +272,7 @@ void (*deferred_error_int_vector)(void) =3D default_defer=
-red_error_interrupt;
-=20
- static void smca_configure(unsigned int bank, unsigned int cpu)
- {
-+	struct mce_amd_cpu_data *data =3D this_cpu_ptr(&mce_amd_data);
- 	u8 *bank_counts =3D this_cpu_ptr(smca_bank_counts);
- 	const struct smca_hwid *s_hwid;
- 	unsigned int i, hwid_mcatype;
-@@ -301,8 +303,8 @@ static void smca_configure(unsigned int bank, unsigned in=
-t cpu)
- 		 * APIC based interrupt. First, check that no interrupt has been
- 		 * set.
- 		 */
--		if ((low & BIT(5)) && !((high >> 5) & 0x3)) {
--			__set_bit(bank, this_cpu_ptr(&mce_amd_data)->dfr_intr_banks);
-+		if ((low & BIT(5)) && !((high >> 5) & 0x3) && data->dfr_intr_en) {
-+			__set_bit(bank, data->dfr_intr_banks);
- 			high |=3D BIT(5);
- 		}
-=20
-@@ -377,6 +379,14 @@ static bool lvt_off_valid(struct threshold_block *b, int=
- apic, u32 lo, u32 hi)
- {
- 	int msr =3D (hi & MASK_LVTOFF_HI) >> 20;
-=20
-+	/*
-+	 * On SMCA CPUs, LVT offset is programmed at a different MSR, and
-+	 * the BIOS provides the value. The original field where LVT offset
-+	 * was set is reserved. Return early here:
-+	 */
-+	if (mce_flags.smca)
-+		return false;
++static DEFINE_PER_CPU_READ_MOSTLY(struct mce_amd_cpu_data, mce_amd_data);
 +
- 	if (apic < 0) {
- 		pr_err(FW_BUG "cpu %d, failed to setup threshold interrupt "
- 		       "for bank %d, block %d (MSR%08X=3D0x%x%08x)\n", b->cpu,
-@@ -385,14 +395,6 @@ static bool lvt_off_valid(struct threshold_block *b, int=
- apic, u32 lo, u32 hi)
- 	}
+ static const char * const th_names[] =3D {
+ 	"load_store",
+ 	"insn_fetch",
+@@ -556,6 +562,7 @@ prepare_threshold_block(unsigned int bank, unsigned int b=
+lock, u32 addr,
+ 	if (!b.interrupt_capable)
+ 		goto done;
 =20
- 	if (apic !=3D msr) {
--		/*
--		 * On SMCA CPUs, LVT offset is programmed at a different MSR, and
--		 * the BIOS provides the value. The original field where LVT offset
--		 * was set is reserved. Return early here:
--		 */
--		if (mce_flags.smca)
--			return false;
--
- 		pr_err(FW_BUG "cpu %d, invalid threshold interrupt offset %d "
- 		       "for bank %d, block %d (MSR%08X=3D0x%x%08x)\n",
- 		       b->cpu, apic, b->bank, b->block, b->address, hi, lo);
-@@ -473,41 +475,6 @@ static int setup_APIC_mce_threshold(int reserved, int ne=
-w)
- 	return reserved;
- }
-=20
--static int setup_APIC_deferred_error(int reserved, int new)
--{
--	if (reserved < 0 && !setup_APIC_eilvt(new, DEFERRED_ERROR_VECTOR,
--					      APIC_EILVT_MSG_FIX, 0))
--		return new;
--
--	return reserved;
--}
--
--static void deferred_error_interrupt_enable(struct cpuinfo_x86 *c)
--{
--	u32 low =3D 0, high =3D 0;
--	int def_offset =3D -1, def_new;
--
--	if (rdmsr_safe(MSR_CU_DEF_ERR, &low, &high))
--		return;
--
--	def_new =3D (low & MASK_DEF_LVTOFF) >> 4;
--	if (!(low & MASK_DEF_LVTOFF)) {
--		pr_err(FW_BUG "Your BIOS is not setting up LVT offset 0x2 for deferred err=
-or IRQs correctly.\n");
--		def_new =3D DEF_LVT_OFF;
--		low =3D (low & ~MASK_DEF_LVTOFF) | (DEF_LVT_OFF << 4);
--	}
--
--	def_offset =3D setup_APIC_deferred_error(def_offset, def_new);
--	if ((def_offset =3D=3D def_new) &&
--	    (deferred_error_int_vector !=3D amd_deferred_error_interrupt))
--		deferred_error_int_vector =3D amd_deferred_error_interrupt;
--
--	if (!mce_flags.smca)
--		low =3D (low & ~MASK_DEF_INT_TYPE) | DEF_INT_TYPE_APIC;
--
--	wrmsr(MSR_CU_DEF_ERR, low, high);
--}
--
- static u32 get_block_address(u32 current_addr, u32 low, u32 high,
- 			     unsigned int bank, unsigned int block,
- 			     unsigned int cpu)
-@@ -543,12 +510,10 @@ static u32 get_block_address(u32 current_addr, u32 low,=
- u32 high,
- 	return addr;
- }
-=20
--static int
--prepare_threshold_block(unsigned int bank, unsigned int block, u32 addr,
--			int offset, u32 misc_high)
-+static int prepare_threshold_block(unsigned int bank, unsigned int block, u3=
-2 addr,
-+				   int offset, u32 misc_high)
- {
- 	unsigned int cpu =3D smp_processor_id();
--	u32 smca_low, smca_high;
- 	struct threshold_block b;
- 	int new;
-=20
-@@ -568,18 +533,10 @@ prepare_threshold_block(unsigned int bank, unsigned int=
- block, u32 addr,
- 	__set_bit(bank, this_cpu_ptr(&mce_amd_data)->thr_intr_banks);
++	__set_bit(bank, this_cpu_ptr(&mce_amd_data)->thr_intr_banks);
  	b.interrupt_enable =3D 1;
 =20
--	if (!mce_flags.smca) {
--		new =3D (misc_high & MASK_LVTOFF_HI) >> 20;
--		goto set_offset;
--	}
--
--	/* Gather LVT offset for thresholding: */
--	if (rdmsr_safe(MSR_CU_DEF_ERR, &smca_low, &smca_high))
--		goto out;
--
--	new =3D (smca_low & SMCA_THR_LVT_OFF) >> 12;
-+	if (mce_flags.smca)
-+		goto done;
-=20
--set_offset:
-+	new =3D (misc_high & MASK_LVTOFF_HI) >> 20;
- 	offset =3D setup_APIC_mce_threshold(offset, new);
- 	if (offset =3D=3D new)
- 		thresholding_irq_en =3D true;
-@@ -587,7 +544,6 @@ set_offset:
- done:
- 	mce_threshold_block_init(&b, offset);
-=20
--out:
- 	return offset;
+ 	if (!mce_flags.smca) {
+@@ -896,12 +903,7 @@ static void amd_deferred_error_interrupt(void)
+ 		log_error_deferred(bank);
  }
 =20
-@@ -678,6 +634,32 @@ static void amd_apply_cpu_quirks(struct cpuinfo_x86 *c)
- 		mce_banks[0].ctl =3D 0;
- }
-=20
-+/*
-+ * Enable the APIC LVT interrupt vectors once per-CPU. This should be done b=
-efore hardware is
-+ * ready to send interrupts.
-+ *
-+ * Individual error sources are enabled later during per-bank init.
-+ */
-+static void smca_enable_interrupt_vectors(void)
-+{
-+	struct mce_amd_cpu_data *data =3D this_cpu_ptr(&mce_amd_data);
-+	u64 mca_intr_cfg, offset;
-+
-+	if (!mce_flags.smca || !mce_flags.succor)
-+		return;
-+
-+	if (rdmsrq_safe(MSR_CU_DEF_ERR, &mca_intr_cfg))
-+		return;
-+
-+	offset =3D (mca_intr_cfg & SMCA_THR_LVT_OFF) >> 12;
-+	if (!setup_APIC_eilvt(offset, THRESHOLD_APIC_VECTOR, APIC_EILVT_MSG_FIX, 0))
-+		data->thr_intr_en =3D 1;
-+
-+	offset =3D (mca_intr_cfg & MASK_DEF_LVTOFF) >> 4;
-+	if (!setup_APIC_eilvt(offset, DEFERRED_ERROR_VECTOR, APIC_EILVT_MSG_FIX, 0))
-+		data->dfr_intr_en =3D 1;
-+}
-+
- /* cpu init entry point, called from mce.c with preempt off */
- void mce_amd_feature_init(struct cpuinfo_x86 *c)
+-static void log_error_thresholding(unsigned int bank, u64 misc)
+-{
+-	_log_error_deferred(bank, misc);
+-}
+-
+-static void log_and_reset_block(struct threshold_block *block)
++static void reset_block(struct threshold_block *block)
  {
-@@ -689,10 +671,16 @@ void mce_amd_feature_init(struct cpuinfo_x86 *c)
+ 	struct thresh_restart tr;
+ 	u32 low =3D 0, high =3D 0;
+@@ -915,23 +917,14 @@ static void log_and_reset_block(struct threshold_block =
+*block)
+ 	if (!(high & MASK_OVERFLOW_HI))
+ 		return;
 =20
- 	mce_flags.amd_threshold	 =3D 1;
-=20
-+	smca_enable_interrupt_vectors();
-+
- 	for (bank =3D 0; bank < this_cpu_read(mce_num_banks); ++bank) {
--		if (mce_flags.smca)
-+		if (mce_flags.smca) {
- 			smca_configure(bank, cpu);
-=20
-+			if (!this_cpu_ptr(&mce_amd_data)->thr_intr_en)
-+				continue;
-+		}
-+
- 		disable_err_thresholding(c, bank);
-=20
- 		for (block =3D 0; block < NR_BLOCKS; ++block) {
-@@ -713,9 +701,6 @@ void mce_amd_feature_init(struct cpuinfo_x86 *c)
- 			offset =3D prepare_threshold_block(bank, block, address, offset, high);
- 		}
- 	}
+-	/* Log the MCE which caused the threshold event. */
+-	log_error_thresholding(block->bank, ((u64)high << 32) | low);
 -
--	if (mce_flags.succor)
--		deferred_error_interrupt_enable(c);
+-	/* Reset threshold block after logging error. */
+ 	memset(&tr, 0, sizeof(tr));
+ 	tr.b =3D block;
+ 	threshold_restart_block(&tr);
  }
 =20
- void smca_bsp_init(void)
+-/*
+- * Threshold interrupt handler will service THRESHOLD_APIC_VECTOR. The inter=
+rupt
+- * goes off when error_count reaches threshold_limit.
+- */
+-static void amd_threshold_interrupt(void)
++static void amd_reset_thr_limit(unsigned int bank)
+ {
+-	struct threshold_bank **bp =3D this_cpu_read(threshold_banks), *thr_bank;
+-	unsigned int bank, cpu =3D smp_processor_id();
++	struct threshold_bank **bp =3D this_cpu_read(threshold_banks);
+ 	struct threshold_block *block, *tmp;
+=20
+ 	/*
+@@ -939,24 +932,26 @@ static void amd_threshold_interrupt(void)
+ 	 * handler is installed at boot time, but on a hotplug event the
+ 	 * interrupt might fire before the data has been initialized.
+ 	 */
+-	if (!bp)
++	if (!bp || !bp[bank])
+ 		return;
+=20
+-	for (bank =3D 0; bank < this_cpu_read(mce_num_banks); ++bank) {
+-		if (!(per_cpu(bank_map, cpu) & BIT_ULL(bank)))
+-			continue;
+-
+-		thr_bank =3D bp[bank];
+-		if (!thr_bank)
+-			continue;
++	list_for_each_entry_safe(block, tmp, &bp[bank]->miscj, miscj)
++		reset_block(block);
++}
+=20
+-		list_for_each_entry_safe(block, tmp, &thr_bank->miscj, miscj)
+-			log_and_reset_block(block);
+-	}
++/*
++ * Threshold interrupt handler will service THRESHOLD_APIC_VECTOR. The inter=
+rupt
++ * goes off when error_count reaches threshold_limit.
++ */
++static void amd_threshold_interrupt(void)
++{
++	machine_check_poll(MCP_TIMESTAMP, &this_cpu_ptr(&mce_amd_data)->thr_intr_ba=
+nks);
+ }
+=20
+ void amd_clear_bank(struct mce *m)
+ {
++	amd_reset_thr_limit(m->bank);
++
+ 	mce_wrmsrq(mca_msr_reg(m->bank, MCA_STATUS), 0);
+ }
+=20
 
