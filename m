@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-7263-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7264-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D28C3AB29
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 06 Nov 2025 12:51:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8B1C3AB56
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 06 Nov 2025 12:53:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7BD3AA16A
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Nov 2025 11:41:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D8C1464710
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  6 Nov 2025 11:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7977030F92F;
-	Thu,  6 Nov 2025 11:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5153D30F93D;
+	Thu,  6 Nov 2025 11:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q3rACz4a";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OGj7ak+1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NM28UPE0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T2FCWbr2"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C8A30F94B;
-	Thu,  6 Nov 2025 11:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F9730F948;
+	Thu,  6 Nov 2025 11:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762429262; cv=none; b=fnoev/CnVkGI64tyrZB3VtdCOYSSBY3E+wvxVCQVi9O8mgGmYkhqLgUiviGBsw5ZzJXtwFyMoQ1jaHK8D5xzVU8LF3pUCQOGez6bZub18ixD6yAxmsVIfeOhbGjlATyZzkKi4K1xfZL0srWO6YexcK1yPo5qOyru9ZHm9ISCVms=
+	t=1762429269; cv=none; b=EQBo5ALqUOBfDYUUtYBSwFtmYcZq3Hpl1gSch4BYdzeVl1NlmEovrTNX788uxWx4PgGczRJ5fDbqe3FVZ6NHsEnhtolyaivLm1Csf8nHce7NGINDooK/ebIprqp9gs78/AP4PunM3xUfOnNaW2l+ShOrhf0a42JplblpFNi7USE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762429262; c=relaxed/simple;
-	bh=slqEmX1ioa8R3+SQy6g00IAdTsnmdZNJLLYZhyWdZFY=;
+	s=arc-20240116; t=1762429269; c=relaxed/simple;
+	bh=W8dsyEbo9xMEnvaG9xz4Ip/v7n0eTB57UanqdnTOQFk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=V9CrVoI4S8bbYaXLJKEFtJyIZMVcyqGWQktIxjNxDoq8WTs44XHI1qk67xROrJQRZ7Zp1gAYuPfTwlBeU6ITl+gjrOTFWCrFHUQvpGTiOzU6ZVg7PUfJHxInFBGog7afmT9PmPc3nf8cygl4i1xZ/9VFwHYMoJ8+Puh5u5Qe62M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q3rACz4a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OGj7ak+1; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=s9xP8Z+/GkZ+opcm01ADJ6hMhlVvsX1vm5fqgVPpXHhOiyINBZAejeGNQLvS//DZAXZrFThcdQMJduQm2OE6WJD3N+KP3MScvmMRTb3EQ5ybAN20FhfUuF6y0wEqJkk303QUFdPt2qDnAhmHusqL1ekbJeRj3USrz5yyfNrYPhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NM28UPE0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T2FCWbr2; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 06 Nov 2025 11:40:51 -0000
+Date: Thu, 06 Nov 2025 11:41:02 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1762429257;
+	s=2020; t=1762429264;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LnwYQvXml/2IkFf2xhXLITKom4tbY4oOYYosysZPHi8=;
-	b=q3rACz4aUcbN+i21O0TcoYJh2uX7L1wYGevt/ZY3mCfypn91UV9gmSUA+rtvL9zOgnXl3e
-	0B32c68H/bFOhpYxpjkH/RKu3OvcZrILlleoP+aCCpm+AOfhTYyttO9HzhCh454SmXzg1w
-	NS1fOXip7xlP2dWfWS4PkNFo8w7J1JEG2GsZ5IuZv00AphovSP2OraFKncOZTNuKji+2+d
-	SOOASK1CKWn3Pc6stNaVwcy22fcjNShje9ChiP/u1OPMjA3IOtc3yfijVXjIg1mQesbIS5
-	10oA1fLc134q7z299oL1YX43gmUCzpJMilSMEcpCUlrvaMaH6399wE0EhijWOw==
+	bh=+WKZEOHtytLHUmj3XqeRgfaMWw/ysPoP5Miq5irD2+M=;
+	b=NM28UPE0Pmyz0dUAeqPMjUuz1YsdFI7aukMDbYP5Ed328bS6h0cf0VyMPHG2yt8W9BEg6h
+	MXX/arsGJmeKaU68B5NljNpt6PdC1sY/OmNXAtBbwX8qBi2hqZ1vDACCpCmQZ0tPKqB5zB
+	9KmxJ9YGtM3BfZZLegiwDTENz6FtaBnzo7rci+1RlMxds+0PUNfoYZ1Q9wAGRnnTRxxl51
+	dpPojV9hinAq723LhatcxghwF4Xd77RGbKsgx3FHFiC7i97yxU+GGZTzmUrlYSOUd/FyhI
+	ByPcC79A34pQPvOTaoVcu+fQlj0Kp3Tu048VKTXUK46SeWdjnVp/Vw7fuAsS3A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1762429257;
+	s=2020e; t=1762429264;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LnwYQvXml/2IkFf2xhXLITKom4tbY4oOYYosysZPHi8=;
-	b=OGj7ak+1a518kfy0ZVb1HSqE7hVT12kFsD9rxWctR3+uO0hH9fdBQOXTltjWJFVyR2LOcY
-	e1/+a64cvspYqyCA==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=+WKZEOHtytLHUmj3XqeRgfaMWw/ysPoP5Miq5irD2+M=;
+	b=T2FCWbr2cgZQyQuLQ9/2ocM8BLqViZtZUmlXFyOCfRyOng2C5PKhrdCptTTyeosdvRuXx/
+	RzF3svjrNu2w7wBA==
+From: "tip-bot2 for Aaron Lu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/urgent] futex: Optimize per-cpu reference counting
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>,
+Subject: [tip: sched/urgent] sched/fair: Prevent cfs_rq from being unthrottled
+ with zero runtime_remaining
+Cc: Benjamin Segall <bsegall@google.com>, Aaron Lu <ziqianlu@bytedance.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251106092929.GR4067720@noisy.programming.kicks-ass.net>
-References: <20251106092929.GR4067720@noisy.programming.kicks-ass.net>
+ K Prateek Nayak <kprateek.nayak@amd.com>, Hao Jia <jiahao1@lixiang.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251030032755.560-1-ziqianlu@bytedance.com>
+References: <20251030032755.560-1-ziqianlu@bytedance.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176242925149.2601451.16934943329668653196.tip-bot2@tip-bot2>
+Message-ID: <176242926295.2601451.9600202594830902272.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,93 +81,118 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/urgent branch of tip:
+The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     4cb5ac2626b5704ed712ac1d46b9d89fdfc12c5d
-Gitweb:        https://git.kernel.org/tip/4cb5ac2626b5704ed712ac1d46b9d89fdfc=
-12c5d
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Wed, 16 Jul 2025 16:29:46 +02:00
+Commit-ID:     956dfda6a70885f18c0f8236a461aa2bc4f556ad
+Gitweb:        https://git.kernel.org/tip/956dfda6a70885f18c0f8236a461aa2bc4f=
+556ad
+Author:        Aaron Lu <ziqianlu@bytedance.com>
+AuthorDate:    Thu, 30 Oct 2025 11:27:55 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 06 Nov 2025 12:30:54 +01:00
+CommitterDate: Thu, 06 Nov 2025 12:30:52 +01:00
 
-futex: Optimize per-cpu reference counting
+sched/fair: Prevent cfs_rq from being unthrottled with zero runtime_remaining
 
-Shrikanth noted that the per-cpu reference counter was still some 10%
-slower than the old immutable option (which removes the reference
-counting entirely).
+When a cfs_rq is to be throttled, its limbo list should be empty and
+that's why there is a warn in tg_throttle_down() for non empty
+cfs_rq->throttled_limbo_list.
 
-Further optimize the per-cpu reference counter by:
+When running a test with the following hierarchy:
 
- - switching from RCU to preempt;
- - using __this_cpu_*() since we now have preempt disabled;
- - switching from smp_load_acquire() to READ_ONCE().
+          root
+        /      \
+        A*     ...
+     /  |  \   ...
+        B
+       /  \
+      C*
 
-This is all safe because disabling preemption inhibits the RCU grace
-period exactly like rcu_read_lock().
+where both A and C have quota settings, that warn on non empty limbo list
+is triggered for a cfs_rq of C, let's call it cfs_rq_c(and ignore the cpu
+part of the cfs_rq for the sake of simpler representation).
 
-Having preemption disabled allows using __this_cpu_*() provided the
-only access to the variable is in task context -- which is the case
-here.
+Debug showed it happened like this:
+Task group C is created and quota is set, so in tg_set_cfs_bandwidth(),
+cfs_rq_c is initialized with runtime_enabled set, runtime_remaining
+equals to 0 and *unthrottled*. Before any tasks are enqueued to cfs_rq_c,
+*multiple* throttled tasks can migrate to cfs_rq_c (e.g., due to task
+group changes). When enqueue_task_fair(cfs_rq_c, throttled_task) is
+called and cfs_rq_c is in a throttled hierarchy (e.g., A is throttled),
+these throttled tasks are directly placed into cfs_rq_c's limbo list by
+enqueue_throttled_task().
 
-Furthermore, since we know changing fph->state to FR_ATOMIC demands a
-full RCU grace period we can rely on the implied smp_mb() from that to
-replace the acquire barrier().
+Later, when A is unthrottled, tg_unthrottle_up(cfs_rq_c) enqueues these
+tasks. The first enqueue triggers check_enqueue_throttle(), and with zero
+runtime_remaining, cfs_rq_c can be throttled in throttle_cfs_rq() if it
+can't get more runtime and enters tg_throttle_down(), where the warning
+is hit due to remaining tasks in the limbo list.
 
-This is very similar to the percpu_down_read_internal() fast-path.
+I think it's a chaos to trigger throttle on unthrottle path, the status
+of a being unthrottled cfs_rq can be in a mixed state in the end, so fix
+this by granting 1ns to cfs_rq in tg_set_cfs_bandwidth(). This ensures
+cfs_rq_c has a positive runtime_remaining when initialized as unthrottled
+and cannot enter tg_unthrottle_up() with zero runtime_remaining.
 
-The reason this is significant for PowerPC is that it uses the generic
-this_cpu_*() implementation which relies on local_irq_disable() (the
-x86 implementation relies on it being a single memop instruction to be
-IRQ-safe). Switching to preempt_disable() and __this_cpu*() avoids
-this IRQ state swizzling. Also, PowerPC needs LWSYNC for the ACQUIRE
-barrier, not having to use explicit barriers safes a bunch.
+Also, update outdated comments in tg_throttle_down() since
+unthrottle_cfs_rq() is no longer called with zero runtime_remaining.
+While at it, remove a redundant assignment to se in tg_throttle_down().
 
-Combined this reduces the performance gap by half, down to some 5%.
-
-Fixes: 760e6f7befba ("futex: Remove support for IMMUTABLE")
-Reported-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Tested-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Fixes: e1fad12dcb66 ("sched/fair: Switch to task based throttle model")
+Reviewed-By: Benjamin Segall <bsegall@google.com>
+Suggested-by: Benjamin Segall <bsegall@google.com>
+Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20251106092929.GR4067720@noisy.programming.kic=
-ks-ass.net
+Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Hao Jia <jiahao1@lixiang.com>
+Link: https://patch.msgid.link/20251030032755.560-1-ziqianlu@bytedance.com
 ---
- kernel/futex/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/sched/core.c |  2 +-
+ kernel/sched/fair.c | 15 ++++++---------
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index 125804f..2e77a6e 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -1680,10 +1680,10 @@ static bool futex_ref_get(struct futex_private_hash *=
-fph)
- {
- 	struct mm_struct *mm =3D fph->mm;
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index f1ebf67..f754a60 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9606,7 +9606,7 @@ static int tg_set_cfs_bandwidth(struct task_group *tg,
 =20
--	guard(rcu)();
-+	guard(preempt)();
+ 		guard(rq_lock_irq)(rq);
+ 		cfs_rq->runtime_enabled =3D runtime_enabled;
+-		cfs_rq->runtime_remaining =3D 0;
++		cfs_rq->runtime_remaining =3D 1;
 =20
--	if (smp_load_acquire(&fph->state) =3D=3D FR_PERCPU) {
--		this_cpu_inc(*mm->futex_ref);
-+	if (READ_ONCE(fph->state) =3D=3D FR_PERCPU) {
-+		__this_cpu_inc(*mm->futex_ref);
- 		return true;
- 	}
+ 		if (cfs_rq->throttled)
+ 			unthrottle_cfs_rq(cfs_rq);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 25970db..5b75232 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -6024,20 +6024,17 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
+ 	struct sched_entity *se =3D cfs_rq->tg->se[cpu_of(rq)];
 =20
-@@ -1694,10 +1694,10 @@ static bool futex_ref_put(struct futex_private_hash *=
-fph)
- {
- 	struct mm_struct *mm =3D fph->mm;
+ 	/*
+-	 * It's possible we are called with !runtime_remaining due to things
+-	 * like user changed quota setting(see tg_set_cfs_bandwidth()) or async
+-	 * unthrottled us with a positive runtime_remaining but other still
+-	 * running entities consumed those runtime before we reached here.
++	 * It's possible we are called with runtime_remaining < 0 due to things
++	 * like async unthrottled us with a positive runtime_remaining but other
++	 * still running entities consumed those runtime before we reached here.
+ 	 *
+-	 * Anyway, we can't unthrottle this cfs_rq without any runtime remaining
+-	 * because any enqueue in tg_unthrottle_up() will immediately trigger a
+-	 * throttle, which is not supposed to happen on unthrottle path.
++	 * We can't unthrottle this cfs_rq without any runtime remaining because
++	 * any enqueue in tg_unthrottle_up() will immediately trigger a throttle,
++	 * which is not supposed to happen on unthrottle path.
+ 	 */
+ 	if (cfs_rq->runtime_enabled && cfs_rq->runtime_remaining <=3D 0)
+ 		return;
 =20
--	guard(rcu)();
-+	guard(preempt)();
+-	se =3D cfs_rq->tg->se[cpu_of(rq)];
+-
+ 	cfs_rq->throttled =3D 0;
 =20
--	if (smp_load_acquire(&fph->state) =3D=3D FR_PERCPU) {
--		this_cpu_dec(*mm->futex_ref);
-+	if (READ_ONCE(fph->state) =3D=3D FR_PERCPU) {
-+		__this_cpu_dec(*mm->futex_ref);
- 		return false;
- 	}
-=20
+ 	update_rq_clock(rq);
 
