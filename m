@@ -1,77 +1,72 @@
-Return-Path: <linux-tip-commits+bounces-7361-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7362-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FA0C5F106
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Nov 2025 20:39:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35511C5F307
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Nov 2025 21:13:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDA93AFC5D
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Nov 2025 19:39:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 381C824221
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 14 Nov 2025 20:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B01A326952;
-	Fri, 14 Nov 2025 19:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DEC342517;
+	Fri, 14 Nov 2025 20:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="k6LQa32n";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h+Tcij+H"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qNKaygui";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="soYgQqS5"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CE82EFDBB;
-	Fri, 14 Nov 2025 19:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AD02DC78E;
+	Fri, 14 Nov 2025 20:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763149152; cv=none; b=l+ylMiDoCtFD8XOXkkzNmiDsYDopPzYArQKYNIKOd3+XA4hU0mFxuTUu13hD8YLpNU2hcDutuG8J+M4cDbuzDvatmeBaB8nUthx0GehRTC5vE1fUhzJL0YtdMa538A6x+E8KqTPDuQ1NpjNI0P6sFIqNDjHP3LpcAUTgmLmCXpk=
+	t=1763151211; cv=none; b=p2KhctNBfPqfoOg2VpLPguyOyNH9dT9G4fjjcHBZawTcsefZvhs84Xm85ixYu5qdJif9ROWloepeoQpTWdFHL/KGVXWAb9lgj3IskCCaZadbcjvrKX1omUiy7BvUDEGUKeqoo6bpxQcMyGzrIULVU6PNjhBZ8V/w4G84nwvizEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763149152; c=relaxed/simple;
-	bh=m9HsxscY1+pcwV44E5N3dI7oJGqVdnzC4fCSE4jOVUE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=prWj23Ll87WFWDIt+ZQS1h8DPnEd5UAyFF+fqb+4TjZjQKO+c1ldK3sz7Ag/kJRb02Xvsx8GgGuGES8tbOCFiHlzAq35B0gQg6Ck0CT4XP9KxmJJHHyluMUEulnAoMl13iNElASWKFk3DsobkqGcCoZHvay7GToXj/Cjn60boDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=k6LQa32n; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h+Tcij+H; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1763151211; c=relaxed/simple;
+	bh=GC7zogF5cd1VloXmU2AbQOqL7X1Llw55bSZZzQy0czU=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=oSxqN0HGAFB+osuiasXfx7i6bpNwl7Df+DqiOfBffxUZvKwixwbedhHj/F9r/GVI7/ib4qckr2C/H8I1cIg+ILXyZiF2l1R7I3+v2Ie9YRwCZxoMwGw48oBFhP6MeNFwJXycOiTd48xJymsPJcRm6w3F1TLZeQanLqdmCUjuqnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qNKaygui; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=soYgQqS5; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 14 Nov 2025 19:39:08 -0000
+Date: Fri, 14 Nov 2025 20:13:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763149149;
+	s=2020; t=1763151207;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VGpjsWAGebHX3iPPXvKsXquO7rvV0ZdgbQvomEtP2Mc=;
-	b=k6LQa32n+XBx2ER6QOSQmZstcEVsRFX9BZpeC0jhZbp8MHr/Mi6S31A3n7GPRdwUzsNk0e
-	R/W3nWt7i/A5bXBrNpEYKmjodC6ESgsS4zuYTJJZmNlFA0y58nuoKDh5KTQ0nVHt1T+3vZ
-	Y1zi9feuA8kAwg3u2Ghsu77aRcm1aQPbsQz8h6rgUe9h8CDhFF9E5PnCbUgmuiJcAS1SD9
-	LwBUrQRh4FnCfEXb4m3ZXIsGOMhC97c/lB/cmyCQJ0DfI08UozBnNx6ZiXyOT9+njP4vOC
-	Xq1A/3oxqZCX6gAd7uKh+DE3v8c4Gp/VQUyvtjXFsnMEuKea50EvP6vXgRbnYQ==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=FYDM7mtqZUPI7/sKPJPQfbQf5ts+wlR06a/MOj1T46M=;
+	b=qNKayguiDjn6lZrrLopLFvk04KMCy583GHG7Opb47ln5hwOoa0M1rHmwL1OGGyZ4Y2N2hG
+	lgv2c6CsFBOPHuqa63vOtrcW7IYgvXiGbzUY0lE2w0JUyH1NicAP7JTcVXhkhFIM8slWr6
+	oveB/J6YJOpddrqly/ZvBePes8Ea2STV8m/PzQObVXGCZEzXtW9z0YARbQsDWsNwLdr4u0
+	iaHo1cwErCoZqwrd1uZtnLyBCP5KRz8CwvgecmSnuMzvp9Lk+r+wI8ncZsi8DDmA+QjTFu
+	h4EaT29Yd/fKNIjhp/o3hPAIHz2aVYPf3s7rJ+1sruMPAKZU/H8UUzlueA9eiw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763149149;
+	s=2020e; t=1763151207;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VGpjsWAGebHX3iPPXvKsXquO7rvV0ZdgbQvomEtP2Mc=;
-	b=h+Tcij+HrjJBpWhtbnJLxc117QlzkXW6e9wfR4w0mG/9i46NqbXWcceRF++0mOui7FF/+D
-	teVuvNuNdrKhI1CA==
-From: "tip-bot2 for Jianyun Gao" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=FYDM7mtqZUPI7/sKPJPQfbQf5ts+wlR06a/MOj1T46M=;
+	b=soYgQqS5TPQC/SetHiCyVfvcz8cGCNsRq8TPWp39N9ZA8WFkdUFI9CzhUTcXah/W6x96dU
+	Ci4NrY7JQc+DjFDQ==
+From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: timers/core] time: Fix a few typos in time[r] related code comments
-Cc: Jianyun Gao <jianyungao89@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
+ [tip: x86/boot] x86/acpi/boot: Correct acpi_is_processor_usable() check again
+Cc: Michal Pecio <michal.pecio@gmail.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>,
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, stable@vger.kernel.org,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250927093411.1509275-1-jianyungao89@gmail.com>
-References: <20250927093411.1509275-1-jianyungao89@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176314914826.498.9885322035796599569.tip-bot2@tip-bot2>
+Message-ID: <176315120547.498.15916722133977289071.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,92 +74,138 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the timers/core branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     4518767be9089ea4f54754ad27364d6134fc46e2
-Gitweb:        https://git.kernel.org/tip/4518767be9089ea4f54754ad27364d6134f=
-c46e2
-Author:        Jianyun Gao <jianyungao89@gmail.com>
-AuthorDate:    Sat, 27 Sep 2025 17:34:10 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Fri, 14 Nov 2025 20:34:50 +01:00
+Commit-ID:     1c7ac68c05bc0327d725dd10aa05f5120f868250
+Gitweb:        https://git.kernel.org/tip/1c7ac68c05bc0327d725dd10aa05f5120f8=
+68250
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Tue, 11 Nov 2025 14:53:57=20
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Fri, 14 Nov 2025 21:00:26 +01:00
 
-time: Fix a few typos in time[r] related code comments
+x86/acpi/boot: Correct acpi_is_processor_usable() check again
 
-Signed-off-by: Jianyun Gao <jianyungao89@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20250927093411.1509275-1-jianyungao89@gmail.com
+ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
+used in conjunction with the "Enabled" MADT LAPIC flag to determine if
+a CPU can be enabled/hotplugged by the OS after boot.
+
+Before the new bit was defined, the "Enabled" bit was explicitly
+described like this (ACPI v6.0 wording provided):
+
+  "If zero, this processor is unusable, and the operating system
+  support will not attempt to use it"
+
+This means that CPU hotplug (based on MADT) is not possible. Many BIOS
+implementations follow this guidance. They may include LAPIC entries in
+MADT for unavailable CPUs, but since these entries are marked with
+"Enabled=3D0" it is expected that the OS will completely ignore these
+entries.
+
+However, QEMU will do the same (include entries with "Enabled=3D0") for
+the purpose of allowing CPU hotplug within the guest.
+
+Comment from QEMU function pc_madt_cpu_entry():
+
+  /* ACPI spec says that LAPIC entry for non present
+   * CPU may be omitted from MADT or it must be marked
+   * as disabled. However omitting non present CPU from
+   * MADT breaks hotplug on linux. So possible CPUs
+   * should be put in MADT but kept disabled.
+   */
+
+Recent Linux topology changes broke the QEMU use case. A following fix
+for the QEMU use case broke bare metal topology enumeration.
+
+Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
+for guests and to maintain the ACPI spec behavior for bare metal.
+
+Remove an unnecessary check added to fix a bare metal case introduced by
+the QEMU "fix".
+
+  [ bp: Change logic as Michal suggested. ]
+
+Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check=
+")
+Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present =
+package")
+Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.=
+com
+Reported-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
 ---
- include/linux/delay.h         | 8 ++++----
- kernel/time/posix-timers.c    | 2 +-
- kernel/time/timer_migration.c | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
+ arch/x86/kernel/cpu/topology.c | 15 ---------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/delay.h b/include/linux/delay.h
-index 89866ba..46412c0 100644
---- a/include/linux/delay.h
-+++ b/include/linux/delay.h
-@@ -68,7 +68,7 @@ void usleep_range_state(unsigned long min, unsigned long ma=
-x,
-  * @min:	Minimum time in microseconds to sleep
-  * @max:	Maximum time in microseconds to sleep
-  *
-- * For basic information please refere to usleep_range_state().
-+ * For basic information please refer to usleep_range_state().
-  *
-  * The task will be in the state TASK_UNINTERRUPTIBLE during the sleep.
-  */
-@@ -82,10 +82,10 @@ static inline void usleep_range(unsigned long min, unsign=
-ed long max)
-  * @min:	Minimum time in microseconds to sleep
-  * @max:	Maximum time in microseconds to sleep
-  *
-- * For basic information please refere to usleep_range_state().
-+ * For basic information please refer to usleep_range_state().
-  *
-  * The sleeping task has the state TASK_IDLE during the sleep to prevent
-- * contribution to the load avarage.
-+ * contribution to the load average.
-  */
- static inline void usleep_range_idle(unsigned long min, unsigned long max)
- {
-@@ -96,7 +96,7 @@ static inline void usleep_range_idle(unsigned long min, uns=
-igned long max)
-  * ssleep - wrapper for seconds around msleep
-  * @seconds:	Requested sleep duration in seconds
-  *
-- * Please refere to msleep() for detailed information.
-+ * Please refer to msleep() for detailed information.
-  */
- static inline void ssleep(unsigned int seconds)
- {
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index aa31201..36dbb81 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -1242,7 +1242,7 @@ SYSCALL_DEFINE2(clock_adjtime, const clockid_t, which_c=
-lock,
-  *    sys_clock_settime(). The kernel internal timekeeping is always using
-  *    nanoseconds precision independent of the clocksource device which is
-  *    used to read the time from. The resolution of that device only
-- *    affects the presicion of the time returned by sys_clock_gettime().
-+ *    affects the precision of the time returned by sys_clock_gettime().
-  *
-  * Returns:
-  *	0		Success. @tp contains the resolution
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index 19ddfa9..57e3867 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -708,7 +708,7 @@ void tmigr_cpu_activate(void)
- /*
-  * Returns true, if there is nothing to be propagated to the next level
-  *
-- * @data->firstexp is set to expiry of first gobal event of the (top level of
-+ * @data->firstexp is set to expiry of first global event of the (top level =
-of
-  * the) hierarchy, but only when hierarchy is completely idle.
-  *
-  * The child and group states need to be read under the lock, to prevent a r=
-ace
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 9fa321a..d6138b2 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -35,6 +35,7 @@
+ #include <asm/smp.h>
+ #include <asm/i8259.h>
+ #include <asm/setup.h>
++#include <asm/hypervisor.h>
+=20
+ #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
+ static int __initdata acpi_force =3D 0;
+@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_f=
+lags)
+ 	if (lapic_flags & ACPI_MADT_ENABLED)
+ 		return true;
+=20
+-	if (!acpi_support_online_capable ||
+-	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+-		return true;
++	if (acpi_support_online_capable)
++		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
+=20
+-	return false;
++	/*
++	 * QEMU expects legacy "Enabled=3D0" LAPIC entries to be counted as usable
++	 * in order to support CPU hotplug in guests.
++	 */
++	return !hypervisor_is_type(X86_HYPER_NATIVE);
+ }
+=20
+ static int __init
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index 6073a16..425404e 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -27,7 +27,6 @@
+ #include <xen/xen.h>
+=20
+ #include <asm/apic.h>
+-#include <asm/hypervisor.h>
+ #include <asm/io_apic.h>
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+@@ -240,20 +239,6 @@ static __init void topo_register_apic(u32 apic_id, u32 a=
+cpi_id, bool present)
+ 		cpuid_to_apicid[cpu] =3D apic_id;
+ 		topo_set_cpuids(cpu, apic_id, acpi_id);
+ 	} else {
+-		u32 pkgid =3D topo_apicid(apic_id, TOPO_PKG_DOMAIN);
+-
+-		/*
+-		 * Check for present APICs in the same package when running
+-		 * on bare metal. Allow the bogosity in a guest.
+-		 */
+-		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
+-		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
+-			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
+-				     apic_id);
+-			topo_info.nr_rejected_cpus++;
+-			return;
+-		}
+-
+ 		topo_info.nr_disabled_cpus++;
+ 	}
+=20
 
