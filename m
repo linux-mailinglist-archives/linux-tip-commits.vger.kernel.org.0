@@ -1,232 +1,204 @@
-Return-Path: <linux-tip-commits+bounces-7380-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7381-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90606C65D4A
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 19:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32D5C65DF0
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 20:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F9C74EC63F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 18:58:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 658AF4ECE88
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 19:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB99633EB0E;
-	Mon, 17 Nov 2025 18:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7BA335541;
+	Mon, 17 Nov 2025 19:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7u7t6mF"
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Cm0wDcH5"
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010037.outbound.protection.outlook.com [40.93.198.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6637B33E377;
-	Mon, 17 Nov 2025 18:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763405713; cv=none; b=lK/bpqby5Fv/I9++kZG12N6gIwdqEfiJeTPNKH3Q+iN6xBj8QBuLinnPAO52kvosSffSKt0Sm9/8uC5E79WElktzf9kWU48d5zt7zQD/4NzJXbiAWGL/RQwaVm2BnefaejJh8LWoaU+tvBmGFLJSrcsrccgq8sNt3DvLALfvp88=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763405713; c=relaxed/simple;
-	bh=vtT+WtTf/UBUYKnc+b3ZReWm4oesw8m7FKXyGXeXf+w=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=V3nrr1nVkMM+GPQWajVcRiCvi2KR9Mtu72p995QNAHCMSUjb7dMrNJOX5IHAb2NPHfaUjD9SqGJgXaLdhpqkG/CDrJYwqEYZAsNlRyVAM74b4bsqLF0cHnPRiBDWiPhwR8jLFBwXeZHNMHrHPzKoBxPF//7nCeBNxGKoGD4h+YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m7u7t6mF; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1763405709; x=1794941709;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=vtT+WtTf/UBUYKnc+b3ZReWm4oesw8m7FKXyGXeXf+w=;
-  b=m7u7t6mFpPwywviStA/IZQDB3xOasuItEBE0NYysdSPdbTvF+RgQONxy
-   O4SobdFR2lgs+ba6lFTe6quinVB7MqUkfARv/bZOk0pM0ZYMjSXS2GTDl
-   bsOLyafnGYhhPBjeeYcBu8J91M0h0TInNNONmvJlzpR7qThX29KN5Ef9a
-   RnOyp0+MpqWtsglfi102N+mtC0hBySAfC3CYJziAIbMmtXsX1DsCjF74k
-   FPasrh0ig5HikaUN/c84nryHWdRaKloWrV9O/0okQcXF3rxiSI5ONKk3W
-   QxgQXSbZCRdvSkkGN34irnJZGJUXbwFGRMgMapxV1W7I+tK8jbRvUJLcn
-   w==;
-X-CSE-ConnectionGUID: QRhMCRQ0TLegAP6C76X9Qw==
-X-CSE-MsgGUID: XaZbI2rwQDW/ACCnlmKABA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11616"; a="65348582"
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="65348582"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 10:55:09 -0800
-X-CSE-ConnectionGUID: O1hhndQSSVOsSx8sQbM5mg==
-X-CSE-MsgGUID: Lz0TjpW8TYuYKkt3LlVNQA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,312,1754982000"; 
-   d="scan'208";a="195467850"
-Received: from unknown (HELO [10.241.243.18]) ([10.241.243.18])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2025 10:55:08 -0800
-Message-ID: <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
-Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running
- cmpxchg when balance is not due
-From: Tim Chen <tim.c.chen@linux.intel.com>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org, 
- "Peter Zijlstra (Intel)"
-	 <peterz@infradead.org>
-Cc: linux-tip-commits@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>, 
- Vincent Guittot <vincent.guittot@linaro.org>, K Prateek Nayak
- <kprateek.nayak@amd.com>, Srikar Dronamraju	 <srikar@linux.ibm.com>, Mohini
- Narkhede <mohini.narkhede@intel.com>, 	x86@kernel.org
-Date: Mon, 17 Nov 2025 10:55:07 -0800
-In-Reply-To: <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
-References: 
-	<6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
-	 <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
-	 <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
-Autocrypt: addr=tim.c.chen@linux.intel.com; prefer-encrypt=mutual;
- keydata=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
- uQ==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164CB84039;
+	Mon, 17 Nov 2025 19:00:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763406058; cv=fail; b=TzuUCXVz6DgQBH8LFsYKB+HzrKkeyeKCO7ioc3CIN1f5ErhK9mInNhKIdnFIWhg+7nNL7ok4yN/vcTenjEXTN3hTkQvsS4tkBz1+VwcGyrr4dD+lTCbrT9zVbbDA6XHByA/hcmPTn2zpO00gFXJ728F4TocQ8hhzsO2oV6/nuOY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763406058; c=relaxed/simple;
+	bh=jUD92756NESaunRFO1fhZuepDrwc6ZsPp0U7tyDkJZ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qMtAM++UZfPfTo3ud3Vk4EoOOmE6s4hL5GAvnpU9rM81NtCfmvxR8gONquKrHzNJKce7Pcs1MEDthRyGynba1EcVGUiWp8snsORxrr/+vT9zUkcx0eZyMshLEyzsxneL/QazCC2YQfbHBk0CK/OiOduMTYJEYZub0jR1UrWmgQg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Cm0wDcH5; arc=fail smtp.client-ip=40.93.198.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Sp0wCpd1EMVBYRacnPEp3WNYhPWCN+8VpI1WE3hr1EpUHMqpce7PruJ/BYJVK3jX/8mX3cM7uFKm8w+W8LXS908svpQ3vCNX01YRWcit5we+gfahOWD/Hp8vH5FDWyO2gZonHEeK/6kuWntqa9DnerUFx4cSqZTfuy7k3x97g9Oj828YEmAa50OuK4lFqJGsIqPqqlNsB2jTBe0Y23tloMtPetp/YOFnxmafLY1MUtBljGITYcGeNW4lZvT6SgM0IUn5e/CJy2iBUAO9jwUa5AA99WvImbnYUaINFEIpVCuN2Iv+hQPnaFwQkQ4Md2eh7KJU5NhRyd6Cu7g8e1hDag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=25mktRR/FSAF4YJ+ghEOwzwnIBEPiyc5NeUKBQn6E2A=;
+ b=a3wSawCuNh24v83AizMqGDYZ9/ajK3GahQ/bvQcFxHIisc0igZmf3L/IopA0pX4cQvm79bn7ZkNWo4ZeaHCSC9hDJ2jwHgOcjWYiC7onD/JQaqwKl0puF0LFZKOfCaec3rlpk21ep50WtL8EhMJ8VUFAH2O/1yQn0vY8Tm8UsCmbFSIzHyENmdhXCehJGPqfkoqv1/cyrSciUuEyUlDwpCs0iXGNTNRhpuDyllm+DYjh9Ayftgw/BdfgoJ0fqsTHscHKSDWKmG4hAC3WQfHCTmz+ZWQmBL8kV0Ps9bx+rsQLVO4GoIST0BMimC5eWSfXaPgyUt9kINoIIozy9bC4IQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=25mktRR/FSAF4YJ+ghEOwzwnIBEPiyc5NeUKBQn6E2A=;
+ b=Cm0wDcH5o99V58wHq0AisBFVZgGVMjeTD9x3/ZgKtsvLCF9aU4qfJDfctJU8WCD7nKNeTzwrDt1lLdiEnih63msnL5AcDnbhrNo8+rWrDxiBFsLiakB+X/VzH1VUrJyx1TSqPIyeRFCUbZaR0Bqgfv/BQgt20grDxQMjK9rzIVM=
+Received: from SA0PR11CA0186.namprd11.prod.outlook.com (2603:10b6:806:1bc::11)
+ by PH8PR12MB7255.namprd12.prod.outlook.com (2603:10b6:510:224::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Mon, 17 Nov
+ 2025 19:00:48 +0000
+Received: from SA2PEPF00003AE8.namprd02.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::3a) by SA0PR11CA0186.outlook.office365.com
+ (2603:10b6:806:1bc::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.22 via Frontend Transport; Mon,
+ 17 Nov 2025 19:00:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SA2PEPF00003AE8.mail.protection.outlook.com (10.167.248.8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9343.9 via Frontend Transport; Mon, 17 Nov 2025 19:00:47 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 17 Nov
+ 2025 11:00:45 -0800
+Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
+ Transport; Mon, 17 Nov 2025 11:00:42 -0800
+Message-ID: <7099a373-8d6c-4c67-806c-84b50315f160@amd.com>
+Date: Tue, 18 Nov 2025 00:30:36 +0530
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running cmpxchg
+ when balance is not due
+To: Tim Chen <tim.c.chen@linux.intel.com>, Shrikanth Hegde
+	<sshegde@linux.ibm.com>, <linux-kernel@vger.kernel.org>, "Peter Zijlstra
+ (Intel)" <peterz@infradead.org>
+CC: <linux-tip-commits@vger.kernel.org>, Chen Yu <yu.c.chen@intel.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>, Srikar Dronamraju
+	<srikar@linux.ibm.com>, Mohini Narkhede <mohini.narkhede@intel.com>,
+	<x86@kernel.org>
+References: <6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
+ <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
+ <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
+ <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
+Content-Language: en-US
+From: K Prateek Nayak <kprateek.nayak@amd.com>
+In-Reply-To: <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE8:EE_|PH8PR12MB7255:EE_
+X-MS-Office365-Filtering-Correlation-Id: e2089910-025f-4e25-1dd5-08de260b9e05
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?bExLSmFZK2sybUVqdVFwbGkzUVd6VjY2WHhsU3BlMEZDS3JYZmMvTjQzRktY?=
+ =?utf-8?B?V3BsamdPbmhLNElsZmZoNXVKYkN2RVBJM3NYZ3JGSnZuYUxYa242L2xiN0lt?=
+ =?utf-8?B?a2U3NkNaRHFVOFBMQTJ1RHAwbUEyaGpXTTFNZTJMWG0xOVJ4SWpjWDNGbmNE?=
+ =?utf-8?B?T0lvMFhiektqeklrRXFkU1AwMEp3SmxkQUJYM3NZOE14YWlkQlFLSHJFbVBE?=
+ =?utf-8?B?ckVnMk91bmw0Vm9FeUNqQ1lSMUZ4Mks5aXhyNjNPVWZxVDRSb3RPZzllMVd2?=
+ =?utf-8?B?cWdGOWhzdDVoRXprekZtMi9TbHBha1B2OTd2Zk9aQlh0NUIwZWdZZnNMVnV6?=
+ =?utf-8?B?QTYvUzUxZnJpWXUvenNhNEFzM25JUDY5VndmazFTRGVCeGZqK2g2cnJBcnZr?=
+ =?utf-8?B?SDNrMzRNa1FNSUdWdElZdFNsWVB0YVVPZFZ6RllKUmh0azlscXY3eldacm8r?=
+ =?utf-8?B?YndQZkdhZml3MU5vNVh1cWozTm9xZ2lNSEZNRkdSNVNDKzJQUVl4TC9YN1J4?=
+ =?utf-8?B?V0x3Szk3S0MrZ01UZVM2M01mS0ZHbm5WRmZDVnUrc3k3M1NaOXdDOFNMbjFT?=
+ =?utf-8?B?UktzYkIwNVJFTWRhMSs2VzVrV2FRSjJ4ZUl2SStSV0svM05yTGJtT2NIR1lv?=
+ =?utf-8?B?aFN3QU9jTEJpQkluajZNUTFRdlJPUExKUzlxMVdXLzcrZlMwT21kM0ZaTXRC?=
+ =?utf-8?B?QzFXbUw2cENYc1BUU2Nuc01kZ0lnTGt5MEZRdzhXaDV1OWtmazd3WlpzNEpG?=
+ =?utf-8?B?WUFMbGZTb2E1YjdRaVUwbjh6NVA5QVhZdmtsejN3cHBWMUJzdXU2NGJFK0R3?=
+ =?utf-8?B?a3dHTDJnMHdrNVFqL0NvZ3pEVXlkWFpZUVhuMzdtQkNRSitoMi9iekk0eGRI?=
+ =?utf-8?B?WGttcVBMZWVXR0FvYnF0YyttT0x4L08xejR6SmJDQU96Z3gyYU9Ob3VvektS?=
+ =?utf-8?B?ckg2WkVyNVovK1RobEZJR2VPZEhKMHh3UUVGeFh4UmRURGdxLzBEK0c5cCti?=
+ =?utf-8?B?QjhCOUVwSWZFYWNCNllFN0Frd2VqVjFOMTlvSWEzTDNCSjg1VExhd0kxVmgy?=
+ =?utf-8?B?MkJXN0JIRVZiR0R0aHJZVFJZVG5KTldHQ1lZdDljZXJPVEMyL0licjJ5NlJC?=
+ =?utf-8?B?WmN5dU8rMHJkd3d5ZTZmR1RzSlpJbHAybEhJc2tTQkMyNExLSzNETDRpQzZq?=
+ =?utf-8?B?eE5TRHRDR1E4QkFHQm9YVEc5RlRzdmd5MXVtVHNoajBMTU1lZkxTVGVSSmpm?=
+ =?utf-8?B?akJiS2lDdnZ1cUZrV3YwZjBSMUNNN202NUV6Ynp4NDlSNHF6Q0M5VGowWVAw?=
+ =?utf-8?B?U2RYOUlpNVBwaVNwciswSWRHR25YcWowdncyOW1zeThaWmxOWTJJRjhuYXhL?=
+ =?utf-8?B?WFE5WFZYY2pCR2tDcDdYcVJuN0hKTGFpVXZoK2NlZ255TXg1cTkxVHZGZmgv?=
+ =?utf-8?B?NkNwSUd3VlQxeTkvUGJXZ0RZWG4vYzJyUHRPaVQ5ZWJKS3QyelpaY2ZYczFV?=
+ =?utf-8?B?akVxZWNsUCsrUFVORmJ0bVhoMGYxdFdWNms5bTM1RW9xR0llbGxtdVFleTVY?=
+ =?utf-8?B?WVNJZk5yZmtkZDRtQVRKZlFVQlJvUEhMZTByYTB0eFFWdm9PMzNDdlk0M2t2?=
+ =?utf-8?B?dzdaeHZnT01vU1lLQVZMdUtRQ3pUT3MxaGVJZFljUUEzTENoMlAvdGczUnND?=
+ =?utf-8?B?MTNielF1UThVMWlQRHc1T3o2L3FPM09Hbyt6NjJickNsMXJ6ZlNHdGpsZERF?=
+ =?utf-8?B?Vm95SVdsdTlzVEpxVFl1M2RQWkJvY1dJcytza2I1WVVWNFJ2dTUxTVpzRzhs?=
+ =?utf-8?B?ejlxNVBrL001STNqWDRuKzY0Rk1qVG9hcDdsRmRVU0VYM3N5Tk56Qmx4aEpV?=
+ =?utf-8?B?czUxUEJEL2d3L0ZNWitFbXU1M0pxSk1FYkVZdG9EWmFsSTBsUnp6RlZ2YlJS?=
+ =?utf-8?B?V0xla2ZFb004eCtjZFhqVzQxRDVIQ0Z0TVFXLzU3Lzg4SDRFTVg4cHRxQ0dF?=
+ =?utf-8?B?NnJwSXFlNEtVNU5OSmk4ZTFlSjIwYUZVaCtNcitld0s3QnpvZGE3V1gwbDJB?=
+ =?utf-8?B?RzRUcmpvRjViTFcwYktsNVR0VHZwcjg1SUVmMmUvM0ZuaVFvMEJyZHpnTVJn?=
+ =?utf-8?Q?VeFk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 19:00:47.0211
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2089910-025f-4e25-1dd5-08de260b9e05
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00003AE8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7255
 
-On Sun, 2025-11-16 at 02:26 +0530, Shrikanth Hegde wrote:
-> Hi Peter.
->=20
-> On 11/14/25 5:49 PM, tip-bot2 for Tim Chen wrote:
-> > The following commit has been merged into the sched/core branch of tip:
-> >=20
-> > Commit-ID:     2265c5d4deeff3bfe4580d9ffe718fd80a414cac
-> > Gitweb:        https://git.kernel.org/tip/2265c5d4deeff3bfe4580d9ffe718=
-fd80a414cac
-> > Author:        Tim Chen <tim.c.chen@linux.intel.com>
-> > AuthorDate:    Mon, 10 Nov 2025 10:47:35 -08:00
-> > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > CommitterDate: Fri, 14 Nov 2025 13:03:05 +01:00
-> >=20
-> > sched/fair: Skip sched_balance_running cmpxchg when balance is not due
-> >=20
-> >=20
->=20
->   =20
-> > +	if (!need_unlock && (sd->flags & SD_SERIALIZE) && idle !=3D CPU_NEWLY=
-_IDLE) {
-> > +		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
->=20
-> This should be atomic_cmpxchg_acquire?
->=20
-> I booted the system with latest sched/core and it crashes at the boot.
->=20
-> BUG: Kernel NULL pointer dereference on read at 0x00000000
-> Faulting instruction address: 0xc0000000001db57c
-> Oops: Kernel access of bad area, sig: 7 [#1]
-> LE PAGE_SIZE=3D64K MMU=3DRadix  SMP NR_CPUS=3D8192 NUMA pSeries
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.18.0-rc3+ #242 PREEMPT=
-(lazy)
-> NIP [c0000000001db57c] sched_balance_rq+0x560/0x92c
-> LR [c0000000001db198] sched_balance_rq+0x17c/0x92c
-> Call Trace:
-> [c00000111ffdfd10] [c0000000001db198] sched_balance_rq+0x17c/0x92c (unrel=
-iable)
-> [c00000111ffdfe50] [c0000000001dc598] sched_balance_domains+0x2c4/0x3d0
-> [c00000111ffdff00] [c000000000168958] handle_softirqs+0x138/0x414
-> [c00000111ffdffe0] [c000000000017d80] do_softirq_own_stack+0x3c/0x50
-> [c000000008a57a60] [c000000000168048] __irq_exit_rcu+0x18c/0x1b4
-> [c000000008a57a90] [c0000000001691a8] irq_exit+0x20/0x38
-> [c000000008a57ab0] [c000000000028c18] timer_interrupt+0x174/0x394
-> [c000000008a57b10] [c000000000009f8c] decrementer_common_virt+0x28c/0x290
->=20
->=20
-> Bisect pointed to:
-> git bisect bad 2265c5d4deeff3bfe4580d9ffe718fd80a414cac
-> # first bad commit: [2265c5d4deeff3bfe4580d9ffe718fd80a414cac] sched/fair=
-: Skip sched_balance_running cmpxchg when balance is not due
->=20
->=20
-> I wondered what is really different since the tim's v4 boots fine.
-> There is try instead in the tip, i think that is messing it since likely
-> we are dereferencing 0?
->=20
->=20
-> With this diff it boots fine.
->=20
-> ---
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index aaa47ece6a8e..01814b10b833 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -11841,7 +11841,7 @@ static int sched_balance_rq(int this_cpu, struct =
-rq *this_rq,
->          }
->  =20
->          if (!need_unlock && (sd->flags & SD_SERIALIZE)) {
-> -               if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0=
-, 1))
+On 11/18/2025 12:25 AM, Tim Chen wrote:
+>> I wondered what is really different since the tim's v4 boots fine.
+>> There is try instead in the tip, i think that is messing it since likely
+>> we are dereferencing 0?
+>>
+>>
+>> With this diff it boots fine.
+>>
+>> ---
+>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>> index aaa47ece6a8e..01814b10b833 100644
+>> --- a/kernel/sched/fair.c
+>> +++ b/kernel/sched/fair.c
+>> @@ -11841,7 +11841,7 @@ static int sched_balance_rq(int this_cpu, struct rq *this_rq,
+>>          }
+>>   
+>>          if (!need_unlock && (sd->flags & SD_SERIALIZE)) {
+>> -               if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
+> 
+> The second argument of atomic_try_cmpxchg_acquire is "int *old" while that of atomic_cmpxchg_acquire
+> is "int old". So the above check would result in NULL pointer access.  Probably have
+> to do something like the following to use atomic_try_cmpxchg_acquire()
+> 
+> 		int zero = 0;
+> 		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, &zero, 1))
 
-The second argument of atomic_try_cmpxchg_acquire is "int *old" while that =
-of atomic_cmpxchg_acquire
-is "int old". So the above check would result in NULL pointer access.  Prob=
-ably have
-to do something like the following to use atomic_try_cmpxchg_acquire()
+Peter seems to have refreshed tip:sched/core with above but is
+there any advantage of using atomic_try_cmpxchg_acquire() as
+opposed to plain old atomic_cmpxchg_acquire() and then checking
+the old value it returns?
 
-		int zero =3D 0;
-		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, &zero, 1))
-	=09
-Otherwise we should do atomic_cmpxchg_acquire() as below
+That zero variable serves no other purpose and is a bit of an
+eyesore IMO.
 
-> +               if (!atomic_cmpxchg_acquire(&sched_balance_running, 0, 1)=
-)
+> 		
+> Otherwise we should do atomic_cmpxchg_acquire() as below
+> 
+>> +               if (!atomic_cmpxchg_acquire(&sched_balance_running, 0, 1))
+> 
+-- 
+Thanks and Regards,
+Prateek
 
-Tim
-
->                          goto out_balanced;
->  =20
->                  need_unlock =3D true;
->=20
->=20
 
