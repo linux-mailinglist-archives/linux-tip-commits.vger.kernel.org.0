@@ -1,204 +1,148 @@
-Return-Path: <linux-tip-commits+bounces-7381-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7382-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E32D5C65DF0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 20:08:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DCC7C65E50
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 20:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 658AF4ECE88
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 19:06:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BB2C362095
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 19:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7BA335541;
-	Mon, 17 Nov 2025 19:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C8A304BA0;
+	Mon, 17 Nov 2025 19:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Cm0wDcH5"
-Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010037.outbound.protection.outlook.com [40.93.198.37])
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jHlK6wNl"
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164CB84039;
-	Mon, 17 Nov 2025 19:00:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763406058; cv=fail; b=TzuUCXVz6DgQBH8LFsYKB+HzrKkeyeKCO7ioc3CIN1f5ErhK9mInNhKIdnFIWhg+7nNL7ok4yN/vcTenjEXTN3hTkQvsS4tkBz1+VwcGyrr4dD+lTCbrT9zVbbDA6XHByA/hcmPTn2zpO00gFXJ728F4TocQ8hhzsO2oV6/nuOY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763406058; c=relaxed/simple;
-	bh=jUD92756NESaunRFO1fhZuepDrwc6ZsPp0U7tyDkJZ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qMtAM++UZfPfTo3ud3Vk4EoOOmE6s4hL5GAvnpU9rM81NtCfmvxR8gONquKrHzNJKce7Pcs1MEDthRyGynba1EcVGUiWp8snsORxrr/+vT9zUkcx0eZyMshLEyzsxneL/QazCC2YQfbHBk0CK/OiOduMTYJEYZub0jR1UrWmgQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Cm0wDcH5; arc=fail smtp.client-ip=40.93.198.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Sp0wCpd1EMVBYRacnPEp3WNYhPWCN+8VpI1WE3hr1EpUHMqpce7PruJ/BYJVK3jX/8mX3cM7uFKm8w+W8LXS908svpQ3vCNX01YRWcit5we+gfahOWD/Hp8vH5FDWyO2gZonHEeK/6kuWntqa9DnerUFx4cSqZTfuy7k3x97g9Oj828YEmAa50OuK4lFqJGsIqPqqlNsB2jTBe0Y23tloMtPetp/YOFnxmafLY1MUtBljGITYcGeNW4lZvT6SgM0IUn5e/CJy2iBUAO9jwUa5AA99WvImbnYUaINFEIpVCuN2Iv+hQPnaFwQkQ4Md2eh7KJU5NhRyd6Cu7g8e1hDag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=25mktRR/FSAF4YJ+ghEOwzwnIBEPiyc5NeUKBQn6E2A=;
- b=a3wSawCuNh24v83AizMqGDYZ9/ajK3GahQ/bvQcFxHIisc0igZmf3L/IopA0pX4cQvm79bn7ZkNWo4ZeaHCSC9hDJ2jwHgOcjWYiC7onD/JQaqwKl0puF0LFZKOfCaec3rlpk21ep50WtL8EhMJ8VUFAH2O/1yQn0vY8Tm8UsCmbFSIzHyENmdhXCehJGPqfkoqv1/cyrSciUuEyUlDwpCs0iXGNTNRhpuDyllm+DYjh9Ayftgw/BdfgoJ0fqsTHscHKSDWKmG4hAC3WQfHCTmz+ZWQmBL8kV0Ps9bx+rsQLVO4GoIST0BMimC5eWSfXaPgyUt9kINoIIozy9bC4IQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=25mktRR/FSAF4YJ+ghEOwzwnIBEPiyc5NeUKBQn6E2A=;
- b=Cm0wDcH5o99V58wHq0AisBFVZgGVMjeTD9x3/ZgKtsvLCF9aU4qfJDfctJU8WCD7nKNeTzwrDt1lLdiEnih63msnL5AcDnbhrNo8+rWrDxiBFsLiakB+X/VzH1VUrJyx1TSqPIyeRFCUbZaR0Bqgfv/BQgt20grDxQMjK9rzIVM=
-Received: from SA0PR11CA0186.namprd11.prod.outlook.com (2603:10b6:806:1bc::11)
- by PH8PR12MB7255.namprd12.prod.outlook.com (2603:10b6:510:224::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9320.16; Mon, 17 Nov
- 2025 19:00:48 +0000
-Received: from SA2PEPF00003AE8.namprd02.prod.outlook.com
- (2603:10b6:806:1bc:cafe::3a) by SA0PR11CA0186.outlook.office365.com
- (2603:10b6:806:1bc::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9320.22 via Frontend Transport; Mon,
- 17 Nov 2025 19:00:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SA2PEPF00003AE8.mail.protection.outlook.com (10.167.248.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9343.9 via Frontend Transport; Mon, 17 Nov 2025 19:00:47 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 17 Nov
- 2025 11:00:45 -0800
-Received: from [172.31.184.125] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Mon, 17 Nov 2025 11:00:42 -0800
-Message-ID: <7099a373-8d6c-4c67-806c-84b50315f160@amd.com>
-Date: Tue, 18 Nov 2025 00:30:36 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9081C2877D7;
+	Mon, 17 Nov 2025 19:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1763406429; cv=none; b=SYxSxnrAvUsDIytUn7nc7hfwsurOyBIp0DLidLLTzqIBo2c3ZUiSgkqUIvf7sWMhMpzS8N2YuzQM6LNVyjVlQZMdzlccskTRNw0U0CM+WKK1x6MkO3toUMOChtSevc87lyecAxqp/Zvk0DfbMYmHXMF1+HMaQ5JRCbVntQISDCE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1763406429; c=relaxed/simple;
+	bh=gH7ybJKYpzcIHZjQ0uJaRw0f1Zni17lhxNfHxhmw+/w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s9LvngH7ui0N5ZbHldZbHyPHYw+VRrojdY2S+LPRuAe+DqbEq1fOkyJWWTf0I3Sa6WwZUY8tVTU+vvGYHB4DvQFmFTwTLiX3EhIGGv7wTBChLS73tTCv3iqTPcneLOELK9s8YmsNuiiuFIeYjZxhubtaHt05Y2tRboB6g6V9Q4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jHlK6wNl; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0FF5540E0216;
+	Mon, 17 Nov 2025 19:07:04 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id rfXEmGTTnpZS; Mon, 17 Nov 2025 19:07:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1763406419; bh=N4PH0C92flXoR5l8LWtwhoNGoAb0kV+3/PqOXvmrUGA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jHlK6wNl+ghF7N94m3g8DQKgy+SD5mQLeV1dtQvGFZG+MB78UQW012xiElnWofuVm
+	 atmZnY0S+CrhTC1sdWydQ9WZU6kYEBFE1tETSJ5ibNp0/Ry2kMPjtsaHxMrbp0f1KV
+	 Ql0jHyqiIw4Pos2zV7pC05Z+I1Bly3WrZrWYxXx6hys3Dg0GhIvqi4dGOq3URIpNmg
+	 rzcW4sFICZazk1MBd4gn1ZUuePSeqodo0B21RsxEo/WZtpn4DT4Rt3fMdw/pbSAHPa
+	 2uJvKnDwxbGKBpnH59t+ArmVybgI3RgkNDCA1/U5d9zA8PGOKzhcpjQX5xprv9eU2L
+	 fIXyWDsXb5wWe28D7hTvL4OeceObIhPuqFO/YvbGXxNKduoMLiPUmRvpDpFI6YNk9h
+	 dAIrYJrApNcpLcjc1icN3GZPH6LDO6AB1LS/t07qWOHAHSXEVSkyuDtgncR/ktd2Z3
+	 Dhbn8d+YNLYkqxbvZ39mXPeQo4heR3syRS+t6jFaHjQGnt0pM6RPchJk3Ug97AnIFF
+	 +3RKjgnViGxajYBn9XIuJ+JhKmTs4N2bEb3rREkfrjuqM+8USp8Uo0+eKU/PD0m4H+
+	 lZ4byyzDnKSbilnwkw5z4Vsep8t1nPQu7odwl02q1pVvvuTgMq/IwCEYxGFTQ7Unr/
+	 yN9xIF3NEgF+a5KNoa4kIe2o=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 64D4640E022F;
+	Mon, 17 Nov 2025 19:06:48 +0000 (UTC)
+Date: Mon, 17 Nov 2025 20:06:41 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org, Tim Chen <tim.c.chen@linux.intel.com>,
+	linux-tip-commits@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Mohini Narkhede <mohini.narkhede@intel.com>, x86@kernel.org
+Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running cmpxchg
+ when balance is not due
+Message-ID: <20251117190641.GCaRtyQXdOhKrlAF7Y@fat_crate.local>
+References: <6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
+ <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
+ <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running cmpxchg
- when balance is not due
-To: Tim Chen <tim.c.chen@linux.intel.com>, Shrikanth Hegde
-	<sshegde@linux.ibm.com>, <linux-kernel@vger.kernel.org>, "Peter Zijlstra
- (Intel)" <peterz@infradead.org>
-CC: <linux-tip-commits@vger.kernel.org>, Chen Yu <yu.c.chen@intel.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>, Srikar Dronamraju
-	<srikar@linux.ibm.com>, Mohini Narkhede <mohini.narkhede@intel.com>,
-	<x86@kernel.org>
-References: <6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
- <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
- <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
- <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
-Content-Language: en-US
-From: K Prateek Nayak <kprateek.nayak@amd.com>
-In-Reply-To: <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE8:EE_|PH8PR12MB7255:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2089910-025f-4e25-1dd5-08de260b9e05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bExLSmFZK2sybUVqdVFwbGkzUVd6VjY2WHhsU3BlMEZDS3JYZmMvTjQzRktY?=
- =?utf-8?B?V3BsamdPbmhLNElsZmZoNXVKYkN2RVBJM3NYZ3JGSnZuYUxYa242L2xiN0lt?=
- =?utf-8?B?a2U3NkNaRHFVOFBMQTJ1RHAwbUEyaGpXTTFNZTJMWG0xOVJ4SWpjWDNGbmNE?=
- =?utf-8?B?T0lvMFhiektqeklrRXFkU1AwMEp3SmxkQUJYM3NZOE14YWlkQlFLSHJFbVBE?=
- =?utf-8?B?ckVnMk91bmw0Vm9FeUNqQ1lSMUZ4Mks5aXhyNjNPVWZxVDRSb3RPZzllMVd2?=
- =?utf-8?B?cWdGOWhzdDVoRXprekZtMi9TbHBha1B2OTd2Zk9aQlh0NUIwZWdZZnNMVnV6?=
- =?utf-8?B?QTYvUzUxZnJpWXUvenNhNEFzM25JUDY5VndmazFTRGVCeGZqK2g2cnJBcnZr?=
- =?utf-8?B?SDNrMzRNa1FNSUdWdElZdFNsWVB0YVVPZFZ6RllKUmh0azlscXY3eldacm8r?=
- =?utf-8?B?YndQZkdhZml3MU5vNVh1cWozTm9xZ2lNSEZNRkdSNVNDKzJQUVl4TC9YN1J4?=
- =?utf-8?B?V0x3Szk3S0MrZ01UZVM2M01mS0ZHbm5WRmZDVnUrc3k3M1NaOXdDOFNMbjFT?=
- =?utf-8?B?UktzYkIwNVJFTWRhMSs2VzVrV2FRSjJ4ZUl2SStSV0svM05yTGJtT2NIR1lv?=
- =?utf-8?B?aFN3QU9jTEJpQkluajZNUTFRdlJPUExKUzlxMVdXLzcrZlMwT21kM0ZaTXRC?=
- =?utf-8?B?QzFXbUw2cENYc1BUU2Nuc01kZ0lnTGt5MEZRdzhXaDV1OWtmazd3WlpzNEpG?=
- =?utf-8?B?WUFMbGZTb2E1YjdRaVUwbjh6NVA5QVhZdmtsejN3cHBWMUJzdXU2NGJFK0R3?=
- =?utf-8?B?a3dHTDJnMHdrNVFqL0NvZ3pEVXlkWFpZUVhuMzdtQkNRSitoMi9iekk0eGRI?=
- =?utf-8?B?WGttcVBMZWVXR0FvYnF0YyttT0x4L08xejR6SmJDQU96Z3gyYU9Ob3VvektS?=
- =?utf-8?B?ckg2WkVyNVovK1RobEZJR2VPZEhKMHh3UUVGeFh4UmRURGdxLzBEK0c5cCti?=
- =?utf-8?B?QjhCOUVwSWZFYWNCNllFN0Frd2VqVjFOMTlvSWEzTDNCSjg1VExhd0kxVmgy?=
- =?utf-8?B?MkJXN0JIRVZiR0R0aHJZVFJZVG5KTldHQ1lZdDljZXJPVEMyL0licjJ5NlJC?=
- =?utf-8?B?WmN5dU8rMHJkd3d5ZTZmR1RzSlpJbHAybEhJc2tTQkMyNExLSzNETDRpQzZq?=
- =?utf-8?B?eE5TRHRDR1E4QkFHQm9YVEc5RlRzdmd5MXVtVHNoajBMTU1lZkxTVGVSSmpm?=
- =?utf-8?B?akJiS2lDdnZ1cUZrV3YwZjBSMUNNN202NUV6Ynp4NDlSNHF6Q0M5VGowWVAw?=
- =?utf-8?B?U2RYOUlpNVBwaVNwciswSWRHR25YcWowdncyOW1zeThaWmxOWTJJRjhuYXhL?=
- =?utf-8?B?WFE5WFZYY2pCR2tDcDdYcVJuN0hKTGFpVXZoK2NlZ255TXg1cTkxVHZGZmgv?=
- =?utf-8?B?NkNwSUd3VlQxeTkvUGJXZ0RZWG4vYzJyUHRPaVQ5ZWJKS3QyelpaY2ZYczFV?=
- =?utf-8?B?akVxZWNsUCsrUFVORmJ0bVhoMGYxdFdWNms5bTM1RW9xR0llbGxtdVFleTVY?=
- =?utf-8?B?WVNJZk5yZmtkZDRtQVRKZlFVQlJvUEhMZTByYTB0eFFWdm9PMzNDdlk0M2t2?=
- =?utf-8?B?dzdaeHZnT01vU1lLQVZMdUtRQ3pUT3MxaGVJZFljUUEzTENoMlAvdGczUnND?=
- =?utf-8?B?MTNielF1UThVMWlQRHc1T3o2L3FPM09Hbyt6NjJickNsMXJ6ZlNHdGpsZERF?=
- =?utf-8?B?Vm95SVdsdTlzVEpxVFl1M2RQWkJvY1dJcytza2I1WVVWNFJ2dTUxTVpzRzhs?=
- =?utf-8?B?ejlxNVBrL001STNqWDRuKzY0Rk1qVG9hcDdsRmRVU0VYM3N5Tk56Qmx4aEpV?=
- =?utf-8?B?czUxUEJEL2d3L0ZNWitFbXU1M0pxSk1FYkVZdG9EWmFsSTBsUnp6RlZ2YlJS?=
- =?utf-8?B?V0xla2ZFb004eCtjZFhqVzQxRDVIQ0Z0TVFXLzU3Lzg4SDRFTVg4cHRxQ0dF?=
- =?utf-8?B?NnJwSXFlNEtVNU5OSmk4ZTFlSjIwYUZVaCtNcitld0s3QnpvZGE3V1gwbDJB?=
- =?utf-8?B?RzRUcmpvRjViTFcwYktsNVR0VHZwcjg1SUVmMmUvM0ZuaVFvMEJyZHpnTVJn?=
- =?utf-8?Q?VeFk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Nov 2025 19:00:47.0211
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2089910-025f-4e25-1dd5-08de260b9e05
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003AE8.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB7255
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
 
-On 11/18/2025 12:25 AM, Tim Chen wrote:
->> I wondered what is really different since the tim's v4 boots fine.
->> There is try instead in the tip, i think that is messing it since likely
->> we are dereferencing 0?
->>
->>
->> With this diff it boots fine.
->>
->> ---
->> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> index aaa47ece6a8e..01814b10b833 100644
->> --- a/kernel/sched/fair.c
->> +++ b/kernel/sched/fair.c
->> @@ -11841,7 +11841,7 @@ static int sched_balance_rq(int this_cpu, struct rq *this_rq,
->>          }
->>   
->>          if (!need_unlock && (sd->flags & SD_SERIALIZE)) {
->> -               if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
+On Sun, Nov 16, 2025 at 02:26:13AM +0530, Shrikanth Hegde wrote:
 > 
-> The second argument of atomic_try_cmpxchg_acquire is "int *old" while that of atomic_cmpxchg_acquire
-> is "int old". So the above check would result in NULL pointer access.  Probably have
-> to do something like the following to use atomic_try_cmpxchg_acquire()
+> Hi Peter.
 > 
-> 		int zero = 0;
-> 		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, &zero, 1))
+> On 11/14/25 5:49 PM, tip-bot2 for Tim Chen wrote:
+> > The following commit has been merged into the sched/core branch of tip:
+> > 
+> > Commit-ID:     2265c5d4deeff3bfe4580d9ffe718fd80a414cac
+> > Gitweb:        https://git.kernel.org/tip/2265c5d4deeff3bfe4580d9ffe718fd80a414cac
+> > Author:        Tim Chen <tim.c.chen@linux.intel.com>
+> > AuthorDate:    Mon, 10 Nov 2025 10:47:35 -08:00
+> > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > CommitterDate: Fri, 14 Nov 2025 13:03:05 +01:00
+> > 
+> > sched/fair: Skip sched_balance_running cmpxchg when balance is not due
+> > 
+> > 
+> 
+> > +	if (!need_unlock && (sd->flags & SD_SERIALIZE) && idle != CPU_NEWLY_IDLE) {
+> > +		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
+> 
+> This should be atomic_cmpxchg_acquire?
+> 
+> I booted the system with latest sched/core and it crashes at the boot.
+> 
+> BUG: Kernel NULL pointer dereference on read at 0x00000000
+> Faulting instruction address: 0xc0000000001db57c
+> Oops: Kernel access of bad area, sig: 7 [#1]
+> LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.18.0-rc3+ #242 PREEMPT(lazy)
+> NIP [c0000000001db57c] sched_balance_rq+0x560/0x92c
+> LR [c0000000001db198] sched_balance_rq+0x17c/0x92c
+> Call Trace:
+> [c00000111ffdfd10] [c0000000001db198] sched_balance_rq+0x17c/0x92c (unreliable)
+> [c00000111ffdfe50] [c0000000001dc598] sched_balance_domains+0x2c4/0x3d0
+> [c00000111ffdff00] [c000000000168958] handle_softirqs+0x138/0x414
+> [c00000111ffdffe0] [c000000000017d80] do_softirq_own_stack+0x3c/0x50
+> [c000000008a57a60] [c000000000168048] __irq_exit_rcu+0x18c/0x1b4
+> [c000000008a57a90] [c0000000001691a8] irq_exit+0x20/0x38
+> [c000000008a57ab0] [c000000000028c18] timer_interrupt+0x174/0x394
+> [c000000008a57b10] [c000000000009f8c] decrementer_common_virt+0x28c/0x290
+> 
+> 
+> Bisect pointed to:
+> git bisect bad 2265c5d4deeff3bfe4580d9ffe718fd80a414cac
+> # first bad commit: [2265c5d4deeff3bfe4580d9ffe718fd80a414cac] sched/fair: Skip sched_balance_running cmpxchg when balance is not due
 
-Peter seems to have refreshed tip:sched/core with above but is
-there any advantage of using atomic_try_cmpxchg_acquire() as
-opposed to plain old atomic_cmpxchg_acquire() and then checking
-the old value it returns?
+Dammit, I spent a whole day bisecting exactly the same issue and I missed your
+mail.
 
-That zero variable serves no other purpose and is a bit of an
-eyesore IMO.
+Oh well, it is fixed now... should pay more attention next time.
 
-> 		
-> Otherwise we should do atomic_cmpxchg_acquire() as below
-> 
->> +               if (!atomic_cmpxchg_acquire(&sched_balance_running, 0, 1))
-> 
+Thx.
+
 -- 
-Thanks and Regards,
-Prateek
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
