@@ -1,70 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-7401-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7402-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26A8C6B71C
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 20:30:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A82AC6B713
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 20:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id EFCF32C40E
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 19:29:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 70B5B292BD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 19:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49CF2F12DB;
-	Tue, 18 Nov 2025 19:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A6F2F5A13;
+	Tue, 18 Nov 2025 19:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oAJTu/oO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HoK0OoS1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q4qGGwDr";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2OVCGD4K"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288052EE60F;
-	Tue, 18 Nov 2025 19:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2D82F0C45;
+	Tue, 18 Nov 2025 19:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763494126; cv=none; b=hNZ7KTgpLAeRPNBYu6gCy979nfKBNZDgkuiVsedo5GHIONjx8oWCubKverMCkvrd6KhJJy/nitUnsdTNtFLh/8rcHv13tmRM6eKH99Ka4XQsOcmJ+NTbBX+CsYsfR3X2QKAHQ6itteuzrG3E16loe4OMSslOBM/K9/5Hj8OL0Tc=
+	t=1763494128; cv=none; b=e8g/vRskWV6jty2hyGZ+fdBegyzomyj7jIbTtk0zQRj2OhXIZncgJDXWB0o7D016qy0nbJN16t1rkAGQ749nYqECDoYpBk4cQleETsaJgLxzouWbG3+LEZqRHMQF25KfuQeNS8gnRcrJpDG5xoLvBDPJ3pbo4kHXZW3eaifkzYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763494126; c=relaxed/simple;
-	bh=fGVcDdyHgxfAxSLH6n97cKZNP3zlMTDYTkYH0aeKDfk=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=STcqOsa8NHmquS48nOgsBeG3SeTxb8whx3tIif+vtWA9fMoaz0Ph3lvr84dxhW263hyDeta2StDw3O1b1NnWOpdGihQ/9YUKzWz1imEvjOBBLysFIPr1wSO0YjadplB+bXr61eQOo33JPN1Q+kkoL71vkk+AgOf10w4j45kx6V4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oAJTu/oO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HoK0OoS1; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1763494128; c=relaxed/simple;
+	bh=t7T7VdlqfzsTjczJpbLxbQUGs5n/artWzrnjPOFq1x8=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=WrWZf2pORQUUs384YDR9FGAAjLB6uk7JIfvhnjzUw/nDQwiWBDPp1f9uNO5P2QpvSjvRZvbysabvG53jtddhtI/FheOrp1R8qwaqnHJk/q5dDXLzzV0S6O0O68mkT+ePcSSlop3NmUU1TnXvsMRaDGMoeUgZ0G4KKlbDp7tuQWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q4qGGwDr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2OVCGD4K; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 18 Nov 2025 19:28:42 -0000
+Date: Tue, 18 Nov 2025 19:28:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763494123;
+	s=2020; t=1763494124;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8wWWUqFsccZuB2ND5XauPkI+AAoP49v6H7Q9mg2BQRA=;
-	b=oAJTu/oOm+DBiU9lCprsWQDS0xoGuecNxXP0ueiqqtUIiJzK0zwTUQeu9/zEzX2njsP58H
-	VzuZFMn77BbTcmACvXjBnl/yJkJ8mU7YD88tgbCqobPBRE3F5miX9IJUfh+0anvdBIE1Zn
-	AnAfkSNFcJXLRbQ+wM9/ZIiO25rYuNBdjXADZI6Z9WZ4/kc0I71WsClQCPZGkfSd1lOtFS
-	RnTyu68i8RnglytpIBZFHEHMDwIdeuq4vMsyTTW268qR6Rm69aWmKGR+dkDd7U4h0MUzuU
-	mxi1ktV53U1QUC5RESRoWNYXAExxo4le1Jo+2fZprRbfiCefy7sm+rmhfYFcEQ==
+	bh=mZsDbh27QRMrR33ha9/mVPB1n2nIaVkop/gIZDVirIQ=;
+	b=q4qGGwDrO5vpfmg6lcAlyfizkMLis+kHVtRrUKpriKTiIbWifY/NndsVR0YTXVaKIFS8G7
+	Ox/z8Pqvo5hD3AkfxuSX+OO5DIWFKGiDtWeznqyUwaIdZygWeC5Lg018MoXcwxLNBeByNC
+	8beXKD0+AeHRj1tIHrmQm9qsBpatq6u6ECsbNjwYG/5B1rwZ5JQlD607I+zBnKFTALIi/I
+	JNbZypE9RMbP8LJ/SciBCjouPO1kWrDdrI1rnRxPpKejzVoD+tPz5il2RJsJvdY7AeUjoj
+	7E52wYLrNIKiDaU3TY0DjEyC7i8MFgL+lI4e+/O3YB8Nw31Ddrse+KrN5ZCpzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763494123;
+	s=2020e; t=1763494124;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=8wWWUqFsccZuB2ND5XauPkI+AAoP49v6H7Q9mg2BQRA=;
-	b=HoK0OoS13rASUiT75quVIcf7C2KkeGcpvJM3Xy/rvbTC8Kc0vBtuLg45GNFdopLEtJbxOw
-	sW96nrhgfwseSMDA==
+	bh=mZsDbh27QRMrR33ha9/mVPB1n2nIaVkop/gIZDVirIQ=;
+	b=2OVCGD4Kre1OHLdHSxfIUitqpd+0lpOG3OQ0G6KTGRk+YLKbDtMpwhUfEA1ORf1yExjqpJ
+	BgQq+CisuySWheBQ==
 From: "tip-bot2 for Sohil Mehta" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu: Add an LASS dependency on SMAP
+Subject: [tip: x86/cpu] x86/cpufeatures: Enumerate the LASS feature bits
 Cc: Sohil Mehta <sohil.mehta@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, "Xin Li (Intel)" <xin@zytor.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176349412242.498.13461166073125191566.tip-bot2@tip-bot2>
+Message-ID: <176349412339.498.2543524640453621205.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -74,57 +75,116 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     e39c5387adebf2839aaf5779cdd09a3506963fc5
-Gitweb:        https://git.kernel.org/tip/e39c5387adebf2839aaf5779cdd09a35069=
-63fc5
+Commit-ID:     7baadd463e147fdcb6d3a091d85e23f89832569c
+Gitweb:        https://git.kernel.org/tip/7baadd463e147fdcb6d3a091d85e23f8983=
+2569c
 Author:        Sohil Mehta <sohil.mehta@intel.com>
-AuthorDate:    Tue, 18 Nov 2025 10:29:04 -08:00
+AuthorDate:    Tue, 18 Nov 2025 10:29:03 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Tue, 18 Nov 2025 10:38:26 -08:00
 
-x86/cpu: Add an LASS dependency on SMAP
+x86/cpufeatures: Enumerate the LASS feature bits
 
-With LASS enabled, any kernel data access to userspace typically results
-in a #GP, or a #SS in some stack-related cases. When the kernel needs to
-access user memory, it can suspend LASS enforcement by toggling the
-RFLAGS.AC bit. Most of these cases are already covered by the
-stac()/clac() pairs used to avoid SMAP violations.
+Linear Address Space Separation (LASS) is a security feature that
+mitigates a class of side-channel attacks relying on speculative access
+across the user/kernel boundary.
 
-Even though LASS could potentially be enabled independently, it would be
-very painful without SMAP and the related stac()/clac() calls. There is
-no reason to support such a configuration because all future hardware
-with LASS is expected to have SMAP as well. Also, the STAC/CLAC
-instructions are architected to:
-	#UD - If CPUID.(EAX=3D07H, ECX=3D0H):EBX.SMAP[bit 20] =3D 0.
+Privilege mode based access protection already exists today with paging
+and features such as SMEP and SMAP. However, to enforce these
+protections, the processor must traverse the paging structures in
+memory. An attacker can use timing information resulting from this
+traversal to determine details about the paging structures, and to
+determine the layout of the kernel memory.
 
-So, make LASS depend on SMAP to conveniently reuse the existing AC bit
-toggling already in place.
+LASS provides the same mode-based protections as paging but without
+traversing the paging structures. Because the protections are enforced
+prior to page-walks, an attacker will not be able to derive paging-based
+timing information from the various caching structures such as the TLBs,
+mid-level caches, page walker, data caches, etc.
 
-Note: Additional STAC/CLAC would still be needed for accesses such as
-text poking which are not flagged by SMAP. This is because such mappings
-are in the lower half but do not have the _PAGE_USER bit set which SMAP
-uses for enforcement.
+LASS enforcement relies on the kernel implementation to divide the
+64-bit virtual address space into two halves:
+  Addr[63]=3D0 -> User address space
+  Addr[63]=3D1 -> Kernel address space
+
+Any data access or code execution across address spaces typically
+results in a #GP fault, with an #SS generated in some rare cases. The
+LASS enforcement for kernel data accesses is dependent on CR4.SMAP being
+set. The enforcement can be disabled by toggling the RFLAGS.AC bit
+similar to SMAP.
+
+Define the CPU feature bits to enumerate LASS. Also, disable the feature
+at compile time on 32-bit kernels. Use a direct dependency on X86_32
+(instead of !X86_64) to make it easier to combine with similar 32-bit
+specific dependencies in the future.
+
+LASS mitigates a class of side-channel speculative attacks, such as
+Spectre LAM, described in the paper, "Leaky Address Masking: Exploiting
+Unmasked Spectre Gadgets with Noncanonical Address Translation".
+
+Add the "lass" flag to /proc/cpuinfo to indicate that the feature is
+supported by hardware and enabled by the kernel. This allows userspace
+to determine if the system is secure against such attacks.
 
 Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Xin Li (Intel) <xin@zytor.com>
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://patch.msgid.link/20251118182911.2983253-3-sohil.mehta%40intel.c=
+Link: https://patch.msgid.link/20251118182911.2983253-2-sohil.mehta%40intel.c=
 om
 ---
- arch/x86/kernel/cpu/cpuid-deps.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/Kconfig.cpufeatures                | 4 ++++
+ arch/x86/include/asm/cpufeatures.h          | 1 +
+ arch/x86/include/uapi/asm/processor-flags.h | 2 ++
+ 3 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/cpuid-deps.c b/arch/x86/kernel/cpu/cpuid-dep=
-s.c
-index 46efcbd..98d0cdd 100644
---- a/arch/x86/kernel/cpu/cpuid-deps.c
-+++ b/arch/x86/kernel/cpu/cpuid-deps.c
-@@ -89,6 +89,7 @@ static const struct cpuid_dep cpuid_deps[] =3D {
- 	{ X86_FEATURE_SHSTK,			X86_FEATURE_XSAVES    },
- 	{ X86_FEATURE_FRED,			X86_FEATURE_LKGS      },
- 	{ X86_FEATURE_SPEC_CTRL_SSBD,		X86_FEATURE_SPEC_CTRL },
-+	{ X86_FEATURE_LASS,			X86_FEATURE_SMAP      },
- 	{}
- };
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index 250c106..733d5af 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -124,6 +124,10 @@ config X86_DISABLED_FEATURE_PCID
+ 	def_bool y
+ 	depends on !X86_64
+=20
++config X86_DISABLED_FEATURE_LASS
++	def_bool y
++	depends on X86_32
++
+ config X86_DISABLED_FEATURE_PKU
+ 	def_bool y
+ 	depends on !X86_INTEL_MEMORY_PROTECTION_KEYS
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufea=
+tures.h
+index 80b68f4..6f82302 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -314,6 +314,7 @@
+ #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
+ #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions=
+ */
+ #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16=
+ instructions */
++#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separati=
+on */
+ #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions=
+ */
+ #define X86_FEATURE_ARCH_PERFMON_EXT	(12*32+ 8) /* Intel Architectural PerfM=
+on Extension */
+ #define X86_FEATURE_FZRM		(12*32+10) /* Fast zero-length REP MOVSB */
+diff --git a/arch/x86/include/uapi/asm/processor-flags.h b/arch/x86/include/u=
+api/asm/processor-flags.h
+index f1a4adc..81d0c8b 100644
+--- a/arch/x86/include/uapi/asm/processor-flags.h
++++ b/arch/x86/include/uapi/asm/processor-flags.h
+@@ -136,6 +136,8 @@
+ #define X86_CR4_PKE		_BITUL(X86_CR4_PKE_BIT)
+ #define X86_CR4_CET_BIT		23 /* enable Control-flow Enforcement Technology */
+ #define X86_CR4_CET		_BITUL(X86_CR4_CET_BIT)
++#define X86_CR4_LASS_BIT	27 /* enable Linear Address Space Separation suppor=
+t */
++#define X86_CR4_LASS		_BITUL(X86_CR4_LASS_BIT)
+ #define X86_CR4_LAM_SUP_BIT	28 /* LAM for supervisor pointers */
+ #define X86_CR4_LAM_SUP		_BITUL(X86_CR4_LAM_SUP_BIT)
 =20
 
