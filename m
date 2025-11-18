@@ -1,71 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-7402-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7403-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A82AC6B713
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 20:30:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2CCC6B785
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 20:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by tor.lore.kernel.org (Postfix) with ESMTPS id 70B5B292BD
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 19:30:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTPS id 5D09A29D51
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 19:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A6F2F5A13;
-	Tue, 18 Nov 2025 19:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52F02E541F;
+	Tue, 18 Nov 2025 19:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q4qGGwDr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2OVCGD4K"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KfNw7QsN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ogp1ddTO"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2D82F0C45;
-	Tue, 18 Nov 2025 19:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5E0279DAD;
+	Tue, 18 Nov 2025 19:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763494128; cv=none; b=e8g/vRskWV6jty2hyGZ+fdBegyzomyj7jIbTtk0zQRj2OhXIZncgJDXWB0o7D016qy0nbJN16t1rkAGQ749nYqECDoYpBk4cQleETsaJgLxzouWbG3+LEZqRHMQF25KfuQeNS8gnRcrJpDG5xoLvBDPJ3pbo4kHXZW3eaifkzYc=
+	t=1763494802; cv=none; b=EGgeMtOhXYTpId0HwhSci3TEoY3QOJ33B6OK+LMMc0bSolvAZuoUeYqV+tb8HrQyJEuaemsun6/0zXGW0lld/dvOZVLksn8yPtS4yRALHYUZq8k+Oa2Zyq5/H5AqAfuqW3pKD052GZO/8KycSPV3yv9FSX8Zbs80kvx9Fa43fxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763494128; c=relaxed/simple;
-	bh=t7T7VdlqfzsTjczJpbLxbQUGs5n/artWzrnjPOFq1x8=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=WrWZf2pORQUUs384YDR9FGAAjLB6uk7JIfvhnjzUw/nDQwiWBDPp1f9uNO5P2QpvSjvRZvbysabvG53jtddhtI/FheOrp1R8qwaqnHJk/q5dDXLzzV0S6O0O68mkT+ePcSSlop3NmUU1TnXvsMRaDGMoeUgZ0G4KKlbDp7tuQWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q4qGGwDr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2OVCGD4K; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1763494802; c=relaxed/simple;
+	bh=cLVPVvDgYSAHKzyplCe4JC0NGppC2om/ew4iTP+0y+c=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=oUOH9rQCeWF14/iBMgfXLx+DLx9vxvqFEjZ6phqDVLgXkxH1J0xs1SIcu89vBoR6oTMMLAnKsz+kbO7OcSc1Ge0xNh9+L9M98788QPlOkiWnrRl36EryCHUGgIl+07j64X/DOeRcLvNOmXT8cMvbzlg8360ponMQ5Xa/glDIPJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KfNw7QsN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ogp1ddTO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 18 Nov 2025 19:28:43 -0000
+Date: Tue, 18 Nov 2025 19:39:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763494124;
+	s=2020; t=1763494799;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=mZsDbh27QRMrR33ha9/mVPB1n2nIaVkop/gIZDVirIQ=;
-	b=q4qGGwDrO5vpfmg6lcAlyfizkMLis+kHVtRrUKpriKTiIbWifY/NndsVR0YTXVaKIFS8G7
-	Ox/z8Pqvo5hD3AkfxuSX+OO5DIWFKGiDtWeznqyUwaIdZygWeC5Lg018MoXcwxLNBeByNC
-	8beXKD0+AeHRj1tIHrmQm9qsBpatq6u6ECsbNjwYG/5B1rwZ5JQlD607I+zBnKFTALIi/I
-	JNbZypE9RMbP8LJ/SciBCjouPO1kWrDdrI1rnRxPpKejzVoD+tPz5il2RJsJvdY7AeUjoj
-	7E52wYLrNIKiDaU3TY0DjEyC7i8MFgL+lI4e+/O3YB8Nw31Ddrse+KrN5ZCpzQ==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yaeJx07Hrlm72DxOQuB/Ymqfw2K0gBmruXWp6dt+6aE=;
+	b=KfNw7QsNt4ZyD1iANruA099oH8Lm4JEr6LSM89gPUizjBeU5iIWQU9eRe83Fv78rtO+/1z
+	TIM3isuNgcyLIg+HVFn4XXg1zK2MrT5r+4gZAasRwXnPG28ZKMl4zkYWh71k/q9vLckeqh
+	Xr9A51/NMRLn6NfQR3zIfRnOMoc2SR5ft5OM79xDa/565jgfnr2/FQiAHKh0aIrb1bKMB6
+	yYkEGiRTKGP1Mv4mSCPE5j77cHoDOadfDF+iAZZRNveBFH7R77jIG8k6qW+z9dWggbAUkc
+	pnon/+lLUDfg+cgn07wCTIfdjBQg6BCWyOgO0iEWcRyv7ZRl0LOqy+UTo1a+Qg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763494124;
+	s=2020e; t=1763494799;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=mZsDbh27QRMrR33ha9/mVPB1n2nIaVkop/gIZDVirIQ=;
-	b=2OVCGD4Kre1OHLdHSxfIUitqpd+0lpOG3OQ0G6KTGRk+YLKbDtMpwhUfEA1ORf1yExjqpJ
-	BgQq+CisuySWheBQ==
-From: "tip-bot2 for Sohil Mehta" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yaeJx07Hrlm72DxOQuB/Ymqfw2K0gBmruXWp6dt+6aE=;
+	b=ogp1ddTO1D/7kqxWZmAefrhdh6MV+sAZwS9bNKcxyQ+FboDrUlSfDEuk2txJN7LzTPQN1z
+	uz95rlxOqSDjBwCA==
+From: "tip-bot2 for Avadhut Naik" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpufeatures: Enumerate the LASS feature bits
-Cc: Sohil Mehta <sohil.mehta@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, "Xin Li (Intel)" <xin@zytor.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: ras/core] x86/mce: Add support for physical address valid bit
+Cc: Avadhut Naik <avadhut.naik@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251118191731.181269-1-avadhut.naik@amd.com>
+References: <20251118191731.181269-1-avadhut.naik@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176349412339.498.2543524640453621205.tip-bot2@tip-bot2>
+Message-ID: <176349479789.498.12179863167646062865.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,118 +79,119 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the ras/core branch of tip:
 
-Commit-ID:     7baadd463e147fdcb6d3a091d85e23f89832569c
-Gitweb:        https://git.kernel.org/tip/7baadd463e147fdcb6d3a091d85e23f8983=
-2569c
-Author:        Sohil Mehta <sohil.mehta@intel.com>
-AuthorDate:    Tue, 18 Nov 2025 10:29:03 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 18 Nov 2025 10:38:26 -08:00
+Commit-ID:     ab19d15bd5ee9e3a3a7f8e0ac9eb8f6eb9c0af2e
+Gitweb:        https://git.kernel.org/tip/ab19d15bd5ee9e3a3a7f8e0ac9eb8f6eb9c=
+0af2e
+Author:        Avadhut Naik <avadhut.naik@amd.com>
+AuthorDate:    Tue, 18 Nov 2025 19:15:03=20
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 18 Nov 2025 20:24:13 +01:00
 
-x86/cpufeatures: Enumerate the LASS feature bits
+x86/mce: Add support for physical address valid bit
 
-Linear Address Space Separation (LASS) is a security feature that
-mitigates a class of side-channel attacks relying on speculative access
-across the user/kernel boundary.
+Starting with Zen6, AMD's Scalable MCA systems will incorporate two new bits =
+in
+MCA_STATUS and MCA_CONFIG MSRs. These bits will indicate if a valid System
+Physical Address (SPA) is present in MCA_ADDR.
 
-Privilege mode based access protection already exists today with paging
-and features such as SMEP and SMAP. However, to enforce these
-protections, the processor must traverse the paging structures in
-memory. An attacker can use timing information resulting from this
-traversal to determine details about the paging structures, and to
-determine the layout of the kernel memory.
+PhysAddrValidSupported bit (MCA_CONFIG[11]) serves as the architectural
+indicator and states if PhysAddrV bit (MCA_STATUS[54]) is Reserved or if it
+indicates validity of SPA in MCA_ADDR.
 
-LASS provides the same mode-based protections as paging but without
-traversing the paging structures. Because the protections are enforced
-prior to page-walks, an attacker will not be able to derive paging-based
-timing information from the various caching structures such as the TLBs,
-mid-level caches, page walker, data caches, etc.
+PhysAddrV bit (MCA_STATUS[54]) advertises if MCA_ADDR contains valid SPA or if
+it is implementation specific.
 
-LASS enforcement relies on the kernel implementation to divide the
-64-bit virtual address space into two halves:
-  Addr[63]=3D0 -> User address space
-  Addr[63]=3D1 -> Kernel address space
+Use and prefer MCA_STATUS[PhysAddrV] when checking for a usable address.
 
-Any data access or code execution across address spaces typically
-results in a #GP fault, with an #SS generated in some rare cases. The
-LASS enforcement for kernel data accesses is dependent on CR4.SMAP being
-set. The enforcement can be disabled by toggling the RFLAGS.AC bit
-similar to SMAP.
-
-Define the CPU feature bits to enumerate LASS. Also, disable the feature
-at compile time on 32-bit kernels. Use a direct dependency on X86_32
-(instead of !X86_64) to make it easier to combine with similar 32-bit
-specific dependencies in the future.
-
-LASS mitigates a class of side-channel speculative attacks, such as
-Spectre LAM, described in the paper, "Leaky Address Masking: Exploiting
-Unmasked Spectre Gadgets with Noncanonical Address Translation".
-
-Add the "lass" flag to /proc/cpuinfo to indicate that the feature is
-supported by hardware and enabled by the kernel. This allows userspace
-to determine if the system is secure against such attacks.
-
-Signed-off-by: Sohil Mehta <sohil.mehta@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Xin Li (Intel) <xin@zytor.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://patch.msgid.link/20251118182911.2983253-2-sohil.mehta%40intel.c=
-om
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251118191731.181269-1-avadhut.naik@amd.com
 ---
- arch/x86/Kconfig.cpufeatures                | 4 ++++
- arch/x86/include/asm/cpufeatures.h          | 1 +
- arch/x86/include/uapi/asm/processor-flags.h | 2 ++
- 3 files changed, 7 insertions(+)
+ arch/x86/include/asm/mce.h    |  2 ++
+ arch/x86/kernel/cpu/mce/amd.c | 16 +++++++++++++---
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
-index 250c106..733d5af 100644
---- a/arch/x86/Kconfig.cpufeatures
-+++ b/arch/x86/Kconfig.cpufeatures
-@@ -124,6 +124,10 @@ config X86_DISABLED_FEATURE_PCID
- 	def_bool y
- 	depends on !X86_64
+diff --git a/arch/x86/include/asm/mce.h b/arch/x86/include/asm/mce.h
+index 1cfbfff..2d98886 100644
+--- a/arch/x86/include/asm/mce.h
++++ b/arch/x86/include/asm/mce.h
+@@ -48,6 +48,7 @@
 =20
-+config X86_DISABLED_FEATURE_LASS
-+	def_bool y
-+	depends on X86_32
+ /* AMD-specific bits */
+ #define MCI_STATUS_TCC		BIT_ULL(55)  /* Task context corrupt */
++#define MCI_STATUS_PADDRV	BIT_ULL(54)  /* Valid System Physical Address */
+ #define MCI_STATUS_SYNDV	BIT_ULL(53)  /* synd reg. valid */
+ #define MCI_STATUS_DEFERRED	BIT_ULL(44)  /* uncorrected error, deferred exce=
+ption */
+ #define MCI_STATUS_POISON	BIT_ULL(43)  /* access poisonous data */
+@@ -62,6 +63,7 @@
+  */
+ #define MCI_CONFIG_MCAX		0x1
+ #define MCI_CONFIG_FRUTEXT	BIT_ULL(9)
++#define MCI_CONFIG_PADDRV	BIT_ULL(11)
+ #define MCI_IPID_MCATYPE	0xFFFF0000
+ #define MCI_IPID_HWID		0xFFF
+=20
+diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
+index 53385e6..3f1dda3 100644
+--- a/arch/x86/kernel/cpu/mce/amd.c
++++ b/arch/x86/kernel/cpu/mce/amd.c
+@@ -87,6 +87,8 @@ struct smca_bank {
+ 	const struct smca_hwid *hwid;
+ 	u32 id;			/* Value of MCA_IPID[InstanceId]. */
+ 	u8 sysfs_id;		/* Value used for sysfs name. */
++	u64 paddrv	:1,	/* Physical Address Valid bit in MCA_CONFIG */
++	    __reserved	:63;
+ };
+=20
+ static DEFINE_PER_CPU_READ_MOSTLY(struct smca_bank[MAX_NR_BANKS], smca_banks=
+);
+@@ -327,6 +329,9 @@ static void smca_configure(unsigned int bank, unsigned in=
+t cpu)
+=20
+ 		this_cpu_ptr(mce_banks_array)[bank].lsb_in_status =3D !!(low & BIT(8));
+=20
++		if (low & MCI_CONFIG_PADDRV)
++			this_cpu_ptr(smca_banks)[bank].paddrv =3D 1;
 +
- config X86_DISABLED_FEATURE_PKU
- 	def_bool y
- 	depends on !X86_INTEL_MEMORY_PROTECTION_KEYS
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufea=
-tures.h
-index 80b68f4..6f82302 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -314,6 +314,7 @@
- #define X86_FEATURE_SM4			(12*32+ 2) /* SM4 instructions */
- #define X86_FEATURE_AVX_VNNI		(12*32+ 4) /* "avx_vnni" AVX VNNI instructions=
- */
- #define X86_FEATURE_AVX512_BF16		(12*32+ 5) /* "avx512_bf16" AVX512 BFLOAT16=
- instructions */
-+#define X86_FEATURE_LASS		(12*32+ 6) /* "lass" Linear Address Space Separati=
-on */
- #define X86_FEATURE_CMPCCXADD           (12*32+ 7) /* CMPccXADD instructions=
- */
- #define X86_FEATURE_ARCH_PERFMON_EXT	(12*32+ 8) /* Intel Architectural PerfM=
-on Extension */
- #define X86_FEATURE_FZRM		(12*32+10) /* Fast zero-length REP MOVSB */
-diff --git a/arch/x86/include/uapi/asm/processor-flags.h b/arch/x86/include/u=
-api/asm/processor-flags.h
-index f1a4adc..81d0c8b 100644
---- a/arch/x86/include/uapi/asm/processor-flags.h
-+++ b/arch/x86/include/uapi/asm/processor-flags.h
-@@ -136,6 +136,8 @@
- #define X86_CR4_PKE		_BITUL(X86_CR4_PKE_BIT)
- #define X86_CR4_CET_BIT		23 /* enable Control-flow Enforcement Technology */
- #define X86_CR4_CET		_BITUL(X86_CR4_CET_BIT)
-+#define X86_CR4_LASS_BIT	27 /* enable Linear Address Space Separation suppor=
-t */
-+#define X86_CR4_LASS		_BITUL(X86_CR4_LASS_BIT)
- #define X86_CR4_LAM_SUP_BIT	28 /* LAM for supervisor pointers */
- #define X86_CR4_LAM_SUP		_BITUL(X86_CR4_LAM_SUP_BIT)
+ 		wrmsr(smca_config, low, high);
+ 	}
 =20
+@@ -790,9 +795,9 @@ bool amd_mce_is_memory_error(struct mce *m)
+ }
+=20
+ /*
+- * AMD systems do not have an explicit indicator that the value in MCA_ADDR =
+is
+- * a system physical address. Therefore, individual cases need to be detecte=
+d.
+- * Future cases and checks will be added as needed.
++ * Some AMD systems have an explicit indicator that the value in MCA_ADDR is=
+ a
++ * system physical address. Individual cases though, need to be detected for
++ * other systems. Future cases will be added as needed.
+  *
+  * 1) General case
+  *	a) Assume address is not usable.
+@@ -806,6 +811,8 @@ bool amd_mce_is_memory_error(struct mce *m)
+  *	a) Reported in legacy bank 4 with extended error code (XEC) 8.
+  *	b) MCA_STATUS[43] is *not* defined as poison in legacy bank 4. Therefore,
+  *	   this bit should not be checked.
++ * 4) MCI_STATUS_PADDRVAL is set
++ *	a) Will provide a valid system physical address.
+  *
+  * NOTE: SMCA UMC memory errors fall into case #1.
+  */
+@@ -819,6 +826,9 @@ bool amd_mce_usable_address(struct mce *m)
+ 			return false;
+ 	}
+=20
++	if (this_cpu_ptr(smca_banks)[m->bank].paddrv)
++		return m->status & MCI_STATUS_PADDRV;
++
+ 	/* Check poison bit for all other bank types. */
+ 	if (m->status & MCI_STATUS_POISON)
+ 		return true;
 
