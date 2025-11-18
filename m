@@ -1,114 +1,147 @@
-Return-Path: <linux-tip-commits+bounces-7386-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7387-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816F9C68A98
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 10:56:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286C3C6A05D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 15:37:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 213ED2A7AE
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 09:56:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 475454E822A
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 14:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA6B320CA2;
-	Tue, 18 Nov 2025 09:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB6C30F93D;
+	Tue, 18 Nov 2025 14:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kjU5xisd"
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="h3V3lt55";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CzB2VGW1"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C414C328B66;
-	Tue, 18 Nov 2025 09:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC4B317711;
+	Tue, 18 Nov 2025 14:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763459775; cv=none; b=CtOOV4TQnVNp86kV529nbMYklUrEjm80wNF6R5Dl4CgjPnsyDA6TbL7jACrXnG0Geis2htNE5J+5pzQsHrXUfr+IqchmNGcge54dYfBabMh3uribDu8G4H4+YC/GacFiANhZTEPjldcW5a6++/qBU5fFsPtuyX9EsftpF2HqUAM=
+	t=1763476121; cv=none; b=pHunfcQj8kmSHMXb74dWpyTF0DRWo0+f3L0xX0Fqg7XRe6U3moEO9nzq/xnMpeSEe/tLYok0yrTOkx2K+IllF+TjxJplkMpeCgIAsWHlX5uAdZCAbjPtMznJMXXhuS393QBUqxXYbtcVtHQhmd+eC6JdyY3blZrxWeRR9MS7ezM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763459775; c=relaxed/simple;
-	bh=0HP2onGt8R3t+Jj61+t+NfIIn7iZgxXMHT/yGHGQaXY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h6PrdUAsGmZt/6TPYNMMS+SIU1byg5TajbL9U5QWYevRL0BYfbrEXOsbGazgwdgDTXIVliwC48ojywOM+0nV5T6FYGlEWoNmtvvNmye/5OJM8neb7WTtUKmNC7xzOcOKZ4GeNs5olKtASeg2DvRizf2fKx/jYFE/SjTkt5A19vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kjU5xisd; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tN95rbT3Ge6tjj0OSWEOP/G2b8NMLg2iv+amDfX2xPU=; b=kjU5xisdLyJb8snURPO0eFzb/+
-	XAseo0Hm1clArSxEfDVzKdW6kwJsIMM0He78TtwKkAmmaTJW9p5frb++8MXAEwyHjquunZLSfmRfY
-	867o+g3a5Crwk2IIYphW1voYvLoAQB6MZQYLvDGXl8HJdMZzx6FGe+ewEy/2jQRs5xnYzBwxb821G
-	9vS2G2sWE5hVE42RGIG+1uEQXvN0sWG/t3NjmpvEC7F1+ugec5PUagowBYuPLV2xfYEtfd7qIRbd8
-	ibvbyZEEESJsYxnCJza98ys3ut6RnTYyrdjP9NeBwHUKvxP0DaXIC+13pfdLXBb8/xZJ6OeBEQ6Q3
-	1dFYMD+A==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vLIRT-0000000FI4i-01Yy;
-	Tue, 18 Nov 2025 09:56:07 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 90E2F300342; Tue, 18 Nov 2025 10:56:06 +0100 (CET)
-Date: Tue, 18 Nov 2025 10:56:06 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Tim Chen <tim.c.chen@linux.intel.com>, nathan@kernel.org
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Mohini Narkhede <mohini.narkhede@intel.com>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running cmpxchg
- when balance is not due
-Message-ID: <20251118095606.GH4068168@noisy.programming.kicks-ass.net>
-References: <6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
- <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
- <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
- <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
- <20251118095432.GN3245006@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1763476121; c=relaxed/simple;
+	bh=4Tla6CCEioxyMl8YfvTIw3DdQ7qHWwrX1DiwfimzZ9s=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=opqEjs+chk77XjXx9O8xLKNEhVJgeIgjHHY5eU60h20sU3/riCwDtn7Mpq8Pi6k2tCl9ujZM+CG8R7Mteys+/JEd7ApmL+q3w0OLGW8vLI5hhDHDDphcwjjT9DBprrhuqwhbYwu5QApejoD5ATPdchbr6B5IpCPor8LE+lPKdAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=h3V3lt55; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CzB2VGW1; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 18 Nov 2025 14:28:35 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1763476117;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4d/fyHx5+TMrKYMq2TXVvIvOIWxC7QzCemxUEmjAPQY=;
+	b=h3V3lt55E/79qhb2SurPVE/eie5UO52kIW+ieKv7jzxhvfpYC3KqHC8LsYKN5/Q2b7E42k
+	5JzIGR9pA3/3m+0I+CC8phMFCuHX7gff2WFv03oi3pWCy/iQBxYJIgMMSGeHSgl+3yGc22
+	nsMVXWGMPtXjUuEUkTMsFeudUfNLg2+htCysFFneSX9ZxRtuDsUJ70qHd/SnsAU4VfPxj2
+	Y7t8z6h6xFBJh1NOz8Ne/6p9pSU2A/bxBdFH0sx3Nsek46+50jDxqNZj/eqFE7Seu6uewK
+	boM0acTz0iQFlzBZ+BivpHeYWIYjNSP8QZ9V8qZZ+TBhhiFUz8rnbR32yfUmwA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1763476117;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4d/fyHx5+TMrKYMq2TXVvIvOIWxC7QzCemxUEmjAPQY=;
+	b=CzB2VGW1trLjzYViRRRtoieGzrQygPhH4kR1O0OKHSBrdZQ7wgjohY5MZN/2DM8MkAJ8KX
+	r/zrRvHS3v3kfuDg==
+From: "tip-bot2 for Christophe Leroy" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: core/uaccess] lib/strn*,uaccess: Use
+ masked_user_{read/write}_access_begin when required
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3Ccb5e4b0fa49ea9c740570949d5e3544423389757=2E1763396?=
+ =?utf-8?q?724=2Egit=2Echristophe=2Eleroy=40csgroup=2Eeu=3E?=
+References: =?utf-8?q?=3Ccb5e4b0fa49ea9c740570949d5e3544423389757=2E17633967?=
+ =?utf-8?q?24=2Egit=2Echristophe=2Eleroy=40csgroup=2Eeu=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251118095432.GN3245006@noisy.programming.kicks-ass.net>
+Message-ID: <176347611584.498.1344690421091616025.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+The following commit has been merged into the core/uaccess branch of tip:
 
-And now with Nathan as a recipient..
+Commit-ID:     4322c8f81c58da493a3c46eda32f0e7534a350a0
+Gitweb:        https://git.kernel.org/tip/4322c8f81c58da493a3c46eda32f0e7534a=
+350a0
+Author:        Christophe Leroy <christophe.leroy@csgroup.eu>
+AuthorDate:    Mon, 17 Nov 2025 17:43:44 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 18 Nov 2025 15:27:35 +01:00
 
-On Tue, Nov 18, 2025 at 10:54:33AM +0100, Peter Zijlstra wrote:
-> On Mon, Nov 17, 2025 at 10:55:07AM -0800, Tim Chen wrote:
-> 
-> > >          if (!need_unlock && (sd->flags & SD_SERIALIZE)) {
-> > > -               if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
-> > 
-> > The second argument of atomic_try_cmpxchg_acquire is "int *old" while that of atomic_cmpxchg_acquire
-> > is "int old". So the above check would result in NULL pointer access.  Probably have
-> > to do something like the following to use atomic_try_cmpxchg_acquire()
-> > 
-> > 		int zero = 0;
-> > 		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, &zero, 1))
-> > 		
-> > Otherwise we should do atomic_cmpxchg_acquire() as below
-> 
-> Yes, and I'm all mightily miffed all the compilers accept 0 (which is
-> int) for an 'int *' argument without so much as a warning :/
-> 
-> Nathan, you looked into this a bit yesterday, afaict there is:
-> 
->   -Wzero-as-null-pointer-constant
-> 
-> which is supposed to issue a warn here, but I can't get clang-22 to
-> object :/ (GCC doesn't take that warning for C mode, only C++, perhaps
-> that's the problem?).
-> 
-> And then there is modernize-use-nullptr, but that objects to using NULL,
-> although I suppose we could do:
-> 
->   #define NULL nullptr
-> 
-> to get around that. Except I also cannot get clangd to report on the
-> issue.
-> 
-> Help?
+lib/strn*,uaccess: Use masked_user_{read/write}_access_begin when required
+
+Properly use masked_user_read_access_begin() and
+masked_user_write_access_begin() instead of masked_user_access_begin() in
+order to match user_read_access_end() and user_write_access_end().  This is
+important for architectures like PowerPC that enable separately user reads
+and user writes.
+
+That means masked_user_read_access_begin() is used when user memory is
+exclusively read during the window and masked_user_write_access_begin()
+is used when user memory is exclusively writen during the window.
+masked_user_access_begin() remains and is used when both reads and
+writes are performed during the open window. Each of them is expected
+to be terminated by the matching user_read_access_end(),
+user_write_access_end() and user_access_end().
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/cb5e4b0fa49ea9c740570949d5e3544423389757.17633=
+96724.git.christophe.leroy@csgroup.eu
+---
+ lib/strncpy_from_user.c | 2 +-
+ lib/strnlen_user.c      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/strncpy_from_user.c b/lib/strncpy_from_user.c
+index 6dc2349..5bb752f 100644
+--- a/lib/strncpy_from_user.c
++++ b/lib/strncpy_from_user.c
+@@ -126,7 +126,7 @@ long strncpy_from_user(char *dst, const char __user *src,=
+ long count)
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
+=20
+-		src =3D masked_user_access_begin(src);
++		src =3D masked_user_read_access_begin(src);
+ 		retval =3D do_strncpy_from_user(dst, src, count, count);
+ 		user_read_access_end();
+ 		return retval;
+diff --git a/lib/strnlen_user.c b/lib/strnlen_user.c
+index 6e489f9..4a6574b 100644
+--- a/lib/strnlen_user.c
++++ b/lib/strnlen_user.c
+@@ -99,7 +99,7 @@ long strnlen_user(const char __user *str, long count)
+ 	if (can_do_masked_user_access()) {
+ 		long retval;
+=20
+-		str =3D masked_user_access_begin(str);
++		str =3D masked_user_read_access_begin(str);
+ 		retval =3D do_strnlen_user(str, count, count);
+ 		user_read_access_end();
+ 		return retval;
 
