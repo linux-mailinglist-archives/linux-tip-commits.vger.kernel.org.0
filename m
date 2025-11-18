@@ -1,148 +1,165 @@
-Return-Path: <linux-tip-commits+bounces-7382-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7383-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCC7C65E50
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 20:13:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516A1C6873E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 10:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9BB2C362095
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 17 Nov 2025 19:08:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTPS id 4AAE92A5AD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 18 Nov 2025 09:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C8A304BA0;
-	Mon, 17 Nov 2025 19:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB693019BB;
+	Tue, 18 Nov 2025 09:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="jHlK6wNl"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fKF69d3s";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4WNSBLgX"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9081C2877D7;
-	Mon, 17 Nov 2025 19:07:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7968308F0F;
+	Tue, 18 Nov 2025 09:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763406429; cv=none; b=SYxSxnrAvUsDIytUn7nc7hfwsurOyBIp0DLidLLTzqIBo2c3ZUiSgkqUIvf7sWMhMpzS8N2YuzQM6LNVyjVlQZMdzlccskTRNw0U0CM+WKK1x6MkO3toUMOChtSevc87lyecAxqp/Zvk0DfbMYmHXMF1+HMaQ5JRCbVntQISDCE=
+	t=1763457254; cv=none; b=iwHTkt30N2vtrZiG8JmqPHA5muUjORF7qgS+g8rXEXWOxGiGuOXDfsrmhJitfjkl1arK8mdZDfIAmQInyrqQE0z0T7lICclsoFIqNnB1ocdvgRXG1BBLa9KOVl82qImv4cStMaARo/vBNuCdNGhjo/uLyKYhfVqr0OMq02uoY4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763406429; c=relaxed/simple;
-	bh=gH7ybJKYpzcIHZjQ0uJaRw0f1Zni17lhxNfHxhmw+/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s9LvngH7ui0N5ZbHldZbHyPHYw+VRrojdY2S+LPRuAe+DqbEq1fOkyJWWTf0I3Sa6WwZUY8tVTU+vvGYHB4DvQFmFTwTLiX3EhIGGv7wTBChLS73tTCv3iqTPcneLOELK9s8YmsNuiiuFIeYjZxhubtaHt05Y2tRboB6g6V9Q4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=jHlK6wNl; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0FF5540E0216;
-	Mon, 17 Nov 2025 19:07:04 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id rfXEmGTTnpZS; Mon, 17 Nov 2025 19:07:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1763406419; bh=N4PH0C92flXoR5l8LWtwhoNGoAb0kV+3/PqOXvmrUGA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jHlK6wNl+ghF7N94m3g8DQKgy+SD5mQLeV1dtQvGFZG+MB78UQW012xiElnWofuVm
-	 atmZnY0S+CrhTC1sdWydQ9WZU6kYEBFE1tETSJ5ibNp0/Ry2kMPjtsaHxMrbp0f1KV
-	 Ql0jHyqiIw4Pos2zV7pC05Z+I1Bly3WrZrWYxXx6hys3Dg0GhIvqi4dGOq3URIpNmg
-	 rzcW4sFICZazk1MBd4gn1ZUuePSeqodo0B21RsxEo/WZtpn4DT4Rt3fMdw/pbSAHPa
-	 2uJvKnDwxbGKBpnH59t+ArmVybgI3RgkNDCA1/U5d9zA8PGOKzhcpjQX5xprv9eU2L
-	 fIXyWDsXb5wWe28D7hTvL4OeceObIhPuqFO/YvbGXxNKduoMLiPUmRvpDpFI6YNk9h
-	 dAIrYJrApNcpLcjc1icN3GZPH6LDO6AB1LS/t07qWOHAHSXEVSkyuDtgncR/ktd2Z3
-	 Dhbn8d+YNLYkqxbvZ39mXPeQo4heR3syRS+t6jFaHjQGnt0pM6RPchJk3Ug97AnIFF
-	 +3RKjgnViGxajYBn9XIuJ+JhKmTs4N2bEb3rREkfrjuqM+8USp8Uo0+eKU/PD0m4H+
-	 lZ4byyzDnKSbilnwkw5z4Vsep8t1nPQu7odwl02q1pVvvuTgMq/IwCEYxGFTQ7Unr/
-	 yN9xIF3NEgF+a5KNoa4kIe2o=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 64D4640E022F;
-	Mon, 17 Nov 2025 19:06:48 +0000 (UTC)
-Date: Mon, 17 Nov 2025 20:06:41 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, Tim Chen <tim.c.chen@linux.intel.com>,
-	linux-tip-commits@vger.kernel.org, Chen Yu <yu.c.chen@intel.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	Mohini Narkhede <mohini.narkhede@intel.com>, x86@kernel.org
-Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running cmpxchg
- when balance is not due
-Message-ID: <20251117190641.GCaRtyQXdOhKrlAF7Y@fat_crate.local>
-References: <6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
- <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
- <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
+	s=arc-20240116; t=1763457254; c=relaxed/simple;
+	bh=KyZez/8ZJAc6nVm8OlUNcWJ7OZ1kiAgeyMA6S1ql2g8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=APb79Bl+mWxH809FuUNWJAg6Ax88oZlD0QVsDvAJeG8cBb9xevHP5/90qxM/z/RhKY0PACtn9G5RlL61jO6yASrrsB0a1YoVy5wNxsNlaOqZdObRd11Nq+DWNVOjFdsSlEZGPsbtP4ROmGG3sw1n2CvI2MC2STjMfUp2+zB9kxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fKF69d3s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4WNSBLgX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 18 Nov 2025 09:14:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1763457249;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pYOX1wnjrFgDRI9HgTOjUygj1C7HLtn5Wx7uOvEALCI=;
+	b=fKF69d3sjkY2ygEB8P+t3inalDwPIqBN7DDJrSMS6aQZK35NbqzoIQGaQBjJfhi7tey59j
+	g5Xnx0zviWqXGboi4BiVqtM3VRggpNxbxdpV30euEb4h/Sj9hh9p36AujWFpFYyyvF6opX
+	7mo7ubUl3AITlY3+xvBR6pLrO7lENAWnMGwfHpLyM6qDEDLoBEOxztVn/yk6aipWEl9m1U
+	rYoe76U/VDn0cEndUT0Te5IEeACmUahwo7GM/yzM1jV6X8JhBfWkC5qQ92bVYg5YwJGwyi
+	L7U9uDq/pIhfK+PPVWDtwPvGU7djVXkoQ4OiAoYoyu7r/nN72eMpt3FsloRnkw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1763457249;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pYOX1wnjrFgDRI9HgTOjUygj1C7HLtn5Wx7uOvEALCI=;
+	b=4WNSBLgXUjvAxJr1js/wSDtveOee/2Bln6bOCEI/OP1W5+T9W8pD3pqFtpsZcczyDATcHk
+	j0ggDiv7nUrhfUDA==
+From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: objtool/core] objtool/klp: Only enable --checksum when needed
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Michael Kelley <mhklinux@outlook.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To:
+ <edbb1ca215e4926e02edb493b68b9d6d063e902f.1762990139.git.jpoimboe@kernel.org>
+References:
+ <edbb1ca215e4926e02edb493b68b9d6d063e902f.1762990139.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
+Message-ID: <176345724486.498.8088274037182866475.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 16, 2025 at 02:26:13AM +0530, Shrikanth Hegde wrote:
-> 
-> Hi Peter.
-> 
-> On 11/14/25 5:49 PM, tip-bot2 for Tim Chen wrote:
-> > The following commit has been merged into the sched/core branch of tip:
-> > 
-> > Commit-ID:     2265c5d4deeff3bfe4580d9ffe718fd80a414cac
-> > Gitweb:        https://git.kernel.org/tip/2265c5d4deeff3bfe4580d9ffe718fd80a414cac
-> > Author:        Tim Chen <tim.c.chen@linux.intel.com>
-> > AuthorDate:    Mon, 10 Nov 2025 10:47:35 -08:00
-> > Committer:     Peter Zijlstra <peterz@infradead.org>
-> > CommitterDate: Fri, 14 Nov 2025 13:03:05 +01:00
-> > 
-> > sched/fair: Skip sched_balance_running cmpxchg when balance is not due
-> > 
-> > 
-> 
-> > +	if (!need_unlock && (sd->flags & SD_SERIALIZE) && idle != CPU_NEWLY_IDLE) {
-> > +		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
-> 
-> This should be atomic_cmpxchg_acquire?
-> 
-> I booted the system with latest sched/core and it crashes at the boot.
-> 
-> BUG: Kernel NULL pointer dereference on read at 0x00000000
-> Faulting instruction address: 0xc0000000001db57c
-> Oops: Kernel access of bad area, sig: 7 [#1]
-> LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Not tainted 6.18.0-rc3+ #242 PREEMPT(lazy)
-> NIP [c0000000001db57c] sched_balance_rq+0x560/0x92c
-> LR [c0000000001db198] sched_balance_rq+0x17c/0x92c
-> Call Trace:
-> [c00000111ffdfd10] [c0000000001db198] sched_balance_rq+0x17c/0x92c (unreliable)
-> [c00000111ffdfe50] [c0000000001dc598] sched_balance_domains+0x2c4/0x3d0
-> [c00000111ffdff00] [c000000000168958] handle_softirqs+0x138/0x414
-> [c00000111ffdffe0] [c000000000017d80] do_softirq_own_stack+0x3c/0x50
-> [c000000008a57a60] [c000000000168048] __irq_exit_rcu+0x18c/0x1b4
-> [c000000008a57a90] [c0000000001691a8] irq_exit+0x20/0x38
-> [c000000008a57ab0] [c000000000028c18] timer_interrupt+0x174/0x394
-> [c000000008a57b10] [c000000000009f8c] decrementer_common_virt+0x28c/0x290
-> 
-> 
-> Bisect pointed to:
-> git bisect bad 2265c5d4deeff3bfe4580d9ffe718fd80a414cac
-> # first bad commit: [2265c5d4deeff3bfe4580d9ffe718fd80a414cac] sched/fair: Skip sched_balance_running cmpxchg when balance is not due
+The following commit has been merged into the objtool/core branch of tip:
 
-Dammit, I spent a whole day bisecting exactly the same issue and I missed your
-mail.
+Commit-ID:     2092007aa32f8dd968c38751bd1b7cac9b1f738d
+Gitweb:        https://git.kernel.org/tip/2092007aa32f8dd968c38751bd1b7cac9b1=
+f738d
+Author:        Josh Poimboeuf <jpoimboe@kernel.org>
+AuthorDate:    Wed, 12 Nov 2025 15:32:34 -08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 18 Nov 2025 09:59:26 +01:00
 
-Oh well, it is fixed now... should pay more attention next time.
+objtool/klp: Only enable --checksum when needed
 
-Thx.
+With CONFIG_KLP_BUILD enabled, checksums are only needed during a
+klp-build run.  There's no need to enable them for normal kernel builds.
 
--- 
-Regards/Gruss,
-    Boris.
+This also has the benefit of softening the xxhash dependency.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/edbb1ca215e4926e02edb493b68b9d6d063e902f.17629=
+90139.git.jpoimboe@kernel.org
+---
+ arch/x86/boot/startup/Makefile | 2 +-
+ scripts/Makefile.lib           | 1 -
+ scripts/livepatch/klp-build    | 4 ++++
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/boot/startup/Makefile b/arch/x86/boot/startup/Makefile
+index e8fdf02..5e499cf 100644
+--- a/arch/x86/boot/startup/Makefile
++++ b/arch/x86/boot/startup/Makefile
+@@ -36,7 +36,7 @@ $(patsubst %.o,$(obj)/%.o,$(lib-y)): OBJECT_FILES_NON_STAND=
+ARD :=3D y
+ # relocations, even if other objtool actions are being deferred.
+ #
+ $(pi-objs): objtool-enabled	=3D 1
+-$(pi-objs): objtool-args	=3D $(if $(delay-objtool),,$(objtool-args-y)) --noa=
+bs
++$(pi-objs): objtool-args	=3D $(if $(delay-objtool),--dry-run,$(objtool-args-=
+y)) --noabs
+=20
+ #
+ # Confine the startup code by prefixing all symbols with __pi_ (for position
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index f4b3391..28a1c08 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -173,7 +173,6 @@ ifdef CONFIG_OBJTOOL
+=20
+ objtool :=3D $(objtree)/tools/objtool/objtool
+=20
+-objtool-args-$(CONFIG_KLP_BUILD)			+=3D --checksum
+ objtool-args-$(CONFIG_HAVE_JUMP_LABEL_HACK)		+=3D --hacks=3Djump_label
+ objtool-args-$(CONFIG_HAVE_NOINSTR_HACK)		+=3D --hacks=3Dnoinstr
+ objtool-args-$(CONFIG_MITIGATION_CALL_DEPTH_TRACKING)	+=3D --hacks=3Dskylake
+diff --git a/scripts/livepatch/klp-build b/scripts/livepatch/klp-build
+index 881e052..8822721 100755
+--- a/scripts/livepatch/klp-build
++++ b/scripts/livepatch/klp-build
+@@ -489,8 +489,11 @@ clean_kernel() {
+=20
+ build_kernel() {
+ 	local log=3D"$TMP_DIR/build.log"
++	local objtool_args=3D()
+ 	local cmd=3D()
+=20
++	objtool_args=3D("--checksum")
++
+ 	cmd=3D("make")
+=20
+ 	# When a patch to a kernel module references a newly created unexported
+@@ -513,6 +516,7 @@ build_kernel() {
+ 	cmd+=3D("$VERBOSE")
+ 	cmd+=3D("-j$JOBS")
+ 	cmd+=3D("KCFLAGS=3D-ffunction-sections -fdata-sections")
++	cmd+=3D("OBJTOOL_ARGS=3D${objtool_args[*]}")
+ 	cmd+=3D("vmlinux")
+ 	cmd+=3D("modules")
+=20
 
