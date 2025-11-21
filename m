@@ -1,78 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7455-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7456-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107CEC7B9AB
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 21:01:39 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E89FC7B9B4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 21:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8903A67CC
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 20:01:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22F794EB070
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 20:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD251302CA5;
-	Fri, 21 Nov 2025 20:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 732D1305057;
+	Fri, 21 Nov 2025 20:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eRcC0HgG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="nGs2JmHa"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ED5MrfU/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xY+4NOkR"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4430507B;
-	Fri, 21 Nov 2025 20:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468313043C8;
+	Fri, 21 Nov 2025 20:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763755294; cv=none; b=PQhJN8suir0EunM8pMKecEWBlhMQHoVK+JDedJTL2wyTmFI3lK9Cc72frHJZBHvl48/K0IfvOLA7XS1uxTJUUHSm1XJB4QS8+G6MqPZbxQ78BKjlArmFTlKNWjrhuLX8dXz2CkSgR0QPjaMEFmOiDOGLrHFDtijBUXge0rbNiww=
+	t=1763755295; cv=none; b=SI4/9JS4Ve31jEom8e5NTACIlawAzaJQAR74i2TqIFGslrnpPLEMmB587ixQuID1HjU3VKfT496oGlcuC6JdXG/x/4fJK+d4UHcGstf6/QhnKppklC09pXiZKG+dvyU9ZOu2De4HLscin8hb6QCgMwFVr3VSrJvSo7jQS8aFxnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763755294; c=relaxed/simple;
-	bh=ZCCPrGXA1+ZJDzn456dyBBrmBr1SNzaq3PKJjDG6Y4M=;
+	s=arc-20240116; t=1763755295; c=relaxed/simple;
+	bh=wCG4IVi/C2NerX0Z0NhFPtGBXqwuiQpJNX6PV7S+Slc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=MNnKA1f45Vh4lTp4Zw11hFrn5EYGnYSJyylMsn9qvx3/5TbUp57iEa5Vyl0WwdW8SEODSG22sH4/2O8wvPD5vZ51xcbcHwKUP1wDRNHxSjP67DGvI/PXcDcx0/SglAMjw6TuYghyUDT6Shdin4K3+eC6Q4zJsHca2rZ3JjKgtf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eRcC0HgG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=nGs2JmHa; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=X+AfHvUghz084LKxpm4uwmKspnGaFBk3VBKsUrAco5avK8gBpEooVPYx5DBWADuh72hcpVB+/9FzOEkgJnHP4IY43wcE0zP487wJTf4kILhy803A/FnjhxllxO/llXKjAq5/zDBrDHzCOUUgvxFmzV/k/WhhzaMVnBGT/g891q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ED5MrfU/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xY+4NOkR; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 21 Nov 2025 20:01:29 -0000
+Date: Fri, 21 Nov 2025 20:01:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763755290;
+	s=2020; t=1763755291;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gbIH4wV+EbTu8MYbfgKasTWchwv2wCCRNHQxSEervRs=;
-	b=eRcC0HgGbHGc8+1Fm291Xma3NlvWARaaLHhz4tnqZJjhZJK12HImvRp+Y0sCXywYdrvQEO
-	GPYnuqjnLH4oOf/hFANizatNAU8xztWZdHVPKKKG87OsV0paHEKsH9ynqbfv4tPGAeqdFX
-	EhK0GMO98OH0rq9by7rABSSGFObvue9dqzwagVXEIt6dDgUm1fN45+5pa9zmfxaAehNyKh
-	LRmRqRmV+lPtJSTH1naCX3ob1PY9o+/yIgMi5nIfLsxaoYNDcmWi51YyI6aG8iwjiv5dn5
-	+Y4dMQb9ykX4ar3m+hx5wT9vPMh0+qbiSZlhvWhoEr7KqA0/p3xiai9dd9tkZQ==
+	bh=NhgU0wsElUfBi18xQStQyCzzCKuKIzisHjE6zpHMqXk=;
+	b=ED5MrfU/VgIqwWEPJnz/kPplLP+cL2xFPLR7pncwTV1NiFGoyITijyupp9pNylaNCKfTix
+	USJehqmhx9oersxpehVjd9A21FtPzDSvkHHIhxrVncwebzFFIguGskcRm5FDo3jgBm4PgQ
+	SdwD/qFR5K9W/hqp2WnKkHPn7ef7Wm2QRCDmgQIghgGqBDmHuH0o76XpF9AY9+altDxSQM
+	hc6rYJYKYTH2YuRGulp/bMbx3fRO5+znjkr8Wff9aXsznKS6wOS1q/rYGDCQKt8cCefnw9
+	sf30+9gQ24lL0NiFtLWNy5pOuWPXNEE31rblpplvgr3RxiZ3TP5naOYZgBY37w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763755290;
+	s=2020e; t=1763755291;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=gbIH4wV+EbTu8MYbfgKasTWchwv2wCCRNHQxSEervRs=;
-	b=nGs2JmHafG7k674VASoAniUHgWRrPZlNAxTihDT6otu1s44VbNB/9cTgRmKV1KVgHQIjIN
-	8yu/iU4bR+CZbzAg==
-From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+	bh=NhgU0wsElUfBi18xQStQyCzzCKuKIzisHjE6zpHMqXk=;
+	b=xY+4NOkR2DfUj/Owqp5yxKogTP8RIeLGjc99J1IYBly5FOkINENcdixmMSrBOt+59OSpnD
+	WvYGMy0kcACNLrDA==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Fix interrupt threads affinity vs. cpuset
- isolated partitions
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- Frederic Weisbecker <frederic@kernel.org>, x86@kernel.org,
+Subject:
+ [tip: irq/core] genirq: Prevent early spurious wake-ups of interrupt threads
+Cc: Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20251121143500.42111-3-frederic@kernel.org>
-References: <20251121143500.42111-3-frederic@kernel.org>
+In-Reply-To: <20251121143500.42111-2-frederic@kernel.org>
+References: <20251121143500.42111-2-frederic@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176375528915.498.18209596343505969827.tip-bot2@tip-bot2>
+Message-ID: <176375529017.498.4701344518061876052.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,86 +82,65 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     71b89ad36c06603c093f04e142972d67c9272f14
-Gitweb:        https://git.kernel.org/tip/71b89ad36c06603c093f04e142972d67c92=
-72f14
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Fri, 21 Nov 2025 15:34:59 +01:00
+Commit-ID:     9d5ca2edd74e479ad09bc7d02820395a9d46e2bd
+Gitweb:        https://git.kernel.org/tip/9d5ca2edd74e479ad09bc7d02820395a9d4=
+6e2bd
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Fri, 21 Nov 2025 15:34:58 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Fri, 21 Nov 2025 20:50:30 +01:00
 
-genirq: Fix interrupt threads affinity vs. cpuset isolated partitions
+genirq: Prevent early spurious wake-ups of interrupt threads
 
-When a cpuset isolated partition is created / updated or destroyed, the
-interrupt threads are affined blindly to all the non-isolated CPUs. This
-happens without taking into account the interrupt threads initial affinity
-that becomes ignored.
+During initialization, the interrupt thread is created before the interrupt
+is enabled. The interrupt enablement happens before the actual kthread wake
+up point. Once the interrupt is enabled the hardware can raise an interrupt
+and once setup_irq() drops the descriptor lock a interrupt wake-up can
+happen.
 
-For example in a system with 8 CPUs, if an interrupt and its kthread are
-initially affine to CPU 5, creating an isolated partition with only CPU 2
-inside will eventually end up affining the interrupt kthread to all CPUs
-but CPU 2 (that is CPUs 0,1,3-7), losing the kthread preference for CPU 5.
+Even when such an interrupt can be considered premature, this is not a
+problem in general because at the point where the descriptor lock is
+dropped and the wakeup can happen, the data which is used by the thread is
+fully initialized.
 
-Besides the blind re-affining, this doesn't take care of the actual low
-level interrupt which isn't migrated. As of today the only way to isolate
-non managed interrupts, along with their kthreads, is to overwrite their
-affinity separately, for example through /proc/irq/
+Though from the perspective of least surprise, the initial wakeup really
+should be performed by the setup code and not randomly by a premature
+interrupt.
 
-To avoid doing that manually, future development should focus on updating
-the interrupt's affinity whenever cpuset isolated partitions are updated.
+Prevent this by performing a wake-up only if the target is in state
+TASK_INTERRUPTIBLE, which the thread uses in wait_for_interrupt().
 
-In the meantime, cpuset shouldn't fiddle with interrupt threads directly.
-To prevent from that, set the PF_NO_SETAFFINITY flag to them.
+If the thread is still in state TASK_UNINTERRUPTIBLE, the wake-up is not
+lost because after the setup code completed the initial wake-up the thread
+will observe the IRQTF_RUNTHREAD and proceed with the handling.
 
-This is done through kthread_bind_mask() by affining them initially to all
-possible CPUs as at that point the interrupt is not started up which means
-the affinity of the hard interrupt is not known. The thread will adjust
-that once it reaches the handler, which is guaranteed to happen after the
-initial affinity of the hard interrupt is established.
-
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251121143500.42111-3-frederic@kernel.org
+Link: https://patch.msgid.link/20251121143500.42111-2-frederic@kernel.org
 ---
- kernel/irq/manage.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ kernel/irq/handle.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index c1ce30c..61da1c6 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1408,16 +1408,23 @@ setup_irq_thread(struct irqaction *new, unsigned int =
-irq, bool secondary)
- 	 * references an already freed task_struct.
+diff --git a/kernel/irq/handle.c b/kernel/irq/handle.c
+index e103451..786f557 100644
+--- a/kernel/irq/handle.c
++++ b/kernel/irq/handle.c
+@@ -133,7 +133,15 @@ void __irq_wake_thread(struct irq_desc *desc, struct irq=
+action *action)
  	 */
- 	new->thread =3D get_task_struct(t);
-+
- 	/*
--	 * Tell the thread to set its affinity. This is
--	 * important for shared interrupt handlers as we do
--	 * not invoke setup_affinity() for the secondary
--	 * handlers as everything is already set up. Even for
--	 * interrupts marked with IRQF_NO_BALANCE this is
--	 * correct as we want the thread to move to the cpu(s)
--	 * on which the requesting code placed the interrupt.
-+	 * The affinity can not be established yet, but it will be once the
-+	 * interrupt is enabled. Delay and defer the actual setting to the
-+	 * thread itself once it is ready to run. In the meantime, prevent
-+	 * it from ever being re-affined directly by cpuset or
-+	 * housekeeping. The proper way to do it is to re-affine the whole
-+	 * vector.
- 	 */
--	set_bit(IRQTF_AFFINITY, &new->thread_flags);
-+	kthread_bind_mask(t, cpu_possible_mask);
-+
+ 	atomic_inc(&desc->threads_active);
+=20
+-	wake_up_process(action->thread);
 +	/*
-+	 * Ensure the thread adjusts the affinity once it reaches the
-+	 * thread function.
++	 * This might be a premature wakeup before the thread reached the
++	 * thread function and set the IRQTF_READY bit. It's waiting in
++	 * kthread code with state UNINTERRUPTIBLE. Once it reaches the
++	 * thread function it waits with INTERRUPTIBLE. The wakeup is not
++	 * lost in that case because the thread is guaranteed to observe
++	 * the RUN flag before it goes to sleep in wait_for_interrupt().
 +	 */
-+	new->thread_flags =3D BIT(IRQTF_AFFINITY);
-+
- 	return 0;
++	wake_up_state(action->thread, TASK_INTERRUPTIBLE);
  }
 =20
+ static DEFINE_STATIC_KEY_FALSE(irqhandler_duration_check_enabled);
 
