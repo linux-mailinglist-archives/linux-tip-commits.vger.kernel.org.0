@@ -1,81 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-7446-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7447-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562ABC78491
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 11:02:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E0EC78493
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 11:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id EA9922D55A
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 10:02:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTPS id 880512D544
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 21 Nov 2025 10:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C523D345740;
-	Fri, 21 Nov 2025 09:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B27345CD6;
+	Fri, 21 Nov 2025 09:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1CWHu/aU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NcF0GF9a"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bv7hyjhO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/se1ttng"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75B03451CC;
-	Fri, 21 Nov 2025 09:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F7A344046;
+	Fri, 21 Nov 2025 09:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763719078; cv=none; b=YYx9QEVJv8uz3w0Ddq/uOZJQYuvUcjaA9yRIrB9082SCeoMy53owMjVl61zs8yNwDNlPIl3iqvmvTjSutwOhyaMlVeFFVi2fIdl8B8sRnMJbvdq/HkC734gdODSwuX/IgwXIHkIvAu/7asyHDfuYiv5givUwlyh+45yCvzWPSz4=
+	t=1763719080; cv=none; b=rOAFEskUvsG2reWODDhPOY0Zap+662jUX0DHIXp9JkgFIbT1alOfysRGUMNd7tpCgcXyfQ3+fQIUd7ENznp3xrFWG5oCdTWav6MKqDFEUjiyMGbKDeVGt9fYezH0/znyCcBXtx2ponUcsnUQNIwFzA3FFeU+SRl6n0hQ0IpeOkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763719078; c=relaxed/simple;
-	bh=uLxw6EfJ22cOL0leviOokBKjCCAjQM4Ah4MeovvmYe4=;
+	s=arc-20240116; t=1763719080; c=relaxed/simple;
+	bh=zX26LyIoSp4BOIgPUzkqsztntnD97UsoKSKdT4vhBzI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=XGAwiA6w+yGSs6eNhDa1i2ydmiqtkBCCvyynxYqLQeXI8GrzfqwUp/Z5aNkbOHZ+PFNiT4gJ5K8iTKpxFZnSsiRUnCINMYcdyHo61+6wSeV1BffGn15jAhWnggb1EorPjKU7KovF5NtYFoqxsG2v31048ulSXSvEbIavan9R0tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1CWHu/aU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NcF0GF9a; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Dz1qO4hg3x9/5JUgGzEL+y95G3Y1WLTt7DezDrQkiYfyHAssT0i4zsGGJSu+DSa/vmDxRv+ehzjRI3NZ3B0hfKSpTRyQtsbD8v4NX34jbdoIST9/tB5CN5D+PhOA7TmZk2OIQVSj/JcqeKFOCIWE8g5Hv+no26z9/bTU1p86LbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bv7hyjhO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/se1ttng; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 21 Nov 2025 09:57:53 -0000
+Date: Fri, 21 Nov 2025 09:57:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763719075;
+	s=2020; t=1763719076;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6n0KdRNgiLQ6Mu/vdUDmKNQ0WFM5/WbzRrCBhzh84i0=;
-	b=1CWHu/aUa8RB5HHlGnIFfBw3FMWsdE9fOTLo2ZbGS+X5xA7RP91U/VMQzOKXzuEJ7PFetJ
-	9tU2xxCoEA/BCS30dTFmHanJtpxRlp1DQKf7K+q2Z6AJnqAcVeKCifih5lPw1eFJdPl191
-	it0xMAkFCza4W1nNh4LiQiHXyUsRKDxVdVfYJ4I1Y6yT/2IblXyxJdqjC01WB3P3wJ5cwA
-	RQuWSoIh9DFFA0qXUW4T5LzK4rarsoMXj68QBZcRww91YnXYrTe9/uijdkD+WvnBkXfJdm
-	WOcJ4TQMfG18i/YNZgV9z/akj/V8JiHYzYeIfQRNH20gkAutTPriqaxun5fCVg==
+	bh=RqAtIKfEoHrODFtFqt13xmgL59h5A10AUNA5gKK1EKc=;
+	b=bv7hyjhOf9C0VpaD5puGOIsurxAGMt8eCcFugRDLCW1/MakRWHGQ6w298f3Rtqw/PGGogH
+	zAPj47SuihFC0owXclHMff3vMJb2chfW1wDH2oW/jlPOK01Jz8OJX5U0I3qpZlpHOC1AjW
+	QbZHb9vO4Gqp3gLF9n04wBgj5wKMuI9sWQl0B0i7TMf9MZWEZPDbiaslYuY9YUAOoXaPfh
+	aAis6uO1CF+sdFzZeExoPGvpTIgajr5yq6ZTuX+eCJ39latmPNs4pE7aNYMQrzSkKVBIiS
+	H342vNGTK94xLU1ap4RZzyH3yWgPlHfiTO4cUEkBglawJ0dCDCr5n0qEz0PmzQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763719075;
+	s=2020e; t=1763719076;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6n0KdRNgiLQ6Mu/vdUDmKNQ0WFM5/WbzRrCBhzh84i0=;
-	b=NcF0GF9aij2sSICQgVBsIkcNgIb3rGKt8HXDh68bELJG+QsHvcH8rTGTBEx3j+c6s1sYjh
-	WkMb9r/3xq5IJ2BA==
+	bh=RqAtIKfEoHrODFtFqt13xmgL59h5A10AUNA5gKK1EKc=;
+	b=/se1ttng0TjESLM7IvVNplzKEIQqHje/HhKlK4+yKavUm1F8EdWVoc6Nw45F95MuQIze0k
+	JXL+nncB3vOmZUCA==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] media: atomisp: gc2235: Fix namespace collision
- and startup() section placement with -ffunction-sections
+Subject: [tip: objtool/core] serial: icom: Fix namespace collision and
+ startup() section placement with -ffunction-sections
 Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 In-Reply-To:
- <d28103a6edf7beceb5e3c6fa24e49dbad1350389.1763669451.git.jpoimboe@kernel.org>
+ <1aee9ef69f9d40405676712b34f0c397706e7023.1763669451.git.jpoimboe@kernel.org>
 References:
- <d28103a6edf7beceb5e3c6fa24e49dbad1350389.1763669451.git.jpoimboe@kernel.org>
+ <1aee9ef69f9d40405676712b34f0c397706e7023.1763669451.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176371907371.498.9090157932452273999.tip-bot2@tip-bot2>
+Message-ID: <176371907472.498.13259400722255119410.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,16 +85,16 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     2c715c9de293b6c05bcdff1c22a7626f3bb42492
-Gitweb:        https://git.kernel.org/tip/2c715c9de293b6c05bcdff1c22a7626f3bb=
-42492
+Commit-ID:     da6202139aef11c3c5881176e6e3184d88d8a0d9
+Gitweb:        https://git.kernel.org/tip/da6202139aef11c3c5881176e6e3184d88d=
+8a0d9
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Thu, 20 Nov 2025 12:14:17 -08:00
+AuthorDate:    Thu, 20 Nov 2025 12:14:16 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 21 Nov 2025 10:04:09 +01:00
 
-media: atomisp: gc2235: Fix namespace collision and startup() section placeme=
-nt with -ffunction-sections
+serial: icom: Fix namespace collision and startup() section placement with -f=
+function-sections
 
 When compiled with -ffunction-sections (e.g., for LTO, livepatch, dead
 code elimination, AutoFDO, or Propeller), the startup() function gets
@@ -113,38 +113,56 @@ disambiguate with #ifdef CONFIG_FUNCTION_SECTIONS or similar.  This
 means that "startup" unfortunately needs to be prohibited as a function
 name.
 
-Rename startup() to gc2235_startup().
+Rename startup() to icom_startup().  For consistency, also rename its
+shutdown() counterpart to icom_shutdown().
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/d28103a6edf7beceb5e3c6fa24e49dbad1350389.17636=
+Link: https://patch.msgid.link/1aee9ef69f9d40405676712b34f0c397706e7023.17636=
 69451.git.jpoimboe@kernel.org
 ---
- drivers/staging/media/atomisp/i2c/atomisp-gc2235.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/icom.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/media/atomisp/i2c/atomisp-gc2235.c b/drivers/sta=
-ging/media/atomisp/i2c/atomisp-gc2235.c
-index 6fc39ab..6050637 100644
---- a/drivers/staging/media/atomisp/i2c/atomisp-gc2235.c
-+++ b/drivers/staging/media/atomisp/i2c/atomisp-gc2235.c
-@@ -491,7 +491,7 @@ static int gc2235_s_power(struct v4l2_subdev *sd, int on)
- 	return ret;
+diff --git a/drivers/tty/serial/icom.c b/drivers/tty/serial/icom.c
+index 7fb995a..d00903c 100644
+--- a/drivers/tty/serial/icom.c
++++ b/drivers/tty/serial/icom.c
+@@ -760,7 +760,7 @@ static void load_code(struct icom_port *icom_port)
+ 		dma_free_coherent(&dev->dev, 4096, new_page, temp_pci);
  }
 =20
--static int startup(struct v4l2_subdev *sd)
-+static int gc2235_startup(struct v4l2_subdev *sd)
+-static int startup(struct icom_port *icom_port)
++static int icom_startup(struct icom_port *icom_port)
  {
- 	struct gc2235_device *dev =3D to_gc2235_sensor(sd);
- 	struct i2c_client *client =3D v4l2_get_subdevdata(sd);
-@@ -556,7 +556,7 @@ static int gc2235_set_fmt(struct v4l2_subdev *sd,
- 		return 0;
- 	}
+ 	unsigned long temp;
+ 	unsigned char cable_id, raw_cable_id;
+@@ -832,7 +832,7 @@ unlock:
+ 	return 0;
+ }
 =20
--	ret =3D startup(sd);
-+	ret =3D gc2235_startup(sd);
- 	if (ret) {
- 		dev_err(&client->dev, "gc2235 startup err\n");
- 		goto err;
+-static void shutdown(struct icom_port *icom_port)
++static void icom_shutdown(struct icom_port *icom_port)
+ {
+ 	unsigned long temp;
+ 	unsigned char cmdReg;
+@@ -1311,7 +1311,7 @@ static int icom_open(struct uart_port *port)
+ 	int retval;
+=20
+ 	kref_get(&icom_port->adapter->kref);
+-	retval =3D startup(icom_port);
++	retval =3D icom_startup(icom_port);
+=20
+ 	if (retval) {
+ 		kref_put(&icom_port->adapter->kref, icom_kref_release);
+@@ -1333,7 +1333,7 @@ static void icom_close(struct uart_port *port)
+ 	cmdReg =3D readb(&icom_port->dram->CmdReg);
+ 	writeb(cmdReg & ~CMD_RCV_ENABLE, &icom_port->dram->CmdReg);
+=20
+-	shutdown(icom_port);
++	icom_shutdown(icom_port);
+=20
+ 	kref_put(&icom_port->adapter->kref, icom_kref_release);
+ }
 
