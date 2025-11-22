@@ -1,79 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-7462-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7464-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59FC2C7D34A
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 16:48:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47766C7D34D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 16:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C9A9634E0AF
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 15:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C46E83A9E9C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 15:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706FC4C6D;
-	Sat, 22 Nov 2025 15:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5854202F9C;
+	Sat, 22 Nov 2025 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hccxGW7B";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P/LAyEgL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vyaLUC8y";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rNUg87IW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC2823E340;
-	Sat, 22 Nov 2025 15:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E593264614;
+	Sat, 22 Nov 2025 15:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763826504; cv=none; b=BSnk6azmkYgBdMWX7qhefcpjygZgJP5bPkO6/8KVSBfXk9suQMdtmXIZpkQQ1IzJ/BjVeteMSYS1gFH+WH7rzBDmjwDzuvDF6MPOSXNCXFdkKUz3hyDLyTA38CFLNqHG8tDo1de+7SIWg9+3QqTAhvBk/aXtvTLu0FeUYRKRgNw=
+	t=1763826520; cv=none; b=DMcl8U1e4oUoEctmLNXJY8rzIG3yKbgzH46+92QzqSHna/igjP4VxZO/GMpK//pCg2pvCNErkZST2bWyXguCTvYOcrJ6rA2LCWH9U9a8RNoDIPqklFIkQiuZpVXF7ulbEY+qEdAAEnmIFOFINQpwHD5KeQfdwED6OLmqgeMqmk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763826504; c=relaxed/simple;
-	bh=YcKNJpp9vlPv7znKdbKZ3rlFm50VmXJgkkqhVnF7IgY=;
+	s=arc-20240116; t=1763826520; c=relaxed/simple;
+	bh=nTmDC+h7btFXniGxyGjLRnPykzRQZ9UHg1LcMvK8oRA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZRwoPAh5zh8Wp7X+rhvzGwRvdQO5R0DX69cVBmaZH92t/upI3wjY42oOWeoiaP0LajJ3LmeoVTQs0PtH4O2T+f9MvLSdI8DTGI/tsd3WoA/VhEnL0L2aRPxz+PMP4H3ZU60qozMY+fZVeoCbZf/uH30VXFjzoviQGrYP32X/jD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hccxGW7B; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P/LAyEgL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gDnnP3UNdOORvvb5g5HnResDTssl+9qoeRXSDWzt9186GQStE6QXp5pD5MKgUsDWyZyd3nrCuNnLDMKSGbkkVqdxCidbR+FJI6hftFUbCLSUwWbVWzICpa7vo+JS5pixkHx/xetAAR0IY+xzZXknJGfFsWenuanSUbfcLH/slLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vyaLUC8y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rNUg87IW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 22 Nov 2025 15:48:19 -0000
+Date: Sat, 22 Nov 2025 15:48:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763826501;
+	s=2020; t=1763826514;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0ZzKuwQQBQP2Ote8S8mcAxsIw8VuqO0l6zCmvKK03MQ=;
-	b=hccxGW7B71vru3POERvtuX/Js7FsB+SuEgo7uPOF/VN66t0qboRHAU9a+Xk75kSKnhdxLW
-	3xDXlt8Br50kn4+wLjOaOlz8LSVSJHB7I78jrHKqOo29zWEoajqWdccJ3Y2/eZoB9SojmB
-	sRlP41rv4sHBerYnq0rQ+Q/zjI/zqd9szOVxijAD4K7J7PZvD08g+7J+PR/6bbI55Lve4n
-	kTmrA/T/yMmKfrhqjTI0vPhmmhHuchhHBizmB1o226+6w29DtGHAx2j0m54p/iu/LTOMJ5
-	rYi3PqJ2Tll2hYA3GHDMInlFiaxJy7t1px1b+6Uj1iKs/Ns6QSE4MuWclaITDg==
+	bh=vTagcREjhf04j100W5y9H9T5WtMIJ3FJP3R+akMxaQs=;
+	b=vyaLUC8ylHoKwmMHD+sXmIRwR9j9BmmIWhO2ciUn3EfekO9g7vtjsxeaXYgH1VzwwYKMhh
+	ZT6e/x1LH7x5fk0+XA5TTLR/9yEyTXViVlaW8tduXioh300fqcrJIXFYvIJQFC3IIsPtIt
+	+kd7bx4FrlJ+mEIMEQKnbfbzykSqjEveNMQNM/V8mKPHyau6wB83Euxq/l61yu/h3jun3T
+	g/TBORGwpufCCD5P179JBwbq8yoGWAjiSaEZKgcJxXw0FA7xhQgaEAQGowtWho71svD4Lw
+	LLVXub9bK/YLmc7Lfm4rZSpCG4kyhuXlxMWy0gnM6PGrvBr3eapyBHoVntFF6w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763826501;
+	s=2020e; t=1763826514;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0ZzKuwQQBQP2Ote8S8mcAxsIw8VuqO0l6zCmvKK03MQ=;
-	b=P/LAyEgLavPVZuHV6XS4N9pgO1a9T9knhFbYZU4+wP8dnrSQ4F2MYahAqRH19D6xtgrTXe
-	D+sn9xocAL+hmrAg==
+	bh=vTagcREjhf04j100W5y9H9T5WtMIJ3FJP3R+akMxaQs=;
+	b=rNUg87IWbRwPyQA1EnATuTm9wqlaiDlCzoO2uCbXCYv5hOZ9oggoOhyUWKtQVTMMjFiuOa
+	Hj4Mw19MUfMpP9CQ==
 From: "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] fs/resctrl: Update bit_usage to reflect io_alloc
+Subject: [tip: x86/cache] fs/resctrl: Introduce interface to modify io_alloc
+ capacity bitmasks
 Cc: Babu Moger <babu.moger@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 In-Reply-To:
- <e02a0d424129fd7f3e45822a559b1c614ae4652a.1762995456.git.babu.moger@amd.com>
+ <67609641b03ccfba18a8ee0bf9dbd1f3dcbecda3.1762995456.git.babu.moger@amd.com>
 References:
- <e02a0d424129fd7f3e45822a559b1c614ae4652a.1762995456.git.babu.moger@amd.com>
+ <67609641b03ccfba18a8ee0bf9dbd1f3dcbecda3.1762995456.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176382649929.498.8411171126977024741.tip-bot2@tip-bot2>
+Message-ID: <176382651370.498.7261884444268596925.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,167 +84,194 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     ac7de456a37f9b126eb53b89c2bb27d625dc5fd9
-Gitweb:        https://git.kernel.org/tip/ac7de456a37f9b126eb53b89c2bb27d625d=
-c5fd9
+Commit-ID:     28fa2cce7a8388f09e457f1e24241ca6d5e985d8
+Gitweb:        https://git.kernel.org/tip/28fa2cce7a8388f09e457f1e24241ca6d5e=
+985d8
 Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Wed, 12 Nov 2025 18:57:36 -06:00
+AuthorDate:    Wed, 12 Nov 2025 18:57:35 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 22 Nov 2025 14:30:34 +01:00
+CommitterDate: Sat, 22 Nov 2025 14:28:31 +01:00
 
-fs/resctrl: Update bit_usage to reflect io_alloc
+fs/resctrl: Introduce interface to modify io_alloc capacity bitmasks
 
-The "shareable_bits" and "bit_usage" resctrl files associated with cache
-resources give insight into how instances of a cache is used.
+The io_alloc feature in resctrl enables system software to configure the
+portion of the cache allocated for I/O traffic. When supported, the
+io_alloc_cbm file in resctrl provides access to capacity bitmasks (CBMs)
+allocated for I/O devices.
 
-Update the annotated capacity bitmasks displayed by "bit_usage" to include the
-cache portions allocated for I/O via the "io_alloc" feature. "shareable_bits"
-is a global bitmask of shareable cache with I/O and can thus not present the
-per-domain I/O allocations possible with the "io_alloc" feature. Revise the
-"shareable_bits" documentation to direct users to "bit_usage" for accurate
-cache usage information.
+Enable users to modify io_alloc CBMs by writing to the io_alloc_cbm resctrl
+file when the io_alloc feature is enabled.
+
+Mirror the CBMs between CDP_CODE and CDP_DATA when CDP is enabled to present
+consistent I/O allocation information to user space.
 
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://patch.msgid.link/e02a0d424129fd7f3e45822a559b1c614ae4652a.17629=
+Link: https://patch.msgid.link/67609641b03ccfba18a8ee0bf9dbd1f3dcbecda3.17629=
 95456.git.babu.moger@amd.com
 ---
- Documentation/filesystems/resctrl.rst | 35 +++++++++++++++-----------
- fs/resctrl/ctrlmondata.c              |  2 +-
- fs/resctrl/internal.h                 |  1 +-
- fs/resctrl/rdtgroup.c                 | 21 ++++++++++++++--
- 4 files changed, 42 insertions(+), 17 deletions(-)
+ Documentation/filesystems/resctrl.rst | 12 +++-
+ fs/resctrl/ctrlmondata.c              | 93 ++++++++++++++++++++++++++-
+ fs/resctrl/internal.h                 |  2 +-
+ fs/resctrl/rdtgroup.c                 |  3 +-
+ 4 files changed, 109 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystem=
 s/resctrl.rst
-index bbc4b6c..8c8ce67 100644
+index e799453..bbc4b6c 100644
 --- a/Documentation/filesystems/resctrl.rst
 +++ b/Documentation/filesystems/resctrl.rst
-@@ -96,12 +96,19 @@ related to allocation:
- 		must be set when writing a mask.
+@@ -196,6 +196,18 @@ related to allocation:
+ 			# cat /sys/fs/resctrl/info/L3/io_alloc_cbm
+ 			0=3Dffff;1=3Dffff
 =20
- "shareable_bits":
--		Bitmask of shareable resource with other executing
--		entities (e.g. I/O). User can use this when
--		setting up exclusive cache partitions. Note that
--		some platforms support devices that have their
--		own settings for cache use which can over-ride
--		these bits.
-+		Bitmask of shareable resource with other executing entities
-+		(e.g. I/O). Applies to all instances of this resource. User
-+		can use this when setting up exclusive cache partitions.
-+		Note that some platforms support devices that have their
-+		own settings for cache use which can over-ride these bits.
++		CBMs can be configured by writing to the interface.
 +
-+		When "io_alloc" is enabled, a portion of each cache instance can
-+		be configured for shared use between hardware and software.
-+		"bit_usage" should be used to see which portions of each cache
-+		instance is configured for hardware use via "io_alloc" feature
-+		because every cache instance can have its "io_alloc" bitmask
-+		configured independently via "io_alloc_cbm".
++		Example::
 +
- "bit_usage":
- 		Annotated capacity bitmasks showing how all
- 		instances of the resource are used. The legend is:
-@@ -115,16 +122,16 @@ related to allocation:
- 			"H":
- 			      Corresponding region is used by hardware only
- 			      but available for software use. If a resource
--			      has bits set in "shareable_bits" but not all
--			      of these bits appear in the resource groups'
--			      schematas then the bits appearing in
--			      "shareable_bits" but no resource group will
--			      be marked as "H".
-+			      has bits set in "shareable_bits" or "io_alloc_cbm"
-+			      but not all of these bits appear in the resource
-+			      groups' schemata then the bits appearing in
-+			      "shareable_bits" or "io_alloc_cbm" but no
-+			      resource group will be marked as "H".
- 			"X":
- 			      Corresponding region is available for sharing and
--			      used by hardware and software. These are the
--			      bits that appear in "shareable_bits" as
--			      well as a resource group's allocation.
-+			      used by hardware and software. These are the bits
-+			      that appear in "shareable_bits" or "io_alloc_cbm"
-+			      as well as a resource group's allocation.
- 			"S":
- 			      Corresponding region is used by software
- 			      and available for sharing.
++			# echo 1=3Dff > /sys/fs/resctrl/info/L3/io_alloc_cbm
++			# cat /sys/fs/resctrl/info/L3/io_alloc_cbm
++			0=3Dffff;1=3D00ff
++
++			# echo "0=3Dff;1=3Df" > /sys/fs/resctrl/info/L3/io_alloc_cbm
++			# cat /sys/fs/resctrl/info/L3/io_alloc_cbm
++			0=3D00ff;1=3D000f
++
+ 		When CDP is enabled "io_alloc_cbm" associated with the CDP_DATA and CDP_CO=
+DE
+ 		resources may reflect the same values. For example, values read from and
+ 		written to /sys/fs/resctrl/info/L3DATA/io_alloc_cbm may be reflected by
 diff --git a/fs/resctrl/ctrlmondata.c b/fs/resctrl/ctrlmondata.c
-index 332918f..b2d178d 100644
+index c43bede..332918f 100644
 --- a/fs/resctrl/ctrlmondata.c
 +++ b/fs/resctrl/ctrlmondata.c
-@@ -750,7 +750,7 @@ out:
-  * resource. Note that if Code Data Prioritization (CDP) is enabled, the num=
-ber
-  * of available CLOSIDs is reduced by half.
-  */
--static u32 resctrl_io_alloc_closid(struct rdt_resource *r)
-+u32 resctrl_io_alloc_closid(struct rdt_resource *r)
- {
- 	if (resctrl_arch_get_cdp_enabled(r->rid))
- 		return resctrl_arch_get_num_closid(r) / 2  - 1;
+@@ -864,3 +864,96 @@ out_unlock:
+ 	cpus_read_unlock();
+ 	return ret;
+ }
++
++static int resctrl_io_alloc_parse_line(char *line,  struct rdt_resource *r,
++				       struct resctrl_schema *s, u32 closid)
++{
++	enum resctrl_conf_type peer_type;
++	struct rdt_parse_data data;
++	struct rdt_ctrl_domain *d;
++	char *dom =3D NULL, *id;
++	unsigned long dom_id;
++
++next:
++	if (!line || line[0] =3D=3D '\0')
++		return 0;
++
++	dom =3D strsep(&line, ";");
++	id =3D strsep(&dom, "=3D");
++	if (!dom || kstrtoul(id, 10, &dom_id)) {
++		rdt_last_cmd_puts("Missing '=3D' or non-numeric domain\n");
++		return -EINVAL;
++	}
++
++	dom =3D strim(dom);
++	list_for_each_entry(d, &r->ctrl_domains, hdr.list) {
++		if (d->hdr.id =3D=3D dom_id) {
++			data.buf =3D dom;
++			data.mode =3D RDT_MODE_SHAREABLE;
++			data.closid =3D closid;
++			if (parse_cbm(&data, s, d))
++				return -EINVAL;
++			/*
++			 * Keep io_alloc CLOSID's CBM of CDP_CODE and CDP_DATA
++			 * in sync.
++			 */
++			if (resctrl_arch_get_cdp_enabled(r->rid)) {
++				peer_type =3D resctrl_peer_type(s->conf_type);
++				memcpy(&d->staged_config[peer_type],
++				       &d->staged_config[s->conf_type],
++				       sizeof(d->staged_config[0]));
++			}
++			goto next;
++		}
++	}
++
++	return -EINVAL;
++}
++
++ssize_t resctrl_io_alloc_cbm_write(struct kernfs_open_file *of, char *buf,
++				   size_t nbytes, loff_t off)
++{
++	struct resctrl_schema *s =3D rdt_kn_parent_priv(of->kn);
++	struct rdt_resource *r =3D s->res;
++	u32 io_alloc_closid;
++	int ret =3D 0;
++
++	/* Valid input requires a trailing newline */
++	if (nbytes =3D=3D 0 || buf[nbytes - 1] !=3D '\n')
++		return -EINVAL;
++
++	buf[nbytes - 1] =3D '\0';
++
++	cpus_read_lock();
++	mutex_lock(&rdtgroup_mutex);
++	rdt_last_cmd_clear();
++
++	if (!r->cache.io_alloc_capable) {
++		rdt_last_cmd_printf("io_alloc is not supported on %s\n", s->name);
++		ret =3D -ENODEV;
++		goto out_unlock;
++	}
++
++	if (!resctrl_arch_get_io_alloc_enabled(r)) {
++		rdt_last_cmd_printf("io_alloc is not enabled on %s\n", s->name);
++		ret =3D -EINVAL;
++		goto out_unlock;
++	}
++
++	io_alloc_closid =3D resctrl_io_alloc_closid(r);
++
++	rdt_staged_configs_clear();
++	ret =3D resctrl_io_alloc_parse_line(buf, r, s, io_alloc_closid);
++	if (ret)
++		goto out_clear_configs;
++
++	ret =3D resctrl_arch_update_domains(r, io_alloc_closid);
++
++out_clear_configs:
++	rdt_staged_configs_clear();
++out_unlock:
++	mutex_unlock(&rdtgroup_mutex);
++	cpus_read_unlock();
++
++	return ret ?: nbytes;
++}
 diff --git a/fs/resctrl/internal.h b/fs/resctrl/internal.h
-index e1eda74..bff4a54 100644
+index 779a575..e1eda74 100644
 --- a/fs/resctrl/internal.h
 +++ b/fs/resctrl/internal.h
-@@ -442,6 +442,7 @@ int resctrl_io_alloc_cbm_show(struct kernfs_open_file *of=
-, struct seq_file *seq,
+@@ -440,6 +440,8 @@ ssize_t resctrl_io_alloc_write(struct kernfs_open_file *o=
+f, char *buf,
+ const char *rdtgroup_name_by_closid(u32 closid);
+ int resctrl_io_alloc_cbm_show(struct kernfs_open_file *of, struct seq_file *=
+seq,
  			      void *v);
- ssize_t resctrl_io_alloc_cbm_write(struct kernfs_open_file *of, char *buf,
- 				   size_t nbytes, loff_t off);
-+u32 resctrl_io_alloc_closid(struct rdt_resource *r);
++ssize_t resctrl_io_alloc_cbm_write(struct kernfs_open_file *of, char *buf,
++				   size_t nbytes, loff_t off);
 =20
  #ifdef CONFIG_RESCTRL_FS_PSEUDO_LOCK
  int rdtgroup_locksetup_enter(struct rdtgroup *rdtgrp);
 diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
-index 3614974..8e39dfd 100644
+index ac326db..3614974 100644
 --- a/fs/resctrl/rdtgroup.c
 +++ b/fs/resctrl/rdtgroup.c
-@@ -1062,15 +1062,17 @@ static int rdt_bit_usage_show(struct kernfs_open_file=
- *of,
-=20
- 	cpus_read_lock();
- 	mutex_lock(&rdtgroup_mutex);
--	hw_shareable =3D r->cache.shareable_bits;
- 	list_for_each_entry(dom, &r->ctrl_domains, hdr.list) {
- 		if (sep)
- 			seq_putc(seq, ';');
-+		hw_shareable =3D r->cache.shareable_bits;
- 		sw_shareable =3D 0;
- 		exclusive =3D 0;
- 		seq_printf(seq, "%d=3D", dom->hdr.id);
- 		for (i =3D 0; i < closids_supported(); i++) {
--			if (!closid_allocated(i))
-+			if (!closid_allocated(i) ||
-+			    (resctrl_arch_get_io_alloc_enabled(r) &&
-+			     i =3D=3D resctrl_io_alloc_closid(r)))
- 				continue;
- 			ctrl_val =3D resctrl_arch_get_config(r, dom, i,
- 							   s->conf_type);
-@@ -1098,6 +1100,21 @@ static int rdt_bit_usage_show(struct kernfs_open_file =
-*of,
- 				break;
- 			}
- 		}
-+
-+		/*
-+		 * When the "io_alloc" feature is enabled, a portion of the cache
-+		 * is configured for shared use between hardware and software.
-+		 * Also, when CDP is enabled the CBMs of CDP_CODE and CDP_DATA
-+		 * resources are kept in sync. So, the CBMs for "io_alloc" can
-+		 * be accessed through either resource.
-+		 */
-+		if (resctrl_arch_get_io_alloc_enabled(r)) {
-+			ctrl_val =3D resctrl_arch_get_config(r, dom,
-+							   resctrl_io_alloc_closid(r),
-+							   s->conf_type);
-+			hw_shareable |=3D ctrl_val;
-+		}
-+
- 		for (i =3D r->cache.cbm_len - 1; i >=3D 0; i--) {
- 			pseudo_locked =3D dom->plr ? dom->plr->cbm : 0;
- 			hwb =3D test_bit(i, &hw_shareable);
+@@ -1973,9 +1973,10 @@ static struct rftype res_common_files[] =3D {
+ 	},
+ 	{
+ 		.name		=3D "io_alloc_cbm",
+-		.mode		=3D 0444,
++		.mode		=3D 0644,
+ 		.kf_ops		=3D &rdtgroup_kf_single_ops,
+ 		.seq_show	=3D resctrl_io_alloc_cbm_show,
++		.write		=3D resctrl_io_alloc_cbm_write,
+ 	},
+ 	{
+ 		.name		=3D "max_threshold_occupancy",
 
