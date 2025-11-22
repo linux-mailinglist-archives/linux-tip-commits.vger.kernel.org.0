@@ -1,79 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-7468-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7470-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4DBC7D377
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 16:51:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26336C7D380
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 16:51:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 411183499BD
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 15:49:24 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5C44034F2FF
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 15:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B84762DC76C;
-	Sat, 22 Nov 2025 15:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4004E2F60B2;
+	Sat, 22 Nov 2025 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WKyll+aG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RK+/KiLO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="URDEJ6r4";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q7KJw0lM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2422BE02C;
-	Sat, 22 Nov 2025 15:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1872D0607;
+	Sat, 22 Nov 2025 15:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763826524; cv=none; b=HZ52xssuaXKmftzef5TDuv0Xnm03er4UhZYa2a1NKCR7uGe2As0exDF1nn5hfa+4gFpBna5/ybIwXRRnj3xq6GyQAhGRXL9g4udjldQSIAFQ/58bX8njVO2Tm7c8rPp+sOkEkFc5S8mR7WSVlv+w1qpwpY25Ho4SbWYam8n7ndE=
+	t=1763826526; cv=none; b=l+AHAK127LhoZi/0u1UoAAQgFmasX8TeB/h9GlCxSCE2ltAFQlPUYUj+28WjUPq4272fa7+QA6uh7rwA81BJmZZribRNCLrFUJuvKsRD5LvLkP/BJEJL7U7YLD43vnXqNeBFpjEqrGoNWjqyobRHnAtwQM9Vj0yIPSYMe1O6fQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763826524; c=relaxed/simple;
-	bh=Xk8gIaNTVz3TJljbAbSqcL5rvG+oNF/DmXMu2ZMQxZg=;
+	s=arc-20240116; t=1763826526; c=relaxed/simple;
+	bh=EfRLPVJ5y1T2+fMnHa0aQBh1GvFBev51tVtKWJ5/VTI=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lMHieaYyYnW9VgnSbJHli4ZvBTp7r7+B8TWnQSrogJrapTQh1QatYAHopF4p66wh/qVqXbVrriHghO97u4G2/HNrCHxkahiIIAsyexMo3oKZWfnUy29Kkfoxt4H1QXdv9nE2fvmTyBZK2ZJSdwcG0wsPAApQZysCfBWKqgt3bco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WKyll+aG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RK+/KiLO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=q8OlqpBwRVreaOHNwb4LmHe/42yb2H5ukVjtdPEyzEsEykuu1pf0CQ3sy1+lK4hc1YAxzog9g0R6zLgydCuLURWndTzv72mrZIZIa1GfI85VrqUEOqtZpZCSXP1NZrkoyCJlKk6mhmDzw6jogmDAK3tk24PsxR/kbrr6oAFJd+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=URDEJ6r4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q7KJw0lM; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 22 Nov 2025 15:48:40 -0000
+Date: Sat, 22 Nov 2025 15:48:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763826521;
+	s=2020; t=1763826522;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1C4ZRL5dQAUIN09w/jQM03MFkaARWvwwe+pjIhi5at4=;
-	b=WKyll+aGhh7Vb1NfYZp+30cCKdIQd6ijJSqpoOtVJ3Ffd/LJ5Q8ug4QlDyYuINwGwbSOUI
-	Rbz8aFfq+1kf1rK/NuotX7ypUcfJBsXKjBRkLqB9WC8eA7QUucxV9ev3KL8Gy7qZvogh0O
-	Yu6jB64mcwJp5gkxC1ns1TxI+Voyk39Mq9L6zmRy/8NKGFF0lMYhQOKzypGcvjBQnkpvCE
-	x37hNsQxZwl1uapo3sTDx4wumzygcy+OKahadZpB4yh5cfJdxZ+e4KUCrwCEpHKKNVkAnA
-	5GbjHt1YG46RB+8cEZDF6eDnRma9G3Ru/eV9YvrvtzzzA41ij/F55ErF+7F4UA==
+	bh=X5l8zc9p235dSk3K3UHtA74740MbkpXpc0C9ybG6io0=;
+	b=URDEJ6r4v3IKtq5LHd+OLJkaDMttSX0kRacmJXLWZpmUx2y9g3gOhEleHCQFpxKurppYSb
+	6jfSAEH8K20Pgda/moAJy5J8wckOYhEAZF9oAgSU2GntIaCEAByAEnJJlIZt4fBiBa1bRA
+	x2luPjepmwFAqBaK4a8vxf1mILq9YBvhP3hYjDGSZ/XmoPY+Dxjf4NmajRPikcGFYkfLcN
+	a4WEvKvG87WsCjOLb9hYEsINzr43QLzpi4ZHSGoIyiIySJscs53rSMSoCCXj3km66zuc/I
+	wtH6CHzudENmllMknU/g9L6XHtCYBtP9rW63+tYmezcNuRDwGTyHyYIyYLAaAA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763826521;
+	s=2020e; t=1763826522;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1C4ZRL5dQAUIN09w/jQM03MFkaARWvwwe+pjIhi5at4=;
-	b=RK+/KiLOmy0bv8FVoO3aoWPYk40gVWGRJBoBdzTQhn4dZMazqLgblJOeESVVphUwUIMdzp
-	yUx0gomdrtJG42CQ==
+	bh=X5l8zc9p235dSk3K3UHtA74740MbkpXpc0C9ybG6io0=;
+	b=Q7KJw0lMJpoxFDZkCzg29mspjDXo5wQL0k3fgDyPZF+N/BCOrMZjb9NvqVG4DyXqY2AXm/
+	YgHjYT24wMjvwqBA==
 From: "tip-bot2 for Babu Moger" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cache] x86,fs/resctrl: Detect io_alloc feature
+Subject:
+ [tip: x86/cache] x86/resctrl: Add SDCIAE feature in the command line options
 Cc: Babu Moger <babu.moger@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
 In-Reply-To:
- <df85a9a6081674fd3ef6b4170920485512ce2ded.1762995456.git.babu.moger@amd.com>
+ <c623edf7cb369ba9da966de47d9f1b666778a40e.1762995456.git.babu.moger@amd.com>
 References:
- <df85a9a6081674fd3ef6b4170920485512ce2ded.1762995456.git.babu.moger@amd.com>
+ <c623edf7cb369ba9da966de47d9f1b666778a40e.1762995456.git.babu.moger@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176382652022.498.17845526767339022307.tip-bot2@tip-bot2>
+Message-ID: <176382652134.498.16140492057350870313.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,83 +84,115 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     7923ae7698cf9728501974d76d8ea712686281bc
-Gitweb:        https://git.kernel.org/tip/7923ae7698cf9728501974d76d8ea712686=
-281bc
+Commit-ID:     4d4840b1251acc194e4b59d9a5bfba23cd573ed3
+Gitweb:        https://git.kernel.org/tip/4d4840b1251acc194e4b59d9a5bfba23cd5=
+73ed3
 Author:        Babu Moger <babu.moger@amd.com>
-AuthorDate:    Wed, 12 Nov 2025 18:57:29 -06:00
+AuthorDate:    Wed, 12 Nov 2025 18:57:28 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 21 Nov 2025 22:04:59 +01:00
+CommitterDate: Fri, 21 Nov 2025 22:03:23 +01:00
 
-x86,fs/resctrl: Detect io_alloc feature
+x86/resctrl: Add SDCIAE feature in the command line options
 
-AMD's SDCIAE (SDCI Allocation Enforcement) PQE feature enables system software
-to control the portions of L3 cache used for direct insertion of data from I/O
-devices into the L3 cache.
-
-Introduce a generic resctrl cache resource property "io_alloc_capable" as the
-first part of the new "io_alloc" resctrl feature that will support AMD's
-SDCIAE. Any architecture can set a cache resource as "io_alloc_capable" if
-a portion of the cache can be allocated for I/O traffic.
-
-Set the "io_alloc_capable" property for the L3 cache resource on x86 (AMD)
-systems that support SDCIAE.
+Add a kernel command-line parameter to enable or disable the exposure of
+the L3 Smart Data Cache Injection Allocation Enforcement (SDCIAE) hardware
+feature to resctrl.
 
 Signed-off-by: Babu Moger <babu.moger@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Link: https://patch.msgid.link/df85a9a6081674fd3ef6b4170920485512ce2ded.17629=
+Link: https://patch.msgid.link/c623edf7cb369ba9da966de47d9f1b666778a40e.17629=
 95456.git.babu.moger@amd.com
 ---
- arch/x86/kernel/cpu/resctrl/core.c | 7 +++++++
- include/linux/resctrl.h            | 3 +++
- 2 files changed, 10 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ Documentation/filesystems/resctrl.rst           | 23 ++++++++--------
+ arch/x86/kernel/cpu/resctrl/core.c              |  2 +-
+ 3 files changed, 15 insertions(+), 12 deletions(-)
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/=
+admin-guide/kernel-parameters.txt
+index 6c42061..29db32a 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -6207,7 +6207,7 @@
+ 	rdt=3D		[HW,X86,RDT]
+ 			Turn on/off individual RDT features. List is:
+ 			cmt, mbmtotal, mbmlocal, l3cat, l3cdp, l2cat, l2cdp,
+-			mba, smba, bmec, abmc.
++			mba, smba, bmec, abmc, sdciae.
+ 			E.g. to turn on cmt and turn off mba use:
+ 				rdt=3Dcmt,!mba
+=20
+diff --git a/Documentation/filesystems/resctrl.rst b/Documentation/filesystem=
+s/resctrl.rst
+index b7f35b0..d7a51ca 100644
+--- a/Documentation/filesystems/resctrl.rst
++++ b/Documentation/filesystems/resctrl.rst
+@@ -17,17 +17,18 @@ AMD refers to this feature as AMD Platform Quality of Ser=
+vice(AMD QoS).
+ This feature is enabled by the CONFIG_X86_CPU_RESCTRL and the x86 /proc/cpui=
+nfo
+ flag bits:
+=20
+-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D	=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
+-RDT (Resource Director Technology) Allocation	"rdt_a"
+-CAT (Cache Allocation Technology)		"cat_l3", "cat_l2"
+-CDP (Code and Data Prioritization)		"cdp_l3", "cdp_l2"
+-CQM (Cache QoS Monitoring)			"cqm_llc", "cqm_occup_llc"
+-MBM (Memory Bandwidth Monitoring)		"cqm_mbm_total", "cqm_mbm_local"
+-MBA (Memory Bandwidth Allocation)		"mba"
+-SMBA (Slow Memory Bandwidth Allocation)         ""
+-BMEC (Bandwidth Monitoring Event Configuration) ""
+-ABMC (Assignable Bandwidth Monitoring Counters) ""
+-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D	=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++RDT (Resource Director Technology) Allocation			"rdt_a"
++CAT (Cache Allocation Technology)				"cat_l3", "cat_l2"
++CDP (Code and Data Prioritization)				"cdp_l3", "cdp_l2"
++CQM (Cache QoS Monitoring)					"cqm_llc", "cqm_occup_llc"
++MBM (Memory Bandwidth Monitoring)				"cqm_mbm_total", "cqm_mbm_local"
++MBA (Memory Bandwidth Allocation)				"mba"
++SMBA (Slow Memory Bandwidth Allocation)				""
++BMEC (Bandwidth Monitoring Event Configuration)			""
++ABMC (Assignable Bandwidth Monitoring Counters)			""
++SDCIAE (Smart Data Cache Injection Allocation Enforcement)	""
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+=20
+ Historically, new features were made visible by default in /proc/cpuinfo. Th=
+is
+ resulted in the feature flags becoming hard to parse by humans. Adding a new
 diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl=
 /core.c
-index 2b2935b..3792ab4 100644
+index 06ca5a3..2b2935b 100644
 --- a/arch/x86/kernel/cpu/resctrl/core.c
 +++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -274,6 +274,11 @@ static void rdt_get_cdp_config(int level)
- 	rdt_resources_all[level].r_resctrl.cdp_capable =3D true;
- }
-=20
-+static void rdt_set_io_alloc_capable(struct rdt_resource *r)
-+{
-+	r->cache.io_alloc_capable =3D true;
-+}
-+
- static void rdt_get_cdp_l3_config(void)
- {
- 	rdt_get_cdp_config(RDT_RESOURCE_L3);
-@@ -855,6 +860,8 @@ static __init bool get_rdt_alloc_resources(void)
- 		rdt_get_cache_alloc_cfg(1, r);
- 		if (rdt_cpu_has(X86_FEATURE_CDP_L3))
- 			rdt_get_cdp_l3_config();
-+		if (rdt_cpu_has(X86_FEATURE_SDCIAE))
-+			rdt_set_io_alloc_capable(r);
- 		ret =3D true;
- 	}
- 	if (rdt_cpu_has(X86_FEATURE_CAT_L2)) {
-diff --git a/include/linux/resctrl.h b/include/linux/resctrl.h
-index a7d9271..533f240 100644
---- a/include/linux/resctrl.h
-+++ b/include/linux/resctrl.h
-@@ -206,6 +206,8 @@ struct rdt_mon_domain {
-  * @arch_has_sparse_bitmasks:	True if a bitmask like f00f is valid.
-  * @arch_has_per_cpu_cfg:	True if QOS_CFG register for this cache
-  *				level has CPU scope.
-+ * @io_alloc_capable:	True if portion of the cache can be configured
-+ *			for I/O traffic.
-  */
- struct resctrl_cache {
- 	unsigned int	cbm_len;
-@@ -213,6 +215,7 @@ struct resctrl_cache {
- 	unsigned int	shareable_bits;
- 	bool		arch_has_sparse_bitmasks;
- 	bool		arch_has_per_cpu_cfg;
-+	bool		io_alloc_capable;
+@@ -719,6 +719,7 @@ enum {
+ 	RDT_FLAG_SMBA,
+ 	RDT_FLAG_BMEC,
+ 	RDT_FLAG_ABMC,
++	RDT_FLAG_SDCIAE,
  };
 =20
- /**
+ #define RDT_OPT(idx, n, f)	\
+@@ -745,6 +746,7 @@ static struct rdt_options rdt_options[]  __ro_after_init =
+=3D {
+ 	RDT_OPT(RDT_FLAG_SMBA,	    "smba",	X86_FEATURE_SMBA),
+ 	RDT_OPT(RDT_FLAG_BMEC,	    "bmec",	X86_FEATURE_BMEC),
+ 	RDT_OPT(RDT_FLAG_ABMC,	    "abmc",	X86_FEATURE_ABMC),
++	RDT_OPT(RDT_FLAG_SDCIAE,    "sdciae",	X86_FEATURE_SDCIAE),
+ };
+ #define NUM_RDT_OPTIONS ARRAY_SIZE(rdt_options)
+=20
 
