@@ -1,79 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7472-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7474-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A402C7D3AB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 17:11:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFB2C7D735
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 21:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 055C1342F35
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 16:11:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E7C64E00E3
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 20:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B2822D9F7;
-	Sat, 22 Nov 2025 16:11:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665F326F2BD;
+	Sat, 22 Nov 2025 20:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TjHkipGA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AJkk41Qv"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VGs385GO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yr3JCqFc"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2074C1DE2A5;
-	Sat, 22 Nov 2025 16:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9EE239E80;
+	Sat, 22 Nov 2025 20:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763827911; cv=none; b=jk3GAW4gFqE/ileBuJnQWjUoMY9GIYmplVscIim4YZHTj7W95qhZ8DM5Fw14vw85BGbhpoUb9lxCJ5UdxMYPbKhXrRelt4CfsCl1Hg3Qruoo4yf04wHQAkT680r0Yh39sqIJKathwwODLxYVcAb7G3m3FhvUfUJ/0OBLmzm80/s=
+	t=1763843797; cv=none; b=V8hcJrJssDC8U6dE3EK0mzv8QBo1HwvkdOe55YF9QHdSJLNVMXjXaeDjYHqJcdCMtF17AxPEahCOsyzp06hVGl3wF6iFBkMlWMplVVxKBKAo2TA1uRkxf0vfel4uhMW2xa7Dq5sWA2gy50rut5nMY1JNMD7BMndDMbpjVt2S8CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763827911; c=relaxed/simple;
-	bh=ucrhHrVUEckSgbWfO3WDdJxcZ3N28Mz3NR3/A31GzeQ=;
+	s=arc-20240116; t=1763843797; c=relaxed/simple;
+	bh=sBGURoA23DTRVl4bu3VnwTXp8lW4u1DFIEmL1y3IFro=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JtY1/74MAuFytKEuTiL+hcx+aN0IgNKbANWj4QwO+gxzNIeBZpDgQZW0tj0AZo5ZgK0jCIHZDHeVAnBL4gS/v1pFGAcuF8ThtYlga2wSUGHMw2h+xlYjqNkYe3QSyOhLTKUveRXaateWbrw6ZRrnXOOPA6jvWVDjBKYq8E0DZbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TjHkipGA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AJkk41Qv; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=eO15uItj8E4n3DT9G9yVZIh+aLt3Ac935eQKTJVnboCNkKUH9ppL/FW+9YZrJ9B07VKVGKTut7y+Fl0sc4dWXqOkJQdeK2v/fdWsQJEy9iWAMbG8o/s584dqXynqSG0ivLihP/Zm2Aa80HILQGC0WleAyPnng+vwZnVwWtzjjmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VGs385GO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yr3JCqFc; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 22 Nov 2025 16:11:47 -0000
+Date: Sat, 22 Nov 2025 20:36:26 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763827908;
+	s=2020; t=1763843788;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UzUauZASvcXlZll5Ck1pU/z0Quzs6IZYzHN7kWNVfdo=;
-	b=TjHkipGAQdv9BGExOuSlsjdiN7Z7xnwEqrzqZFig522RxCtL3nF6aFBKhGm6twazW1ofF+
-	haayd+Yk0ZiWRj7v7gec61pib2So3kEW7yyUsaRh6S5glxN0JXESaGP5hLhH5MqJx1AlXm
-	TALmppe01aD9D+UBs2ghyNWAJOOUewAhGGAIGqhUD8PytLqIlR7G9wLMLnMgN2qcQ4UQFg
-	7V1l/jHP+3aU2dOd5S8ynh1TotlwIblOCIMNhrVdSxsBZD1ppCu81bbCoMMpLL1knQarTi
-	8s58OlUGYsGxZaHA3VB1g5Nq3i627oSwtfC4w69oHNSGET9niqgA7Md0/U3j4Q==
+	bh=JUcSnOrurmG2+HxdnGHeuyMGX/jNk9bnoga8Wx90VE4=;
+	b=VGs385GOA3Jt5IScNFsu0APTQ6Xwv1ljIK0/7QorFOSlvCTk6wSSbIAY0PmLuBo63knQl4
+	OjtNKLkYUFmYJr7DSTNKBda8xqGW9TTa8qQzPvJjv/BMvhG9xTBXtsv1zi0PSU1XmyzTIp
+	0jFgk+pJMoQEDACyT1kjnuy6g0/uJPGDyaLNejekuQv++VK3fgb1TjRK5rg/HgnNiRVuuL
+	6uhNKU3C/b0ex6VUkDXygKJE8qFJHTeBUtl5ZHqzLvU+Z/IU4FctdvUZkjhrOxeF4GuyDY
+	j+mhAyTT2oQuhxzHTQKQOjOgNLleA5qC0jzM4F8Dr8StLSI6isxkl5PdS0T/2w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763827908;
+	s=2020e; t=1763843788;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UzUauZASvcXlZll5Ck1pU/z0Quzs6IZYzHN7kWNVfdo=;
-	b=AJkk41Qv9VUn3VZaahTsKFbHo4mAtPoYu/kXbJb0Ycnw9ZhtfjzXx6+qSOvvr4N+PzilQa
-	P3kMXK9MuTv2o7AA==
-From: "tip-bot2 for Lorenzo Pieralisi" <tip-bot2@linutronix.de>
+	bh=JUcSnOrurmG2+HxdnGHeuyMGX/jNk9bnoga8Wx90VE4=;
+	b=yr3JCqFcR8CD8DL+q6X1rhU997EYLGdjCOgiJYhXedfBxPYVvhe55OGiQjXfmNBXJDMQai
+	54TV9HCdMaLsKGDQ==
+From: "tip-bot2 for Yue Haibing" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] PCI: iproc: Implement MSI controller node detection
- with of_msi_xlate()
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Frank Li <Frank.Li@nxp.com>,
- Bjorn Helgaas <bhelgaas@google.com>, x86@kernel.org,
+Subject:
+ [tip: x86/cleanups] x86/{boot,mtrr}: Remove unused function declarations
+Cc: Yue Haibing <yuehaibing@huawei.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251021124103.198419-5-lpieralisi@kernel.org>
-References: <20251021124103.198419-5-lpieralisi@kernel.org>
+In-Reply-To: <20251120121037.1479334-1-yuehaibing@huawei.com>
+References: <20251120121037.1479334-1-yuehaibing@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176382790748.498.16266737819766872891.tip-bot2@tip-bot2>
+Message-ID: <176384378656.498.412814564621420954.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,83 +80,61 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the x86/cleanups branch of tip:
 
-Commit-ID:     4f32612f6a4e5a9b1344aebf856aa1a1581a426d
-Gitweb:        https://git.kernel.org/tip/4f32612f6a4e5a9b1344aebf856aa1a1581=
-a426d
-Author:        Lorenzo Pieralisi <lpieralisi@kernel.org>
-AuthorDate:    Tue, 21 Oct 2025 14:41:02 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sat, 22 Nov 2025 17:09:03 +01:00
+Commit-ID:     e6a11a526ec63e456d725f67cebcf4f42b2ec2aa
+Gitweb:        https://git.kernel.org/tip/e6a11a526ec63e456d725f67cebcf4f42b2=
+ec2aa
+Author:        Yue Haibing <yuehaibing@huawei.com>
+AuthorDate:    Thu, 20 Nov 2025 20:10:37 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Sat, 22 Nov 2025 21:26:36 +01:00
 
-PCI: iproc: Implement MSI controller node detection with of_msi_xlate()
+x86/{boot,mtrr}: Remove unused function declarations
 
-The functionality implemented in the iproc driver in order to detect an
-OF MSI controller node is now fully implemented in of_msi_xlate().
+Commits
 
-Replace the current msi-map/msi-parent parsing code with of_msi_xlate().
+  28be1b454c2b ("x86/boot: Remove unused copy_*_gs() functions")
+  34d2819f2078 ("x86, mtrr: Remove unused mtrr/state.c")
 
-Since of_msi_xlate() is also a deviceID mapping API, pass in a fictitious
-0 as deviceID - the driver only requires detecting the OF MSI controller
-node not the deviceID mapping per-se (of_msi_xlate() return value is
-ignored for the same reason).
+removed the functions but left the prototypes. Remove them.
 
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251021124103.198419-5-lpieralisi@kernel.org
+  [ bp: Merge into a single patch. ]
+
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251120121037.1479334-1-yuehaibing@huawei.com
 ---
- drivers/pci/controller/pcie-iproc.c | 22 +++++-----------------
- 1 file changed, 5 insertions(+), 17 deletions(-)
+ arch/x86/boot/boot.h            | 2 --
+ arch/x86/kernel/cpu/mtrr/mtrr.h | 4 ----
+ 2 files changed, 6 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-iproc.c b/drivers/pci/controller/pci=
-e-iproc.c
-index 22134e9..ccf7199 100644
---- a/drivers/pci/controller/pcie-iproc.c
-+++ b/drivers/pci/controller/pcie-iproc.c
-@@ -17,6 +17,7 @@
- #include <linux/irqchip/arm-gic-v3.h>
- #include <linux/platform_device.h>
- #include <linux/of_address.h>
-+#include <linux/of_irq.h>
- #include <linux/of_pci.h>
- #include <linux/of_platform.h>
- #include <linux/phy/phy.h>
-@@ -1337,29 +1338,16 @@ static int iproc_pcie_msi_steer(struct iproc_pcie *pc=
-ie,
+diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
+index a3c58eb..8e3eab3 100644
+--- a/arch/x86/boot/boot.h
++++ b/arch/x86/boot/boot.h
+@@ -193,8 +193,6 @@ static inline bool heap_free(size_t n)
 =20
- static int iproc_pcie_msi_enable(struct iproc_pcie *pcie)
- {
--	struct device_node *msi_node;
-+	struct device_node *msi_node =3D NULL;
- 	int ret;
+ void copy_to_fs(addr_t dst, void *src, size_t len);
+ void *copy_from_fs(void *dst, addr_t src, size_t len);
+-void copy_to_gs(addr_t dst, void *src, size_t len);
+-void *copy_from_gs(void *dst, addr_t src, size_t len);
 =20
- 	/*
- 	 * Either the "msi-parent" or the "msi-map" phandle needs to exist
- 	 * for us to obtain the MSI node.
- 	 */
--
--	msi_node =3D of_parse_phandle(pcie->dev->of_node, "msi-parent", 0);
--	if (!msi_node) {
--		const __be32 *msi_map =3D NULL;
--		int len;
--		u32 phandle;
--
--		msi_map =3D of_get_property(pcie->dev->of_node, "msi-map", &len);
--		if (!msi_map)
--			return -ENODEV;
--
--		phandle =3D be32_to_cpup(msi_map + 1);
--		msi_node =3D of_find_node_by_phandle(phandle);
--		if (!msi_node)
--			return -ENODEV;
--	}
-+	of_msi_xlate(pcie->dev, &msi_node, 0);
-+	if (!msi_node)
-+		return -ENODEV;
+ /* a20.c */
+ int enable_a20(void);
+diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.h b/arch/x86/kernel/cpu/mtrr/mtrr.h
+index 5655f25..2de3bd2 100644
+--- a/arch/x86/kernel/cpu/mtrr/mtrr.h
++++ b/arch/x86/kernel/cpu/mtrr/mtrr.h
+@@ -46,10 +46,6 @@ struct set_mtrr_context {
+ 	u32		ccr3;
+ };
 =20
- 	/*
- 	 * Certain revisions of the iProc PCIe controller require additional
+-void set_mtrr_done(struct set_mtrr_context *ctxt);
+-void set_mtrr_cache_disable(struct set_mtrr_context *ctxt);
+-void set_mtrr_prepare_save(struct set_mtrr_context *ctxt);
+-
+ void fill_mtrr_var_range(unsigned int index,
+ 		u32 base_lo, u32 base_hi, u32 mask_lo, u32 mask_hi);
+ bool get_mtrr_state(void);
 
