@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-7474-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7475-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFB2C7D735
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 21:36:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7831CC7D848
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 22:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1E7C64E00E3
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 20:36:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 385354E051A
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 22 Nov 2025 21:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665F326F2BD;
-	Sat, 22 Nov 2025 20:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A731B26F2BD;
+	Sat, 22 Nov 2025 21:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VGs385GO";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yr3JCqFc"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tEDhDwsU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="koxvInjL"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9EE239E80;
-	Sat, 22 Nov 2025 20:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB97123D7C8;
+	Sat, 22 Nov 2025 21:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763843797; cv=none; b=V8hcJrJssDC8U6dE3EK0mzv8QBo1HwvkdOe55YF9QHdSJLNVMXjXaeDjYHqJcdCMtF17AxPEahCOsyzp06hVGl3wF6iFBkMlWMplVVxKBKAo2TA1uRkxf0vfel4uhMW2xa7Dq5sWA2gy50rut5nMY1JNMD7BMndDMbpjVt2S8CQ=
+	t=1763848625; cv=none; b=YZUKa3DMYfvaNr/uo5rty9HxIywZOj6X1yuxj2Mul6/os8lUepz5FFoeDLFLTUSzapByPvG8xcPdmP1fx33H4dipy3GXRnDb4wryZHygPz6wSJkBPrum3ojy4ZAcLnK+5gW8Dhrk/jagjH6L2rObhS8AwtUqCBbU1pS0VLIbixQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763843797; c=relaxed/simple;
-	bh=sBGURoA23DTRVl4bu3VnwTXp8lW4u1DFIEmL1y3IFro=;
+	s=arc-20240116; t=1763848625; c=relaxed/simple;
+	bh=J+7JAnSP9bUprgQRaynkO3NFdNfvKEVHYXFm9zEit+0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=eO15uItj8E4n3DT9G9yVZIh+aLt3Ac935eQKTJVnboCNkKUH9ppL/FW+9YZrJ9B07VKVGKTut7y+Fl0sc4dWXqOkJQdeK2v/fdWsQJEy9iWAMbG8o/s584dqXynqSG0ivLihP/Zm2Aa80HILQGC0WleAyPnng+vwZnVwWtzjjmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VGs385GO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yr3JCqFc; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=U/6vUkOg9WfnAi3/4CZFV2G4cstx752HwGOMD4k+Pm0H1p1q8+kM4+9IOJ63TJ7oiZEdHN+GYWLSXZBQA2cRs3X37knWebkRLEsm/gNS7YgcD5ssHbbs46onVSoKDoP4Z3XbNoGYV55WZ+rttu8XLf910Eg6HR7dvNV8ZuZHmaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tEDhDwsU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=koxvInjL; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 22 Nov 2025 20:36:26 -0000
+Date: Sat, 22 Nov 2025 21:57:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763843788;
+	s=2020; t=1763848621;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JUcSnOrurmG2+HxdnGHeuyMGX/jNk9bnoga8Wx90VE4=;
-	b=VGs385GOA3Jt5IScNFsu0APTQ6Xwv1ljIK0/7QorFOSlvCTk6wSSbIAY0PmLuBo63knQl4
-	OjtNKLkYUFmYJr7DSTNKBda8xqGW9TTa8qQzPvJjv/BMvhG9xTBXtsv1zi0PSU1XmyzTIp
-	0jFgk+pJMoQEDACyT1kjnuy6g0/uJPGDyaLNejekuQv++VK3fgb1TjRK5rg/HgnNiRVuuL
-	6uhNKU3C/b0ex6VUkDXygKJE8qFJHTeBUtl5ZHqzLvU+Z/IU4FctdvUZkjhrOxeF4GuyDY
-	j+mhAyTT2oQuhxzHTQKQOjOgNLleA5qC0jzM4F8Dr8StLSI6isxkl5PdS0T/2w==
+	bh=VBmFtYG+iLUHGHF5V6Busfs0QrMJ/FoTRd7IbKgT/i0=;
+	b=tEDhDwsUdq00NialL4CdtPmCS3cbVl5B27lKnzBGLjs/QXPc9pRCTF6f5Y/N68UeRV6LCu
+	CchwfVF3CZOUETjevVBXg74PIKimIZyatgo5EKEHLZXrFAmWiiYyhN3HVCmim6SSibNK4Y
+	zYI0NAYNSXDWMGL2O09tOox6eEUXMrGlQxRPKWxK2+zqSffuNXrbLOdUXFIMqtyac6U755
+	st/YahWU6tiFMd0U8xBS2ijs2lcPNrEQJBzAq43PdeQLhbOABdl772TyUk9bbEu6krjr/1
+	cXceDikhYpSWqQIVGHbNx7oHL1TYDg+9Bh493VNdxTuyiy8D4+vnYgFQAXI5YA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763843788;
+	s=2020e; t=1763848621;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JUcSnOrurmG2+HxdnGHeuyMGX/jNk9bnoga8Wx90VE4=;
-	b=yr3JCqFcR8CD8DL+q6X1rhU997EYLGdjCOgiJYhXedfBxPYVvhe55OGiQjXfmNBXJDMQai
-	54TV9HCdMaLsKGDQ==
-From: "tip-bot2 for Yue Haibing" <tip-bot2@linutronix.de>
+	bh=VBmFtYG+iLUHGHF5V6Busfs0QrMJ/FoTRd7IbKgT/i0=;
+	b=koxvInjLlZnGdqPfIfObsmFyoeXO3+VTe24kxGu7Wv5qdd5m5aTvEtHWIRjQhojbELZBTV
+	MJMxDPBkDKM2GKBw==
+From: "tip-bot2 for Yipeng Zou" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cleanups] x86/{boot,mtrr}: Remove unused function declarations
-Cc: Yue Haibing <yuehaibing@huawei.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251120121037.1479334-1-yuehaibing@huawei.com>
-References: <20251120121037.1479334-1-yuehaibing@huawei.com>
+Subject: [tip: timers/urgent] timers: Fix NULL function pointer race in
+ timer_shutdown_sync()
+Cc: Yipeng Zou <zouyipeng@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251122093942.301559-1-zouyipeng@huawei.com>
+References: <20251122093942.301559-1-zouyipeng@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176384378656.498.412814564621420954.tip-bot2@tip-bot2>
+Message-ID: <176384862016.498.10720277913756598678.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,61 +79,98 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/cleanups branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     e6a11a526ec63e456d725f67cebcf4f42b2ec2aa
-Gitweb:        https://git.kernel.org/tip/e6a11a526ec63e456d725f67cebcf4f42b2=
-ec2aa
-Author:        Yue Haibing <yuehaibing@huawei.com>
-AuthorDate:    Thu, 20 Nov 2025 20:10:37 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Sat, 22 Nov 2025 21:26:36 +01:00
+Commit-ID:     20739af07383e6eb1ec59dcd70b72ebfa9ac362c
+Gitweb:        https://git.kernel.org/tip/20739af07383e6eb1ec59dcd70b72ebfa9a=
+c362c
+Author:        Yipeng Zou <zouyipeng@huawei.com>
+AuthorDate:    Sat, 22 Nov 2025 09:39:42=20
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sat, 22 Nov 2025 22:55:26 +01:00
 
-x86/{boot,mtrr}: Remove unused function declarations
+timers: Fix NULL function pointer race in timer_shutdown_sync()
 
-Commits
+There is a race condition between timer_shutdown_sync() and timer
+expiration that can lead to hitting a WARN_ON in expire_timers().
 
-  28be1b454c2b ("x86/boot: Remove unused copy_*_gs() functions")
-  34d2819f2078 ("x86, mtrr: Remove unused mtrr/state.c")
+The issue occurs when timer_shutdown_sync() clears the timer function
+to NULL while the timer is still running on another CPU. The race
+scenario looks like this:
 
-removed the functions but left the prototypes. Remove them.
+CPU0					CPU1
+					<SOFTIRQ>
+					lock_timer_base()
+					expire_timers()
+					base->running_timer =3D timer;
+					unlock_timer_base()
+					[call_timer_fn enter]
+					mod_timer()
+					...
+timer_shutdown_sync()
+lock_timer_base()
+// For now, will not detach the timer but only clear its function to NULL
+if (base->running_timer !=3D timer)
+	ret =3D detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function =3D NULL;
+unlock_timer_base()
+					[call_timer_fn exit]
+					lock_timer_base()
+					base->running_timer =3D NULL;
+					unlock_timer_base()
+					...
+					// Now timer is pending while its function set to NULL.
+					// next timer trigger
+					<SOFTIRQ>
+					expire_timers()
+					WARN_ON_ONCE(!fn) // hit
+					...
+lock_timer_base()
+// Now timer will detach
+if (base->running_timer !=3D timer)
+	ret =3D detach_if_pending(timer, base, true);
+if (shutdown)
+	timer->function =3D NULL;
+unlock_timer_base()
 
-  [ bp: Merge into a single patch. ]
+The problem is that timer_shutdown_sync() clears the timer function
+regardless of whether the timer is currently running. This can leave a
+pending timer with a NULL function pointer, which triggers the
+WARN_ON_ONCE(!fn) check in expire_timers().
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/20251120121037.1479334-1-yuehaibing@huawei.com
+Fix this by only clearing the timer function when actually detaching the
+timer. If the timer is running, leave the function pointer intact, which is
+safe because the timer will be properly detached when it finishes running.
+
+Fixes: 0cc04e80458a ("timers: Add shutdown mechanism to the internal function=
+s")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251122093942.301559-1-zouyipeng@huawei.com
 ---
- arch/x86/boot/boot.h            | 2 --
- arch/x86/kernel/cpu/mtrr/mtrr.h | 4 ----
- 2 files changed, 6 deletions(-)
+ kernel/time/timer.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/boot/boot.h b/arch/x86/boot/boot.h
-index a3c58eb..8e3eab3 100644
---- a/arch/x86/boot/boot.h
-+++ b/arch/x86/boot/boot.h
-@@ -193,8 +193,6 @@ static inline bool heap_free(size_t n)
+diff --git a/kernel/time/timer.c b/kernel/time/timer.c
+index 553fa46..d5ebb1d 100644
+--- a/kernel/time/timer.c
++++ b/kernel/time/timer.c
+@@ -1458,10 +1458,11 @@ static int __try_to_del_timer_sync(struct timer_list =
+*timer, bool shutdown)
 =20
- void copy_to_fs(addr_t dst, void *src, size_t len);
- void *copy_from_fs(void *dst, addr_t src, size_t len);
--void copy_to_gs(addr_t dst, void *src, size_t len);
--void *copy_from_gs(void *dst, addr_t src, size_t len);
+ 	base =3D lock_timer_base(timer, &flags);
 =20
- /* a20.c */
- int enable_a20(void);
-diff --git a/arch/x86/kernel/cpu/mtrr/mtrr.h b/arch/x86/kernel/cpu/mtrr/mtrr.h
-index 5655f25..2de3bd2 100644
---- a/arch/x86/kernel/cpu/mtrr/mtrr.h
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.h
-@@ -46,10 +46,6 @@ struct set_mtrr_context {
- 	u32		ccr3;
- };
+-	if (base->running_timer !=3D timer)
++	if (base->running_timer !=3D timer) {
+ 		ret =3D detach_if_pending(timer, base, true);
+-	if (shutdown)
+-		timer->function =3D NULL;
++		if (shutdown)
++			timer->function =3D NULL;
++	}
 =20
--void set_mtrr_done(struct set_mtrr_context *ctxt);
--void set_mtrr_cache_disable(struct set_mtrr_context *ctxt);
--void set_mtrr_prepare_save(struct set_mtrr_context *ctxt);
--
- void fill_mtrr_var_range(unsigned int index,
- 		u32 base_lo, u32 base_hi, u32 mask_lo, u32 mask_hi);
- bool get_mtrr_state(void);
+ 	raw_spin_unlock_irqrestore(&base->lock, flags);
+=20
 
