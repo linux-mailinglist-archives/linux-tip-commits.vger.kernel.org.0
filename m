@@ -1,79 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-7492-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7493-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1524BC7F843
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 10:15:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D644C7F854
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 10:16:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6D8F3348D77
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 09:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D02D23A69A8
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 09:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F412FB62C;
-	Mon, 24 Nov 2025 09:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0D72FBDFD;
+	Mon, 24 Nov 2025 09:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aGL9lC/u";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="48BLxIYw"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ehuU38XM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xBvPgaYa"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF102F9DA0;
-	Mon, 24 Nov 2025 09:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873CE2FB625;
+	Mon, 24 Nov 2025 09:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763975512; cv=none; b=c8bBBst8V4MZrPHVRHDED6HaerLWexGpLgFtrKUPG1ckJaxw1U68S15t4pFDEB2BCzWadVGG16un6UaXIdNxndHwuTrf7904OTfM+zH/uAKDbkb5eXAmYHr5ME3dlDAOcedCHHD/UvRcOCsuJjbqgNLr/HdbIaOdfooJXH8j/A0=
+	t=1763975514; cv=none; b=cDJodCbnoiOScJFZc28yxCMs81kFeNBqo93Zx94QSPvNpSAqrZkUi5ij+WP2G7L6+LkTBHNihd7XjM2i/ilCBngiomTB3ArKiIb5L3R1FluFjlAEgZjUTcOcZTf6I1dlaJ+5LGP17y8Trvv8yA+VNfBjU7lo6KuAdFsL8CKZgN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763975512; c=relaxed/simple;
-	bh=++LOiqNpC44mbd66FOy6biDjvlUa+u6+/t1Rs2oxoMk=;
+	s=arc-20240116; t=1763975514; c=relaxed/simple;
+	bh=jONyEBn7+6NrdWN4c/6crSf78vGOibNA1nLbVihmWEg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lNX6RRT1u0Nv1lKbvc43d+n5PJMIcMXlqRuZscT+WVVFEDOf3IoxsSu0D/DfiVsgOCQhzlRwCMwkzqPaXAhzmpWoZ9fgS3dNFZYIyzlOrf5NiW1MMxebCL04O2C9RtjouROFBzTeGQUN6sraEqB9buQABaRtaWEzOQJ12dUpBgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aGL9lC/u; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=48BLxIYw; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Tx5luK1tflbHmIvGa90+xtYcVhmwDVemD2u6v2Hxqd2DYBAAYKLpc+1LD366fQN4W0Zr2f/PSfy9NGjQin0lrN6KYzz+JTo8AvxDev8e3A6UVKeOb4VpLlERfW0uGRNXQFSpJsSknGY2zAXrorgYoUfPT1y2vv56BVjjXfOpmuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ehuU38XM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xBvPgaYa; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 24 Nov 2025 09:11:47 -0000
+Date: Mon, 24 Nov 2025 09:11:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763975509;
+	s=2020; t=1763975510;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cmKHZBIE1ttpeyPwpC8ZmBdOAlIOPjXXstWQ+LGo83k=;
-	b=aGL9lC/ugSby9uTySC+sL8IJl/0oPHWlHX2rp+t5NlLrNszHMo9FfGmoJezcHYYMrGsQVQ
-	gUP9S1DP6vUtKsxFKAqhsCfQt89M/ctnQbQCe1wcGOWMPam6/p5CJpOBrTuHQNrBVbdmlj
-	WCVQuPryiUiPFVzkdDKrQCZRtWSg2plvJYLIehAw+6lUUxVudGsBMlDTNTZswqfSqeV0i7
-	fSrlYpWXNAS4q+3++pVuuJkXxFPdnHvPFS+pQm4GuZOoA4Jtpx/BWDrf2Lap4NCqEpNA/7
-	XDgTQXwATFpn2IZK+OPVnDAI7V20J3QdCqdGdFhU8fYjW4m0Bh62EirpXeN+Gw==
+	bh=n6x7z7ogNWhjOqabpGjGccwSOgcC9HJb8oyPM0w3Yl0=;
+	b=ehuU38XMbdwiwMC1k6g8f5RaLlmHXfxNVQw8Vv6AWAo//2+09j8lVCYaNyrx3d1cxM2AZK
+	XDhU4MG8SqD5Z9mctntNB/yjP36JiMX+wdOqmxRhlbBd+ZoEUD35Wcxw7+JT/Q4LzX0Hdd
+	XEtiJq+MoMrijLMSF+3buFHYxVXiWSar4dwqZ4vJDKmNMKrbgFHuciSfRmG5+AE0VzIxwb
+	n5CGmD96H6tW/A5TN69oiJMhH/2T786Q7LgNXT0rqmJr+A5iDXhs5gAGF2jLZwhQl/q9ym
+	lUweeQN85p1BGgCozvFmMz2BeWwCJprjVjaPs32MNgjT4gpentJi1e7hff1hmw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763975509;
+	s=2020e; t=1763975510;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cmKHZBIE1ttpeyPwpC8ZmBdOAlIOPjXXstWQ+LGo83k=;
-	b=48BLxIYwGl8pPr47jiZNJYWuGObOHIkGkg6lRBXRUX5L4PZu7H0MxKQ9AEg+ITPJMGt1ic
-	9DCHQIzv469NwfBw==
+	bh=n6x7z7ogNWhjOqabpGjGccwSOgcC9HJb8oyPM0w3Yl0=;
+	b=xBvPgaYaBRlTB2nkEiY78Af0w8JoUVcMTnBLINaHIcZG5UO3JKJLvb7o980qctOiCDpknu
+	eH53c11+Ws+v8VDw==
 From: "tip-bot2 for Alexandre Chartre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Do not validate IBT for .return_sites
- and .call_sites
+Subject:
+ [tip: objtool/core] objtool: Improve tracing of alternative instructions
 Cc: Alexandre Chartre <alexandre.chartre@oracle.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251121095340.464045-17-alexandre.chartre@oracle.com>
-References: <20251121095340.464045-17-alexandre.chartre@oracle.com>
+In-Reply-To: <20251121095340.464045-16-alexandre.chartre@oracle.com>
+References: <20251121095340.464045-16-alexandre.chartre@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176397550799.498.17947549306101322103.tip-bot2@tip-bot2>
+Message-ID: <176397550898.498.12685492922627906275.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,44 +83,254 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     c3b7d044fc5ac99a31ce9420431b90e21ed55503
-Gitweb:        https://git.kernel.org/tip/c3b7d044fc5ac99a31ce9420431b90e21ed=
-55503
+Commit-ID:     350c7ab8577a32c101a097f4c072220d9ce64f3b
+Gitweb:        https://git.kernel.org/tip/350c7ab8577a32c101a097f4c072220d9ce=
+64f3b
 Author:        Alexandre Chartre <alexandre.chartre@oracle.com>
-AuthorDate:    Fri, 21 Nov 2025 10:53:26 +01:00
+AuthorDate:    Fri, 21 Nov 2025 10:53:25 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 21 Nov 2025 15:30:12 +01:00
+CommitterDate: Fri, 21 Nov 2025 15:30:11 +01:00
 
-objtool: Do not validate IBT for .return_sites and .call_sites
+objtool: Improve tracing of alternative instructions
 
-The .return_sites and .call_sites sections reference text addresses,
-but not with the intent to indirect branch to them, so they don't
-need to be validated for IBT.
-
-This is useful when running objtool on object files which already
-have .return_sites or .call_sites sections, for example to re-run
-objtool after it has reported an error or a warning.
+When tracing function validation, improve the reporting of
+alternative instruction by more clearly showing the different
+alternatives beginning and end.
 
 Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://patch.msgid.link/20251121095340.464045-17-alexandre.chartre@ora=
+Link: https://patch.msgid.link/20251121095340.464045-16-alexandre.chartre@ora=
 cle.com
 ---
- tools/objtool/check.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/objtool/check.c                 | 18 ++-----
+ tools/objtool/include/objtool/trace.h | 65 +++++++++++++++++++++++++-
+ tools/objtool/trace.c                 | 55 ++++++++++++++++++++++-
+ 3 files changed, 125 insertions(+), 13 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 442b655..4ebadf9 100644
+index 93aaa4b..442b655 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -4753,6 +4753,8 @@ static int validate_ibt(struct objtool_file *file)
- 		    !strcmp(sec->name, ".llvm.call-graph-profile")	||
- 		    !strcmp(sec->name, ".llvm_bb_addr_map")		||
- 		    !strcmp(sec->name, "__tracepoints")			||
-+		    !strcmp(sec->name, ".return_sites")			||
-+		    !strcmp(sec->name, ".call_sites")			||
- 		    !strcmp(sec->name, "__patchable_function_entries"))
- 			continue;
+@@ -3564,7 +3564,7 @@ static bool skip_alt_group(struct instruction *insn)
 =20
+ 	/* ANNOTATE_IGNORE_ALTERNATIVE */
+ 	if (insn->alt_group->ignore) {
+-		TRACE_INSN(insn, "alt group ignored");
++		TRACE_ALT(insn, "alt group ignored");
+ 		return true;
+ 	}
+=20
+@@ -3680,8 +3680,9 @@ static int validate_insn(struct objtool_file *file, str=
+uct symbol *func,
+ 			 struct instruction *prev_insn, struct instruction *next_insn,
+ 			 bool *dead_end)
+ {
+-	/* prev_state is not used if there is no disassembly support */
++	/* prev_state and alt_name are not used if there is no disassembly support =
+*/
+ 	struct insn_state prev_state __maybe_unused;
++	char *alt_name __maybe_unused =3D NULL;
+ 	struct alternative *alt;
+ 	u8 visited;
+ 	int ret;
+@@ -3768,23 +3769,16 @@ static int validate_insn(struct objtool_file *file, s=
+truct symbol *func,
+ 		return 1;
+=20
+ 	if (insn->alts) {
+-		int i, num_alts;
+-
+-		num_alts =3D 0;
+-		for (alt =3D insn->alts; alt; alt =3D alt->next)
+-			num_alts++;
+-
+-		i =3D 1;
+ 		for (alt =3D insn->alts; alt; alt =3D alt->next) {
+-			TRACE_INSN(insn, "alternative %d/%d", i, num_alts);
++			TRACE_ALT_BEGIN(insn, alt, alt_name);
+ 			ret =3D validate_branch(file, func, alt->insn, *statep);
++			TRACE_ALT_END(insn, alt, alt_name);
+ 			if (ret) {
+ 				BT_INSN(insn, "(alt)");
+ 				return ret;
+ 			}
+-			i++;
+ 		}
+-		TRACE_INSN(insn, "alternative DEFAULT");
++		TRACE_ALT_INFO_NOADDR(insn, "/ ", "DEFAULT");
+ 	}
+=20
+ 	if (skip_alt_group(insn))
+diff --git a/tools/objtool/include/objtool/trace.h b/tools/objtool/include/ob=
+jtool/trace.h
+index 33fe9c6..70b5743 100644
+--- a/tools/objtool/include/objtool/trace.h
++++ b/tools/objtool/include/objtool/trace.h
+@@ -19,11 +19,26 @@ extern int trace_depth;
+ 		fprintf(stderr, fmt, ##__VA_ARGS__);		\
+ })
+=20
++/*
++ * Print the instruction address and a message. The instruction
++ * itself is not printed.
++ */
++#define TRACE_ADDR(insn, fmt, ...)				\
++({								\
++	if (trace) {						\
++		disas_print_info(stderr, insn, trace_depth - 1, \
++				 fmt "\n", ##__VA_ARGS__);	\
++	}							\
++})
++
++/*
++ * Print the instruction address, the instruction and a message.
++ */
+ #define TRACE_INSN(insn, fmt, ...)				\
+ ({								\
+ 	if (trace) {						\
+ 		disas_print_insn(stderr, objtool_disas_ctx,	\
+-				 insn, trace_depth - 1,	\
++				 insn, trace_depth - 1,		\
+ 				 fmt, ##__VA_ARGS__);		\
+ 		fprintf(stderr, "\n");				\
+ 		insn->trace =3D 1;				\
+@@ -36,6 +51,37 @@ extern int trace_depth;
+ 		trace_insn_state(insn, sprev, snext);		\
+ })
+=20
++#define TRACE_ALT_FMT(pfx, fmt) pfx "<%s.%lx> " fmt
++#define TRACE_ALT_ARG(insn) disas_alt_type_name(insn), (insn)->offset
++
++#define TRACE_ALT(insn, fmt, ...)				\
++	TRACE_INSN(insn, TRACE_ALT_FMT("", fmt),		\
++		   TRACE_ALT_ARG(insn), ##__VA_ARGS__)
++
++#define TRACE_ALT_INFO(insn, pfx, fmt, ...)			\
++	TRACE_ADDR(insn, TRACE_ALT_FMT(pfx, fmt),		\
++		   TRACE_ALT_ARG(insn), ##__VA_ARGS__)
++
++#define TRACE_ALT_INFO_NOADDR(insn, pfx, fmt, ...)		\
++	TRACE_ADDR(NULL, TRACE_ALT_FMT(pfx, fmt),		\
++		   TRACE_ALT_ARG(insn), ##__VA_ARGS__)
++
++#define TRACE_ALT_BEGIN(insn, alt, alt_name)			\
++({								\
++	if (trace) {						\
++		alt_name =3D disas_alt_name(alt);			\
++		trace_alt_begin(insn, alt, alt_name);		\
++	}							\
++})
++
++#define TRACE_ALT_END(insn, alt, alt_name)			\
++({								\
++	if (trace) {						\
++		trace_alt_end(insn, alt, alt_name);		\
++		free(alt_name);					\
++	}							\
++})
++
+ static inline void trace_enable(void)
+ {
+ 	trace =3D true;
+@@ -61,17 +107,34 @@ static inline void trace_depth_dec(void)
+=20
+ void trace_insn_state(struct instruction *insn, struct insn_state *sprev,
+ 		      struct insn_state *snext);
++void trace_alt_begin(struct instruction *orig_insn, struct alternative *alt,
++		     char *alt_name);
++void trace_alt_end(struct instruction *orig_insn, struct alternative *alt,
++		   char *alt_name);
+=20
+ #else /* DISAS */
+=20
+ #define TRACE(fmt, ...) ({})
++#define TRACE_ADDR(insn, fmt, ...) ({})
+ #define TRACE_INSN(insn, fmt, ...) ({})
+ #define TRACE_INSN_STATE(insn, sprev, snext) ({})
++#define TRACE_ALT(insn, fmt, ...) ({})
++#define TRACE_ALT_INFO(insn, fmt, ...) ({})
++#define TRACE_ALT_INFO_NOADDR(insn, fmt, ...) ({})
++#define TRACE_ALT_BEGIN(insn, alt, alt_name) ({})
++#define TRACE_ALT_END(insn, alt, alt_name) ({})
++
+=20
+ static inline void trace_enable(void) {}
+ static inline void trace_disable(void) {}
+ static inline void trace_depth_inc(void) {}
+ static inline void trace_depth_dec(void) {}
++static inline void trace_alt_begin(struct instruction *orig_insn,
++				   struct alternative *alt,
++				   char *alt_name) {};
++static inline void trace_alt_end(struct instruction *orig_insn,
++				 struct alternative *alt,
++				 char *alt_name) {};
+=20
+ #endif
+=20
+diff --git a/tools/objtool/trace.c b/tools/objtool/trace.c
+index d70d470..5dec44d 100644
+--- a/tools/objtool/trace.c
++++ b/tools/objtool/trace.c
+@@ -146,3 +146,58 @@ void trace_insn_state(struct instruction *insn, struct i=
+nsn_state *sprev,
+=20
+ 	insn->trace =3D 1;
+ }
++
++void trace_alt_begin(struct instruction *orig_insn, struct alternative *alt,
++		     char *alt_name)
++{
++	struct instruction *alt_insn;
++	char suffix[2];
++
++	alt_insn =3D alt->insn;
++
++	if (alt->type =3D=3D ALT_TYPE_EX_TABLE) {
++		/*
++		 * When there is an exception table then the instruction
++		 * at the original location is executed but it can cause
++		 * an exception. In that case, the execution will be
++		 * redirected to the alternative instruction.
++		 *
++		 * The instruction at the original location can have
++		 * instruction alternatives, so we just print the location
++		 * of the instruction that can cause the exception and
++		 * not the instruction itself.
++		 */
++		TRACE_ALT_INFO_NOADDR(orig_insn, "/ ", "%s for instruction at 0x%lx <%s+0x=
+%lx>",
++				      alt_name,
++				      orig_insn->offset, orig_insn->sym->name,
++				      orig_insn->offset - orig_insn->sym->offset);
++	} else {
++		TRACE_ALT_INFO_NOADDR(orig_insn, "/ ", "%s", alt_name);
++	}
++
++	if (alt->type =3D=3D ALT_TYPE_JUMP_TABLE) {
++		/*
++		 * For a jump alternative, if the default instruction is
++		 * a NOP then it is replaced with the jmp instruction,
++		 * otherwise it is replaced with a NOP instruction.
++		 */
++		trace_depth++;
++		if (orig_insn->type =3D=3D INSN_NOP) {
++			suffix[0] =3D (orig_insn->len =3D=3D 5) ? 'q' : '\0';
++			TRACE_ADDR(orig_insn, "jmp%-3s %lx <%s+0x%lx>", suffix,
++				   alt_insn->offset, alt_insn->sym->name,
++				   alt_insn->offset - alt_insn->sym->offset);
++		} else {
++			TRACE_ADDR(orig_insn, "nop%d", orig_insn->len);
++			trace_depth--;
++		}
++	}
++}
++
++void trace_alt_end(struct instruction *orig_insn, struct alternative *alt,
++		   char *alt_name)
++{
++	if (alt->type =3D=3D ALT_TYPE_JUMP_TABLE && orig_insn->type =3D=3D INSN_NOP)
++		trace_depth--;
++	TRACE_ALT_INFO_NOADDR(orig_insn, "\\ ", "%s", alt_name);
++}
 
