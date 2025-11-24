@@ -1,99 +1,130 @@
-Return-Path: <linux-tip-commits+bounces-7523-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7524-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99BCC82654
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 21:15:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F13C82A33
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 23:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B089A4E23B1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 20:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C02E53ACB21
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 22:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA682EA168;
-	Mon, 24 Nov 2025 20:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD0822B8CB;
+	Mon, 24 Nov 2025 22:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="CCplBg1J"
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="Afnt4dvI"
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68182238C0D;
-	Mon, 24 Nov 2025 20:15:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC13238D;
+	Mon, 24 Nov 2025 22:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764015303; cv=none; b=WItRyqau+0Z++OkKRJbDThhb21Un/zN3XFSW8/8xlzYJ8RiRHecJEhHa+k9gXzKs1MEdV2FyX+x0F1Sq0RVsQP4kI/YJbir6/OfsBLgMd7EfiwQBheiyof8Ead1T5W5ypeAfx8t7OvQIRoG+Q4rhoMq+YgkJiRHoxbv7Gsemd5o=
+	t=1764022743; cv=none; b=rvujzvgkVHVMZAaJ2Pqis7f4QYTrJauYaCCd4OtW4lotato+kfZKAOUmQYlNPL6t//yZpMialguUCMKTiB+y87WwzMQ9L8BkTm9ma8IWBsIqKkggb0SfPDl4rROoAHQksVYv2mKvamAlyPc8caMnw5hUizK1p2wleJsyehGgUVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764015303; c=relaxed/simple;
-	bh=H1Vfkzsnx2yoHxg8sT12hi7cDSm4CBQZ5KLE/BhfiVg=;
+	s=arc-20240116; t=1764022743; c=relaxed/simple;
+	bh=Z8NpdcuT1nwfKei3mh3g/WjgavM1azUIVBGdSwibf/0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jmFc9W/300QXhgVXy7HMGqjPpahx+Db86rb7BMsXdfEAO8IwSVkNXSyPDLQ1HdBVjJb/1K/QyvfDptD06R5NdTouORnXjeyqVZwNdcHYj0OEmZWoUeM2Zj/2E2vGlNqyvpPikPrg9CrVrjh1Q6H+X3w3J7sHyCmKuBwlrMP4/Xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=CCplBg1J; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4B7DD40E0217;
-	Mon, 24 Nov 2025 20:14:58 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id qdJ7Be_X16zl; Mon, 24 Nov 2025 20:14:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1764015292; bh=8lkpzg1bJSw9zZO0edMgZN+voDVsTBG0rlfckgtRH9M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CCplBg1J3XyNIAeUDsb/eqKKEvSWEo2GFD722mWBQEqM30iZSg5oJDeJFs1Y1jYiT
-	 AYMIsKk5CqhRVPEIYnOs/3w9sZa/mbsW4CicDmSCKPez89N4EOCOOBMJxvbDTG1boy
-	 JfQd95wVLIoAxG7DkOvp/dkAUe6oxrITplFcUctreNA9EWAFCJURfEn09dnL1hjGzk
-	 A9PQO2KsvuWwV4E8wjIIMZdlkjKl0836V1KsBHKWPEcBXTCJ+puzpLmwta/WIcVuZH
-	 GNf/o5ziykLgWaZa63tltGCtKRrxPE/iRdl8MhD8fpKo6+mR4Y5uT938Qh11K9gN8T
-	 Q94FBVubUeG6ZLAu0t+bWsb2skHzgb6SuKy6kQHXP0tIJWwIjwraCQcbbtzhrSflTx
-	 pskDt7BQA0WXXyyyjfYAGoDoiSdfX55XHzcRJjj73sxFW6Os5c62Gz4aiIrmTOLTWy
-	 YFIKtfpEehhwfiGhlzEGf3JQQ2Nn/QIdb4+GKAN638otkFFiYjH6e3M+E8kSRJY/D0
-	 4kFFkzdWVXSeFTl8lr1R2VKCvPRp5qPVpvFeKXg0kPDfxUh8a85tXy+T5txIHb5eVB
-	 At3Ad0deHvCRABysoY8Z4hm/yILMbg0c6KbviZe92L5VOZFHFEv/+9NUQLOvir7IMM
-	 +pXUD0OsaYg9mwFZTTinsPDs=
-Received: from zn.tnic (p57969402.dip0.t-ipconnect.de [87.150.148.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id A01C740E015B;
-	Mon, 24 Nov 2025 20:14:46 +0000 (UTC)
-Date: Mon, 24 Nov 2025 21:14:40 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Alexandre Chartre <alexandre.chartre@oracle.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-tip-commits@vger.kernel.org,
-	Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org
-Subject: Re: [tip: objtool/core] objtool: Function to get the name of a CPU
- feature
-Message-ID: <20251124201440.GJaSS8sAXasG6FV-g1@fat_crate.local>
-References: <20251121095340.464045-27-alexandre.chartre@oracle.com>
- <176398104154.498.14035591969424868341.tip-bot2@tip-bot2>
- <20251124115942.GO4067720@noisy.programming.kicks-ass.net>
- <20251124122639.GBaSRO_-G9dUtVHMaY@fat_crate.local>
- <cf0ecf1e-6d7c-4d5e-8f8a-27446b801c94@oracle.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ikY66fOF7oqSenj3OXzUCMgwmXjLkSQwBBGiDCrbjNjfRU9gzm8ap6xmxOmlNZlGXKpPiAZPqHNFprVAhFaO9FrCD54hQuVa+gkXEt48VeQMZUpaEJnr8K2LqMXamPif5J9WCCkeSRzUTu37V+BsG4brlswBHW5w8jqQ+0RVVAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=Afnt4dvI; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id A75291C01C4; Mon, 24 Nov 2025 23:18:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1764022730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kzruiFsyXf/+HODnlfoc7taXRjE+q/NxonHCE/IBbUM=;
+	b=Afnt4dvIwIm9SsJ4GXHOixPZbrX/HFmzd4Cw81qI6ODSFzP2qe6MjcUvl1ghxchpL8ciKI
+	08DpcO+dyypO8Y/m/z9meFJe8nrr6oMZ+hH4NH1oUhOzJWGXN5JpZOX36VcVTeZOuQK5Yt
+	+QfzvtMprVszmrZompi3Tx1+QOmnaug=
+Date: Mon, 24 Nov 2025 23:18:50 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Peter Jung <ptr1337@cachyos.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	stable@vger.kernel.org, Gregory Price <gourry@gourry.net>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
+Message-ID: <aSTZylJfiN5uXDi1@duo.ucw.cz>
+References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
+ <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="RVDJ6xVA4bgVS92o"
 Content-Disposition: inline
-In-Reply-To: <cf0ecf1e-6d7c-4d5e-8f8a-27446b801c94@oracle.com>
+In-Reply-To: <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
 
-On Mon, Nov 24, 2025 at 05:43:04PM +0100, Alexandre Chartre wrote:
-> Here is a fix. It works with gawk and mawk:
 
-Yap, works, thanks!
+--RVDJ6xVA4bgVS92o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reported-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Hi!
 
--- 
-Regards/Gruss,
-    Boris.
+> > Add a fix glue which checks microcode revisions.
+> >=20
+> >    [ bp: Add microcode revisions checking, rewrite. ]
+> >=20
+> > Cc:stable@vger.kernel.org
+> > Signed-off-by: Gregory Price<gourry@gourry.net>
+> > Signed-off-by: Borislav Petkov (AMD)<bp@alien8.de>
+> > Link:https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.n=
+et
+> > ---
+> >   arch/x86/kernel/cpu/amd.c | 10 ++++++++++
+> >   1 file changed, 10 insertions(+)
+> >=20
+> > diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+> > index ccaa51c..bc29be6 100644
+> > --- a/arch/x86/kernel/cpu/amd.c
+> > +++ b/arch/x86/kernel/cpu/amd.c
+> > @@ -1035,8 +1035,18 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
+> >   	}
+> >   }
+> > +static const struct x86_cpu_id zen5_rdseed_microcode[] =3D {
+> > +	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
+> > +	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
+> > +};
+> > +
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> This fix seems to break quite a bunch of users in CachyOS. There has been
+> now several users reporting that there system can not get properly into t=
+he
+> graphical interface.
+>=20
+> CachyOS is compiling the packages with -march=3Dznver5 and the GCC compil=
+er
+> currently does pass RDSEED.
+
+Besides other things, GCC should probably be fixed not to do that.
+
+And this will be fun for both mainline and -stable: security bug or
+broken boot, pick one :-(.
+
+Best regards,
+								Pavel
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, Netanyahu and Musk!
+
+--RVDJ6xVA4bgVS92o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaSTZygAKCRAw5/Bqldv6
+8vk+AKCw7aghUH2Ox+xw8O5EkNTQz+dk2ACfagIs6UZAWmouYIy6ObGgNGDfYPw=
+=6YLc
+-----END PGP SIGNATURE-----
+
+--RVDJ6xVA4bgVS92o--
 
