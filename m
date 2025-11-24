@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-7511-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7512-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0280BC7FF88
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 11:45:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314ACC7FF8E
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 11:45:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A99C34E5F53
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 10:44:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4DF9C4E4996
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 10:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADB62F83A3;
-	Mon, 24 Nov 2025 10:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579DA2FB977;
+	Mon, 24 Nov 2025 10:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AcqKInab";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Lvq0h8xe"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R7cXKE/g";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UfSeXq14"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C148B2FB962;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49BE2FB62E;
 	Mon, 24 Nov 2025 10:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763981047; cv=none; b=EbSJWS1HWNWLnfXSB71Ei57IULVM8JtqPWjaH3OLkujmo/3RvmK91iumtsj801RTovww3H+3WKR4kw9D73+7y/ebbbB53V0o94QiJbPlSblDPwBv3aPkymXoG+jkdAhHvx6Ka7QHzijWiPzl0jfjWTPNI3r2XqguH9Oz225hNy8=
+	t=1763981048; cv=none; b=C1EMQfinohxbYcUbhkubzB+U9izABod5hwkwLMMSToGyyx47/mM41fNkZZgSl7eDDM9DSLo7JIPLSRQLwpk8PuLFj+vDobQ171Pk3gFcoSoANP/d3BzCa9P0SoIrDzZkeJ/jvG4E3MlyG16t47W4kunsrUOlYWbvdeCpedEwMXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763981047; c=relaxed/simple;
-	bh=vYcfBogXCC4Daaox34ae9ML7RGGtz2OmyD3pIAB7wFw=;
+	s=arc-20240116; t=1763981048; c=relaxed/simple;
+	bh=3n0ekYqwkUslMIT7bhslnj/63LR86fMc231pBmGXZ/U=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YYS4VuKX68x0lJA6t4CP765sf/yO3L39p2ik+9wxqydKPuBwLgyE2X1Hh6emMDn1GeByoQXVXIoCh3bjgqZ3xPqfhrgeTPdC/k6BHZOCmGrfuB+/PHwqo6I9eJ/eCOCk0r8KVOr6wW8w8Bds8xyAFBw+f1PPPpllLv52uBv6lmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AcqKInab; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Lvq0h8xe; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=pFAMPbaRMQz4PEHemXPf0BgLd0VpRB8PhyfvUBisN2o6vSjlvthMazLZLBhMeo5Wxxc65cgM68GnuAMc8wRqMVGGfIih1AtaLFdGwljGHQE+gToGfZYA7zgQlEefA9rqp7Xir6F7fE4dHvgImPW4+bXnMOoCOVfraE1PohnIB0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R7cXKE/g; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UfSeXq14; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 24 Nov 2025 10:44:00 -0000
+Date: Mon, 24 Nov 2025 10:44:01 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1763981041;
+	s=2020; t=1763981042;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OlWTKrn+Fl9wJ6mXGhp27Ga3EDh1MWJBck4n+7YF+zc=;
-	b=AcqKInab5P9GW/ZIzJFGNc7ZnfcYWoMPpc/sI4Yy2q4uimy/pWxOKvusrBUlJYNWlOHPyO
-	VPtiHo0Qc9ULQa7MYlcFP3i5XCkVjX537hySwyawRMDnXBxtxQDrLg9vqXn8zUc2avG0lm
-	1dXDhN28TdOL95/zVamOC3hCp6s3+JNhvH/gKYaqbt7hWWBqyHFfkGwowuUK/floWCE3Us
-	P5F3qhhRkGlv1jwRat2T5qnn2k82ePtnmLdmudatiePaQPB6WoiFNEx/wXbZYQEY+3JEl9
-	85dT/CzdThJeaqzZXHZChE115I3L5hd1tWMKwfDyj/wdtEvLU0lqXUGSsaBj6g==
+	bh=PfX3flpUk4b/ejynbfhrYREm1lxj8oJZeekWdIFbdXk=;
+	b=R7cXKE/gZhzWHgrS3kIIK3Rb/H8uRONF7l0nR02Fqeju4YPQ/tO9X2e1jk1v03BOfCXZQw
+	OhtOY6PvVfUoDihdLZYLS69MZ44b5gXVYWga4fjXJRldDnHg+DaH7gQyE4qD61yb/eMh3O
+	O9IQlqjQIordY8bvC0R/CRAvCkIJ9RoHA2aUPHEOVJimf9uLNJIZEHdOh8GqNxzgoEbAM1
+	+6OzIdcBr8BPkOR/1gqwLIM0NT3rXtWj2aEcu7lzhHiL61N/YTW6SEWsMemzbqnZmcF+1t
+	6ikvbYUDSXQpLCd7oBT7U/fzywvSr/nt1Vwxrl768Y3X8LK3JokgVy8JcvkU3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1763981041;
+	s=2020e; t=1763981042;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OlWTKrn+Fl9wJ6mXGhp27Ga3EDh1MWJBck4n+7YF+zc=;
-	b=Lvq0h8xea/O7ypjb8MKbrZnpzAZi5+DuxeG7+znULNlvmP2Uc8skW5aE+13GYs1wVsLGiL
-	GM4yLEetPg9usQDg==
+	bh=PfX3flpUk4b/ejynbfhrYREm1lxj8oJZeekWdIFbdXk=;
+	b=UfSeXq142tg872WBkVa64NBzKFfkdIR+uopLSy01P4w4qJp7Geb58sYkBvtACFOIsKuDpc
+	C4nVZt/+FSIKPiDQ==
 From: "tip-bot2 for Alexandre Chartre" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/core] objtool: Improve naming of group alternatives
+Subject:
+ [tip: objtool/core] objtool: Function to get the name of a CPU feature
 Cc: Alexandre Chartre <alexandre.chartre@oracle.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251121095340.464045-28-alexandre.chartre@oracle.com>
-References: <20251121095340.464045-28-alexandre.chartre@oracle.com>
+In-Reply-To: <20251121095340.464045-27-alexandre.chartre@oracle.com>
+References: <20251121095340.464045-27-alexandre.chartre@oracle.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176398104055.498.706765429362126861.tip-bot2@tip-bot2>
+Message-ID: <176398104154.498.14035591969424868341.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,125 +83,199 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the objtool/core branch of tip:
 
-Commit-ID:     47793c0677e11bef7eb546d90e73f1d51e6eb22b
-Gitweb:        https://git.kernel.org/tip/47793c0677e11bef7eb546d90e73f1d51e6=
-eb22b
+Commit-ID:     afff4e5820e9a0d609740a83c366f3f0335db342
+Gitweb:        https://git.kernel.org/tip/afff4e5820e9a0d609740a83c366f3f0335=
+db342
 Author:        Alexandre Chartre <alexandre.chartre@oracle.com>
-AuthorDate:    Fri, 21 Nov 2025 10:53:37 +01:00
+AuthorDate:    Fri, 21 Nov 2025 10:53:36 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 24 Nov 2025 11:35:16 +01:00
+CommitterDate: Mon, 24 Nov 2025 11:35:06 +01:00
 
-objtool: Improve naming of group alternatives
+objtool: Function to get the name of a CPU feature
 
-Improve the naming of group alternatives by showing the feature name and
-flags used by the alternative.
+Add a function to get the name of a CPU feature. The function is
+architecture dependent and currently only implemented for x86. The
+feature names are automatically generated from the cpufeatures.h
+include file.
 
 Signed-off-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://patch.msgid.link/20251121095340.464045-28-alexandre.chartre@ora=
+Link: https://patch.msgid.link/20251121095340.464045-27-alexandre.chartre@ora=
 cle.com
 ---
- tools/objtool/disas.c | 58 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 6 deletions(-)
+ tools/arch/x86/tools/gen-cpu-feature-names-x86.awk | 33 +++++++++++++-
+ tools/objtool/.gitignore                           |  1 +-
+ tools/objtool/Makefile                             |  1 +-
+ tools/objtool/arch/loongarch/special.c             |  5 ++-
+ tools/objtool/arch/powerpc/special.c               |  5 ++-
+ tools/objtool/arch/x86/Build                       | 13 ++++-
+ tools/objtool/arch/x86/special.c                   | 10 ++++-
+ tools/objtool/include/objtool/special.h            |  2 +-
+ 8 files changed, 69 insertions(+), 1 deletion(-)
+ create mode 100644 tools/arch/x86/tools/gen-cpu-feature-names-x86.awk
 
-diff --git a/tools/objtool/disas.c b/tools/objtool/disas.c
-index f8917c8..731c449 100644
---- a/tools/objtool/disas.c
-+++ b/tools/objtool/disas.c
-@@ -9,6 +9,7 @@
- #include <objtool/arch.h>
- #include <objtool/check.h>
- #include <objtool/disas.h>
-+#include <objtool/special.h>
- #include <objtool/warn.h>
-=20
- #include <bfd.h>
-@@ -60,6 +61,21 @@ struct disas_alt {
- #define DALT_GROUP(dalt)	(DALT_INSN(dalt)->alt_group)
- #define DALT_ALTID(dalt)	((dalt)->orig_insn->offset)
-=20
-+#define ALT_FLAGS_SHIFT		16
-+#define ALT_FLAG_NOT		(1 << 0)
-+#define ALT_FLAG_DIRECT_CALL	(1 << 1)
-+#define ALT_FEATURE_MASK	((1 << ALT_FLAGS_SHIFT) - 1)
+diff --git a/tools/arch/x86/tools/gen-cpu-feature-names-x86.awk b/tools/arch/=
+x86/tools/gen-cpu-feature-names-x86.awk
+new file mode 100644
+index 0000000..1b1c1d8
+--- /dev/null
++++ b/tools/arch/x86/tools/gen-cpu-feature-names-x86.awk
+@@ -0,0 +1,33 @@
++#!/bin/awk -f
++# SPDX-License-Identifier: GPL-2.0
++#
++# Copyright (c) 2025, Oracle and/or its affiliates.
++#
++# Usage: awk -f gen-cpu-feature-names-x86.awk cpufeatures.h > cpu-feature-na=
+mes.c
++#
 +
-+static int alt_feature(unsigned int ft_flags)
-+{
-+	return (ft_flags & ALT_FEATURE_MASK);
++BEGIN {
++	print "/* cpu feature name array generated from cpufeatures.h */"
++	print "/* Do not change this code. */"
++	print
++	print "static const char *cpu_feature_names[(NCAPINTS+NBUGINTS)*32] =3D {"
++
++	feature_expr =3D "(X86_FEATURE_[A-Z0-9_]+)\\s+\\(([0-9*+ ]+)\\)"
++	debug_expr =3D "(X86_BUG_[A-Z0-9_]+)\\s+X86_BUG\\(([0-9*+ ]+)\\)"
 +}
 +
-+static int alt_flags(unsigned int ft_flags)
-+{
-+	return (ft_flags >> ALT_FLAGS_SHIFT);
++/^#define X86_FEATURE_/ {
++	if (match($0, feature_expr, m)) {
++		print "\t[" m[2] "] =3D \"" m[1] "\","
++	}
 +}
 +
- /*
-  * Wrapper around asprintf() to allocate and format a string.
-  * Return the allocated string or NULL on error.
-@@ -635,7 +651,12 @@ const char *disas_alt_type_name(struct instruction *insn)
-  */
- char *disas_alt_name(struct alternative *alt)
++/^#define X86_BUG_/ {
++	if (match($0, debug_expr, m)) {
++		print "\t[NCAPINTS*32+(" m[2] ")] =3D \"" m[1] "\","
++	}
++}
++
++END {
++	print "};"
++}
+diff --git a/tools/objtool/.gitignore b/tools/objtool/.gitignore
+index 7593036..73d8831 100644
+--- a/tools/objtool/.gitignore
++++ b/tools/objtool/.gitignore
+@@ -1,4 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++arch/x86/lib/cpu-feature-names.c
+ arch/x86/lib/inat-tables.c
+ /objtool
+ feature
+diff --git a/tools/objtool/Makefile b/tools/objtool/Makefile
+index df793ca..66397d7 100644
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -125,6 +125,7 @@ $(LIBSUBCMD)-clean:
+ clean: $(LIBSUBCMD)-clean
+ 	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+ 	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name =
+'\.*.d' -delete
++	$(Q)$(RM) $(OUTPUT)arch/x86/lib/cpu-feature-names.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+ 	$(Q)$(RM) -- $(OUTPUT)FEATURE-DUMP.objtool
+ 	$(Q)$(RM) -r -- $(OUTPUT)feature
+diff --git a/tools/objtool/arch/loongarch/special.c b/tools/objtool/arch/loon=
+garch/special.c
+index a80b75f..aba7741 100644
+--- a/tools/objtool/arch/loongarch/special.c
++++ b/tools/objtool/arch/loongarch/special.c
+@@ -194,3 +194,8 @@ struct reloc *arch_find_switch_table(struct objtool_file =
+*file,
+=20
+ 	return rodata_reloc;
+ }
++
++const char *arch_cpu_feature_name(int feature_number)
++{
++	return NULL;
++}
+diff --git a/tools/objtool/arch/powerpc/special.c b/tools/objtool/arch/powerp=
+c/special.c
+index 5161068..8f9bf61 100644
+--- a/tools/objtool/arch/powerpc/special.c
++++ b/tools/objtool/arch/powerpc/special.c
+@@ -18,3 +18,8 @@ struct reloc *arch_find_switch_table(struct objtool_file *f=
+ile,
  {
-+	char pfx[4] =3D { 0 };
- 	char *str =3D NULL;
-+	const char *name;
-+	int feature;
-+	int flags;
-+	int num;
+ 	exit(-1);
+ }
++
++const char *arch_cpu_feature_name(int feature_number)
++{
++	return NULL;
++}
+diff --git a/tools/objtool/arch/x86/Build b/tools/objtool/arch/x86/Build
+index 3dedb2f..febee0b 100644
+--- a/tools/objtool/arch/x86/Build
++++ b/tools/objtool/arch/x86/Build
+@@ -1,5 +1,5 @@
+-objtool-y +=3D special.o
+ objtool-y +=3D decode.o
++objtool-y +=3D special.o
+ objtool-y +=3D orc.o
 =20
- 	switch (alt->type) {
+ inat_tables_script =3D ../arch/x86/tools/gen-insn-attr-x86.awk
+@@ -12,3 +12,14 @@ $(OUTPUT)arch/x86/lib/inat-tables.c: $(inat_tables_script)=
+ $(inat_tables_maps)
+ $(OUTPUT)arch/x86/decode.o: $(OUTPUT)arch/x86/lib/inat-tables.c
 =20
-@@ -649,13 +670,37 @@ char *disas_alt_name(struct alternative *alt)
+ CFLAGS_decode.o +=3D -I$(OUTPUT)arch/x86/lib
++
++cpu_features =3D ../arch/x86/include/asm/cpufeatures.h
++cpu_features_script =3D ../arch/x86/tools/gen-cpu-feature-names-x86.awk
++
++$(OUTPUT)arch/x86/lib/cpu-feature-names.c: $(cpu_features_script) $(cpu_feat=
+ures)
++	$(call rule_mkdir)
++	$(Q)$(call echo-cmd,gen)$(AWK) -f $(cpu_features_script) $(cpu_features) > =
+$@
++
++$(OUTPUT)arch/x86/special.o: $(OUTPUT)arch/x86/lib/cpu-feature-names.c
++
++CFLAGS_special.o +=3D -I$(OUTPUT)arch/x86/lib
+diff --git a/tools/objtool/arch/x86/special.c b/tools/objtool/arch/x86/specia=
+l.c
+index 0930076..e817a3f 100644
+--- a/tools/objtool/arch/x86/special.c
++++ b/tools/objtool/arch/x86/special.c
+@@ -4,6 +4,10 @@
+ #include <objtool/special.h>
+ #include <objtool/builtin.h>
+ #include <objtool/warn.h>
++#include <asm/cpufeatures.h>
++
++/* cpu feature name array generated from cpufeatures.h */
++#include "cpu-feature-names.c"
 =20
- 	case ALT_TYPE_INSTRUCTIONS:
- 		/*
--		 * This is a non-default group alternative. Create a unique
--		 * name using the offset of the first original and alternative
--		 * instructions.
-+		 * This is a non-default group alternative. Create a name
-+		 * based on the feature and flags associated with this
-+		 * alternative. Use either the feature name (it is available)
-+		 * or the feature number. And add a prefix to show the flags
-+		 * used.
-+		 *
-+		 * Prefix flags characters:
-+		 *
-+		 *   '!'  alternative used when feature not enabled
-+		 *   '+'  direct call alternative
-+		 *   '?'  unknown flag
- 		 */
--		asprintf(&str, "ALTERNATIVE %lx.%lx",
--			 alt->insn->alt_group->orig_group->first_insn->offset,
--			 alt->insn->alt_group->first_insn->offset);
+ void arch_handle_alternative(struct special_alt *alt)
+ {
+@@ -134,3 +138,9 @@ struct reloc *arch_find_switch_table(struct objtool_file =
+*file,
+ 	*table_size =3D 0;
+ 	return rodata_reloc;
+ }
 +
-+		feature =3D alt->insn->alt_group->feature;
-+		num =3D alt_feature(feature);
-+		flags =3D alt_flags(feature);
-+		str =3D pfx;
++const char *arch_cpu_feature_name(int feature_number)
++{
++	return (feature_number < ARRAY_SIZE(cpu_feature_names)) ?
++		cpu_feature_names[feature_number] : NULL;
++}
+diff --git a/tools/objtool/include/objtool/special.h b/tools/objtool/include/=
+objtool/special.h
+index b224107..121c376 100644
+--- a/tools/objtool/include/objtool/special.h
++++ b/tools/objtool/include/objtool/special.h
+@@ -38,4 +38,6 @@ bool arch_support_alt_relocation(struct special_alt *specia=
+l_alt,
+ struct reloc *arch_find_switch_table(struct objtool_file *file,
+ 				     struct instruction *insn,
+ 				     unsigned long *table_size);
++const char *arch_cpu_feature_name(int feature_number);
 +
-+		if (flags & ~(ALT_FLAG_NOT | ALT_FLAG_DIRECT_CALL))
-+			*str++ =3D '?';
-+		if (flags & ALT_FLAG_DIRECT_CALL)
-+			*str++ =3D '+';
-+		if (flags & ALT_FLAG_NOT)
-+			*str++ =3D '!';
-+
-+		name =3D arch_cpu_feature_name(num);
-+		if (!name)
-+			str =3D strfmt("%sFEATURE 0x%X", pfx, num);
-+		else
-+			str =3D strfmt("%s%s", pfx, name);
-+
- 		break;
- 	}
-=20
-@@ -892,6 +937,7 @@ static void *disas_alt(struct disas_context *dctx,
- 			WARN("%s has more alternatives than supported", alt_name);
- 			break;
- 		}
-+
- 		dalt =3D &dalts[i];
- 		err =3D disas_alt_init(dalt, orig_insn, alt);
- 		if (err) {
+ #endif /* _SPECIAL_H */
 
