@@ -1,130 +1,123 @@
-Return-Path: <linux-tip-commits+bounces-7524-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7525-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F13C82A33
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 23:19:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACDCC83F8D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Nov 2025 09:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C02E53ACB21
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 24 Nov 2025 22:19:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DB665348A4E
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 25 Nov 2025 08:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD0822B8CB;
-	Mon, 24 Nov 2025 22:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF70B2D8776;
+	Tue, 25 Nov 2025 08:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="Afnt4dvI"
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U71iYjZ6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0D3G7s2k"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC13238D;
-	Mon, 24 Nov 2025 22:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20FD2D0C72;
+	Tue, 25 Nov 2025 08:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764022743; cv=none; b=rvujzvgkVHVMZAaJ2Pqis7f4QYTrJauYaCCd4OtW4lotato+kfZKAOUmQYlNPL6t//yZpMialguUCMKTiB+y87WwzMQ9L8BkTm9ma8IWBsIqKkggb0SfPDl4rROoAHQksVYv2mKvamAlyPc8caMnw5hUizK1p2wleJsyehGgUVA=
+	t=1764059206; cv=none; b=WpBB6bVpLWzBlouFjxGk+ByIN4+KN1bHuzF7npFpVMXh5yVOKvJ47fk85pp/QXIR98rO29YBBE78+DOzebvSkB79npCA1iYamMjd1gHqe9pjFJhnXZ+sz/Ps4w6nVnZ0dlcLe8GeLkw0mi7xPxFoP9aFHAPWP3yiulBBxdjugJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764022743; c=relaxed/simple;
-	bh=Z8NpdcuT1nwfKei3mh3g/WjgavM1azUIVBGdSwibf/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ikY66fOF7oqSenj3OXzUCMgwmXjLkSQwBBGiDCrbjNjfRU9gzm8ap6xmxOmlNZlGXKpPiAZPqHNFprVAhFaO9FrCD54hQuVa+gkXEt48VeQMZUpaEJnr8K2LqMXamPif5J9WCCkeSRzUTu37V+BsG4brlswBHW5w8jqQ+0RVVAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=Afnt4dvI; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id A75291C01C4; Mon, 24 Nov 2025 23:18:50 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1764022730;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1764059206; c=relaxed/simple;
+	bh=QCWBJI8aQ2IULNG1QG6VD9qytOu4xhuZVf4B0J8HVL8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=mclPzy1ODyobcNYX9PozyUb70/syGxiHwY+gx9QKoD3I1f1H0ci+RvvzgBQXBViqLC9W08RFY/xBUkSHedElSoNIdJMHJePMLU0xy235t+ObaroGqOA/bEWGcUHIjAkeDfcqX7iZTZ6BLA0dQuH+JRYwVHBHCpuo1LouFmNpJcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U71iYjZ6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0D3G7s2k; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 25 Nov 2025 08:26:36 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1764059202;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kzruiFsyXf/+HODnlfoc7taXRjE+q/NxonHCE/IBbUM=;
-	b=Afnt4dvIwIm9SsJ4GXHOixPZbrX/HFmzd4Cw81qI6ODSFzP2qe6MjcUvl1ghxchpL8ciKI
-	08DpcO+dyypO8Y/m/z9meFJe8nrr6oMZ+hH4NH1oUhOzJWGXN5JpZOX36VcVTeZOuQK5Yt
-	+QfzvtMprVszmrZompi3Tx1+QOmnaug=
-Date: Mon, 24 Nov 2025 23:18:50 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Peter Jung <ptr1337@cachyos.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	stable@vger.kernel.org, Gregory Price <gourry@gourry.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/CPU/AMD: Add RDSEED fix for Zen5
-Message-ID: <aSTZylJfiN5uXDi1@duo.ucw.cz>
-References: <176165291198.2601451.3074910014537130674.tip-bot2@tip-bot2>
- <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
+	bh=Qe/A1WTChMkEWnBCROaVAuk1W+S6s9PErMLVhZ9k3T4=;
+	b=U71iYjZ60i46rHvu2yfyx3KCMxFaJ7PGyfpD/C+hzAm7oxm1hubUwWUFWsvsTir+wvdsEO
+	gJcl9TpHlnQkIMKlVVpHroWqYO/m9/+56MdL+U8ztWc50v5PuUF5kX3nhVp8uGrsNtW6XG
+	o0mLNil4HMr7kt+GR5EtDH8n1W7pk+d6yfCktPlO0iwKW1t2QY4A4RfEKr5KE7S0UYNM/o
+	o/e8UJ2cSwYC5WqahwDzOUpAZUzXHlKTzDcIU9q2OO7TIWA1ZcQK/aCWTkzdgGoSoxNGZF
+	sGQ4oqoMOEooS+wPQOZbqqdr3f3yliSYWHDNhUELCcKN6PJhxHm4ZbTMKCtTJg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1764059202;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qe/A1WTChMkEWnBCROaVAuk1W+S6s9PErMLVhZ9k3T4=;
+	b=0D3G7s2kJLfqk70EPG7CRetJZmWHXGW0NDnmSLfzNBhxBbsEoH4s0eDlStszP51GqmOlJG
+	2LpwtAXSL7kl6kDw==
+From: "tip-bot2 for Randy Dunlap" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/sev] x86/cc: Fix enum spelling to fix kernel-doc warnings
+Cc: Randy Dunlap <rdunlap@infradead.org>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251125022730.3163679-1-rdunlap@infradead.org>
+References: <20251125022730.3163679-1-rdunlap@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="RVDJ6xVA4bgVS92o"
-Content-Disposition: inline
-In-Reply-To: <9a27f2e6-4f62-45a6-a527-c09983b8dce4@cachyos.org>
-
-
---RVDJ6xVA4bgVS92o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-ID: <176405919694.498.3991936524620420861.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
+The following commit has been merged into the x86/sev branch of tip:
 
-> > Add a fix glue which checks microcode revisions.
-> >=20
-> >    [ bp: Add microcode revisions checking, rewrite. ]
-> >=20
-> > Cc:stable@vger.kernel.org
-> > Signed-off-by: Gregory Price<gourry@gourry.net>
-> > Signed-off-by: Borislav Petkov (AMD)<bp@alien8.de>
-> > Link:https://lore.kernel.org/r/20251018024010.4112396-1-gourry@gourry.n=
-et
-> > ---
-> >   arch/x86/kernel/cpu/amd.c | 10 ++++++++++
-> >   1 file changed, 10 insertions(+)
-> >=20
-> > diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-> > index ccaa51c..bc29be6 100644
-> > --- a/arch/x86/kernel/cpu/amd.c
-> > +++ b/arch/x86/kernel/cpu/amd.c
-> > @@ -1035,8 +1035,18 @@ static void init_amd_zen4(struct cpuinfo_x86 *c)
-> >   	}
-> >   }
-> > +static const struct x86_cpu_id zen5_rdseed_microcode[] =3D {
-> > +	ZEN_MODEL_STEP_UCODE(0x1a, 0x02, 0x1, 0x0b00215a),
-> > +	ZEN_MODEL_STEP_UCODE(0x1a, 0x11, 0x0, 0x0b101054),
-> > +};
-> > +
+Commit-ID:     73029e73ccd07b64905f441d4f474a9bb91e7027
+Gitweb:        https://git.kernel.org/tip/73029e73ccd07b64905f441d4f474a9bb91=
+e7027
+Author:        Randy Dunlap <rdunlap@infradead.org>
+AuthorDate:    Mon, 24 Nov 2025 18:27:30 -08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 25 Nov 2025 09:17:13 +01:00
 
-> This fix seems to break quite a bunch of users in CachyOS. There has been
-> now several users reporting that there system can not get properly into t=
-he
-> graphical interface.
->=20
-> CachyOS is compiling the packages with -march=3Dznver5 and the GCC compil=
-er
-> currently does pass RDSEED.
+x86/cc: Fix enum spelling to fix kernel-doc warnings
 
-Besides other things, GCC should probably be fixed not to do that.
+Make the enum name in kernel-doc match the code to prevent kernel-doc warning=
+s:
 
-And this will be fun for both mainline and -stable: security bug or
-broken boot, pick one :-(.
+  Warning: include/linux/cc_platform.h:106 Enum value
+   'CC_ATTR_GUEST_SEV_SNP' not described in enum 'cc_attr'
+  Warning: include/linux/cc_platform.h:106 Excess enum value
+   '%CC_ATTR_SEV_SNP' description in 'cc_attr'
 
-Best regards,
-								Pavel
---=20
-I don't work for Nazis and criminals, and neither should you.
-Boycott Putin, Trump, Netanyahu and Musk!
+Fixes: f742b90e61bb ("x86/mm: Extend cc_attr to include AMD SEV-SNP")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251125022730.3163679-1-rdunlap@infradead.org
+---
+ include/linux/cc_platform.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---RVDJ6xVA4bgVS92o
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaSTZygAKCRAw5/Bqldv6
-8vk+AKCw7aghUH2Ox+xw8O5EkNTQz+dk2ACfagIs6UZAWmouYIy6ObGgNGDfYPw=
-=6YLc
------END PGP SIGNATURE-----
-
---RVDJ6xVA4bgVS92o--
+diff --git a/include/linux/cc_platform.h b/include/linux/cc_platform.h
+index 7fcec02..559353a 100644
+--- a/include/linux/cc_platform.h
++++ b/include/linux/cc_platform.h
+@@ -74,7 +74,7 @@ enum cc_attr {
+ 	CC_ATTR_GUEST_UNROLL_STRING_IO,
+=20
+ 	/**
+-	 * @CC_ATTR_SEV_SNP: Guest SNP is active.
++	 * @CC_ATTR_GUEST_SEV_SNP: Guest SNP is active.
+ 	 *
+ 	 * The platform/OS is running as a guest/virtual machine and actively
+ 	 * using AMD SEV-SNP features.
 
