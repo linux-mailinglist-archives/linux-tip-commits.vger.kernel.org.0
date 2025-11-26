@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-7529-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7530-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3E8CC880EE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 05:36:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74547C880FF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 05:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6656C3AA6C1
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 04:36:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4861035537D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 04:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6228420A5F3;
-	Wed, 26 Nov 2025 04:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6C530EF69;
+	Wed, 26 Nov 2025 04:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OqmbCMMm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C4vdUjwH"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DfU3PN7G";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vOf4VO8m"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BE31A9FAC;
-	Wed, 26 Nov 2025 04:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499F01F471F;
+	Wed, 26 Nov 2025 04:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764131771; cv=none; b=T5oxtxra6LD+4wFdVUc/KXtv5+ABqGkk2yAxxltzz5vHp5DZDCKbUzZmVovmoHbDyHV/duTn7Sf98XQOS+zeJeBe8MYhlvwXqHCYCb85exjIGbhu1RHbKcuooBHGP2084+uqN9fsVnRQwySrozQR02UU49ZocuQbxfgQD2KtSko=
+	t=1764131773; cv=none; b=fhGFDH7j0NvIuHpBKCjylVdB8j40srZ6RopDSoE9j81dEmWAWO1E5kS6m7EWv3KiR1iXjXPmW5pdDaIXAYvpnSpE7lSPplIsAsKEWiiuBfGmbbFVukDgVPhOeiqJeEpx3pHMP9nSphpquCcH9Cc2xgfEZd3N0UQ24YIkzufgCB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764131771; c=relaxed/simple;
-	bh=i/KfQ52NxHPZ4ObsdxA8+9apyPYnV1fUisPIzjKWJCs=;
+	s=arc-20240116; t=1764131773; c=relaxed/simple;
+	bh=NNKE0tE2zNzL+YPOjwBORbA+OWwN+pfIVKztohR1LHc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lt4tJAfqRRJtwxdFHdH9j53/RSQbX9mMO/vR74ZHu/xrhBUGqOUHmOb3tXISBEpT3FsJdWbK2U7qF29oPHDs0CDp/ZVZcarusimCa8R7oMCk5A9ylG7Gy0xKhDtnPSwmFNwYq7iAHqnCvK9hC0YCBGJXYB4tdeLeLHeQ9Shwa3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OqmbCMMm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=C4vdUjwH; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=D3lzwcs8rFCjtvT/yrAAzI0+eZYgYyG0kmz19s/lxepFXTybjeRjh0LHdCbC3gxrcPmBNzwvmv6iSfJoK5tss+WbZ5H8P9Xx2p9xumxvwWnIC326GHdf6827k6VN05mIKGMlvp+YPlzXan5hyRCqQzXmUFJALif7V0Q2TCTXWu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DfU3PN7G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vOf4VO8m; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Nov 2025 04:36:06 -0000
+Date: Wed, 26 Nov 2025 04:36:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764131768;
+	s=2020; t=1764131769;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6EokGo1SNkGifxsCSXzNShyndAJ7klaqhGLVNebJfgw=;
-	b=OqmbCMMmafIZqMEyTguW0tKD1Cic2FgIpOCGLkVl9xT/fNHBmWDDjgCwUS7KHP3F7W4vG+
-	5y0nlwFmOkUlTxdxEY53iGm4KkAslJgnO8D0QkvAkYP9QbyoF2A5hoL+G96bbFBumT4gjF
-	u5CgNDB+YAyohlLlvLshNMz8M+xJPhGKuM1E031H7WmJ9COGoYnXtNbBCgW5n78oDkQbxc
-	Li+KHo1R8BtQiiPMZcMOtqqMpLJiW6BqfnLfnjB9UW3uJZrx2aBGVVo3WJBG/XTsUEMHEd
-	232tX8Ppv8oUj8WxzlepvrlyLdLWMZJDjEuVYQb9cCXiqJ89vr7Jgfmx30lyOg==
+	bh=a7AEKmCiygzFg1Djs0HqcIithBn3zs63mHwlSL8KCA0=;
+	b=DfU3PN7Goa3Uc7zHIRJ7gweMyFj60stjoFo8GHXzqBI/fgrRbDY2k9RHqTVuynldYdsjQe
+	ogaoD74qBwTVv8mbPjaPrV9vbU73QYPwMN/RsDHamPcwCGaDJqsiZDLWfE9xyjB3FD0vRH
+	7fMEffenqLILVJqrCOuTn792ngtTh29ar9LSBeIJ7zbSSFGISGOVb/IBpBdTCA3lPHj6W1
+	f1OyuXQS6hblPlbT9Dj7sciqbFO/pS9tY4oaiqm4m2vZ6T4Mv27cnvJMdgYDO9ovb4je3W
+	9345yfLKh574omqeTqeKkLajvjC59ER1D0fCXfR63XJS2OR/fH6ma2HuPANAeg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764131768;
+	s=2020e; t=1764131769;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6EokGo1SNkGifxsCSXzNShyndAJ7klaqhGLVNebJfgw=;
-	b=C4vdUjwHLIS7eHCEKkpkjwF2iRgOBwtkYqdRNVZQVOdoMa55fzyu8ljaF6pbJBYsO3PK8d
-	1nge1tWd3GgltcBg==
+	bh=a7AEKmCiygzFg1Djs0HqcIithBn3zs63mHwlSL8KCA0=;
+	b=vOf4VO8mOyj5FJy8+NF/T4HIw4r0TSymTNEbPbUC2acqTtKrHLKcCARcXBrBxxVEjxHJZV
+	a0+JaXfvjTUexVBQ==
 From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rseq] irqwork: Move data struct to a types header
+Subject:
+ [tip: core/rseq] sched/mmcid: Provide CID ownership mode fixup functions
 Cc: Thomas Gleixner <tglx@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251119172550.152813625@linutronix.de>
-References: <20251119172550.152813625@linutronix.de>
+In-Reply-To: <20251119172550.088189028@linutronix.de>
+References: <20251119172550.088189028@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176413176693.498.11963442562554610868.tip-bot2@tip-bot2>
+Message-ID: <176413176804.498.9969301679446185125.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,76 +83,463 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the core/rseq branch of tip:
 
-Commit-ID:     c809f081fe400cb1b9898f4791c0d33146315161
-Gitweb:        https://git.kernel.org/tip/c809f081fe400cb1b9898f4791c0d331463=
-15161
+Commit-ID:     fbd0e71dc370af73f6b316e4de9eed273dd90340
+Gitweb:        https://git.kernel.org/tip/fbd0e71dc370af73f6b316e4de9eed273dd=
+90340
 Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 19 Nov 2025 18:27:18 +01:00
+AuthorDate:    Wed, 19 Nov 2025 18:27:16 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
 CommitterDate: Tue, 25 Nov 2025 19:45:41 +01:00
 
-irqwork: Move data struct to a types header
+sched/mmcid: Provide CID ownership mode fixup functions
 
-... to avoid header recursion hell.
+CIDs are either owned by tasks or by CPUs. The ownership mode depends on
+the number of tasks related to a MM and the number of CPUs on which these
+tasks are theoretically allowed to run on. Theoretically because that
+number is the superset of CPU affinities of all tasks which only grows and
+never shrinks.
+
+Switching to per CPU mode happens when the user count becomes greater than
+the maximum number of CIDs, which is calculated by:
+
+	opt_cids =3D min(mm_cid::nr_cpus_allowed, mm_cid::users);
+	max_cids =3D min(1.25 * opt_cids, nr_cpu_ids);
+
+The +25% allowance is useful for tight CPU masks in scenarios where only a
+few threads are created and destroyed to avoid frequent mode
+switches. Though this allowance shrinks, the closer opt_cids becomes to
+nr_cpu_ids, which is the (unfortunate) hard ABI limit.
+
+At the point of switching to per CPU mode the new user is not yet visible
+in the system, so the task which initiated the fork() runs the fixup
+function: mm_cid_fixup_tasks_to_cpu() walks the thread list and either
+transfers each tasks owned CID to the CPU the task runs on or drops it into
+the CID pool if a task is not on a CPU at that point in time. Tasks which
+schedule in before the task walk reaches them do the handover in
+mm_cid_schedin(). When mm_cid_fixup_tasks_to_cpus() completes it's
+guaranteed that no task related to that MM owns a CID anymore.
+
+Switching back to task mode happens when the user count goes below the
+threshold which was recorded on the per CPU mode switch:
+
+	pcpu_thrs =3D min(opt_cids - (opt_cids / 4), nr_cpu_ids / 2);
+
+This threshold is updated when a affinity change increases the number of
+allowed CPUs for the MM, which might cause a switch back to per task mode.
+
+If the switch back was initiated by a exiting task, then that task runs the
+fixup function. If it was initiated by a affinity change, then it's run
+either in the deferred update function in context of a workqueue or by a
+task which forks a new one or by a task which exits. Whatever happens
+first. mm_cid_fixup_cpus_to_task() walks through the possible CPUs and
+either transfers the CPU owned CIDs to a related task which runs on the CPU
+or drops it into the pool. Tasks which schedule in on a CPU which the walk
+did not cover yet do the handover themselves.
+
+This transition from CPU to per task ownership happens in two phases:
+
+ 1) mm:mm_cid.transit contains MM_CID_TRANSIT. This is OR'ed on the task
+    CID and denotes that the CID is only temporarily owned by the
+    task. When it schedules out the task drops the CID back into the
+    pool if this bit is set.
+
+ 2) The initiating context walks the per CPU space and after completion
+    clears mm:mm_cid.transit. After that point the CIDs are strictly
+    task owned again.
+
+This two phase transition is required to prevent CID space exhaustion
+during the transition as a direct transfer of ownership would fail if
+two tasks are scheduled in on the same CPU before the fixup freed per
+CPU CIDs.
+
+When mm_cid_fixup_cpus_to_tasks() completes it's guaranteed that no CID
+related to that MM is owned by a CPU anymore.
 
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20251119172550.152813625@linutronix.de
+Link: https://patch.msgid.link/20251119172550.088189028@linutronix.de
 ---
- include/linux/irq_work.h       |  9 ++-------
- include/linux/irq_work_types.h | 14 ++++++++++++++
- 2 files changed, 16 insertions(+), 7 deletions(-)
- create mode 100644 include/linux/irq_work_types.h
+ include/linux/rseq_types.h |   7 +-
+ kernel/sched/core.c        | 278 ++++++++++++++++++++++++++++++++----
+ 2 files changed, 259 insertions(+), 26 deletions(-)
 
-diff --git a/include/linux/irq_work.h b/include/linux/irq_work.h
-index 136f298..c5afd05 100644
---- a/include/linux/irq_work.h
-+++ b/include/linux/irq_work.h
-@@ -2,8 +2,9 @@
- #ifndef _LINUX_IRQ_WORK_H
- #define _LINUX_IRQ_WORK_H
-=20
--#include <linux/smp_types.h>
-+#include <linux/irq_work_types.h>
- #include <linux/rcuwait.h>
-+#include <linux/smp_types.h>
-=20
- /*
-  * An entry can be in one of four states:
-@@ -14,12 +15,6 @@
-  * busy      NULL, 2 -> {free, claimed} : callback in progress, can be claim=
-ed
+diff --git a/include/linux/rseq_types.h b/include/linux/rseq_types.h
+index 66b1482..a3a4f3f 100644
+--- a/include/linux/rseq_types.h
++++ b/include/linux/rseq_types.h
+@@ -122,14 +122,15 @@ struct mm_cid_pcpu {
+  * @percpu:		Set, when CIDs are in per CPU mode
+  * @transit:		Set to MM_CID_TRANSIT during a mode change transition phase
+  * @max_cids:		The exclusive maximum CID value for allocation and convergence
+- * @lock:		Spinlock to protect all fields except @pcpu. It also protects
+- *			the MM cid cpumask and the MM cidmask bitmap.
++ * @lock:		Spinlock to protect against affinity setting which can't take @mu=
+tex
+  * @mutex:		Mutex to serialize forks and exits related to this mm
+  * @nr_cpus_allowed:	The number of CPUs in the per MM allowed CPUs map. The =
+map
+  *			is growth only.
+  * @users:		The number of tasks sharing this MM. Separate from mm::mm_users
+  *			as that is modified by mmget()/mm_put() by other entities which
+  *			do not actually share the MM.
++ * @pcpu_thrs:		Threshold for switching back from per CPU mode
++ * @update_deferred:	A deferred switch back to per task mode is pending.
+  */
+ struct mm_mm_cid {
+ 	/* Hotpath read mostly members */
+@@ -144,6 +145,8 @@ struct mm_mm_cid {
+ 	/* Low frequency modified */
+ 	unsigned int		nr_cpus_allowed;
+ 	unsigned int		users;
++	unsigned int		pcpu_thrs;
++	unsigned int		update_deferred;
+ }____cacheline_aligned_in_smp;
+ #else /* CONFIG_SCHED_MM_CID */
+ struct mm_mm_cid { };
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 659ae56..eb0d59d 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -10396,43 +10396,270 @@ void call_trace_sched_update_nr_running(struct rq =
+*rq, int count)
+  * task needs to drop the CID into the pool when scheduling out.  Both bits
+  * (ONCPU and TRANSIT) are filtered out by task_cid() when the CID is
+  * actually handed over to user space in the RSEQ memory.
++ *
++ * Mode switching:
++ *
++ * Switching to per CPU mode happens when the user count becomes greater
++ * than the maximum number of CIDs, which is calculated by:
++ *
++ *	opt_cids =3D min(mm_cid::nr_cpus_allowed, mm_cid::users);
++ *	max_cids =3D min(1.25 * opt_cids, num_possible_cpus());
++ *
++ * The +25% allowance is useful for tight CPU masks in scenarios where only
++ * a few threads are created and destroyed to avoid frequent mode
++ * switches. Though this allowance shrinks, the closer opt_cids becomes to
++ * num_possible_cpus(), which is the (unfortunate) hard ABI limit.
++ *
++ * At the point of switching to per CPU mode the new user is not yet
++ * visible in the system, so the task which initiated the fork() runs the
++ * fixup function: mm_cid_fixup_tasks_to_cpu() walks the thread list and
++ * either transfers each tasks owned CID to the CPU the task runs on or
++ * drops it into the CID pool if a task is not on a CPU at that point in
++ * time. Tasks which schedule in before the task walk reaches them do the
++ * handover in mm_cid_schedin(). When mm_cid_fixup_tasks_to_cpus() completes
++ * it's guaranteed that no task related to that MM owns a CID anymore.
++ *
++ * Switching back to task mode happens when the user count goes below the
++ * threshold which was recorded on the per CPU mode switch:
++ *
++ *	pcpu_thrs =3D min(opt_cids - (opt_cids / 4), num_possible_cpus() / 2);
++ *
++ * This threshold is updated when a affinity change increases the number of
++ * allowed CPUs for the MM, which might cause a switch back to per task
++ * mode.
++ *
++ * If the switch back was initiated by a exiting task, then that task runs
++ * the fixup function. If it was initiated by a affinity change, then it's
++ * run either in the deferred update function in context of a workqueue or
++ * by a task which forks a new one or by a task which exits. Whatever
++ * happens first. mm_cid_fixup_cpus_to_task() walks through the possible
++ * CPUs and either transfers the CPU owned CIDs to a related task which
++ * runs on the CPU or drops it into the pool. Tasks which schedule in on a
++ * CPU which the walk did not cover yet do the handover themself.
++ *
++ * This transition from CPU to per task ownership happens in two phases:
++ *
++ *  1) mm:mm_cid.transit contains MM_CID_TRANSIT This is OR'ed on the task
++ *     CID and denotes that the CID is only temporarily owned by the
++ *     task. When it schedules out the task drops the CID back into the
++ *     pool if this bit is set.
++ *
++ *  2) The initiating context walks the per CPU space and after completion
++ *     clears mm:mm_cid.transit. So after that point the CIDs are strictly
++ *     task owned again.
++ *
++ * This two phase transition is required to prevent CID space exhaustion
++ * during the transition as a direct transfer of ownership would fail if
++ * two tasks are scheduled in on the same CPU before the fixup freed per
++ * CPU CIDs.
++ *
++ * When mm_cid_fixup_cpus_to_tasks() completes it's guaranteed that no CID
++ * related to that MM is owned by a CPU anymore.
   */
 =20
--struct irq_work {
--	struct __call_single_node node;
--	void (*func)(struct irq_work *);
--	struct rcuwait irqwait;
--};
+ /*
+  * Update the CID range properties when the constraints change. Invoked via
+  * fork(), exit() and affinity changes
+  */
+-static void mm_update_max_cids(struct mm_struct *mm)
++static void __mm_update_max_cids(struct mm_mm_cid *mc)
++{
++	unsigned int opt_cids, max_cids;
++
++	/* Calculate the new optimal constraint */
++	opt_cids =3D min(mc->nr_cpus_allowed, mc->users);
++
++	/* Adjust the maximum CIDs to +25% limited by the number of possible CPUs */
++	max_cids =3D min(opt_cids + (opt_cids / 4), num_possible_cpus());
++	WRITE_ONCE(mc->max_cids, max_cids);
++}
++
++static inline unsigned int mm_cid_calc_pcpu_thrs(struct mm_mm_cid *mc)
++{
++	unsigned int opt_cids;
++
++	opt_cids =3D min(mc->nr_cpus_allowed, mc->users);
++	/* Has to be at least 1 because 0 indicates PCPU mode off */
++	return max(min(opt_cids - opt_cids / 4, num_possible_cpus() / 2), 1);
++}
++
++static bool mm_update_max_cids(struct mm_struct *mm)
+ {
+ 	struct mm_mm_cid *mc =3D &mm->mm_cid;
+-	unsigned int max_cids;
+=20
+ 	lockdep_assert_held(&mm->mm_cid.lock);
+=20
+-	/* Calculate the new maximum constraint */
+-	max_cids =3D min(mc->nr_cpus_allowed, mc->users);
+-	WRITE_ONCE(mc->max_cids, max_cids);
++	/* Clear deferred mode switch flag. A change is handled by the caller */
++	mc->update_deferred =3D false;
++	__mm_update_max_cids(mc);
++
++	/* Check whether owner mode must be changed */
++	if (!mc->percpu) {
++		/* Enable per CPU mode when the number of users is above max_cids */
++		if (mc->users > mc->max_cids)
++			mc->pcpu_thrs =3D mm_cid_calc_pcpu_thrs(mc);
++	} else {
++		/* Switch back to per task if user count under threshold */
++		if (mc->users < mc->pcpu_thrs)
++			mc->pcpu_thrs =3D 0;
++	}
++
++	/* Mode change required? */
++	if (!!mc->percpu =3D=3D !!mc->pcpu_thrs)
++		return false;
++	/* When switching back to per TASK mode, set the transition flag */
++	if (!mc->pcpu_thrs)
++		WRITE_ONCE(mc->transit, MM_CID_TRANSIT);
++	WRITE_ONCE(mc->percpu, !!mc->pcpu_thrs);
++	return true;
+ }
+=20
+ static inline void mm_update_cpus_allowed(struct mm_struct *mm, const struct=
+ cpumask *affmsk)
+ {
+ 	struct cpumask *mm_allowed;
++	struct mm_mm_cid *mc;
+ 	unsigned int weight;
+=20
+ 	if (!mm || !READ_ONCE(mm->mm_cid.users))
+ 		return;
 -
- #define __IRQ_WORK_INIT(_func, _flags) (struct irq_work){	\
- 	.node =3D { .u_flags =3D (_flags), },			\
- 	.func =3D (_func),					\
-diff --git a/include/linux/irq_work_types.h b/include/linux/irq_work_types.h
-new file mode 100644
-index 0000000..73abec5
---- /dev/null
-+++ b/include/linux/irq_work_types.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _LINUX_IRQ_WORK_TYPES_H
-+#define _LINUX_IRQ_WORK_TYPES_H
+ 	/*
+ 	 * mm::mm_cid::mm_cpus_allowed is the superset of each threads
+ 	 * allowed CPUs mask which means it can only grow.
+ 	 */
+-	guard(raw_spinlock)(&mm->mm_cid.lock);
++	mc =3D &mm->mm_cid;
++	guard(raw_spinlock)(&mc->lock);
+ 	mm_allowed =3D mm_cpus_allowed(mm);
+ 	weight =3D cpumask_weighted_or(mm_allowed, mm_allowed, affmsk);
+-	if (weight =3D=3D mm->mm_cid.nr_cpus_allowed)
++	if (weight =3D=3D mc->nr_cpus_allowed)
++		return;
 +
-+#include <linux/smp_types.h>
-+#include <linux/types.h>
++	WRITE_ONCE(mc->nr_cpus_allowed, weight);
++	__mm_update_max_cids(mc);
++	if (!mc->percpu)
+ 		return;
+-	WRITE_ONCE(mm->mm_cid.nr_cpus_allowed, weight);
+-	mm_update_max_cids(mm);
 +
-+struct irq_work {
-+	struct __call_single_node	node;
-+	void				(*func)(struct irq_work *);
-+	struct rcuwait			irqwait;
-+};
++	/* Adjust the threshold to the wider set */
++	mc->pcpu_thrs =3D mm_cid_calc_pcpu_thrs(mc);
 +
-+#endif
++	/* Scheduling of deferred mode switch goes here */
++}
++
++static inline void mm_cid_transit_to_task(struct task_struct *t, struct mm_c=
+id_pcpu *pcp)
++{
++	if (cid_on_cpu(t->mm_cid.cid)) {
++		unsigned int cid =3D cpu_cid_to_cid(t->mm_cid.cid);
++
++		t->mm_cid.cid =3D cid_to_transit_cid(cid);
++		pcp->cid =3D t->mm_cid.cid;
++	}
++}
++
++static void __maybe_unused mm_cid_fixup_cpus_to_tasks(struct mm_struct *mm)
++{
++	unsigned int cpu;
++
++	/* Walk the CPUs and fixup all stale CIDs */
++	for_each_possible_cpu(cpu) {
++		struct mm_cid_pcpu *pcp =3D per_cpu_ptr(mm->mm_cid.pcpu, cpu);
++		struct rq *rq =3D cpu_rq(cpu);
++
++		/* Remote access to mm::mm_cid::pcpu requires rq_lock */
++		guard(rq_lock_irq)(rq);
++		/* Is the CID still owned by the CPU? */
++		if (cid_on_cpu(pcp->cid)) {
++			/*
++			 * If rq->curr has @mm, transfer it with the
++			 * transition bit set. Otherwise drop it.
++			 */
++			if (rq->curr->mm =3D=3D mm && rq->curr->mm_cid.active)
++				mm_cid_transit_to_task(rq->curr, pcp);
++			else
++				mm_drop_cid_on_cpu(mm, pcp);
++
++		} else if (rq->curr->mm =3D=3D mm && rq->curr->mm_cid.active) {
++			unsigned int cid =3D rq->curr->mm_cid.cid;
++
++			/* Ensure it has the transition bit set */
++			if (!cid_in_transit(cid)) {
++				cid =3D cid_to_transit_cid(cid);
++				rq->curr->mm_cid.cid =3D cid;
++				pcp->cid =3D cid;
++			}
++		}
++	}
++	/* Clear the transition bit */
++	WRITE_ONCE(mm->mm_cid.transit, 0);
++}
++
++static inline void mm_cid_transfer_to_cpu(struct task_struct *t, struct mm_c=
+id_pcpu *pcp)
++{
++	if (cid_on_task(t->mm_cid.cid)) {
++		t->mm_cid.cid =3D cid_to_cpu_cid(t->mm_cid.cid);
++		pcp->cid =3D t->mm_cid.cid;
++	}
++}
++
++static bool mm_cid_fixup_task_to_cpu(struct task_struct *t, struct mm_struct=
+ *mm)
++{
++	/* Remote access to mm::mm_cid::pcpu requires rq_lock */
++	guard(task_rq_lock)(t);
++	/* If the task is not active it is not in the users count */
++	if (!t->mm_cid.active)
++		return false;
++	if (cid_on_task(t->mm_cid.cid)) {
++		/* If running on the CPU, transfer the CID, otherwise drop it */
++		if (task_rq(t)->curr =3D=3D t)
++			mm_cid_transfer_to_cpu(t, per_cpu_ptr(mm->mm_cid.pcpu, task_cpu(t)));
++		else
++			mm_unset_cid_on_task(t);
++	}
++	return true;
++}
++
++static void __maybe_unused mm_cid_fixup_tasks_to_cpus(void)
++{
++	struct mm_struct *mm =3D current->mm;
++	struct task_struct *p, *t;
++	unsigned int users;
++
++	/*
++	 * This can obviously race with a concurrent affinity change, which
++	 * increases the number of allowed CPUs for this mm, but that does
++	 * not affect the mode and only changes the CID constraints. A
++	 * possible switch back to per task mode happens either in the
++	 * deferred handler function or in the next fork()/exit().
++	 *
++	 * The caller has already transferred. The newly incoming task is
++	 * already accounted for, but not yet visible.
++	 */
++	users =3D mm->mm_cid.users - 2;
++	if (!users)
++		return;
++
++	guard(rcu)();
++	for_other_threads(current, t) {
++		if (mm_cid_fixup_task_to_cpu(t, mm))
++			users--;
++	}
++
++	if (!users)
++		return;
++
++	/* Happens only for VM_CLONE processes. */
++	for_each_process_thread(p, t) {
++		if (t =3D=3D current || t->mm !=3D mm)
++			continue;
++		if (mm_cid_fixup_task_to_cpu(t, mm)) {
++			if (--users =3D=3D 0)
++				return;
++		}
++	}
++}
++
++static bool sched_mm_cid_add_user(struct task_struct *t, struct mm_struct *m=
+m)
++{
++	t->mm_cid.active =3D 1;
++	mm->mm_cid.users++;
++	return mm_update_max_cids(mm);
+ }
+=20
+ void sched_mm_cid_fork(struct task_struct *t)
+@@ -10442,12 +10669,19 @@ void sched_mm_cid_fork(struct task_struct *t)
+ 	WARN_ON_ONCE(!mm || t->mm_cid.cid !=3D MM_CID_UNSET);
+=20
+ 	guard(mutex)(&mm->mm_cid.mutex);
+-	guard(raw_spinlock)(&mm->mm_cid.lock);
+-	t->mm_cid.active =3D 1;
+-	mm->mm_cid.users++;
+-	/* Preset last_cid for mm_cid_select() */
+-	t->mm_cid.last_cid =3D READ_ONCE(mm->mm_cid.max_cids) - 1;
+-	mm_update_max_cids(mm);
++	scoped_guard(raw_spinlock, &mm->mm_cid.lock) {
++		sched_mm_cid_add_user(t, mm);
++		/* Preset last_cid for mm_cid_select() */
++		t->mm_cid.last_cid =3D mm->mm_cid.max_cids - 1;
++	}
++}
++
++static bool sched_mm_cid_remove_user(struct task_struct *t)
++{
++	t->mm_cid.active =3D 0;
++	mm_unset_cid_on_task(t);
++	t->mm->mm_cid.users--;
++	return mm_update_max_cids(t->mm);
+ }
+=20
+ /*
+@@ -10462,14 +10696,8 @@ void sched_mm_cid_exit(struct task_struct *t)
+ 		return;
+=20
+ 	guard(mutex)(&mm->mm_cid.mutex);
+-	guard(raw_spinlock)(&mm->mm_cid.lock);
+-	t->mm_cid.active =3D 0;
+-	mm->mm_cid.users--;
+-	if (t->mm_cid.cid !=3D MM_CID_UNSET) {
+-		clear_bit(t->mm_cid.cid, mm_cidmask(mm));
+-		t->mm_cid.cid =3D MM_CID_UNSET;
+-	}
+-	mm_update_max_cids(mm);
++	scoped_guard(raw_spinlock, &mm->mm_cid.lock)
++		sched_mm_cid_remove_user(t);
+ }
+=20
+ /* Deactivate MM CID allocation across execve() */
+@@ -10499,6 +10727,8 @@ void mm_init_cid(struct mm_struct *mm, struct task_st=
+ruct *p)
+ 	mm->mm_cid.transit =3D 0;
+ 	mm->mm_cid.nr_cpus_allowed =3D p->nr_cpus_allowed;
+ 	mm->mm_cid.users =3D 0;
++	mm->mm_cid.pcpu_thrs =3D 0;
++	mm->mm_cid.update_deferred =3D 0;
+ 	raw_spin_lock_init(&mm->mm_cid.lock);
+ 	mutex_init(&mm->mm_cid.mutex);
+ 	cpumask_copy(mm_cpus_allowed(mm), &p->cpus_mask);
 
