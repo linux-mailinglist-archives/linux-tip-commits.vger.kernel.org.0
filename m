@@ -1,80 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-7538-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7539-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F8EC88132
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 05:39:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A403FC8A614
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 15:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 11E1D340422
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 04:38:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 490203A874C
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0A7313E0B;
-	Wed, 26 Nov 2025 04:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094C32FDC43;
+	Wed, 26 Nov 2025 14:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="K8tCDvww";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LAlc6rdA"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3M+V6/od";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3YndJvxD"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F7A3128A9;
-	Wed, 26 Nov 2025 04:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3762730276D;
+	Wed, 26 Nov 2025 14:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764131781; cv=none; b=MTdqAQxHs7fgWv0lHHxe78Y7lpFrSAhf/Vqi12HnBXm0V4trhdVLE5jpxHXCoPXQBgCl5IzOxGw4n7zwk3vvUR284Zas+zOsPyul1BY6FMO0kiLh0a+pO+YSKxJlXAqlfY8kFKJ1jAK8zhkPIX2ATATNDuAdrCT7fEV35fBlEmg=
+	t=1764168018; cv=none; b=O4Od2UFyqXWyWPMfgr/nTWJX734WhW3V6EjgbHB36Q3vbJ8K0Krms996ZZ5JbPW5orx99W5ZIZmZi/WUMC4+yEJjITIWEnnaGXIiurnbAYNlLtJu/2Q9/f0H05M8MR5QlhpfG6aHq2Hq1Ss1TYpAWBxRelfzuVopNMDgj6sNy8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764131781; c=relaxed/simple;
-	bh=fnoDJXaDSOCeI7NPsxgouHx7Hs97To+mxSZHlmgHiDs=;
+	s=arc-20240116; t=1764168018; c=relaxed/simple;
+	bh=iJqE3DDjcZyp9kmV3sm0xZygPYBJKYUcpXHPo/jEe/c=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=m5gGiPXxTWcOuM7GTB6pub0Olt1zyFzLx6egyI6V6XhEUj1o2SZ9ttfPh4DAeQH0SUdP3R3Flh7ZyAeuSs/JsVHQXa6KrTmMsQ7zgCeVN5k79pBmkBozt4BLZ+m+5OS1c/nyCyu5nbpuS8+IkBvLOjH2N48sojaera1XE2H05wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=K8tCDvww; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LAlc6rdA; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jzKIcqkMM4j6imjgJGXNHXnLcmxHFOdOyhtbFwTTEEKgDYVJXvmkHJ8DEf29FG0OV/oHQj3GGaNuT3F0AGZgkLIIKHG2vpgyLlRLCIsNmTXBWUVLlx79BybrsQiUzDWO4E6oaM2rrpqoNp4zqDujLkzpEQc1ArIl6AtC5X+XSy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3M+V6/od; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3YndJvxD; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Nov 2025 04:36:16 -0000
+Date: Wed, 26 Nov 2025 14:40:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764131777;
+	s=2020; t=1764168013;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tnz0md2X20d3tzGa0poevVtw1UzAg8qevBsY2fhfHew=;
-	b=K8tCDvwwbmxX/dOb6vYAF18n4cqzdb7mLi2PyMKF9lcUgKjrvlNmooyXm5N9RoljMP4a3M
-	F8hWdPSVFIDFjejC0oA49IOKLK2mACeUq8S1sIShQRFlF2t45WWinpWKKcvkT91cAqwwLn
-	vimyXVQOy+LHIDFtJSCG/2VW1A6ctnZPDzckS4I2kLnpjBh1lK3+oPDqXC6po8CZz2AuGO
-	F1E9A3g/IE91j0GyWPzPHK/2Mk8i1FJCbdNB0UWqzrxkmdCvsU6VqrElR7xQzn9yGpNPID
-	DvdUG2KBWyuaS+KvGs1dXLgFfC60OzV2Q9eokfLBblAfqt8Ij2xUPSLy+EW9Dw==
+	bh=XxMplbH6ASuOysNl+YjozSqSOtBkL8VltPVtXLLt4OI=;
+	b=3M+V6/odUFjkzjKrWnDAh1ZKP7/ynz+iofNK7ioDEN5VX/LYM1Pc0A0oNPFIZjb0P3HIX/
+	o4y2ZkythRaxlbvbI6laQIIBT634KJhG9x2b1S6XU0xmAFM2a3OmmcJnguH5e2djsvDYH6
+	b3PnaxtBEDAsYf664i07f1rx/QSI5Pb/nht1QeKLHQc2MMKEjiwVYJ0XwtesVuDBfUNDCT
+	Z+jGHHg/7o8uhOBMhwRq6TEnRuIemwe7qd0fJCBbE55vqLJTQuDqOnhQLkDdlqK/pbIo9C
+	3KVroufTjc6lqBc7flw412smIVmtKpvgLQVijdi7BaxGp22e3Tv+u1jRWOl0GQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764131777;
+	s=2020e; t=1764168013;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Tnz0md2X20d3tzGa0poevVtw1UzAg8qevBsY2fhfHew=;
-	b=LAlc6rdAF/Y6yNRFAhuP+Q9DjGVKGTHcV1trPB+FkyZisbMq/cQwjmkpr7Hhu+qXkh53+c
-	NxepjWuCSb85JJAw==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=XxMplbH6ASuOysNl+YjozSqSOtBkL8VltPVtXLLt4OI=;
+	b=3YndJvxDo4d5TJROarJq+93XrKwCsiQTWcCuCRuDGe6SKmQCsHK7fjXaq4ySzYYPJ9uPHM
+	WSYX4Sv7C7riXrBw==
+From: "tip-bot2 for Hao-Wen Ting" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: core/rseq] cpumask: Cache num_possible_cpus()
-Cc: Thomas Gleixner <tglx@linutronix.de>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Yury Norov <yury.norov@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, x86@kernel.org,
+Subject: [tip: timers/clocksource] clocksource/drivers: Add Realtek system
+ timer driver
+Cc: "Hao-Wen Ting" <haowen.ting@realtek.com>,
+ Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251119172549.578653738@linutronix.de>
-References: <20251119172549.578653738@linutronix.de>
+In-Reply-To: <20251126060110.198330-3-haowen.ting@realtek.com>
+References: <20251126060110.198330-3-haowen.ting@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176413177658.498.8348323122345597622.tip-bot2@tip-bot2>
+Message-ID: <176416801190.498.17026062158783999046.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -82,128 +81,243 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the core/rseq branch of tip:
+The following commit has been merged into the timers/clocksource branch of ti=
+p:
 
-Commit-ID:     35a5c37cb9f1f947dff18e7cfc75a8cfcfd557ca
-Gitweb:        https://git.kernel.org/tip/35a5c37cb9f1f947dff18e7cfc75a8cfcfd=
-557ca
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 19 Nov 2025 18:27:01 +01:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 25 Nov 2025 19:45:40 +01:00
+Commit-ID:     d1780dce9575072303b9c574614b72b5c8c5c44c
+Gitweb:        https://git.kernel.org/tip/d1780dce9575072303b9c574614b72b5c8c=
+5c44c
+Author:        Hao-Wen Ting <haowen.ting@realtek.com>
+AuthorDate:    Wed, 26 Nov 2025 14:01:10 +08:00
+Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
+CommitterDate: Wed, 26 Nov 2025 11:25:15 +01:00
 
-cpumask: Cache num_possible_cpus()
+clocksource/drivers: Add Realtek system timer driver
 
-Reevaluating num_possible_cpus() over and over does not make sense. That
-becomes a constant after init as cpu_possible_mask is marked ro_after_init.
+Add a system timer driver for Realtek SoCs.
 
-Cache the value during initialization and provide that for consumption.
+This driver registers the 1 MHz global hardware counter on Realtek
+platforms as a clock event device. Since this hardware counter starts
+counting automatically after SoC power-on, no clock initialization is
+required. Because the counter does not stop or get affected by CPU power
+down, and it supports oneshot mode, it is typically used as a tick
+broadcast timer.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Link: https://patch.msgid.link/20251119172549.578653738@linutronix.de
+Signed-off-by: Hao-Wen Ting <haowen.ting@realtek.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251126060110.198330-3-haowen.ting@realtek.com
 ---
- include/linux/cpumask.h | 10 ++++++++--
- kernel/cpu.c            | 19 +++++++++++++++++++
- 2 files changed, 27 insertions(+), 2 deletions(-)
+ MAINTAINERS                         |   5 +-
+ drivers/clocksource/Kconfig         |  11 ++-
+ drivers/clocksource/Makefile        |   1 +-
+ drivers/clocksource/timer-realtek.c | 150 +++++++++++++++++++++++++++-
+ 4 files changed, 167 insertions(+)
+ create mode 100644 drivers/clocksource/timer-realtek.c
 
-diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
-index feba06e..66694ee 100644
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -126,6 +126,7 @@ extern struct cpumask __cpu_dying_mask;
- #define cpu_dying_mask    ((const struct cpumask *)&__cpu_dying_mask)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 3da2c26..b72b987 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21669,6 +21669,11 @@ S:	Maintained
+ F:	Documentation/devicetree/bindings/spi/realtek,rtl9301-snand.yaml
+ F:	drivers/spi/spi-realtek-rtl-snand.c
 =20
- extern atomic_t __num_online_cpus;
-+extern unsigned int __num_possible_cpus;
-=20
- extern cpumask_t cpus_booted_once_mask;
-=20
-@@ -1152,13 +1153,13 @@ void init_cpu_possible(const struct cpumask *src);
- #define __assign_cpu(cpu, mask, val)	\
- 	__assign_bit(cpumask_check(cpu), cpumask_bits(mask), (val))
-=20
--#define set_cpu_possible(cpu, possible)	assign_cpu((cpu), &__cpu_possible_ma=
-sk, (possible))
- #define set_cpu_enabled(cpu, enabled)	assign_cpu((cpu), &__cpu_enabled_mask,=
- (enabled))
- #define set_cpu_present(cpu, present)	assign_cpu((cpu), &__cpu_present_mask,=
- (present))
- #define set_cpu_active(cpu, active)	assign_cpu((cpu), &__cpu_active_mask, (a=
-ctive))
- #define set_cpu_dying(cpu, dying)	assign_cpu((cpu), &__cpu_dying_mask, (dyin=
-g))
-=20
- void set_cpu_online(unsigned int cpu, bool online);
-+void set_cpu_possible(unsigned int cpu, bool possible);
-=20
- /**
-  * to_cpumask - convert a NR_CPUS bitmap to a struct cpumask *
-@@ -1211,7 +1212,12 @@ static __always_inline unsigned int num_online_cpus(vo=
-id)
- {
- 	return raw_atomic_read(&__num_online_cpus);
- }
--#define num_possible_cpus()	cpumask_weight(cpu_possible_mask)
++REALTEK SYSTIMER DRIVER
++M:	Hao-Wen Ting <haowen.ting@realtek.com>
++S:	Maintained
++F:	drivers/clocksource/timer-realtek.c
 +
-+static __always_inline unsigned int num_possible_cpus(void)
-+{
-+	return __num_possible_cpus;
-+}
+ REALTEK WIRELESS DRIVER (rtlwifi family)
+ M:	Ping-Ke Shih <pkshih@realtek.com>
+ L:	linux-wireless@vger.kernel.org
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index ffcd236..aa59e5b 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -782,4 +782,15 @@ config NXP_STM_TIMER
+           Enables the support for NXP System Timer Module found in the
+           s32g NXP platform series.
+=20
++config RTK_SYSTIMER
++	bool "Realtek SYSTIMER support"
++	depends on ARM || ARM64
++	depends on ARCH_REALTEK || COMPILE_TEST
++	select TIMER_OF
++	help
++	  This option enables the driver that registers the global 1 MHz hardware
++	  counter as a clock event device on Realtek SoCs. Make sure to enable
++	  this option only when building for a Realtek platform or for compilation
++	  testing.
 +
- #define num_enabled_cpus()	cpumask_weight(cpu_enabled_mask)
- #define num_present_cpus()	cpumask_weight(cpu_present_mask)
- #define num_active_cpus()	cpumask_weight(cpu_active_mask)
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index db9f6c5..b674fdf 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -3085,10 +3085,13 @@ EXPORT_SYMBOL(cpu_all_bits);
- #ifdef CONFIG_INIT_ALL_POSSIBLE
- struct cpumask __cpu_possible_mask __ro_after_init
- 	=3D {CPU_BITS_ALL};
-+unsigned int __num_possible_cpus __ro_after_init =3D NR_CPUS;
- #else
- struct cpumask __cpu_possible_mask __ro_after_init;
-+unsigned int __num_possible_cpus __ro_after_init;
- #endif
- EXPORT_SYMBOL(__cpu_possible_mask);
-+EXPORT_SYMBOL(__num_possible_cpus);
-=20
- struct cpumask __cpu_online_mask __read_mostly;
- EXPORT_SYMBOL(__cpu_online_mask);
-@@ -3116,6 +3119,7 @@ void init_cpu_present(const struct cpumask *src)
- void init_cpu_possible(const struct cpumask *src)
- {
- 	cpumask_copy(&__cpu_possible_mask, src);
-+	__num_possible_cpus =3D cpumask_weight(&__cpu_possible_mask);
- }
-=20
- void set_cpu_online(unsigned int cpu, bool online)
-@@ -3140,6 +3144,21 @@ void set_cpu_online(unsigned int cpu, bool online)
- }
-=20
- /*
-+ * This should be marked __init, but there is a boatload of call sites
-+ * which need to be fixed up to do so. Sigh...
-+ */
-+void set_cpu_possible(unsigned int cpu, bool possible)
-+{
-+	if (possible) {
-+		if (!cpumask_test_and_set_cpu(cpu, &__cpu_possible_mask))
-+			__num_possible_cpus++;
-+	} else {
-+		if (cpumask_test_and_clear_cpu(cpu, &__cpu_possible_mask))
-+			__num_possible_cpus--;
-+	}
-+}
-+
+ endmenu
+diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+index ec4452e..b46376a 100644
+--- a/drivers/clocksource/Makefile
++++ b/drivers/clocksource/Makefile
+@@ -95,3 +95,4 @@ obj-$(CONFIG_CLKSRC_LOONGSON1_PWM)	+=3D timer-loongson1-pwm=
+.o
+ obj-$(CONFIG_EP93XX_TIMER)		+=3D timer-ep93xx.o
+ obj-$(CONFIG_RALINK_TIMER)		+=3D timer-ralink.o
+ obj-$(CONFIG_NXP_STM_TIMER)		+=3D timer-nxp-stm.o
++obj-$(CONFIG_RTK_SYSTIMER)		+=3D timer-realtek.o
+diff --git a/drivers/clocksource/timer-realtek.c b/drivers/clocksource/timer-=
+realtek.c
+new file mode 100644
+index 0000000..4f0439d
+--- /dev/null
++++ b/drivers/clocksource/timer-realtek.c
+@@ -0,0 +1,150 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +/*
-  * Activate the first processor.
-  */
- void __init boot_cpu_init(void)
++ * Copyright (c) 2025 Realtek Semiconductor Corp.
++ */
++
++#define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
++
++#include <linux/irqflags.h>
++#include <linux/interrupt.h>
++#include "timer-of.h"
++
++#define ENBL 1
++#define DSBL 0
++
++#define SYSTIMER_RATE 1000000
++#define SYSTIMER_MIN_DELTA 0x64
++#define SYSTIMER_MAX_DELTA ULONG_MAX
++
++/* SYSTIMER Register Offset (RTK Internal Use) */
++#define TS_LW_OFST 0x0
++#define TS_HW_OFST 0x4
++#define TS_CMP_VAL_LW_OFST 0x8
++#define TS_CMP_VAL_HW_OFST 0xC
++#define TS_CMP_CTRL_OFST 0x10
++#define TS_CMP_STAT_OFST 0x14
++
++/* SYSTIMER CMP CTRL REG Mask */
++#define TS_CMP_EN_MASK 0x1
++#define TS_WR_EN0_MASK 0x2
++
++static void __iomem *systimer_base;
++
++static u64 rtk_ts64_read(void)
++{
++	u32 low, high;
++	u64 ts;
++
++	/* Caution: Read LSB word (TS_LW_OFST) first then MSB (TS_HW_OFST) */
++	low =3D readl(systimer_base + TS_LW_OFST);
++	high =3D readl(systimer_base + TS_HW_OFST);
++	ts =3D ((u64)high << 32) | low;
++
++	return ts;
++}
++
++static void rtk_cmp_value_write(u64 value)
++{
++	u32 high, low;
++
++	low =3D value & 0xFFFFFFFF;
++	high =3D value >> 32;
++
++	writel(high, systimer_base + TS_CMP_VAL_HW_OFST);
++	writel(low, systimer_base + TS_CMP_VAL_LW_OFST);
++}
++
++static inline void rtk_cmp_en_write(bool cmp_en)
++{
++	u32 val;
++
++	val =3D TS_WR_EN0_MASK;
++	if (cmp_en =3D=3D ENBL)
++		val |=3D TS_CMP_EN_MASK;
++
++	writel(val, systimer_base + TS_CMP_CTRL_OFST);
++}
++
++static int rtk_syst_clkevt_next_event(unsigned long cycles, struct clock_eve=
+nt_device *clkevt)
++{
++	u64 cmp_val;
++
++	rtk_cmp_en_write(DSBL);
++	cmp_val =3D rtk_ts64_read();
++
++	/* Set CMP value to current timestamp plus delta_us */
++	rtk_cmp_value_write(cmp_val + cycles);
++	rtk_cmp_en_write(ENBL);
++	return 0;
++}
++
++static irqreturn_t rtk_ts_match_intr_handler(int irq, void *dev_id)
++{
++	struct clock_event_device *clkevt =3D dev_id;
++	void __iomem *reg_base;
++	u32 val;
++
++	/* Disable TS CMP Match */
++	rtk_cmp_en_write(DSBL);
++
++	/* Clear TS CMP INTR */
++	reg_base =3D systimer_base + TS_CMP_STAT_OFST;
++	val =3D readl(reg_base) & TS_CMP_EN_MASK;
++	writel(val | TS_CMP_EN_MASK, reg_base);
++	clkevt->event_handler(clkevt);
++
++	return IRQ_HANDLED;
++}
++
++static int rtk_syst_shutdown(struct clock_event_device *clkevt)
++{
++	void __iomem *reg_base;
++	u64 cmp_val =3D 0;
++
++	/* Disable TS CMP Match */
++	rtk_cmp_en_write(DSBL);
++	/* Set compare value to 0 */
++	rtk_cmp_value_write(cmp_val);
++
++	/* Clear TS CMP INTR */
++	reg_base =3D systimer_base + TS_CMP_STAT_OFST;
++	writel(TS_CMP_EN_MASK, reg_base);
++	return 0;
++}
++
++static struct timer_of rtk_timer_to =3D {
++	.flags =3D TIMER_OF_IRQ | TIMER_OF_BASE,
++
++	.clkevt =3D {
++		.name			=3D "rtk-clkevt",
++		.rating			=3D 300,
++		.cpumask		=3D cpu_possible_mask,
++		.features		=3D CLOCK_EVT_FEAT_DYNIRQ |
++					  CLOCK_EVT_FEAT_ONESHOT,
++		.set_next_event		=3D rtk_syst_clkevt_next_event,
++		.set_state_oneshot	=3D rtk_syst_shutdown,
++		.set_state_shutdown	=3D rtk_syst_shutdown,
++	},
++
++	.of_irq =3D {
++		.flags			=3D IRQF_TIMER | IRQF_IRQPOLL,
++		.handler		=3D rtk_ts_match_intr_handler,
++	},
++};
++
++static int __init rtk_systimer_init(struct device_node *node)
++{
++	int ret;
++
++	ret =3D timer_of_init(node, &rtk_timer_to);
++	if (ret)
++		return ret;
++
++	systimer_base =3D timer_of_base(&rtk_timer_to);
++	clockevents_config_and_register(&rtk_timer_to.clkevt, SYSTIMER_RATE,
++					SYSTIMER_MIN_DELTA, SYSTIMER_MAX_DELTA);
++
++	return 0;
++}
++
++TIMER_OF_DECLARE(rtk_systimer, "realtek,rtd1625-systimer", rtk_systimer_init=
+);
 
