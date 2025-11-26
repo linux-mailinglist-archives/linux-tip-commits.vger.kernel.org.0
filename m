@@ -1,78 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-7541-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7542-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC01C8A62E
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 15:41:06 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F5CC8A631
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 15:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35AEA3A95A3
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 14:40:54 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 03880357E83
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 14:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FAD3043C8;
-	Wed, 26 Nov 2025 14:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE759304BA4;
+	Wed, 26 Nov 2025 14:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eHcoBkfk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OzhxZM/a"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xqvR2mvN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q4uJNuMk"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF02D303CBD;
-	Wed, 26 Nov 2025 14:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54DC3043BF;
+	Wed, 26 Nov 2025 14:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764168041; cv=none; b=hDRNq4wx6HSENlYzqN/Zx48fcFd7T5YIx+LcYYoRdUASTr0WLzYrzdKtsZSBdfrkRKVUwKMjxSjkWTSzmSKzqKeOI8XvW99FB4GMk2IQFkWfVtYkry7x2hLHTZlgFqB8XiDN3Lw8G1yk92RCpPyqf3FT5PkYHONB/8OG2QIJozI=
+	t=1764168042; cv=none; b=tXVT6uDFqXCEk9NK3cPJlz8LCHOlPXgaZUEdz86oe3Bxe6PqC65gto8mX1Otp6HFHG3tI5pDflpWnd0OsmZZ+Idq2pase/ZVsl3Y0r0tT9ObYiaBrrUGJ2vGAUDyXoMFAga09wUzigBf/KO43UfpCZy3+B/OMlKtCjtZO2r8GGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764168041; c=relaxed/simple;
-	bh=lnc+vv9VdGmwzsAQaHxISi+DiZfOC4HBYma4IqIS8qk=;
+	s=arc-20240116; t=1764168042; c=relaxed/simple;
+	bh=FVwvwVE+1p0xQ9xn+BKxF1GiBAIRv0OZo02X7Fng5Pk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YAkZlvxnqLznrge+fmkLk9uT8D5+K1pgXjJNbeGl+9LTnZlZe+7SJ9GM48QM78zDYZmwm119XENbCN1KCbkdjAD+eSOO24TkqJ1OnL8VdU6hOQn5PcgD/VP/fCyMOyfFw4U9cLIhenFSvFpmuWe5xloevdfoF49lBL7Wzf/RqkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eHcoBkfk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OzhxZM/a; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=nplaTT9OT8YrRqhHZx0lZfND+y4BW+XOn9Au1YZgn9RRlxwV6a+3aXd/FadA9wGrCyuY7jV09n+OTYdJoMLO8keAMFm5zpvYETvtCWfwhHiiqiZapbL83ddp0QOyHeJ3bI+8tY2ECt29C12pvZCcWKaJzTEWBUuRflWG0cFGDEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xqvR2mvN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q4uJNuMk; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Nov 2025 14:40:36 -0000
+Date: Wed, 26 Nov 2025 14:40:37 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764168038;
+	s=2020; t=1764168039;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2KXg2HAtfDg2Pfr2sceYyp2xJBmCnOEssvEADdfx3cI=;
-	b=eHcoBkfkbGooiaaRq8ucVuQZCF0VQb2r6fRe2KMiNT+q2bx4p2yl+VoTDG2HUaAuyx/feQ
-	yiBCuKny+S4w+9JJtnoXcbNlV501RajkiGtwk4oA6/vc+S4/Bib+HS9RgtYpWd8V/goER3
-	/vJf3sOCFw3UaqDqDMq5IO5fug0cbXKO6aWgrql1IC7wZbmA+cWNNO95uozdfBMfN36HO7
-	2+8AVqpp/CJCWXGc4xVuawkm4eEQxeGB3D0bqrFOJGkUA3DPTREc3w9ryuCnJKRSo5yB/a
-	e7UidlIWBCSHerUgNG7+8/1Kd4Bq5JVUWV/lsKySBL916Ik+dMoXZ7SU0tMCSw==
+	bh=De5OMkw5fW9lzgoMv4jH7dE6EC6GQ05snWKS+6Sa44g=;
+	b=xqvR2mvNVuXhPAtKFdNv9fOY6Ix82SPtzWOmNlFe12eG/hRMS3jV9J5t3nwJeg2GPj56ml
+	dgz1PWHPUx3pu2nGuTKQeHz4egV8TrJylN5meHq5V8kAFOmXhKn7lBborbU+wHwUdq2DDQ
+	nsCt9hVLZTmcgQ7IDeqJPLebcswrR2ULl2pIYHNRAfhHmuRBgXFOHq0Cz9hBzReh1pPaMJ
+	qlU6jJCzxzrW7l+CfHcoU79zQR0WC0BVRCtF+DvBpXkmnmrKkuXkR0ekjcyUYsj78CjK31
+	SS0qjSgmtf4LsWVDi3ybsl2SAI0oYTzvHvjyqnBWOr1MkjjM/oxDFCockvLsgw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764168038;
+	s=2020e; t=1764168039;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2KXg2HAtfDg2Pfr2sceYyp2xJBmCnOEssvEADdfx3cI=;
-	b=OzhxZM/aTt6zQCK8rK/upUqZ17u2qBtDzDdp9kAtfi3vkHmtgUQdcD5qeX2bwXBqPBp8wl
-	v25T6mDodI+pC6DA==
-From: "tip-bot2 for Johan Hovold" <tip-bot2@linutronix.de>
+	bh=De5OMkw5fW9lzgoMv4jH7dE6EC6GQ05snWKS+6Sa44g=;
+	b=q4uJNuMkpFWojbxmN6qKfAks1Au18b7qN7HK8MVpKUbAkRYfW0JkvClGJf/I6FCpUbCra+
+	7IuMOyjU+wQeB4DA==
+From: "tip-bot2 for Enlin Mu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/clocksource] clocksource/drivers/stm32-lp: Drop unused
- module alias
-Cc: Johan Hovold <johan@kernel.org>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251111154516.1698-1-johan@kernel.org>
-References: <20251111154516.1698-1-johan@kernel.org>
+Subject: [tip: timers/clocksource] clocksource/drivers/rda: Add
+ sched_clock_register for RDA8810PL SoC
+Cc: Enlin Mu <enlin.mu@unisoc.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251107063347.3692-1-enlin.mu@linux.dev>
+References: <20251107063347.3692-1-enlin.mu@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176416803689.498.10286527278087573420.tip-bot2@tip-bot2>
+Message-ID: <176416803794.498.5180797545298678811.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,39 +82,68 @@ Content-Transfer-Encoding: quoted-printable
 The following commit has been merged into the timers/clocksource branch of ti=
 p:
 
-Commit-ID:     ed92a968a967042a7c7eb4c938e640b4deb79fe2
-Gitweb:        https://git.kernel.org/tip/ed92a968a967042a7c7eb4c938e640b4deb=
-79fe2
-Author:        Johan Hovold <johan@kernel.org>
-AuthorDate:    Tue, 11 Nov 2025 16:45:16 +01:00
+Commit-ID:     627f3f3716a3591f5e6a6bd124c95eef85444080
+Gitweb:        https://git.kernel.org/tip/627f3f3716a3591f5e6a6bd124c95eef854=
+44080
+Author:        Enlin Mu <enlin.mu@unisoc.com>
+AuthorDate:    Fri, 07 Nov 2025 14:33:47 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Wed, 26 Nov 2025 11:25:15 +01:00
+CommitterDate: Wed, 26 Nov 2025 11:25:11 +01:00
 
-clocksource/drivers/stm32-lp: Drop unused module alias
+clocksource/drivers/rda: Add sched_clock_register for RDA8810PL SoC
 
-The driver cannot be built as a module so drop the unused platform
-module alias.
+The current system log timestamp accuracy is tick based, which can not
+meet the usage requirements and needs to reach nanoseconds.
+Therefore, the sched_clock_register function needs to be added.
 
-Note that platform aliases are not needed for OF probing should it ever
-become possible to build the driver as a module.
+[ dlezcano: Fixed typos ]
 
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20251111154516.1698-1-johan@kernel.org
+Link: https://patch.msgid.link/20251107063347.3692-1-enlin.mu@linux.dev
 ---
- drivers/clocksource/timer-stm32-lp.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/clocksource/timer-rda.c |  9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-stm32-lp.c b/drivers/clocksource/timer=
--stm32-lp.c
-index c2a699f..3d80412 100644
---- a/drivers/clocksource/timer-stm32-lp.c
-+++ b/drivers/clocksource/timer-stm32-lp.c
-@@ -289,5 +289,4 @@ static struct platform_driver stm32_clkevent_lp_driver =
-=3D {
- };
- module_platform_driver(stm32_clkevent_lp_driver);
+diff --git a/drivers/clocksource/timer-rda.c b/drivers/clocksource/timer-rda.c
+index fd1199c..0be8e05 100644
+--- a/drivers/clocksource/timer-rda.c
++++ b/drivers/clocksource/timer-rda.c
+@@ -13,6 +13,7 @@
 =20
--MODULE_ALIAS("platform:stm32-lptimer-timer");
- MODULE_DESCRIPTION("STMicroelectronics STM32 clockevent low power driver");
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
++#include <linux/sched_clock.h>
+=20
+ #include "timer-of.h"
+=20
+@@ -153,7 +154,7 @@ static struct timer_of rda_ostimer_of =3D {
+ 	},
+ };
+=20
+-static u64 rda_hwtimer_read(struct clocksource *cs)
++static u64 rda_hwtimer_clocksource_read(void)
+ {
+ 	void __iomem *base =3D timer_of_base(&rda_ostimer_of);
+ 	u32 lo, hi;
+@@ -167,6 +168,11 @@ static u64 rda_hwtimer_read(struct clocksource *cs)
+ 	return ((u64)hi << 32) | lo;
+ }
+=20
++static u64 rda_hwtimer_read(struct clocksource *cs)
++{
++	return rda_hwtimer_clocksource_read();
++}
++
+ static struct clocksource rda_hwtimer_clocksource =3D {
+ 	.name           =3D "rda-timer",
+ 	.rating         =3D 400,
+@@ -185,6 +191,7 @@ static int __init rda_timer_init(struct device_node *np)
+ 		return ret;
+=20
+ 	clocksource_register_hz(&rda_hwtimer_clocksource, rate);
++	sched_clock_register(rda_hwtimer_clocksource_read, 64, rate);
+=20
+ 	clockevents_config_and_register(&rda_ostimer_of.clkevt, rate,
+ 					0x2, UINT_MAX);
 
