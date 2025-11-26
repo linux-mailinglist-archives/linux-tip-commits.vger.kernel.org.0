@@ -1,80 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7550-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7551-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C350C8A66D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 15:43:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A368C8A673
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 15:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 37D5F4ED06F
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 14:42:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 049864ED39A
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 26 Nov 2025 14:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41BA3093C6;
-	Wed, 26 Nov 2025 14:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABF130B510;
+	Wed, 26 Nov 2025 14:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Avc3Qwfr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pL3XAiOz"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ESUdqYGj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wn7l9mzS"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AAE3081DF;
-	Wed, 26 Nov 2025 14:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779C13090FA;
+	Wed, 26 Nov 2025 14:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764168050; cv=none; b=Q3Ab8YUYioQ4cx3l4YzH+h9XHlJxJcOIZtPjxFX/O30Upt1KCxm9gbWaBvlZLqdMld/65Rg+2CVnnEY0ioO3b/mkw0pl0waQZ6ppAstQOVLLy+GVucKDgkYdBCvhUwIPLSLAEVZBWiaD6iJGUqx4JmRlrVAvZUOeRBmkziQzA3c=
+	t=1764168052; cv=none; b=MQDiBSK2kSadkTqECe7eYA8gfGOMCxdn/o0Pi9+K+NBkosagBToj4PYRNNlsp1/nR4yKipOoqT4uGeekBBRiN0Nh93rYN5WpmBs+jWUFBgcIwP5AP7eHLByM8v50dZMOllGDi2qG8L9RF5fhTmLMeZvoXOr7aIlDgbxj1232pqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764168050; c=relaxed/simple;
-	bh=h+VDIP4/gp+E+wPtprqPdfK4SwrZ8Htp9zL8QxY1xhU=;
+	s=arc-20240116; t=1764168052; c=relaxed/simple;
+	bh=izH60OCWzm7IE/Y8GSm3zDDBOWJmHWMbNREUB2JhFrQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WLr89R9/ANyPBe+GDSHXzmBbZzPFFtqsjJWJqoG1j+96H/i4iGRLyBGo8BKzVupXKLy89B9Pqda6qxFkI6yr/43YnOi23Ha0g/la4yDOyH6C6QAcap7Pt3SKeqBkOpkcehGPMBpmMschtxhRk5XjvMjqKhNl9/GJmcMOwT5ExDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Avc3Qwfr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pL3XAiOz; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qxrJLVB89PTNnQKP7SOs1DUpb2Fb9s9W9hWMBguEAgm6JSsNtdNq8oVmivkD86+98TRozNjKgYQeiAStQeYMAtRogRKzbicEdxQeOziZEXlFV3LurYDYFsmRq36hdeCgqETf49TA2YCpxB7Du1fGXUSCSt811XrZ6vednsLu1iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ESUdqYGj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wn7l9mzS; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 26 Nov 2025 14:40:46 -0000
+Date: Wed, 26 Nov 2025 14:40:47 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764168047;
+	s=2020; t=1764168048;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N/i8U5UcLUgCHAo/F+PDF+Z64l+JjuaNz4Y8qdUPvig=;
-	b=Avc3QwfrE4jZVguKqIOhyNXFTl/DFKS9BtUEFKlzgTY82icYpm5pbr9YGlpbASV7r6JYKG
-	X2h3JfPoWBVBlQY+eunKvoK5qlF4Obtt0LF3+RLnjyJorVc838UVJbA/ASrIgQ3SUKbgpE
-	nX+fC5j2lbCrzt1THTjMCygKRR+VmRi2h5oDneJlkY/b7fKOdl2oSjprAJh2JFHJib0Kwl
-	itQuhLy1KA/0N8j2jtyGqyvqbjxf+2jz6waLGBKWga7Nv1sVqa2ZcQCNo5mauA/tMeeMgt
-	yJ+KsG3v2HYslflFblhMU7xPqquKIltj5KPsXmum798vcSfhKYfpjW2EeYLW4A==
+	bh=gAfaxf7Vr4yMSirrZ+2t+qR1r8xWJhYvu1ur+tU3EZM=;
+	b=ESUdqYGjqQIWV5PCo+KRpvBnVy9qKBokE1B3dRsO4CWu+o94ERaaAZGE30JashZvg8QcmA
+	3v3gK8PIEAudRuyfxMIkSDumKEszcp++DO6h46U2L93BFoN1y45rsXH+IwhIwmUhHKwZCE
+	fL1wSfPHgI3Ddo+dnas8ldTrFE0y7S0VqIMNiczBxwQkAIDE4KGWRCnlMxBLejF2QRqeBZ
+	kic+PPnEFHorPvtaH79AIG4lu24edJzVUigupqwQBMaKx1F2HanA41g+NT7xvpBe4kEKfr
+	AFmmonC7rJ0FsqK2CH3vBpyjUs0wuuVK9Bvj+jAUo5xcrJ9+DOjRl3iv9V1amw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764168047;
+	s=2020e; t=1764168048;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N/i8U5UcLUgCHAo/F+PDF+Z64l+JjuaNz4Y8qdUPvig=;
-	b=pL3XAiOzSrr32J+MOeM4JJ7GMTJmUt0Bo/V64vv2/TNDcP7vKrb8W6OZ5fgVbLElMMMbTZ
-	fWhQVQ+wpLTZoBDQ==
-From: "tip-bot2 for Stephen Eta Zhou" <tip-bot2@linutronix.de>
+	bh=gAfaxf7Vr4yMSirrZ+2t+qR1r8xWJhYvu1ur+tU3EZM=;
+	b=Wn7l9mzShVRlg/nRKo0RuQe6TGRRykFGeDvtzWIHFCih4jULlywwFSA5MPP8tOtSZ8LveO
+	3Kt1nhOLAWvimCDg==
+From: "tip-bot2 for Enlin Mu" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/clocksource] clocksource/drivers/timer-sp804: Fix
- read_current_timer() issue when clock source is not registered
-Cc: Stephen Eta Zhou <stephen.eta.zhou@gmail.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>, x86@kernel.org,
+Subject: [tip: timers/clocksource] clocksource/drivers/sprd: Enable register
+ for timer counter from 32 bit to 64 bit
+Cc: Enlin Mu <enlin.mu@unisoc.com>, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To:
- <20250525-sp804-fix-read_current_timer-v4-1-87a9201fa4ec@gmail.com>
-References:
- <20250525-sp804-fix-read_current_timer-v4-1-87a9201fa4ec@gmail.com>
+In-Reply-To: <20251106021830.34846-1-enlin.mu@linux.dev>
+References: <20251106021830.34846-1-enlin.mu@linux.dev>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176416804655.498.15475479090310855080.tip-bot2@tip-bot2>
+Message-ID: <176416804751.498.11528586048553005636.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,96 +83,83 @@ Content-Transfer-Encoding: quoted-printable
 The following commit has been merged into the timers/clocksource branch of ti=
 p:
 
-Commit-ID:     640594a04f119338019b0aeed70c7301216595b3
-Gitweb:        https://git.kernel.org/tip/640594a04f119338019b0aeed70c7301216=
-595b3
-Author:        Stephen Eta Zhou <stephen.eta.zhou@gmail.com>
-AuthorDate:    Sun, 25 May 2025 16:43:28 +08:00
+Commit-ID:     576c564ec3bb60e571c705a71907d7c0c039e6c0
+Gitweb:        https://git.kernel.org/tip/576c564ec3bb60e571c705a71907d7c0c03=
+9e6c0
+Author:        Enlin Mu <enlin.mu@unisoc.com>
+AuthorDate:    Thu, 06 Nov 2025 10:18:30 +08:00
 Committer:     Daniel Lezcano <daniel.lezcano@linaro.org>
-CommitterDate: Wed, 26 Nov 2025 11:24:32 +01:00
+CommitterDate: Wed, 26 Nov 2025 11:24:26 +01:00
 
-clocksource/drivers/timer-sp804: Fix read_current_timer() issue when clock so=
-urce is not registered
+clocksource/drivers/sprd: Enable register for timer counter from 32 bit to 64=
+ bit
 
-Register a valid read_current_timer() function for the
-SP804 timer on ARM32.
+Using 32 bit for suspend compensation, the max compensation time is 36
+hours(working clock is 32k).In some IOT devices, the suspend time may
+be long, even exceeding 36 hours. Therefore, a 64 bit timer counter
+is needed for counting.
 
-On ARM32 platforms, when the SP804 timer is selected as the clocksource,
-the driver does not register a valid read_current_timer() function.
-As a result, features that rely on this API=E2=80=94such as rdseed=E2=80=94co=
-nsistently
-return incorrect values.
-
-To fix this, a delay_timer structure is registered during the SP804
-driver's initialization. The read_current_timer() function is implemented
-using the existing sp804_read() logic, and the timer frequency is reused
-from the already-initialized clocksource.
-
-Signed-off-by: Stephen Eta Zhou <stephen.eta.zhou@gmail.com>
+Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20250525-sp804-fix-read_current_timer-v4-1-87a=
-9201fa4ec@gmail.com
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://patch.msgid.link/20251106021830.34846-1-enlin.mu@linux.dev
 ---
- drivers/clocksource/timer-sp804.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/clocksource/timer-sprd.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clocksource/timer-sp804.c b/drivers/clocksource/timer-sp=
-804.c
-index cd1916c..e82a95e 100644
---- a/drivers/clocksource/timer-sp804.c
-+++ b/drivers/clocksource/timer-sp804.c
-@@ -21,6 +21,10 @@
- #include <linux/of_irq.h>
- #include <linux/sched_clock.h>
+diff --git a/drivers/clocksource/timer-sprd.c b/drivers/clocksource/timer-spr=
+d.c
+index 430cb99..2c07dd2 100644
+--- a/drivers/clocksource/timer-sprd.c
++++ b/drivers/clocksource/timer-sprd.c
+@@ -30,6 +30,7 @@
+ #define TIMER_VALUE_SHDW_HI	0x1c
 =20
-+#ifdef CONFIG_ARM
-+#include <linux/delay.h>
-+#endif
+ #define TIMER_VALUE_LO_MASK	GENMASK(31, 0)
++#define TIMER_VALUE_HI_MASK	GENMASK(31, 0)
+=20
+ static void sprd_timer_enable(void __iomem *base, u32 flag)
+ {
+@@ -162,15 +163,26 @@ static struct timer_of suspend_to =3D {
+=20
+ static u64 sprd_suspend_timer_read(struct clocksource *cs)
+ {
+-	return ~(u64)readl_relaxed(timer_of_base(&suspend_to) +
+-				   TIMER_VALUE_SHDW_LO) & cs->mask;
++	u32 lo, hi;
 +
- #include "timer-sp.h"
-=20
- /* Hisilicon 64-bit timer(a variant of ARM SP804) */
-@@ -102,6 +106,23 @@ static u64 notrace sp804_read(void)
- 	return ~readl_relaxed(sched_clkevt->value);
++	do {
++		hi =3D readl_relaxed(timer_of_base(&suspend_to) +
++				   TIMER_VALUE_SHDW_HI);
++		lo =3D readl_relaxed(timer_of_base(&suspend_to) +
++				   TIMER_VALUE_SHDW_LO);
++	} while (hi !=3D readl_relaxed(timer_of_base(&suspend_to) + TIMER_VALUE_SHD=
+W_HI));
++
++	return ~(((u64)hi << 32) | lo);
  }
 =20
-+#ifdef CONFIG_ARM
-+static struct delay_timer delay;
-+static unsigned long sp804_read_delay_timer_read(void)
-+{
-+	return sp804_read();
-+}
-+
-+static void sp804_register_delay_timer(int freq)
-+{
-+	delay.freq =3D freq;
-+	delay.read_current_timer =3D sp804_read_delay_timer_read;
-+	register_current_timer_delay(&delay);
-+}
-+#else
-+static inline void sp804_register_delay_timer(int freq) {}
-+#endif
-+
- static int __init sp804_clocksource_and_sched_clock_init(void __iomem *base,
- 							 const char *name,
- 							 struct clk *clk,
-@@ -114,6 +135,8 @@ static int __init sp804_clocksource_and_sched_clock_init(=
-void __iomem *base,
- 	if (rate < 0)
- 		return -EINVAL;
-=20
-+	sp804_register_delay_timer(rate);
-+
- 	clkevt =3D sp804_clkevt_get(base);
-=20
- 	writel(0, clkevt->ctrl);
-@@ -318,6 +341,7 @@ static int __init sp804_of_init(struct device_node *np, s=
-truct sp804_timer *time
- 		if (ret)
- 			goto err;
- 	}
-+
- 	initialized =3D true;
+ static int sprd_suspend_timer_enable(struct clocksource *cs)
+ {
+-	sprd_timer_update_counter(timer_of_base(&suspend_to),
+-				  TIMER_VALUE_LO_MASK);
+-	sprd_timer_enable(timer_of_base(&suspend_to), TIMER_CTL_PERIOD_MODE);
++	writel_relaxed(TIMER_VALUE_LO_MASK,
++		       timer_of_base(&suspend_to) + TIMER_LOAD_LO);
++	writel_relaxed(TIMER_VALUE_HI_MASK,
++		       timer_of_base(&suspend_to) + TIMER_LOAD_HI);
++	sprd_timer_enable(timer_of_base(&suspend_to),
++			  TIMER_CTL_PERIOD_MODE|TIMER_CTL_64BIT_WIDTH);
 =20
  	return 0;
+ }
+@@ -186,7 +198,7 @@ static struct clocksource suspend_clocksource =3D {
+ 	.read	=3D sprd_suspend_timer_read,
+ 	.enable =3D sprd_suspend_timer_enable,
+ 	.disable =3D sprd_suspend_timer_disable,
+-	.mask	=3D CLOCKSOURCE_MASK(32),
++	.mask	=3D CLOCKSOURCE_MASK(64),
+ 	.flags	=3D CLOCK_SOURCE_IS_CONTINUOUS | CLOCK_SOURCE_SUSPEND_NONSTOP,
+ };
+=20
 
