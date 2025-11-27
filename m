@@ -1,128 +1,115 @@
-Return-Path: <linux-tip-commits+bounces-7553-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7554-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3DD8C8E81B
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Nov 2025 14:39:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE41C8EB4E
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Nov 2025 15:10:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 83EAD4E0206
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Nov 2025 13:39:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD0B84E230F
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 27 Nov 2025 14:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9412750ED;
-	Thu, 27 Nov 2025 13:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABBA33290A;
+	Thu, 27 Nov 2025 14:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RhPM6cpm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QCHmxZS0"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="CA35JTdU"
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8798317A2E0;
-	Thu, 27 Nov 2025 13:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2976175A5;
+	Thu, 27 Nov 2025 14:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764250761; cv=none; b=JoEnFiWSKDmLC0V321PMceHnp5Tslw4BgGF4b3OfyYG8NsFZ+U8f21wBPEGPrXhQvbMPruC2iX6uq9xOpcVODrEDg+jFTfQT55QX/HZ8+H6WROV7oMxe+rPbMeZSf+Zt2+Rku+t9R/CTMBIKKFSB/gMUjfeYrOrmj5/L6uYRqpA=
+	t=1764252593; cv=none; b=AHyyYWDuMsRpmyvaimMDGAe09nVOMWZMH9ZeWYLOF7XQ1bIf/lryuu5e8RDTNKOYd2VfW1wv24MqHO0WdRA0Qbo+ut6VG5l3lrTVm43Upc6bf23l1O8zaU6W7/UxZdhr4IG/3hyQZeildroZG1B1kIFq781cQAAhWdb3etnrzWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764250761; c=relaxed/simple;
-	bh=BJWlzz/wqxrlkJ50Dk8nj4OFt2Od9tQtjwEMpkA/1nU=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Kw2SaK3v8z4yh4WxvkCG1ZivMpUpQCoCUG3CWFY3WgT/wcLTc3SjY/bH9fpX03r7v3k1T1qCJqj4oiZroyslcn2UQVx1ZX+iHQ8KIly2zjkTkacOXUwsLV+ewJF2PjeN+FGfMiVGpISLw8zmXk29V1li3rnhnnjMrjosVOa1w3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RhPM6cpm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QCHmxZS0; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 27 Nov 2025 13:39:15 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764250757;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fCW6j1nG8z+Y/fXU+nQfbpyWZZfUZhmX6mrayIZIk54=;
-	b=RhPM6cpmuHxZwuXrI6hEtxq+qBY1EJKSLdY7R6mddcRM3Y61RLKsBiXXKsNUXUp5Zqvgd8
-	eChN3Iq1pN3gcm5bsFm/TIbX+bef1WFoXjpdHlFiKwGdplkiIKxTiUNmXicXfWr6gu7Tk0
-	rzFUNYGVyA0kjIay2+LXqf/5MFRiG05lYYe/csY/jvCHBPMIthX0s5kMSqDNnIq8qyGj2M
-	7PhflAqUx+QcQQdU/N0gk9X2y9rdBk77nDu3smrRL9EVoTHlTcVtHAZB6l2iiH5JlqDt0h
-	vqlRvr1eTbgdCyZO/vLMHDftUYT/O+zcuwuiqg5Kiywm4K36Xshhfh8SKOYm7w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764250757;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fCW6j1nG8z+Y/fXU+nQfbpyWZZfUZhmX6mrayIZIk54=;
-	b=QCHmxZS0B3NID5q4KIoOKDcqfYwo5nWJ45a3WcsoMe0P1agFAAYxImZevqAV3nJIiiwlbp
-	91NmX+EYOp8FbrAQ==
-From: "tip-bot2 for Brendan Jackman" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cleanups] x86/mm: Delete disabled debug code
-Cc: Brendan Jackman <jackmanb@google.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251003-x86-init-cleanup-v1-1-f2b7994c2ad6@google.com>
-References: <20251003-x86-init-cleanup-v1-1-f2b7994c2ad6@google.com>
+	s=arc-20240116; t=1764252593; c=relaxed/simple;
+	bh=spFiWCMcfw8g+JExYRUixp20wUu+rlNRKd+hlw47+r0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FmafDw5pRaMkR0Kj5XIdkKRn4TmgFRjvupr7qa1aiI6CL9bVFISyOM9D9t3OvIZYq0MMX/ly2I8mPMNKTs5Wik2G+Kq7mMJ1N1xHAVayuXDHiaD3Q4tkZo7GSyb/XkRSRFNieUYOjlfuwJLq3NVW0gcHm1KZa97yJuzEC9a/G2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=CA35JTdU; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=+l5YS/ZDWyQLkDp+VJkGaSKyZVCR9j6f+aLO/x/D5m4=; b=CA35JTdU1jNe2sLdFrN8Nm9Pxf
+	3AcXrQZl1Pls1raXVTXPm2RMNCkJ7ZEIJlkJksGKwaMNNauYpWmaHydCKN+2mUqwvsCGyVej8omNq
+	I8YfoREf5cmnVk9oAsBRe1cczU9pb3RvPV2kK5vBMFQUEZlfMy+Bf0Q6lzbYWmlWEPG9bumGqf7dP
+	HsavdcYUJ5afdoZvKp4CvtiSIj76NZGaR3+Knj+e/y5Rtc5l9AS4il10MfZoQOSX+OaN3/T6dRJWf
+	jbmQ/m7I4z1j0LDh2wgkDEVLFwTVi/GJN7SGcBZliMZu9rBz4O2hsIXt6Q55ztQmIUEMsYGwK1XzF
+	8z8K8nHg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vOcgp-0000000BpEg-14kW;
+	Thu, 27 Nov 2025 14:09:43 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 296DF300342; Thu, 27 Nov 2025 15:09:42 +0100 (CET)
+Date: Thu, 27 Nov 2025 15:09:42 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Tim Chen <tim.c.chen@linux.intel.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Chen Yu <yu.c.chen@intel.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Srikar Dronamraju <srikar@linux.ibm.com>,
+	Mohini Narkhede <mohini.narkhede@intel.com>, x86@kernel.org
+Subject: Re: [tip: sched/core] sched/fair: Skip sched_balance_running cmpxchg
+ when balance is not due
+Message-ID: <20251127140942.GW4067720@noisy.programming.kicks-ass.net>
+References: <6fed119b723c71552943bfe5798c93851b30a361.1762800251.git.tim.c.chen@linux.intel.com>
+ <176312274812.498.6548506845675120622.tip-bot2@tip-bot2>
+ <dffe53a4-0ef2-4346-ad73-c4b71a734b3a@linux.ibm.com>
+ <ceffc6f7870711d40f195191d298ca9bf1def022.camel@linux.intel.com>
+ <7099a373-8d6c-4c67-806c-84b50315f160@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176425075553.498.11965992722021819677.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7099a373-8d6c-4c67-806c-84b50315f160@amd.com>
 
-The following commit has been merged into the x86/cleanups branch of tip:
+On Tue, Nov 18, 2025 at 12:30:36AM +0530, K Prateek Nayak wrote:
+> On 11/18/2025 12:25 AM, Tim Chen wrote:
+> >> I wondered what is really different since the tim's v4 boots fine.
+> >> There is try instead in the tip, i think that is messing it since likely
+> >> we are dereferencing 0?
+> >>
+> >>
+> >> With this diff it boots fine.
+> >>
+> >> ---
+> >> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> >> index aaa47ece6a8e..01814b10b833 100644
+> >> --- a/kernel/sched/fair.c
+> >> +++ b/kernel/sched/fair.c
+> >> @@ -11841,7 +11841,7 @@ static int sched_balance_rq(int this_cpu, struct rq *this_rq,
+> >>          }
+> >>   
+> >>          if (!need_unlock && (sd->flags & SD_SERIALIZE)) {
+> >> -               if (!atomic_try_cmpxchg_acquire(&sched_balance_running, 0, 1))
+> > 
+> > The second argument of atomic_try_cmpxchg_acquire is "int *old" while that of atomic_cmpxchg_acquire
+> > is "int old". So the above check would result in NULL pointer access.  Probably have
+> > to do something like the following to use atomic_try_cmpxchg_acquire()
+> > 
+> > 		int zero = 0;
+> > 		if (!atomic_try_cmpxchg_acquire(&sched_balance_running, &zero, 1))
+> 
+> Peter seems to have refreshed tip:sched/core with above but is
+> there any advantage of using atomic_try_cmpxchg_acquire() as
+> opposed to plain old atomic_cmpxchg_acquire() and then checking
+> the old value it returns?
+> 
+> That zero variable serves no other purpose and is a bit of an
+> eyesore IMO.
 
-Commit-ID:     3d1f1088455d9a9bce51f0c1e6a81f518a5cb468
-Gitweb:        https://git.kernel.org/tip/3d1f1088455d9a9bce51f0c1e6a81f518a5=
-cb468
-Author:        Brendan Jackman <jackmanb@google.com>
-AuthorDate:    Fri, 03 Oct 2025 16:56:41=20
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Thu, 27 Nov 2025 14:32:16 +01:00
-
-x86/mm: Delete disabled debug code
-
-This code doesn't run. Since 2008:
-
-  4f9c11dd49fb ("x86, 64-bit: adjust mapping of physical pagetables to work w=
-ith Xen")
-
-the kernel has gained more flexible logging and tracing capabilities;
-presumably if anyone wanted to take advantage of this log message they would
-have got rid of the "if (0)" so they could use these capabilities.
-
-Since they haven't, just delete it.
-
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/20251003-x86-init-cleanup-v1-1-f2b7994c2ad6@go=
-ogle.com
----
- arch/x86/mm/init_64.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 0e4270e..1044aaf 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -504,9 +504,6 @@ phys_pte_init(pte_t *pte_page, unsigned long paddr, unsig=
-ned long paddr_end,
- 			continue;
- 		}
-=20
--		if (0)
--			pr_info("   pte=3D%p addr=3D%lx pte=3D%016lx\n", pte, paddr,
--				pfn_pte(paddr >> PAGE_SHIFT, PAGE_KERNEL).pte);
- 		pages++;
- 		set_pte_init(pte, pfn_pte(paddr >> PAGE_SHIFT, prot), init);
- 		paddr_last =3D (paddr & PAGE_MASK) + PAGE_SIZE;
+Yeah, its not ideal. It should generate slightly saner code, since the
+compiler can now use the condition codes set by cmpxchg instead of
+having to do an extra compare.
 
