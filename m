@@ -1,80 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-7563-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7564-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3114C95BE1
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 01 Dec 2025 07:01:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A737C95BE7
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 01 Dec 2025 07:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 633743425F7
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Dec 2025 06:01:27 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2B7AD3425F8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  1 Dec 2025 06:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3826219A89;
-	Mon,  1 Dec 2025 06:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A617D221DB1;
+	Mon,  1 Dec 2025 06:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="amlXytOA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NmfcFFy8"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iWRoUqpx";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JDj6UX6p"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F004DD27E;
-	Mon,  1 Dec 2025 06:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A4B21ABC9;
+	Mon,  1 Dec 2025 06:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764568882; cv=none; b=iDRpOqmHJV28Mfr1IawPcqddI11giF1Di3vgGFoy9Ie6Gl6VB5qsxOobLJSzx+m1MZUw5fsa2mxTyW9dpWD2C5rkaKfDzKl6geCBJpYCfwneEOVGYZt9deb9ol88ALyDyCtjK9T2wQOyuI5BJOiMPFZqTyGrFv5UUe43+fPLQCw=
+	t=1764568884; cv=none; b=DcIn0GEKK9OHRrUKKxKA2NTGJc1SwELHTr8MxBd6dNVzlgfHOOsPbn7p+0tgh/44z3CFZcNdHjYRU3uqfUH0an3fMxRgNFw/i+/fn2ibduJHoMx4PGMndkFex94XgEYdl9OGuRSUrqvNLH3Kx3Va4W7DXdz0BjEqZ6p/QZj6ULE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764568882; c=relaxed/simple;
-	bh=T+Mmi60qo9WFpMaRlOJ7SA5WEW1VTNerIajgJCZslAE=;
+	s=arc-20240116; t=1764568884; c=relaxed/simple;
+	bh=BjDyE+q7vhGihvt/AnwEUzpeDcxjiwbfIryViCij7mU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=FzLUgyzL60QIqBVbvxQ7p49SYE2UzC/XVk5jCWjeSy0EwjWPOWqnATf8785uFrUlfx6+Ax/WDYXi12EzgzhKRlDd9kiS1aGQtjY9oFi1ooFbs7RqPf6IYn8aE6jZ5wQdubOg2UIRkLDbwLK+z2GCn+vXwQVqaG6mf5EbcHFf+KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=amlXytOA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NmfcFFy8; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=uyMgAT5heErA/M1+7Uct3iP9DQaxvKQBm8rKhHjCKrLkPcc5BTewaZiwDBFde3w8LQskd2gUFPHDIwa+RxqZ27WtoNN7VDdhTN7FXXsrJy0ZUXCas3aPgVrs3ubBNaxZ2+w2J3pG0tErO8gHzNx1HBt/Jy3Hxp+sZPdO0chw0fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iWRoUqpx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JDj6UX6p; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 01 Dec 2025 06:01:11 -0000
+Date: Mon, 01 Dec 2025 06:01:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764568873;
+	s=2020; t=1764568874;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tP70tBrGu/d1TXN8irDMdGBmtBWULOng3+CUyy+vKLE=;
-	b=amlXytOAt33Srip0+sWNtLdyh4kZgWbcArMaxb/++WLdQPrO5N9ERGCS99kDvrzGMbAcTD
-	8vmjtJLAuIyK1OA4oCWfe1DNrYcC+aBMnkXgdnTzaLMyDQPyLU7gupvfUlG/HYulF5gFpA
-	c5i11H6shePxHK1LcAGL4ivmPsmQs4Z7M0C1J9JHQHNGzUve5ovl2K/yNl/5CPtfci1WKZ
-	nqiXc2Typ9BBLK56xrGemu8bCWg79HvEgINH7rcdnJFVQ1y5vM1mb+Mtp0Dt4lIBva21cA
-	SEdaJnKH1qwpeNcXxvPy1zlifGpsxjG8Ijhq8IEogh2WoHcJgF+udkiiH8k+ZA==
+	bh=Ojfx7OCuC3y3Q77eXrj1dClRn6hpd3kU07eTki7xR7s=;
+	b=iWRoUqpxfEtfnQFB0NgjkDTweohRl3BATvZP6BXvG7ivQVtszsRihQxRotyM6vuCiIKWcV
+	Z8Wf6T41WxebM6I7ZDywJrk9YJTIhlmdg1BvAXLHZ4Xa8utBGyF3pODRYnVZZisw6Pq1qR
+	EtQ4dV9eiVRJdoTSxRQy+Sias8vfPN6OBGsQRmasD85WDOe411GSWib+P8Q2FROx2K1+uV
+	+X5u5fbScFeCApvvmSCt6v/RNuf3blVoa3zJSeeFq4l67pmG2JUWhMohCNnZVGB09t7zuU
+	jn3omvCDQDHuejEXxLgAIvYGvGpr/JZusWXPRBoxdylOXCaIKyMLBspvS7DW2g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764568873;
+	s=2020e; t=1764568874;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tP70tBrGu/d1TXN8irDMdGBmtBWULOng3+CUyy+vKLE=;
-	b=NmfcFFy89jU2ZlNTxjp60qMOXOKVw4j3qCdbjqneE3gLoGrKrbdXW4nn8lGgNNcnmPvdZL
-	gsAwK56cK+vlWWBA==
-From: "tip-bot2 for Vincent Mailhol" <tip-bot2@linutronix.de>
+	bh=Ojfx7OCuC3y3Q77eXrj1dClRn6hpd3kU07eTki7xR7s=;
+	b=JDj6UX6p961dwB01PMIwTTV47vFICUU9PRwKHOxvm6QeiPW43haT2Fjluz/bfZxtwwh9LV
+	NzvfwoKaNPuP+vAw==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] locking/local_lock: s/l/__l/ and s/tl/__tl/ to
- reduce the risk of shadowing
-Cc: Vincent Mailhol <mailhol@kernel.org>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+Subject: [tip: locking/core] locking/local_lock: Add the <linux/local_lock*.h>
+ headers to MAINTAINERS
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Ingo Molnar <mingo@kernel.org>, Waiman Long <longman@redhat.com>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251127144140.215722-3-bigeasy@linutronix.de>
-References: <20251127144140.215722-3-bigeasy@linutronix.de>
+In-Reply-To: <20251127144140.215722-2-bigeasy@linutronix.de>
+References: <20251127144140.215722-2-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176456887168.498.5797505081932873516.tip-bot2@tip-bot2>
+Message-ID: <176456887366.498.11227603155294634926.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,166 +83,40 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     719e357fc09c63238956eb7cd546627f9e050640
-Gitweb:        https://git.kernel.org/tip/719e357fc09c63238956eb7cd546627f9e0=
-50640
-Author:        Vincent Mailhol <mailhol@kernel.org>
-AuthorDate:    Thu, 27 Nov 2025 15:41:40 +01:00
+Commit-ID:     52ed746147140e30419ee852c1916531b4ef9b0a
+Gitweb:        https://git.kernel.org/tip/52ed746147140e30419ee852c1916531b4e=
+f9b0a
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 27 Nov 2025 15:41:39 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Mon, 01 Dec 2025 06:56:16 +01:00
+CommitterDate: Mon, 01 Dec 2025 06:56:10 +01:00
 
-locking/local_lock: s/l/__l/ and s/tl/__tl/ to reduce the risk of shadowing
+locking/local_lock: Add the <linux/local_lock*.h> headers to MAINTAINERS
 
-The Linux kernel coding style advises to avoid common variable
-names in function-like macros to reduce the risk of namespace
-collisions.
+The local_lock_t was never added to the MAINTAINERS file since its
+inclusion.
 
-Throughout local_lock_internal.h, several macros use the rather common
-variable names 'l' and 'tl'. This already resulted in an actual
-collision: the __local_lock_acquire() function like macro is currently
-shadowing the parameter 'l' of the:
+Add local_lock_t to the locking primitives section.
 
-  class_##_name##_t class_##_name##_constructor(_type *l)
-
-function factory from <linux/cleanup.h>.
-
-Rename the variable 'l' to '__l' and the variable 'tl' to '__tl'
-throughout the file to fix the current namespace collision and
-to prevent future ones.
-
-[ bigeasy: Rebase, update all l and tl instances in macros ]
-
-Signed-off-by: Vincent Mailhol <mailhol@kernel.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Waiman Long <longman@redhat.com>
-Link: https://patch.msgid.link/20251127144140.215722-3-bigeasy@linutronix.de
+Link: https://patch.msgid.link/20251127144140.215722-2-bigeasy@linutronix.de
 ---
- include/linux/local_lock_internal.h | 62 ++++++++++++++--------------
- 1 file changed, 31 insertions(+), 31 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/local_lock_internal.h b/include/linux/local_lock_i=
-nternal.h
-index a4dc479..8f82b4e 100644
---- a/include/linux/local_lock_internal.h
-+++ b/include/linux/local_lock_internal.h
-@@ -99,18 +99,18 @@ do {								\
-=20
- #define __local_lock_acquire(lock)					\
- 	do {								\
--		local_trylock_t *tl;					\
--		local_lock_t *l;					\
-+		local_trylock_t *__tl;					\
-+		local_lock_t *__l;					\
- 									\
--		l =3D (local_lock_t *)(lock);				\
--		tl =3D (local_trylock_t *)l;				\
-+		__l =3D (local_lock_t *)(lock);				\
-+		__tl =3D (local_trylock_t *)__l;				\
- 		_Generic((lock),					\
- 			local_trylock_t *: ({				\
--				lockdep_assert(tl->acquired =3D=3D 0);	\
--				WRITE_ONCE(tl->acquired, 1);		\
-+				lockdep_assert(__tl->acquired =3D=3D 0);	\
-+				WRITE_ONCE(__tl->acquired, 1);		\
- 			}),						\
- 			local_lock_t *: (void)0);			\
--		local_lock_acquire(l);					\
-+		local_lock_acquire(__l);				\
- 	} while (0)
-=20
- #define __local_lock(lock)					\
-@@ -133,36 +133,36 @@ do {								\
-=20
- #define __local_trylock(lock)					\
- 	({							\
--		local_trylock_t *tl;				\
-+		local_trylock_t *__tl;				\
- 								\
- 		preempt_disable();				\
--		tl =3D (lock);					\
--		if (READ_ONCE(tl->acquired)) {			\
-+		__tl =3D (lock);					\
-+		if (READ_ONCE(__tl->acquired)) {		\
- 			preempt_enable();			\
--			tl =3D NULL;				\
-+			__tl =3D NULL;				\
- 		} else {					\
--			WRITE_ONCE(tl->acquired, 1);		\
-+			WRITE_ONCE(__tl->acquired, 1);		\
- 			local_trylock_acquire(			\
--				(local_lock_t *)tl);		\
-+				(local_lock_t *)__tl);		\
- 		}						\
--		!!tl;						\
-+		!!__tl;						\
- 	})
-=20
- #define __local_trylock_irqsave(lock, flags)			\
- 	({							\
--		local_trylock_t *tl;				\
-+		local_trylock_t *__tl;				\
- 								\
- 		local_irq_save(flags);				\
--		tl =3D (lock);					\
--		if (READ_ONCE(tl->acquired)) {			\
-+		__tl =3D (lock);					\
-+		if (READ_ONCE(__tl->acquired)) {		\
- 			local_irq_restore(flags);		\
--			tl =3D NULL;				\
-+			__tl =3D NULL;				\
- 		} else {					\
--			WRITE_ONCE(tl->acquired, 1);		\
-+			WRITE_ONCE(__tl->acquired, 1);		\
- 			local_trylock_acquire(			\
--				(local_lock_t *)tl);		\
-+				(local_lock_t *)__tl);		\
- 		}						\
--		!!tl;						\
-+		!!__tl;						\
- 	})
-=20
- /* preemption or migration must be disabled before calling __local_lock_is_l=
-ocked */
-@@ -170,16 +170,16 @@ do {								\
-=20
- #define __local_lock_release(lock)					\
- 	do {								\
--		local_trylock_t *tl;					\
--		local_lock_t *l;					\
-+		local_trylock_t *__tl;					\
-+		local_lock_t *__l;					\
- 									\
--		l =3D (local_lock_t *)(lock);				\
--		tl =3D (local_trylock_t *)l;				\
--		local_lock_release(l);					\
-+		__l =3D (local_lock_t *)(lock);				\
-+		__tl =3D (local_trylock_t *)__l;				\
-+		local_lock_release(__l);				\
- 		_Generic((lock),					\
- 			local_trylock_t *: ({				\
--				lockdep_assert(tl->acquired =3D=3D 1);	\
--				WRITE_ONCE(tl->acquired, 0);		\
-+				lockdep_assert(__tl->acquired =3D=3D 1);	\
-+				WRITE_ONCE(__tl->acquired, 0);		\
- 			}),						\
- 			local_lock_t *: (void)0);			\
- 	} while (0)
-@@ -223,12 +223,12 @@ typedef spinlock_t local_trylock_t;
- #define INIT_LOCAL_LOCK(lockname) __LOCAL_SPIN_LOCK_UNLOCKED((lockname))
- #define INIT_LOCAL_TRYLOCK(lockname) __LOCAL_SPIN_LOCK_UNLOCKED((lockname))
-=20
--#define __local_lock_init(l)					\
-+#define __local_lock_init(__l)					\
- 	do {							\
--		local_spin_lock_init((l));			\
-+		local_spin_lock_init((__l));			\
- 	} while (0)
-=20
--#define __local_trylock_init(l)			__local_lock_init(l)
-+#define __local_trylock_init(__l)			__local_lock_init(__l)
-=20
- #define __local_lock(__lock)					\
- 	do {							\
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 545a477..a099b9b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14517,6 +14517,7 @@ S:	Maintained
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git locking/core
+ F:	Documentation/locking/
+ F:	arch/*/include/asm/spinlock*.h
++F:	include/linux/local_lock*.h
+ F:	include/linux/lockdep*.h
+ F:	include/linux/mutex*.h
+ F:	include/linux/rwlock*.h
 
