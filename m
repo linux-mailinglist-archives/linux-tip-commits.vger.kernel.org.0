@@ -1,60 +1,60 @@
-Return-Path: <linux-tip-commits+bounces-7572-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7573-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F549C9C320
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 02 Dec 2025 17:27:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2808C9C46D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 02 Dec 2025 17:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 58A864E438A
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Dec 2025 16:27:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7531F3495BE
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  2 Dec 2025 16:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36197283FC5;
-	Tue,  2 Dec 2025 16:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614D3288C0A;
+	Tue,  2 Dec 2025 16:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uYXZxYOn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1vh/525z"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vU0vTZm9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ce6WvXzZ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6142D281357;
-	Tue,  2 Dec 2025 16:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF98256C71;
+	Tue,  2 Dec 2025 16:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764692828; cv=none; b=Pb3VGr43KgzZyXxq2N4j5VpaGtc0nhjRL4+L55+n6QXGCtcsP+Zo3u8ZmgDK7iYHxeltct8HwhV+t6vZ/M+Xe7cdKprYgFxHC4KTCjAT7xw5u+wqwx9H4p/CEtyxJR6W/35WPRkYTienN3OVqGhtn+uW1VRDd2Uu3S06kgn6Mgk=
+	t=1764693956; cv=none; b=rwdYuT4quiotMoltCocUMrzQHYZRLp9H1it2mMl6KxUENzWkqLYyGmF6GeYarKGV9OGeV7ehiCGJd0Ygwv7+3sbg4znETCwr5xI7glCenbBtGAzB15EC7buMt2L0Vow/r2nNv09TAkNr4zoQodVbqxnC/ykVYWEMh4tSQZySG58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764692828; c=relaxed/simple;
-	bh=MagwZDTBzoum0BGr/+2eLfR4rRo3fQWBP5gG37cLkuU=;
+	s=arc-20240116; t=1764693956; c=relaxed/simple;
+	bh=eXM+nTQ2rLDhk5tehZamxcI3FbqZZh3qF2ODqZVL+2E=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=F8UT2skB/FTvHHdMQ6HdxDZS+rKxTPgmFxR77fQqHpPvVMRTat3zX9n85WAwYMfikYmNd5iIWncKzoBsJWOE8wYeL35G3TZVtwoFC9F9qfZe6nXl/PFMPaLhVxTN7pkoECyREOZ+xx4cImIHUQhYQErt9ZxsASBaYKchaTXqz68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uYXZxYOn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1vh/525z; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=JsnEaPT6DL5gWDerEn3u0T2epSqndVMmoCft9Ka+qYE8WeM12Uoc8Jqlmcc9n4oIOwdD4P5McbzhAsdDKW99sK7Lz3C0Tc/19rfibPK2mgfnXsoeiAM0jk0aydT5lcSKuHcqr5xXhrq1hVc9g4XKu9Y4ndIcHRwSiidkJ4K4fAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vU0vTZm9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ce6WvXzZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 02 Dec 2025 16:27:02 -0000
+Date: Tue, 02 Dec 2025 16:44:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1764692824;
+	s=2020; t=1764693953;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4D/gPvoc+/lcRiDWiCvBoVquHDebShfmCM8STJCx05k=;
-	b=uYXZxYOnYC/kTNe8wetsuEcD22Uakk7JhuxWDje7D4igQfxHgGYea0zpdynOsV8fULoLbM
-	OhA4kyW24UvOeDlc/27lX76bP6aQ0i08NzldcwTxrnCBU3YUP0HUxHIMW1N6V4F0hObWAe
-	cLlOi983QzEs+83MjsC24DyRFDQCPRFMxz9BCbWQGHQkr1N1fpbzWCdLGtcLwV9XUSMhCy
-	R3NoEPw6jMEqpmNNuF33ASbuQQpM2SEfYllwtiq766uUqs1Lxc8EUMdjFD873R4tE15WKs
-	qUxzjGXq/gcDciU5vEse/VC7IaycD55txuUIOTG5CNUMU6YeIBdTGNiKzZ85cg==
+	bh=sJWIJ6IN/COLJZOsTj1T81fxYSorJH2SKe8syIQ2XvM=;
+	b=vU0vTZm9Hj3cwCZ99P33oG1cuKe3jH28lT9avH1vWbkhK8KSbXixOIurWDtdpdU6QjiJ25
+	VZ1IRq19GT10/GOpnSmVbmm3iccSEs+tyD8xyO8VqliP6eBa9hMVvA7ze0b0l80FGKaZdh
+	W3ck3OM4vWSpCpvls4pmZbSk7VknUh9RuBmiEa34zGHKq5MiZfZ08onaeYXL4YofdgKK9l
+	iqEQK7+sLfFtT3FkRzL7IBIclNlYCbBZCS+va+Ng101fCqimt5JpEjjIscXwq8lTn11zB0
+	YNb7PJBdwR4Bjd/6mcE9Uj8VmvhwUApQaOrTyONOmPBCkaE1lO9VrEbV2JoxZA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1764692824;
+	s=2020e; t=1764693953;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4D/gPvoc+/lcRiDWiCvBoVquHDebShfmCM8STJCx05k=;
-	b=1vh/525zg6TYpZafPDC3WaAUGxLldJecaXnBXBdL5PqofXVjOnT49sFkH7PdaRkerRq7+Q
-	TIpAy+kJXxh5LMCg==
+	bh=sJWIJ6IN/COLJZOsTj1T81fxYSorJH2SKe8syIQ2XvM=;
+	b=Ce6WvXzZpRopvcrXDoD99vRAhxMyh+AyBiAjAjexe9pdSB/nnYL2m1i0qa4CUButqexlMS
+	I3QG9iwUWvYDLdAg==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -74,7 +74,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176469282298.498.17970695187992519968.tip-bot2@tip-bot2>
+Message-ID: <176469387080.498.13134077611244424666.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -84,13 +84,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     3db8fd69e50b6723cd509f219363b64567c287be
-Gitweb:        https://git.kernel.org/tip/3db8fd69e50b6723cd509f219363b64567c=
-287be
+Commit-ID:     0c314a881cac61a80a0e05309fafd48c55dd3afc
+Gitweb:        https://git.kernel.org/tip/0c314a881cac61a80a0e05309fafd48c55d=
+d3afc
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
 AuthorDate:    Tue, 02 Dec 2025 08:16:28 -08:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 02 Dec 2025 17:21:18 +01:00
+CommitterDate: Tue, 02 Dec 2025 17:40:35 +01:00
 
 objtool: Fix stack overflow in validate_branch()
 
@@ -117,11 +117,11 @@ Link: https://patch.msgid.link/21bb161c23ca0d8c942a960505c0d327ca2dc7dc.17646=
 91895.git.jpoimboe@kernel.org
 Closes: https://lore.kernel.org/20251201202329.GA3225984@ax162
 ---
- tools/objtool/check.c | 24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ tools/objtool/check.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
 diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 9ec0e07..4e7b44f 100644
+index 9ec0e07..3f79993 100644
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
 @@ -3282,18 +3282,19 @@ static int propagate_alt_cfi(struct objtool_file *fil=
@@ -160,16 +160,19 @@ e, struct instruction *insn
  			}
  			state->uaccess_stack <<=3D 1;
  			state->uaccess_stack  |=3D state->uaccess;
-@@ -3319,6 +3321,8 @@ static int handle_insn_ops(struct instruction *insn,
+@@ -3319,7 +3321,10 @@ static int handle_insn_ops(struct instruction *insn,
  		}
  	}
 =20
+-	return 0;
 +done:
 +	TRACE_INSN_STATE(insn, &prev_state, state);
- 	return 0;
++
++	return ret;
  }
 =20
-@@ -3694,8 +3698,6 @@ static int validate_insn(struct objtool_file *file, str=
+ static bool insn_cfi_match(struct instruction *insn, struct cfi_state *cfi2)
+@@ -3694,8 +3699,6 @@ static int validate_insn(struct objtool_file *file, str=
 uct symbol *func,
  			 struct instruction *prev_insn, struct instruction *next_insn,
  			 bool *dead_end)
@@ -180,7 +183,7 @@ uct symbol *func,
  	char *alt_name __maybe_unused =3D NULL;
  	struct alternative *alt;
  	u8 visited;
-@@ -3798,11 +3800,7 @@ static int validate_insn(struct objtool_file *file, st=
+@@ -3798,11 +3801,7 @@ static int validate_insn(struct objtool_file *file, st=
 ruct symbol *func,
  	if (skip_alt_group(insn))
  		return 0;
