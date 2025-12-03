@@ -1,117 +1,122 @@
-Return-Path: <linux-tip-commits+bounces-7584-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7585-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6F6CA0C01
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 03 Dec 2025 19:04:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB51CA0A03
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 03 Dec 2025 18:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4FAC13006E12
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Dec 2025 18:04:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 17C8130014CA
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  3 Dec 2025 17:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83B53161AF;
-	Wed,  3 Dec 2025 17:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4236032D0E2;
+	Wed,  3 Dec 2025 17:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CbJ6GqQQ"
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeStIfcL"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BB330C619
-	for <linux-tip-commits@vger.kernel.org>; Wed,  3 Dec 2025 17:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CD532ABC7;
+	Wed,  3 Dec 2025 17:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764783906; cv=none; b=phJGC5IVdfVLZoMJJtuCxyidtHLydwRwcGpGByolPCeQeB+3E+YUJFus2TRW8dDZU3i2sXBNHmVGmj3GUXr23rP2NJkDXlZQR1rZ3sV7rXDnTYmq1cqCi2JZGtheF5w7utDZFl73w9SustIrM8vkwzo6ljlZDFbCWVV7X688W1Q=
+	t=1764784017; cv=none; b=FTexV6p2M2zF7bGmaXy8/k5xpmsTlwty2AcT3ZtMi5w96YunrjlV86pY9+7W12mG7H0wiZrsqazyF2S/3RzOsxkX899qbWXgJYtuvew0XH+gwLqdTYbcntAjRmKGvMbCDDTViWonGhnOnhlXD8rvsKy0DAiIRbFNvzFYfIg08+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764783906; c=relaxed/simple;
-	bh=ivGEDE5oOEvKm1xY3Rk3hgNOaXYaAse63rCpmgdZfug=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h+AIU1sSJUSdlfpHb+eKapoW4rTw+FBkFUy0Uwq09kVHCGcbH95kqCXeZKWi2Si9CeCgmT7OOfrwU1Pjq2I4kF29v7sddWKkoD3MauxKPI7rW/0Mv6K/nEuBZMETGCkcAq4YjXHIG3jKx1EbUu3rqbGYTlsCeLMPHwZQeodXrkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CbJ6GqQQ; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64180bd67b7so9086214a12.0
-        for <linux-tip-commits@vger.kernel.org>; Wed, 03 Dec 2025 09:45:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1764783903; x=1765388703; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=a7AC1fjGPhRI8jv6LTd9Dz4WyZ+JQOqk9zt4lgWdTgU=;
-        b=CbJ6GqQQvWVBzbNm4q1MtN1aBuzk1KGxAGv0CZzT1tVUkJaAdIGaUj84HQ4ec6e0ed
-         fVfxVGgKQiXEeSt/WUN2fP++b+4+maMdyWK2n44/UAxVMM6/hrgeyB3MpFpFOjTu03v3
-         Qwp9UD0yevlql8U6ATnpr21bs+QeBaTXL2tMM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1764783903; x=1765388703;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a7AC1fjGPhRI8jv6LTd9Dz4WyZ+JQOqk9zt4lgWdTgU=;
-        b=kmPD3TTWepEXtOQG4tenPa37F3YtcyIbT+AfgAcRdwElvGf+DmDNHbsVGzKpkBUchs
-         rO+kiFGZKWmu7x6Uoy67Z+5ii7B291Yi5kExeTr48YyzswL12qomCGaMGqlh4yUzQIUm
-         F6m8aST3AB6g0Oy7f10p12jXAnNFTtYB6Lel+NMeOFX+fpR6McSZY63IT0LA/IstudaC
-         EriFoEAsAe1vC7wLB6IqqDlqF4g8TpUfyhvy17n3mRp46/zQxBrf1wRAH3PSJ2CocjJi
-         VtqTcmLOyu22e6ewbCGCfzb0jo4klSKgvj65G/Bp+0hDbpwxFD4DGh7c9Z8zAe+nMOpJ
-         eFSA==
-X-Forwarded-Encrypted: i=1; AJvYcCUoFPYljrLJjMBIGgA2GQZC9c1fY9phYWD0GBX/5pDc4RsUGY7y46vvi7MGf+z0atfyfd6XAfi/mOk9BIhxTFtHcQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWtA16qQkKF4+sw3L+5vI8LajeOpEqM/ZunznPyrFQa17Qq1hq
-	bGZjGuTIRaStqp8fTtFXEj4ZcOsnoqXRVD5qKEo7ViUQUBWfChS8/5fVhN++e7gPz4vwy0ifp4Z
-	M+dMRUGI=
-X-Gm-Gg: ASbGncuQNll2p3AgfpO0harGOHALPFsSP6XWGhoX0T8umPipT90eJ8xiQENMGIBzYfa
-	9xRY3AwvVbGYu3OyhHu6QjSixlvbYfUc/+6dvn1YzgVhuJPh0bOzs3QX9KL9HclsAcPHqFuvLJk
-	FB7DqTQ94lYxZsJ87aBrun2i8kfaV2in+sspqCNKboawokbQwJN94VNsLk+lqCdjJUi/CtMz5Yp
-	T+rtDXaoaR7cmNi5QfxCPfOqd71soNsluj40Y746y9Gdf132ucdxjc1FIrMuSmT1upmPMMBKShy
-	3CwofKLdnI0qqiq5RDoZgHv+hX3Dfc5Y/zi1syG9QzCOq1Ex8KjizFKMdA90buS6WeD/MfOg/7j
-	Pu1n5b5ItV4uO4f7DdZbIJD541iO0ERKH89RdDh99mLcww4SZuss8W20LOVRinYvGrxqg8zbI4U
-	YjVPHum4/8wbNu03gmBkZM5zzw9+3OWSa9KDfUF1DbCqNcyl47bm8YR1vIYUDFAr+uxiV13MI=
-X-Google-Smtp-Source: AGHT+IE6AANUo8K35VEbkQUtWTJGSbfDZT4uGJQlvytyS+/Z/OJjT5J8y8zgW5E94gRGGgr7McsbTg==
-X-Received: by 2002:a05:6402:2111:b0:640:f481:984 with SMTP id 4fb4d7f45d1cf-6479c3ed696mr2639022a12.2.1764783902809;
-        Wed, 03 Dec 2025 09:45:02 -0800 (PST)
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-64751035c2fsm18935830a12.17.2025.12.03.09.45.02
-        for <linux-tip-commits@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Dec 2025 09:45:02 -0800 (PST)
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so10376781a12.2
-        for <linux-tip-commits@vger.kernel.org>; Wed, 03 Dec 2025 09:45:02 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVoFPZDQTXjaVC9O84wOUyvYj8tlpjiOChAUW4qqE86jBqVt7Siza5zC29wxwKC9o0yvIEd0wDGvxe0dKjUTo1vHg==@vger.kernel.org
-X-Received: by 2002:a05:6402:254b:b0:640:b31a:8439 with SMTP id
- 4fb4d7f45d1cf-6479c415686mr2908225a12.12.1764783901731; Wed, 03 Dec 2025
- 09:45:01 -0800 (PST)
+	s=arc-20240116; t=1764784017; c=relaxed/simple;
+	bh=WRY8YLizPAkapsHRRIwMqLYmGjGAe0KDqmYvPfU8gkU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eGHyMfAtfmwEKJAIdcc2LgVfymFxpPHv4XxniMF8+GE9qzliAfkXSTslsOP9OuAMu74vsZS6naiVdQvPFUQHEmax8Xt2MRUC30WTiUp0JoCoTIosgokrnyku185UiCFDA3CcTLEzwsswZU2g0xCeuZrBUj0LSkSVOCOASvRf2aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeStIfcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1089CC4CEF5;
+	Wed,  3 Dec 2025 17:46:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1764784015;
+	bh=WRY8YLizPAkapsHRRIwMqLYmGjGAe0KDqmYvPfU8gkU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aeStIfcLCNdLHFqMyOgeKtIh7IMKwlrjqZXVFlqjEO+so12me3TTu4yLaZdf2J8ZV
+	 bKSigmXpn6g9dYcWuKKLt4b1Ni6aoad7YJcNZ9u5SZUZsLDEV60DLGS7aTpqi+kTmU
+	 rN7rRuLiKFQXJs0MZbXY1U1V6TUZBOg0c4Owc13IMjxWsXZA7mkXwp1q0gOIIG+qb4
+	 DX0UAdEQvmVKPrz2HWBAo+DElQC/ZnytgSfjQCJrBQ7FZqba7qeSqpoxpAR27bUoq/
+	 F4nS6qsqHewbWmR3h8Tk4JjJB5pZroVnUFEWZWZBZqLFIfb5n0aCMQHhcpQtimcKmn
+	 NQemMC2+2/saA==
+Date: Wed, 3 Dec 2025 09:46:53 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-tip-commits@vger.kernel.org, x86@kernel.org
+Subject: Re: [tip: objtool/urgent] objtool: Consolidate annotation macros
+Message-ID: <72juhabxma7rw5eq2gglct4lmeoqfvrlv5jf36sdcfimz5rxxd@gnfuxdgv6stj>
+References: <c05ff40d3383e85c3b59018ef0b3c7aaf993a60d.1764694625.git.jpoimboe@kernel.org>
+ <176478003405.498.13298696533128884255.tip-bot2@tip-bot2>
+ <CAHk-=wgzL-bCggZOuDU7_f-1jpjus8Oaqtek9T8GdGUexnHYkg@mail.gmail.com>
+ <aTBr3ImmrJQe4G49@gmail.com>
+ <CAHk-=wjc4BeSu7dHB=5AuQNWQ=sOGAuH4j0=uRwsGyiSo+m+bw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <c05ff40d3383e85c3b59018ef0b3c7aaf993a60d.1764694625.git.jpoimboe@kernel.org>
- <176478003405.498.13298696533128884255.tip-bot2@tip-bot2> <CAHk-=wgzL-bCggZOuDU7_f-1jpjus8Oaqtek9T8GdGUexnHYkg@mail.gmail.com>
- <aTBr3ImmrJQe4G49@gmail.com> <CAHk-=wjc4BeSu7dHB=5AuQNWQ=sOGAuH4j0=uRwsGyiSo+m+bw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 In-Reply-To: <CAHk-=wjc4BeSu7dHB=5AuQNWQ=sOGAuH4j0=uRwsGyiSo+m+bw@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 3 Dec 2025 09:44:45 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgTWezdprq6eBYAv52r6JYoD_oBjouUfsbvMZqtpYjWfQ@mail.gmail.com>
-X-Gm-Features: AWmQ_blDJJkWbllvBLW3gVbK7ReojIOuBWSy-u-DWjNR8cOoKE6afqURElEiNQA
-Message-ID: <CAHk-=wgTWezdprq6eBYAv52r6JYoD_oBjouUfsbvMZqtpYjWfQ@mail.gmail.com>
-Subject: Re: [tip: objtool/urgent] objtool: Consolidate annotation macros
-To: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 3 Dec 2025 at 09:21, Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> It *feels* like this should just all be
->
->         911: .pushsection .discard.annotate_insn ; .long 911b - .; .long 1; .popsection
+On Wed, Dec 03, 2025 at 09:21:55AM -0800, Linus Torvalds wrote:
+> On Wed, 3 Dec 2025 at 08:57, Ingo Molnar <mingo@kernel.org> wrote:
+> >
+> > Find below a diff of the arch/x86/kernel/process.s output
+> > of your tree versus current tip:objtool/urgent.
+> 
+> Yeah, just a single example would have been sufficient, ie a simple
+> 
+>    Turn
+> 
+>         911:
+>                .pushsection .discard.annotate_insn,"M", @progbits, 8
+>                .long 911b - .
+>                .long 1
+>                .popsection
+>                jmp __x86_return_thunk
+> 
+>   Into
+> 
+>         911: .pushsection ".discard.annotate_insn", "M", @progbits, 8;
+> .long 911b - .; .long 1; .popsection
 >         jmp __x86_return_thunk
->
-> instead.
+> 
+> and btw, the quotes around the section name are not necessary afaik.
 
-Actually, I think it should just be
+Indeed, I can remove those quotes.
 
-  911: jmp __x86_return_thunk
-  .pushsection .discard.annotate_insn ; .long 911b - . , 1; .popsection
+> Also, I have to say that being mergeable is a bit annoying here:
+> without that, we could drop the "@progbits, 8" parts too which is just
+> strange noise.  Is the mergeability really a win? Because I'd assume
+> that it's never *actually* merged, since the expression "911b-." ends
+> up being a unique value?
+> 
+> What am I missing? It *feels* like this should just all be
+> 
+>         911: .pushsection .discard.annotate_insn ; .long 911b - .;
+> .long 1; .popsection
+>         jmp __x86_return_thunk
+> 
+> instead. But it's entirely possible I'm not seeing the reason here...
 
-but again: it's entirely possible that there's something I am missing.
+So that mergeable thing is the only way to convince the toolchains to
+allow setting the section entsize, which is a generic way for objtool to
+look at the myriad of special sections and determine their entry sizes,
+so it can extract individual entries for the purposes of creating
+livepatch modules.
 
-           Linus
+In this case I do realize the irony of objtool needing to know the
+section size of a section which is explicitly created for objtool's use
+(so of course it already knows the size).
+
+In actuality they are two completely separate subcommands of objtool.
+"Regular" objtool reads .discard.annotate_insn for its annotations,
+whereas "objtool klp diff" extracts special section entries.  It does so
+in a generic way (entsize), regardless of whether the special section is
+objtool-specific or not (e.g., the bug table).
+
+-- 
+Josh
 
