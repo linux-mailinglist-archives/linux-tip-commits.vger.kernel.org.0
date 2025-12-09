@@ -1,35 +1,35 @@
-Return-Path: <linux-tip-commits+bounces-7620-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7619-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F68CAFC18
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C35CAFC1D
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 09 Dec 2025 12:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88AFF3010E07
-	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Dec 2025 11:24:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F91330088DC
+	for <lists+linux-tip-commits@lfdr.de>; Tue,  9 Dec 2025 11:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3700320386;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7105C2F5496;
 	Tue,  9 Dec 2025 11:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LGbMT0/4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4rBmdu0D"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tpuv753l";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f98ROZIR"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8C31E7C34;
-	Tue,  9 Dec 2025 11:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B852800;
+	Tue,  9 Dec 2025 11:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765279493; cv=none; b=kxSqWhu5jtLUlkXSb5uUjw18OdkYW5WIRSVDkgAf+9g9CyGomxeb8ur3JHvp322uG4JZMSEPIEtcuU3OnHFrjSp8wLhgO2bn1LPExh8roQrCvEQ1CCoNyOC6MewufXcbeTFqon0OTa/y6Sm8tUE4KkHheDWDWSYax8yHKct6AN8=
+	t=1765279493; cv=none; b=YHpkHEKfrPop1/RJWjJMgQjx7QfHI5GRwio0J55v+YD9tGD6OWP6C092JIU6L6UUvVJqf9ZC5YK0hkwnkEo6BGEzpl05ftohUj4zECiAyn0Bm027Efnwj+qlCRdN4DthUv9G6YE0REvKuzjeELgOeLk84uZg+vUwLgeLGIAzTT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765279493; c=relaxed/simple;
-	bh=H5btXk/+oC7SAB9++U7/lphBfoew9ALzPNB3wrtQhA4=;
+	bh=iItUhqkXUDtIfBlc8FKCXi9ZH08tNEr14aUH8zHHsWM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=sxXyqu1lMhwYxXPZwU0vIB8ZtAm7zITZjr3SMSan/lIr1lrHHFoIGSgzzXHNBRkTBXBOM5e70kE5/TcLrUaY9S2kmUyNj4dUmVQCZQ4nT2B0daGlCjMwWisqD28GMWc/5/0Ys5GaChvkv/5tcp3K3xG1OqTuWN+6u3gu8YsD7P0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LGbMT0/4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4rBmdu0D; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Y9E3V5AGLRvUDqLoDBOYIL/pnKSPPLtLcFaYsqWeoP7lywX5l5IFIZeNXJEb6ymzxegHtM0OrTVDIHtlDRXynIpNPAWUTZZPFAjeaiomWjs9Vi2ZTJ25slaAede0XWZDIin7lDm+2M7uI/4Fr++Spbk1ANFiMJruh161Qh862rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tpuv753l; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f98ROZIR; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 09 Dec 2025 11:24:47 -0000
+Date: Tue, 09 Dec 2025 11:24:48 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1765279489;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -37,12 +37,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sIny6YUQuMC7wj+IntQV/3JJLGsBurBGpsu7lIWtjPs=;
-	b=LGbMT0/4NbkxiYVRKGmNC8gBOBEarw8+VOmsONbuNY7P99bm2GHJ/BvPGfXLEx139Kwnxn
-	f1zNKAh5MkUK8PGKhNij0iy86RVs7lGR/hj5o7FiwpmCD7yEIifyOn1JFkrJKNYbzN5gV7
-	/4rkLESpISqtx4tpzgqSPCL5kiM0rFHwc+hAE0mhPr45LpqYIGwh8omu+KIUnNpzwURMkR
-	Atvsh3Cq1lL5L5H7lPUZgX9YsrOk8j5NL0F18O1diNYjN0yD5AHpYnUn1cDHTatBCvNgpw
-	m5/MOstIy8cTvoqj36OCAid/F9Jg51mvDU9XGrCeu0PaMv001u3peS8KkVtZSw==
+	bh=NFT2VDPRVMANryn46TKwtBky95aV3GFWee/jIzS71gg=;
+	b=tpuv753lhM10XpdLTlts9+upZoFIdhKU4kYdfEQ7BWtfs4Au10YrGx7RbdwtoFkMFFLDiv
+	sJxkGLfG6ZhVB/Xf/bE9pCvMV0W2tGdK0yHkdAqpjzfdiVwghHwyO5AjtJi0fc0xou5bLv
+	o19GmkoJFgs4BYKnaFJhRQLEpSk66bTqY141gpIpstVHGg1T7Ua8IjVjJQ9ge0CRfS1bta
+	e33RwkTcm/rdqZ+42fsDxKYTXkw1fsEfBe8YMf1E4anqBYOa2qG4NkV2YE6WJcQCNVWEeJ
+	W6PtCvOXHphu232R75jV9OO1YoUC6eb0xI8YERZCL1h41AjeEimRYxpKKjDFkQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1765279489;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -50,33 +50,30 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sIny6YUQuMC7wj+IntQV/3JJLGsBurBGpsu7lIWtjPs=;
-	b=4rBmdu0DLQYNYutl74G4xGJ1bnNio0z740uOFQbAigZMbz3KtBehvdtz6cFfBM5nvuUeyZ
-	h2OXDvaIUrpGY4Dw==
-From: "tip-bot2 for Thaumy Cheng" <tip-bot2@linutronix.de>
+	bh=NFT2VDPRVMANryn46TKwtBky95aV3GFWee/jIzS71gg=;
+	b=f98ROZIRn1KlOir5P1a4/TCzVwPxMmWnqcpZCkttqzoc4AGOFN8OQHIX9VJpzfmHWCL/rh
+	eRhNeHkacq38Z6Aw==
+From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/urgent] perf/core: Fix missing read event generation on task exit
-Cc: Thaumy Cheng <thaumy.love@gmail.com>, Ingo Molnar <mingo@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Ian Rogers <irogers@google.com>,
- James Clark <james.clark@linaro.org>, Jiri Olsa <jolsa@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>, Namhyung Kim <namhyung@kernel.org>,
- linux-perf-users@vger.kernel.org, x86@kernel.org,
+Subject: [tip: perf/urgent] perf/x86/amd/uncore: Fix the return value of
+ amd_uncore_df_event_init() on error
+Cc: Dan Carpenter <dan.carpenter@linaro.org>,
+ Sandipan Das <sandipan.das@amd.com>, Ingo Molnar <mingo@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251209041600.963586-1-thaumy.love@gmail.com>
-References: <20251209041600.963586-1-thaumy.love@gmail.com>
+In-Reply-To: =?utf-8?q?=3C076935e23a70335d33bd6e23308b75ae0ad35ba2=2E1765268?=
+ =?utf-8?q?667=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C076935e23a70335d33bd6e23308b75ae0ad35ba2=2E17652686?=
+ =?utf-8?q?67=2Egit=2Esandipan=2Edas=40amd=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176527948706.498.4135909078466502735.tip-bot2@tip-bot2>
+Message-ID: <176527948852.498.10792756287021428217.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -86,168 +83,54 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/urgent branch of tip:
 
-Commit-ID:     c418d8b4d7a43a86b82ee39cb52ece3034383530
-Gitweb:        https://git.kernel.org/tip/c418d8b4d7a43a86b82ee39cb52ece30343=
-83530
-Author:        Thaumy Cheng <thaumy.love@gmail.com>
-AuthorDate:    Tue, 09 Dec 2025 12:16:00 +08:00
+Commit-ID:     01439286514ce9d13b8123f8ec3717d7135ff1d6
+Gitweb:        https://git.kernel.org/tip/01439286514ce9d13b8123f8ec3717d7135=
+ff1d6
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Tue, 09 Dec 2025 13:56:38 +05:30
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 09 Dec 2025 12:22:25 +01:00
+CommitterDate: Tue, 09 Dec 2025 12:21:47 +01:00
 
-perf/core: Fix missing read event generation on task exit
+perf/x86/amd/uncore: Fix the return value of amd_uncore_df_event_init() on er=
+ror
 
-For events with inherit_stat enabled, a "read" event will be generated
-to collect per task event counts on task exit.
+If amd_uncore_event_init() fails, return an error irrespective of the
+pmu_version. Setting hwc->config should be safe even if there is an
+error so use this opportunity to simplify the code.
 
-The call chain is as follows:
+Closes: https://lore.kernel.org/all/aTaI0ci3vZ44lmBn@stanley.mountain/
 
-do_exit
-  -> perf_event_exit_task
-    -> perf_event_exit_task_context
-      -> perf_event_exit_event
-        -> perf_remove_from_context
-          -> perf_child_detach
-            -> sync_child_event
-              -> perf_event_read_event
-
-However, the child event context detaches the task too early in
-perf_event_exit_task_context, which causes sync_child_event to never
-generate the read event in this case, since child_event->ctx->task is
-always set to TASK_TOMBSTONE. Fix that by moving context lock section
-backward to ensure ctx->task is not set to TASK_TOMBSTONE before
-generating the read event.
-
-Because perf_event_free_task calls perf_event_exit_task_context with
-exit =3D false to tear down all child events from the context, and the
-task never lived, accessing the task PID can lead to a use-after-free.
-
-To fix that, let sync_child_event read task from argument and move the
-call to the only place it should be triggered to avoid the effect of
-setting ctx->task to TASK_TOMESTONE, and add a task parameter to
-perf_event_exit_event to trigger the sync_child_event properly when
-needed.
-
-This bug can be reproduced by running "perf record -s" and attaching to
-any program that generates perf events in its child tasks. If we check
-the result with "perf report -T", the last line of the report will leave
-an empty table like "# PID  TID", which is expected to contain the
-per-task event counts by design.
-
-Fixes: ef54c1a476ae ("perf: Rework perf_event_exit_event()")
-Signed-off-by: Thaumy Cheng <thaumy.love@gmail.com>
+Fixes: d6389d3ccc13 ("perf/x86/amd/uncore: Refactor uncore management")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: linux-perf-users@vger.kernel.org
-Link: https://patch.msgid.link/20251209041600.963586-1-thaumy.love@gmail.com
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/076935e23a70335d33bd6e23308b75ae0ad35ba2.17652=
+68667.git.sandipan.das@amd.com
 ---
- kernel/events/core.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ arch/x86/events/amd/uncore.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ece7168..dad0d3d 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2317,8 +2317,6 @@ out:
- 	perf_event__header_size(leader);
- }
+diff --git a/arch/x86/events/amd/uncore.c b/arch/x86/events/amd/uncore.c
+index e8b6af1..9293ce5 100644
+--- a/arch/x86/events/amd/uncore.c
++++ b/arch/x86/events/amd/uncore.c
+@@ -656,14 +656,11 @@ static int amd_uncore_df_event_init(struct perf_event *=
+event)
+ 	struct hw_perf_event *hwc =3D &event->hw;
+ 	int ret =3D amd_uncore_event_init(event);
 =20
--static void sync_child_event(struct perf_event *child_event);
+-	if (ret || pmu_version < 2)
+-		return ret;
 -
- static void perf_child_detach(struct perf_event *event)
- {
- 	struct perf_event *parent_event =3D event->parent;
-@@ -2337,7 +2335,6 @@ static void perf_child_detach(struct perf_event *event)
- 	lockdep_assert_held(&parent_event->child_mutex);
- 	 */
+ 	hwc->config =3D event->attr.config &
+ 		      (pmu_version >=3D 2 ? AMD64_PERFMON_V2_RAW_EVENT_MASK_NB :
+ 					  AMD64_RAW_EVENT_MASK_NB);
 =20
--	sync_child_event(event);
- 	list_del_init(&event->child_list);
+-	return 0;
++	return ret;
  }
 =20
-@@ -4588,6 +4585,7 @@ out:
- static void perf_remove_from_owner(struct perf_event *event);
- static void perf_event_exit_event(struct perf_event *event,
- 				  struct perf_event_context *ctx,
-+				  struct task_struct *task,
- 				  bool revoke);
-=20
- /*
-@@ -4615,7 +4613,7 @@ static void perf_event_remove_on_exec(struct perf_event=
-_context *ctx)
-=20
- 		modified =3D true;
-=20
--		perf_event_exit_event(event, ctx, false);
-+		perf_event_exit_event(event, ctx, ctx->task, false);
- 	}
-=20
- 	raw_spin_lock_irqsave(&ctx->lock, flags);
-@@ -12518,7 +12516,7 @@ static void __pmu_detach_event(struct pmu *pmu, struc=
-t perf_event *event,
- 	/*
- 	 * De-schedule the event and mark it REVOKED.
- 	 */
--	perf_event_exit_event(event, ctx, true);
-+	perf_event_exit_event(event, ctx, ctx->task, true);
-=20
- 	/*
- 	 * All _free_event() bits that rely on event->pmu:
-@@ -14075,14 +14073,13 @@ void perf_pmu_migrate_context(struct pmu *pmu, int =
-src_cpu, int dst_cpu)
- }
- EXPORT_SYMBOL_GPL(perf_pmu_migrate_context);
-=20
--static void sync_child_event(struct perf_event *child_event)
-+static void sync_child_event(struct perf_event *child_event,
-+			     struct task_struct *task)
- {
- 	struct perf_event *parent_event =3D child_event->parent;
- 	u64 child_val;
-=20
- 	if (child_event->attr.inherit_stat) {
--		struct task_struct *task =3D child_event->ctx->task;
--
- 		if (task && task !=3D TASK_TOMBSTONE)
- 			perf_event_read_event(child_event, task);
- 	}
-@@ -14101,7 +14098,9 @@ static void sync_child_event(struct perf_event *child=
-_event)
-=20
- static void
- perf_event_exit_event(struct perf_event *event,
--		      struct perf_event_context *ctx, bool revoke)
-+		      struct perf_event_context *ctx,
-+		      struct task_struct *task,
-+		      bool revoke)
- {
- 	struct perf_event *parent_event =3D event->parent;
- 	unsigned long detach_flags =3D DETACH_EXIT;
-@@ -14124,6 +14123,9 @@ perf_event_exit_event(struct perf_event *event,
- 		mutex_lock(&parent_event->child_mutex);
- 		/* PERF_ATTACH_ITRACE might be set concurrently */
- 		attach_state =3D READ_ONCE(event->attach_state);
-+
-+		if (attach_state & PERF_ATTACH_CHILD)
-+			sync_child_event(event, task);
- 	}
-=20
- 	if (revoke)
-@@ -14215,7 +14217,7 @@ static void perf_event_exit_task_context(struct task_=
-struct *task, bool exit)
- 		perf_event_task(task, ctx, 0);
-=20
- 	list_for_each_entry_safe(child_event, next, &ctx->event_list, event_entry)
--		perf_event_exit_event(child_event, ctx, false);
-+		perf_event_exit_event(child_event, ctx, exit ? task : NULL, false);
-=20
- 	mutex_unlock(&ctx->mutex);
-=20
+ static int amd_uncore_df_add(struct perf_event *event, int flags)
 
