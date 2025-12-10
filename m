@@ -1,77 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-7624-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7625-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC3DCB1C70
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 04:15:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72A8CB21D9
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 07:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C8673014DBC
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 03:15:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D57F03005ABA
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 06:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A940B27A469;
-	Wed, 10 Dec 2025 03:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367D223C8C7;
+	Wed, 10 Dec 2025 06:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="b5IT9XdL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3XNuwKKl"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iPRn+STD";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FNFN2SVs"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010BB1B87C0;
-	Wed, 10 Dec 2025 03:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680231F3BA4;
+	Wed, 10 Dec 2025 06:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765336500; cv=none; b=liYXbQkIdIy8pId58wpY+Y4fYAO3zz9DCElE+gBGXgyW21SAtdCByK80/SsABQmtcZWpHNzeUVE1wikehEEJF1nSmSPzHUbakPaPZ2d1N7XTssnImxp3qTAy5I6hbJjcUJuirUAlGy7oTbUGnnxIju42LQMs3kfy5SMuBHX2Shg=
+	t=1765349537; cv=none; b=etckrz9ZxnJxsguptACLiFDIL7pdt/j+6hNOCA9MvO20nOSj4B2GHu4pJrrI2qJZ8l7qVcetCd3B454BQqQbvL2q8UJgOHxjOmBx2ecky2abq0g9gBo1cBm4aSbeLGMyS9oNxYXzrvEdgjU4wukn5clHdfK+Dl7ytwB0aXj5L/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765336500; c=relaxed/simple;
-	bh=nU4hbgcZNgi3iNchaUwY/av4sAnNk/WkDSSF6fNBeDo=;
+	s=arc-20240116; t=1765349537; c=relaxed/simple;
+	bh=Fgxrsfp5ux6Evv0n77rdUgAZyas9VwMJRtMaQcM0Kcs=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YDL4rCA8Jv4Y9AEM96YChUFBZ6VqP/m1uvXXi4maW9icxseXAes51zZgM0GqqI+0o+o1IiFbjNHWnPS8/e09C1arNagELjne3CuRsfPQBI/WzK1IMUJjycbAQp8OjgOOoMqe2uFrj/A6lq6pD4iEP564GXpCbYK10XzF/6a8sXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=b5IT9XdL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3XNuwKKl; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=or/YtSrvNlb43iMcf+a8B3PCuO717dc/8BDsYpvKqNCn9HU4Kmo0RP/ACmcemj6bYWiXmCE3Ui/u31SieHNkmc9AMoTsz3SLGCD++mgSt+8PCgTb9a1hhYp784Hz8qAwePPUtqhbmmWs1v767nOmryx9YC/aAj4xTcE+vW/IT+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iPRn+STD; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FNFN2SVs; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Dec 2025 03:14:51 -0000
+Date: Wed, 10 Dec 2025 06:52:08 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765336494;
+	s=2020; t=1765349530;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H9btgBF9wR2TBQQUuzl+S1BzKCIIBl2pqy/q4RxRBuI=;
-	b=b5IT9XdLd88XitDtnZ1bt2kPCduL/hfDA81bN+tPKjXKAMwookeyh5NA5EqWScpZcZ7st3
-	WI52FkMd4lfkVTL7qn1qZp1CJpyxIAz8J4K0pXsrcJjBApK46qEl4fb+IJSVRx3tALYUrp
-	vWswUGZlYGom5fKJZtPEbU7i9h8/xgo7P7Rzkt3AQRruP+BpDJkDDVE8LK7tV8ynqXBuqf
-	UUKN71kpUg4lEKnTROQpUUveHWeuA6JtCRqBd2WJkGZYbaUbQu8yTPAqIZMsQ9YWAZ3Mi2
-	tXGSFUPFpI7PqJd2FCyB2CgiC6t/qCOmCtM60nwPSCH+9YYHOUA4ZRM8nmm9UQ==
+	bh=q+XtOJ15kTAOv/rc5c/PTgEsTGGnAAfMT47XI5a/cN8=;
+	b=iPRn+STDetgTgs/G+iSFHyxfK+xdG1fB2BKb9SXi1vSrkdchVfTIJ2u77X1AmYFC3ge0Oq
+	nD3yiEj9tOkXe+dVw+ekKJARL4ZG70z7A+7S1iCI1UzG2hqxceDP9Dg30ZmHpYglr74539
+	BJrn/hTmnzOKccMxv+OjW8V5GGj3fSlrBYO7IlrjfcNKp8Lh0JOEk5oDa3Y4+kel9eXtxu
+	uNcbYk2zp8w+WpLK4B74q89O7VDjEwzz8qVSUX+/FKJpjh6OKHpqupUWcBbb14FpQbLz57
+	PXtNDU73QoM2vIEojcDsx/wIC05y16gPHHfMMGNa+q7H5A8u28qrblGBsiLjMw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765336494;
+	s=2020e; t=1765349530;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H9btgBF9wR2TBQQUuzl+S1BzKCIIBl2pqy/q4RxRBuI=;
-	b=3XNuwKKllIiP5No130Fw4gYRDKtj6n24KVHJILQvRnBBnodj2gIBdcyVg7ruP1LqIDdzxi
-	tAhhRufYMi7rAQAw==
-From: "tip-bot2 for Dan Carpenter" <tip-bot2@linutronix.de>
+	bh=q+XtOJ15kTAOv/rc5c/PTgEsTGGnAAfMT47XI5a/cN8=;
+	b=FNFN2SVsGeEmjAxxLj4z608Cy+8D2Ezj6mGP2FxOhIoslO/ia8bXa2KuIXGGqAUGgqFi2i
+	HbmJYg9BKygjKrBw==
+From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <aTfHmOz6IBpTIPU5@stanley.mountain>
-References: <aTfHmOz6IBpTIPU5@stanley.mountain>
+Subject: [tip: smp/urgent] cpu: Make atomic hotplug callbacks run with
+ interrupts disabled on UP
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251127144723.ev9DuXXR@linutronix.de>
+References: <20251127144723.ev9DuXXR@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176533649129.498.12013031719621583485.tip-bot2@tip-bot2>
+Message-ID: <176534952894.498.16086847818085207539.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,45 +78,94 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7
-Gitweb:        https://git.kernel.org/tip/7dbc0d40d8347bd9de55c904f59ea44bcc8=
-dedb7
-Author:        Dan Carpenter <dan.carpenter@linaro.org>
-AuthorDate:    Tue, 09 Dec 2025 09:54:16 +03:00
+Commit-ID:     c94291914b200e10c72cef23c8e4c67eb4fdbcd9
+Gitweb:        https://git.kernel.org/tip/c94291914b200e10c72cef23c8e4c67eb4f=
+dbcd9
+Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+AuthorDate:    Thu, 27 Nov 2025 15:47:23 +01:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 10 Dec 2025 12:11:06 +09:00
+CommitterDate: Wed, 10 Dec 2025 15:49:11 +09:00
 
-irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
+cpu: Make atomic hotplug callbacks run with interrupts disabled on UP
 
-If irq_domain_translate_twocell() sets "hwirq" to >=3D MCHP_EIC_NIRQ (2) then
-it results in an out of bounds access.
+On SMP systems the CPU hotplug callbacks in the "starting" range are
+invoked while the CPU is brought up and interrupts are still
+disabled. Callbacks which are added later are invoked via the
+hotplug-thread on the target CPU and interrupts are explicitly disabled.
 
-The code checks for invalid values, but doesn't set the error code.  Return
--EINVAL in that case, instead of returning success.
+In the UP case callbacks which are added later are invoked directly without
+the thread indirection. This is in principle okay since there is just one
+CPU but those callbacks are invoked with interrupt disabled code. That's
+incorrect as those callbacks assume interrupt disabled context.
 
-Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Disable interrupts before invoking the callbacks on UP if the state is
+atomic and interrupts are expected to be disabled.  The "save" part is
+required because this is also invoked early in the boot process while
+interrupts are disabled and must not be enabled prematurely.
+
+Fixes: 06ddd17521bf1 ("sched/smp: Always define is_percpu_thread() and schedu=
+ler_ipi()")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
+Link: https://patch.msgid.link/20251127144723.ev9DuXXR@linutronix.de
 ---
- drivers/irqchip/irq-mchp-eic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cpu.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
-index 2474fa4..31093a8 100644
---- a/drivers/irqchip/irq-mchp-eic.c
-+++ b/drivers/irqchip/irq-mchp-eic.c
-@@ -170,7 +170,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domai=
-n, unsigned int virq,
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index b674fdf..8df2d77 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -249,6 +249,14 @@ err:
+ 	return ret;
+ }
 =20
- 	ret =3D irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
- 	if (ret || hwirq >=3D MCHP_EIC_NIRQ)
--		return ret;
-+		return ret ?: -EINVAL;
++/*
++ * The former STARTING/DYING states, ran with IRQs disabled and must not fai=
+l.
++ */
++static bool cpuhp_is_atomic_state(enum cpuhp_state state)
++{
++	return CPUHP_AP_IDLE_DEAD <=3D state && state < CPUHP_AP_ONLINE;
++}
++
+ #ifdef CONFIG_SMP
+ static bool cpuhp_is_ap_state(enum cpuhp_state state)
+ {
+@@ -271,14 +279,6 @@ static inline void complete_ap_thread(struct cpuhp_cpu_s=
+tate *st, bool bringup)
+ 	complete(done);
+ }
 =20
- 	switch (type) {
- 	case IRQ_TYPE_EDGE_RISING:
+-/*
+- * The former STARTING/DYING states, ran with IRQs disabled and must not fai=
+l.
+- */
+-static bool cpuhp_is_atomic_state(enum cpuhp_state state)
+-{
+-	return CPUHP_AP_IDLE_DEAD <=3D state && state < CPUHP_AP_ONLINE;
+-}
+-
+ /* Synchronization state management */
+ enum cpuhp_sync_state {
+ 	SYNC_STATE_DEAD,
+@@ -2364,7 +2364,14 @@ static int cpuhp_issue_call(int cpu, enum cpuhp_state =
+state, bool bringup,
+ 	else
+ 		ret =3D cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
+ #else
+-	ret =3D cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++	if (cpuhp_is_atomic_state(state)) {
++		guard(irqsave)();
++		ret =3D cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++		/* STARTING/DYING must not fail! */
++		WARN_ON_ONCE(ret);
++	} else {
++		ret =3D cpuhp_invoke_callback(cpu, state, bringup, node, NULL);
++	}
+ #endif
+ 	BUG_ON(ret && !bringup);
+ 	return ret;
 
