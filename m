@@ -1,75 +1,68 @@
-Return-Path: <linux-tip-commits+bounces-7627-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7628-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 902B6CB251A
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 08:47:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FF7ACB2520
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 08:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74ADD3004D25
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 07:47:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8FED30B6210
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 07:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44EE23D7E6;
-	Wed, 10 Dec 2025 07:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2141B24EF76;
+	Wed, 10 Dec 2025 07:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e1JlVTax";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="foQsKDHt"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1U2+f2MK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T2qd092O"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19819CD06;
-	Wed, 10 Dec 2025 07:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1BB207A20;
+	Wed, 10 Dec 2025 07:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352828; cv=none; b=oGzH6KA7ZHGx4+Ztcjh/SwvQTfS+r9wFO9b1EolvOrokZG8ZgTaNKfWYgY5Ih3vJny1mF/+Wg8lO1mloRRhVWgC/d1Ghu91KoistbrJkcOBiyfS3tjic4GEWF4BmYm1/ajdGzCbRRz+EGoK5DDnHsVHeY1Fh+4MLSq7NqFQzDqo=
+	t=1765352835; cv=none; b=pO48Xp5qIH5l/7m25Jfw+xoLWfcIKKWihBGz2zrEC1Uk/yipxo3EDO/Gq8N6SMDFt1jbhnU6A22FNHtfX7CUSW7OtEHMVL+kZuKjeVkFUTErulvDkOY5YoAL2O9RGU0oxKlsB1pNBTA6HZm38/q8tbdjbM3yFhQYQGHZcO5ku+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352828; c=relaxed/simple;
-	bh=NAE66TZfCcPanlZznqbJd0YtzQdY2I4918fwCghtzI0=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=YXnlB+VqNHcmv39V4YehgOvXNJna/2HnZ43DtO65n0tIGLewMwLX2xuLp7jQW1oNn08AIjjQstKWMicwNnWKLNQ+nsXpcI4Ln+IrGEM48Um9ncL2defe+SdLEdp3pJadsujpQD6FIK7lWqjmzJvO3aNVbMn5a7OJ5zgsCJbBVro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e1JlVTax; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=foQsKDHt; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1765352835; c=relaxed/simple;
+	bh=aIYPa/Pw3MGkEsASR5p6GwfvqRKLRkc3WC8uMyidLa0=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=mEiV+WgnEJiaHVIUQzwEGF8xK7kkcsg3m1eYh3mAdh58va5OAjYIm/qEheooPOE6n3+XBRjDq5sdCZQy7Gl4XMZcpyP/KHt/0Rr7v4wdjjIKxd0w7s8qvB3GV4KgSLlZKM3kjNvXVR4tLFDOQKA/iXHR/ewJ00x3Ns8/RVf/vKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1U2+f2MK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T2qd092O; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Dec 2025 07:47:03 -0000
+Date: Wed, 10 Dec 2025 07:47:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765352825;
+	s=2020; t=1765352831;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tmwtBs/zhn8pBV3Syoh/Qf2pfDGtBCcXCcKC6RYVKFA=;
-	b=e1JlVTaxFAvDA8k+D/HnSa053EJImNX7LX3Ma1GvXQZevggovmXB6Q7rykB0cLaL3u89J2
-	oB5dQFewmL07lHmmwy05oKQAc099GROXnZAmOxy8j4OGML1ZyWP/P+XLc5NfCIeEZzot73
-	ArbbdfKmpOHi3xLzB+iVwWsw4XKzQBI5+z46dCS16f6F0c7hT6g4oUTZFUFFFEfX4Hd4XN
-	4/uF8G380aZSxxjCUjbVgUFiF6MUiJn+wcr3/d0b4CKNI+AX88kY2DCqc8wPU9nSoJKPsg
-	XeRwooiYY3iKTf/5vWvlyH8/3v93FDhWrnBTsA4F/JK+yq+3Y1QobKxr4U3aGA==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Hwbe38Y3H+ahF2M3FXIcwaG9LXo/syvQba2kw5JhUKE=;
+	b=1U2+f2MKu0VyJMi1QNhRM416eWOAyk3Re/H/+pEWHvcyr9zzhku9cItmyCYb6cvUHuZuHx
+	VUJRY6RY/u9VOTbJ6fV6gIUFWuJKeQdJEkhOY0xuRaDnYi366xudjEa5ibnjkvt6TdeMaP
+	S+unzC+QFEvT2WjewWmSjUMxUXOfX5DEvUjSNptZxkuPvR7GPS3BkRQAs13yzc4/Bbhxwi
+	ZCua8aw56nIf9P6wkgiiZqVJsRT5pTu3NdgKRu1+mDaknmvKRoNIShxZVnJxFD+8Xdu47O
+	5JWKZL4Ph442xQJ3RK0fF+QVpZZS4xnhJerWq196124Xt4wG4wpLgzdfEadejw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765352825;
+	s=2020e; t=1765352831;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tmwtBs/zhn8pBV3Syoh/Qf2pfDGtBCcXCcKC6RYVKFA=;
-	b=foQsKDHtNaiNP2Qflhvdt7Cl1Gn0FaYGJLmyhXDKzeTpGHsCiUD2Yr0S2n6UP/NKfBZxie
-	WnxgZy7iuT3PKcDg==
-From: "tip-bot2 for Yongxin Liu" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Hwbe38Y3H+ahF2M3FXIcwaG9LXo/syvQba2kw5JhUKE=;
+	b=T2qd092Omj0XYrCLU879wtkm5/MJTxrMlFDFThB4BbKYB6rkEhqoVQNKv3FtUDHJzCxrTn
+	zXoXlBfFeQZM4zCw==
+From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/fpu: Fix FPU state core dump truncation on CPUs
- with no extended xfeatures
-Cc: Yongxin Liu <yongxin.liu@windriver.com>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251210000219.4094353-2-yongxin.liu@windriver.com>
-References: <20251210000219.4094353-2-yongxin.liu@windriver.com>
+Subject:
+ [tip: x86/boot] x86/boot/Documentation: Fix whitespace noise in boot.rst
+Cc:
+ Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org, x86@kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176535282315.498.10251081753003110803.tip-bot2@tip-bot2>
+Message-ID: <176535283007.498.16442167388418039352.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,61 +70,318 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     c8161e5304abb26e6c0bec6efc947992500fa6c5
-Gitweb:        https://git.kernel.org/tip/c8161e5304abb26e6c0bec6efc947992500=
-fa6c5
-Author:        Yongxin Liu <yongxin.liu@windriver.com>
-AuthorDate:    Wed, 10 Dec 2025 08:02:20 +08:00
+Commit-ID:     f6941415d7211142eeaf647c2bf0822ef8ad8cea
+Gitweb:        https://git.kernel.org/tip/f6941415d7211142eeaf647c2bf0822ef8a=
+d8cea
+Author:        Ingo Molnar <mingo@kernel.org>
+AuthorDate:    Wed, 10 Dec 2025 08:36:18 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 10 Dec 2025 08:44:34 +01:00
+CommitterDate: Wed, 10 Dec 2025 08:38:47 +01:00
 
-x86/fpu: Fix FPU state core dump truncation on CPUs with no extended xfeatures
+x86/boot/Documentation: Fix whitespace noise in boot.rst
 
-Zero can be a valid value of num_records. For example, on Intel Atom x6425RE,
-only x87 and SSE are supported (features 0, 1), and fpu_user_cfg.max_features
-is 3. The for_each_extended_xfeature() loop only iterates feature 2, which is
-not enabled, so num_records =3D 0. This is valid and should not cause core du=
-mp
-failure.
+There's a lot of unnecessary whitespace damage in this
+file: space before tabs, etc., that has no formatting
+or readability effect or advantages.
 
-The issue is that dump_xsave_layout_desc() returns 0 for both genuine errors
-(dump_emit() failure) and valid cases (no extended features). Use negative
-return values for errors and only abort on genuine failures.
+Fix them.
 
-Fixes: ba386777a30b ("x86/elf: Add a new FPU buffer layout info to x86 core f=
-iles")
-Signed-off-by: Yongxin Liu <yongxin.liu@windriver.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/20251210000219.4094353-2-yongxin.liu@windriver=
-.com
+Cc: linux-kernel@vger.kernel.org
 ---
- arch/x86/kernel/fpu/xstate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/arch/x86/boot.rst | 194 +++++++++++++++----------------
+ 1 file changed, 97 insertions(+), 97 deletions(-)
 
-diff --git a/arch/x86/kernel/fpu/xstate.c b/arch/x86/kernel/fpu/xstate.c
-index 48113c5..76153df 100644
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1946,7 +1946,7 @@ static int dump_xsave_layout_desc(struct coredump_param=
-s *cprm)
- 		};
+diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
+index 77e6163..ebb5c6f 100644
+--- a/Documentation/arch/x86/boot.rst
++++ b/Documentation/arch/x86/boot.rst
+@@ -95,26 +95,26 @@ Memory Layout
+ The traditional memory map for the kernel loader, used for Image or
+ zImage kernels, typically looks like::
 =20
- 		if (!dump_emit(cprm, &xc, sizeof(xc)))
--			return 0;
-+			return -1;
+-  		|  			 |
++		|  			 |
+   0A0000	+------------------------+
+-  		|  Reserved for BIOS	 |	Do not use.  Reserved for BIOS EBDA.
++		|  Reserved for BIOS	 |	Do not use.  Reserved for BIOS EBDA.
+   09A000	+------------------------+
+-  		|  Command line		 |
+-  		|  Stack/heap		 |	For use by the kernel real-mode code.
++		|  Command line		 |
++		|  Stack/heap		 |	For use by the kernel real-mode code.
+   098000	+------------------------+
+-  		|  Kernel setup		 |	The kernel real-mode code.
++		|  Kernel setup		 |	The kernel real-mode code.
+   090200	+------------------------+
+-  		|  Kernel boot sector	 |	The kernel legacy boot sector.
++		|  Kernel boot sector	 |	The kernel legacy boot sector.
+   090000	+------------------------+
+-  		|  Protected-mode kernel |	The bulk of the kernel image.
++		|  Protected-mode kernel |	The bulk of the kernel image.
+   010000	+------------------------+
+-  		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
++		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
+   001000	+------------------------+
+-  		|  Reserved for MBR/BIOS |
++		|  Reserved for MBR/BIOS |
+   000800	+------------------------+
+-  		|  Typically used by MBR |
++		|  Typically used by MBR |
+   000600	+------------------------+
+-  		|  BIOS use only	 |
++		|  BIOS use only	 |
+   000000	+------------------------+
 =20
- 		num_records++;
- 	}
-@@ -1984,7 +1984,7 @@ int elf_coredump_extra_notes_write(struct coredump_para=
-ms *cprm)
- 		return 1;
+ When using bzImage, the protected-mode kernel was relocated to
+@@ -142,27 +142,27 @@ above the 0x9A000 point; too many BIOSes will break abo=
+ve that point.
+ For a modern bzImage kernel with boot protocol version >=3D 2.02, a
+ memory layout like the following is suggested::
 =20
- 	num_records =3D dump_xsave_layout_desc(cprm);
--	if (!num_records)
-+	if (num_records < 0)
- 		return 1;
+-  		~  			 ~
+-  		|  Protected-mode kernel |
++		~  			 ~
++		|  Protected-mode kernel |
+   100000	+------------------------+
+-  		|  I/O memory hole	 |
++		|  I/O memory hole	 |
+   0A0000	+------------------------+
+-  		|  Reserved for BIOS	 |	Leave as much as possible unused
+-  		~  			 ~
+-  		|  Command line		 |	(Can also be below the X+10000 mark)
++		|  Reserved for BIOS	 |	Leave as much as possible unused
++		~  			 ~
++		|  Command line		 |	(Can also be below the X+10000 mark)
+   X+10000	+------------------------+
+-  		|  Stack/heap		 |	For use by the kernel real-mode code.
++		|  Stack/heap		 |	For use by the kernel real-mode code.
+   X+08000	+------------------------+
+-  		|  Kernel setup		 |	The kernel real-mode code.
+-  		|  Kernel boot sector	 |	The kernel legacy boot sector.
++		|  Kernel setup		 |	The kernel real-mode code.
++		|  Kernel boot sector	 |	The kernel legacy boot sector.
+   X		+------------------------+
+-  		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
++		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
+   001000	+------------------------+
+-  		|  Reserved for MBR/BIOS |
++		|  Reserved for MBR/BIOS |
+   000800	+------------------------+
+-  		|  Typically used by MBR |
++		|  Typically used by MBR |
+   000600	+------------------------+
+-  		|  BIOS use only	 |
++		|  BIOS use only	 |
+   000000	+------------------------+
 =20
- 	/* Total size should be equal to the number of records */
+   ... where the address X is as low as the design of the boot loader permits.
+@@ -809,12 +809,12 @@ Protocol:	2.09+
+   as follow::
+=20
+    struct setup_data {
+-   	__u64 next;
+-   	__u32 type;
+-   	__u32 len;
+-   	__u8 data[];
++	__u64 next;
++	__u32 type;
++	__u32 len;
++	__u8 data[];
+    }
+-  =20
++
+   Where, the next is a 64-bit physical pointer to the next node of
+   linked list, the next field of the last node is 0; the type is used
+   to identify the contents of data; the len is the length of data
+@@ -835,10 +835,10 @@ Protocol:	2.09+
+   protocol 2.15::
+=20
+    struct setup_indirect {
+-   	__u32 type;
+-   	__u32 reserved;		/* Reserved, must be set to zero. */
+-   	__u64 len;
+-   	__u64 addr;
++	__u32 type;
++	__u32 reserved;		/* Reserved, must be set to zero. */
++	__u64 len;
++	__u64 addr;
+    };
+=20
+   The type member is a SETUP_INDIRECT | SETUP_* type. However, it cannot be
+@@ -850,15 +850,15 @@ Protocol:	2.09+
+   In this case setup_data and setup_indirect will look like this::
+=20
+    struct setup_data {
+-   	.next =3D 0,	/* or <addr_of_next_setup_data_struct> */
+-   	.type =3D SETUP_INDIRECT,
+-   	.len =3D sizeof(setup_indirect),
+-   	.data[sizeof(setup_indirect)] =3D (struct setup_indirect) {
+-   		.type =3D SETUP_INDIRECT | SETUP_E820_EXT,
+-   		.reserved =3D 0,
+-   		.len =3D <len_of_SETUP_E820_EXT_data>,
+-   		.addr =3D <addr_of_SETUP_E820_EXT_data>,
+-   	},
++	.next =3D 0,	/* or <addr_of_next_setup_data_struct> */
++	.type =3D SETUP_INDIRECT,
++	.len =3D sizeof(setup_indirect),
++	.data[sizeof(setup_indirect)] =3D (struct setup_indirect) {
++		.type =3D SETUP_INDIRECT | SETUP_E820_EXT,
++		.reserved =3D 0,
++		.len =3D <len_of_SETUP_E820_EXT_data>,
++		.addr =3D <addr_of_SETUP_E820_EXT_data>,
++	},
+    }
+=20
+ .. note::
+@@ -897,11 +897,11 @@ Offset/size:	0x260/4
+   The kernel runtime start address is determined by the following algorithm::
+=20
+    if (relocatable_kernel) {
+-    	if (load_address < pref_address)
+-    		load_address =3D pref_address;
+-    	runtime_start =3D align_up(load_address, kernel_alignment);
++	if (load_address < pref_address)
++		load_address =3D pref_address;
++	runtime_start =3D align_up(load_address, kernel_alignment);
+    } else {
+-    	runtime_start =3D pref_address;
++	runtime_start =3D pref_address;
+    }
+=20
+ Hence the necessary memory window location and size can be estimated by
+@@ -975,22 +975,22 @@ after kernel_info_var_len_data label. Each chunk of var=
+iable size data has to
+ be prefixed with header/magic and its size, e.g.::
+=20
+   kernel_info:
+-  	.ascii  "LToP"		/* Header, Linux top (structure). */
+-  	.long   kernel_info_var_len_data - kernel_info
+-  	.long   kernel_info_end - kernel_info
+-  	.long   0x01234567	/* Some fixed size data for the bootloaders. */
++	.ascii  "LToP"		/* Header, Linux top (structure). */
++	.long   kernel_info_var_len_data - kernel_info
++	.long   kernel_info_end - kernel_info
++	.long   0x01234567	/* Some fixed size data for the bootloaders. */
+   kernel_info_var_len_data:
+   example_struct:		/* Some variable size data for the bootloaders. */
+-  	.ascii  "0123"		/* Header/Magic. */
+-  	.long   example_struct_end - example_struct
+-  	.ascii  "Struct"
+-  	.long   0x89012345
++	.ascii  "0123"		/* Header/Magic. */
++	.long   example_struct_end - example_struct
++	.ascii  "Struct"
++	.long   0x89012345
+   example_struct_end:
+   example_strings:		/* Some variable size data for the bootloaders. */
+-  	.ascii  "ABCD"		/* Header/Magic. */
+-  	.long   example_strings_end - example_strings
+-  	.asciz  "String_0"
+-  	.asciz  "String_1"
++	.ascii  "ABCD"		/* Header/Magic. */
++	.long   example_strings_end - example_strings
++	.asciz  "String_0"
++	.asciz  "String_1"
+   example_strings_end:
+   kernel_info_end:
+=20
+@@ -1132,53 +1132,53 @@ Such a boot loader should enter the following fields =
+in the header::
+   unsigned long base_ptr;	/* base address for real-mode segment */
+=20
+   if (setup_sects =3D=3D 0)
+-  	setup_sects =3D 4;
++	setup_sects =3D 4;
+=20
+   if (protocol >=3D 0x0200) {
+-  	type_of_loader =3D <type code>;
+-  	if (loading_initrd) {
+-  		ramdisk_image =3D <initrd_address>;
+-  		ramdisk_size =3D <initrd_size>;
+-  	}
+-
+-  	if (protocol >=3D 0x0202 && loadflags & 0x01)
+-  		heap_end =3D 0xe000;
+-  	else
+-  		heap_end =3D 0x9800;
+-
+-  	if (protocol >=3D 0x0201) {
+-  		heap_end_ptr =3D heap_end - 0x200;
+-  		loadflags |=3D 0x80;		/* CAN_USE_HEAP */
+-  	}
+-
+-  	if (protocol >=3D 0x0202) {
+-  		cmd_line_ptr =3D base_ptr + heap_end;
+-  		strcpy(cmd_line_ptr, cmdline);
+-  	} else {
+-  		cmd_line_magic	=3D 0xA33F;
+-  		cmd_line_offset =3D heap_end;
+-  		setup_move_size =3D heap_end + strlen(cmdline) + 1;
+-  		strcpy(base_ptr + cmd_line_offset, cmdline);
+-  	}
++	type_of_loader =3D <type code>;
++	if (loading_initrd) {
++		ramdisk_image =3D <initrd_address>;
++		ramdisk_size =3D <initrd_size>;
++	}
++
++	if (protocol >=3D 0x0202 && loadflags & 0x01)
++		heap_end =3D 0xe000;
++	else
++		heap_end =3D 0x9800;
++
++	if (protocol >=3D 0x0201) {
++		heap_end_ptr =3D heap_end - 0x200;
++		loadflags |=3D 0x80;		/* CAN_USE_HEAP */
++	}
++
++	if (protocol >=3D 0x0202) {
++		cmd_line_ptr =3D base_ptr + heap_end;
++		strcpy(cmd_line_ptr, cmdline);
++	} else {
++		cmd_line_magic	=3D 0xA33F;
++		cmd_line_offset =3D heap_end;
++		setup_move_size =3D heap_end + strlen(cmdline) + 1;
++		strcpy(base_ptr + cmd_line_offset, cmdline);
++	}
+   } else {
+-  	/* Very old kernel */
++	/* Very old kernel */
+=20
+-  	heap_end =3D 0x9800;
++	heap_end =3D 0x9800;
+=20
+-  	cmd_line_magic	=3D 0xA33F;
+-  	cmd_line_offset =3D heap_end;
++	cmd_line_magic	=3D 0xA33F;
++	cmd_line_offset =3D heap_end;
+=20
+-  	/* A very old kernel MUST have its real-mode code loaded at 0x90000 */
+-  	if (base_ptr !=3D 0x90000) {
+-  		/* Copy the real-mode kernel */
+-  		memcpy(0x90000, base_ptr, (setup_sects + 1) * 512);
+-  		base_ptr =3D 0x90000;		 /* Relocated */
+-  	}
++	/* A very old kernel MUST have its real-mode code loaded at 0x90000 */
++	if (base_ptr !=3D 0x90000) {
++		/* Copy the real-mode kernel */
++		memcpy(0x90000, base_ptr, (setup_sects + 1) * 512);
++		base_ptr =3D 0x90000;		 /* Relocated */
++	}
+=20
+-  	strcpy(0x90000 + cmd_line_offset, cmdline);
++	strcpy(0x90000 + cmd_line_offset, cmdline);
+=20
+-  	/* It is recommended to clear memory up to the 32K mark */
+-  	memset(0x90000 + (setup_sects + 1) * 512, 0, (64 - (setup_sects + 1)) * 5=
+12);
++	/* It is recommended to clear memory up to the 32K mark */
++	memset(0x90000 + (setup_sects + 1) * 512, 0, (64 - (setup_sects + 1)) * 512=
+);
+   }
+=20
+=20
 
