@@ -1,53 +1,58 @@
-Return-Path: <linux-tip-commits+bounces-7628-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7629-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FF7ACB2520
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 08:47:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C007CCB2544
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 08:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8FED30B6210
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 07:47:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB18C30056F2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 07:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2141B24EF76;
-	Wed, 10 Dec 2025 07:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940167080D;
+	Wed, 10 Dec 2025 07:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1U2+f2MK";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="T2qd092O"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HwvG8AkN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IO6vmxNB"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1BB207A20;
-	Wed, 10 Dec 2025 07:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF913635C;
+	Wed, 10 Dec 2025 07:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765352835; cv=none; b=pO48Xp5qIH5l/7m25Jfw+xoLWfcIKKWihBGz2zrEC1Uk/yipxo3EDO/Gq8N6SMDFt1jbhnU6A22FNHtfX7CUSW7OtEHMVL+kZuKjeVkFUTErulvDkOY5YoAL2O9RGU0oxKlsB1pNBTA6HZm38/q8tbdjbM3yFhQYQGHZcO5ku+o=
+	t=1765353208; cv=none; b=aVhK36ufforGIs2bn4ofbzdya2Iz7De7C0x5G2My6yuKCbvThLkpNuJJyneTmGPCsFt49whZXeMfT2rJvJXs2LlhgmmaK5yipFpX7qzC7+uxjKRLuZKR9PLhSvaT3g24pZXJMkIbDmtogAfAsc8Fy4MuxqtnOxnnzMqhjax28dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765352835; c=relaxed/simple;
-	bh=aIYPa/Pw3MGkEsASR5p6GwfvqRKLRkc3WC8uMyidLa0=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=mEiV+WgnEJiaHVIUQzwEGF8xK7kkcsg3m1eYh3mAdh58va5OAjYIm/qEheooPOE6n3+XBRjDq5sdCZQy7Gl4XMZcpyP/KHt/0Rr7v4wdjjIKxd0w7s8qvB3GV4KgSLlZKM3kjNvXVR4tLFDOQKA/iXHR/ewJ00x3Ns8/RVf/vKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1U2+f2MK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=T2qd092O; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1765353208; c=relaxed/simple;
+	bh=3oGNw7WBAlC13G9hDyjKug2/Cx1pSONMfLLZoA93gog=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=a76YvuKVB6UlFn5XF6nkQtezeL5KRhWUq20r1UmmO3iUrqaMR/PyUpvbOg6dFmJqO9ZoeghiwtjnMmk9njPo2P4kuhhLyLcgiuSB1q8jztVCczUuaArVyBGjfr2qEFdgU6WUfcjTycNTt7ge8TSmJGJys8zGEv5TGd7Au7D/x4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HwvG8AkN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IO6vmxNB; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Dec 2025 07:47:10 -0000
+Date: Wed, 10 Dec 2025 07:53:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765352831;
+	s=2020; t=1765353204;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=Hwbe38Y3H+ahF2M3FXIcwaG9LXo/syvQba2kw5JhUKE=;
-	b=1U2+f2MKu0VyJMi1QNhRM416eWOAyk3Re/H/+pEWHvcyr9zzhku9cItmyCYb6cvUHuZuHx
-	VUJRY6RY/u9VOTbJ6fV6gIUFWuJKeQdJEkhOY0xuRaDnYi366xudjEa5ibnjkvt6TdeMaP
-	S+unzC+QFEvT2WjewWmSjUMxUXOfX5DEvUjSNptZxkuPvR7GPS3BkRQAs13yzc4/Bbhxwi
-	ZCua8aw56nIf9P6wkgiiZqVJsRT5pTu3NdgKRu1+mDaknmvKRoNIShxZVnJxFD+8Xdu47O
-	5JWKZL4Ph442xQJ3RK0fF+QVpZZS4xnhJerWq196124Xt4wG4wpLgzdfEadejw==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7CYp9zWZ923ITfH0tV+yPleCjqurz46wPmtxqnK7D6g=;
+	b=HwvG8AkNUy3yKldHinEqMXt9h49a5fuWeo4dO5NvOrUSGzSlNRb/g+vAWdNWZnsRq00HGL
+	Us3/VBM7YcCPSsuMbpiY6BN4gIKKGbr20D4CJHfOuesgSyoTcfQzI0PN3lKUkqtGpH65+6
+	XliWdtfNb6uJJ2uB+KJlbWOK9Y9OpcpfuAAfaZuWLf8uYikEyUt+i525Vw7HgwxRESenx+
+	KBLwmwVopLrrEOfRrvSF357z1EbDnh/RGPqWy+6IgHGpCWnDgrNsZ2j8itVpzdFOV/6sJ0
+	EavBSzT3++2x11ogpuphvV30OklavCfcqELHQdTc6Zel/OMaAwSCO5kSOsyLOw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765352831;
+	s=2020e; t=1765353204;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=Hwbe38Y3H+ahF2M3FXIcwaG9LXo/syvQba2kw5JhUKE=;
-	b=T2qd092Omj0XYrCLU879wtkm5/MJTxrMlFDFThB4BbKYB6rkEhqoVQNKv3FtUDHJzCxrTn
-	zXoXlBfFeQZM4zCw==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7CYp9zWZ923ITfH0tV+yPleCjqurz46wPmtxqnK7D6g=;
+	b=IO6vmxNB3T8C3h6e+x9OHjvg0hm6bCUgGpFFxnjLUS5vPBJMktj8s5FzvTPhyMMCbhXieC
+	gFFWeLG1AyKUpKBA==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -55,14 +60,16 @@ To: linux-tip-commits@vger.kernel.org
 Subject:
  [tip: x86/boot] x86/boot/Documentation: Fix whitespace noise in boot.rst
 Cc:
- Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org, x86@kernel.org
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <176535283007.498.16442167388418039352.tip-bot2@tip-bot2>
+References: <176535283007.498.16442167388418039352.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176535283007.498.16442167388418039352.tip-bot2@tip-bot2>
+Message-ID: <176535320303.498.8991779738178387067.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -72,13 +79,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     f6941415d7211142eeaf647c2bf0822ef8ad8cea
-Gitweb:        https://git.kernel.org/tip/f6941415d7211142eeaf647c2bf0822ef8a=
-d8cea
+Commit-ID:     3c667b92a5481b60b60c6a20127aa112f2177b1f
+Gitweb:        https://git.kernel.org/tip/3c667b92a5481b60b60c6a20127aa112f21=
+77b1f
 Author:        Ingo Molnar <mingo@kernel.org>
 AuthorDate:    Wed, 10 Dec 2025 08:36:18 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 10 Dec 2025 08:38:47 +01:00
+CommitterDate: Wed, 10 Dec 2025 08:50:05 +01:00
 
 x86/boot/Documentation: Fix whitespace noise in boot.rst
 
@@ -89,7 +96,8 @@ or readability effect or advantages.
 Fix them.
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: linux-kernel@vger.kernel.org
+Link: https://patch.msgid.link/176535283007.498.16442167388418039352.tip-bot2=
+@tip-bot2
 ---
  Documentation/arch/x86/boot.rst | 194 +++++++++++++++----------------
  1 file changed, 97 insertions(+), 97 deletions(-)
