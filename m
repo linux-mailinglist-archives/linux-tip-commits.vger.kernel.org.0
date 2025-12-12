@@ -1,75 +1,71 @@
-Return-Path: <linux-tip-commits+bounces-7629-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7631-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C007CCB2544
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 08:53:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA6CCB84EC
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Dec 2025 09:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB18C30056F2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 10 Dec 2025 07:53:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC9693004CC7
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 12 Dec 2025 08:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940167080D;
-	Wed, 10 Dec 2025 07:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E582D592D;
+	Fri, 12 Dec 2025 08:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HwvG8AkN";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IO6vmxNB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="2ihEAZFP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mB8f009P"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EF913635C;
-	Wed, 10 Dec 2025 07:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34CA1F151C;
+	Fri, 12 Dec 2025 08:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765353208; cv=none; b=aVhK36ufforGIs2bn4ofbzdya2Iz7De7C0x5G2My6yuKCbvThLkpNuJJyneTmGPCsFt49whZXeMfT2rJvJXs2LlhgmmaK5yipFpX7qzC7+uxjKRLuZKR9PLhSvaT3g24pZXJMkIbDmtogAfAsc8Fy4MuxqtnOxnnzMqhjax28dQ=
+	t=1765529194; cv=none; b=Yy+Jdaow2HTLLCzIS6sUT+SpOZQOQsllYvjfX4NiX7nEpy38N8hckUgPWxBQWpw7+g9Ds4uu+raj/wXMVm+o2krI/qn1rxBroOaev5Cbl4BaA/NTgPGhFMdAqVFhKGb2Z5L5HLfhg1ppoOuyHtEeYZuV3yLiwyuNgeVsQjwvJYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765353208; c=relaxed/simple;
-	bh=3oGNw7WBAlC13G9hDyjKug2/Cx1pSONMfLLZoA93gog=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=a76YvuKVB6UlFn5XF6nkQtezeL5KRhWUq20r1UmmO3iUrqaMR/PyUpvbOg6dFmJqO9ZoeghiwtjnMmk9njPo2P4kuhhLyLcgiuSB1q8jztVCczUuaArVyBGjfr2qEFdgU6WUfcjTycNTt7ge8TSmJGJys8zGEv5TGd7Au7D/x4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HwvG8AkN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IO6vmxNB; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1765529194; c=relaxed/simple;
+	bh=kaygFpEKXYYDG+8/UngONMN6MifrZk7dcXSC2iGWp6k=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Jpx3pLcTFNekrOyNayb+0hNMegsxivrbK8n8Zu4ugU2ndkQ/c9hhxxwAepLC73Se8GvyWyBJrF4nolzJ72zbO6jCpJFPMXsaaUQ68HHXLrLwbse78yIp7CfdPHmBJ0GzZdCvA0xyNmmKhuLYGwilXjn+t1aPFOU5a9K+zcHvg0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=2ihEAZFP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mB8f009P; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 10 Dec 2025 07:53:23 -0000
+Date: Fri, 12 Dec 2025 08:45:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765353204;
+	s=2020; t=1765529190;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7CYp9zWZ923ITfH0tV+yPleCjqurz46wPmtxqnK7D6g=;
-	b=HwvG8AkNUy3yKldHinEqMXt9h49a5fuWeo4dO5NvOrUSGzSlNRb/g+vAWdNWZnsRq00HGL
-	Us3/VBM7YcCPSsuMbpiY6BN4gIKKGbr20D4CJHfOuesgSyoTcfQzI0PN3lKUkqtGpH65+6
-	XliWdtfNb6uJJ2uB+KJlbWOK9Y9OpcpfuAAfaZuWLf8uYikEyUt+i525Vw7HgwxRESenx+
-	KBLwmwVopLrrEOfRrvSF357z1EbDnh/RGPqWy+6IgHGpCWnDgrNsZ2j8itVpzdFOV/6sJ0
-	EavBSzT3++2x11ogpuphvV30OklavCfcqELHQdTc6Zel/OMaAwSCO5kSOsyLOw==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=1Kk3NLtioyUgckFe1IfCGVHk3jqy0cosuqQPx1RnTVk=;
+	b=2ihEAZFP9fjGEFelDbc1iZs36vjFM3fHNK2kcetJpULv+9QR6nBegj0gw3y4ZQh1/JHVGH
+	hDWvyFnuJnNcf1IEwfF8vItYWgtOTeiK34FNv3KRDGbqAckeY6kDhRiYK0MEjI7lWlzXiH
+	qxjOwWpTtr2Xk6NgiOXmPrdp05TAzmdtZjCFEFM4AJXyjPbP+TbRtGOuilLB/jBGXXpaWx
+	FCRlsFkT6AvKCzArV0zOFRixAfZqByxwu6EGB4ObN60GwqF2qTKlglxAy1G5RnWySvpaH9
+	w/b73OByVQ7rGDsIUyI7YKb0xe2pfIUPcyUlZNYmrzMoS4BNNU6E1EUtQOLoCw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765353204;
+	s=2020e; t=1765529190;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7CYp9zWZ923ITfH0tV+yPleCjqurz46wPmtxqnK7D6g=;
-	b=IO6vmxNB3T8C3h6e+x9OHjvg0hm6bCUgGpFFxnjLUS5vPBJMktj8s5FzvTPhyMMCbhXieC
-	gFFWeLG1AyKUpKBA==
-From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=1Kk3NLtioyUgckFe1IfCGVHk3jqy0cosuqQPx1RnTVk=;
+	b=mB8f009PBu6mwsa3xfwwnx5u/n97O0wX1qqhe+jShhPmdpC5WxZLp4Aee8D2h2Dq7FF8cX
+	3HFdYkPNbUutTiAw==
+From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/boot] x86/boot/Documentation: Fix whitespace noise in boot.rst
-Cc:
- Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <176535283007.498.16442167388418039352.tip-bot2@tip-bot2>
-References: <176535283007.498.16442167388418039352.tip-bot2@tip-bot2>
+Subject: [tip: x86/urgent] x86/acpi/boot: Correct acpi_is_processor_usable()
+ check again
+Cc: Michal Pecio <michal.pecio@gmail.com>,
+ Yazen Ghannam <yazen.ghannam@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ Ingo Molnar <mingo@kernel.org>,
+ Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176535320303.498.8991779738178387067.tip-bot2@tip-bot2>
+Message-ID: <176552911836.498.14233165896834824768.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,319 +73,140 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     3c667b92a5481b60b60c6a20127aa112f2177b1f
-Gitweb:        https://git.kernel.org/tip/3c667b92a5481b60b60c6a20127aa112f21=
-77b1f
-Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Wed, 10 Dec 2025 08:36:18 +01:00
+Commit-ID:     4368a3b96c427ea3299be8cedb28684ba4157529
+Gitweb:        https://git.kernel.org/tip/4368a3b96c427ea3299be8cedb28684ba41=
+57529
+Author:        Yazen Ghannam <yazen.ghannam@amd.com>
+AuthorDate:    Tue, 11 Nov 2025 14:53:57=20
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 10 Dec 2025 08:50:05 +01:00
+CommitterDate: Fri, 12 Dec 2025 09:38:30 +01:00
 
-x86/boot/Documentation: Fix whitespace noise in boot.rst
+x86/acpi/boot: Correct acpi_is_processor_usable() check again
 
-There's a lot of unnecessary whitespace damage in this
-file: space before tabs, etc., that has no formatting
-or readability effect or advantages.
+ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
+used in conjunction with the "Enabled" MADT LAPIC flag to determine if
+a CPU can be enabled/hotplugged by the OS after boot.
 
-Fix them.
+Before the new bit was defined, the "Enabled" bit was explicitly
+described like this (ACPI v6.0 wording provided):
 
+  "If zero, this processor is unusable, and the operating system
+  support will not attempt to use it"
+
+This means that CPU hotplug (based on MADT) is not possible. Many BIOS
+implementations follow this guidance. They may include LAPIC entries in
+MADT for unavailable CPUs, but since these entries are marked with
+"Enabled=3D0" it is expected that the OS will completely ignore these
+entries.
+
+However, QEMU will do the same (include entries with "Enabled=3D0") for
+the purpose of allowing CPU hotplug within the guest.
+
+Comment from QEMU function pc_madt_cpu_entry():
+
+  /* ACPI spec says that LAPIC entry for non present
+   * CPU may be omitted from MADT or it must be marked
+   * as disabled. However omitting non present CPU from
+   * MADT breaks hotplug on linux. So possible CPUs
+   * should be put in MADT but kept disabled.
+   */
+
+Recent Linux topology changes broke the QEMU use case. A following fix
+for the QEMU use case broke bare metal topology enumeration.
+
+Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
+for guests and to maintain the ACPI spec behavior for bare metal.
+
+Remove an unnecessary check added to fix a bare metal case introduced by
+the QEMU "fix".
+
+  [ bp: Change logic as Michal suggested. ]
+
+Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check=
+")
+Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present =
+package")
+Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.=
+com
+Reported-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/176535283007.498.16442167388418039352.tip-bot2=
-@tip-bot2
+Tested-by: Michal Pecio <michal.pecio@gmail.com>
+Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
 ---
- Documentation/arch/x86/boot.rst | 194 +++++++++++++++----------------
- 1 file changed, 97 insertions(+), 97 deletions(-)
+ arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
+ arch/x86/kernel/cpu/topology.c | 15 ---------------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/arch/x86/boot.rst b/Documentation/arch/x86/boot.rst
-index 77e6163..ebb5c6f 100644
---- a/Documentation/arch/x86/boot.rst
-+++ b/Documentation/arch/x86/boot.rst
-@@ -95,26 +95,26 @@ Memory Layout
- The traditional memory map for the kernel loader, used for Image or
- zImage kernels, typically looks like::
+diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
+index 9fa321a..d6138b2 100644
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -35,6 +35,7 @@
+ #include <asm/smp.h>
+ #include <asm/i8259.h>
+ #include <asm/setup.h>
++#include <asm/hypervisor.h>
 =20
--  		|  			 |
-+		|  			 |
-   0A0000	+------------------------+
--  		|  Reserved for BIOS	 |	Do not use.  Reserved for BIOS EBDA.
-+		|  Reserved for BIOS	 |	Do not use.  Reserved for BIOS EBDA.
-   09A000	+------------------------+
--  		|  Command line		 |
--  		|  Stack/heap		 |	For use by the kernel real-mode code.
-+		|  Command line		 |
-+		|  Stack/heap		 |	For use by the kernel real-mode code.
-   098000	+------------------------+
--  		|  Kernel setup		 |	The kernel real-mode code.
-+		|  Kernel setup		 |	The kernel real-mode code.
-   090200	+------------------------+
--  		|  Kernel boot sector	 |	The kernel legacy boot sector.
-+		|  Kernel boot sector	 |	The kernel legacy boot sector.
-   090000	+------------------------+
--  		|  Protected-mode kernel |	The bulk of the kernel image.
-+		|  Protected-mode kernel |	The bulk of the kernel image.
-   010000	+------------------------+
--  		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
-+		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
-   001000	+------------------------+
--  		|  Reserved for MBR/BIOS |
-+		|  Reserved for MBR/BIOS |
-   000800	+------------------------+
--  		|  Typically used by MBR |
-+		|  Typically used by MBR |
-   000600	+------------------------+
--  		|  BIOS use only	 |
-+		|  BIOS use only	 |
-   000000	+------------------------+
+ #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
+ static int __initdata acpi_force =3D 0;
+@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_f=
+lags)
+ 	if (lapic_flags & ACPI_MADT_ENABLED)
+ 		return true;
 =20
- When using bzImage, the protected-mode kernel was relocated to
-@@ -142,27 +142,27 @@ above the 0x9A000 point; too many BIOSes will break abo=
-ve that point.
- For a modern bzImage kernel with boot protocol version >=3D 2.02, a
- memory layout like the following is suggested::
+-	if (!acpi_support_online_capable ||
+-	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
+-		return true;
++	if (acpi_support_online_capable)
++		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
 =20
--  		~  			 ~
--  		|  Protected-mode kernel |
-+		~  			 ~
-+		|  Protected-mode kernel |
-   100000	+------------------------+
--  		|  I/O memory hole	 |
-+		|  I/O memory hole	 |
-   0A0000	+------------------------+
--  		|  Reserved for BIOS	 |	Leave as much as possible unused
--  		~  			 ~
--  		|  Command line		 |	(Can also be below the X+10000 mark)
-+		|  Reserved for BIOS	 |	Leave as much as possible unused
-+		~  			 ~
-+		|  Command line		 |	(Can also be below the X+10000 mark)
-   X+10000	+------------------------+
--  		|  Stack/heap		 |	For use by the kernel real-mode code.
-+		|  Stack/heap		 |	For use by the kernel real-mode code.
-   X+08000	+------------------------+
--  		|  Kernel setup		 |	The kernel real-mode code.
--  		|  Kernel boot sector	 |	The kernel legacy boot sector.
-+		|  Kernel setup		 |	The kernel real-mode code.
-+		|  Kernel boot sector	 |	The kernel legacy boot sector.
-   X		+------------------------+
--  		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
-+		|  Boot loader		 |	<- Boot sector entry point 0000:7C00
-   001000	+------------------------+
--  		|  Reserved for MBR/BIOS |
-+		|  Reserved for MBR/BIOS |
-   000800	+------------------------+
--  		|  Typically used by MBR |
-+		|  Typically used by MBR |
-   000600	+------------------------+
--  		|  BIOS use only	 |
-+		|  BIOS use only	 |
-   000000	+------------------------+
+-	return false;
++	/*
++	 * QEMU expects legacy "Enabled=3D0" LAPIC entries to be counted as usable
++	 * in order to support CPU hotplug in guests.
++	 */
++	return !hypervisor_is_type(X86_HYPER_NATIVE);
+ }
 =20
-   ... where the address X is as low as the design of the boot loader permits.
-@@ -809,12 +809,12 @@ Protocol:	2.09+
-   as follow::
+ static int __init
+diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
+index f55ea3c..23190a7 100644
+--- a/arch/x86/kernel/cpu/topology.c
++++ b/arch/x86/kernel/cpu/topology.c
+@@ -27,7 +27,6 @@
+ #include <xen/xen.h>
 =20
-    struct setup_data {
--   	__u64 next;
--   	__u32 type;
--   	__u32 len;
--   	__u8 data[];
-+	__u64 next;
-+	__u32 type;
-+	__u32 len;
-+	__u8 data[];
-    }
--  =20
-+
-   Where, the next is a 64-bit physical pointer to the next node of
-   linked list, the next field of the last node is 0; the type is used
-   to identify the contents of data; the len is the length of data
-@@ -835,10 +835,10 @@ Protocol:	2.09+
-   protocol 2.15::
-=20
-    struct setup_indirect {
--   	__u32 type;
--   	__u32 reserved;		/* Reserved, must be set to zero. */
--   	__u64 len;
--   	__u64 addr;
-+	__u32 type;
-+	__u32 reserved;		/* Reserved, must be set to zero. */
-+	__u64 len;
-+	__u64 addr;
-    };
-=20
-   The type member is a SETUP_INDIRECT | SETUP_* type. However, it cannot be
-@@ -850,15 +850,15 @@ Protocol:	2.09+
-   In this case setup_data and setup_indirect will look like this::
-=20
-    struct setup_data {
--   	.next =3D 0,	/* or <addr_of_next_setup_data_struct> */
--   	.type =3D SETUP_INDIRECT,
--   	.len =3D sizeof(setup_indirect),
--   	.data[sizeof(setup_indirect)] =3D (struct setup_indirect) {
--   		.type =3D SETUP_INDIRECT | SETUP_E820_EXT,
--   		.reserved =3D 0,
--   		.len =3D <len_of_SETUP_E820_EXT_data>,
--   		.addr =3D <addr_of_SETUP_E820_EXT_data>,
--   	},
-+	.next =3D 0,	/* or <addr_of_next_setup_data_struct> */
-+	.type =3D SETUP_INDIRECT,
-+	.len =3D sizeof(setup_indirect),
-+	.data[sizeof(setup_indirect)] =3D (struct setup_indirect) {
-+		.type =3D SETUP_INDIRECT | SETUP_E820_EXT,
-+		.reserved =3D 0,
-+		.len =3D <len_of_SETUP_E820_EXT_data>,
-+		.addr =3D <addr_of_SETUP_E820_EXT_data>,
-+	},
-    }
-=20
- .. note::
-@@ -897,11 +897,11 @@ Offset/size:	0x260/4
-   The kernel runtime start address is determined by the following algorithm::
-=20
-    if (relocatable_kernel) {
--    	if (load_address < pref_address)
--    		load_address =3D pref_address;
--    	runtime_start =3D align_up(load_address, kernel_alignment);
-+	if (load_address < pref_address)
-+		load_address =3D pref_address;
-+	runtime_start =3D align_up(load_address, kernel_alignment);
-    } else {
--    	runtime_start =3D pref_address;
-+	runtime_start =3D pref_address;
-    }
-=20
- Hence the necessary memory window location and size can be estimated by
-@@ -975,22 +975,22 @@ after kernel_info_var_len_data label. Each chunk of var=
-iable size data has to
- be prefixed with header/magic and its size, e.g.::
-=20
-   kernel_info:
--  	.ascii  "LToP"		/* Header, Linux top (structure). */
--  	.long   kernel_info_var_len_data - kernel_info
--  	.long   kernel_info_end - kernel_info
--  	.long   0x01234567	/* Some fixed size data for the bootloaders. */
-+	.ascii  "LToP"		/* Header, Linux top (structure). */
-+	.long   kernel_info_var_len_data - kernel_info
-+	.long   kernel_info_end - kernel_info
-+	.long   0x01234567	/* Some fixed size data for the bootloaders. */
-   kernel_info_var_len_data:
-   example_struct:		/* Some variable size data for the bootloaders. */
--  	.ascii  "0123"		/* Header/Magic. */
--  	.long   example_struct_end - example_struct
--  	.ascii  "Struct"
--  	.long   0x89012345
-+	.ascii  "0123"		/* Header/Magic. */
-+	.long   example_struct_end - example_struct
-+	.ascii  "Struct"
-+	.long   0x89012345
-   example_struct_end:
-   example_strings:		/* Some variable size data for the bootloaders. */
--  	.ascii  "ABCD"		/* Header/Magic. */
--  	.long   example_strings_end - example_strings
--  	.asciz  "String_0"
--  	.asciz  "String_1"
-+	.ascii  "ABCD"		/* Header/Magic. */
-+	.long   example_strings_end - example_strings
-+	.asciz  "String_0"
-+	.asciz  "String_1"
-   example_strings_end:
-   kernel_info_end:
-=20
-@@ -1132,53 +1132,53 @@ Such a boot loader should enter the following fields =
-in the header::
-   unsigned long base_ptr;	/* base address for real-mode segment */
-=20
-   if (setup_sects =3D=3D 0)
--  	setup_sects =3D 4;
-+	setup_sects =3D 4;
-=20
-   if (protocol >=3D 0x0200) {
--  	type_of_loader =3D <type code>;
--  	if (loading_initrd) {
--  		ramdisk_image =3D <initrd_address>;
--  		ramdisk_size =3D <initrd_size>;
--  	}
+ #include <asm/apic.h>
+-#include <asm/hypervisor.h>
+ #include <asm/io_apic.h>
+ #include <asm/mpspec.h>
+ #include <asm/msr.h>
+@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 a=
+cpi_id, bool present)
+ 		cpuid_to_apicid[cpu] =3D apic_id;
+ 		topo_set_cpuids(cpu, apic_id, acpi_id);
+ 	} else {
+-		u32 pkgid =3D topo_apicid(apic_id, TOPO_PKG_DOMAIN);
 -
--  	if (protocol >=3D 0x0202 && loadflags & 0x01)
--  		heap_end =3D 0xe000;
--  	else
--  		heap_end =3D 0x9800;
+-		/*
+-		 * Check for present APICs in the same package when running
+-		 * on bare metal. Allow the bogosity in a guest.
+-		 */
+-		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
+-		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
+-			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
+-				     apic_id);
+-			topo_info.nr_rejected_cpus++;
+-			return;
+-		}
 -
--  	if (protocol >=3D 0x0201) {
--  		heap_end_ptr =3D heap_end - 0x200;
--  		loadflags |=3D 0x80;		/* CAN_USE_HEAP */
--  	}
--
--  	if (protocol >=3D 0x0202) {
--  		cmd_line_ptr =3D base_ptr + heap_end;
--  		strcpy(cmd_line_ptr, cmdline);
--  	} else {
--  		cmd_line_magic	=3D 0xA33F;
--  		cmd_line_offset =3D heap_end;
--  		setup_move_size =3D heap_end + strlen(cmdline) + 1;
--  		strcpy(base_ptr + cmd_line_offset, cmdline);
--  	}
-+	type_of_loader =3D <type code>;
-+	if (loading_initrd) {
-+		ramdisk_image =3D <initrd_address>;
-+		ramdisk_size =3D <initrd_size>;
-+	}
-+
-+	if (protocol >=3D 0x0202 && loadflags & 0x01)
-+		heap_end =3D 0xe000;
-+	else
-+		heap_end =3D 0x9800;
-+
-+	if (protocol >=3D 0x0201) {
-+		heap_end_ptr =3D heap_end - 0x200;
-+		loadflags |=3D 0x80;		/* CAN_USE_HEAP */
-+	}
-+
-+	if (protocol >=3D 0x0202) {
-+		cmd_line_ptr =3D base_ptr + heap_end;
-+		strcpy(cmd_line_ptr, cmdline);
-+	} else {
-+		cmd_line_magic	=3D 0xA33F;
-+		cmd_line_offset =3D heap_end;
-+		setup_move_size =3D heap_end + strlen(cmdline) + 1;
-+		strcpy(base_ptr + cmd_line_offset, cmdline);
-+	}
-   } else {
--  	/* Very old kernel */
-+	/* Very old kernel */
-=20
--  	heap_end =3D 0x9800;
-+	heap_end =3D 0x9800;
-=20
--  	cmd_line_magic	=3D 0xA33F;
--  	cmd_line_offset =3D heap_end;
-+	cmd_line_magic	=3D 0xA33F;
-+	cmd_line_offset =3D heap_end;
-=20
--  	/* A very old kernel MUST have its real-mode code loaded at 0x90000 */
--  	if (base_ptr !=3D 0x90000) {
--  		/* Copy the real-mode kernel */
--  		memcpy(0x90000, base_ptr, (setup_sects + 1) * 512);
--  		base_ptr =3D 0x90000;		 /* Relocated */
--  	}
-+	/* A very old kernel MUST have its real-mode code loaded at 0x90000 */
-+	if (base_ptr !=3D 0x90000) {
-+		/* Copy the real-mode kernel */
-+		memcpy(0x90000, base_ptr, (setup_sects + 1) * 512);
-+		base_ptr =3D 0x90000;		 /* Relocated */
-+	}
-=20
--  	strcpy(0x90000 + cmd_line_offset, cmdline);
-+	strcpy(0x90000 + cmd_line_offset, cmdline);
-=20
--  	/* It is recommended to clear memory up to the 32K mark */
--  	memset(0x90000 + (setup_sects + 1) * 512, 0, (64 - (setup_sects + 1)) * 5=
-12);
-+	/* It is recommended to clear memory up to the 32K mark */
-+	memset(0x90000 + (setup_sects + 1) * 512, 0, (64 - (setup_sects + 1)) * 512=
-);
-   }
-=20
+ 		topo_info.nr_disabled_cpus++;
+ 	}
 =20
 
