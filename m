@@ -1,63 +1,63 @@
-Return-Path: <linux-tip-commits+bounces-7677-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7680-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF04FCBB84D
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 09:43:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 377FECBB80E
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 09:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 399C1304D0FC
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:37:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A507A3005032
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F9C2D23A3;
-	Sun, 14 Dec 2025 08:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11E1C18787A;
+	Sun, 14 Dec 2025 08:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kHEo/15G";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="VTQNUGyL"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MhMQR0IM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="e5uHlYjq"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72D22C11DB;
-	Sun, 14 Dec 2025 08:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF8D2C11EB;
+	Sun, 14 Dec 2025 08:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765701458; cv=none; b=NFkfrEZdAFp51a5sMZGZ5k2PrCW/McoXRyVIZ+qapZX7F27Mu97Y0dWVyM3h8z/QvENKQF0UBE2hKiTKe/7m4eta2lyIeBAKEetleNKeW2wJ60/y/VffYOaKSwr127F+ZG+5HD1+KMbtMUK7E8t9eDAWPds6mgu6SgQaK3ZOTWg=
+	t=1765701459; cv=none; b=rZkISD88wuRSzI7F6hMVKg1zC46jSyyZUCsLXBhSn+Zk0CRaeEV/mkW2THu10jeNQbA+U8vOOs/fC7XKp+tBNTEGgX/nMXkBfoOw7fXKzHb5eiLsEKQBY9SfRl+sQGQb+WOwhtD0mxEGHoRtD0nof5uJ6PszJUlFpc2ILFRItwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765701458; c=relaxed/simple;
-	bh=Rfwc/ayn4UjJRNTbUqre5hT4IfJaTYKx5XBd215C4HA=;
+	s=arc-20240116; t=1765701459; c=relaxed/simple;
+	bh=IaR4iRcbbpaqkpAjHhTteDzeiClb4vItA5KSaN8WhCc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=S6/+E1xW7566mz6ocyvlPJHOxm5WR7/ll3z0+OBQLcOG8GQ14DlrjGdRRcApfXawtD0QRSV694tSd3FvO2v6xNY64T+fv6GFSM+XOdh3EV72poTHCMe6VpwFKUYUvFLoHsATlVcECZCiqv6Ywt+nqPsH2mgwPi9GTQn0apV9zS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kHEo/15G; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=VTQNUGyL; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=drsMbNtn+ZilZLdl/QcsI384KRDJq3ISVLrmiccWhMcFWBNbwqzL7EjVAnXWks9nsQS4WwIRFx57ZhC2ZmjyzWdPVWon6AMsAQ7rZv6j5nMB1rRbK6IuD8fTWm3jOIsgMGUq/PHYD9AGHzKQhZir/1kovsaPSpBMaydbzklwOBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MhMQR0IM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=e5uHlYjq; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Dec 2025 08:37:34 -0000
+Date: Sun, 14 Dec 2025 08:37:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765701455;
+	s=2020; t=1765701456;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FOR89DdUDQuhjsV3k4Apvvln/JVFrMsKQo/mgk4XBe8=;
-	b=kHEo/15GVmdY6A5M3/wjayvt8gXLOnl1MjIiiq7RK1l53NLcPq8CDWU831DEqGZmx59mQj
-	JWck0lkiZlm0genqELlhUXdqZhWbMMSnllbIBaLu3QdnhAF1ZVlAiTemThIFz4eVmTJKiN
-	ZbeSMa7YJoEqCWLP5lleADjZ1uNb9BZQ6ADhV4AJQyH2whRvrSMFQpEoOcGHsvldvFCqk4
-	C07wUkXq4RRkjxMuxF/9xW0Vrsfvjqt3q3zymwbO9H2JZUFOO4wnsRBDcoAzUGum2rbbci
-	ysdFBwltY+nqNrVP5iI9lIyYjSRDXomcBEulgRffqjzxXmHKT09Eyp5Zi2heOw==
+	bh=uys477tbVbW38gDVBbtzr4ZCkyHUYFKYYwj4lGBg7CU=;
+	b=MhMQR0IMf6H4pEChXV2dWkaGimMFKXekkZP2go/uBXCCcN5v1BoYJpUPonkl/b7gU1AAy8
+	qFF2V4bWLa6QbBIKva2FLwptgwcQ+dbHMF4JaoAOnqAqy0qOavTBQihsq6d/I2qJXtAKEo
+	3i1nO+8cACvP81W6A9wXESv7RTe2xw7nZTruERp11QUiI7dF+LlYSewpyTNyDN0P7j4svN
+	9BBoDdR/XGSHliFB/oHL46rP7Hdt2GY7z8lLJEz+Y2tdZuKHNBVGY4d6FMfh7056UGzitl
+	B6TFp1GoiDhRp+Sr4ximiJGopyaTbW//2LFPgHsW1rnWftCC65e7R7qfmgAGTQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765701455;
+	s=2020e; t=1765701456;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FOR89DdUDQuhjsV3k4Apvvln/JVFrMsKQo/mgk4XBe8=;
-	b=VTQNUGyLc+Ci+AIWOmMqjHnCIBc/gFB+kENkAqTlWyGB04o+xj5t7QJiILZPHLrZQrHrv9
-	AI8z1+Ar6c+v2EAg==
+	bh=uys477tbVbW38gDVBbtzr4ZCkyHUYFKYYwj4lGBg7CU=;
+	b=e5uHlYjq6Uu/Yb/792TAvLT6TZBymLaIWs5O/jA7sasDb7Zlg7UvUWTMUtK+LaB3c9BsUw
+	thfws2TdeNPLQOBg==
 From: "tip-bot2 for Ingo Molnar" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/boot] x86/boot/e820: Clean up __refdata use a bit
+Subject: [tip: x86/boot] x86/boot/e820: Clean up __e820__range_add() a bit
 Cc: Ingo Molnar <mingo@kernel.org>, Andy Shevchenko <andy@kernel.org>,
  Arnd Bergmann <arnd@kernel.org>, Borislav Petkov <bp@alien8.de>,
  Juergen Gross <jgross@suse.com>, "H . Peter Anvin" <hpa@zytor.com>,
@@ -67,15 +67,15 @@ Cc: Ingo Molnar <mingo@kernel.org>, Andy Shevchenko <andy@kernel.org>,
  Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
  David Woodhouse <dwmw@amazon.co.uk>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20250515120549.2820541-16-mingo@kernel.org>
-References: <20250515120549.2820541-16-mingo@kernel.org>
+In-Reply-To: <20250515120549.2820541-15-mingo@kernel.org>
+References: <20250515120549.2820541-15-mingo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176570145411.498.14602338476948820983.tip-bot2@tip-bot2>
+Message-ID: <176570145525.498.17211876197299706287.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,19 +85,19 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/boot branch of tip:
 
-Commit-ID:     2774ae1046fb1504908f8387351485cd0fc71108
-Gitweb:        https://git.kernel.org/tip/2774ae1046fb1504908f8387351485cd0fc=
-71108
+Commit-ID:     a4803df3a2b145fd17bc3d4c23c4c12c74951299
+Gitweb:        https://git.kernel.org/tip/a4803df3a2b145fd17bc3d4c23c4c12c749=
+51299
 Author:        Ingo Molnar <mingo@kernel.org>
-AuthorDate:    Thu, 15 May 2025 14:05:31 +02:00
+AuthorDate:    Thu, 15 May 2025 14:05:30 +02:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sun, 14 Dec 2025 09:19:39 +01:00
 
-x86/boot/e820: Clean up __refdata use a bit
+x86/boot/e820: Clean up __e820__range_add() a bit
 
-So __refdata, like __init, is more of a storage class specifier,
-so move the attribute in front of the type, not after the variable
-name. This also aligns it vertically.
+ - Use 'idx' index variable instead of a weird 'x'
+ - Make the error message E820-specific
+ - Group the code a bit better
 
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Cc: Andy Shevchenko <andy@kernel.org>
@@ -112,28 +112,40 @@ Cc: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: David Woodhouse <dwmw@amazon.co.uk>
-Link: https://patch.msgid.link/20250515120549.2820541-16-mingo@kernel.org
+Link: https://patch.msgid.link/20250515120549.2820541-15-mingo@kernel.org
 ---
- arch/x86/kernel/e820.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/e820.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/arch/x86/kernel/e820.c b/arch/x86/kernel/e820.c
-index 4340751..2ce8ca5 100644
+index 0c3f12f..4340751 100644
 --- a/arch/x86/kernel/e820.c
 +++ b/arch/x86/kernel/e820.c
-@@ -61,9 +61,9 @@ static struct e820_table e820_table_init		__initdata;
- static struct e820_table e820_table_kexec_init		__initdata;
- static struct e820_table e820_table_firmware_init	__initdata;
+@@ -166,17 +166,18 @@ int e820__get_entry_type(u64 start, u64 end)
+  */
+ static void __init __e820__range_add(struct e820_table *table, u64 start, u6=
+4 size, enum e820_type type)
+ {
+-	int x =3D table->nr_entries;
++	int idx =3D table->nr_entries;
 =20
--struct e820_table *e820_table __refdata			=3D &e820_table_init;
--struct e820_table *e820_table_kexec __refdata		=3D &e820_table_kexec_init;
--struct e820_table *e820_table_firmware __refdata	=3D &e820_table_firmware_in=
-it;
-+__refdata struct e820_table *e820_table			=3D &e820_table_init;
-+__refdata struct e820_table *e820_table_kexec		=3D &e820_table_kexec_init;
-+__refdata struct e820_table *e820_table_firmware	=3D &e820_table_firmware_in=
-it;
+-	if (x >=3D ARRAY_SIZE(table->entries)) {
+-		pr_err("too many entries; ignoring [mem %#010llx-%#010llx]\n",
+-		       start, start + size - 1);
++	if (idx >=3D ARRAY_SIZE(table->entries)) {
++		pr_err("too many E820 table entries; ignoring [mem %#010llx-%#010llx]\n",
++		       start, start + size-1);
+ 		return;
+ 	}
 =20
- /* For PCI or other memory-mapped resources */
- unsigned long pci_mem_start =3D 0xaeedbabe;
+-	table->entries[x].addr =3D start;
+-	table->entries[x].size =3D size;
+-	table->entries[x].type =3D type;
++	table->entries[idx].addr =3D start;
++	table->entries[idx].size =3D size;
++	table->entries[idx].type =3D type;
++
+ 	table->nr_entries++;
+ }
+=20
 
