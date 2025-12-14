@@ -1,74 +1,74 @@
-Return-Path: <linux-tip-commits+bounces-7656-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7657-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9BFECBB792
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:48:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDB6CBB793
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0A1D3301B2EE
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12F4B301B2FE
 	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 07:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F2B2C21D8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B712C21FB;
 	Sun, 14 Dec 2025 07:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kWZJEYjd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hMiSe2vm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="No/zViZi";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wirlpBEX"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32C42BEC42;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24E32BEC32;
 	Sun, 14 Dec 2025 07:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765698409; cv=none; b=L4MvTdSpuJSITu9Fo30KbjgoAa9n/alL0O2uKov6w0fixScJ747UjjOSjUCb7ce3X7dTjj90KvQO5Yogv8CX8abeQ2n4Dw8UAYsNkxapPIr53bb7X7pB5fXikJpEGbu5gZEPECyTNIGmRvSAZrz5btS1HZ2Inmgtn0JSB2P6eTc=
+	t=1765698409; cv=none; b=InHoTz6Gdn+eUBpyeZ9fyii6p2XftXKoWk9d0w4idI+bqkWlKZhEFAYvYwx/xHnDV3egOTDn8+J2nHdRkCYtR+Of2DdnvuaiSseUp3jW8Zrt6Dd+te+WUgiQCmHgfZI+KolhmUHsKIut4u7j2tfoCymfhoGB/UWGKeO6ueGnOxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1765698409; c=relaxed/simple;
-	bh=uch4LVCtt4F/okM1Qz7OCdAiaRg33RyarvYVpIAvGTU=;
+	bh=d3ehEgf2LMwG3EVN1HINg+UtNa6GaxzQKhDc+XEye1w=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=T6M0LcLyKXo/UarFyZBpE8bUJXAtPSgJVL94ied9qPzICjvt6xosUnt9lETB1r8WLTL0zoYln94pb5YdOg0oWkB4R+32qlfWhJymgFUpYsnqB6Z/NBWEdObuAwE2qSrX+zyB0onBjUUauZ620/mYiHqgmHvXp6ZXJKQ+HQVr9oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kWZJEYjd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hMiSe2vm; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=t4c5Z4yiD6wjDCts58p/ZTCQgEGUWPriJJUoX59xeJLXAJOZ3uNZCBu1zJ25Xq6Y2eQvLuDAcKJeUxbr3OSz6sARec1G1q06zu1U1xWNQunMFo8bnpzfot8UQgcTW4DhRhHzBqC3+y/ttJmOW2J8c1J5jDrXnCzaRhhs0RU3C/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=No/zViZi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wirlpBEX; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Dec 2025 07:46:43 -0000
+Date: Sun, 14 Dec 2025 07:46:44 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765698404;
+	s=2020; t=1765698405;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u/1beNgHSLRmIlyW7IGgUnxYnUj1dE9TCyMJ8rMVIPU=;
-	b=kWZJEYjdnTVU+s8qA6TzyJvbKsYvjoK9gObVjsAQ5VgxHruEh9Ah3haMVoFNMANY9Y/2P/
-	dA6iYj3dCeMsh1aXE0waiqUgoo6hRx+nU4rSN3TnNd57CU0bdqgN9XJq8CyRQ2qMtKO6F2
-	BkATs6WgNeth1MwjzzT7jVnY1TJ6Pm3vsNwR6eizFb3n/9bym8OXuiU/5c3er7BdCmtIu6
-	U9yRURrqC06+bAIDd229hUOfUyZI16eXhF00DICjvfBXQm6j91DbVUBZF9zo+T3UtPwJEs
-	aJSU+pp/e+PXmiJs3OaKvFZsxG3xfVZK1ElSGwA6JAXrooJmf0qpwU5bouKZtQ==
+	bh=bQxLFfu8Ii38zbfR0c7bg+WWBBqZuHD7mS6NsE4Bt/4=;
+	b=No/zViZiNIzI1FjcfGYCOZ5IHGYMo+peHw3oSw/kpiGZvTUmLEkB56cS6CO3QKJmiHKAbu
+	Z3TYk9Uw32VuhV8UWHGkkb6aOjhgCzL9ccXSPu1mBTygzwjZdqsvB3wmZwk0w5jGLiP82a
+	vOkF73BrtWQUWK5C11IHymGyYYHSjFnMP1wvs5DUnArjjR5b57bsKu0U3j8oYzCzrdfCxl
+	zR/IizVtNaOfEfcHyZkRX2Lo8CgSVuJKmmYwoaQgwWTuGzn1Lsu2UYZ5eipgL5YexYDJ+Z
+	H4aCgi9fm1f2xHKWysltnM0P/dhct2vQrIvq1EqqTF8kLBXHzr3Rovk+ndLfWg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765698404;
+	s=2020e; t=1765698405;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u/1beNgHSLRmIlyW7IGgUnxYnUj1dE9TCyMJ8rMVIPU=;
-	b=hMiSe2vmhdvdjyBxAeDeYY73FfkSH7ZK7CVus9i0VK5UNo/DwTLLXXvTAuDASwmch++nm2
-	isv22hp0UHTSwFAw==
+	bh=bQxLFfu8Ii38zbfR0c7bg+WWBBqZuHD7mS6NsE4Bt/4=;
+	b=wirlpBEXh5d288HiDYAyByaqgDsk7wRUhXz6XVdnxRHvs9fqyxkIXi8bkmNjU7+2bcW2Sz
+	NRRJCKnOId+7u3Cg==
 From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Limit hrtick work
+Subject: [tip: sched/core] sched/fair: Remove superfluous rcu_read_lock()
 Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250918080205.563385766@infradead.org>
-References: <20250918080205.563385766@infradead.org>
+In-Reply-To: <20251127154725.647502625@infradead.org>
+References: <20251127154725.647502625@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176569840329.498.11558609512617664315.tip-bot2@tip-bot2>
+Message-ID: <176569840446.498.719471047587243574.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,50 +78,71 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     95a0155224a658965f34ed4b1943b238d9be1fea
-Gitweb:        https://git.kernel.org/tip/95a0155224a658965f34ed4b1943b238d9b=
-e1fea
+Commit-ID:     a03fee333a2f1e065a739bdbe5edbc5512fab9a4
+Gitweb:        https://git.kernel.org/tip/a03fee333a2f1e065a739bdbe5edbc5512f=
+ab9a4
 Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 01 Sep 2025 22:50:56 +02:00
+AuthorDate:    Fri, 14 Nov 2025 11:00:55 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
 CommitterDate: Sun, 14 Dec 2025 08:25:02 +01:00
 
-sched/fair: Limit hrtick work
+sched/fair: Remove superfluous rcu_read_lock()
 
-The task_tick_fair() function does:
-
- - update the hierarchical runtimes
- - drive NUMA-balancing
- - update load-balance statistics
- - drive force-idle preemption
-
-All but the very first can be limited to the periodic tick. Let hrtick
-only update accounting and drive preemption, not load-balancing and
-other bits.
+With fair switched to rcu_dereference_all() validation, having IRQ or
+preemption disabled is sufficient, remove the rcu_read_lock()
+clutter.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/20250918080205.563385766@infradead.org
+Link: https://patch.msgid.link/20251127154725.647502625@infradead.org
 ---
- kernel/sched/fair.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/sched/fair.c |  9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 496a30a..f79951f 100644
+index 44a359d..496a30a 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -13332,6 +13332,12 @@ static void task_tick_fair(struct rq *rq, struct tas=
-k_struct *curr, int queued)
- 		entity_tick(cfs_rq, se, queued);
- 	}
+@@ -12856,21 +12856,16 @@ static int sched_balance_newidle(struct rq *this_rq=
+, struct rq_flags *rf)
+ 	 */
+ 	rq_unpin_lock(this_rq, rf);
 =20
-+	if (queued) {
-+		if (!need_resched())
-+			hrtick_start_fair(rq, curr);
-+		return;
-+	}
-+
- 	if (static_branch_unlikely(&sched_numa_balancing))
- 		task_tick_numa(rq, curr);
+-	rcu_read_lock();
+ 	sd =3D rcu_dereference_sched_domain(this_rq->sd);
+-	if (!sd) {
+-		rcu_read_unlock();
++	if (!sd)
+ 		goto out;
+-	}
+=20
+ 	if (!get_rd_overloaded(this_rq->rd) ||
+ 	    this_rq->avg_idle < sd->max_newidle_lb_cost) {
+=20
+ 		update_next_balance(sd, &next_balance);
+-		rcu_read_unlock();
+ 		goto out;
+ 	}
+-	rcu_read_unlock();
+=20
+ 	/*
+ 	 * Include sched_balance_update_blocked_averages() in the cost
+@@ -12883,7 +12878,6 @@ static int sched_balance_newidle(struct rq *this_rq, =
+struct rq_flags *rf)
+ 	rq_modified_clear(this_rq);
+ 	raw_spin_rq_unlock(this_rq);
+=20
+-	rcu_read_lock();
+ 	for_each_domain(this_cpu, sd) {
+ 		u64 domain_cost;
+=20
+@@ -12933,7 +12927,6 @@ static int sched_balance_newidle(struct rq *this_rq, =
+struct rq_flags *rf)
+ 		if (pulled_task || !continue_balancing)
+ 			break;
+ 	}
+-	rcu_read_unlock();
+=20
+ 	raw_spin_rq_lock(this_rq);
 =20
 
