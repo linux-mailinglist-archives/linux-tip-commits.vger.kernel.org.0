@@ -1,81 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7663-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7664-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AAACBB780
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:47:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13D0CBB7C2
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 67DDC300A713
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 07:47:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A083C3003BF0
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 07:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE2A2BEC32;
-	Sun, 14 Dec 2025 07:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF006243969;
+	Sun, 14 Dec 2025 07:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DHriQyOB";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hrYygQCd"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YJJw0aEU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JtvGbKCb"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9274129E10C;
-	Sun, 14 Dec 2025 07:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FBB1448D5;
+	Sun, 14 Dec 2025 07:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765698414; cv=none; b=UFfcCqVhPrYOszlajLsCuX+K/9Rq4xMArzaRKCkUSEVk9OfI3O5bcNPy1T162UmnckgxzDvjdJa7wZc2wqGaeAycGezoGWe2VPSqnwp18YSXmCFxTce+tgb0/yyZlhxbMeVAaTExSN0LAkHbr81P++0uUzF8OdTHldGYeCWIqPo=
+	t=1765699179; cv=none; b=LlyIi+djT9YJyE7YiM/Wo/1KBnI+udLyG/NKoGD4yJLoJJuA6OT29/nQ13e0H8pbwMQn+1NICBu5S+s1vKDet54efsl/jVNLEsomJAfABW7XqoxIgc7MjePUcFEsMZE4viibry7IxQ/a139LrFVsxIfGRiPbfElZj0dOs7Ts9vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765698414; c=relaxed/simple;
-	bh=0nO/PYDhyDyLjGwn8yYLSluYQW1eyxd9CoP8wmIXDYQ=;
+	s=arc-20240116; t=1765699179; c=relaxed/simple;
+	bh=NPfS2xx66D6+uo7sYmR5ZVnIpGZMCn53LlavH61dvgs=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Q11menFFDQZHsINN9u8uUkGbJv/yOlsntRM//9/AXPQjf+Usn1qV45uZ6VcgKzK+xjtpe8OcwccEeRMXAAvlo03XHojg3jIFXx/9yhgz4eYNX7uTgkVxnlKJK1LcF4pu8YYrG6zh3baL+JTTTEY0xWNhGys03HNuCgVwi73xsmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DHriQyOB; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hrYygQCd; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=jhvSk16f1btjdjxruAhyXBAP4NrbXkBPeth48lWT+laaAiGS+OhIG7fMWH/h49yJUrP/61UiQB7zzS+vhxgrmFe6gmTWJ2iBHGnBfPci+FKVg6jpwTc0Gb/o+jr1CAkKGtrTOGI63hMZG7ZH1GLDRsiIMKg7dH3yaqBnh851BHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YJJw0aEU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JtvGbKCb; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Dec 2025 07:46:50 -0000
+Date: Sun, 14 Dec 2025 07:59:35 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765698411;
+	s=2020; t=1765699176;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0/Grw40EEpKcwbBGvQVRC1HMv2wSegEV554cm1G65XU=;
-	b=DHriQyOB7+rxtcw0AGMjMfLcLlRHlShubhbM1zZg6OeFPhgNHfRwfflG73/NTrN/DMDCp3
-	cwgB5yEsfZCN4i7LWZrc9IUTj8fYwjWKHtaqNqchTIBiCKRqxBxA57E4pIsC36z4DhOfeF
-	L6OtiGHd2kCfqf957/WJD9hWb+gWBPfnaSe5ikB7vKugUVfwjCi01Tr5PsuglGiaTZ5Hgc
-	YFxHxrO2RbjCaeJgqF8E5XAGLEje5ZIfpta87NGVdlDFWOZkedWmo7HmmdXuNBnCkQHbch
-	dOCzWF0orIsqFAVJuNDPScaoi8lNEUB4URth5lMTS3nVrJE3qkCjHy0xEd6V1Q==
+	bh=yZccdFQKuAPs5xeG/R2LBvvPguEytVehTyEB+Eh2RCU=;
+	b=YJJw0aEU8lBaLqpDIEkg6l/PH9BxJQRSBNqnnNqbIZJdrvDX+Emxb0MJNcr6oDq/v8+KFw
+	lWwPbRZgaPxHHoCNGIz3LQGlYB85FnLfGNzmSGey4uWeZU5eNokJwQZehMijmrUdX0cnCp
+	zQVUVNdk6hH/jPoPw5+JL2nk/KtMG5YPjLQlzBrxwwPl5mu+mnnp5n9UqeQuwgCwvbEvKu
+	IdZ/yhqFEKyshaAI1ebzRDcB8X6/xfbYXKOmlJSLbtdOPxEUCOKb26kN97NW8h0iYX951i
+	6/5iXCn8withQd0ZfmcKFenIeG+Pn6MZTHqaz9/QmoE4yuJ30tK+WPWmPQ56/w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765698411;
+	s=2020e; t=1765699176;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0/Grw40EEpKcwbBGvQVRC1HMv2wSegEV554cm1G65XU=;
-	b=hrYygQCd3Yxs1Jenhu7pWRXFsWPPG9DwEUzcuN/TGCaDYyOOsxFlXl9uXEjAYnlhjm9/Om
-	XzOVE7wN6tedSVBQ==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=yZccdFQKuAPs5xeG/R2LBvvPguEytVehTyEB+Eh2RCU=;
+	b=JtvGbKCbpny2TG7/3/th0W60N4WdVlvNWhi0E4k9B78D+W8gjsN5xu7Kh90piEs7SMGiOy
+	Dt85oCQVYsyDIxBg==
+From: "tip-bot2 for Kyle Meyer" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] <linux/compiler_types.h>: Add the
- __signed_scalar_typeof() helper
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Ingo Molnar <mingo@kernel.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Juri Lelli <juri.lelli@redhat.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, Mel Gorman <mgorman@suse.de>,
- Shrikanth Hegde <sshegde@linux.ibm.com>,
- Valentin Schneider <vschneid@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251127154725.413564507@infradead.org>
-References: <20251127154725.413564507@infradead.org>
+Subject:
+ [tip: x86/urgent] x86/platform/uv: Fix UBSAN array-index-out-of-bounds
+Cc: Kyle Meyer <kyle.meyer@hpe.com>, Ingo Molnar <mingo@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <aTxksN-3otY41WvQ@hpe.com>
+References: <aTxksN-3otY41WvQ@hpe.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176569841006.498.2794868287250554578.tip-bot2@tip-bot2>
+Message-ID: <176569917501.498.242341801054532826.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -83,68 +77,78 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the sched/core branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     38a68b982dd0b10e3da943f100e034598326eafe
-Gitweb:        https://git.kernel.org/tip/38a68b982dd0b10e3da943f100e03459832=
-6eafe
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Thu, 27 Nov 2025 16:39:44 +01:00
+Commit-ID:     21433d3e3ca14d20f9b0c2237b3d3a1355af7907
+Gitweb:        https://git.kernel.org/tip/21433d3e3ca14d20f9b0c2237b3d3a1355a=
+f7907
+Author:        Kyle Meyer <kyle.meyer@hpe.com>
+AuthorDate:    Fri, 12 Dec 2025 12:53:36 -06:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 14 Dec 2025 08:25:02 +01:00
+CommitterDate: Sun, 14 Dec 2025 08:46:53 +01:00
 
-<linux/compiler_types.h>: Add the __signed_scalar_typeof() helper
+x86/platform/uv: Fix UBSAN array-index-out-of-bounds
 
-Define __signed_scalar_typeof() to declare a signed scalar type, leaving
-non-scalar types unchanged.
+When UBSAN is enabled, multiple array-index-out-of-bounds messages are
+printed:
 
-To be used to clean up the scheduler load-balancing code a bit.
+  [    0.000000] [     T0] UBSAN: array-index-out-of-bounds in arch/x86/kerne=
+l/apic/x2apic_uv_x.c:276:23
+  [    0.000000] [     T0] index 1 is out of range for type '<unknown> [1]'
+  ...
+  [    0.000000] [     T0] UBSAN: array-index-out-of-bounds in arch/x86/kerne=
+l/apic/x2apic_uv_x.c:277:32
+  [    0.000000] [     T0] index 1 is out of range for type '<unknown> [1]'
+  ...
+  [    0.000000] [     T0] UBSAN: array-index-out-of-bounds in arch/x86/kerne=
+l/apic/x2apic_uv_x.c:282:16
+  [    0.000000] [     T0] index 1 is out of range for type '<unknown> [1]'
+  ...
+  [    0.515850] [     T1] UBSAN: array-index-out-of-bounds in arch/x86/kerne=
+l/apic/x2apic_uv_x.c:1344:23
+  [    0.519851] [     T1] index 1 is out of range for type '<unknown> [1]'
+  ...
+  [    0.603850] [     T1] UBSAN: array-index-out-of-bounds in arch/x86/kerne=
+l/apic/x2apic_uv_x.c:1345:32
+  [    0.607850] [     T1] index 1 is out of range for type '<unknown> [1]'
+  ...
+  [    0.691850] [     T1] UBSAN: array-index-out-of-bounds in arch/x86/kerne=
+l/apic/x2apic_uv_x.c:1353:20
+  [    0.695850] [     T1] index 1 is out of range for type '<unknown> [1]'
 
-[ mingo: Split off this patch from the scheduler patch. ]
+One-element arrays have been deprecated:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+  https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element=
+-arrays
+
+Switch entry in struct uv_systab to a flexible array member to fix UBSAN
+array-index-out-of-bounds messages.
+
+sizeof(struct uv_systab) is passed to early_memremap() and ioremap(). The
+flexible array member is not accessed until the UV system table size is used =
+to
+remap the entire UV system table, so changes to sizeof(struct uv_systab) have=
+ no
+impact.
+
+Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://patch.msgid.link/20251127154725.413564507@infradead.org
+Link: https://patch.msgid.link/aTxksN-3otY41WvQ@hpe.com
 ---
- include/linux/compiler_types.h | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/x86/include/asm/uv/bios.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
-index 1280693..280b4ac 100644
---- a/include/linux/compiler_types.h
-+++ b/include/linux/compiler_types.h
-@@ -586,6 +586,25 @@ struct ftrace_likely_data {
- 			 __scalar_type_to_expr_cases(long long),	\
- 			 default: (x)))
+diff --git a/arch/x86/include/asm/uv/bios.h b/arch/x86/include/asm/uv/bios.h
+index 6989b82..d0b62e2 100644
+--- a/arch/x86/include/asm/uv/bios.h
++++ b/arch/x86/include/asm/uv/bios.h
+@@ -122,7 +122,7 @@ struct uv_systab {
+ 	struct {
+ 		u32 type:8;	/* type of entry */
+ 		u32 offset:24;	/* byte offset from struct start to entry */
+-	} entry[1];		/* additional entries follow */
++	} entry[];		/* additional entries follow */
+ };
+ extern struct uv_systab *uv_systab;
 =20
-+/*
-+ * __signed_scalar_typeof(x) - Declare a signed scalar type, leaving
-+ *			       non-scalar types unchanged.
-+ */
-+
-+#define __scalar_type_to_signed_cases(type)				\
-+		unsigned type:	(signed type)0,				\
-+		signed type:	(signed type)0
-+
-+#define __signed_scalar_typeof(x) typeof(				\
-+		_Generic((x),						\
-+			 char:	(signed char)0,				\
-+			 __scalar_type_to_signed_cases(char),		\
-+			 __scalar_type_to_signed_cases(short),		\
-+			 __scalar_type_to_signed_cases(int),		\
-+			 __scalar_type_to_signed_cases(long),		\
-+			 __scalar_type_to_signed_cases(long long),	\
-+			 default: (x)))
-+
- /* Is this type a native word size -- useful for atomic operations */
- #define __native_word(t) \
- 	(sizeof(t) =3D=3D sizeof(char) || sizeof(t) =3D=3D sizeof(short) || \
 
