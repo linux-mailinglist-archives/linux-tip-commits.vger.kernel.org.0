@@ -1,75 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7694-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7697-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 846B3CBCBF8
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 08:18:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFDCCBCE63
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 09:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1ADCD3007C6F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 07:18:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E4DB30124FC
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 07:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F692D7DE4;
-	Mon, 15 Dec 2025 07:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4940329E60;
+	Mon, 15 Dec 2025 07:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TKhXyvkX";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vxZ5Z30b"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wv/2a4zt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qBY3ZCJH"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBDBE2222B6;
-	Mon, 15 Dec 2025 07:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECA9313525;
+	Mon, 15 Dec 2025 07:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765783123; cv=none; b=r4ggOiiyZEqgtOPGDfit9KlPQlWa4pPCTE62XzprecVeM6Bd22HY1FWp7v42raHsk8J8+yNNlfL/4/XsKFDuIw9Fg5EMjLYahkysqRJhHbH/wNEx7U32q1dWnyp1jT134GGLO5d4SNttSgp/BHPcxouWXXEnAh0Hro9cA0aOOr4=
+	t=1765785558; cv=none; b=AW8fvfpC6tifgjU6TSc2rSOptFhDfr54P7fz4d/P220llXbZwtReJOklE2sOaRThdHvKBCrGPldloK7VTEIs0aoClFZtuBrQQNqvx0b1AM8SNw8mrAwEdajpGqAJq2jwylShMynlBlIf9j9SXm6WsU28AUdTQluwxeMQFO0u3yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765783123; c=relaxed/simple;
-	bh=BkrOo9B4f1jbZAGHZ9+kErImDRzr7mRfhdhaqecSGnQ=;
+	s=arc-20240116; t=1765785558; c=relaxed/simple;
+	bh=Z34OCFXlevZdGrtbSsD8oAHV/QNL7NlvOkU78WF1tCg=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=FoAks4oJqQxCt4xysJUUUaroUYhBhrnMDHAgM9SZJC/JKBxKNZS4QJDeE0uydmfi+5GjpORuqLV/XoCDo2Fsv0iuvjvqI09rWh+Zzd+dUsyLYvoTLjjUqbX41ESbc3DrMEmm+Dh9ckr72iL9cNYzrGb4uPIzNVC0nPXlsntBVyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TKhXyvkX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vxZ5Z30b; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=kdyFrv8HuodVKNUKDebRi3poTYFs0474lXIKs3tz/lp0rZzD6UhCANlsWw38N4XgJ4JnFUTi11fbB2aLJGA2IFGSt5wXWiAqLdC1zQf7UtAYeYF2I2I+uZ3Qso/UVidqw/sFtEITkdxJ65p/NuC/zVuzcoy9+IjUdXUCr5m4dAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wv/2a4zt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qBY3ZCJH; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 15 Dec 2025 07:18:38 -0000
+Date: Mon, 15 Dec 2025 07:59:07 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765783119;
+	s=2020; t=1765785548;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Uuw+12DsJ7ameAUEDlAZaliFXEdZrO+9D9kyowPLz6Y=;
-	b=TKhXyvkXLRXSn/0427YMLB1SX98SnTJiSKtgPfZ1HOlTVjkRPTsRNWLlm7qjN4Cfx4Fx/g
-	M/jie684Berexuhxij3ag4F4LsYTZotft+rbyfwvFNtQWbBbLGSi/Zc7GZZ278nRYp5g6D
-	AL6BOwMHGltlRHQByjTSIqytn0ie4rmAd7Y8XQpo6sOU0XErELXJqWst0GEZgjc0h1ZrfB
-	4sdCncnQlsSL54PWvCGatNVhFEF/Qbo5Gpi5q8sjEX720njS05tjKwrExpwaylXDwtHVfP
-	NJjCgEVLzfBWqZcWEHd/9GTQHxDkMkW9KUNQ15F/bpEyUA3/ikMMPPkaTN4H1w==
+	bh=BI1wFU/JKPBzJnEB5fYpg0nyonYOTN+NFy3jKAu7rkQ=;
+	b=wv/2a4ztult7J97C9Te+RIED5UmouiA4YHIZqmWdcZsAm/tybCG46XXg7GV+w0ADRTuOEH
+	r7D2t1n5t5dTGbD08AktkQ7YmRqBDSYGoxfD97ekwsCTUDENMAiE/NOz4udxhbUiEJDsvG
+	/IJLzWaMipjLwhonOvJFhaPWnFAFaSHEFOiSR39LzCjd5ObDG+8OMWR1KU9Qv5ijJ8F61n
+	0Qef6zWPkrXu2QZqCl5esorLhrPZGPvlGuO2B7KuSUgIpbVCZiOOPgowxn8a5k4X0+PKbS
+	0De+hcyAD5EglXSeJ4qa6fub9yXdbmySbob//giB5ydop+EPkjyNvqzQI7cfVg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765783119;
+	s=2020e; t=1765785548;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Uuw+12DsJ7ameAUEDlAZaliFXEdZrO+9D9kyowPLz6Y=;
-	b=vxZ5Z30bXOOW0XneCzWcPqTkSliLAAjc4r+rpfcCx24A+mTwhmTd/G8iMqYxJ5Zf6AIG+3
-	qTuCuxLKP03RI1Cg==
-From: "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
+	bh=BI1wFU/JKPBzJnEB5fYpg0nyonYOTN+NFy3jKAu7rkQ=;
+	b=qBY3ZCJHTLTbOdk8zpqbLkPFd6EymC6oJqeLahYJDTmAjP79TJQALVj7Hr7jdh+Jyv3sKA
+	3BodaZnQ4/69upDA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/cpu] x86/cpu/amd: Correct the microcode table for Zenbleed
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Ingo Molnar <mingo@kernel.org>,
- Borislav Petkov <bp@alien8.de>, Mario Limonciello <mario.limonciello@amd.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251126130352.880424-1-andrew.cooper3@citrix.com>
-References: <20251126130352.880424-1-andrew.cooper3@citrix.com>
+Subject: [tip: sched/core] sched/core: Rework sched_class::wakeup_preempt()
+ and rq_modified_*()
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251127154725.901391274@infradead.org>
+References: <20251127154725.901391274@infradead.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176578311818.498.18390208161254339658.tip-bot2@tip-bot2>
+Message-ID: <176578554720.498.799395370694223734.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,89 +77,392 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/cpu branch of tip:
+The following commit has been merged into the sched/core branch of tip:
 
-Commit-ID:     fb7bfa31b8e8569f154f2fe0ea6c2f03c0f087aa
-Gitweb:        https://git.kernel.org/tip/fb7bfa31b8e8569f154f2fe0ea6c2f03c0f=
-087aa
-Author:        Andrew Cooper <andrew.cooper3@citrix.com>
-AuthorDate:    Wed, 26 Nov 2025 13:03:52=20
+Commit-ID:     5d1f0b2f278eb55aebe29210fbc8f352c53497d6
+Gitweb:        https://git.kernel.org/tip/5d1f0b2f278eb55aebe29210fbc8f352c53=
+497d6
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Wed, 10 Dec 2025 09:06:50 +01:00
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 14 Dec 2025 09:54:46 +01:00
+CommitterDate: Mon, 15 Dec 2025 07:53:35 +01:00
 
-x86/cpu/amd: Correct the microcode table for Zenbleed
+sched/core: Rework sched_class::wakeup_preempt() and rq_modified_*()
 
-The good revisions are tied to exact steppings, meaning it's not valid to
-match on model number alone, let alone a range.
+Change sched_class::wakeup_preempt() to also get called for
+cross-class wakeups, specifically those where the woken task
+is of a higher class than the previous highest class.
 
-This is probably only a latent issue.  From public microcode archives, the
-following CPUs exist 17-30-00, 17-60-00, 17-70-00 and would be captured by the
-model ranges.  They're likely pre-production steppings, and likely didn't get
-Zenbleed microcode, but it's still incorrect to compare them to a different
-steppings revision.
+In order to do this, track the current highest class of the runqueue
+in rq::next_class and have wakeup_preempt() track this upwards for
+each new wakeup. Additionally have schedule() re-set the value on
+pick.
 
-Either way, convert the logic to use x86_match_min_microcode_rev(), which is
-the preferred mechanism.
-
-Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: x86@kernel.org
-Link: https://patch.msgid.link/20251126130352.880424-1-andrew.cooper3@citrix.=
-com
+Link: https://patch.msgid.link/20251127154725.901391274@infradead.org
 ---
- arch/x86/kernel/cpu/amd.c | 30 +++++++++---------------------
- 1 file changed, 9 insertions(+), 21 deletions(-)
+ kernel/sched/core.c      | 32 +++++++++++++++++++++++---------
+ kernel/sched/deadline.c  | 14 +++++++++-----
+ kernel/sched/ext.c       |  7 +++----
+ kernel/sched/fair.c      | 17 ++++++++++-------
+ kernel/sched/idle.c      |  3 ---
+ kernel/sched/rt.c        |  9 ++++++---
+ kernel/sched/sched.h     | 26 ++------------------------
+ kernel/sched/stop_task.c |  3 ---
+ 8 files changed, 53 insertions(+), 58 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index bc94ff1..86059f2 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -951,26 +951,14 @@ static void init_amd_zen1(struct cpuinfo_x86 *c)
- 	}
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 4479f7d..7d0a862 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -2090,7 +2090,6 @@ void enqueue_task(struct rq *rq, struct task_struct *p,=
+ int flags)
+ 	 */
+ 	uclamp_rq_inc(rq, p, flags);
+=20
+-	rq->queue_mask |=3D p->sched_class->queue_mask;
+ 	p->sched_class->enqueue_task(rq, p, flags);
+=20
+ 	psi_enqueue(p, flags);
+@@ -2123,7 +2122,6 @@ inline bool dequeue_task(struct rq *rq, struct task_str=
+uct *p, int flags)
+ 	 * and mark the task ->sched_delayed.
+ 	 */
+ 	uclamp_rq_dec(rq, p);
+-	rq->queue_mask |=3D p->sched_class->queue_mask;
+ 	return p->sched_class->dequeue_task(rq, p, flags);
  }
 =20
--static bool cpu_has_zenbleed_microcode(void)
--{
--	u32 good_rev =3D 0;
--
--	switch (boot_cpu_data.x86_model) {
--	case 0x30 ... 0x3f: good_rev =3D 0x0830107b; break;
--	case 0x60 ... 0x67: good_rev =3D 0x0860010c; break;
--	case 0x68 ... 0x6f: good_rev =3D 0x08608107; break;
--	case 0x70 ... 0x7f: good_rev =3D 0x08701033; break;
--	case 0xa0 ... 0xaf: good_rev =3D 0x08a00009; break;
--
--	default:
--		return false;
--	}
--
--	if (boot_cpu_data.microcode < good_rev)
--		return false;
--
--	return true;
--}
-+static const struct x86_cpu_id amd_zenbleed_microcode[] =3D {
-+	ZEN_MODEL_STEP_UCODE(0x17, 0x31, 0x0, 0x0830107b),
-+	ZEN_MODEL_STEP_UCODE(0x17, 0x60, 0x1, 0x0860010c),
-+	ZEN_MODEL_STEP_UCODE(0x17, 0x68, 0x1, 0x08608107),
-+	ZEN_MODEL_STEP_UCODE(0x17, 0x71, 0x0, 0x08701033),
-+	ZEN_MODEL_STEP_UCODE(0x17, 0xa0, 0x0, 0x08a00009),
-+	{}
-+};
-=20
- static void zen2_zenbleed_check(struct cpuinfo_x86 *c)
+@@ -2174,10 +2172,14 @@ void wakeup_preempt(struct rq *rq, struct task_struct=
+ *p, int flags)
  {
-@@ -980,7 +968,7 @@ static void zen2_zenbleed_check(struct cpuinfo_x86 *c)
- 	if (!cpu_has(c, X86_FEATURE_AVX))
+ 	struct task_struct *donor =3D rq->donor;
+=20
+-	if (p->sched_class =3D=3D donor->sched_class)
+-		donor->sched_class->wakeup_preempt(rq, p, flags);
+-	else if (sched_class_above(p->sched_class, donor->sched_class))
++	if (p->sched_class =3D=3D rq->next_class) {
++		rq->next_class->wakeup_preempt(rq, p, flags);
++
++	} else if (sched_class_above(p->sched_class, rq->next_class)) {
++		rq->next_class->wakeup_preempt(rq, p, flags);
+ 		resched_curr(rq);
++		rq->next_class =3D p->sched_class;
++	}
+=20
+ 	/*
+ 	 * A queue event has occurred, and we're going to schedule.  In
+@@ -6804,6 +6806,7 @@ static void __sched notrace __schedule(int sched_mode)
+ pick_again:
+ 	next =3D pick_next_task(rq, rq->donor, &rf);
+ 	rq_set_donor(rq, next);
++	rq->next_class =3D next->sched_class;
+ 	if (unlikely(task_is_blocked(next))) {
+ 		next =3D find_proxy_task(rq, next, &rf);
+ 		if (!next)
+@@ -8650,6 +8653,8 @@ void __init sched_init(void)
+ 		rq->rt.rt_runtime =3D global_rt_runtime();
+ 		init_tg_rt_entry(&root_task_group, &rq->rt, NULL, i, NULL);
+ #endif
++		rq->next_class =3D &idle_sched_class;
++
+ 		rq->sd =3D NULL;
+ 		rq->rd =3D NULL;
+ 		rq->cpu_capacity =3D SCHED_CAPACITY_SCALE;
+@@ -10775,10 +10780,8 @@ struct sched_change_ctx *sched_change_begin(struct t=
+ask_struct *p, unsigned int=20
+ 		flags |=3D DEQUEUE_NOCLOCK;
+ 	}
+=20
+-	if (flags & DEQUEUE_CLASS) {
+-		if (p->sched_class->switching_from)
+-			p->sched_class->switching_from(rq, p);
+-	}
++	if ((flags & DEQUEUE_CLASS) && p->sched_class->switching_from)
++		p->sched_class->switching_from(rq, p);
+=20
+ 	*ctx =3D (struct sched_change_ctx){
+ 		.p =3D p,
+@@ -10831,6 +10834,17 @@ void sched_change_end(struct sched_change_ctx *ctx)
+ 			p->sched_class->switched_to(rq, p);
+=20
+ 		/*
++		 * If this was a class promotion; let the old class know it
++		 * got preempted. Note that none of the switch*_from() methods
++		 * know the new class and none of the switch*_to() methods
++		 * know the old class.
++		 */
++		if (ctx->running && sched_class_above(p->sched_class, ctx->class)) {
++			rq->next_class->wakeup_preempt(rq, p, 0);
++			rq->next_class =3D p->sched_class;
++		}
++
++		/*
+ 		 * If this was a degradation in class someone should have set
+ 		 * need_resched by now.
+ 		 */
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 319439f..80c9559 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2499,9 +2499,16 @@ static int balance_dl(struct rq *rq, struct task_struc=
+t *p, struct rq_flags *rf)
+  * Only called when both the current and waking task are -deadline
+  * tasks.
+  */
+-static void wakeup_preempt_dl(struct rq *rq, struct task_struct *p,
+-				  int flags)
++static void wakeup_preempt_dl(struct rq *rq, struct task_struct *p, int flag=
+s)
+ {
++	/*
++	 * Can only get preempted by stop-class, and those should be
++	 * few and short lived, doesn't really make sense to push
++	 * anything away for that.
++	 */
++	if (p->sched_class !=3D &dl_sched_class)
++		return;
++
+ 	if (dl_entity_preempt(&p->dl, &rq->donor->dl)) {
+ 		resched_curr(rq);
+ 		return;
+@@ -3346,9 +3353,6 @@ static int task_is_throttled_dl(struct task_struct *p, =
+int cpu)
+ #endif
+=20
+ DEFINE_SCHED_CLASS(dl) =3D {
+-
+-	.queue_mask		=3D 8,
+-
+ 	.enqueue_task		=3D enqueue_task_dl,
+ 	.dequeue_task		=3D dequeue_task_dl,
+ 	.yield_task		=3D yield_task_dl,
+diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
+index 05f5a49..3058777 100644
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -2431,7 +2431,7 @@ do_pick_task_scx(struct rq *rq, struct rq_flags *rf, bo=
+ol force_scx)
+ 	/* see kick_cpus_irq_workfn() */
+ 	smp_store_release(&rq->scx.kick_sync, rq->scx.kick_sync + 1);
+=20
+-	rq_modified_clear(rq);
++	rq->next_class =3D &fair_sched_class;
+=20
+ 	rq_unpin_lock(rq, rf);
+ 	balance_one(rq, prev);
+@@ -3075,7 +3075,8 @@ static void switched_from_scx(struct rq *rq, struct tas=
+k_struct *p)
+ 	scx_disable_task(p);
+ }
+=20
+-static void wakeup_preempt_scx(struct rq *rq, struct task_struct *p,int wake=
+_flags) {}
++static void wakeup_preempt_scx(struct rq *rq, struct task_struct *p, int wak=
+e_flags) {}
++
+ static void switched_to_scx(struct rq *rq, struct task_struct *p) {}
+=20
+ int scx_check_setscheduler(struct task_struct *p, int policy)
+@@ -3336,8 +3337,6 @@ static void scx_cgroup_unlock(void) {}
+  *   their current sched_class. Call them directly from sched core instead.
+  */
+ DEFINE_SCHED_CLASS(ext) =3D {
+-	.queue_mask		=3D 1,
+-
+ 	.enqueue_task		=3D enqueue_task_scx,
+ 	.dequeue_task		=3D dequeue_task_scx,
+ 	.yield_task		=3D yield_task_scx,
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d588eb8..76f5e4b 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -8736,7 +8736,7 @@ preempt_sync(struct rq *rq, int wake_flags,
+ /*
+  * Preempt the current task with a newly woken task if needed:
+  */
+-static void check_preempt_wakeup_fair(struct rq *rq, struct task_struct *p, =
+int wake_flags)
++static void wakeup_preempt_fair(struct rq *rq, struct task_struct *p, int wa=
+ke_flags)
+ {
+ 	enum preempt_wakeup_action preempt_action =3D PREEMPT_WAKEUP_PICK;
+ 	struct task_struct *donor =3D rq->donor;
+@@ -8744,6 +8744,12 @@ static void check_preempt_wakeup_fair(struct rq *rq, s=
+truct task_struct *p, int=20
+ 	struct cfs_rq *cfs_rq =3D task_cfs_rq(donor);
+ 	int cse_is_idle, pse_is_idle;
+=20
++	/*
++	 * XXX Getting preempted by higher class, try and find idle CPU?
++	 */
++	if (p->sched_class !=3D &fair_sched_class)
++		return;
++
+ 	if (unlikely(se =3D=3D pse))
  		return;
 =20
--	if (!cpu_has_zenbleed_microcode()) {
-+	if (!x86_match_min_microcode_rev(amd_zenbleed_microcode)) {
- 		pr_notice_once("Zenbleed: please update your microcode for the most optima=
-l fix\n");
- 		msr_set_bit(MSR_AMD64_DE_CFG, MSR_AMD64_DE_CFG_ZEN2_FP_BACKUP_FIX_BIT);
- 	} else {
+@@ -12911,7 +12917,7 @@ static int sched_balance_newidle(struct rq *this_rq, =
+struct rq_flags *rf)
+ 	t0 =3D sched_clock_cpu(this_cpu);
+ 	__sched_balance_update_blocked_averages(this_rq);
+=20
+-	rq_modified_clear(this_rq);
++	this_rq->next_class =3D &fair_sched_class;
+ 	raw_spin_rq_unlock(this_rq);
+=20
+ 	for_each_domain(this_cpu, sd) {
+@@ -12978,7 +12984,7 @@ static int sched_balance_newidle(struct rq *this_rq, =
+struct rq_flags *rf)
+ 		pulled_task =3D 1;
+=20
+ 	/* If a higher prio class was modified, restart the pick */
+-	if (rq_modified_above(this_rq, &fair_sched_class))
++	if (sched_class_above(this_rq->next_class, &fair_sched_class))
+ 		pulled_task =3D -1;
+=20
+ out:
+@@ -13882,15 +13888,12 @@ static unsigned int get_rr_interval_fair(struct rq =
+*rq, struct task_struct *task
+  * All the scheduling class methods:
+  */
+ DEFINE_SCHED_CLASS(fair) =3D {
+-
+-	.queue_mask		=3D 2,
+-
+ 	.enqueue_task		=3D enqueue_task_fair,
+ 	.dequeue_task		=3D dequeue_task_fair,
+ 	.yield_task		=3D yield_task_fair,
+ 	.yield_to_task		=3D yield_to_task_fair,
+=20
+-	.wakeup_preempt		=3D check_preempt_wakeup_fair,
++	.wakeup_preempt		=3D wakeup_preempt_fair,
+=20
+ 	.pick_task		=3D pick_task_fair,
+ 	.pick_next_task		=3D pick_next_task_fair,
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index c174afe..65eb8f8 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -536,9 +536,6 @@ static void update_curr_idle(struct rq *rq)
+  * Simple, special scheduling class for the per-CPU idle tasks:
+  */
+ DEFINE_SCHED_CLASS(idle) =3D {
+-
+-	.queue_mask		=3D 0,
+-
+ 	/* no enqueue/yield_task for idle tasks */
+=20
+ 	/* dequeue is not valid, we print a debug message there: */
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index f1867fe..0a9b2cd 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1615,6 +1615,12 @@ static void wakeup_preempt_rt(struct rq *rq, struct ta=
+sk_struct *p, int flags)
+ {
+ 	struct task_struct *donor =3D rq->donor;
+=20
++	/*
++	 * XXX If we're preempted by DL, queue a push?
++	 */
++	if (p->sched_class !=3D &rt_sched_class)
++		return;
++
+ 	if (p->prio < donor->prio) {
+ 		resched_curr(rq);
+ 		return;
+@@ -2568,9 +2574,6 @@ static int task_is_throttled_rt(struct task_struct *p, =
+int cpu)
+ #endif /* CONFIG_SCHED_CORE */
+=20
+ DEFINE_SCHED_CLASS(rt) =3D {
+-
+-	.queue_mask		=3D 4,
+-
+ 	.enqueue_task		=3D enqueue_task_rt,
+ 	.dequeue_task		=3D dequeue_task_rt,
+ 	.yield_task		=3D yield_task_rt,
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index ab1bfa0..bdb1e74 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -1119,7 +1119,6 @@ struct rq {
+ 	raw_spinlock_t		__lock;
+=20
+ 	/* Per class runqueue modification mask; bits in class order. */
+-	unsigned int		queue_mask;
+ 	unsigned int		nr_running;
+ #ifdef CONFIG_NUMA_BALANCING
+ 	unsigned int		nr_numa_running;
+@@ -1179,6 +1178,7 @@ struct rq {
+ 	struct sched_dl_entity	*dl_server;
+ 	struct task_struct	*idle;
+ 	struct task_struct	*stop;
++	const struct sched_class *next_class;
+ 	unsigned long		next_balance;
+ 	struct mm_struct	*prev_mm;
+=20
+@@ -2426,15 +2426,6 @@ struct sched_class {
+ #ifdef CONFIG_UCLAMP_TASK
+ 	int uclamp_enabled;
+ #endif
+-	/*
+-	 * idle:  0
+-	 * ext:   1
+-	 * fair:  2
+-	 * rt:    4
+-	 * dl:    8
+-	 * stop: 16
+-	 */
+-	unsigned int queue_mask;
+=20
+ 	/*
+ 	 * move_queued_task/activate_task/enqueue_task: rq->lock
+@@ -2593,20 +2584,6 @@ struct sched_class {
+ #endif
+ };
+=20
+-/*
+- * Does not nest; only used around sched_class::pick_task() rq-lock-breaks.
+- */
+-static inline void rq_modified_clear(struct rq *rq)
+-{
+-	rq->queue_mask =3D 0;
+-}
+-
+-static inline bool rq_modified_above(struct rq *rq, const struct sched_class=
+ * class)
+-{
+-	unsigned int mask =3D class->queue_mask;
+-	return rq->queue_mask & ~((mask << 1) - 1);
+-}
+-
+ static inline void put_prev_task(struct rq *rq, struct task_struct *prev)
+ {
+ 	WARN_ON_ONCE(rq->donor !=3D prev);
+@@ -3899,6 +3876,7 @@ void move_queued_task_locked(struct rq *src_rq, struct =
+rq *dst_rq, struct task_s
+ 	deactivate_task(src_rq, task, 0);
+ 	set_task_cpu(task, dst_rq->cpu);
+ 	activate_task(dst_rq, task, 0);
++	wakeup_preempt(dst_rq, task, 0);
+ }
+=20
+ static inline
+diff --git a/kernel/sched/stop_task.c b/kernel/sched/stop_task.c
+index 4f9192b..f95798b 100644
+--- a/kernel/sched/stop_task.c
++++ b/kernel/sched/stop_task.c
+@@ -97,9 +97,6 @@ static void update_curr_stop(struct rq *rq)
+  * Simple, special scheduling class for the per-CPU stop tasks:
+  */
+ DEFINE_SCHED_CLASS(stop) =3D {
+-
+-	.queue_mask		=3D 16,
+-
+ 	.enqueue_task		=3D enqueue_task_stop,
+ 	.dequeue_task		=3D dequeue_task_stop,
+ 	.yield_task		=3D yield_task_stop,
 
