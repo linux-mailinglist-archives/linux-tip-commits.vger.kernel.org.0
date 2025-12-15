@@ -1,35 +1,35 @@
-Return-Path: <linux-tip-commits+bounces-7708-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7709-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4146DCBFFB5
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 22:41:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5A4CBFFA6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 22:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54F3C30B0A76
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 21:36:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 668423097499
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 21:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64EC32D7DA;
-	Mon, 15 Dec 2025 21:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE2432E6AB;
+	Mon, 15 Dec 2025 21:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iFOucKEQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Gb7z46TS"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4omW6stP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1u0wXC/n"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA1E32AACA;
-	Mon, 15 Dec 2025 21:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB1532D452;
+	Mon, 15 Dec 2025 21:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765834034; cv=none; b=CqwgD1choeqqYpM/7ko2YCTNZxW0bnukzFHOVG8tHD29CyCIcxcvzXcuBKE1sPTEj/tf/teYDA6aCtJEdMVqhU+J96UI11u3H8hFNabIdm3R1pdY1QOTBG2KHZUxdx0rouy7sV5LPc3oKXHOEBSNPviAEq/wfHMqpU1h0gRcgco=
+	t=1765834035; cv=none; b=PRGMxfdghdpkDngl6hoH4mHJCaFs00mYa+bTixP9CAJplzdGZgiOlnGPXkHXttuLMj7Mfyurfw3+zRD8dJ29goRK2SpQDj7poKeK5GMWXtsFxR5G8UXeaWLEZOWzCqSs66neTqR2R2/6998s0x6mrRICSrMIgW9O876L496poJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765834034; c=relaxed/simple;
-	bh=ZeWJD3Tcsg2hZg3wPFFNy15jIW05rDSuCidtdlI+jT8=;
+	s=arc-20240116; t=1765834035; c=relaxed/simple;
+	bh=6bBIeLQ+kTXp7w8trazcVSMy4wAm1TadBb1u66FUiWE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=hhF5EJYj5RY0UXHEkGjwn7WwfrPqvCR8Rw5vP3xvc1EysnCzbxorYR6l/6LMEuBJwzL9zQP6yAJwJ2gx5nILBms9VrSSAdaspH0UAXw3o7aw2BASuDI2vuZmoeqnx2rnqU+TaM+Nc/LvlCxFgm74jErasLUfuFn60r+3w7nDmcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iFOucKEQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Gb7z46TS; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=OD6xmToQ/+Kxk6QToJBU7UGmVjEeIOwyWhWD+iJ8PvgM8k0TT56gKtKPGC28HDpX3b9n4b7uZqpWd9Ba1+35q8z6W2idybWjwDfdqzpeL4hg14P7sLcB1c1sO3/rC3Heab0mO4G/oRrbg9HdiJOZqCwV/bTdA+yWhbAmUolfrow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4omW6stP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1u0wXC/n; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 15 Dec 2025 21:27:09 -0000
+Date: Mon, 15 Dec 2025 21:27:10 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1765834031;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -37,12 +37,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a8mHz+pkuqCVp8SY3/Jv6cbB7tBS0L+QV8v7WpC8mrE=;
-	b=iFOucKEQdkHKxRRZuDW7WL84DMq1P86sFAQrTDWGIIpwIkks6874S3gWTYclrA8+oy+Xj2
-	fbJ1meYKy9XTcqUbCoC1I3xnIoz1jDNY3XYOBRlGKcKK7gC2SVLy3DBi40FLHiQlTrd4JQ
-	kItH3aLXGot8Yz6VgxT0vZTcUUrwy/Hb3BsNcN0NfvCzTBMJ2MVuR2LJ7HWstwZ0WnzdCZ
-	uE+wa2DmeDbTcJk6rsuu8dJxEi/Hk4vjzmmXNqWXM0YqHqYzNE+oNhR984sflIrG8JIFDW
-	6Uu1va31tTZvszCpo/OisE7oFGAS9WalBaLvv+yUu0P/dX90G8GyQiWFxL9z7g==
+	bh=WQLWoK4KO49dZKGqdo4vlcbkgj9sytdnpLjRe/tIetI=;
+	b=4omW6stPLQ+T9TNq1N//VBid+n4aEnKIsh+oUHgrPdx7l6vs7pE/Tjc5E2flM3N7zPWi1Z
+	0yoTpMCbu9pJthgO0g5Q5Z2iBR8K6CkcgNmS/Urx9bWqKs4FzKqrOfn2kBKA/dfaAuiBDV
+	em4NMToipV8IItyrgSqsPEydhTdPn/45Ngf1ER+kyAQV80CCptJRToXso5lzVd5F/h4x0p
+	XApCsgF5TNYtZUvLLOIhs3rii+ak65kubD3E4wxdoMigwFU66B8+r11AIq1FE67MU1FwO/
+	5yLh23V/VPstZ7WJAgiTCReGko9SqbjZ5D3/CuxfAXTUWk4ugoNs+oRzeM4SOg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1765834031;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -50,26 +50,25 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a8mHz+pkuqCVp8SY3/Jv6cbB7tBS0L+QV8v7WpC8mrE=;
-	b=Gb7z46TSTx0my0vI2XbVQVoMkGj/vksn1DFT2e1egG0cKYAjRcRnwu9XIqcxEF9BLUHQ4g
-	PmyrguWuHmOWbnBQ==
+	bh=WQLWoK4KO49dZKGqdo4vlcbkgj9sytdnpLjRe/tIetI=;
+	b=1u0wXC/nGNUwdX18bw5S7OJwm+/TUufK2R/kXN0vOOUHjhagBOEZCiE5FCB/CxFzCl2DVQ
+	4ae1r5USqB/l8UCw==
 From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] clocksource/drivers/mips-gic-timer: Move GIC timer to
- request_percpu_irq()
+Subject: [tip: irq/core] MIPS: Move IP27 timer to request_percpu_irq()
 Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251210082242.360936-6-maz@kernel.org>
-References: <20251210082242.360936-6-maz@kernel.org>
+In-Reply-To: <20251210082242.360936-5-maz@kernel.org>
+References: <20251210082242.360936-5-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176583402966.510.3686299502471247608.tip-bot2@tip-bot2>
+Message-ID: <176583403068.510.1173893746184203789.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,54 +78,53 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the irq/core branch of tip:
 
-Commit-ID:     bd04dae0791a8d44adc304d9787916fd4c539bb4
-Gitweb:        https://git.kernel.org/tip/bd04dae0791a8d44adc304d9787916fd4c5=
-39bb4
+Commit-ID:     7f92b583382a1eb4aaafed90d181464969e41656
+Gitweb:        https://git.kernel.org/tip/7f92b583382a1eb4aaafed90d181464969e=
+41656
 Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Wed, 10 Dec 2025 08:22:41=20
+AuthorDate:    Wed, 10 Dec 2025 08:22:40=20
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 15 Dec 2025 22:20:51 +01:00
+CommitterDate: Mon, 15 Dec 2025 22:20:50 +01:00
 
-clocksource/drivers/mips-gic-timer: Move GIC timer to request_percpu_irq()
+MIPS: Move IP27 timer to request_percpu_irq()
 
-Teach the MIPS GIC timer about request_percpu_irq(), which ultimately will
+Teach the SGI IP27 timer about request_percpu_irq(), which ultimately will
 allow for the removal of the antiquated setup_percpu_irq() API.
 
 Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251210082242.360936-6-maz@kernel.org
+Link: https://patch.msgid.link/20251210082242.360936-5-maz@kernel.org
 ---
- drivers/clocksource/mips-gic-timer.c | 10 ++--------
+ arch/mips/sgi-ip27/ip27-timer.c | 10 ++--------
  1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-=
-gic-timer.c
-index abb685a..1501c7d 100644
---- a/drivers/clocksource/mips-gic-timer.c
-+++ b/drivers/clocksource/mips-gic-timer.c
-@@ -77,13 +77,6 @@ static irqreturn_t gic_compare_interrupt(int irq, void *de=
-v_id)
+diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
+index 444b5e0..5f4da05 100644
+--- a/arch/mips/sgi-ip27/ip27-timer.c
++++ b/arch/mips/sgi-ip27/ip27-timer.c
+@@ -58,13 +58,6 @@ static irqreturn_t hub_rt_counter_handler(int irq, void *d=
+ev_id)
  	return IRQ_HANDLED;
  }
 =20
--static struct irqaction gic_compare_irqaction =3D {
--	.handler =3D gic_compare_interrupt,
--	.percpu_dev_id =3D &gic_clockevent_device,
--	.flags =3D IRQF_PERCPU | IRQF_TIMER,
--	.name =3D "timer",
+-struct irqaction hub_rt_irqaction =3D {
+-	.handler	=3D hub_rt_counter_handler,
+-	.percpu_dev_id	=3D &hub_rt_clockevent,
+-	.flags		=3D IRQF_PERCPU | IRQF_TIMER,
+-	.name		=3D "hub-rt",
 -};
 -
- static void gic_clockevent_cpu_init(unsigned int cpu,
- 				    struct clock_event_device *cd)
+ /*
+  * This is a hack; we really need to figure these values out dynamically
+  *
+@@ -103,7 +96,8 @@ static void __init hub_rt_clock_event_global_init(void)
  {
-@@ -152,7 +145,8 @@ static int gic_clockevent_init(void)
- 	if (!gic_frequency)
- 		return -ENXIO;
+ 	irq_set_handler(IP27_RT_TIMER_IRQ, handle_percpu_devid_irq);
+ 	irq_set_percpu_devid(IP27_RT_TIMER_IRQ);
+-	setup_percpu_irq(IP27_RT_TIMER_IRQ, &hub_rt_irqaction);
++	WARN_ON(request_percpu_irq(IP27_RT_TIMER_IRQ, hub_rt_counter_handler,
++				   "hub-rt", &hub_rt_clockevent));
+ }
 =20
--	ret =3D setup_percpu_irq(gic_timer_irq, &gic_compare_irqaction);
-+	ret =3D request_percpu_irq(gic_timer_irq, gic_compare_interrupt,
-+				 "timer", &gic_clockevent_device);
- 	if (ret < 0) {
- 		pr_err("IRQ %d setup failed (%d)\n", gic_timer_irq, ret);
- 		return ret;
+ static u64 hub_rt_read(struct clocksource *cs)
 
