@@ -1,71 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7693-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7696-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBB4CBB8A1
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 09:49:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84167CBCC51
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 08:29:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF93130249C2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 14 Dec 2025 08:46:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B7503002692
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 15 Dec 2025 07:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4042C21F1;
-	Sun, 14 Dec 2025 08:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A55313532;
+	Mon, 15 Dec 2025 07:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PRoDJkuV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z2YS+UzN"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kuXwSMi/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Rou69YT9"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218D42D249A;
-	Sun, 14 Dec 2025 08:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A67C1313522;
+	Mon, 15 Dec 2025 07:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765701475; cv=none; b=jE0VLbf37nU3A4SoDeZmq525LnEiUMlmEJ22rFRPhwtcbQ8Au4Iby6NkcuV5Bg/z48iks6+4ky2x1OvSup2yanWbO+X5uG4vINzgYSLSoIfqpr9e222dS+rdrQgW2SmNcnJShPyr5nb9iOTBCOzRV0sgF964YfoW/284mUi6qrY=
+	t=1765783780; cv=none; b=DgtC+hh4g2iA94fIVAyUDm84AKByjtqJABgaNJutdtzVQPal63RrFN8x4wnssrDqnDju/ai8j2eWoEjck+7+TYZDuedBALDwAS3PAq3I1Cu6lVhMjb7+/6fV6tqdYm9HEoWe/RigMdckXvZh1/xsqbcOceq1bpMK+KPTqyOr2Zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765701475; c=relaxed/simple;
-	bh=PUrHBUG+KqbvkB69jPkDWi+JJH6g3LcmWiO0jijUr0I=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=p5k0WCYHhs5mXyav4iszx6QF8vbFiNtVqR1d/hdO+pVTlIY4JJNpJ48jpPhXZo+NnyIKb0LBJjh2A5vabViEsbcQwOC7vzDq40Ywp8LcVFCvMkCyb4S0qR9l53a2mahnDL4YTvpciThruwOPhPudKw+CAu7AjIX5puR9tmt8Hmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PRoDJkuV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z2YS+UzN; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1765783780; c=relaxed/simple;
+	bh=6Yumyo20oySMajWv2fAqDmrh6e9D7bbShn1JJ7FlNpA=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=CS5F1AUtTpWr07MHqLHwLyd0nDa3pSgd7twviawYmFSbMNXrDD6MNfBtNJ/VQD/j+f1jLg+cHMkJrma2TwGz+Zju0G7Y3JJA9n8FWfqEIWQ4GRTJBC9qg+xhb0zOniJwTRJi5XFHYuVp0PNR+ncptPgSm5sO8O1dgjev5215VJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kuXwSMi/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Rou69YT9; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 14 Dec 2025 08:37:49 -0000
+Date: Mon, 15 Dec 2025 07:18:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765701471;
+	s=2020; t=1765783117;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=KZmKfV756pSzEfgt3VmIwVrp/vlp7pdOUieYOdWI5cY=;
-	b=PRoDJkuVLkiROkz3/F8+OYl6u4GYPnGdGGzqq7BjXutAo5GhdZths8sjSl9kh+QijUfUYD
-	8FIHsRBNiTnGv0rwDpJ7qgiTiw3eJRpZoyLqsqwq1hvo1xCMM4UhpWoD/UYDQmYyMVtAy7
-	8kEHOWQaCnpFvNpWFfANT5ZGOlnpkcpKnn8nSyVuGCkT28+DIl/o9+GHtuk1/faSioXDeI
-	Q5mBExW1MxUaMSujy6jEuY4vURlLoutJ++x8UshblpwEKh4YpGOjvXU++IJXchWAe70NkV
-	hfmW0vkaHrWGmWdt5xAPod1StTpELx/ILJeXQqFWoVgubKnCtVMl6buGj7V2yA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=55OqeXvegQjYguOhoqwSL48wzxa/fxMqaq8Gb5eBZSI=;
+	b=kuXwSMi/4BCH70vYOuvlduL+wAJIXvrFSz52iLLAEZyCsakE8T9xhanVk4ICpMO8YoNRDc
+	9zoh2/J/u3nvxeHPbRTyicjLKnL/0/GzHfEYXzVG4CyY8o2glr8/XWt+mDf+JwgPB6RI4n
+	JlMbFp0Xa6FaSHzPjbKrWA56COmdU6y5iocDpgqc2ACczdmt0md+eZFhi3TkA5PukMmrc5
+	gFJnUxIhOZ1G2wLVWSmYH5YgDGywtzA5AXcnE0vFtTVPD0J08DOx+qNpSELiIb7Yumc0ka
+	8tDBTWvT0uarebSpqe1f+Equ3GYrFh8n86vxYPQwH8u7ovoO+rvjTqOoj3sFRg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765701471;
+	s=2020e; t=1765783117;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=KZmKfV756pSzEfgt3VmIwVrp/vlp7pdOUieYOdWI5cY=;
-	b=Z2YS+UzNdykw66eTLSq9PDdd7ggFyT+HWg6t3H2NkD8wllhPqQ5acqCdnsz3Vt1ld8xFrl
-	Fr2y/S4KKyqM+TCQ==
-From: "tip-bot2 for Yazen Ghannam" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=55OqeXvegQjYguOhoqwSL48wzxa/fxMqaq8Gb5eBZSI=;
+	b=Rou69YT9I726ODFA9dpaDAPI7zKalRjMo7scRd4UFv3Fdxe0q7OpwaAdeDlbCgbl9oYltZ
+	SJNDyE4swKepLHDQ==
+From: "tip-bot2 for Andrew Cooper" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: x86/boot] x86/acpi/boot: Correct acpi_is_processor_usable() check again
-Cc: Michal Pecio <michal.pecio@gmail.com>,
- Yazen Ghannam <yazen.ghannam@amd.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Ingo Molnar <mingo@kernel.org>,
- Ricardo Neri <ricardo.neri-calderon@linux.intel.com>, stable@vger.kernel.org,
+ [tip: x86/cpu] x86/cpu: Drop vestigial PBE logic in AMD/Hygon/Centaur/Cyrix
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, Ingo Molnar <mingo@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Pu Wen <puwen@hygon.cn>,
  x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251126125147.880275-1-andrew.cooper3@citrix.com>
+References: <20251126125147.880275-1-andrew.cooper3@citrix.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176570146995.498.6035988538497211042.tip-bot2@tip-bot2>
+Message-ID: <176578311272.498.3625790823072042019.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,141 +80,119 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/boot branch of tip:
+The following commit has been merged into the x86/cpu branch of tip:
 
-Commit-ID:     adbf61cc47cb72b102682e690ad323e1eda652c2
-Gitweb:        https://git.kernel.org/tip/adbf61cc47cb72b102682e690ad323e1eda=
-652c2
-Author:        Yazen Ghannam <yazen.ghannam@amd.com>
-AuthorDate:    Tue, 11 Nov 2025 14:53:57=20
+Commit-ID:     0bc03750deefc5fdab77b01c459bb1691c64c3c5
+Gitweb:        https://git.kernel.org/tip/0bc03750deefc5fdab77b01c459bb1691c6=
+4c3c5
+Author:        Andrew Cooper <andrew.cooper3@citrix.com>
+AuthorDate:    Wed, 26 Nov 2025 12:51:47=20
 Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 14 Dec 2025 09:19:03 +01:00
+CommitterDate: Sun, 14 Dec 2025 09:57:13 +01:00
 
-x86/acpi/boot: Correct acpi_is_processor_usable() check again
+x86/cpu: Drop vestigial PBE logic in AMD/Hygon/Centaur/Cyrix
 
-ACPI v6.3 defined a new "Online Capable" MADT LAPIC flag. This bit is
-used in conjunction with the "Enabled" MADT LAPIC flag to determine if
-a CPU can be enabled/hotplugged by the OS after boot.
+Besides formatting changes, this logic dates back to Linux 2.4.0-test11 in
+November 2000.
 
-Before the new bit was defined, the "Enabled" bit was explicitly
-described like this (ACPI v6.0 wording provided):
+Prior to "Massive cleanup of CPU detection and bug handling",
+c->x86_capability was a single u32 containing cpuid(1).edx,
+cpuid(0x80000001).edx, or a synthesis thereof.  X86_FEATURE_AMD3D was
+defined as the top bit this single u32.
 
-  "If zero, this processor is unusable, and the operating system
-  support will not attempt to use it"
+After "Massive cleanup of CPU detection and bug handling",
+c->x86_capability became an array with AMD's extended feature leaf split
+away from Intel's basic feature leaf.
 
-This means that CPU hotplug (based on MADT) is not possible. Many BIOS
-implementations follow this guidance. They may include LAPIC entries in
-MADT for unavailable CPUs, but since these entries are marked with
-"Enabled=3D0" it is expected that the OS will completely ignore these
-entries.
+AMD doc #20734-G states that 3DNow is only enumerated in the extended
+feature leaf, and that other vendors where using this bit too.  i.e. AMD
+never produced a CPU which set bit 31 in the basic leaf, meaning that
+there's nothing to clear out in the first place.
 
-However, QEMU will do the same (include entries with "Enabled=3D0") for
-the purpose of allowing CPU hotplug within the guest.
+This logic looks like it was relevant in the pre-"Massive cleanup" world
+but ought to have been dropped when c->x86_capability was properly split.
 
-Comment from QEMU function pc_madt_cpu_entry():
-
-  /* ACPI spec says that LAPIC entry for non present
-   * CPU may be omitted from MADT or it must be marked
-   * as disabled. However omitting non present CPU from
-   * MADT breaks hotplug on linux. So possible CPUs
-   * should be put in MADT but kept disabled.
-   */
-
-Recent Linux topology changes broke the QEMU use case. A following fix
-for the QEMU use case broke bare metal topology enumeration.
-
-Rework the Linux MADT LAPIC flags check to allow the QEMU use case only
-for guests and to maintain the ACPI spec behavior for bare metal.
-
-Remove an unnecessary check added to fix a bare metal case introduced by
-the QEMU "fix".
-
-  [ bp: Change logic as Michal suggested. ]
-  [ mingo: Removed misapplied -stable tag. ]
-
-Fixes: fed8d8773b8e ("x86/acpi/boot: Correct acpi_is_processor_usable() check=
-")
-Fixes: f0551af02130 ("x86/topology: Ignore non-present APIC IDs in a present =
-package")
-Closes: https://lore.kernel.org/r/20251024204658.3da9bf3f.michal.pecio@gmail.=
-com
-Reported-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Michal Pecio <michal.pecio@gmail.com>
-Tested-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Link: https://lore.kernel.org/20251111145357.4031846-1-yazen.ghannam@amd.com
-Cc: stable@vger.kernel.org
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Pu Wen <puwen@hygon.cn>
+Link: https://patch.msgid.link/20251126125147.880275-1-andrew.cooper3@citrix.=
+com
 ---
- arch/x86/kernel/acpi/boot.c    | 12 ++++++++----
- arch/x86/kernel/cpu/topology.c | 15 ---------------
- 2 files changed, 8 insertions(+), 19 deletions(-)
+ arch/x86/kernel/cpu/amd.c     | 6 ------
+ arch/x86/kernel/cpu/centaur.c | 6 ------
+ arch/x86/kernel/cpu/cyrix.c   | 6 ------
+ arch/x86/kernel/cpu/hygon.c   | 6 ------
+ 4 files changed, 24 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 9fa321a..d6138b2 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -35,6 +35,7 @@
- #include <asm/smp.h>
- #include <asm/i8259.h>
- #include <asm/setup.h>
-+#include <asm/hypervisor.h>
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index c04f53f..c792c2a 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1051,12 +1051,6 @@ static void init_amd(struct cpuinfo_x86 *c)
 =20
- #include "sleep.h" /* To include x86_acpi_suspend_lowlevel */
- static int __initdata acpi_force =3D 0;
-@@ -164,11 +165,14 @@ static bool __init acpi_is_processor_usable(u32 lapic_f=
-lags)
- 	if (lapic_flags & ACPI_MADT_ENABLED)
- 		return true;
+ 	early_init_amd(c);
 =20
--	if (!acpi_support_online_capable ||
--	    (lapic_flags & ACPI_MADT_ONLINE_CAPABLE))
--		return true;
-+	if (acpi_support_online_capable)
-+		return lapic_flags & ACPI_MADT_ONLINE_CAPABLE;
-=20
--	return false;
-+	/*
-+	 * QEMU expects legacy "Enabled=3D0" LAPIC entries to be counted as usable
-+	 * in order to support CPU hotplug in guests.
-+	 */
-+	return !hypervisor_is_type(X86_HYPER_NATIVE);
- }
-=20
- static int __init
-diff --git a/arch/x86/kernel/cpu/topology.c b/arch/x86/kernel/cpu/topology.c
-index f55ea3c..23190a7 100644
---- a/arch/x86/kernel/cpu/topology.c
-+++ b/arch/x86/kernel/cpu/topology.c
-@@ -27,7 +27,6 @@
- #include <xen/xen.h>
-=20
- #include <asm/apic.h>
--#include <asm/hypervisor.h>
- #include <asm/io_apic.h>
- #include <asm/mpspec.h>
- #include <asm/msr.h>
-@@ -236,20 +235,6 @@ static __init void topo_register_apic(u32 apic_id, u32 a=
-cpi_id, bool present)
- 		cpuid_to_apicid[cpu] =3D apic_id;
- 		topo_set_cpuids(cpu, apic_id, acpi_id);
- 	} else {
--		u32 pkgid =3D topo_apicid(apic_id, TOPO_PKG_DOMAIN);
+-	/*
+-	 * Bit 31 in normal CPUID used for nonstandard 3DNow ID;
+-	 * 3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway
+-	 */
+-	clear_cpu_cap(c, 0*32+31);
 -
--		/*
--		 * Check for present APICs in the same package when running
--		 * on bare metal. Allow the bogosity in a guest.
--		 */
--		if (hypervisor_is_type(X86_HYPER_NATIVE) &&
--		    topo_unit_count(pkgid, TOPO_PKG_DOMAIN, phys_cpu_present_map)) {
--			pr_info_once("Ignoring hot-pluggable APIC ID %x in present package.\n",
--				     apic_id);
--			topo_info.nr_rejected_cpus++;
--			return;
--		}
--
- 		topo_info.nr_disabled_cpus++;
- 	}
+ 	if (c->x86 >=3D 0x10)
+ 		set_cpu_cap(c, X86_FEATURE_REP_GOOD);
 =20
+diff --git a/arch/x86/kernel/cpu/centaur.c b/arch/x86/kernel/cpu/centaur.c
+index a3b55db..c839894 100644
+--- a/arch/x86/kernel/cpu/centaur.c
++++ b/arch/x86/kernel/cpu/centaur.c
+@@ -119,12 +119,6 @@ static void init_centaur(struct cpuinfo_x86 *c)
+ 	u32  fcr_clr =3D 0;
+ 	u32  lo, hi, newlo;
+ 	u32  aa, bb, cc, dd;
+-
+-	/*
+-	 * Bit 31 in normal CPUID used for nonstandard 3DNow ID;
+-	 * 3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway
+-	 */
+-	clear_cpu_cap(c, 0*32+31);
+ #endif
+ 	early_init_centaur(c);
+ 	init_intel_cacheinfo(c);
+diff --git a/arch/x86/kernel/cpu/cyrix.c b/arch/x86/kernel/cpu/cyrix.c
+index dfec2c6..8f22085 100644
+--- a/arch/x86/kernel/cpu/cyrix.c
++++ b/arch/x86/kernel/cpu/cyrix.c
+@@ -195,12 +195,6 @@ static void init_cyrix(struct cpuinfo_x86 *c)
+ 	char *buf =3D c->x86_model_id;
+ 	const char *p =3D NULL;
+=20
+-	/*
+-	 * Bit 31 in normal CPUID used for nonstandard 3DNow ID;
+-	 * 3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway
+-	 */
+-	clear_cpu_cap(c, 0*32+31);
+-
+ 	/* Cyrix used bit 24 in extended (AMD) CPUID for Cyrix MMX extensions */
+ 	if (test_cpu_cap(c, 1*32+24)) {
+ 		clear_cpu_cap(c, 1*32+24);
+diff --git a/arch/x86/kernel/cpu/hygon.c b/arch/x86/kernel/cpu/hygon.c
+index 1fda6c3..7f95a74 100644
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -174,12 +174,6 @@ static void init_hygon(struct cpuinfo_x86 *c)
+=20
+ 	early_init_hygon(c);
+=20
+-	/*
+-	 * Bit 31 in normal CPUID used for nonstandard 3DNow ID;
+-	 * 3DNow is IDd by bit 31 in extended CPUID (1*32+31) anyway
+-	 */
+-	clear_cpu_cap(c, 0*32+31);
+-
+ 	set_cpu_cap(c, X86_FEATURE_REP_GOOD);
+=20
+ 	/*
 
