@@ -1,135 +1,118 @@
-Return-Path: <linux-tip-commits+bounces-7726-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7729-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 092BECC198A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Dec 2025 09:36:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0BACC35D9
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Dec 2025 14:55:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A0B8302EFD8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Dec 2025 08:35:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD7A930D2DBB
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 16 Dec 2025 13:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAC5731C56F;
-	Tue, 16 Dec 2025 08:35:45 +0000 (UTC)
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350CF1DA60F;
+	Tue, 16 Dec 2025 13:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fisxbgUN";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QCr2Fuph"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED38530F532
-	for <linux-tip-commits@vger.kernel.org>; Tue, 16 Dec 2025 08:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699E325F7B9;
+	Tue, 16 Dec 2025 13:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765874144; cv=none; b=Ymtm+E2kHnyAJ/NzV4RoIHwFpsLouKVm/Kr/sMSSeTiMtGuWSxUaxrDtkeSKeke+xtnfXG9dbB7BcAyYj8pVvYJcKjiIpcDpkaSTE3rHDPG9ahT93W20pWIV8pzUUkAbP1k1AhXSmIA6N45VUAR1S4J+FGYzLkEdbfMz5WNsd3g=
+	t=1765892927; cv=none; b=NibJMn3mCrNbUmZSHH+0RHy34vPRFqfSsQHkcPmjlQ9xFrE+3Z7Q6V9VDbpdp+8Ya+CT0G/24qteFBkurjYc2yH6rn2upOPuhKdvB1FXSA57F8SuZh3l6xX2mnyUBM2mKiFouhaFBZzCHNqPoQkqCbbxLamvgLhyzr7Dt21QH5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765874144; c=relaxed/simple;
-	bh=/Ov3Y7rxA0gOa6VLbByhi6NeA/O5stuUy7+ZFh7/gR0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Fy8EejDVlLE60T9poWZ5sUUDEBYGupbudXDpTRqVcrJadNL5z3cJW3cQHBqWEIP5KlpNfv/TA7l4VIb3xc4CCU7vz8hK9olQCdT3nkfgcmeX1xfdfyWqju7P0Vtrbl/HEVAO1G0FVkwzCq6JVNeR6SauFOix1X1QCjbKDhRjQBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-93f573ba819so1110947241.1
-        for <linux-tip-commits@vger.kernel.org>; Tue, 16 Dec 2025 00:35:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765874135; x=1766478935;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tzpKec+akZNL0WBBQ4BRLgSAv5EeRs8IKto9EFXrxyQ=;
-        b=TyXeEUoO5DWiAk2D+/b5X4kalRY0pMFsJEKvfPQIsXCDgf/SG26lmMscz6puvpI4EK
-         NWHjieQGpD5P8VNk/gwNeABbcJ87R+G0QUy2+O3XIm9i4tOtK9t2K6jdnI2hRdGfC7KU
-         2esOi8+06tqt07C+CqceG/GTXM8et53aTwu28A5Ad0WrGK8X4fK/nZExEnwL3a36nHHP
-         eR0pPlMNp+Wb1chVhMX042rQ+zDGp4qTxy0NHsEyXvqs54gWoGOJ7afz0+sZmO4QoslS
-         4bXqwp+7Yi6oYWZDXsKvGhXyOdJDoYyOiya/emj2DPzOzDYtpyGUGHfa7e/5gk8Zbv4d
-         KLZw==
-X-Gm-Message-State: AOJu0YzYyaEK7MknGA+2v0OQrk06NBsVj5qbwlAlx5WJpMPkugRGl0Jj
-	ID8IEoyqfBPuQmfemPDGuixSLbD8jX9/9SIwFbO/PDvYpQGR7WqkFIDfO9hSnCKp
-X-Gm-Gg: AY/fxX6GZwsq6xrLLmAr/hrA//FYPXBqlCvJTiuBqSyApqi5VhkP9d85MBucIWx4fYo
-	Dp2jIFz++CLyv9MFtuw6qR9rf5417bx5KkqrFPenHNZOg6723R+ug1ty4eGl+kgHeGzHXfF0ZOA
-	FhGL3QuU+5WCcY/vYmbSlYDAfYEjAwL3ER+B566RiMYrmVOvfLFrk09jflEjW+01AtjLr6suJ8t
-	3+2Uksj6/EwxTWNHNechM+6iodFtxQET5R/u6JtNVwhBzFj6AUilH3ZOOy2qh6sWN0cdnDGOzIS
-	M/wk59KT3z8Os6P2Og0khdhE2dCTpehBcLjLfBUtQEDIaXG3MTcNa8YphfmkQxBoXbMIws8zxuw
-	2KGvOIniXSECRWsQfnl+diWJ0Mut9gEX+tLBYHMM88QcyczaZ/+qWXwY9ERwq7/0oxuWpQUXy8e
-	BuEKDmUNeuoeP91bwwExqIqNHDyxnZbz7SfZH5eov4m7G22CZX
-X-Google-Smtp-Source: AGHT+IH2STS0bu4zAf1t0IYpd4Q7SMnOWSZ0Se/Bv64eN2fQ7cFk8qpFZdVkUwWmjdJiMdKIGOskpQ==
-X-Received: by 2002:a05:6102:8083:b0:5db:3bbf:8e62 with SMTP id ada2fe7eead31-5e82748aa6dmr3893946137.1.1765874134673;
-        Tue, 16 Dec 2025 00:35:34 -0800 (PST)
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com. [209.85.222.50])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-93f5ace659asm5660539241.5.2025.12.16.00.35.34
-        for <linux-tip-commits@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Dec 2025 00:35:34 -0800 (PST)
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-93f5905e698so1028454241.0
-        for <linux-tip-commits@vger.kernel.org>; Tue, 16 Dec 2025 00:35:34 -0800 (PST)
-X-Received: by 2002:a05:6102:54aa:b0:5db:c9cd:673f with SMTP id
- ada2fe7eead31-5e8277bb861mr3642915137.26.1765874133843; Tue, 16 Dec 2025
- 00:35:33 -0800 (PST)
+	s=arc-20240116; t=1765892927; c=relaxed/simple;
+	bh=nh7X1bPi4fGeDd+FE5OIIq9pF3GB3scpqTLRGQ/ernI=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=aNl/i3tXpCKeGAoVxeV1pojGSjxI9CLOfmCaDp/hHnf1WTGP8YPdg77FPyEZF4Z2GAbiVKjgyF+jPhT0wwhKt62BRlSZUTi5T4lu5KgqcYG76NNzOzG1q8GLMuFtjpRG5nYlyQuqLbGMnRlQ5DyxlrpMaudJNq2OMooqVj70ZSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fisxbgUN; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QCr2Fuph; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 16 Dec 2025 13:48:38 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1765892919;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8UewFPbDf2rBRe3/INQNj0cqQJ9cVvJQoVi6Pw9J6zM=;
+	b=fisxbgUNRc8cz+ypDWbjs2iCSM3zL3SHF3aTNZknYnSmRosQd7w2R7DiR7uJkYtHm/5P6q
+	8Wa03PDJ2lPsFr3I5iJUWDcGjpcQStQC/t3/e7BN1i2vc8Zq+gX00/rxx9boQpEO4HDvBz
+	XAMZ3vNdMT/4e003520hui3nTYeiur7KC403Is4KGfaNWQx5d19vXfwO3dKTY6mxJo6Ft+
+	ixTl7BQfub1wq4eIOk2841dAoM7YH2w/NJyntuZiZulvtEwlFFporrIiiwYfFk3zn7evip
+	TqImo6m8u3btErl8EhdITmm9XrgBI4DJa+27GDJnf8Hu2XTxKflOLYDZUplN1Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1765892919;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8UewFPbDf2rBRe3/INQNj0cqQJ9cVvJQoVi6Pw9J6zM=;
+	b=QCr2Fuph6OS/TKR/nGAX98HyAMQQ8vdgTjyDrRClhv2MqmgNDFTwDwZ6ItXkVM1oSefw4f
+	6Wv2+RhWoaD4dfAA==
+From: "tip-bot2 for Zide Chen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf/x86/intel/cstate: Add Diamond Rapids support
+Cc: Zide Chen <zide.chen@intel.com>, Ingo Molnar <mingo@kernel.org>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251215182520.115822-3-zide.chen@intel.com>
+References: <20251215182520.115822-3-zide.chen@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251201112933.488801-5-cosmin-gabriel.tanislav.xa@renesas.com> <176583521910.510.16822991242218719932.tip-bot2@tip-bot2>
-In-Reply-To: <176583521910.510.16822991242218719932.tip-bot2@tip-bot2>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 16 Dec 2025 09:35:23 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXVtpfKyT8ZbuL4LOvDyYAa_Oo_YNxTTj-B_5-kpsyekg@mail.gmail.com>
-X-Gm-Features: AQt7F2onkNKHHn16tGXkBeeIY6vzzqyFZZdcP4ummSThRbDBMLYVvDY_iq0Wd6w
-Message-ID: <CAMuHMdXVtpfKyT8ZbuL4LOvDyYAa_Oo_YNxTTj-B_5-kpsyekg@mail.gmail.com>
-Subject: Re: [tip: irq/drivers] arm64: dts: renesas: r9a09g087: Add ICU support
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: linux-tip-commits@vger.kernel.org, 
-	Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <176589291813.510.6479806528717518018.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Thomas,
+The following commit has been merged into the perf/core branch of tip:
 
-On Mon, 15 Dec 2025 at 22:47, tip-bot2 for Cosmin Tanislav
-<tip-bot2@linutronix.de> wrote:
-> The following commit has been merged into the irq/drivers branch of tip:
->
-> Commit-ID:     97232dc43e83987e2c5fc2fb875b31c745ac9c01
-> Gitweb:        https://git.kernel.org/tip/97232dc43e83987e2c5fc2fb875b31c745ac9c01
-> Author:        Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-> AuthorDate:    Mon, 01 Dec 2025 13:29:33 +02:00
-> Committer:     Thomas Gleixner <tglx@linutronix.de>
-> CommitterDate: Mon, 15 Dec 2025 22:44:33 +01:00
->
-> arm64: dts: renesas: r9a09g087: Add ICU support
->
-> The Renesas RZ/N2H (R9A09G087) SoC has an Interrupt Controller (ICU) block
-> that routes external interrupts to the GIC's SPIs, with the ability of
-> level-translation, and can also produce software and aggregate error
-> interrupts.
->
-> Add support for it.
->
-> Signed-off-by: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Link: https://patch.msgid.link/20251201112933.488801-5-cosmin-gabriel.tanislav.xa@renesas.com
+Commit-ID:     7ac422cf7b16ec524bcd8e017459e328a4103f63
+Gitweb:        https://git.kernel.org/tip/7ac422cf7b16ec524bcd8e017459e328a41=
+03f63
+Author:        Zide Chen <zide.chen@intel.com>
+AuthorDate:    Mon, 15 Dec 2025 10:25:20 -08:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Tue, 16 Dec 2025 14:35:59 +01:00
 
-Please do not apply DTS patches to the irqchip tree, as this will cause
-conflicts with the renesas-dts tree: subsequent patches referring to
-the "icu" label depend on this patch.
+perf/x86/intel/cstate: Add Diamond Rapids support
 
-Thank you for dropping this commit!
+>From a C-state residency profiling perspective, Diamond Rapids is
+similar to SRF and GNR, supporting core C1/C6, module C6, and
+package C2/C6 residency counters.  Similar to CWF, the C1E residency
+can be accessed via PMT only.
 
-> --- a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
-> +++ b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
-> @@ -759,6 +759,79 @@
->                         #power-domain-cells = <0>;
->                 };
->
-> +               icu: interrupt-controller@802a0000 {
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://patch.msgid.link/20251215182520.115822-3-zide.chen@intel.com
+---
+ arch/x86/events/intel/cstate.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+diff --git a/arch/x86/events/intel/cstate.c b/arch/x86/events/intel/cstate.c
+index 008f8ea..1e2658b 100644
+--- a/arch/x86/events/intel/cstate.c
++++ b/arch/x86/events/intel/cstate.c
+@@ -652,6 +652,7 @@ static const struct x86_cpu_id intel_cstates_match[] __in=
+itconst =3D {
+ 	X86_MATCH_VFM(INTEL_EMERALDRAPIDS_X,	&icx_cstates),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_X,	&icx_cstates),
+ 	X86_MATCH_VFM(INTEL_GRANITERAPIDS_D,	&icx_cstates),
++	X86_MATCH_VFM(INTEL_DIAMONDRAPIDS_X,	&srf_cstates),
+=20
+ 	X86_MATCH_VFM(INTEL_TIGERLAKE_L,	&icl_cstates),
+ 	X86_MATCH_VFM(INTEL_TIGERLAKE,		&icl_cstates),
 
