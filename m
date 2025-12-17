@@ -1,75 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-7740-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7741-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93CF8CC7B3C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 13:51:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B162CC7AF7
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 13:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD8E03087991
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 12:47:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E737F301B3AF
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 12:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68E9345CB1;
-	Wed, 17 Dec 2025 12:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9B3346782;
+	Wed, 17 Dec 2025 12:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JojKaCk9";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KCp94ljE"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dZlr6o3N";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sEkwdovl"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3816D3451A7;
-	Wed, 17 Dec 2025 12:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4407F3451DB;
+	Wed, 17 Dec 2025 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765975089; cv=none; b=KRFh8qkPFxySbnOPIOlGaRUr9rsE8yzXQhdp5uR64oTvVl4bsaqGcEMlN5E0XXKOIkfFEiCELnRfMKXAv5Gm3Yvvzrn/bPstxrMEgJQ2zx77/wv7SrVax2rsm6kzw5vMV3MuaTxjC70CaI0ogiO3QwML2gIish4WIGXJ47JW0H4=
+	t=1765975090; cv=none; b=hhKABEA+AyEqezYWYLuJE54D5prq3pgmSd4PK+Gb+GgcAwvYagXRYKcM9EwZwhR4tISLq+jf4H47YfD6QfEQqSxPAdp0IXu677BeWn6FtAaAQHW0Ya8hm9G2BT3ycORtZo+BpEPjbHlnOZ4vkdHnRNyTUC1remuWNpA/eH6Jhk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765975089; c=relaxed/simple;
-	bh=0ryz5+PZWkmQBp/annbH4tdiDuc9ZPirRQ+/kkhWDaI=;
+	s=arc-20240116; t=1765975090; c=relaxed/simple;
+	bh=Ig070YKl+qQKGqtA3txSk05mFBCu5hb/W1WirOEIlz4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=eAO8PFjM2/XiUoCknwjf6v44+kakrt3lx31F4bS8jBsZT0+Cb+GUjZWp4ZgV+hjO4mMVRjwQosL/wc91SkL2yrKmhqpQI8oA4vlcztJVMXyteIw5VgBhCSIebiFezKcEQtgr9g6oCMgEbHegxm85ozKz9FLOh2Yq8dy580aKQAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JojKaCk9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KCp94ljE; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=s4QCSZR90UtHVQ227ovAxX6wuuoR10S+PBCAReuzygAu3SsAJ8bR6p1qxZqPWPTtfB7eCMv9AMKBuLmecXfqOkTwQn7ttmKJyVdws84PyqDSI3ImIzSsdUoF6/pDw5EGOnhhW0Leh/SXUwGwUW9VjsaE/AAsZVpnY3SMRmhVzdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dZlr6o3N; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sEkwdovl; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 17 Dec 2025 12:38:05 -0000
+Date: Wed, 17 Dec 2025 12:38:06 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765975086;
+	s=2020; t=1765975087;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dxh5Xyq7yNSDiFI1Gp/hFK/ypgOAp9s/TbvGDjVXPXQ=;
-	b=JojKaCk97o+2ZKp924obIpixWhYC+i47ZuedeFm7sKbTOGtEnx9F9YWkFGLjTkeFUMYFDn
-	M3vIHUzVdO8RbbdaMn2/Zm7Kpi7u7p8JbHVHeuS5DDkxvd7xOCc6ALQ6kA6wq9p0X5QCU/
-	dmTNC5v4zsH+bFDa6zQQ555l6fO9yKX76nlPGa6l8uWT35xvmXCWb7/20HaT6U/Y0Q7k1E
-	m7sTx0bYxUf+2vGWcEU5gO4J6ORWqmzFxvqmMyhURJEhpWH2DrgMRqCxm/wwrnr8aWom5J
-	ujH39m/d7YgcVoNZ7UreTeB1DjYtN/0ZxNpPDeyOF1k4G/rIpXNmT1PbA49bSg==
+	bh=1pCs0n3iip2sTkyCvoMHZYLnSpjLZGEPE8F8Ncp7JdQ=;
+	b=dZlr6o3NHMSOtFkQYSeAJTt5+LOUL2pCg0XIShJGSr/0QzJAzF5KWHJQqawTTB6ap+aMGJ
+	pd2AFfWsuYXJl+or9H6ojBn9rRHOoJGZRyeqsbElrfCxZdR95fdMuDljyLzVEmTkN5Me0N
+	BmT3ojaDcU4IM/VJlgATgFydydCHWasENdUSB46grgGndIBBZdYNuGykvr1GvID75c/QcE
+	UqVEX68E1b2iPIWkqJOnUVkTt2Ad6UxZxVd1Fn00irFUP5yDU51xvOuMqZH2yn6w47wF+I
+	kgyhKvQc9yq6/c4sOdF8KM9EoTgU48J2l3QYBkE/UnP+yxQQcAuIUFCi35xIcA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765975086;
+	s=2020e; t=1765975087;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dxh5Xyq7yNSDiFI1Gp/hFK/ypgOAp9s/TbvGDjVXPXQ=;
-	b=KCp94ljEEHwypU1FVVv7gwvxB1lrBmGY/yMNqJe3UCQLXfVUHRA46p9CVonpCyXUKnEDR/
-	MBjF9dkeRz6DBACA==
-From: "tip-bot2 for Jens Remus" <tip-bot2@linutronix.de>
+	bh=1pCs0n3iip2sTkyCvoMHZYLnSpjLZGEPE8F8Ncp7JdQ=;
+	b=sEkwdovlCUF+XvmJ7C6SLTzkA6C6fsnuopT2csvhPPek4EyON0oE9j3C8qnK6XBEIWTpfN
+	GLLPfTruESeOaPAA==
+From: "tip-bot2 for Sandipan Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] unwind_user: Enhance comments on get CFA, FP, and RA
-Cc: Jens Remus <jremus@linux.ibm.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: perf/core] perf/x86/amd: Support PERF_PMU_CAP_MEDIATED_VPMU for
+ AMD host
+Cc: Sandipan Das <sandipan.das@amd.com>, Mingwei Zhang <mizhang@google.com>,
+ Sean Christopherson <seanjc@google.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Xudong Hao <xudong.hao@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251208160352.1363040-2-jremus@linux.ibm.com>
-References: <20251208160352.1363040-2-jremus@linux.ibm.com>
+In-Reply-To: <20251206001720.468579-14-seanjc@google.com>
+References: <20251206001720.468579-14-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176597508521.510.9459757707168769746.tip-bot2@tip-bot2>
+Message-ID: <176597508637.510.5295271479609953725.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,72 +82,48 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     2d6ad925fb2386f3ee1d26f5022f7ea71bbc1541
-Gitweb:        https://git.kernel.org/tip/2d6ad925fb2386f3ee1d26f5022f7ea71bb=
-c1541
-Author:        Jens Remus <jremus@linux.ibm.com>
-AuthorDate:    Mon, 08 Dec 2025 17:03:49 +01:00
+Commit-ID:     65eb3a9a8a34fa9188e0ab5e657d84ce4fa242a7
+Gitweb:        https://git.kernel.org/tip/65eb3a9a8a34fa9188e0ab5e657d84ce4fa=
+242a7
+Author:        Sandipan Das <sandipan.das@amd.com>
+AuthorDate:    Fri, 05 Dec 2025 16:16:49 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 17 Dec 2025 13:31:07 +01:00
 
-unwind_user: Enhance comments on get CFA, FP, and RA
+perf/x86/amd: Support PERF_PMU_CAP_MEDIATED_VPMU for AMD host
 
-Move the comment "Get the Canonical Frame Address (CFA)" to the top
-of the sequence of statements that actually get the CFA.  Reword the
-comment "Find the Return Address (RA)" to "Get ...", as the statements
-actually get the RA.  Add a respective comment to the statements that
-get the FP.  This will be useful once future commits extend the logic
-to get the RA and FP.
+Apply the PERF_PMU_CAP_MEDIATED_VPMU flag for version 2 and later
+implementations of the core PMU. Aside from having Global Control and
+Status registers, virtualizing the PMU using the mediated model requires
+an interface to set or clear the overflow bits in the Global Status MSRs
+while restoring or saving the PMU context of a vCPU.
 
-While at it align the comment on the "stack going in wrong direction"
-check to the following one on the "address is word aligned" check.
+PerfMonV2-capable hardware has additional MSRs for this purpose, namely
+PerfCntrGlobalStatusSet and PerfCntrGlobalStatusClr, thereby making it
+suitable for use with mediated vPMU.
 
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+Signed-off-by: Mingwei Zhang <mizhang@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251208160352.1363040-2-jremus@linux.ibm.com
+Tested-by: Xudong Hao <xudong.hao@intel.com>
+Link: https://patch.msgid.link/20251206001720.468579-14-seanjc@google.com
 ---
- kernel/unwind/user.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/events/amd/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/unwind/user.c b/kernel/unwind/user.c
-index 39e2707..0ca434f 100644
---- a/kernel/unwind/user.c
-+++ b/kernel/unwind/user.c
-@@ -31,6 +31,7 @@ static int unwind_user_next_common(struct unwind_user_state=
- *state,
- {
- 	unsigned long cfa, fp, ra;
+diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
+index 44656d2..0c92ed5 100644
+--- a/arch/x86/events/amd/core.c
++++ b/arch/x86/events/amd/core.c
+@@ -1439,6 +1439,8 @@ static int __init amd_core_pmu_init(void)
 =20
-+	/* Get the Canonical Frame Address (CFA) */
- 	if (frame->use_fp) {
- 		if (state->fp < state->sp)
- 			return -EINVAL;
-@@ -38,11 +39,9 @@ static int unwind_user_next_common(struct unwind_user_stat=
-e *state,
- 	} else {
- 		cfa =3D state->sp;
- 	}
--
--	/* Get the Canonical Frame Address (CFA) */
- 	cfa +=3D frame->cfa_off;
+ 		amd_pmu_global_cntr_mask =3D x86_pmu.cntr_mask64;
 =20
--	/* stack going in wrong direction? */
-+	/* Make sure that stack is not going in wrong direction */
- 	if (cfa <=3D state->sp)
- 		return -EINVAL;
-=20
-@@ -50,10 +49,11 @@ static int unwind_user_next_common(struct unwind_user_sta=
-te *state,
- 	if (cfa & (state->ws - 1))
- 		return -EINVAL;
-=20
--	/* Find the Return Address (RA) */
-+	/* Get the Return Address (RA) */
- 	if (get_user_word(&ra, cfa, frame->ra_off, state->ws))
- 		return -EINVAL;
-=20
-+	/* Get the Frame Pointer (FP) */
- 	if (frame->fp_off && get_user_word(&fp, cfa, frame->fp_off, state->ws))
- 		return -EINVAL;
-=20
++		x86_get_pmu(smp_processor_id())->capabilities |=3D PERF_PMU_CAP_MEDIATED_V=
+PMU;
++
+ 		/* Update PMC handling functions */
+ 		x86_pmu.enable_all =3D amd_pmu_v2_enable_all;
+ 		x86_pmu.disable_all =3D amd_pmu_v2_disable_all;
 
