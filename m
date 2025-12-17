@@ -1,77 +1,77 @@
-Return-Path: <linux-tip-commits+bounces-7751-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7752-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73DACC7D43
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 14:31:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E19ECC7D6B
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 14:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 91378300DBB0
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 13:31:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1277230852F8
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 17 Dec 2025 13:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D98D34A784;
-	Wed, 17 Dec 2025 12:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BACC34AAE6;
+	Wed, 17 Dec 2025 12:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QKyh7rvm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lRYm2OK1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ldIhilI9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pSthkWn/"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F60A34A3B0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8E334A763;
 	Wed, 17 Dec 2025 12:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765975101; cv=none; b=cSzMyalMRfeyFi7e4ES24OWq3Oh2VTAiQqX1mTuaiEtEWaytG0umqzdqz9k1JcsIJHgClgOwr6mjHqe0SMss8vx01dx2/gxvEkxq7KDH13pfw1v33mQFFor7R1cGkuWSauJhU4OvkjJdJhPahNa6huO1AJr6gPVSQph4mre4kQk=
+	t=1765975102; cv=none; b=CPE2Jt2xCDsLP4XafpzC3qf63eRyU/sGns9w+JFI2wMvO3l46N4sW2ywTBU4vLajflhMopxqhAIKEucQ006X8KTJaEQ5bld+xeMz8lfQX+kCVU9oMSQXvyEQjKRoYVBBmP+LgFBqpO2aBve67UJ4PF1MxUmtdYZSBK7wMpPwoxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765975101; c=relaxed/simple;
-	bh=/CX5btYMfSQDqvkEuUQwgdpu3bhfEHC1liks4BSuT4c=;
+	s=arc-20240116; t=1765975102; c=relaxed/simple;
+	bh=7in5RF2DjArdNU8g9hI9MfDhalzuARY28go3BJZgWwM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DuokhoMVSsWCqrYvOyJQqeyJN7V544zGbkA+vFOxLEpxeCR9iaaxQ89HLPIFd5bnyjEKJjINuF44LTzp7GGzKDtoprE75JCMNGKvrUXemeNNkVOTxcPvmj97ifQ5CoYKFcAevxqcuZHJLCAUQZqYQkEO40ZLrRcrlH0Yusav7ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QKyh7rvm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lRYm2OK1; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=oN9bQrs/hLq7i7qgMTlks3aE3kuNlQ3CE6Gh1XMXYy6m5/qGywCwszZHYUPX8ek50yI9RacPYeU0AJkDc6dVOPmK0u1BplsxeegFHv1ah0vDqjjzMh7n49p1vlTiu7ETP20kJ7LApRAwFkOCQ6Xx0cxVKo+eaGxBeJHzW2d+V3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ldIhilI9; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pSthkWn/; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 17 Dec 2025 12:38:16 -0000
+Date: Wed, 17 Dec 2025 12:38:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1765975097;
+	s=2020; t=1765975098;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tkYsvYA4BVbfv6N5XOZGkRE/GAS4ynE4iz4LTA3QQbM=;
-	b=QKyh7rvmCx40PBQj69pis2iJCO3VujVrOvqDv1gs++dO+ARrkUQcOqkuvCvn2NujuHw868
-	mHAyB+qdnGWYh01FGnYBWJn5DWuDas+GMS6Tzay0MyrJe84KY9nwhGQ9GR8OdV23eFHBmR
-	AqwLg8qgz0vN12aK8v3OhC2CFubTpaIerVl8V7HDigNX2APzgwRdbr6qRF7aFRRwluXmq7
-	KS+U3eIzt3l50/kd1TnXVJl6c9n+V1OWH3kVznHlajgRIkTj0Ua1jIJToLEKveYUlZ4RI5
-	IqIX82UHBJ2Ia8zE0tF/yYesKRoxocJLw5Mdcw5i59Xmkv1v+vgBkpQxS/My4Q==
+	bh=2/tQJGEDSjXlwrSDdTdPbxvI4lTYaJEhJCreJCmgBWs=;
+	b=ldIhilI9a1KtAqgd6KXkERq8J0PlCID1RNKTcOKcrtG4FNcgB7qHRaVF+eRJVUyH1/LVDF
+	idgDEQGMxjDUszI3nlELYcecfl6YWt96yVCFd2az603U/kmW9FvDcnqhKV0okFKvUaCuhm
+	+fbh89yWY4VR7JauNOvPXezrVSpRK+9wJgI8t5T2lOkpwrojMBHjvyXKdQWMYez9B4cif0
+	jvUFMw2d8w1wgrt7V0cyZ62tuf1UjuBFIi+QqQKPS/AKoo34LjoRrd2FY8cIjf+fD7UfMs
+	cmRTDGD6HdVYYUgWe2XvCiUQQBBQj2u6smJb5jBZctzZKf/ssuY3pkvN0pbIJw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1765975097;
+	s=2020e; t=1765975098;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tkYsvYA4BVbfv6N5XOZGkRE/GAS4ynE4iz4LTA3QQbM=;
-	b=lRYm2OK1cseQc1RJYbZhVXJ1WTdHmlTMrLessKMoKsdeRYJcPKBJWgWsRUFk3914xxkweo
-	wJNDygLjNyM+HfBg==
-From: "tip-bot2 for Sean Christopherson" <tip-bot2@linutronix.de>
+	bh=2/tQJGEDSjXlwrSDdTdPbxvI4lTYaJEhJCreJCmgBWs=;
+	b=pSthkWn/Ugvtt6AUKASxdh6pfI3DpDQLnHTWdERF/BL+5IYH9U5M5Rod20kvGE14UVLpsn
+	pdAchY22noF1R/CA==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/core] perf: Move security_perf_event_free() call to __free_event()
-Cc: Sean Christopherson <seanjc@google.com>,
+Subject: [tip: perf/core] perf: Add generic exclude_guest support
+Cc: Kan Liang <kan.liang@linux.intel.com>, Mingwei Zhang <mizhang@google.com>,
+ Sean Christopherson <seanjc@google.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>,
  Xudong Hao <xudong.hao@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251206001720.468579-4-seanjc@google.com>
-References: <20251206001720.468579-4-seanjc@google.com>
+In-Reply-To: <20251206001720.468579-3-seanjc@google.com>
+References: <20251206001720.468579-3-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176597509645.510.5364980686283921892.tip-bot2@tip-bot2>
+Message-ID: <176597509757.510.17999033168090109265.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,54 +81,75 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     991bdf7e9d6cc74c1de215d1a05c23ff61076bf0
-Gitweb:        https://git.kernel.org/tip/991bdf7e9d6cc74c1de215d1a05c23ff610=
-76bf0
-Author:        Sean Christopherson <seanjc@google.com>
-AuthorDate:    Fri, 05 Dec 2025 16:16:39 -08:00
+Commit-ID:     b9e52b11d2e5e403afaf69a7f8d6b29f8380ed38
+Gitweb:        https://git.kernel.org/tip/b9e52b11d2e5e403afaf69a7f8d6b29f838=
+0ed38
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Fri, 05 Dec 2025 16:16:38 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 17 Dec 2025 13:31:04 +01:00
+CommitterDate: Wed, 17 Dec 2025 13:31:03 +01:00
 
-perf: Move security_perf_event_free() call to __free_event()
+perf: Add generic exclude_guest support
 
-Move the freeing of any security state associated with a perf event from
-_free_event() to __free_event(), i.e. invoke security_perf_event_free() in
-the error paths for perf_event_alloc().  This will allow adding potential
-error paths in perf_event_alloc() that can occur after allocating security
-state.
+Only KVM knows the exact time when a guest is entering/exiting. Expose
+two interfaces to KVM to switch the ownership of the PMU resources.
 
-Note, kfree() and thus security_perf_event_free() is a nop if
-event->security is NULL, i.e. calling security_perf_event_free() even if
-security_perf_event_alloc() fails or is never reached is functionality ok.
+All the pinned events must be scheduled in first. Extend the
+perf_event_sched_in() helper to support extra flag, e.g., EVENT_GUEST.
 
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Mingwei Zhang <mizhang@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Xudong Hao <xudong.hao@intel.com>
-Link: https://patch.msgid.link/20251206001720.468579-4-seanjc@google.com
+Link: https://patch.msgid.link/20251206001720.468579-3-seanjc@google.com
 ---
- kernel/events/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index fab358d..6973483 100644
+index 406371c..fab358d 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -5601,6 +5601,8 @@ static void __free_event(struct perf_event *event)
+@@ -2870,14 +2870,15 @@ static void task_ctx_sched_out(struct perf_event_cont=
+ext *ctx,
+=20
+ static void perf_event_sched_in(struct perf_cpu_context *cpuctx,
+ 				struct perf_event_context *ctx,
+-				struct pmu *pmu)
++				struct pmu *pmu,
++				enum event_type_t event_type)
  {
- 	struct pmu *pmu =3D event->pmu;
+-	ctx_sched_in(&cpuctx->ctx, pmu, EVENT_PINNED);
++	ctx_sched_in(&cpuctx->ctx, pmu, EVENT_PINNED | event_type);
+ 	if (ctx)
+-		 ctx_sched_in(ctx, pmu, EVENT_PINNED);
+-	ctx_sched_in(&cpuctx->ctx, pmu, EVENT_FLEXIBLE);
++		ctx_sched_in(ctx, pmu, EVENT_PINNED | event_type);
++	ctx_sched_in(&cpuctx->ctx, pmu, EVENT_FLEXIBLE | event_type);
+ 	if (ctx)
+-		 ctx_sched_in(ctx, pmu, EVENT_FLEXIBLE);
++		ctx_sched_in(ctx, pmu, EVENT_FLEXIBLE | event_type);
+ }
 =20
-+	security_perf_event_free(event);
-+
- 	if (event->attach_state & PERF_ATTACH_CALLCHAIN)
- 		put_callchain_buffers();
+ /*
+@@ -2933,7 +2934,7 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 	else if (event_type & EVENT_PINNED)
+ 		ctx_sched_out(&cpuctx->ctx, pmu, EVENT_FLEXIBLE);
 =20
-@@ -5664,8 +5666,6 @@ static void _free_event(struct perf_event *event)
+-	perf_event_sched_in(cpuctx, task_ctx, pmu);
++	perf_event_sched_in(cpuctx, task_ctx, pmu, 0);
 =20
- 	unaccount_event(event);
+ 	for_each_epc(epc, &cpuctx->ctx, pmu, 0)
+ 		perf_pmu_enable(epc->pmu);
+@@ -4151,7 +4152,7 @@ static void perf_event_context_sched_in(struct task_str=
+uct *task)
+ 		ctx_sched_out(&cpuctx->ctx, NULL, EVENT_FLEXIBLE);
+ 	}
 =20
--	security_perf_event_free(event);
--
- 	if (event->rb) {
- 		/*
- 		 * Can happen when we close an event with re-directed output.
+-	perf_event_sched_in(cpuctx, ctx, NULL);
++	perf_event_sched_in(cpuctx, ctx, NULL, 0);
+=20
+ 	perf_ctx_sched_task_cb(cpuctx->task_ctx, task, true);
+=20
 
