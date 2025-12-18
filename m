@@ -1,251 +1,154 @@
-Return-Path: <linux-tip-commits+bounces-7765-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7766-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE30CCD34C
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Dec 2025 19:40:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E21CCDBF9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Dec 2025 23:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5358C30000A4
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Dec 2025 18:40:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 272CC300D146
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 18 Dec 2025 22:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F462E0926;
-	Thu, 18 Dec 2025 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298B1299A90;
+	Thu, 18 Dec 2025 22:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3ClhuB3A"
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YWtH2LPZ";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o5zEx4ie"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8482BE02C
-	for <linux-tip-commits@vger.kernel.org>; Thu, 18 Dec 2025 18:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C40231845;
+	Thu, 18 Dec 2025 22:03:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766083255; cv=none; b=ZsdEbsmJVCMo34d55bS0jfaYx1TFsx7MdlqBsOlCfSfpgUEcSMnrFH2X0lG+ONozE9oHsW6of8FMh7omKiMcm3j3StDIrXCD1Ee6KqXY261bIhQ8QtJE7NZJIggMvnkvjLG3zz5gCO57sDt9F/Cx+K+JPDSPVrDvpagBALUJ788=
+	t=1766095418; cv=none; b=beXcdkPUzf7uyKcjTKYjpEjrwRgi2sJ4kwxY7uO7CfVJkCM4NsjiA6NrMg10IsspdTdhnbGjEY2tBYqp6TfBCTQkx/UNeoIySYyUXS/1/r7zjABO+8H0vjARPoUgNYkzL3sKo3SLrqJDpM36l2s4a6emK1ktrYGWzoxpdzHjixo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766083255; c=relaxed/simple;
-	bh=RYYbsSApLUmSiLGjx9MRR/PKwa64iCnAviHCFLXAP7s=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bVMr3b0YM/IlW+GpyQexYmWOR7pOgckrlg2z5l2ozYSaRNHYGUEr0lZGrsxOuGqgQI8ha/L5tP1trrajWaIhuvq0Lto0g0lV/+2nY25SORiZJw7eDg48G9mkCVpQHRoiHNMuOkKcUQQCuHZzXcyRx9jg6gEV5SCnbdjdPDb9y3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3ClhuB3A; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34ac819b2f2so1298322a91.0
-        for <linux-tip-commits@vger.kernel.org>; Thu, 18 Dec 2025 10:40:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1766083253; x=1766688053; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qXXqU4jbywOmCfyBbesOdSVLl4kVgayMGQ9AhPMyorU=;
-        b=3ClhuB3A4RlYnrJabgTSEFwDRJjGvObPbGkKi/3wxjlxcf6E+YoJp9hnRZf/yzysIU
-         EQQVVgCrRU6Y41CUDDDwUlOPe5k1bQwQdrDeiCIEQG8CxMJxFildW+Sdadw2MW5cMiwN
-         85CHMPOSe3wVo3ygvwuJD7zFlkKyoq8kUjlDoos+94pphxFVa/Q7DncQKjPO+H4iJKr7
-         cq5gezszCcbqnWAlLysvY8va8ITWeEhtVnVDlVXP5Aiu7ENOLgDKxaxmudMbCfBuwOVD
-         uRq7RQS154l+OdXdC2Q2mZuSgVR3aNUrJfOSvX6Ya51y1HyT8epAkuyJvvp/zSHEQEq7
-         vF5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1766083253; x=1766688053;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qXXqU4jbywOmCfyBbesOdSVLl4kVgayMGQ9AhPMyorU=;
-        b=QyLLHVCgBCkI9+1nq3Ef8NeKRUvQXF3oanu4VI3QX6MPz684mSJXtqVu5tqzrpg4rb
-         wnX+8ySAo9SA0l4l9/IBPerrvJhnaJ1fPbR+0mpJOhov/WBpsrY5ydg9cO/jHujtE71j
-         vun/uBSV+t7mSM78tUg2UfVXzctXXjpgnwlinXxBc/Z2PNjjJiKM6sMNVIFflBC0C4Lq
-         4F+c6MMhg0sIpADtsm3kopevxEHiKQ5iUbswnmMw1HQpCWxke1PfpNIn4qAEWHihg4nu
-         BhKdAp3MKxJeAmXHxejDrWAwyLwxMHl1Ya2DWKtTYPqJM7XKNJMVA2VQ5CLMK7PPr5cy
-         eEbw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJBo/tptvH30alD5Ryxd+Ji+KbtrkJjzSbbAVb7zfTSaKDZe8GYjOTHy6ZJ7uNdHsk7AUpbz/3AtdBLEMZrKc8pA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJAkJTCdMPdUIIa33NdUTGqzl8SKAltfUMt3zYeVAgHwtWAEvc
-	SuSCxwQhQLA62JdVHSTjO6QQHn1itPGMrkg1CZfPadY54tM1ZCQHc0FoApyKc1c8/OSSZVV2Qy1
-	XH4OB8A==
-X-Google-Smtp-Source: AGHT+IHwIK+8v+VK9tU3i7xm3ePKwmKmQsQMB3JoeqAXbjt4LHZxEpdn/la1a2+MaxxOCof88uAiv0k1myM=
-X-Received: from pjbgq23.prod.google.com ([2002:a17:90b:1057:b0:34c:ab9b:76d2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e7c9:b0:32e:7340:a7f7
- with SMTP id 98e67ed59e1d1-34e921131admr254464a91.2.1766083252671; Thu, 18
- Dec 2025 10:40:52 -0800 (PST)
-Date: Thu, 18 Dec 2025 10:40:51 -0800
-In-Reply-To: <20251218083346.GG3708021@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1766095418; c=relaxed/simple;
+	bh=CwYlTroVDdhR7NwIjLQ9riM2y1za930mDQ28ZGqmAHw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=cs4Qsa6BF7tCMd6XSmxvHK2bLZyWgHPmjtBqkweEwwai8NaRTrM9taPD8cDPR/r75Kxj4dT/a0B7fhxyQQ5DA1aMGD9zkDNedffJHOp/Ej37iurs43mwJYDh8gwQs8+Bg/BhxpDQXMa+AXahl8NWDjfLbS0kiXMRGugJ53nGroo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YWtH2LPZ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o5zEx4ie; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 18 Dec 2025 22:03:33 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1766095414;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gVbqNDqXopaIe97xzEVe3j1IAG+mZHW7Ph3dhG8vYo0=;
+	b=YWtH2LPZ3pq+Eqp7JUDsGSHiOl/pN2UqTf7BQ0jJZZHd+t2hIs9Wn0ySSZKtyAICWxT+BR
+	p/d2Yvazo+Wi0nUnxUWtYFVkSGHcxQJa23iEBmQ3+SIYIGargopKtpQ8wLOh9XdLHoqFoH
+	5Rv9q/LIAbHEMhvkEroc7kOBz2g1wan62WI2OloIAd/T6GMWy+n5bHjaP1ZJyjx7VQF8fB
+	zgjD1rHPMlp6SmtGMD+fcmvgvFkiap7l/Nx8kwGw+xLo5qOu6ORgZ4TAt9SqmBRiC5LH2d
+	4Ajvk0y8kYJtnEg3RwLUvCk+BuhVVPI0m78ScXlzLyzSrw91jPFPe6yL91aiQg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1766095414;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gVbqNDqXopaIe97xzEVe3j1IAG+mZHW7Ph3dhG8vYo0=;
+	b=o5zEx4iexqOeubaOKcM8UWMQUmAhOlsTlFrd0Nb4GgJwf02/39lOxu2ZIjkJpJJ8M/gh0V
+	hOF96hCl1bcUp4AQ==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/irq] x86/irq_remapping: Sanitize posted_msi_supported()
+Cc: Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251125214631.170499997@linutronix.de>
+References: <20251125214631.170499997@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251208115156.GE3707891@noisy.programming.kicks-ass.net>
- <176597507731.510.6380001909229389563.tip-bot2@tip-bot2> <20251218083109.GH3707891@noisy.programming.kicks-ass.net>
- <20251218083346.GG3708021@noisy.programming.kicks-ass.net>
-Message-ID: <aURKsxhxpJ0oHDok@google.com>
-Subject: Re: [tip: perf/core] perf: Use EXPORT_SYMBOL_FOR_KVM() for the
- mediated APIs
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, sfr@canb.auug.org.au, 
-	linux-tip-commits@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com, 
-	kvm@vger.kernel.org
+MIME-Version: 1.0
+Message-ID: <176609541311.510.13017225944888809036.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Dec 18, 2025, Peter Zijlstra wrote:
-> On Thu, Dec 18, 2025 at 09:31:09AM +0100, Peter Zijlstra wrote:
-> > On Wed, Dec 17, 2025 at 12:37:57PM -0000, tip-bot2 for Peter Zijlstra w=
-rote:
-> > > diff --git a/kernel/events/core.c b/kernel/events/core.c
-> > > index e6a4b1e..376fb07 100644
-> > > --- a/kernel/events/core.c
-> > > +++ b/kernel/events/core.c
-> > > @@ -57,6 +57,7 @@
-> > >  #include <linux/task_work.h>
-> > >  #include <linux/percpu-rwsem.h>
-> > >  #include <linux/unwind_deferred.h>
-> > > +#include <linux/kvm_types.h>
-> > Bah, so the !KVM architectures hate on this.
-> >=20
-> > Sean, would something like this be acceptable?
->=20
-> Hmm, the other option is doing something like so:
->=20
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 376fb07d869b..014d832e8eaa 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -57,7 +57,6 @@
->  #include <linux/task_work.h>
->  #include <linux/percpu-rwsem.h>
->  #include <linux/unwind_deferred.h>
-> -#include <linux/kvm_types.h>
-> =20
->  #include "internal.h"
-> =20
-> @@ -6325,6 +6324,8 @@ u64 perf_event_pause(struct perf_event *event, bool=
- reset)
->  EXPORT_SYMBOL_GPL(perf_event_pause);
-> =20
->  #ifdef CONFIG_PERF_GUEST_MEDIATED_PMU
-> +#include <linux/kvm_types.h>
+The following commit has been merged into the x86/irq branch of tip:
 
-Hrm, quick and dirty, but I don't love the idea of punting on the underlyin=
-g
-issue, because not being able to include kvm_types.h will be a big deterren=
-t to
-using EXPORT_SYMBOL_FOR_KVM().
+Commit-ID:     d441e38a2c87824afc7e656e634e55141d015307
+Gitweb:        https://git.kernel.org/tip/d441e38a2c87824afc7e656e634e55141d0=
+15307
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Tue, 25 Nov 2025 22:50:49 +01:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Thu, 18 Dec 2025 22:59:40 +01:00
 
->  static atomic_t nr_include_guest_events __read_mostly;
-> =20
->  static atomic_t nr_mediated_pmu_vms __read_mostly;
->=20
-> > ---
-> > Subject: kvm: Fix linux/kvm_types.h for !KVM architectures
-> >=20
-> > As is, <linux/kvm_types.h> hard relies on architectures having
-> > <asm/kvm_types.h> which (obviously) breaks for architectures that don't
-> > have KVM support.
-> >=20
-> > This means generic code (kernel/events/ in this case) cannot use
-> > EXPORT_SYMBOL_FOR_KVM().
-> >=20
-> > Rearrange things just so that <linux/kvm_types.h> becomes usable and
-> > provides the (expected) empty stub for EXPORT_SYMBOL_FOR_KVM() for !KVM=
-.
-> >=20
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > ---
-> > diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-> > index a568d8e6f4e8..a4cc13e41eec 100644
-> > --- a/include/linux/kvm_types.h
-> > +++ b/include/linux/kvm_types.h
-> > @@ -6,6 +6,8 @@
-> >  #include <linux/bits.h>
-> >  #include <linux/export.h>
-> >  #include <linux/types.h>
-> > +
-> > +#ifdef CONFIG_KVM
-> >  #include <asm/kvm_types.h>
+x86/irq_remapping: Sanitize posted_msi_supported()
 
-This won't work, because asm/kvm_types.h #defines KVM_ARCH_NR_OBJS_PER_MEMO=
-RY_CACHE,
-which guards the "struct kvm_mmu_memory_cache" definition.  E.g. on x86 wit=
-h
-CONFIG_KVM=3Dn, that yields errors like:
+posted_msi_supported() is a misnomer as it actually checks whether it is
+enabled or not. Aside of that this does not take CONFIG_X86_POSTED_MSI into
+account which is required to actually use it.
 
-  In file included from include/linux/kvm_host.h:45,
-                   from arch/x86/events/intel/core.c:17:
-  arch/x86/include/asm/kvm_host.h:854:37: error: field =E2=80=98mmu_pte_lis=
-t_desc_cache=E2=80=99 has incomplete type
-    854 |         struct kvm_mmu_memory_cache mmu_pte_list_desc_cache;
-        |                                     ^~~~~~~~~~~~~~~~~~~~~~~
+Rename it to posted_msi_enabled() and make the return value depend on
+CONFIG_X86_POSTED_MSI, which allows the compiler to eliminate the related
+dead code and data if disabled:
 
+  text	   data	    bss	    dec	    hex	filename
+  10046	    701	   3296	  14043	   36db	drivers/iommu/intel/irq_remapping.o
+   9904	    413	   3296	  13613	   352d	drivers/iommu/intel/irq_remapping.o
 
-In general, I'm hesitant to guard an include with a conditional Kconfig, pr=
-ecisely
-because doing so has a tendency to result in wonky, config-specific build e=
-rrors.
-
-Rather than gate the check on KVM being enabled, what if we restrict the as=
-m
-include to architectures that support KVM in any capacity?  Alternatively, =
-we
-could add a HAVE_KVM, but I'd rather not add HAVE_KVM, because then we'll e=
-nd up
-with the same mess if architectures get clever and conditionally select HAV=
-E_KVM
-(IIRC, that's exactly what happened when HAVE_KVM was a thing in the past).
-
-Compiled tested on all KVM architectures along with csky (and an include of
-kvm_types.h in init/main.c).
-
---
-From: Sean Christopherson <seanjc@google.com>
-Date: Thu, 18 Dec 2025 15:47:59 +0000
-Subject: [PATCH] KVM: Allow linux/kvm_types.h to be included on non-KVM
- architectures
-
-Include the arch-defined asm/kvm_types.h if and only if the kernel is
-being compiled for an architecture that supports KVM so that kvm_types.h
-can be included in generic code without having to guard _those_ includes,
-and without having to add "generic-y +=3D kvm_types.h" for all architecture=
-s
-that don't support KVM.
-
-Assert that KVM=3Dn if asm/kvm_types.h isn't included to provide a more
-helpful error message if an arch name changes (highly unlikely) or a new
-arch that supports KVM comes along.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://patch.msgid.link/20251125214631.170499997@linutronix.de
 ---
- include/linux/kvm_types.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/x86/include/asm/irq_remapping.h | 5 +++--
+ drivers/iommu/intel/irq_remapping.c  | 4 ++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
-index a568d8e6f4e8..797721e298df 100644
---- a/include/linux/kvm_types.h
-+++ b/include/linux/kvm_types.h
-@@ -6,7 +6,23 @@
- #include <linux/bits.h>
- #include <linux/export.h>
- #include <linux/types.h>
-+
-+/*
-+ * Include the arch-defined kvm_types.h if and only if the target architec=
-ture
-+ * supports KVM, so that linux/kvm_types.h can be included in generic code
-+ * without requiring _all_ architectures to add generic-y +=3D kvm_types.h=
-.
-+ */
-+#if defined(CONFIG_ARM64)	|| \
-+    defined(CONFIG_LOONGARCH)	|| \
-+    defined(CONFIG_MIPS)	|| \
-+    defined(CONFIG_PPC)		|| \
-+    defined(CONFIG_RISCV)	|| \
-+    defined(CONFIG_S390)	|| \
-+    defined(CONFIG_X86)
- #include <asm/kvm_types.h>
-+#else
-+static_assert(!IS_ENABLED(CONFIG_KVM));
-+#endif
+diff --git a/arch/x86/include/asm/irq_remapping.h b/arch/x86/include/asm/irq_=
+remapping.h
+index 4e55d17..37b94f4 100644
+--- a/arch/x86/include/asm/irq_remapping.h
++++ b/arch/x86/include/asm/irq_remapping.h
+@@ -67,9 +67,10 @@ static inline struct irq_domain *arch_get_ir_parent_domain=
+(void)
 =20
- #ifdef KVM_SUB_MODULES
- #define EXPORT_SYMBOL_FOR_KVM_INTERNAL(symbol) \
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
---=20
+ extern bool enable_posted_msi;
+=20
+-static inline bool posted_msi_supported(void)
++static inline bool posted_msi_enabled(void)
+ {
+-	return enable_posted_msi && irq_remapping_cap(IRQ_POSTING_CAP);
++	return IS_ENABLED(CONFIG_X86_POSTED_MSI) &&
++		enable_posted_msi && irq_remapping_cap(IRQ_POSTING_CAP);
+ }
+=20
+ #else  /* CONFIG_IRQ_REMAP */
+diff --git a/drivers/iommu/intel/irq_remapping.c b/drivers/iommu/intel/irq_re=
+mapping.c
+index 8bcbfe3..ecb591e 100644
+--- a/drivers/iommu/intel/irq_remapping.c
++++ b/drivers/iommu/intel/irq_remapping.c
+@@ -1368,7 +1368,7 @@ static void intel_irq_remapping_prepare_irte(struct int=
+el_ir_data *data,
+ 		break;
+ 	case X86_IRQ_ALLOC_TYPE_PCI_MSI:
+ 	case X86_IRQ_ALLOC_TYPE_PCI_MSIX:
+-		if (posted_msi_supported()) {
++		if (posted_msi_enabled()) {
+ 			prepare_irte_posted(irte);
+ 			data->irq_2_iommu.posted_msi =3D 1;
+ 		}
+@@ -1460,7 +1460,7 @@ static int intel_irq_remapping_alloc(struct irq_domain =
+*domain,
+=20
+ 		irq_data->hwirq =3D (index << 16) + i;
+ 		irq_data->chip_data =3D ird;
+-		if (posted_msi_supported() &&
++		if (posted_msi_enabled() &&
+ 		    ((info->type =3D=3D X86_IRQ_ALLOC_TYPE_PCI_MSI) ||
+ 		     (info->type =3D=3D X86_IRQ_ALLOC_TYPE_PCI_MSIX)))
+ 			irq_data->chip =3D &intel_ir_chip_post_msi;
 
