@@ -1,131 +1,116 @@
-Return-Path: <linux-tip-commits+bounces-7771-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7772-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52654CCEFBA
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Dec 2025 09:30:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31CACD06B4
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Dec 2025 15:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3EC3930A8B1F
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Dec 2025 08:26:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19A543007C94
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 19 Dec 2025 14:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141AC306B02;
-	Fri, 19 Dec 2025 08:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D70E33A9D7;
+	Fri, 19 Dec 2025 14:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wtU6WKTV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yvF1PyDl"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1PK6J7tb"
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EDF5305E28;
-	Fri, 19 Dec 2025 08:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1491025DB12
+	for <linux-tip-commits@vger.kernel.org>; Fri, 19 Dec 2025 14:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1766132216; cv=none; b=GO6UNSjye6bZu0idcI6+SVIPkut5tSs4TSowIpegGSz5h7vXuVVhVN8q9kammAExxaMCcxXiE9IYUX66zC64aNtGuKef2LTD0ck1V2GEf1pO9zgBNGRErQ1/b0zzcWcqsrywS0tODQBIjaeVar0+eOFSdWYgLcAlp87bWhPJkho=
+	t=1766156273; cv=none; b=icoF7Xs0FfPn35tHRurCbUv8TFLe3jYlxIDUEEdr/o0WTkrvbkuilK5xjjEWsCDAdUWHWIBMce2/sgA4j/rMn5G08SHvEDUsO9j4QhFoGLnAeEfgO8tqHQn9J+sBTwlqWyK2wiS/UbxUq9UwDLkII+/7/sRLQO5U3sAKigrLtr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1766132216; c=relaxed/simple;
-	bh=jy/Mh/GOyuzHoXMF4hVFP1aS9qIB/U94Qg7D19TNV2U=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=pcx0pHjUHnLFyFHA4W09rokIeLhx9Zc1i11tSDVibUlsTUYIDinkO6hFpCUO1xv/77AehSFIxoMjkm0ALal8w0pFVYEevaPkE86ny5//vuss0eU0TxvbSSHl22NJCxbqspHUgCA2SWQ5LVgFET+qUBTw4THYoQFHuHcav3DrmGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wtU6WKTV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yvF1PyDl; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 19 Dec 2025 08:16:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1766132212;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JUSFlcFwnv42vT4o3X+vJlASJxjYyowAPnDgS7wIzso=;
-	b=wtU6WKTVW2gEjJ6TykkK9jbYjx/RIcukJAnQMTinbETP26Q2IQWFdW4LV8aFQVmruJn6bG
-	Lib/m/ogaxeipbNPKTd0CbXnxl3GBH6Djp/pB/+fFLK+tnxJm6EIDGT1NYg7MpO5/znutg
-	Qmo69uiQH0/F5AHS9tCi3hmpxlwrPRUMAH8OrRUadiDKN+7CqQ6R4+ZHXqtBk7kK1P/5et
-	JE4Fh31Sz8zbuTDi5eKlM07cUFDbuGTSsuyYbri1W+G3pG4jlK8I/QboOMTxpljpUyxeSK
-	Lt+HkANyYtjIeo1ep4tlvV79OgrlN7stvmq+FR54FzQDWcLSGKpTDdhj6pJU7w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1766132212;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JUSFlcFwnv42vT4o3X+vJlASJxjYyowAPnDgS7wIzso=;
-	b=yvF1PyDlgq8QPp2qSFEK4h+n+f27eOIPREjylH2MBTjyIx5NyyG0jDua2KvWXrN989BvYY
-	UJMiH64YpKNsYXDw==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/core] sched/fair: Fix sched_avg fold
-Cc: kernel test robot <oliver.sang@intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20251218102020.GO3707891@noisy.programming.kicks-ass.net>
-References: <20251218102020.GO3707891@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1766156273; c=relaxed/simple;
+	bh=mkNqhV9WiF2+nf9rqKSXFDPOf031Yc4BX0YxsVb/OPs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=szDU+P1XWxBlGsM1q2cp3IrgNro26VBYgiBcC8975Vxp0iwuAHUgSZH5Yb5na+4aFBEs1Vjq90Vp9oTc+BM/nBhBxt8YuhbLYzftzjGBA5vC4lYrGiD5oua62uT9ndSrR4p+/Flu/unQCMvaicc6P29SNGuSfvBlJPDgpybRQgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1PK6J7tb; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c64cd48a8so4235014a91.0
+        for <linux-tip-commits@vger.kernel.org>; Fri, 19 Dec 2025 06:57:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1766156271; x=1766761071; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5MqWiCmNEH8alnJtLTveyyVgFFstQuw8nmjLVj/SWzc=;
+        b=1PK6J7tbn/5Q8mxpbFh9UWGGwKtCPl/eQoZ2YZFZlhXSd4t89e/lOpQ/6wFBw0Dtt6
+         /9VHa0XfCkbI1xidEQgteqzj6W2Z0/Zb1R8kbl2lf8Ye64O1LIl9t/RZW5YkEBbwPw6K
+         fSfhj6nJtRgesqbOq0Mgih16ljN9wVV0aO09kJEAMDB7sOgxyfEz35Xyprju++DfcwDC
+         H9sINGojWDeoTDNwdyG51saV5DgQoJ2cQ3QVIWbpsc7b/ttJd/v7XCi1YHe+uEpLxd3S
+         fOwXSE6n6k2OFhD+4hQ2BAqrHUrvxdb0lQPU0xmllPr2bFqxg8zilndxEskIw4qfR+UW
+         LzMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766156271; x=1766761071;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5MqWiCmNEH8alnJtLTveyyVgFFstQuw8nmjLVj/SWzc=;
+        b=OYI9CVcNlbnSL0XEhVpIl6yfV1qCGdV30tdWsO61VwDpDJEycaAoHOjOLH5TabdDaC
+         1qNCJS/7f0Im/igCrFM0ds+mbdwusgakJ/xU5H0gQTHU/8P9w4QOZnfVHBozZ5dVwtbA
+         VRAwv56KTBuYJGDG0xF908BMmkNw/727X3VwN1tAESuuBdf1rfjWAXGVl9amxvAI9r6n
+         ABD+YN75jljaLXS6MZe8oBr39w/+SQZ/W7aNShXFtjDmcP4PjxfdF0wUoXJ8UgzY6X3e
+         WhepL+CwBgUA3hC85RK+wiolLqYDlcaHNGn8IGDHYZEPh4d7MEEMaGJq7fXsPpmQHYpQ
+         IivA==
+X-Forwarded-Encrypted: i=1; AJvYcCV6oRyBo+ORo7bCOVxY8Kin26IsD4b4QRAxDKL7QA2HWr0OHhkriX35RGP3Oa3o/1mJwvrGoeScvBb7HHx4LXZLCA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhpTAxR3vLOKFGqOYLGy/s0wUTXplvm6LP6Zzzs/IVWLjttqjR
+	guWdVD9N9dxDq69yydqSzj+d1hhkLNFbBZn6Js93/hGfpA5g/n7RmMs1r9jfZm3kp9wjn658fAk
+	QB9ONTQ==
+X-Google-Smtp-Source: AGHT+IFclvLPSA0J0AyfZYWwUmH36gc8jxESS4IFZSIxx6EqTt6mr/Mv/CYJlijNnMios0+N+Xc3g8I4Ank=
+X-Received: from pjbst3.prod.google.com ([2002:a17:90b:1fc3:b0:34c:d9a0:3bf6])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:53c7:b0:32c:2cd:4d67
+ with SMTP id 98e67ed59e1d1-34e92142bb2mr2492750a91.13.1766156271429; Fri, 19
+ Dec 2025 06:57:51 -0800 (PST)
+Date: Fri, 19 Dec 2025 06:57:50 -0800
+In-Reply-To: <20251219075235.GV3911114@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <176613221140.510.276814644472640242.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20251208115156.GE3707891@noisy.programming.kicks-ass.net>
+ <176597507731.510.6380001909229389563.tip-bot2@tip-bot2> <20251218083109.GH3707891@noisy.programming.kicks-ass.net>
+ <20251218083346.GG3708021@noisy.programming.kicks-ass.net>
+ <aURKsxhxpJ0oHDok@google.com> <20251219075235.GV3911114@noisy.programming.kicks-ass.net>
+Message-ID: <aUVn7tPw8EaJS-d7@google.com>
+Subject: Re: [tip: perf/core] perf: Use EXPORT_SYMBOL_FOR_KVM() for the
+ mediated APIs
+From: Sean Christopherson <seanjc@google.com>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: linux-kernel@vger.kernel.org, sfr@canb.auug.org.au, 
+	linux-tip-commits@vger.kernel.org, x86@kernel.org, pbonzini@redhat.com, 
+	kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-The following commit has been merged into the sched/core branch of tip:
+On Fri, Dec 19, 2025, Peter Zijlstra wrote:
+> On Thu, Dec 18, 2025 at 10:40:51AM -0800, Sean Christopherson wrote:
+> 
+> 
+> > Include the arch-defined asm/kvm_types.h if and only if the kernel is
+> > being compiled for an architecture that supports KVM so that kvm_types.h
+> > can be included in generic code without having to guard _those_ includes,
+> > and without having to add "generic-y += kvm_types.h" for all architectures
+> > that don't support KVM.
+> 
+> Something jogged my brain and the below seems to work for the few
+> architectures I've tried. Let me update the patch and see if the build
+> robot still finds fail.
 
-Commit-ID:     6ab7973f254071faf20fe5fcc502a3fe9ca14a47
-Gitweb:        https://git.kernel.org/tip/6ab7973f254071faf20fe5fcc502a3fe9ca=
-14a47
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Fri, 19 Dec 2025 09:04:45 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 19 Dec 2025 09:09:38 +01:00
+Nice!  Works on my end as well.  Just when I think I've learned most of the
+build system's tricks...
 
-sched/fair: Fix sched_avg fold
-
-After the robot reported a regression wrt commit: 089d84203ad4 ("sched/fair:
-Fold the sched_avg update"), Shrikanth noted that two spots missed a factor
-se_weight().
-
-Fixes: 089d84203ad4 ("sched/fair: Fold the sched_avg update")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202512181208.753b9f6e-lkp@intel.com
-Debugged-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251218102020.GO3707891@noisy.programming.kic=
-ks-ass.net
----
- kernel/sched/fair.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 76f5e4b..7377f91 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3775,13 +3775,15 @@ account_entity_dequeue(struct cfs_rq *cfs_rq, struct =
-sched_entity *se)
- static inline void
- enqueue_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
--	__update_sa(&cfs_rq->avg, load, se->avg.load_avg, se->avg.load_sum);
-+	__update_sa(&cfs_rq->avg, load, se->avg.load_avg,
-+		    se_weight(se) * se->avg.load_sum);
- }
-=20
- static inline void
- dequeue_load_avg(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
--	__update_sa(&cfs_rq->avg, load, -se->avg.load_avg, -se->avg.load_sum);
-+	__update_sa(&cfs_rq->avg, load, -se->avg.load_avg,
-+		    se_weight(se) * -se->avg.load_sum);
- }
-=20
- static void place_entity(struct cfs_rq *cfs_rq, struct sched_entity *se, int=
- flags);
+> ---
+> diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+> index 295c94a3ccc1..9aff61e7b8f2 100644
+> --- a/include/asm-generic/Kbuild
+> +++ b/include/asm-generic/Kbuild
+> @@ -32,6 +32,7 @@ mandatory-y += irq_work.h
+>  mandatory-y += kdebug.h
+>  mandatory-y += kmap_size.h
+>  mandatory-y += kprobes.h
+> +mandatory-y += kvm_types.h
+>  mandatory-y += linkage.h
+>  mandatory-y += local.h
+>  mandatory-y += local64.h
 
