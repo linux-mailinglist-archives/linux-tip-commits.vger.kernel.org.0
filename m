@@ -1,121 +1,145 @@
-Return-Path: <linux-tip-commits+bounces-7774-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7775-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1249CE6EFE
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Dec 2025 14:58:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A29DCE7371
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Dec 2025 16:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACF653008FB6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Dec 2025 13:58:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5420C3008885
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 29 Dec 2025 15:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF3D1E51E0;
-	Mon, 29 Dec 2025 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF4A241CA2;
+	Mon, 29 Dec 2025 15:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IP2annq+"
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="W9qQXyeS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TUC/Btr0"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E60318152
-	for <linux-tip-commits@vger.kernel.org>; Mon, 29 Dec 2025 13:58:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7754EEB3;
+	Mon, 29 Dec 2025 15:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767016711; cv=none; b=pWmUNubMdXqG8+ZkAuT1efq7yLO7DFePzkoiJUvhTc0lbDN39BeMTRoKB4I7dpf5S33lgDNm0VlorqWPNPQyU5BlhmldSAZ6LEbQQQbhgu5whV1W0sP6pp7O1K8T4ykSQjgEXx4f2nYJTuEDVOLRSE/Y8z65rpViiZ4dC5LZ19w=
+	t=1767022329; cv=none; b=kZS+yzs5Zw6ZAiU88l5wTVjEO7BtERMT9HJqwEDRCA53njXnP2lefQqOJV8THZYhQQHwZFVhD2jdxoGPzeQR6qJagtNYpspfJWkKWag0h0kXAvAT+q0EWjOl0KfP5BtfzIkS2jikZoT3/RqbWgtt1skkQqTaV4+IeAJ9MGzbH8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767016711; c=relaxed/simple;
-	bh=CbUYp8eke5wFqdyFofdKK1TbcpzA7CHWG8GpwsMWeto=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hn0sjYYI55XQfIoVR4+oAJEm7K2wbR94yWVCNmIXNQy1xvdm+FSciEH+47hOHvenLTH524ZXS1tDfGOLOCBpFYUKwBWLz8WVIWzITfyguWwK6PezU6G0fnRvXqAsTPJZ0UtNoayBmZmzjcSfjq0JAiy56ID6ROwqT3nKj8tbihM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IP2annq+; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b7a72874af1so1551708166b.3
-        for <linux-tip-commits@vger.kernel.org>; Mon, 29 Dec 2025 05:58:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1767016708; x=1767621508; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CbUYp8eke5wFqdyFofdKK1TbcpzA7CHWG8GpwsMWeto=;
-        b=IP2annq+PxylonYGnf4ODqPDdhtekpmNPQWl9DUmLd2ysSUNYToySkOl17poCWbQ0O
-         soI/e/y9sATGlbf2b6JCaYmAEM3xPeqjVVKTtEI70T3A8r1P3r+kDzxbmANAuNiZL+o6
-         zX6KjyEZGFw6cfRpl3q5YR0pJrFAwzmNMwUnWzm7EGizYBQwTnVkCYqCDlqAi0TjWkpk
-         +Enalw7Dqu+s1IOOXQAAEmfXHlVH+bfB7r1jURKsBXbpckQbOtxUCmABMC4TeVZtKTci
-         FNw0cXq9/4VJp/j5LuhtCCUaJNkG8CPRNJI5NNdW5FyW5vdKyL43A67Z6ou/0x6bx8Dn
-         Mt1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767016708; x=1767621508;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CbUYp8eke5wFqdyFofdKK1TbcpzA7CHWG8GpwsMWeto=;
-        b=N7/58UbEOEl4RJ9NciMQ9uRwI7alEV8LPLWbjWsC6CDmwuN/2Bt5nU1PfE54XcjDqQ
-         YWjJcgb2N2QEjKgVcFx8bqtYQxiC2Y6qI+UFP2oj3icG4KLrh2PVb2P5G7t2n++egqWS
-         jGpfOCts3is2Bd3GBkU9RVkaiF8ZY6z3ix4dU8lZJ9sLbJrk7AxLkjmuAqO2/RgbN6MK
-         r7kTMZhywgKOYTlpnXmd7h22pchpKEfRGWdiUAGK7ZDno9qXAr7/+iET6Hbwl/jh5jlP
-         Uly2GYQwHMchXhwHAxUTuBxDxsAAjWNsbbN3dVXyyADIy6Wfmmj+MenetvC+hKemyzYr
-         lPfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkQfqmYaUERoSsPzGUU3oa85yOKtu7dFt1gJjx9/h13uupsN2uo0MyuzDfGJSoyF4qMY2v8yv7FiDlyQKeTvjCWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx38THsBD+OapmIb7XD2qRJHYtqlalKHBnHVo7WT2u4sc2FQkiY
-	h9V1GspxdN8owf8o7JI3N3yZwHR4E4WFLR6JU0EHaT/t34dgDgwd39xVAjp0hP1msie6TDemq+H
-	AlHo5Yz7zvxgpiLbbj2bx547YgCbVpzkbXjv8Y07LsVXEp1MUXW86Z6A=
-X-Gm-Gg: AY/fxX6AYYVAObrznOuQ9DJa6bf7Kf+OS4Ky2SyR9fE1OzNY8IPoBIccpLxgQwskLbR
-	7k3UtpQX7l0SVlOysJfQV/qGtFE7ZHEJKu3vDTa6EpNhJyadoJj0RiTUvyiQXGSw3JvN1dEfGWI
-	X33goTw48rc8W1Isy1Mqn/WTPjK+3QDE0fWAH0xUNARoetzGykUpi9bh9j9Cw53XNXzsRk9rtay
-	GFBS5t+7rV49FuL5fkRUi4QMXz1jD/yixDNSl0e/t0GO+t3v3WmGGZoSlohQajLAIGmkkmDMtTx
-	46EKHhSE4YVP2fG2OGi0JkvC
-X-Google-Smtp-Source: AGHT+IGO6MoABPt9lpWXH4D4NpC+nEGOI6KLjXON4jPuGcTxRllAQBlHsOTOdPXT8w4jzdqKKxjSJ7vSN8a9o2S2IGs=
-X-Received: by 2002:a17:907:6e9f:b0:b73:8cea:62b3 with SMTP id
- a640c23a62f3a-b803704ffd7mr3084766766b.41.1767016707606; Mon, 29 Dec 2025
- 05:58:27 -0800 (PST)
+	s=arc-20240116; t=1767022329; c=relaxed/simple;
+	bh=fSRIhCdX5gNixcCzq0Yekxp9N9Eh0OlhVCmkxhWe4sc=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=rsIgSFq05gsmsIWB81knShu4Cm66KtB3M6tF85IB/BJ1qsZVAJrCShT/v3C92D+XuHaFbbJD+j6YLxv8vl2St9bMRIapbnrVjn8vMjLuwLeHkF2DluN9lDe7+sOQ/nWcmLI/66Lo2uyYvyLcfQl/wlMDYtnosqUrw+GYjbsL2KY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=W9qQXyeS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TUC/Btr0; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 29 Dec 2025 15:31:59 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1767022324;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LavvjmoSoChlo1z471ENH9JZJ4WL6lualYR5qbVJkFw=;
+	b=W9qQXyeSYJoXF5K5saq9dWQfufy21twDpNKQeMBnTuZS6eeV4/9BHtaUZybZlubH4feKjB
+	yduxY1+MaCgiWsjPAF4HY2F9r2KVRTBfQ8FfHQ+Qfr102bJaP/oDLPvDb9OjlwObGIpTBM
+	MZ1/jM2F4htIzNDyCg0kXfiHGgikyf0ipcOwDO8WmcxwcrkTBg35qH09AXDllSoR66cD2Q
+	n8bs0LQiu4FUFTkaTdWd0kcMmwHWsvvUMfkM/lpq025Mdd1TXKUBEch7sX3trhiH/OERWu
+	ltSTU1bYSGcA5lLXbH+OGLeypzqXZqVNnk4zC8RwExqcHlKq5gmBx6CCIOLP8A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1767022324;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LavvjmoSoChlo1z471ENH9JZJ4WL6lualYR5qbVJkFw=;
+	b=TUC/Btr0VZTCekEp+owOr8oHRmAxHFJWffosyT7T3nNYmr+ZD0sIfuOIJG3G9Jn4ERqOl9
+	J4nT/tMyFj7kIlBQ==
+From: "tip-bot2 for Brendan Jackman" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/bugs] Documentation/x86: Fix PR_SET_SPECULATION_CTRL error codes
+Cc: Brendan Jackman <jackmanb@google.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20251111-b4-prctl-docs-2-v2-1-bc9d14ec9662@google.com>
+References: <20251111-b4-prctl-docs-2-v2-1-bc9d14ec9662@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <176478073513.498.15089394378873483436.tip-bot2@tip-bot2> <20251229125109.1995077-1-CruzZhao@linux.alibaba.com>
-In-Reply-To: <20251229125109.1995077-1-CruzZhao@linux.alibaba.com>
-From: Vincent Guittot <vincent.guittot@linaro.org>
-Date: Mon, 29 Dec 2025 14:58:16 +0100
-X-Gm-Features: AQt7F2psSqdUkvELM_p2lhfUwfT1gwYwvORg5P1Yq7iNhqPGuZbDS1EhmQ7JZ9Q
-Message-ID: <CAKfTPtCQW_Oj+P6nGx0nVO01CahSEqxuToO8kg=oe3yfuViOwg@mail.gmail.com>
-Subject: Re: [tip:sched/urgent] sched/fair: Clear ->h_load_next when
- unregistering a cgroup
-To: Cruz Zhao <CruzZhao@linux.alibaba.com>
-Cc: tip-bot2@linutronix.de, linux-kernel@vger.kernel.org, 
-	linux-tip-commits@vger.kernel.org, mingo@kernel.org, 
-	peng_wang@linux.alibaba.com, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <176702231989.510.14589594757275090350.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Cruz,
+The following commit has been merged into the x86/bugs branch of tip:
 
-On Mon, 29 Dec 2025 at 13:51, Cruz Zhao <CruzZhao@linux.alibaba.com> wrote:
->
-> Hi Ingo/Peter/all,
->
-> I noticed that the following patch has been queued in the
-> tip:sched/urgent branch for some time but hasn't yet made
-> it into mainline:
-> https://lore.kernel.org/all/176478073513.498.15089394378873483436.tip-bot=
-2@tip-bot2/
->
-> Could you please check if there's anything blocking its
-> merge? I wanted to ensure it doesn=E2=80=99t get overlooked.
+Commit-ID:     4992ed7813c54f0a676b7707d1f8f16552fdb240
+Gitweb:        https://git.kernel.org/tip/4992ed7813c54f0a676b7707d1f8f16552f=
+db240
+Author:        Brendan Jackman <jackmanb@google.com>
+AuthorDate:    Tue, 11 Nov 2025 17:41:08=20
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 29 Dec 2025 16:27:45 +01:00
 
-From an off list discussion w/ Peter, we need to check that this patch
-is not hiding the root cause that task_h_load is not called in the
-right context i.e. with rcu_read_lock(). Peter pointed out one place
-in numa [1]
+Documentation/x86: Fix PR_SET_SPECULATION_CTRL error codes
 
-[1] https://lore.kernel.org/all/20251015124422.GD3419281@noisy.programming.=
-kicks-ass.net/
+If you force-disable mitigations on the kernel cmdline, for SPEC_STORE_BYPASS
+this ends up with the prctl returning -ENXIO, but contrary to the current docs
+for the other controls it returns -EPERM. Fix that.
 
-Vincent
+Note that this return value should probably be considered a bug. But, making
+the behaviour consistent with the current docs seems more likely to break
+existing users than help anyone out in practice, so just "fix" it by
+specifying it as correct.
 
->
-> Thanks for your time and reviewing!
->
-> Best regards,
-> Cruz Zhao
+Since this is getting more wordy and confusing, also be more explicit about
+"control is not possible" be mentioning the boot configuration, to better
+distinguish this case conceptually from the FORCE_DISABLE failure mode.
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251111-b4-prctl-docs-2-v2-1-bc9d14ec9662@goo=
+gle.com
+---
+ Documentation/userspace-api/spec_ctrl.rst | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/userspace-api/spec_ctrl.rst b/Documentation/usersp=
+ace-api/spec_ctrl.rst
+index ca89151..61fe020 100644
+--- a/Documentation/userspace-api/spec_ctrl.rst
++++ b/Documentation/userspace-api/spec_ctrl.rst
+@@ -81,11 +81,15 @@ Value   Meaning
+ ERANGE  arg3 is incorrect, i.e. it's neither PR_SPEC_ENABLE nor
+         PR_SPEC_DISABLE nor PR_SPEC_FORCE_DISABLE.
+=20
+-ENXIO   Control of the selected speculation misfeature is not possible.
+-        See PR_GET_SPECULATION_CTRL.
++ENXIO   For PR_SPEC_STORE_BYPASS: control of the selected speculation misfea=
+ture
++        is not possible via prctl, because of the system's boot configuratio=
+n.
++
++EPERM   Speculation was disabled with PR_SPEC_FORCE_DISABLE and caller tried=
+ to
++        enable it again.
++
++EPERM   For PR_SPEC_L1D_FLUSH and PR_SPEC_INDIRECT_BRANCH: control of the
++        mitigation is not possible because of the system's boot configuratio=
+n.
+=20
+-EPERM   Speculation was disabled with PR_SPEC_FORCE_DISABLE and caller
+-        tried to enable it again.
+ =3D=3D=3D=3D=3D=3D=3D =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+=20
+ Speculation misfeature controls
 
