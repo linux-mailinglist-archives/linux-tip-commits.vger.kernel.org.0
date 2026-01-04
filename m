@@ -1,170 +1,147 @@
-Return-Path: <linux-tip-commits+bounces-7780-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7781-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E936FCEFA90
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 03 Jan 2026 05:09:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F805CF1427
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 04 Jan 2026 20:20:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0337B3001189
-	for <lists+linux-tip-commits@lfdr.de>; Sat,  3 Jan 2026 04:09:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB9C7300C5F2
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  4 Jan 2026 19:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A122940D;
-	Sat,  3 Jan 2026 04:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703A51E1E00;
+	Sun,  4 Jan 2026 19:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b="Bd+UUGQr"
-Received: from buffalo.tulip.relay.mailchannels.net (buffalo.tulip.relay.mailchannels.net [23.83.218.24])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="phxEtDAA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+CUzDia8"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4EB4A3E
-	for <linux-tip-commits@vger.kernel.org>; Sat,  3 Jan 2026 04:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=23.83.218.24
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767413356; cv=pass; b=gpmu9dYm5wkCXQu+KbN7V15TAEWXSF0LNO1OAXQqDNTsCTGoTn0j0QVOf/5o1fbSgd5v9d//vqfNqyJIi7GAsbl04kxR2UIsXIIFGKoDGX9T44yJlbo/ka9LNcFKoRe3zdTlATeaTpOEQEAXgSSiEPSeCuzM3qE8XgTHbEnZXcw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767413356; c=relaxed/simple;
-	bh=bPuEfX0yyxelc1Sv8G312XMxRBrR4zzrR9+lO6vSmrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iSOfDrMdJiylp8jF6UrZeO6i0UrqICh1KdvBsmiH1WCrM+er7Oxm3nKT30ISV8u5Od8LMjr6GBGfWVBBYXczjCHEjaMVJhf7f+bytBAcD/ee7NF6w9btP31H0hLRvXFUe1/VULYse4odFAgaC+Baj9SpSmPYHZCNkcgaEw1tq4k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com; spf=pass smtp.mailfrom=templeofstupid.com; dkim=pass (2048-bit key) header.d=templeofstupid.com header.i=@templeofstupid.com header.b=Bd+UUGQr; arc=pass smtp.client-ip=23.83.218.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=templeofstupid.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 7BB98582828
-	for <linux-tip-commits@vger.kernel.org>; Sat, 03 Jan 2026 01:47:04 +0000 (UTC)
-Received: from pdx1-sub0-mail-a246.dreamhost.com (trex-green-2.trex.outbound.svc.cluster.local [100.106.233.210])
-	(Authenticated sender: dreamhost)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 0DA1E582832
-	for <linux-tip-commits@vger.kernel.org>; Sat, 03 Jan 2026 01:47:04 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
-	t=1767404824;
-	b=58xi/i1UfpTPOkIaeVCkGx/pBm9/nDTye8ocRGf9VOldM9zurV39gdCCvFl+Pwl1zKILaG
-	XTUzzHby6+ucUhWMJXO7WpO9Irheah7gXyx9uMAWZHFxEbSqLJczlCdF0okpxp+3P7/VdP
-	S+lhR4LOYHgk0u7TfUSqJd1S3KU5uxSCslfHbaOJPG59YMOoSxEeHMAnZxEkc3EDdVke9m
-	S4p3/9sskO8FpkYd1t1l4UPe5HG7k2GsSo7K0HXgSnnXBoLKmobbFs8Ea/dxFZLHGwn5rJ
-	UYYepgvj4o5aizkz0E8c85DIVW+4vvKxzEQIsiSV127TuQq9/+OlcD5emL4fzA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1767404824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B881EF36C;
+	Sun,  4 Jan 2026 19:18:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767554326; cv=none; b=e2u4xgq4aIRgPBEIJ+gs+3UA2FEgDem/4V95V311dP9DdNBtW4SR0heiKp44MJM9ZnMg1TY9DACKMULUEzRWGsG8Q0IxZEdG1WfoPa8sbUJh2HV+Pd7Vz93r1cKQ0iCxNPeuAg9zaOsbDGOL6Yd81XG/BdJyVFKJpAlT4fCZNg8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767554326; c=relaxed/simple;
+	bh=K/65FS1J6R/6KdrU6EYz2SryNpxz2tuS/jysHo8ZXho=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=NIAqAOST7Q9wl68/1c4lvRZUAm19LCTJlAXQL+oiypybB58azuyyJSTItfInScWBzKdFT4obqkcdndIOOL6sCkdnbY2YZti9rZYtWo97CwoYbMUq0yEMAJkzpFV9CPIDPqW4naF06nD7Wmf/bGrxfPrdTtvLAlO3UCXBSY9be/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=phxEtDAA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+CUzDia8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 04 Jan 2026 19:18:30 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1767554316;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f9YFi8lLVjnAU8ooH57/ylvUgZtmXHB+FkrW4QEucOg=;
-	b=Pv65KHeuAMT86gD3HzcslpMX+gK32p3EZSyoQ6yBBx1GAktyqr8slX1Mi5DI6Ln7d71YrY
-	PYPyH5pWD98iWOZjwkNkPXodQq5/ZVPnBAKrYNuDTu8ggh8zD2tjiiXC7RqXHRzGg0CZ1s
-	2UFjJPt3pHHqkjyxeNEtFeaS8RYd3BtJ6JKNjt3i5uLWDN5mW9+qya0CgQraD38xFItANp
-	RKSpEsfCGNfCkak4naGQt7SRklcrie793Z6Iddvm/CisMupGTTPFI1PwSMq9xtOyR7wMct
-	zxAKhVrKhb9sT9oVo4vDUzvIKssCe48qmkfGP3RKalMsmR6d+Trl8ZFurykZVg==
-ARC-Authentication-Results: i=1;
-	rspamd-69599c6f48-ggnnh;
-	auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MailChannels-Auth-Id: dreamhost
-X-Spicy-Absorbed: 2a0273e75f6eaf93_1767404824244_2459701428
-X-MC-Loop-Signature: 1767404824244:109577145
-X-MC-Ingress-Time: 1767404824244
-Received: from pdx1-sub0-mail-a246.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.106.233.210 (trex/7.1.3);
-	Sat, 03 Jan 2026 01:47:04 +0000
-Received: from kmjvbox.templeofstupid.com (c-73-241-240-52.hsd1.ca.comcast.net [73.241.240.52])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: kjlx@templeofstupid.com)
-	by pdx1-sub0-mail-a246.dreamhost.com (Postfix) with ESMTPSA id 4djk2H5tYzzyrC
-	for <linux-tip-commits@vger.kernel.org>; Fri,  2 Jan 2026 17:47:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
-	s=dreamhost; t=1767404823;
-	bh=f9YFi8lLVjnAU8ooH57/ylvUgZtmXHB+FkrW4QEucOg=;
-	h=Date:From:To:Cc:Subject:Content-Type:Content-Transfer-Encoding;
-	b=Bd+UUGQrnAxktgXc2etpXnqMmCoIlPY7FaluTy0eV8f3bbUZNq48ELOPl24AC5tGM
-	 TUVfo/19axLvEoAUBu3GzYeyPQAQBfb31wxwsqt8d5lWF5UeutwKdWmUZBxi3SP+VA
-	 5ZL4pXsfHvgWIs/UjEu+gT+UUsDPFZq96CvUcpivStwyHnEKsckc83Pp91wfydAyM1
-	 ctkLV13Um57MWZluLI57FUT8hGPDtq2Knob1Ebz3vKyOCh0ceLkNBSAmUcx/JNBPZh
-	 Hz0UMK0j6TK18yUrajdPLlQmhLTlHPkZJDOO0hII+CbehNaMvL9VbQclgsoMaRoiMK
-	 ScU3QOAyd+oaw==
-Received: from johansen (uid 1000)
-	(envelope-from kjlx@templeofstupid.com)
-	id e0179
-	by kmjvbox.templeofstupid.com (DragonFly Mail Agent v0.13);
-	Fri, 02 Jan 2026 17:47:02 -0800
-Date: Fri, 2 Jan 2026 17:47:02 -0800
-From: Krister Johansen <kjlx@templeofstupid.com>
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Cruz Zhao <CruzZhao@linux.alibaba.com>, tip-bot2@linutronix.de,
-	linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	mingo@kernel.org, x86@kernel.org,
-	Peng Wang <peng_wang@linux.alibaba.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [tip:sched/urgent] sched/fair: Clear ->h_load_next when
- unregistering a cgroup
-Message-ID: <aVh1Fiar6aC4W_1D@templeofstupid.com>
-References: <176478073513.498.15089394378873483436.tip-bot2@tip-bot2>
- <20251229125109.1995077-1-CruzZhao@linux.alibaba.com>
- <CAKfTPtCQW_Oj+P6nGx0nVO01CahSEqxuToO8kg=oe3yfuViOwg@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=vbVp3FZIhlX7ecOLLMTUTnBv5Uj3fLmyk5Fyk4Sw9Ho=;
+	b=phxEtDAADpkeEDWGW3fzPiOwYFup6F2PrHF99T7Or4ESzpt4GERkddyIIlZV0ZI6IbGZZp
+	/HWuGnU9CYFKdRQfeJ5Y2DO5ZlXPZsqzqyk/xGXg0R1omDDrxN+tVys0WMW9OBMX83vF73
+	U+0T9TsML1Eo4iBtr1zd2C3PWSUPi05Rk5EGNlG4vzuNm65bpQQ6l2AE3DY9hTcf588sWT
+	FZv8Ur8rcLHmmnq5nOgHH68rrcdgf1lEtywA0vhA4z0EumYbcjzHtEC+Y02SMR9ivh9Sb/
+	XtiBANvE6GccOD2Sy8h/wBumBPymREZiEmo3uWc7oH9btNIREQId5hjiY5oIzw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1767554316;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vbVp3FZIhlX7ecOLLMTUTnBv5Uj3fLmyk5Fyk4Sw9Ho=;
+	b=+CUzDia80+4tueXO6V2+2Zqdfqqyj6nMdWyksYKtacALqPbkbVTjIfW9dHgsdJ9VJ5XWSv
+	Qa3vdVQV2McCwuBA==
+From: "tip-bot2 for Rong Zhang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/cleanups] x86/split_lock: Remove dead string when
+ split_lock_detect=fatal
+Cc: Rong Zhang <i@rong.moe>, "Borislav Petkov (AMD)" <bp@alien8.de>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251215182907.152881-1-i@rong.moe>
+References: <20251215182907.152881-1-i@rong.moe>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKfTPtCQW_Oj+P6nGx0nVO01CahSEqxuToO8kg=oe3yfuViOwg@mail.gmail.com>
+Message-ID: <176755431116.510.16624657260337348261.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Vincent,
+The following commit has been merged into the x86/cleanups branch of tip:
 
-On Mon, Dec 29, 2025 at 02:58:16PM +0100, Vincent Guittot wrote:
-> On Mon, 29 Dec 2025 at 13:51, Cruz Zhao <CruzZhao@linux.alibaba.com> wrote:
-> > I noticed that the following patch has been queued in the
-> > tip:sched/urgent branch for some time but hasn't yet made
-> > it into mainline:
-> > https://lore.kernel.org/all/176478073513.498.15089394378873483436.tip-bot2@tip-bot2/
-> >
-> > Could you please check if there's anything blocking its
-> > merge? I wanted to ensure it doesn’t get overlooked.
-> 
-> From an off list discussion w/ Peter, we need to check that this patch
-> is not hiding the root cause that task_h_load is not called in the
-> right context i.e. with rcu_read_lock(). Peter pointed out one place
-> in numa [1]
-> 
-> [1] https://lore.kernel.org/all/20251015124422.GD3419281@noisy.programming.kicks-ass.net/
+Commit-ID:     6823f10dcc84f35ca652eff0448f7da3d3b26548
+Gitweb:        https://git.kernel.org/tip/6823f10dcc84f35ca652eff0448f7da3d3b=
+26548
+Author:        Rong Zhang <i@rong.moe>
+AuthorDate:    Tue, 16 Dec 2025 02:11:51 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Sun, 04 Jan 2026 14:26:02 +01:00
 
-If it helps, I've double-checked this code a few times.  When I looked,
-there were 7 different callers of task_h_load(), and they decompose into
-3 cases.
+x86/split_lock: Remove dead string when split_lock_detect=3Dfatal
 
-1. rcu_read_lock is held as we expect
-2. the numa balancing cases Peter already identified
-3. tick related invocations, where the caller is in interrupt context
+sld_state_show() has a dead str1 below:
 
-For 3, there's an edge case where deferred work is scheduled if the
-target cpu is in full nohz mode and has stopped.
+  if (A) {
+  	...
+  } else if (B) {
+  	pr_info(... A ? str1 : str2 ...);
+  }
 
-In the cases where I'm hitting this bug, the systems aren't using numa
-balancing and aren't using nohz. 90% of ones I've analyzed are in a
-futex wakeup and are holding the rcu_read_lock.
+where A is always false in the second block, implied by the "if (A) else"
+pattern. Hence, str2 is always used.
 
-This seems like just a case of the pointer continuing to reference
-memory that was already free'd.  If the task group's sched entity is
-freed, but the parent cfs_rq still has a pointer to that sched_entity in
-h_load_next, then it may end up accessing that memory accidentally if we
-do not clear it.
+This seems to be some mysterious legacy inherited from the earlier patch
+revisions of
 
-Put another way, even if all of these callers used rcu_read_lock, there
-would still be a need to ensure that the parent's h_load_next doesn't
-point to a sched entity that is free'd once the RCU read-side critical
-section is exited, because the child is getting free'd and not the
-parent.  The (freed) child is still discoverable from the parent's
-h_load_next after the critical section because the delete code does not
-clear h_load_next and order that write before the free.
+  ebb1064e7c2e ("x86/traps: Handle #DB for bus lock").
 
--K
+Earlier revisions=C2=B9 did enable both sld and bld at the same time to detect
+non-WB bus_locks when split_lock_detect=3Dfatal, but that's no longer true in
+the merged revision.
+
+Remove it and translate the pr_info() into its equivalent form.
+
+=C2=B9 https://lore.kernel.org/r/20201121023624.3604415-3-fenghua.yu@intel.com
+
+  [ bp: Massage commit message; simplify braces ]
+
+Signed-off-by: Rong Zhang <i@rong.moe>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20251215182907.152881-1-i@rong.moe
+---
+ arch/x86/kernel/cpu/bus_lock.c |  9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/bus_lock.c b/arch/x86/kernel/cpu/bus_lock.c
+index dbc99a4..fb16666 100644
+--- a/arch/x86/kernel/cpu/bus_lock.c
++++ b/arch/x86/kernel/cpu/bus_lock.c
+@@ -410,13 +410,10 @@ static void sld_state_show(void)
+ 		}
+ 		break;
+ 	case sld_fatal:
+-		if (boot_cpu_has(X86_FEATURE_SPLIT_LOCK_DETECT)) {
++		if (boot_cpu_has(X86_FEATURE_SPLIT_LOCK_DETECT))
+ 			pr_info("#AC: crashing the kernel on kernel split_locks and sending SIGBU=
+S on user-space split_locks\n");
+-		} else if (boot_cpu_has(X86_FEATURE_BUS_LOCK_DETECT)) {
+-			pr_info("#DB: sending SIGBUS on user-space bus_locks%s\n",
+-				boot_cpu_has(X86_FEATURE_SPLIT_LOCK_DETECT) ?
+-				" from non-WB" : "");
+-		}
++		else if (boot_cpu_has(X86_FEATURE_BUS_LOCK_DETECT))
++			pr_info("#DB: sending SIGBUS on user-space bus_locks\n");
+ 		break;
+ 	case sld_ratelimit:
+ 		if (boot_cpu_has(X86_FEATURE_BUS_LOCK_DETECT))
 
