@@ -1,75 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7791-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7793-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA52CF48DB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 05 Jan 2026 17:00:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB8BCF48E1
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 05 Jan 2026 17:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8947130AB2CF
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jan 2026 15:54:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C49E830B78C8
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jan 2026 15:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DEC33DEF3;
-	Mon,  5 Jan 2026 15:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BE933F37F;
+	Mon,  5 Jan 2026 15:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="iPbUw8x0";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="acpnrDNg"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AwcLsqoS";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="SmUpGUWj"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E07433A9D2;
-	Mon,  5 Jan 2026 15:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEE833BBD8;
+	Mon,  5 Jan 2026 15:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767628461; cv=none; b=rAn/dIiilX4gfA2tGxeiotYxg5+6L7vRAgvefqQOL7rDMkknAN/jMoqISPBv1/EYhiCpGpMP1bllpeExwFxVEFufVkGU1Flxq9C5KWRFcJ+Z8XBjSpWg1ng4ajuDx2IwvyEmixmEWmwsWH4RGtg+LRBUGoePaljRMKGMITTnlRg=
+	t=1767628463; cv=none; b=oaseYf3nkhCvBuIlys19dCkRgunIehM6Big8n/yzihW88r3EzwP76zQAzf2f5UVrPneaN800/grmjbHnpKegReC0M90pASf15Ir2ANffcfLSg3CtwIOtQE1oP1+Dhu8Lh4b+0PHng35Wj33d4hJmiQlguyzDxXSowutTcVQxdlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767628461; c=relaxed/simple;
-	bh=5CLC/8i0QYlmUXp6O8EHOkDxTAJdroYArL2acQDsfhk=;
+	s=arc-20240116; t=1767628463; c=relaxed/simple;
+	bh=2W+F19iaD2xBbeDQ0H9XZqsj+qTd5YB0ei5zzMqvUcU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=oiM6oZuDTAzVTGaTJV4IgorgkEnGTIKQep7PVoCYUF8feuZfTyuNkmP0tZjAuQ/FiqTHvUSelnqBkj8+ObC/+EHssDg4LGwiqLvGg72V2Pbg19FCF0/x7qbALWXpV8UzalFqcDcdlSG32LTFb3GqmnIwoPBrjjJXkPCqOmldUyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=iPbUw8x0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=acpnrDNg; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=p9APRa0ji+MqUbpQpQmBIblW6lXZFOxv9k9TCxe9ux/AudjuHnN0XY5wb13vbeuLmj5rCPdWARPAbtQKqC2xU+EDqmq/5vC6hEe8VNg1c06pNuA/yNkNdNhhx75UiALrBgeaS+oU9hJfxpJ7b42VJPBvZwZupqiP950pL/3ZArg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AwcLsqoS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=SmUpGUWj; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 05 Jan 2026 15:54:16 -0000
+Date: Mon, 05 Jan 2026 15:54:17 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1767628457;
+	s=2020; t=1767628458;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jyE3XCDgeXp2gzLqg1L1CKLEVVXj0H0vv/+jVbbmcRo=;
-	b=iPbUw8x0Z8uHhIvSbMmzLbdT3zSI06M7mmtQWCmHsMCVuYcXsTjLV8Vs1kET2lXMDy5ts2
-	+YQHnF9RCfSjsWZnZs6k7pI/hJWqaiAJ5+xmrHEi4MlpG1PLigcW4HoXYWz/e7bkh2e/4I
-	Gc5+0tbfyBYCo1ePoCKSwtmxeZooNsfccnYvxlKScMJCXq9ESivRi8qInqHW9NdWlOp+MI
-	obvU1EGUwvy3nSCL6rb601tOc7SmXGEvYmWUooLLxq7C774xvVeffIyVFVXSTsKQmgMCey
-	yZrsdeoD1+HfaSr1FaV38WOLMTF3zWcEGmjnLwi78t3hZ1wYZqwXk2P7bw3J7g==
+	bh=ygUlTOKzEXF+yQpqn9AvwHEo+31zxOCLSQHYKPsBzCI=;
+	b=AwcLsqoSdq2yuCZ/wPz97nJYw1zMk0H1qUIGt71rU3cdHRBsfTh1ytzu614uHrF3DOIeXq
+	okQDRm0oddDmYQMI+VwIEFsbFFwpzjPVLxZa4R1lKht21fl2pfwdVwwAUAtaUxySkTApvh
+	5wdwqRtb5vQVU/GSViot8VMuWQnA9N4GS8KN2U1VFv1/Q3kO5DZ7qyofo7oYOdFJw27mRK
+	85euV5IsxnotFzQYatnAoDT+wc0w4EVg8QFHZp+uXRRo34fRW5Z9M/1ySAgowi0M5ef2mO
+	GxUGT98OM+8CekDWk2ZA82tdShpyAlFSAe2G7tw1gy6gHqqewwqEkfSjyqtT0w==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1767628457;
+	s=2020e; t=1767628458;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jyE3XCDgeXp2gzLqg1L1CKLEVVXj0H0vv/+jVbbmcRo=;
-	b=acpnrDNgUv43oJcv1XQg3QyHtTmC+Lr/QR3uHD7YFuq88UVz2CDyqcwdJSUd0xCsCKDJHO
-	NkW6qobLviquXUDw==
+	bh=ygUlTOKzEXF+yQpqn9AvwHEo+31zxOCLSQHYKPsBzCI=;
+	b=SmUpGUWj8Vs40jP/3lePxGhYWdsSJhSxZGqPevaAX994NziRRWprD4q+ovQfr1Z06UqfH9
+	x2QFeMQ8E+4UkNCQ==
 From: "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] kcsan: Enable context analysis
+Subject: [tip: locking/core] kcov: Enable context analysis
 Cc: Marco Elver <elver@google.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251219154418.3592607-31-elver@google.com>
-References: <20251219154418.3592607-31-elver@google.com>
+In-Reply-To: <20251219154418.3592607-30-elver@google.com>
+References: <20251219154418.3592607-30-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176762845638.510.4042540741478938936.tip-bot2@tip-bot2>
+Message-ID: <176762845749.510.12886787854662087499.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,117 +79,184 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     0eaa911f890812a7868a44bbfd656636b2c7caf8
-Gitweb:        https://git.kernel.org/tip/0eaa911f890812a7868a44bbfd656636b2c=
-7caf8
+Commit-ID:     6556fde265a7bd408ad8ff15ec08970f99f6201c
+Gitweb:        https://git.kernel.org/tip/6556fde265a7bd408ad8ff15ec08970f99f=
+6201c
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 19 Dec 2025 16:40:19 +01:00
+AuthorDate:    Fri, 19 Dec 2025 16:40:18 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 05 Jan 2026 16:43:35 +01:00
+CommitterDate: Mon, 05 Jan 2026 16:43:34 +01:00
 
-kcsan: Enable context analysis
+kcov: Enable context analysis
 
-Enable context analysis for the KCSAN subsystem.
+Enable context analysis for the KCOV subsystem.
 
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251219154418.3592607-31-elver@google.com
+Link: https://patch.msgid.link/20251219154418.3592607-30-elver@google.com
 ---
- kernel/kcsan/Makefile |  2 ++
- kernel/kcsan/report.c | 11 ++++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ kernel/Makefile |  2 ++
+ kernel/kcov.c   | 36 +++++++++++++++++++++++++-----------
+ 2 files changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/kcsan/Makefile b/kernel/kcsan/Makefile
-index a45f3df..824f30c 100644
---- a/kernel/kcsan/Makefile
-+++ b/kernel/kcsan/Makefile
-@@ -1,4 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
-+CONTEXT_ANALYSIS :=3D y
+diff --git a/kernel/Makefile b/kernel/Makefile
+index e836698..6785982 100644
+--- a/kernel/Makefile
++++ b/kernel/Makefile
+@@ -43,6 +43,8 @@ KASAN_SANITIZE_kcov.o :=3D n
+ KCSAN_SANITIZE_kcov.o :=3D n
+ UBSAN_SANITIZE_kcov.o :=3D n
+ KMSAN_SANITIZE_kcov.o :=3D n
 +
- KCSAN_SANITIZE :=3D n
- KCOV_INSTRUMENT :=3D n
- UBSAN_SANITIZE :=3D n
-diff --git a/kernel/kcsan/report.c b/kernel/kcsan/report.c
-index e95ce7d..11a48b7 100644
---- a/kernel/kcsan/report.c
-+++ b/kernel/kcsan/report.c
-@@ -116,6 +116,7 @@ static DEFINE_RAW_SPINLOCK(report_lock);
-  * been reported since (now - KCSAN_REPORT_ONCE_IN_MS).
-  */
- static bool rate_limit_report(unsigned long frame1, unsigned long frame2)
-+	__must_hold(&report_lock)
- {
- 	struct report_time *use_entry =3D &report_times[0];
- 	unsigned long invalid_before;
-@@ -366,6 +367,7 @@ static int sym_strcmp(void *addr1, void *addr2)
++CONTEXT_ANALYSIS_kcov.o :=3D y
+ CFLAGS_kcov.o :=3D $(call cc-option, -fno-conserve-stack) -fno-stack-protect=
+or
 =20
- static void
- print_stack_trace(unsigned long stack_entries[], int num_entries, unsigned l=
-ong reordered_to)
-+	__must_hold(&report_lock)
- {
- 	stack_trace_print(stack_entries, num_entries, 0);
- 	if (reordered_to)
-@@ -373,6 +375,7 @@ print_stack_trace(unsigned long stack_entries[], int num_=
-entries, unsigned long=20
+ obj-y +=3D sched/
+diff --git a/kernel/kcov.c b/kernel/kcov.c
+index 6563141..6cbc6e2 100644
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -55,13 +55,13 @@ struct kcov {
+ 	refcount_t		refcount;
+ 	/* The lock protects mode, size, area and t. */
+ 	spinlock_t		lock;
+-	enum kcov_mode		mode;
++	enum kcov_mode		mode __guarded_by(&lock);
+ 	/* Size of arena (in long's). */
+-	unsigned int		size;
++	unsigned int		size __guarded_by(&lock);
+ 	/* Coverage buffer shared with user space. */
+-	void			*area;
++	void			*area __guarded_by(&lock);
+ 	/* Task for which we collect coverage, or NULL. */
+-	struct task_struct	*t;
++	struct task_struct	*t __guarded_by(&lock);
+ 	/* Collecting coverage from remote (background) threads. */
+ 	bool			remote;
+ 	/* Size of remote area (in long's). */
+@@ -391,6 +391,7 @@ void kcov_task_init(struct task_struct *t)
  }
 =20
- static void print_verbose_info(struct task_struct *task)
-+	__must_hold(&report_lock)
+ static void kcov_reset(struct kcov *kcov)
++	__must_hold(&kcov->lock)
  {
- 	if (!task)
- 		return;
-@@ -389,6 +392,7 @@ static void print_report(enum kcsan_value_change value_ch=
-ange,
- 			 const struct access_info *ai,
- 			 struct other_info *other_info,
- 			 u64 old, u64 new, u64 mask)
-+	__must_hold(&report_lock)
- {
- 	unsigned long reordered_to =3D 0;
- 	unsigned long stack_entries[NUM_STACK_ENTRIES] =3D { 0 };
-@@ -496,6 +500,7 @@ static void print_report(enum kcsan_value_change value_ch=
-ange,
+ 	kcov->t =3D NULL;
+ 	kcov->mode =3D KCOV_MODE_INIT;
+@@ -400,6 +401,7 @@ static void kcov_reset(struct kcov *kcov)
  }
 =20
- static void release_report(unsigned long *flags, struct other_info *other_in=
-fo)
-+	__releases(&report_lock)
+ static void kcov_remote_reset(struct kcov *kcov)
++	__must_hold(&kcov->lock)
  {
- 	/*
- 	 * Use size to denote valid/invalid, since KCSAN entirely ignores
-@@ -507,13 +512,11 @@ static void release_report(unsigned long *flags, struct=
- other_info *other_info)
+ 	int bkt;
+ 	struct kcov_remote *remote;
+@@ -419,6 +421,7 @@ static void kcov_remote_reset(struct kcov *kcov)
+ }
 =20
- /*
-  * Sets @other_info->task and awaits consumption of @other_info.
-- *
-- * Precondition: report_lock is held.
-- * Postcondition: report_lock is held.
+ static void kcov_disable(struct task_struct *t, struct kcov *kcov)
++	__must_hold(&kcov->lock)
+ {
+ 	kcov_task_reset(t);
+ 	if (kcov->remote)
+@@ -435,8 +438,11 @@ static void kcov_get(struct kcov *kcov)
+ static void kcov_put(struct kcov *kcov)
+ {
+ 	if (refcount_dec_and_test(&kcov->refcount)) {
+-		kcov_remote_reset(kcov);
+-		vfree(kcov->area);
++		/* Context-safety: no references left, object being destroyed. */
++		context_unsafe(
++			kcov_remote_reset(kcov);
++			vfree(kcov->area);
++		);
+ 		kfree(kcov);
+ 	}
+ }
+@@ -491,6 +497,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_s=
+truct *vma)
+ 	unsigned long size, off;
+ 	struct page *page;
+ 	unsigned long flags;
++	void *area;
+=20
+ 	spin_lock_irqsave(&kcov->lock, flags);
+ 	size =3D kcov->size * sizeof(unsigned long);
+@@ -499,10 +506,11 @@ static int kcov_mmap(struct file *filep, struct vm_area=
+_struct *vma)
+ 		res =3D -EINVAL;
+ 		goto exit;
+ 	}
++	area =3D kcov->area;
+ 	spin_unlock_irqrestore(&kcov->lock, flags);
+ 	vm_flags_set(vma, VM_DONTEXPAND);
+ 	for (off =3D 0; off < size; off +=3D PAGE_SIZE) {
+-		page =3D vmalloc_to_page(kcov->area + off);
++		page =3D vmalloc_to_page(area + off);
+ 		res =3D vm_insert_page(vma, vma->vm_start + off, page);
+ 		if (res) {
+ 			pr_warn_once("kcov: vm_insert_page() failed\n");
+@@ -522,10 +530,10 @@ static int kcov_open(struct inode *inode, struct file *=
+filep)
+ 	kcov =3D kzalloc(sizeof(*kcov), GFP_KERNEL);
+ 	if (!kcov)
+ 		return -ENOMEM;
++	spin_lock_init(&kcov->lock);
+ 	kcov->mode =3D KCOV_MODE_DISABLED;
+ 	kcov->sequence =3D 1;
+ 	refcount_set(&kcov->refcount, 1);
+-	spin_lock_init(&kcov->lock);
+ 	filep->private_data =3D kcov;
+ 	return nonseekable_open(inode, filep);
+ }
+@@ -556,6 +564,7 @@ static int kcov_get_mode(unsigned long arg)
+  * vmalloc fault handling path is instrumented.
   */
- static void set_other_info_task_blocking(unsigned long *flags,
- 					 const struct access_info *ai,
- 					 struct other_info *other_info)
-+	__must_hold(&report_lock)
+ static void kcov_fault_in_area(struct kcov *kcov)
++	__must_hold(&kcov->lock)
  {
+ 	unsigned long stride =3D PAGE_SIZE / sizeof(unsigned long);
+ 	unsigned long *area =3D kcov->area;
+@@ -584,6 +593,7 @@ static inline bool kcov_check_handle(u64 handle, bool com=
+mon_valid,
+=20
+ static int kcov_ioctl_locked(struct kcov *kcov, unsigned int cmd,
+ 			     unsigned long arg)
++	__must_hold(&kcov->lock)
+ {
+ 	struct task_struct *t;
+ 	unsigned long flags, unused;
+@@ -814,6 +824,7 @@ static inline bool kcov_mode_enabled(unsigned int mode)
+ }
+=20
+ static void kcov_remote_softirq_start(struct task_struct *t)
++	__must_hold(&kcov_percpu_data.lock)
+ {
+ 	struct kcov_percpu_data *data =3D this_cpu_ptr(&kcov_percpu_data);
+ 	unsigned int mode;
+@@ -831,6 +842,7 @@ static void kcov_remote_softirq_start(struct task_struct =
+*t)
+ }
+=20
+ static void kcov_remote_softirq_stop(struct task_struct *t)
++	__must_hold(&kcov_percpu_data.lock)
+ {
+ 	struct kcov_percpu_data *data =3D this_cpu_ptr(&kcov_percpu_data);
+=20
+@@ -896,10 +908,12 @@ void kcov_remote_start(u64 handle)
+ 	/* Put in kcov_remote_stop(). */
+ 	kcov_get(kcov);
  	/*
- 	 * We may be instrumenting a code-path where current->state is already
-@@ -572,6 +575,7 @@ static void set_other_info_task_blocking(unsigned long *f=
-lags,
- static void prepare_report_producer(unsigned long *flags,
- 				    const struct access_info *ai,
- 				    struct other_info *other_info)
-+	__must_not_hold(&report_lock)
- {
- 	raw_spin_lock_irqsave(&report_lock, *flags);
-=20
-@@ -603,6 +607,7 @@ static void prepare_report_producer(unsigned long *flags,
- static bool prepare_report_consumer(unsigned long *flags,
- 				    const struct access_info *ai,
- 				    struct other_info *other_info)
-+	__cond_acquires(true, &report_lock)
- {
-=20
- 	raw_spin_lock_irqsave(&report_lock, *flags);
+-	 * Read kcov fields before unlock to prevent races with
+-	 * KCOV_DISABLE / kcov_remote_reset().
++	 * Read kcov fields before unlocking kcov_remote_lock to prevent races
++	 * with KCOV_DISABLE and kcov_remote_reset(); cannot acquire kcov->lock
++	 * here, because it might lead to deadlock given kcov_remote_lock is
++	 * acquired _after_ kcov->lock elsewhere.
+ 	 */
+-	mode =3D kcov->mode;
++	mode =3D context_unsafe(kcov->mode);
+ 	sequence =3D kcov->sequence;
+ 	if (in_task()) {
+ 		size =3D kcov->remote_size;
 
