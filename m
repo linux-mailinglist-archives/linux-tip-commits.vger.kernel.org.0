@@ -1,76 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7816-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7822-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7528CF4EC0
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 05 Jan 2026 18:11:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89355CF5458
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 05 Jan 2026 19:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D80E3011B21
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jan 2026 17:11:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1594300E7AC
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jan 2026 18:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A87234A3D6;
-	Mon,  5 Jan 2026 15:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9953333EAEC;
+	Mon,  5 Jan 2026 18:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DCdSJOC7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CPX86pw1"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eTotU5DI";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R0LioIuB"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DB43491F3;
-	Mon,  5 Jan 2026 15:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC563C38;
+	Mon,  5 Jan 2026 18:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767628487; cv=none; b=AI3CXkMYAhfT7bnXqL4/76vHuMJwT+1YxRl4ARDq+L4y3aYMzgkgGq+yoBkI0i0T3ZgAUhsplrvm+bg++V6B4MGoc+8ZHWNgHg31U9uNAjOF/4oBLnh3ph5fwzaXM5L3uhJuEHbgEKzjQuF+K66v9pbM/krMTeyUB3O2FFxVKek=
+	t=1767639086; cv=none; b=VJd8IMZtXYb6/VUlE6kFtb7mNs6VQdVpmulXJXJcVGRKHIDX7LOyfvKNwsKjvOnk3I4+mqbyAB65iil1BcKuKHda3jN2zJOt9r85lvYSNoLY1CkherolCygukRlnrW7o3GWP6T0KLDcIqdEVy7StmHhObRzSV+n8iiIUdgcRp/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767628487; c=relaxed/simple;
-	bh=GrunBRjZysY3Kjx7PO4D5N05XqvavvVusFjj0PH6IRE=;
+	s=arc-20240116; t=1767639086; c=relaxed/simple;
+	bh=7676Tb+JAfWlGXXq/xLMl7x37AnTmN533W/V6Npa1LE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=EJpfAA21pZ64Qzot8JsmC2nNMbBRU4v2f0qX2lFuD1C6gWzmWvVg9U+m/MMLEOOI3opDcOAxwyI9omc6DEQ7KzmbXjOwsKVdzzX8MWuM4XamcuDh63Q6qs3YB9stsyhzqXU+aKJ01QOjjJdyk1CTJXEg4xyi2aIHRtQyiAKye6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DCdSJOC7; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CPX86pw1; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=eq5bIs9c608FKW8rlJzSWc2sqmzEK9uUppbv8Dyf8Pc9qhYqEEMYk/OClScVG13TuSDyVCbzAXUi9OvsMDRX19zHwP4lr3mXG5UIIpTp/GhXAVj1I+ojCF9UEjX5HAQtN6stwqtZYIJ3C/XEafKrZPHRIbK3zsctqdU8b68pasY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eTotU5DI; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=R0LioIuB; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 05 Jan 2026 15:54:41 -0000
+Date: Mon, 05 Jan 2026 18:51:20 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1767628483;
+	s=2020; t=1767639082;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ejzLfDYviWbvL65tchScYWQXA34S2dx6IX23GBV5TY0=;
-	b=DCdSJOC7LDFgVYxWhW5YIAGW62sV/i5assAj8KCQ4QtxKv8Rvq5IKQ8bLZpWw2TKI/UXk5
-	mImXWQCK5fsURuPZInbB1KY3xaH0kbs1TU0L95IrwINWYAIbrMyc3ZwdxF/ViC9FZp4QjT
-	UGgQfpfjZKDBtL11/tieNR8qSoKSTkLuMnHuih/Ar3Q7hhZnuseWTnZ5LmCn+g8Qb0dq9x
-	cy+aUWsaBLrF0TKxoBP79TQb1XID1PoR7Px9Nc2TM0IRvmvx6nuPpLhobrU3n6IeY9tdJ4
-	NEsDwe8Z317RnGUn3bLyZN3lMld1Fj2poDPfW4f7kHsLO1daXUCJ/e5bQ7R6IQ==
+	bh=9MoTQeT4ROWjmoNCyTcwWtS9egYbDxir5jeZUmliCBY=;
+	b=eTotU5DIRvpKWA4rCeqtOA9xX1p0LaCHyVy1HPiTCrgtHZJ8sYxCte+Otdz2vt2a+a82n/
+	jzUJ+3EAQwod8at48SUhDDsiOIoUClQLIKjFY/ZxDidaeM4fyThzX7jM2Imo3GcNIco9Jm
+	cEx4IzJPb0ZKdhZ57lT/FOQhUF6O8EeyYifWc2wJygVsv2TYwRix+CiGXWAXjfS0OWfE54
+	w2205Wog3F3cAd1/5i+64fl9o0LdX73P8K64rX1MIoeXA/7AIQQOB2PFm81EMRpKT9wmYL
+	ue/a1ZxV0YuVNm0NpeJ2If9fb0U18vU8w5u0Ne0ASgdf73lpftgVBTCFOvI9bQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1767628483;
+	s=2020e; t=1767639082;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ejzLfDYviWbvL65tchScYWQXA34S2dx6IX23GBV5TY0=;
-	b=CPX86pw1XtKtvcLyDB5PBUFk64C7XLesdXnUKstoOSUiSKnpyL2qxv8NsOXg5Bvwvh/Mxv
-	fznER0ESRygwh0Dw==
-From: "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
+	bh=9MoTQeT4ROWjmoNCyTcwWtS9egYbDxir5jeZUmliCBY=;
+	b=R0LioIuBuyKEuW8e7iRace2GS9QJpiw2In5unKgCZxmu1TJMlxSsS0OGubERcdwEle44Bd
+	0Vl5DSkbOVJ1Y4Dg==
+From: "tip-bot2 for Eric Dumazet" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: locking/core] cleanup: Basic compatibility with context analysis
-Cc: Marco Elver <elver@google.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: x86/misc] x86/lib: Inline csum_ipv6_magic()
+Cc: Eric Dumazet <edumazet@google.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251219154418.3592607-7-elver@google.com>
-References: <20251219154418.3592607-7-elver@google.com>
+In-Reply-To: <20251113154545.594580-1-edumazet@google.com>
+References: <20251113154545.594580-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176762848191.510.10553727703623467980.tip-bot2@tip-bot2>
+Message-ID: <176763908096.510.3138878419623948783.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,190 +77,166 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the locking/core branch of tip:
+The following commit has been merged into the x86/misc branch of tip:
 
-Commit-ID:     3931d4b980398012b66c8ff203bfa2ab3df71a71
-Gitweb:        https://git.kernel.org/tip/3931d4b980398012b66c8ff203bfa2ab3df=
-71a71
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 19 Dec 2025 16:39:55 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 05 Jan 2026 16:43:28 +01:00
+Commit-ID:     529676cabcf4a5046d217bba2c8f3b94a3f6a10f
+Gitweb:        https://git.kernel.org/tip/529676cabcf4a5046d217bba2c8f3b94a3f=
+6a10f
+Author:        Eric Dumazet <edumazet@google.com>
+AuthorDate:    Thu, 13 Nov 2025 15:45:45=20
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Mon, 05 Jan 2026 10:14:05 -08:00
 
-cleanup: Basic compatibility with context analysis
+x86/lib: Inline csum_ipv6_magic()
 
-Introduce basic compatibility with cleanup.h infrastructure.
+Inline this small helper. It has been observed to consume up
+to 0.75%, which is significant for such a small function.
 
-We need to allow the compiler to see the acquisition and release of the
-context lock at the start and end of a scope. However, the current
-"cleanup" helpers wrap the lock in a struct passed through separate
-helper functions, which hides the lock alias from the compiler (no
-inter-procedural analysis).
+This should reduce register pressure, as saddr and daddr are often
+back to back in memory.
 
-While Clang supports scoped guards in C++, it's not possible to apply in
-C code: https://clang.llvm.org/docs/ThreadSafetyAnalysis.html#scoped-context
+For instance code inlined in tcp6_gro_receive() will look like:
 
-However, together with recent improvements to Clang's alias analysis
-abilities, idioms such as this work correctly now:
+ 55a:	48 03 73 28          	add    0x28(%rbx),%rsi
+ 55e:	8b 43 70             	mov    0x70(%rbx),%eax
+ 561:	29 f8                	sub    %edi,%eax
+ 563:	0f c8                	bswap  %eax
+ 565:	89 c0                	mov    %eax,%eax
+ 567:	48 05 00 06 00 00    	add    $0x600,%rax
+ 56d:	48 03 46 08          	add    0x8(%rsi),%rax
+ 571:	48 13 46 10          	adc    0x10(%rsi),%rax
+ 575:	48 13 46 18          	adc    0x18(%rsi),%rax
+ 579:	48 13 46 20          	adc    0x20(%rsi),%rax
+ 57d:	48 83 d0 00          	adc    $0x0,%rax
+ 581:	48 89 c6             	mov    %rax,%rsi
+ 584:	48 c1 ee 20          	shr    $0x20,%rsi
+ 588:	01 f0                	add    %esi,%eax
+ 58a:	83 d0 00             	adc    $0x0,%eax
+ 58d:	89 c6                	mov    %eax,%esi
+ 58f:	66 31 c0             	xor    %ax,%ax
 
-        void spin_unlock_cleanup(spinlock_t **l) __releases(*l) { .. }
-        ...
-        {
-            spinlock_t *lock_scope __cleanup(spin_unlock_cleanup) =3D &lock;
-            spin_lock(&lock);  // lock through &lock
-            ... critical section ...
-        }  // unlock through lock_scope -[alias]-> &lock (no warnings)
+Surprisingly, this inlining does not seem to bloat kernel text size.
+It at least two cases[1], it either has no effect or results in a
+slightly smaller kernel.
 
-To generalize this pattern and make it work with existing lock guards,
-introduce DECLARE_LOCK_GUARD_1_ATTRS() and WITH_LOCK_GUARD_1_ATTRS().
+1. https://lore.kernel.org/all/CANn89iJzcb_XO9oCApKYfRxsMMmg7BHukRDqWTca3ZLQ8=
+HT0iQ@mail.gmail.com/
 
-These allow creating an explicit alias to the context lock instance that
-is "cleaned" up with a separate cleanup helper. This helper is a dummy
-function that does nothing at runtime, but has the release attributes to
-tell the compiler what happens at the end of the scope.
+[ dhansen: add justification and note about lack of kernel bloat ]
 
-Example usage:
-
-  DECLARE_LOCK_GUARD_1_ATTRS(mutex, __acquires(_T), __releases(*(struct mutex=
- **)_T))
-  #define class_mutex_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
-
-Note: To support the for-loop based scoped helpers, the auxiliary
-variable must be a pointer to the "class" type because it is defined in
-the same statement as the guard variable. However, we initialize it with
-the lock pointer (despite the type mismatch, the compiler's alias
-analysis still works as expected). The "_unlock" attribute receives a
-pointer to the auxiliary variable (a double pointer to the class type),
-and must be cast and dereferenced appropriately.
-
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251219154418.3592607-7-elver@google.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://patch.msgid.link/20251113154545.594580-1-edumazet@google.com
 ---
- include/linux/cleanup.h | 50 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+)
+ arch/x86/include/asm/checksum_64.h | 45 +++++++++++++++++++++--------
+ arch/x86/lib/csum-wrappers_64.c    | 22 +--------------
+ 2 files changed, 33 insertions(+), 34 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index 8d41b91..ee6df68 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -278,16 +278,21 @@ const volatile void * __must_check_fn(const volatile vo=
-id *val)
-=20
- #define DEFINE_CLASS(_name, _type, _exit, _init, _init_args...)		\
- typedef _type class_##_name##_t;					\
-+typedef _type lock_##_name##_t;						\
- static __always_inline void class_##_name##_destructor(_type *p)	\
-+	__no_context_analysis						\
- { _type _T =3D *p; _exit; }						\
- static __always_inline _type class_##_name##_constructor(_init_args)	\
-+	__no_context_analysis						\
- { _type t =3D _init; return t; }
-=20
- #define EXTEND_CLASS(_name, ext, _init, _init_args...)			\
-+typedef lock_##_name##_t lock_##_name##ext##_t;			\
- typedef class_##_name##_t class_##_name##ext##_t;			\
- static __always_inline void class_##_name##ext##_destructor(class_##_name##_=
-t *p) \
- { class_##_name##_destructor(p); }					\
- static __always_inline class_##_name##_t class_##_name##ext##_constructor(_i=
-nit_args) \
-+	__no_context_analysis \
- { class_##_name##_t t =3D _init; return t; }
-=20
- #define CLASS(_name, var)						\
-@@ -474,12 +479,14 @@ _label:									\
+diff --git a/arch/x86/include/asm/checksum_64.h b/arch/x86/include/asm/checks=
+um_64.h
+index 4d4a47a..5bdfd2d 100644
+--- a/arch/x86/include/asm/checksum_64.h
++++ b/arch/x86/include/asm/checksum_64.h
+@@ -9,6 +9,7 @@
   */
 =20
- #define __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, ...)		\
-+typedef _type lock_##_name##_t;						\
- typedef struct {							\
- 	_type *lock;							\
- 	__VA_ARGS__;							\
- } class_##_name##_t;							\
- 									\
- static __always_inline void class_##_name##_destructor(class_##_name##_t *_T=
-) \
-+	__no_context_analysis						\
- {									\
- 	if (!__GUARD_IS_ERR(_T->lock)) { _unlock; }			\
- }									\
-@@ -488,6 +495,7 @@ __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
+ #include <linux/compiler.h>
++#include <linux/in6.h>
+ #include <asm/byteorder.h>
 =20
- #define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
- static __always_inline class_##_name##_t class_##_name##_constructor(_type *=
-l) \
-+	__no_context_analysis						\
- {									\
- 	class_##_name##_t _t =3D { .lock =3D l }, *_T =3D &_t;		\
- 	_lock;								\
-@@ -496,6 +504,7 @@ static __always_inline class_##_name##_t class_##_name##_=
-constructor(_type *l) \
+ /**
+@@ -145,6 +146,17 @@ extern __wsum csum_partial_copy_nocheck(const void *src,=
+ void *dst, int len);
+  */
+ extern __sum16 ip_compute_csum(const void *buff, int len);
 =20
- #define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
- static __always_inline class_##_name##_t class_##_name##_constructor(void) \
-+	__no_context_analysis						\
- {									\
- 	class_##_name##_t _t =3D { .lock =3D (void*)1 },			\
- 			 *_T __maybe_unused =3D &_t;			\
-@@ -503,6 +512,47 @@ static __always_inline class_##_name##_t class_##_name##=
-_constructor(void) \
- 	return _t;							\
++static inline unsigned add32_with_carry(unsigned a, unsigned b)
++{
++	asm("addl %2,%0\n\t"
++	    "adcl $0,%0"
++	    : "=3Dr" (a)
++	    : "0" (a), "rm" (b));
++	return a;
++}
++
++#define _HAVE_ARCH_IPV6_CSUM 1
++
+ /**
+  * csum_ipv6_magic - Compute checksum of an IPv6 pseudo header.
+  * @saddr: source address
+@@ -158,20 +170,29 @@ extern __sum16 ip_compute_csum(const void *buff, int le=
+n);
+  * Returns the unfolded 32bit checksum.
+  */
+=20
+-struct in6_addr;
++static inline __sum16 csum_ipv6_magic(
++	const struct in6_addr *_saddr, const struct in6_addr *_daddr,
++	__u32 len, __u8 proto, __wsum sum)
++{
++	const unsigned long *saddr =3D (const unsigned long *)_saddr;
++	const unsigned long *daddr =3D (const unsigned long *)_daddr;
++	__u64 sum64;
+=20
+-#define _HAVE_ARCH_IPV6_CSUM 1
+-extern __sum16
+-csum_ipv6_magic(const struct in6_addr *saddr, const struct in6_addr *daddr,
+-		__u32 len, __u8 proto, __wsum sum);
++	sum64 =3D (__force __u64)htonl(len) + (__force __u64)htons(proto) +
++		(__force __u64)sum;
+=20
+-static inline unsigned add32_with_carry(unsigned a, unsigned b)
+-{
+-	asm("addl %2,%0\n\t"
+-	    "adcl $0,%0"
+-	    : "=3Dr" (a)
+-	    : "0" (a), "rm" (b));
+-	return a;
++	asm("	addq %1,%[sum64]\n"
++	    "	adcq %2,%[sum64]\n"
++	    "	adcq %3,%[sum64]\n"
++	    "	adcq %4,%[sum64]\n"
++	    "	adcq $0,%[sum64]\n"
++
++	    : [sum64] "+r" (sum64)
++	    : "m" (saddr[0]), "m" (saddr[1]),
++	      "m" (daddr[0]), "m" (daddr[1]));
++
++	return csum_fold(
++	       (__force __wsum)add32_with_carry(sum64 & 0xffffffff, sum64>>32));
  }
 =20
-+#define DECLARE_LOCK_GUARD_0_ATTRS(_name, _lock, _unlock)		\
-+static inline class_##_name##_t class_##_name##_constructor(void) _lock;\
-+static inline void class_##_name##_destructor(class_##_name##_t *_T) _unlock;
-+
-+/*
-+ * To support Context Analysis, we need to allow the compiler to see the
-+ * acquisition and release of the context lock. However, the "cleanup" helpe=
-rs
-+ * wrap the lock in a struct passed through separate helper functions, which
-+ * hides the lock alias from the compiler (no inter-procedural analysis).
-+ *
-+ * To make it work, we introduce an explicit alias to the context lock insta=
-nce
-+ * that is "cleaned" up with a separate cleanup helper. This helper is a dum=
-my
-+ * function that does nothing at runtime, but has the "_unlock" attribute to
-+ * tell the compiler what happens at the end of the scope.
-+ *
-+ * To generalize the pattern, the WITH_LOCK_GUARD_1_ATTRS() macro should be =
-used
-+ * to redefine the constructor, which then also creates the alias variable w=
-ith
-+ * the right "cleanup" attribute, *after* DECLARE_LOCK_GUARD_1_ATTRS() has b=
-een
-+ * used.
-+ *
-+ * Example usage:
-+ *
-+ *   DECLARE_LOCK_GUARD_1_ATTRS(mutex, __acquires(_T), __releases(*(struct m=
-utex **)_T))
-+ *   #define class_mutex_constructor(_T) WITH_LOCK_GUARD_1_ATTRS(mutex, _T)
-+ *
-+ * Note: To support the for-loop based scoped helpers, the auxiliary variable
-+ * must be a pointer to the "class" type because it is defined in the same
-+ * statement as the guard variable. However, we initialize it with the lock
-+ * pointer (despite the type mismatch, the compiler's alias analysis still w=
-orks
-+ * as expected). The "_unlock" attribute receives a pointer to the auxiliary
-+ * variable (a double pointer to the class type), and must be cast and
-+ * dereferenced appropriately.
-+ */
-+#define DECLARE_LOCK_GUARD_1_ATTRS(_name, _lock, _unlock)		\
-+static inline class_##_name##_t class_##_name##_constructor(lock_##_name##_t=
- *_T) _lock;\
-+static __always_inline void __class_##_name##_cleanup_ctx(class_##_name##_t =
-**_T) \
-+	__no_context_analysis _unlock { }
-+#define WITH_LOCK_GUARD_1_ATTRS(_name, _T)				\
-+	class_##_name##_constructor(_T),				\
-+	*__UNIQUE_ID(unlock) __cleanup(__class_##_name##_cleanup_ctx) =3D (void *)(=
-unsigned long)(_T)
-+
- #define DEFINE_LOCK_GUARD_1(_name, _type, _lock, _unlock, ...)		\
- __DEFINE_CLASS_IS_CONDITIONAL(_name, false);				\
- __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)		\
+ #define HAVE_ARCH_CSUM_ADD
+diff --git a/arch/x86/lib/csum-wrappers_64.c b/arch/x86/lib/csum-wrappers_64.c
+index f4df4d2..831b711 100644
+--- a/arch/x86/lib/csum-wrappers_64.c
++++ b/arch/x86/lib/csum-wrappers_64.c
+@@ -68,25 +68,3 @@ csum_partial_copy_nocheck(const void *src, void *dst, int =
+len)
+ }
+ EXPORT_SYMBOL(csum_partial_copy_nocheck);
+=20
+-__sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+-			const struct in6_addr *daddr,
+-			__u32 len, __u8 proto, __wsum sum)
+-{
+-	__u64 rest, sum64;
+-
+-	rest =3D (__force __u64)htonl(len) + (__force __u64)htons(proto) +
+-		(__force __u64)sum;
+-
+-	asm("	addq (%[saddr]),%[sum]\n"
+-	    "	adcq 8(%[saddr]),%[sum]\n"
+-	    "	adcq (%[daddr]),%[sum]\n"
+-	    "	adcq 8(%[daddr]),%[sum]\n"
+-	    "	adcq $0,%[sum]\n"
+-
+-	    : [sum] "=3Dr" (sum64)
+-	    : "[sum]" (rest), [saddr] "r" (saddr), [daddr] "r" (daddr));
+-
+-	return csum_fold(
+-	       (__force __wsum)add32_with_carry(sum64 & 0xffffffff, sum64>>32));
+-}
+-EXPORT_SYMBOL(csum_ipv6_magic);
 
