@@ -1,76 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7818-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7819-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F399CF4A60
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 05 Jan 2026 17:23:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C22CF4AA5
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 05 Jan 2026 17:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 57CE5329118F
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jan 2026 16:11:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A53932E79F5
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  5 Jan 2026 16:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC3233EAEC;
-	Mon,  5 Jan 2026 15:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8921834A3DB;
+	Mon,  5 Jan 2026 15:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qtbAMGfs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mATIFzDO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0GsBxeX2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BQzkadit"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDDA329E5D;
-	Mon,  5 Jan 2026 15:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5079B346FB0;
+	Mon,  5 Jan 2026 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767628491; cv=none; b=RlYvBQ72jxZWtILg4iJjoMr4ImYIgyWKoiMYIE4jBphdLxUzD4i1j04V08ZZhcQvQ1SAVtkZXdDJqqGNpUUpGQp5D2zLK8SyezQeowLfl2Q6slYrEE+Wwh+NHg83LJlK4zrGq+SbhEf19j1eoduAJb21B1ehm+Vy2ZVuVWBIXCA=
+	t=1767628494; cv=none; b=NrL5FPqo6YCjLJs9FNwlJrHT70ao7hEhzBCeOrCZPQaiJ6yOHJI7F5laEZSOG7ujUnB8tVgYa2R3Z+PQjSAsDqKvGNurxY8mQnyGFSoUmCV3nx2EyOeOFK9uTlL+oyUxyIarrsv8AGn/oK4JNrTlCyOxl1UtOjOy3MXAqYACoR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767628491; c=relaxed/simple;
-	bh=ESFD/XQAZQ6VgWxVQ48vp3eFCJiSGpHEVCif5gt5X5w=;
+	s=arc-20240116; t=1767628494; c=relaxed/simple;
+	bh=7lF8A2+iL+J2C6U49bqR3FNe31i4VJl4xPNauaf1dks=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=oPYrsYBQbXmS3cAcZiauEssm2DCtg4TZToUR2LGbVtDgj8LRRjqs3g4JchclvOuwNQ/7ElPq+Pg7GUbL1NCeENZYKOvsVw/XtsDTNffS/vefuwSu3+9JkiYS8mqkq5G3DTkeBSrzCFY/Pl7aoULpAJsxXd4MR2P/rauqXbtF4I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qtbAMGfs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mATIFzDO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=uvnRMOiIQzVUrK6/mazwbNuCgFQWIUSkjjBnnIECK3FsJJ05qIGpIohauvvMKydUKVuGDDNLqllCZm7XRmDKAFah6XoGPyLFrqO2ILcFC618H866kDEVKpjPAaXgf4MWNWEoGloiVRjXPEEmCZMT3Y/v4CEJSEWHCWowBc+Yn9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0GsBxeX2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BQzkadit; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 05 Jan 2026 15:54:44 -0000
+Date: Mon, 05 Jan 2026 15:54:45 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1767628485;
+	s=2020; t=1767628486;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tebMu6lBfvurwwDFyDmM7ijDaaTNqrtRV+RwxGlekkk=;
-	b=qtbAMGfsky30qj5Y8/s22tnwCYDLhychmZCPNI0WD3TwXDrNyts04zA6C9eQjJMCV31Iev
-	9nj7oPn6VWnxyOWcyqDSGK9bPP+Faym8zjMLCHslqmoZtE2E1xPcKtjqOHIEI3rvpG2i4s
-	rXSXmC+s3rVD16N2wSJypF7+rDKRa/CflvF6wxumltA8Wj7nWAO+HOKImhnR0QL0/xFHTs
-	JKuFEwiiCbSxBaWHUkb8qJCSR+4fec5ASsDFbh63dMY09MY0R33/RldA7NVmIkc+IVSjVt
-	hEfcugQK/OWdOxY3WicL7CXWHLP+hycIje5N3+vLgbiGT0bLA3TaoZAgyLmB3Q==
+	bh=MqyQqQ3orl4Rj7LeTSNden2jyUvVfURBl/pk7o/8ErQ=;
+	b=0GsBxeX27/NNXWRKEa75HGGKc9Vt7gQtHSnxJByVtOGRFz42hZ0jGnXiwh+dbTDYJKnJ4N
+	z+vhxcUiQ/y+TFtvYYzltOXs9ojAF/++IMpCggYGpZXjhNFAM9/hCVyz5U8KzPTwxG2EBN
+	coFcBl5OzC+k5I2xeGD5GxnBY3YAlzqr//DWvak1cHy3QGfMOn4l+fky5BFAbZzoY7Y6am
+	k65xezUuFsiMD9Fadh7bWd5k4/OiTvZ9s1EAEJaYVk5GP3lKiBSTY+RfQawnGcjOj9L9xK
+	edILisiLGS5nlIWF+yQIIunAUCULCobwy4enUanYKRd5HWAqeNs3Gnw/zg9VYQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1767628485;
+	s=2020e; t=1767628486;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tebMu6lBfvurwwDFyDmM7ijDaaTNqrtRV+RwxGlekkk=;
-	b=mATIFzDOcUt0GCKySnAtrubOBvTcHCCerfbCnBBVNeVvPwbddDbvy6Eikz2jpbsI7R6VPz
-	Dz8Iyr9xwlElI8BA==
+	bh=MqyQqQ3orl4Rj7LeTSNden2jyUvVfURBl/pk7o/8ErQ=;
+	b=BQzkadit5bJMyxtRtFjDugHhKzjlhlErAg/6kIlo5ly4WwWJn/6GuzpulgxkEBymT9z1lx
+	sXMvtMEu3cqphaBQ==
 From: "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] Documentation: Add documentation for
- Compiler-Based Context Analysis
+Subject: [tip: locking/core] compiler-context-analysis: Add test stub
 Cc: Marco Elver <elver@google.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251219154418.3592607-5-elver@google.com>
-References: <20251219154418.3592607-5-elver@google.com>
+In-Reply-To: <20251219154418.3592607-4-elver@google.com>
+References: <20251219154418.3592607-4-elver@google.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176762848405.510.5294819154113428119.tip-bot2@tip-bot2>
+Message-ID: <176762848507.510.4572526344684889633.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,209 +79,91 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     8f32441d7a532804a8d9e2ae36f9b13c353934d7
-Gitweb:        https://git.kernel.org/tip/8f32441d7a532804a8d9e2ae36f9b13c353=
-934d7
+Commit-ID:     9b00c1609deeb7d6f68a61f3ec6988ab7e6f4535
+Gitweb:        https://git.kernel.org/tip/9b00c1609deeb7d6f68a61f3ec6988ab7e6=
+f4535
 Author:        Marco Elver <elver@google.com>
-AuthorDate:    Fri, 19 Dec 2025 16:39:53 +01:00
+AuthorDate:    Fri, 19 Dec 2025 16:39:52 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Mon, 05 Jan 2026 16:43:27 +01:00
 
-Documentation: Add documentation for Compiler-Based Context Analysis
+compiler-context-analysis: Add test stub
 
-Adds documentation in Documentation/dev-tools/context-analysis.rst, and
-adds it to the index.
+Add a simple test stub where we will add common supported patterns that
+should not generate false positives for each new supported context lock.
 
 Signed-off-by: Marco Elver <elver@google.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251219154418.3592607-5-elver@google.com
+Link: https://patch.msgid.link/20251219154418.3592607-4-elver@google.com
 ---
- Documentation/dev-tools/context-analysis.rst | 144 ++++++++++++++++++-
- Documentation/dev-tools/index.rst            |   1 +-
- 2 files changed, 145 insertions(+)
- create mode 100644 Documentation/dev-tools/context-analysis.rst
+ lib/Kconfig.debug           | 14 ++++++++++++++
+ lib/Makefile                |  3 +++
+ lib/test_context-analysis.c | 18 ++++++++++++++++++
+ 3 files changed, 35 insertions(+)
+ create mode 100644 lib/test_context-analysis.c
 
-diff --git a/Documentation/dev-tools/context-analysis.rst b/Documentation/dev=
--tools/context-analysis.rst
+diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+index cd557e7..8ca4252 100644
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -2835,6 +2835,20 @@ config LINEAR_RANGES_TEST
+=20
+ 	  If unsure, say N.
+=20
++config CONTEXT_ANALYSIS_TEST
++	bool "Compiler context-analysis warnings test"
++	depends on EXPERT
++	help
++	  This builds the test for compiler-based context analysis. The test
++	  does not add executable code to the kernel, but is meant to test that
++	  common patterns supported by the analysis do not result in false
++	  positive warnings.
++
++	  When adding support for new context locks, it is strongly recommended
++	  to add supported patterns to this test.
++
++	  If unsure, say N.
++
+ config CMDLINE_KUNIT_TEST
+ 	tristate "KUnit test for cmdline API" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+diff --git a/lib/Makefile b/lib/Makefile
+index aaf677c..89defef 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -331,4 +331,7 @@ obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) +=3D devmem_i=
+s_allowed.o
+=20
+ obj-$(CONFIG_FIRMWARE_TABLE) +=3D fw_table.o
+=20
++CONTEXT_ANALYSIS_test_context-analysis.o :=3D y
++obj-$(CONFIG_CONTEXT_ANALYSIS_TEST) +=3D test_context-analysis.o
++
+ subdir-$(CONFIG_FORTIFY_SOURCE) +=3D test_fortify
+diff --git a/lib/test_context-analysis.c b/lib/test_context-analysis.c
 new file mode 100644
-index 0000000..47eb547
+index 0000000..68f075d
 --- /dev/null
-+++ b/Documentation/dev-tools/context-analysis.rst
-@@ -0,0 +1,144 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. Copyright (C) 2025, Google LLC.
++++ b/lib/test_context-analysis.c
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Compile-only tests for common patterns that should not generate false
++ * positive errors when compiled with Clang's context analysis.
++ */
 +
-+.. _context-analysis:
++#include <linux/build_bug.h>
 +
-+Compiler-Based Context Analysis
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-+
-+Context Analysis is a language extension, which enables statically checking
-+that required contexts are active (or inactive) by acquiring and releasing
-+user-definable "context locks". An obvious application is lock-safety checki=
-ng
-+for the kernel's various synchronization primitives (each of which represent=
-s a
-+"context lock"), and checking that locking rules are not violated.
-+
-+The Clang compiler currently supports the full set of context analysis
-+features. To enable for Clang, configure the kernel with::
-+
-+    CONFIG_WARN_CONTEXT_ANALYSIS=3Dy
-+
-+The feature requires Clang 22 or later.
-+
-+The analysis is *opt-in by default*, and requires declaring which modules and
-+subsystems should be analyzed in the respective `Makefile`::
-+
-+    CONTEXT_ANALYSIS_mymodule.o :=3D y
-+
-+Or for all translation units in the directory::
-+
-+    CONTEXT_ANALYSIS :=3D y
-+
-+It is possible to enable the analysis tree-wide, however, which will result =
-in
-+numerous false positive warnings currently and is *not* generally recommende=
-d::
-+
-+    CONFIG_WARN_CONTEXT_ANALYSIS_ALL=3Dy
-+
-+Programming Model
-+-----------------
-+
-+The below describes the programming model around using context lock types.
-+
-+.. note::
-+   Enabling context analysis can be seen as enabling a dialect of Linux C wi=
-th
-+   a Context System. Some valid patterns involving complex control-flow are
-+   constrained (such as conditional acquisition and later conditional release
-+   in the same function).
-+
-+Context analysis is a way to specify permissibility of operations to depend =
-on
-+context locks being held (or not held). Typically we are interested in
-+protecting data and code in a critical section by requiring a specific conte=
-xt
-+to be active, for example by holding a specific lock. The analysis ensures t=
-hat
-+callers cannot perform an operation without the required context being activ=
-e.
-+
-+Context locks are associated with named structs, along with functions that
-+operate on struct instances to acquire and release the associated context lo=
-ck.
-+
-+Context locks can be held either exclusively or shared. This mechanism allows
-+assigning more precise privileges when a context is active, typically to
-+distinguish where a thread may only read (shared) or also write (exclusive) =
-to
-+data guarded within a context.
-+
-+The set of contexts that are actually active in a given thread at a given po=
-int
-+in program execution is a run-time concept. The static analysis works by
-+calculating an approximation of that set, called the context environment. The
-+context environment is calculated for every program point, and describes the
-+set of contexts that are statically known to be active, or inactive, at that
-+particular point. This environment is a conservative approximation of the fu=
-ll
-+set of contexts that will actually be active in a thread at run-time.
-+
-+More details are also documented `here
-+<https://clang.llvm.org/docs/ThreadSafetyAnalysis.html>`_.
-+
-+.. note::
-+   Clang's analysis explicitly does not infer context locks acquired or
-+   released by inline functions. It requires explicit annotations to (a) ass=
-ert
-+   that it's not a bug if a context lock is released or acquired, and (b) to
-+   retain consistency between inline and non-inline function declarations.
-+
-+Supported Kernel Primitives
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+.. Currently the following synchronization primitives are supported:
-+
-+For context locks with an initialization function (e.g., `spin_lock_init()`),
-+calling this function before initializing any guarded members or globals
-+prevents the compiler from issuing warnings about unguarded initialization.
-+
-+Lockdep assertions, such as `lockdep_assert_held()`, inform the compiler's
-+context analysis that the associated synchronization primitive is held after
-+the assertion. This avoids false positives in complex control-flow scenarios
-+and encourages the use of Lockdep where static analysis is limited. For
-+example, this is useful when a function doesn't *always* require a lock, mak=
-ing
-+`__must_hold()` inappropriate.
-+
-+Keywords
-+~~~~~~~~
-+
-+.. kernel-doc:: include/linux/compiler-context-analysis.h
-+   :identifiers: context_lock_struct
-+                 token_context_lock token_context_lock_instance
-+                 __guarded_by __pt_guarded_by
-+                 __must_hold
-+                 __must_not_hold
-+                 __acquires
-+                 __cond_acquires
-+                 __releases
-+                 __must_hold_shared
-+                 __acquires_shared
-+                 __cond_acquires_shared
-+                 __releases_shared
-+                 __acquire
-+                 __release
-+                 __cond_lock
-+                 __acquire_shared
-+                 __release_shared
-+                 __cond_lock_shared
-+                 __acquire_ret
-+                 __acquire_shared_ret
-+                 context_unsafe
-+                 __context_unsafe
-+                 disable_context_analysis enable_context_analysis
-+
-+.. note::
-+   The function attribute `__no_context_analysis` is reserved for internal
-+   implementation of context lock types, and should be avoided in normal cod=
-e.
-+
-+Background
-+----------
-+
-+Clang originally called the feature `Thread Safety Analysis
-+<https://clang.llvm.org/docs/ThreadSafetyAnalysis.html>`_, with some keywords
-+and documentation still using the thread-safety-analysis-only terminology. T=
-his
-+was later changed and the feature became more flexible, gaining the ability =
-to
-+define custom "capabilities". Its foundations can be found in `Capability
-+Systems <https://www.cs.cornell.edu/talc/papers/capabilities.pdf>`_, used to
-+specify the permissibility of operations to depend on some "capability" being
-+held (or not held).
-+
-+Because the feature is not just able to express capabilities related to
-+synchronization primitives, and "capability" is already overloaded in the
-+kernel, the naming chosen for the kernel departs from Clang's initial "Thread
-+Safety" and "capability" nomenclature; we refer to the feature as "Context
-+Analysis" to avoid confusion. The internal implementation still makes
-+references to Clang's terminology in a few places, such as `-Wthread-safety`
-+being the warning option that also still appears in diagnostic messages.
-diff --git a/Documentation/dev-tools/index.rst b/Documentation/dev-tools/inde=
-x.rst
-index 4b8425e..d864b3d 100644
---- a/Documentation/dev-tools/index.rst
-+++ b/Documentation/dev-tools/index.rst
-@@ -21,6 +21,7 @@ Documentation/process/debugging/index.rst
-    checkpatch
-    clang-format
-    coccinelle
-+   context-analysis
-    sparse
-    kcov
-    gcov
++/*
++ * Test that helper macros work as expected.
++ */
++static void __used test_common_helpers(void)
++{
++	BUILD_BUG_ON(context_unsafe(3) !=3D 3); /* plain expression */
++	BUILD_BUG_ON(context_unsafe((void)2; 3) !=3D 3); /* does not swallow semi-c=
+olon */
++	BUILD_BUG_ON(context_unsafe((void)2, 3) !=3D 3); /* does not swallow commas=
+ */
++	context_unsafe(do { } while (0)); /* works with void statements */
++}
 
