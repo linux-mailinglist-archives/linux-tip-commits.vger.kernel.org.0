@@ -1,59 +1,59 @@
-Return-Path: <linux-tip-commits+bounces-7840-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7848-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF160D0DC49
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jan 2026 20:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 533D9D0DC6D
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jan 2026 20:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 344D230519C1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jan 2026 19:46:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C4FA307AFAC
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 10 Jan 2026 19:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070811B4F1F;
-	Sat, 10 Jan 2026 19:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BF72D8391;
+	Sat, 10 Jan 2026 19:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CQACIMqU";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DHqdZXP7"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZUt2IvUn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rrhEIgBJ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E9927B34E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F4E28134C;
 	Sat, 10 Jan 2026 19:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768074363; cv=none; b=HyYxe0U9UrG4MmPXH1XgsXcZzw80xiszVl792ZqV+RZa/nD53WVJOfz9oxqhGsJDcXSmWwzyb2ye4HyBUhvDQMeyXfpGoEP0j9xPXMdr7mnkeES96G5vyvhsP2GIM9sFDtT2ylEVrlI4lx0n3MDgvjqNr8KJkzJRK6UKCIgStq8=
+	t=1768074369; cv=none; b=DWHixabGgB1yWAc2rvBCXUYWEpkxbX1T3VbT2GbcH8y5TUxhBntlT6rPu1QsHW3qxp+MJuHOsw5hrKvpwnxsaBui/axfE2LXwFFlp0mvD8s1eUTQEa2Cu24LJh8twb/38wZukkn5EiJDVcBXk0KwRFuSONVfFWpoVmFJKKm4huU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768074363; c=relaxed/simple;
-	bh=/LAOV+Ff61CSvfyrY5L2KmgVLcabWZipv04s05ZJCfo=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=rwnTdG6KZPv/MnYRdpY9Bul5B6Xot34ItFMBG1v+KF1g3EH0pvUn5htUB8h+L6nqTsG/VQ3qQUMJrr0NVMSGiFJV1aLcZ3WdGVMB7eoquBCM+zz2M2EpJ+XH8M2WtxhIGMGKIyrUqhBLOquEHWj0G5G6LPZrynMXZIOIm2BkbW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CQACIMqU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DHqdZXP7; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1768074369; c=relaxed/simple;
+	bh=4PQxsXkmUTz0XCDy4u4tF3HFGwy/8B1b8cHkqTYFtiY=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ZMYXZJIO/wFCiU3mpIlMrp58wkPnPk/0Je+J5Ji9KZy6NhtA4mrTABGGDjI26a5Shjz1vSY2iqAuPpskqsGyxChpIufAOcSnvOo+Ei9lIiJ9b69Jvxa6jFEpqyccjeEYInuRtng9H8X7toUXbgo1hgGBJ935Mz4zyrtZ9OyNMGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZUt2IvUn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rrhEIgBJ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 10 Jan 2026 19:45:56 -0000
+Date: Sat, 10 Jan 2026 19:45:57 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768074357;
+	s=2020; t=1768074359;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=TPEbHqe1uPycFyttd3bzZoDC9rFLGxIgSg4Vq1EaLF0=;
-	b=CQACIMqUkvy4Y/xi6D4exgWSWb7n2ZSP1PrVooCJ9syrWHY6jT2viR0iumFxK0Sm+VePjD
-	fl+cTmQLZc/1MYj7EEYn91wlZmUW2XXF3M54WrWtAUdacuSqR3nJkmKjHu3m1iS8oKqhbc
-	J6MrbDB5achAY/qwYfbHwiJtTdw5O5ZZMNd1C5SUBcs1v31JeKXF1z4Pcbj438AwzljUCP
-	9U6Beb8Z+pJjO9OMyrj8P/PN+2qaYFmXSrxUrHjcuLx+a4A/jJpw8KhJwIikEPI16YSwLG
-	2NKfDUzrHtZ9XHkgRBOda5R8QSleImT3M4AjCvKIi++BcHc86oFQjhjXOUA0gQ==
+	bh=24ZIa+ZX3C3P/6MKVcF1IC6Sz+a+0gJqvU5gKA6ylGs=;
+	b=ZUt2IvUn9EuYDl5oZo1IgSUuMc0dt5o7YxltqipDGdZ/bTzmkTR1Y9jH7aIPWnan89QCQ2
+	iFmB/WKfz0HznKvt4kfOVpzUJTItZdtGXOvCPPAAaH9Bypy/5wMEeM5npDClQCfuWi1keM
+	OC0P5DSAKwuRPUk9JylUcXAZFiQ9udFxJfPhsCLIdxtvTLYeJkvWsJeunp1ZGB5xjcYP7H
+	BrHvAzdqVc82EmmrFLF9R7Gm+/tPK8tax5tNUPvshdZwzCYeKC5kepBLM4Epow0B4geUJ4
+	lWfq+U9hWP1TCHjoj5kyqWryysUaRoZ1LxacQX0GCxUJ4YnMgHg89GmCfBeoHA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768074357;
+	s=2020e; t=1768074359;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=TPEbHqe1uPycFyttd3bzZoDC9rFLGxIgSg4Vq1EaLF0=;
-	b=DHqdZXP7JfsRMb86rtii48itNuSW7A7WdXXyGX8aiEFT6wBYEwUuod8u0DyKKL86Kxcpvv
-	RCpYoEpj65PCS8DA==
+	bh=24ZIa+ZX3C3P/6MKVcF1IC6Sz+a+0gJqvU5gKA6ylGs=;
+	b=rrhEIgBJYPFlYfY3ymuliN1SID/xabxIXWOhdLT38tp31zHgjytkvbZkDyLUENCb/jZEB+
+	ekD2ZsNuXYtOI+Dg==
 From: "tip-bot2 for Tony Luck" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/cache] x86/resctrl: Add energy/perf choices to rdt boot option
+Subject: [tip: x86/cache] x86,fs/resctrl: Handle domain creation/deletion for
+ RDT_RESOURCE_PERF_PKG
 Cc: Tony Luck <tony.luck@intel.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  Reinette Chatre <reinette.chatre@intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
@@ -63,7 +63,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176807435671.510.2188274998747953660.tip-bot2@tip-bot2>
+Message-ID: <176807435775.510.16712181685635787207.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -73,182 +73,234 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/cache branch of tip:
 
-Commit-ID:     842e7f97d71a4116a650ec0045d6444b4377b512
-Gitweb:        https://git.kernel.org/tip/842e7f97d71a4116a650ec0045d6444b437=
-7b512
+Commit-ID:     f4e0cd80d3e7c31327459008b01d63804838a89d
+Gitweb:        https://git.kernel.org/tip/f4e0cd80d3e7c31327459008b01d6380483=
+8a89d
 Author:        Tony Luck <tony.luck@intel.com>
-AuthorDate:    Wed, 17 Dec 2025 09:21:11 -08:00
+AuthorDate:    Wed, 17 Dec 2025 09:21:10 -08:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 09 Jan 2026 23:38:32 +01:00
+CommitterDate: Fri, 09 Jan 2026 23:36:41 +01:00
 
-x86/resctrl: Add energy/perf choices to rdt boot option
+x86,fs/resctrl: Handle domain creation/deletion for RDT_RESOURCE_PERF_PKG
 
-Legacy resctrl features are enumerated by X86_FEATURE_* flags. These may be
-overridden by quirks to disable features in the case of errata.  Users can use
-kernel command line options to either disable a feature, or to force enable
-a feature that was disabled by a quirk.
+The L3 resource has several requirements for domains. There are per-domain
+structures that hold the 64-bit values of counters, and elements to keep
+track of the overflow and limbo threads.
 
-A different approach is needed for hardware features that do not have an
-X86_FEATURE_* flag.
+None of these are needed for the PERF_PKG resource. The hardware counters
+are wide enough that they do not wrap around for decades.
 
-Update parsing of the "rdt=3D" boot parameter to call the telemetry driver
-directly to handle new "perf" and "energy" options that controls activation of
-telemetry monitoring of the named type. By itself a "perf" or "energy" option
-controls the forced enabling or disabling (with ! prefix) of all event groups
-of the named type. A ":guid" suffix allows for fine grained control per event
-group.
+Define a new rdt_perf_pkg_mon_domain structure which just consists of the
+standard rdt_domain_hdr to keep track of domain id and CPU mask.
 
-  [ bp: s/intel_aet_option/intel_handle_aet_option/g ]
+Update resctrl_online_mon_domain() for RDT_RESOURCE_PERF_PKG. The only action
+needed for this resource is to create and populate domain directories if a
+domain is added while resctrl is mounted.
+
+Similarly resctrl_offline_mon_domain() only needs to remove domain directorie=
+s.
 
 Signed-off-by: Tony Luck <tony.luck@intel.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Link: https://lore.kernel.org/20251217172121.12030-1-tony.luck@intel.com
 ---
- Documentation/admin-guide/kernel-parameters.txt |  7 ++-
- arch/x86/kernel/cpu/resctrl/core.c              |  2 +-
- arch/x86/kernel/cpu/resctrl/intel_aet.c         | 38 ++++++++++++++++-
- arch/x86/kernel/cpu/resctrl/internal.h          |  2 +-
- 4 files changed, 48 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/resctrl/core.c      | 17 ++++++++++++++-
+ arch/x86/kernel/cpu/resctrl/intel_aet.c | 29 ++++++++++++++++++++++++-
+ arch/x86/kernel/cpu/resctrl/internal.h  | 13 +++++++++++-
+ fs/resctrl/rdtgroup.c                   | 17 +++++++++-----
+ 4 files changed, 71 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/=
-admin-guide/kernel-parameters.txt
-index a8d0afd..abd77f3 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6325,9 +6325,14 @@ Kernel parameters
- 	rdt=3D		[HW,X86,RDT]
- 			Turn on/off individual RDT features. List is:
- 			cmt, mbmtotal, mbmlocal, l3cat, l3cdp, l2cat, l2cdp,
--			mba, smba, bmec, abmc, sdciae.
-+			mba, smba, bmec, abmc, sdciae, energy[:guid],
-+			perf[:guid].
- 			E.g. to turn on cmt and turn off mba use:
- 				rdt=3Dcmt,!mba
-+			To turn off all energy telemetry monitoring and ensure that
-+			perf telemetry monitoring associated with guid 0x12345
-+			is enabled use:
-+				rdt=3D!energy,perf:0x12345
-=20
- 	reboot=3D		[KNL]
- 			Format (x86 or x86_64):
 diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl=
 /core.c
-index 2514f15..e38d7fc 100644
+index 509277b..2514f15 100644
 --- a/arch/x86/kernel/cpu/resctrl/core.c
 +++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -814,6 +814,8 @@ static int __init set_rdt_options(char *str)
- 		force_off =3D *tok =3D=3D '!';
- 		if (force_off)
- 			tok++;
-+		if (intel_handle_aet_option(force_off, tok))
-+			continue;
- 		for (o =3D rdt_options; o < &rdt_options[NUM_RDT_OPTIONS]; o++) {
- 			if (strcmp(tok, o->name) =3D=3D 0) {
- 				if (force_off)
+@@ -580,6 +580,10 @@ static void domain_add_cpu_mon(int cpu, struct rdt_resou=
+rce *r)
+ 		if (!hdr)
+ 			l3_mon_domain_setup(cpu, id, r, add_pos);
+ 		break;
++	case RDT_RESOURCE_PERF_PKG:
++		if (!hdr)
++			intel_aet_mon_domain_setup(cpu, id, r, add_pos);
++		break;
+ 	default:
+ 		pr_warn_once("Unknown resource rid=3D%d\n", r->rid);
+ 		break;
+@@ -679,6 +683,19 @@ static void domain_remove_cpu_mon(int cpu, struct rdt_re=
+source *r)
+ 		l3_mon_domain_free(hw_dom);
+ 		break;
+ 	}
++	case RDT_RESOURCE_PERF_PKG: {
++		struct rdt_perf_pkg_mon_domain *pkgd;
++
++		if (!domain_header_is_valid(hdr, RESCTRL_MON_DOMAIN, RDT_RESOURCE_PERF_PKG=
+))
++			return;
++
++		pkgd =3D container_of(hdr, struct rdt_perf_pkg_mon_domain, hdr);
++		resctrl_offline_mon_domain(r, hdr);
++		list_del_rcu(&hdr->list);
++		synchronize_rcu();
++		kfree(pkgd);
++		break;
++	}
+ 	default:
+ 		pr_warn_once("Unknown resource rid=3D%d\n", r->rid);
+ 		break;
 diff --git a/arch/x86/kernel/cpu/resctrl/intel_aet.c b/arch/x86/kernel/cpu/re=
 sctrl/intel_aet.c
-index 9351fe5..dc25e8d 100644
+index 96d627e..9351fe5 100644
 --- a/arch/x86/kernel/cpu/resctrl/intel_aet.c
 +++ b/arch/x86/kernel/cpu/resctrl/intel_aet.c
-@@ -52,12 +52,17 @@ struct pmt_event {
- /**
-  * struct event_group - Events with the same feature type ("energy" or "perf=
-") and GUID.
-  * @pfname:		PMT feature name ("energy" or "perf") of this event group.
-+ *			Used by boot rdt=3D option.
-  * @pfg:		Points to the aggregated telemetry space information
-  *			returned by the intel_pmt_get_regions_by_feature()
-  *			call to the INTEL_PMT_TELEMETRY driver that contains
-  *			data for all telemetry regions of type @pfname.
-  *			Valid if the system supports the event group,
-  *			NULL otherwise.
-+ * @force_off:		True when "rdt" command line or architecture code disables
-+ *			this event group.
-+ * @force_on:		True when "rdt" command line overrides disable of this
-+ *			event group.
-  * @guid:		Unique number per XML description file.
-  * @mmio_size:		Number of bytes of MMIO registers for this group.
-  * @num_events:		Number of events in this group.
-@@ -67,6 +72,7 @@ struct event_group {
- 	/* Data fields for additional structures to manage this group. */
- 	const char			*pfname;
- 	struct pmt_feature_group	*pfg;
-+	bool				force_off, force_on;
+@@ -14,15 +14,20 @@
+ #include <linux/bits.h>
+ #include <linux/compiler_types.h>
+ #include <linux/container_of.h>
++#include <linux/cpumask.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
++#include <linux/gfp_types.h>
+ #include <linux/init.h>
+ #include <linux/intel_pmt_features.h>
+ #include <linux/intel_vsec.h>
+ #include <linux/io.h>
+ #include <linux/printk.h>
++#include <linux/rculist.h>
++#include <linux/rcupdate.h>
+ #include <linux/resctrl.h>
+ #include <linux/resctrl_types.h>
++#include <linux/slab.h>
+ #include <linux/stddef.h>
+ #include <linux/topology.h>
+ #include <linux/types.h>
+@@ -283,3 +288,27 @@ int intel_aet_read_event(int domid, u32 rmid, void *arch=
+_priv, u64 *val)
 =20
- 	/* Remaining fields initialized from XML file. */
- 	u32				guid;
-@@ -121,6 +127,35 @@ static struct event_group *known_event_groups[] =3D {
- 	     _peg < &known_event_groups[ARRAY_SIZE(known_event_groups)];	\
- 	     _peg++)
-=20
-+bool intel_handle_aet_option(bool force_off, char *tok)
+ 	return valid ? 0 : -EINVAL;
+ }
++
++void intel_aet_mon_domain_setup(int cpu, int id, struct rdt_resource *r,
++				struct list_head *add_pos)
 +{
-+	struct event_group **peg;
-+	bool ret =3D false;
-+	u32 guid =3D 0;
-+	char *name;
++	struct rdt_perf_pkg_mon_domain *d;
++	int err;
 +
-+	if (!tok)
-+		return false;
++	d =3D kzalloc_node(sizeof(*d), GFP_KERNEL, cpu_to_node(cpu));
++	if (!d)
++		return;
 +
-+	name =3D strsep(&tok, ":");
-+	if (tok && kstrtou32(tok, 16, &guid))
-+		return false;
++	d->hdr.id =3D id;
++	d->hdr.type =3D RESCTRL_MON_DOMAIN;
++	d->hdr.rid =3D RDT_RESOURCE_PERF_PKG;
++	cpumask_set_cpu(cpu, &d->hdr.cpu_mask);
++	list_add_tail_rcu(&d->hdr.list, add_pos);
 +
-+	for_each_event_group(peg) {
-+		if (strcmp(name, (*peg)->pfname))
-+			continue;
-+		if (guid && (*peg)->guid !=3D guid)
-+			continue;
-+		if (force_off)
-+			(*peg)->force_off =3D true;
-+		else
-+			(*peg)->force_on =3D true;
-+		ret =3D true;
++	err =3D resctrl_online_mon_domain(r, &d->hdr);
++	if (err) {
++		list_del_rcu(&d->hdr.list);
++		synchronize_rcu();
++		kfree(d);
 +	}
-+
-+	return ret;
 +}
-+
- static bool skip_telem_region(struct telemetry_region *tr, struct event_grou=
-p *e)
- {
- 	if (tr->guid !=3D e->guid)
-@@ -168,6 +203,9 @@ static bool enable_events(struct event_group *e, struct p=
-mt_feature_group *p)
- 	struct rdt_resource *r =3D &rdt_resources_all[RDT_RESOURCE_PERF_PKG].r_resc=
-trl;
- 	int skipped_events =3D 0;
-=20
-+	if (e->force_off)
-+		return false;
-+
- 	if (!group_has_usable_regions(e, p))
- 		return false;
-=20
 diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/res=
 ctrl/internal.h
-index 3b228b2..61a2836 100644
+index 10743f5..3b228b2 100644
 --- a/arch/x86/kernel/cpu/resctrl/internal.h
 +++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -236,6 +236,7 @@ void __exit intel_aet_exit(void);
+@@ -88,6 +88,14 @@ static inline struct rdt_hw_l3_mon_domain *resctrl_to_arch=
+_mon_dom(struct rdt_l3
+ }
+=20
+ /**
++ * struct rdt_perf_pkg_mon_domain - CPUs sharing an package scoped resctrl m=
+onitor resource
++ * @hdr:	common header for different domain types
++ */
++struct rdt_perf_pkg_mon_domain {
++	struct rdt_domain_hdr	hdr;
++};
++
++/**
+  * struct msr_param - set a range of MSRs from a domain
+  * @res:       The resource to use
+  * @dom:       The domain to update
+@@ -226,6 +234,8 @@ void resctrl_arch_mbm_cntr_assign_set_one(struct rdt_reso=
+urce *r);
+ bool intel_aet_get_events(void);
+ void __exit intel_aet_exit(void);
  int intel_aet_read_event(int domid, u32 rmid, void *arch_priv, u64 *val);
- void intel_aet_mon_domain_setup(int cpu, int id, struct rdt_resource *r,
- 				struct list_head *add_pos);
-+bool intel_handle_aet_option(bool force_off, char *tok);
++void intel_aet_mon_domain_setup(int cpu, int id, struct rdt_resource *r,
++				struct list_head *add_pos);
  #else
  static inline bool intel_aet_get_events(void) { return false; }
  static inline void __exit intel_aet_exit(void) { }
-@@ -246,6 +247,7 @@ static inline int intel_aet_read_event(int domid, u32 rmi=
+@@ -233,6 +243,9 @@ static inline int intel_aet_read_event(int domid, u32 rmi=
 d, void *arch_priv, u64
-=20
- static inline void intel_aet_mon_domain_setup(int cpu, int id, struct rdt_re=
+ {
+ 	return -EINVAL;
+ }
++
++static inline void intel_aet_mon_domain_setup(int cpu, int id, struct rdt_re=
 source *r,
- 					      struct list_head *add_pos) { }
-+static inline bool intel_handle_aet_option(bool force_off, char *tok) { retu=
-rn false; }
++					      struct list_head *add_pos) { }
  #endif
 =20
  #endif /* _ASM_X86_RESCTRL_INTERNAL_H */
+diff --git a/fs/resctrl/rdtgroup.c b/fs/resctrl/rdtgroup.c
+index 57139f9..b9363a9 100644
+--- a/fs/resctrl/rdtgroup.c
++++ b/fs/resctrl/rdtgroup.c
+@@ -4308,11 +4308,6 @@ void resctrl_offline_mon_domain(struct rdt_resource *r=
+, struct rdt_domain_hdr *h
+=20
+ 	mutex_lock(&rdtgroup_mutex);
+=20
+-	if (!domain_header_is_valid(hdr, RESCTRL_MON_DOMAIN, RDT_RESOURCE_L3))
+-		goto out_unlock;
+-
+-	d =3D container_of(hdr, struct rdt_l3_mon_domain, hdr);
+-
+ 	/*
+ 	 * If resctrl is mounted, remove all the
+ 	 * per domain monitor data directories.
+@@ -4320,6 +4315,13 @@ void resctrl_offline_mon_domain(struct rdt_resource *r=
+, struct rdt_domain_hdr *h
+ 	if (resctrl_mounted && resctrl_arch_mon_capable())
+ 		rmdir_mondata_subdir_allrdtgrp(r, hdr);
+=20
++	if (r->rid !=3D RDT_RESOURCE_L3)
++		goto out_unlock;
++
++	if (!domain_header_is_valid(hdr, RESCTRL_MON_DOMAIN, RDT_RESOURCE_L3))
++		goto out_unlock;
++
++	d =3D container_of(hdr, struct rdt_l3_mon_domain, hdr);
+ 	if (resctrl_is_mbm_enabled())
+ 		cancel_delayed_work(&d->mbm_over);
+ 	if (resctrl_is_mon_event_enabled(QOS_L3_OCCUP_EVENT_ID) && has_busy_rmid(d)=
+) {
+@@ -4416,6 +4418,9 @@ int resctrl_online_mon_domain(struct rdt_resource *r, s=
+truct rdt_domain_hdr *hdr
+=20
+ 	mutex_lock(&rdtgroup_mutex);
+=20
++	if (r->rid !=3D RDT_RESOURCE_L3)
++		goto mkdir;
++
+ 	if (!domain_header_is_valid(hdr, RESCTRL_MON_DOMAIN, RDT_RESOURCE_L3))
+ 		goto out_unlock;
+=20
+@@ -4433,6 +4438,8 @@ int resctrl_online_mon_domain(struct rdt_resource *r, s=
+truct rdt_domain_hdr *hdr
+ 	if (resctrl_is_mon_event_enabled(QOS_L3_OCCUP_EVENT_ID))
+ 		INIT_DELAYED_WORK(&d->cqm_limbo, cqm_handle_limbo);
+=20
++mkdir:
++	err =3D 0;
+ 	/*
+ 	 * If the filesystem is not mounted then only the default resource group
+ 	 * exists. Creation of its directories is deferred until mount time
 
