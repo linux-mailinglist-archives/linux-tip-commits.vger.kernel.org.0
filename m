@@ -1,76 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-7926-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7927-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD64D1838B
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 11:53:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759BBD18376
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 11:52:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F3CB53022389
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 10:51:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 329D930259DD
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 10:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C7D38E5F3;
-	Tue, 13 Jan 2026 10:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5D638F23C;
+	Tue, 13 Jan 2026 10:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X3Emue9h";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YpG0mgXs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aXRVqkiF";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yADW6eK7"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C112238E105;
-	Tue, 13 Jan 2026 10:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BCA38E5E5;
+	Tue, 13 Jan 2026 10:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768301403; cv=none; b=EeOnmVIhb6J7B9K8dzKLfkgFsYsffXvNA5TB8jOfVm2+Z9lismqGCVRg8P4Kd0AuZXdp0PirWF+T+8WkF5uyVvhyHHsHF/jz2P2FyP5trMXRsch2WWNm2UZ6D2CmK1Tv21WwHpUkMNw7ykudZWSWeboWYl+pozIuvVWbT+C0jzU=
+	t=1768301404; cv=none; b=E/9u8Xbwm8Y+XmgDX1sNSqbFIdShrkTD0lSP4O26uiqZaaTP1pJWBwN1dLAb/JF65h6aAw/bf7Aj8XawYHSjPnoWOkoO+x04Ic40Q6zJk65oGe7kuMq2gn22zGtahwFqWuEwSBrFLEQ8hQInfwg6P7aGQ30fz/dpPX/Lr3gxkeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768301403; c=relaxed/simple;
-	bh=ooq2efFJdtjif044w0BZtKk+y6A22kuVqK0X5bTcuO0=;
+	s=arc-20240116; t=1768301404; c=relaxed/simple;
+	bh=a5/hiCwYIZ+jBvufWKkvBKoCJHBncaxQDdPC6Jh97EQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=jMG6P/yDIojXS3oYyb8OehFlzgCJ28tyKCqf1O658VejyOT+853Rlfy7yuFwmjLivA0lnhSbRQYs3wINP5usT+YaI3MaJ//Vrsx2lv5zcpCydP/utu1hJDJyrdnJ643umoD6AMqAA1c/ulY8JvDHJzNGSUA1cR/KlXkrLAsM9j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X3Emue9h; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YpG0mgXs; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=OtrHOgH3WbiZVlHTCDDJ9ZZqZf0nzm3ei4htTmgrna687vhUnNAyOWANQeEG9y2i5h8F5xXIeW8J5xRXl3mCEq+w5prqhnn9Fi5eA5sAc9xjNLGNHOX2Z+T/wQf18HiFlvKC8TjdEi0yXRfcyiBN7Vc3EdSrg1pGcNEwO8W3+6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aXRVqkiF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yADW6eK7; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 Jan 2026 10:49:59 -0000
+Date: Tue, 13 Jan 2026 10:50:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768301400;
+	s=2020; t=1768301401;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YJryVh6CvOOKsKh0XvWdL9OHBULkVcDyPfaTbjtzoNA=;
-	b=X3Emue9hjqK+v/YJZrM14iYw4lyj7Cv7gUrjOWEi7/lg0azVYtH071ICSTVD8ah5vD8ahf
-	M2aKJx/c+XEFR86c1d8jH8skfDYbEWNVq22x+snsLMyAX9J/S8qYjwhmupd0i47iQlddKz
-	XGLhUBV+lxTOUMJZ8JEKWVqByw4txdZabacezh1v/u7sM73R88+TgDdQDdIzT1/vYCeW1C
-	NyJkGh7dAcEdBNa/Y0yjFQ4zD3BfdGdxJ19T8ptxGx+oCxxjr2lihcLzjgQIUtFeyC/J/x
-	dB9kI6hoxQZk6JjYgVBa3jwGclOANgFpcOkHUYrYL5hjIodIZ9T8HfwQAzyiFA==
+	bh=bjMMHyctdFRtyDW4AaNZDeOf2Bs7isR8vMBeTYrN5Ao=;
+	b=aXRVqkiFCfpZ8r5aEYWez4JmrOxis6ZD5HAlaNIhrLU1KJQzMux5oxVh70rZhStLZP6wUY
+	t5NGA2ewE6gL353qkp1oPHplZLMjaaiSkMt/7oesg7UiJ53oPls1njGUwO6TFSSJ06v9vT
+	oJXMZoJ8aJLqw8/5nYdScrA52X0NbGPsAeqVe0dMSWir+EL7VfEjmEOYTg6MTBSYCiw+jh
+	9I9+Ig8qEayGYnQmpJH982E7gFssrb5Z1q6Qt3PjbVGkb3/cOZGIklCRZUVSCosIyIcw7f
+	cLOP9/MSaJQsnuISuLn3yChkgF+cMlhXpEgG0JpnQZKdnt8hPqcMfNK3Cx7Nvw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768301400;
+	s=2020e; t=1768301401;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YJryVh6CvOOKsKh0XvWdL9OHBULkVcDyPfaTbjtzoNA=;
-	b=YpG0mgXsVluC80T6AylQbCP1i2liwFYV4JHu2tZXfXsrzJLN7k+OvQW5rOmQNnXwLnzPgv
-	CzayjyRyVMd6zsBQ==
+	bh=bjMMHyctdFRtyDW4AaNZDeOf2Bs7isR8vMBeTYrN5Ao=;
+	b=yADW6eK7TyQtwGdkg7CKK/NW9pOkV3hbeOpRQDc61QJa3KvO4FcPFmHdiaJd+GLtO3XiXC
+	etTYzXJC5iKt4jCQ==
 From: "tip-bot2 for FUJITA Tomonori" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject: [tip: locking/core] rust: helpers: Add i8/i16 atomic
- try_cmpxchg_relaxed helpers
+ try_cmpxchg_release helpers
 Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
  Boqun Feng <boqun.feng@gmail.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251227115951.1424458-5-fujita.tomonori@gmail.com>
-References: <20251227115951.1424458-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20251227115951.1424458-4-fujita.tomonori@gmail.com>
+References: <20251227115951.1424458-4-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176830139916.510.6034582803335438352.tip-bot2@tip-bot2>
+Message-ID: <176830140020.510.5720171850048014435.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,49 +80,49 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the locking/core branch of tip:
 
-Commit-ID:     8de731a6c75547602601a5d219b5cf259ce2b38b
-Gitweb:        https://git.kernel.org/tip/8de731a6c75547602601a5d219b5cf259ce=
-2b38b
+Commit-ID:     b5992f07a9736ab6279181c848f42227af9945bf
+Gitweb:        https://git.kernel.org/tip/b5992f07a9736ab6279181c848f42227af9=
+945bf
 Author:        FUJITA Tomonori <fujita.tomonori@gmail.com>
-AuthorDate:    Sat, 27 Dec 2025 20:59:51 +09:00
+AuthorDate:    Sat, 27 Dec 2025 20:59:50 +09:00
 Committer:     Boqun Feng <boqun.feng@gmail.com>
 CommitterDate: Fri, 09 Jan 2026 19:01:41 +08:00
 
-rust: helpers: Add i8/i16 atomic try_cmpxchg_relaxed helpers
+rust: helpers: Add i8/i16 atomic try_cmpxchg_release helpers
 
-Add i8/i16 atomic try_cmpxchg_relaxed helpers that call
-try_cmpxchg_relaxed() macro implementing atomic try_cmpxchg_relaxed
+Add i8/i16 atomic try_cmpxchg_release helpers that call
+try_cmpxchg_release() macro implementing atomic try_cmpxchg_release
 using architecture-specific instructions.
 
-[boqun: Use try_cmpxchg_relaxed() instead of raw_try_cmpxchg_relaxed()]
+[boqun: Use try_cmpxchg_release() instead of raw_try_cmpxchg_release()]
 
 Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20251227115951.1424458-5-fujita.tomonori@gmail=
+Link: https://patch.msgid.link/20251227115951.1424458-4-fujita.tomonori@gmail=
 .com
 ---
  rust/helpers/atomic_ext.c | 10 ++++++++++
  1 file changed, 10 insertions(+)
 
 diff --git a/rust/helpers/atomic_ext.c b/rust/helpers/atomic_ext.c
-index 962ea05..7d0c2bd 100644
+index b6efec1..962ea05 100644
 --- a/rust/helpers/atomic_ext.c
 +++ b/rust/helpers/atomic_ext.c
-@@ -127,3 +127,13 @@ __rust_helper bool rust_helper_atomic_i16_try_cmpxchg_re=
-lease(s16 *ptr, s16 *old
+@@ -117,3 +117,13 @@ __rust_helper bool rust_helper_atomic_i16_try_cmpxchg_ac=
+quire(s16 *ptr, s16 *old
  {
- 	return try_cmpxchg_release(ptr, old, new);
+ 	return try_cmpxchg_acquire(ptr, old, new);
  }
 +
-+__rust_helper bool rust_helper_atomic_i8_try_cmpxchg_relaxed(s8 *ptr, s8 *ol=
++__rust_helper bool rust_helper_atomic_i8_try_cmpxchg_release(s8 *ptr, s8 *ol=
 d, s8 new)
 +{
-+	return try_cmpxchg_relaxed(ptr, old, new);
++	return try_cmpxchg_release(ptr, old, new);
 +}
 +
-+__rust_helper bool rust_helper_atomic_i16_try_cmpxchg_relaxed(s16 *ptr, s16 =
++__rust_helper bool rust_helper_atomic_i16_try_cmpxchg_release(s16 *ptr, s16 =
 *old, s16 new)
 +{
-+	return try_cmpxchg_relaxed(ptr, old, new);
++	return try_cmpxchg_release(ptr, old, new);
 +}
 
