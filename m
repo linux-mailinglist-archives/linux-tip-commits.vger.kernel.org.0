@@ -1,77 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7962-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7963-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6055AD1A219
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 17:14:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B99D1A8B5
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 18:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B1FB303CF77
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 16:14:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 31141300519C
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 17:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB0238946D;
-	Tue, 13 Jan 2026 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E901B3502AA;
+	Tue, 13 Jan 2026 17:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ufUXOyli";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oLdKMJWX"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y4sH9pEO";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ng7JP81q"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB2230F80F;
-	Tue, 13 Jan 2026 16:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F25343D78;
+	Tue, 13 Jan 2026 17:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768320844; cv=none; b=riZHIQTyRjhHdmusAbMYxv5MEx9KsEW6c4FyUtvaNsCiC2xxXWoJazQp576puudyDKO4AmI6RGZjS0pvPzeiL67bD8cde8NuN0PQyVL+opwSIO+oABTtswA1IYr4Ifqz66QBZPIkmxpEa3Ca2vKTvogj0f4uelL35tDHbv6BfIk=
+	t=1768324518; cv=none; b=dtqpKPNoTQP5uZHqYDYYqYraW8U6I0Q/y1vywaw9YPCgCx87shAzp/60h4TNiD584hY06zqsSxgHYj/dsa89uYKvJ0MSfKv9yiDVOsbSKTqVE9VcJ++lMrlc6UDIA+8A6uIhbCIpGqgo7nm6xfe68oVjPcyxb9JnCi8NIeivsZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768320844; c=relaxed/simple;
-	bh=EmiiEqY2Eykt1SqjlZl2cMLHNHbtNov8uCSsOgX/Z3Y=;
+	s=arc-20240116; t=1768324518; c=relaxed/simple;
+	bh=X9Vkm+KKJeEOReWS8Q2qWyoQhCELABbt8xk8J4BL+dQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=l11Ls7HHYyZTVCXEWrycshk5OiWfherTiKvIMN4yVM2pfsiFxXidygpq8PfunohvfrI2lrOQYu7Iomji3t99fSwBk+6muXCGknHBjVeyhzkWERQVR0ccmWbFDB4p858psqZ/qzbSSPvOtXA/GIvhJz65yVvXOK4spZuOzWtxwdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ufUXOyli; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oLdKMJWX; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=sNTLqc7us4YH6PwC8tEDFJe2WTMhd8Q8EqYRAICkB2movWiKSMvwW40ln7rPz3fnJavqYzZ0UEX2xUcIoHS47Sv7V/5ug4U9ycUiV+XCS2bSwbr7XGD8w4Jb3JlHOjM+oIZNkZUDqXpo7zXElDB9IkoWXS1fhJWYv6HpBSkbc8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Y4sH9pEO; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ng7JP81q; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 Jan 2026 16:14:00 -0000
+Date: Tue, 13 Jan 2026 17:15:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768320841;
+	s=2020; t=1768324515;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HSgcNUCY9dtgwiA69Kx7IvG8d8ZE5876cfCAVU4dcjE=;
-	b=ufUXOylimDjYJsSH3ZekgKxVX4lEvYqRGmy6pv3w7J8LE+MCB3sHVZcnqF7UkPGEMIJjLL
-	JRoQaXL3HdnI2FZ2FyEALbvSWJmZGhoU7jifjOTLiIozhB3+hyZV6yAbU/ywZgNKXlncQX
-	/gR2caZSJb8s28EgqCeiw5tYILzqBdYfYlwQ4ulaFyXpVssoDMQYZgMQvcRisZwC37iodE
-	DriAOCgci6WcnHLMXvOYPew7LCKpiMF3wd12e00qIV7nK24kj73RENBFAFAEQtwmWOawlE
-	1v0CHt4D9nTJQWrj1wUaQeOp9+jbOPj0XgmCjW2Kn/OwrhXHdUmMLmX+48LBEg==
+	bh=AigVotkEkPYjJSobhzYoJ2YgYKCLIiwgYsUN74OG2sg=;
+	b=Y4sH9pEOCGCvc3515vX4a3D31BwakrwOPE9qzxxdsRjrK4v+eGYhDCo8OgsLgq2jMgNtdD
+	GgndmohRtfpKihK/rek/ztQw2N6h3YXXkorvXHENXGzSwW1CMzNoBMtRDBmTMOqe0/d0NZ
+	GEq7XipV86eP6AvbTNMrzwShUADEew5nk67mXP4vkO6+iLBOalC27qAKiENUmpR15mYjyF
+	TF8XcKCSR6GpJVGp6BT5EgXr16UJGXqt90Vxe4FwTlWazIDP2Jro/bumypcQHmsFs/p7/9
+	6vtLRzIkt9YsYzhDfnkQwADLv9u9JFd/3jd5MMYN5yTR7dMXvuHyZi40ymjy/g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768320841;
+	s=2020e; t=1768324515;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HSgcNUCY9dtgwiA69Kx7IvG8d8ZE5876cfCAVU4dcjE=;
-	b=oLdKMJWXjOqeeyvcc+j0VEzcWWbqm7y8ajwZxsscplzBuUJi5AuQ0QLZMQV8fv5Sz0ZPbA
-	1J5sc6Yd1xxvJmBw==
-From: "tip-bot2 for Xiaochen Shen" <tip-bot2@linutronix.de>
+	bh=AigVotkEkPYjJSobhzYoJ2YgYKCLIiwgYsUN74OG2sg=;
+	b=ng7JP81qFXNMLiBCZaP2A9IBdamcfcpf5w5pth7nykvn8tR1a/QYZg9JF6nnNj3RhULxCc
+	olG6Qhj1+UNiMnCg==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/resctrl: Add missing resctrl initialization for Hygon
-Cc: Xiaochen Shen <shenxiaochen@open-hieco.net>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Reinette Chatre <reinette.chatre@intel.com>, stable@vger.kernel.org,
+Subject: [tip: timers/core] time/sched_clock: Use ACCESS_PRIVATE() to evaluate
+ hrtimer::function
+Cc: kernel test robot <lkp@intel.com>, Thomas Gleixner <tglx@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251209062650.1536952-2-shenxiaochen@open-hieco.net>
-References: <20251209062650.1536952-2-shenxiaochen@open-hieco.net>
+In-Reply-To: <875x95jw7q.ffs@tglx>
+References: <875x95jw7q.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176832084042.510.2796952283536723674.tip-bot2@tip-bot2>
+Message-ID: <176832451368.510.9081222014514031930.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,69 +77,43 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/urgent branch of tip:
+The following commit has been merged into the timers/core branch of tip:
 
-Commit-ID:     6ee98aabdc700b5705e4f1833e2edc82a826b53b
-Gitweb:        https://git.kernel.org/tip/6ee98aabdc700b5705e4f1833e2edc82a82=
-6b53b
-Author:        Xiaochen Shen <shenxiaochen@open-hieco.net>
-AuthorDate:    Tue, 09 Dec 2025 14:26:49 +08:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 13 Jan 2026 16:20:01 +01:00
+Commit-ID:     3db5306b0bd562ac0fe7eddad26c60ebb6f5fdd4
+Gitweb:        https://git.kernel.org/tip/3db5306b0bd562ac0fe7eddad26c60ebb6f=
+5fdd4
+Author:        Thomas Gleixner <tglx@kernel.org>
+AuthorDate:    Tue, 13 Jan 2026 17:47:37 +01:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Tue, 13 Jan 2026 18:08:57 +01:00
 
-x86/resctrl: Add missing resctrl initialization for Hygon
+time/sched_clock: Use ACCESS_PRIVATE() to evaluate hrtimer::function
 
-Hygon CPUs supporting Platform QoS features currently undergo partial resctrl
-initialization through resctrl_cpu_detect() in the Hygon BSP init helper and
-AMD/Hygon common initialization code. However, several critical data
-structures remain uninitialized for Hygon CPUs in the following paths:
+This dereference of sched_clock_timer::function was missed when the
+hrtimer callback function pointer was marked private.
 
- - get_mem_config()-> __rdt_get_mem_config_amd():
-     rdt_resource::membw,alloc_capable
-     hw_res::num_closid
-
- - rdt_init_res_defs()->rdt_init_res_defs_amd():
-     rdt_resource::cache
-     hw_res::msr_base,msr_update
-
-Add the missing AMD/Hygon common initialization to ensure proper Platform QoS
-functionality on Hygon CPUs.
-
-Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_=
-init helper")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209062650.1536952-2-shenxiaochen@open-hie=
-co.net
+Fixes: 04257da0c99c ("hrtimers: Make callback function pointer private")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/875x95jw7q.ffs@tglx
+Closes: https://lore.kernel.org/oe-kbuild-all/202601131713.KsxhXQ0M-lkp@intel=
+.com/
 ---
- arch/x86/kernel/cpu/resctrl/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/time/sched_clock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl=
-/core.c
-index 3792ab4..10de159 100644
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -825,7 +825,8 @@ static __init bool get_mem_config(void)
+diff --git a/kernel/time/sched_clock.c b/kernel/time/sched_clock.c
+index f391118..f3aaef6 100644
+--- a/kernel/time/sched_clock.c
++++ b/kernel/time/sched_clock.c
+@@ -215,7 +215,7 @@ void sched_clock_register(u64 (*read)(void), int bits, un=
+signed long rate)
 =20
- 	if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_INTEL)
- 		return __get_mem_config_intel(&hw_res->r_resctrl);
--	else if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_HYGON)
- 		return __rdt_get_mem_config_amd(&hw_res->r_resctrl);
+ 	update_clock_read_data(&rd);
 =20
- 	return false;
-@@ -987,7 +988,8 @@ static __init void rdt_init_res_defs(void)
- {
- 	if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_INTEL)
- 		rdt_init_res_defs_intel();
--	else if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor =3D=3D X86_VENDOR_HYGON)
- 		rdt_init_res_defs_amd();
- }
-=20
+-	if (sched_clock_timer.function !=3D NULL) {
++	if (ACCESS_PRIVATE(&sched_clock_timer, function) !=3D NULL) {
+ 		/* update timeout for clock wrap */
+ 		hrtimer_start(&sched_clock_timer, cd.wrap_kt,
+ 			      HRTIMER_MODE_REL_HARD);
 
