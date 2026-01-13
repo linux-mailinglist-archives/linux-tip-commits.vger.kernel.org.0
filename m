@@ -1,79 +1,166 @@
-Return-Path: <linux-tip-commits+bounces-7960-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7961-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CE8D19DE9
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 16:26:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A40CCD1A202
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 17:14:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DEBFF30042B0
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 15:26:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25E783009246
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 16:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B9A363C64;
-	Tue, 13 Jan 2026 15:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E660330339;
+	Tue, 13 Jan 2026 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1O0UYT8"
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ibi8gOsP";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YwyKWJx8"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC3630171A;
-	Tue, 13 Jan 2026 15:26:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27E5AD5A;
+	Tue, 13 Jan 2026 16:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768317997; cv=none; b=VmJgcuGXLVzIOHwbBkdvqywm6YWZgLX+wpzHqc3wiyuH9yyRVbNWhv/EFJ25NbkN1S9+8azst10C5J+wJTLcrZftTotuqns4VYCGdg9VClTTQMHabYR4gxywztP4mpf0tVCFgalfUica7Rk09AiSHS9vZSTAc3efKNtIDjNDddI=
+	t=1768320844; cv=none; b=VPY9HovcLe4D8BbO4tR2vC2ohuUwg3ATL/VBSUg+5a70WuHbRM+rj+RmOA8AtCGKnhnp9x5w2/4Sd5vpcmg6NW0PTnbK33fX2Jsk3upTUopV1yfgxtYP/tuI/yWHRSmLxXxOnIy874QxVFId6E1JYR9obBQk8bd7UQdZEA5R6bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768317997; c=relaxed/simple;
-	bh=rAOFp+Lw9PRBllXmPyh/0uSQG2O6gtprXGgLkKmaOE0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=giy5+7uqayoFXV7lVrB+ZoljNysDcGVfUZNuddhY5LRXa80IBO9ESbySDnofb14Q+lpvmkSbRr7RNFcQViFKxgrx/RQxShF0WvXOlNkML3KrareXneKRFSTY97zkGvrRKBfPrq1ul8t3VZeX3cgCTH1miydipSycaHkRgDBOLXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1O0UYT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004D8C116C6;
-	Tue, 13 Jan 2026 15:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768317996;
-	bh=rAOFp+Lw9PRBllXmPyh/0uSQG2O6gtprXGgLkKmaOE0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=L1O0UYT8WmONn0fL8z0VbgVIdusdGVNwZkvfV45TOTKhSuJHTXSiVopRb5MslL4sG
-	 vbNYV0d+nmNu5EhuEHXQBlkGlK4lDUhUhgKMdP+NFk+2Q6AS04mKlU822aAJRU0/fl
-	 5XR2jusidDfBFRCAFTHdNoOuDo78frK5FDjGSB2Lva7/efe4htzlvHbRrMYz1I3EGA
-	 6ZO+bk7eNsqBiUYFi3t3X4Wrp9ovk/NxWTb+IQIiv6ccHcD1dMpuEAZPOSVxalsTpq
-	 CZLaFn3H9nOlf9AwHJn667+08OhnGzbah6ymZ+WUOhFG/MK8CqkIYSOICQ5CUIEzID
-	 EvTcNjyTKN/nQ==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Laurent Pinchart
- <laurent.pinchart@ideasonboard.com>, x86@kernel.org, maz@kernel.org
-Subject: Re: [tip: irq/core] genirq: Warn about using IRQF_ONESHOT without a
- threaded handler
-In-Reply-To: <20260113120541.YVf2vRA3@linutronix.de>
-References: <20260112134013.eQWyReHR@linutronix.de>
- <176829473742.510.5940174319056100768.tip-bot2@tip-bot2>
- <20260113120541.YVf2vRA3@linutronix.de>
-Date: Tue, 13 Jan 2026 16:26:33 +0100
-Message-ID: <87ecntjzyu.ffs@tglx>
+	s=arc-20240116; t=1768320844; c=relaxed/simple;
+	bh=2DeOsBy0YsHCe+32DWjAHmYy3t4rh1Dh8hQmVWPcEGg=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=tEE/A3rh3O/DynNqCbouW8eF6w/Gkul21OBuLRbJ6+FsWbwUhkAdpWACjtMgdU0j7MD31j5vKDFZ8ZRiCaGRsx+zVKEaIIrRLAm351MOpfkeQtI0FxDgPknHXlMvoA66Ugmt3CwftLi+tuYmWS9xN4CN5SnclQtJUDLSY6z2YDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ibi8gOsP; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YwyKWJx8; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 13 Jan 2026 16:13:59 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768320840;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+rwkkX2JjaJWNzUzffYSUIRLt8HbUjTzqSkWnL7ycWw=;
+	b=Ibi8gOsPrBl9LNZntnlfwjKmU5O7liNkBzh8iFL4gm5+gFDy/sBLAutgG/JK5D7VZf9t7C
+	L3PNFYDpnOlwAwxDXfBsZP0Iq4452usSOWka83GAObZl0iUv+Fq4AAYuxyQL0qUDjcxPcX
+	6sQeEIP/Zqya8jm37Sc4BPO4L+sRXl4dJxHV1Zfqqp3PVtVLPwDwvwEl8u3LKZIyimxi7q
+	aK7fX1vXpfKRen/8OS+EwiEsr8V641zRxQ2QGUtwsfqYtMqwjRKcP6fNjBIs631xjX/+0C
+	MXXMuQ98fQziXJH4LzzZ7+Gorx/ROw7vaJIb/rVAcF9Vk/0VhsXH5ZZRZH+tOA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768320840;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+rwkkX2JjaJWNzUzffYSUIRLt8HbUjTzqSkWnL7ycWw=;
+	b=YwyKWJx84RZEVtcPjnw9sUxbq34Vr39BtSBDmzzgaWCL1tTWZ09XbZabU4xmmmwyZt7wvw
+	ppbeIqJPPHMLzsAQ==
+From: "tip-bot2 for Xiaochen Shen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject:
+ [tip: x86/urgent] x86/resctrl: Fix memory bandwidth counter width for Hygon
+Cc: Xiaochen Shen <shenxiaochen@open-hieco.net>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
+ Reinette Chatre <reinette.chatre@intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251209062650.1536952-3-shenxiaochen@open-hieco.net>
+References: <20251209062650.1536952-3-shenxiaochen@open-hieco.net>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Message-ID: <176832083920.510.6826832603557460892.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 13 2026 at 13:05, Sebastian Andrzej Siewior wrote:
-> On 2026-01-13 08:58:56 [-0000], tip-bot2 for Sebastian Andrzej Siewior wrote:
->> The following commit has been merged into the irq/core branch of tip:
->> 
->> Commit-ID:     aef30c8d569c0f31715447525640044c74feb26f
->> Gitweb:        https://git.kernel.org/tip/aef30c8d569c0f31715447525640044c74feb26f
->> Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->> AuthorDate:    Mon, 12 Jan 2026 14:40:13 +01:00
->> Committer:     Thomas Gleixner <tglx@kernel.org>
->> CommitterDate: Tue, 13 Jan 2026 09:56:25 +01:00
->> 
->> genirq: Warn about using IRQF_ONESHOT without a threaded handler
->
-> Should I pro-active send some patches to those users which I know do it
-> wrong? Or do we simply wait?
+The following commit has been merged into the x86/urgent branch of tip:
 
-Just send fixes for them ...
+Commit-ID:     7517e899e1b87b4c22a92c7e40d8733c48e4ec3c
+Gitweb:        https://git.kernel.org/tip/7517e899e1b87b4c22a92c7e40d8733c48e=
+4ec3c
+Author:        Xiaochen Shen <shenxiaochen@open-hieco.net>
+AuthorDate:    Tue, 09 Dec 2025 14:26:50 +08:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Tue, 13 Jan 2026 16:44:26 +01:00
+
+x86/resctrl: Fix memory bandwidth counter width for Hygon
+
+The memory bandwidth calculation relies on reading the hardware counter
+and measuring the delta between samples. To ensure accurate measurement,
+the software reads the counter frequently enough to prevent it from
+rolling over twice between reads.
+
+The default Memory Bandwidth Monitoring (MBM) counter width is 24 bits.
+Hygon CPUs provide a 32-bit width counter, but they do not support the
+MBM capability CPUID leaf (0xF.[ECX=3D1]:EAX) to report the width offset
+(from 24 bits).
+
+Consequently, the kernel falls back to the 24-bit default counter width,
+which causes incorrect overflow handling on Hygon CPUs.
+
+Fix this by explicitly setting the counter width offset to 8 bits (resulting
+in a 32-bit total counter width) for Hygon CPUs.
+
+Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_=
+init helper")
+Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251209062650.1536952-3-shenxiaochen@open-hie=
+co.net
+---
+ arch/x86/kernel/cpu/resctrl/core.c     | 15 +++++++++++++--
+ arch/x86/kernel/cpu/resctrl/internal.h |  3 +++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/resctrl/core.c b/arch/x86/kernel/cpu/resctrl=
+/core.c
+index 10de159..6ebff44 100644
+--- a/arch/x86/kernel/cpu/resctrl/core.c
++++ b/arch/x86/kernel/cpu/resctrl/core.c
+@@ -1021,8 +1021,19 @@ void resctrl_cpu_detect(struct cpuinfo_x86 *c)
+ 		c->x86_cache_occ_scale =3D ebx;
+ 		c->x86_cache_mbm_width_offset =3D eax & 0xff;
+=20
+-		if (c->x86_vendor =3D=3D X86_VENDOR_AMD && !c->x86_cache_mbm_width_offset)
+-			c->x86_cache_mbm_width_offset =3D MBM_CNTR_WIDTH_OFFSET_AMD;
++		if (!c->x86_cache_mbm_width_offset) {
++			switch (c->x86_vendor) {
++			case X86_VENDOR_AMD:
++				c->x86_cache_mbm_width_offset =3D MBM_CNTR_WIDTH_OFFSET_AMD;
++				break;
++			case X86_VENDOR_HYGON:
++				c->x86_cache_mbm_width_offset =3D MBM_CNTR_WIDTH_OFFSET_HYGON;
++				break;
++			default:
++				/* Leave c->x86_cache_mbm_width_offset as 0 */
++				break;
++			}
++		}
+ 	}
+ }
+=20
+diff --git a/arch/x86/kernel/cpu/resctrl/internal.h b/arch/x86/kernel/cpu/res=
+ctrl/internal.h
+index 4a916c8..79c1865 100644
+--- a/arch/x86/kernel/cpu/resctrl/internal.h
++++ b/arch/x86/kernel/cpu/resctrl/internal.h
+@@ -14,6 +14,9 @@
+=20
+ #define MBM_CNTR_WIDTH_OFFSET_AMD	20
+=20
++/* Hygon MBM counter width as an offset from MBM_CNTR_WIDTH_BASE */
++#define MBM_CNTR_WIDTH_OFFSET_HYGON	8
++
+ #define RMID_VAL_ERROR			BIT_ULL(63)
+=20
+ #define RMID_VAL_UNAVAIL		BIT_ULL(62)
 
