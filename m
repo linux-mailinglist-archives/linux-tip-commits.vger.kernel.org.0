@@ -1,77 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-7892-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7893-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BF27D176F8
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 09:59:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DF6D176F2
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 09:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8D74A30057F5
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9A3A300E3E0
 	for <lists+linux-tip-commits@lfdr.de>; Tue, 13 Jan 2026 08:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB64836AB58;
-	Tue, 13 Jan 2026 08:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA3537FF7D;
+	Tue, 13 Jan 2026 08:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ZMDtsOIi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BgrBjCIh"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="F0jR9Hme";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AoFx07Py"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526F71F3B87;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC84A3128AE;
 	Tue, 13 Jan 2026 08:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768294758; cv=none; b=IivkNYLihVpU46cPYO+dV+5tbewKzY9wPARnEfY+/MPE/6YmtNBXX/q77+vIt0UpaSqi8KVRbPlPbn3fi2qJXeXWPBPONY5bnErM47lbk8OhjQebbXoDUkI2Ts3o06X48t86U+Q2D/7KFr8i4piej5LOQUUU+2+uCV8pogjSsX0=
+	t=1768294759; cv=none; b=ZqR3P5CJ0ZaHYZ3v52uASPihUEhE5gFmjo2/d5hxHYy0ufklVFHKZHNivPAPCBgi0VOsxn1CiOUnB3AX3BKyuc+xMGBrl/eyxJolVX8Ug73+hG3/7lirov11pVihdpboJHpqcPTmg6SjA5q1ujqaBral6ICJG4lWcz45OSCWigA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768294758; c=relaxed/simple;
-	bh=xXL6wyXe17X9wxmdjc+rzG904HP8/z+c9fhwkpEjO/w=;
+	s=arc-20240116; t=1768294759; c=relaxed/simple;
+	bh=sejjDQN/rQx4SHObeuu+wRFBXrNEfm4gmeylWGSuGEc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=e0p2v30IeZ7egS4Cmekd3mP9yN6hAEi3ADH0jCfBS1jlCuKTdFsDsFYGFBPOzu0d2xp6Fl8Q+5tHWxvyrPuNEW3ZV00CXm2gGaX5G/3Atkx/XXFkwVDwv+keANce6Li1KHKksCJMofGADoX/j7QDBleB0enu/G/MVK390p2KcHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ZMDtsOIi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BgrBjCIh; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=A+DKtBpjWJTOLGyU0ettt2bei5AUT0Lypc4MRjQatHL9qRDd4vf3LA/XkPA5VxCE9RDq7zuSCWhTemNgxf0EnL/DjjsjX06bBkLChZ/pSvoZNBpnCsGB55K90Jh2A1H8vtuiLcvF9n5BX+Kw6WesRK3t7nHDlAPU3Rslz+hT2EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=F0jR9Hme; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AoFx07Py; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 Jan 2026 08:58:56 -0000
+Date: Tue, 13 Jan 2026 08:59:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768294755;
+	s=2020; t=1768294756;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DrC0TXdbNR2xy8mixkjZDzJX+tuuWfJUtHAbt86rr0c=;
-	b=ZMDtsOIi/mFv7hrh5pRh9J9rnrLwhxfSKtTBXPnEgAl9bBl/WHorpqbPwZIfELKGzq6i81
-	VrNI3hPiPwqHAL0Fz988XJxEV3GvykJVBaKn4SHLL2+Y/Z328XMGMXwfRNa6argZTXfyjk
-	j5b0Kl21P2hHd5VQO3APoZONmz8WLEqRTu4+1yO+KxCqCBaviOz/tJavbAzzyGnIVXZsdP
-	++NO7oILz0PkxOsW6JzMUFAr0sAhQYF8cfJ7rTo+UAZnEBYR1BwoOVTf5Gn0zedxwEVa5B
-	wBegIVT+RDPG3S4o8def2f3ykWsO+yheDKTUcam1SkmVEco2EuIG3BE8LjJltg==
+	bh=dSy+7ZDuE7ljob2kEBBnJ2reXrrnlPeTVTXEL3e4064=;
+	b=F0jR9Hme4Do0+zE1uGyZa+fBo3PQJS6KpPB7IEyVTZwi3AExIaeBKliQAR20kqkpKf4t73
+	VlZc5PrHaCZnoIx5LUmDZhe3YbZnN8I1p8Tp1THmCP59dVcNa7oRG8lPsp1aVpScUowmV1
+	gSVTYnxpGD3XNlcbEUoe3CFA/e8sKLZe0LOhdAQjveZIYLiWyEPVQcq62SfLxEn1x156+0
+	K3nKyFZY5648bByT9bG1JvTFj3YMxBSRXQK+WgH4RkeOxy/i2M9ubgQFDJN1275oFtb/3N
+	VJDphUJjn65Xn6hJuE55H+dilqlSctr6RsYXHdyBUO3vR8kTraEGmVYjd+e4pw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768294755;
+	s=2020e; t=1768294756;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DrC0TXdbNR2xy8mixkjZDzJX+tuuWfJUtHAbt86rr0c=;
-	b=BgrBjCIhXw9PnOupSIBzEgHTdSMBQ9KBGagpOufEG2Ur7VIW22C//Dv3a6RfObWHGIKDx+
-	K7gwQHsQV9bFBqCg==
-From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
+	bh=dSy+7ZDuE7ljob2kEBBnJ2reXrrnlPeTVTXEL3e4064=;
+	b=AoFx07PyQPNUFGRYqAo/cB7AUm8PZWL3iq/vsy2d9o6oIKZZLeX/SBMDm4CA0E1iwYPbIq
+	Asv22wr/SmtEbaAw==
+From: "tip-bot2 for Luo Haiyang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] genirq: Warn about using IRQF_ONESHOT without a
- threaded handler
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Thomas Gleixner <tglx@kernel.org>,
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20260112134013.eQWyReHR@linutronix.de>
-References: <20260112134013.eQWyReHR@linutronix.de>
+Subject: [tip: irq/urgent] irqchip/riscv-imsic: Revert "Remove redundant
+ irq_data lookups"
+Cc: Luo Haiyang <luo.haiyang@zte.com.cn>, Thomas Gleixner <tglx@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20260113111930821RrC26avITHWSFCN0bYbgI@zte.com.cn>
+References: <20260113111930821RrC26avITHWSFCN0bYbgI@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176829473742.510.5940174319056100768.tip-bot2@tip-bot2>
+Message-ID: <176829475523.510.14507156182002572447.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -79,58 +77,63 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/core branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     aef30c8d569c0f31715447525640044c74feb26f
-Gitweb:        https://git.kernel.org/tip/aef30c8d569c0f31715447525640044c74f=
-eb26f
-Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Mon, 12 Jan 2026 14:40:13 +01:00
+Commit-ID:     f2edf797dab185cce439e5bc5185fe20dd536300
+Gitweb:        https://git.kernel.org/tip/f2edf797dab185cce439e5bc5185fe20dd5=
+36300
+Author:        Luo Haiyang <luo.haiyang@zte.com.cn>
+AuthorDate:    Tue, 13 Jan 2026 11:19:30 +08:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Tue, 13 Jan 2026 09:56:25 +01:00
+CommitterDate: Tue, 13 Jan 2026 09:51:46 +01:00
 
-genirq: Warn about using IRQF_ONESHOT without a threaded handler
+irqchip/riscv-imsic: Revert "Remove redundant irq_data lookups"
 
-IRQF_ONESHOT disables the interrupt source until after the threaded
-handler completed its work. This is needed to allow the threaded handler
-to run - otherwise the CPU will get back to the interrupt handler
-because the interrupt source remains active and the threaded handler
-will not able to do its work.
+Commit c475c0b71314("irqchip/riscv-imsic: Remove redundant irq_data
+lookups") leads to a NULL pointer deference in imsic_msi_update_msg():
 
-Specifying IRQF_ONESHOT without a threaded handler does not make sense.
-It could be a leftover if the handler _was_ threaded and changed back to
-primary and the flag was not removed. This can be problematic in the
-`threadirqs' case because the handler is exempt from forced-threading.
-This in turn can become a problem on a PREEMPT_RT system if the handler
-attempts to acquire sleeping locks.
+ virtio_blk virtio1: 8/0/0 default/read/poll queues
+ Unable to handle kernel NULL pointer dereference at virtual address 00000000=
+00000000
+ Current kworker/u32:2 pgtable: 4K pagesize, 48-bit VAs, pgdp=3D0x0000000081c=
+33000
+ [0000000000000000] pgd=3D0000000000000000, p4d=3D0000000000000000
+ CPU: 5 UID: 0 PID: 75 Comm: kworker/u32:2 Not tainted 6.19.0-rc4-next-202601=
+09 #1 NONE
+ epc : 0x0
+  ra : imsic_irq_set_affinity+0x110/0x130
 
-Warn about missing threaded handlers with the IRQF_ONESHOT flag.
+The irq_data argument of imsic_irq_set_affinity() is associated with the
+imsic domain and not with the top-level MSI domain. As a consequence the
+code dereferences the wrong interrupt chip, which has the
+irq_write_msi_msg() callback not populated.
 
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Luo Haiyang <luo.haiyang@zte.com.cn>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://patch.msgid.link/20260112134013.eQWyReHR@linutronix.de
+Link: https://patch.msgid.link/20260113111930821RrC26avITHWSFCN0bYbgI@zte.com=
+.cn
 ---
- kernel/irq/manage.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/irqchip/irq-riscv-imsic-platform.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index bc2d36b..dde1aa6 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1474,6 +1474,13 @@ __setup_irq(unsigned int irq, struct irq_desc *desc, s=
-truct irqaction *new)
- 		new->flags |=3D irqd_get_trigger_type(&desc->irq_data);
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq=
+-riscv-imsic-platform.c
+index 7228a33..643c8e4 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -158,11 +158,11 @@ static int imsic_irq_set_affinity(struct irq_data *d, c=
+onst struct cpumask *mask
+ 		tmp_vec.local_id =3D new_vec->local_id;
 =20
- 	/*
-+	 * IRQF_ONESHOT means the interrupt source in the IRQ chip will be
-+	 * masked until the threaded handled is done. If there is no thread
-+	 * handler then it makes no sense to have IRQF_ONESHOT.
-+	 */
-+	WARN_ON_ONCE(new->flags & IRQF_ONESHOT && !new->thread_fn);
-+
-+	/*
- 	 * Check whether the interrupt nests into another interrupt
- 	 * thread.
- 	 */
+ 		/* Point device to the temporary vector */
+-		imsic_msi_update_msg(d, &tmp_vec);
++		imsic_msi_update_msg(irq_get_irq_data(d->irq), &tmp_vec);
+ 	}
+=20
+ 	/* Point device to the new vector */
+-	imsic_msi_update_msg(d, new_vec);
++	imsic_msi_update_msg(irq_get_irq_data(d->irq), new_vec);
+=20
+ 	/* Update irq descriptors with the new vector */
+ 	d->chip_data =3D new_vec;
 
