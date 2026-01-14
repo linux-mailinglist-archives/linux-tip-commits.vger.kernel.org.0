@@ -1,76 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-7991-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7989-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DFBD1E26B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 11:41:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127EFD1E328
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 11:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D20F0302075C
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 10:40:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F03C304790D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 10:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EBE392819;
-	Wed, 14 Jan 2026 10:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A8E394492;
+	Wed, 14 Jan 2026 10:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eiuY52Ff";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YvACc6+A"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kTK83/a6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bQfs4qRZ"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791BE393DFB;
-	Wed, 14 Jan 2026 10:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FCC393DF8;
+	Wed, 14 Jan 2026 10:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768387218; cv=none; b=mXRqVpcU/z7VVm3HQVwHUGDkeA3Fjao/ZbitrnD1B3/q8CbIeCzna2WtXkr47SCX++RpUFG2maSrz0L6VXCekVksfU3WySWYqS1e/jtUWsWciDQ1BUK1vcageH4eCq+jUUj3f/+e9iH7t2DGnJ4NTAP7ImSbc+soCtavpBbILPA=
+	t=1768387218; cv=none; b=QAOmkNfOUSa9W2NqddZGQMPEb4xb2r0DwXxmOXNy4hDQliMoD7h+njdh+43U9SeqmICGTwtaeWM0+VDoZFJ0h0pKOXa42elNO1NpC8OycnOBlzHngtF1rhwc5O5lY5/27EIol4WW6pO8SKdegNVJCJBaqYp0IJvPZcvRv0q80Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768387218; c=relaxed/simple;
-	bh=DGe6fJVwz+yufeUOtnxIuFa5tEXZenAvqs5e+sBnCec=;
+	bh=aGs4eSOsrUnapHkLKtcUnjdqpQGcbYEiUBjno1PyKqk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=IHqHduD83zY4BMoRToh4vQLaYULX62tdCDXNnEqgPn7fopYxmNf6o/C2Zt+okKtU1QNU+brAXUuPJrzt68evkbkJfiCZk8HY0MljV6P/xHtMhZMy7z0DtUyufNu1hcWUThYQPWmIPQ1TAEtoKePwFcjnETlvwkLdgKFYXLFRiYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eiuY52Ff; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YvACc6+A; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=gYb0iZDPTpspRmBafxNdQEeAsSy0R18DvTn4pIMRObpxmAwWwygFUg37GaDqO2VfxvROdeYDehu7b5C0UTF7ZQQ5Nx+4lkNoEo0E+5a7IAFautGCEQkrJNd2d/mC2NZFCRbP6K571wnN6oLurw4SM+TC1/UD0Stf4Qx/ZKCf1TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kTK83/a6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bQfs4qRZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 14 Jan 2026 10:40:10 -0000
+Date: Wed, 14 Jan 2026 10:40:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768387211;
+	s=2020; t=1768387212;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J8iqxJn0B9qR7wGo1iFuw2aTfHAqYhwwyCxNQkX7p84=;
-	b=eiuY52FfU6HBu0i2mDbAI6w97DrNjvnq5N5K+iBJwLFdYLgZoBgRSyUZAO8VuxNVFNlryu
-	sJ9EZdzTv3Lrp1OgEpECs4ij8An1dMENZAuou8yRkw7KrSYyrlR4aSWh9/xY51Up1WiCoS
-	3EVMOypgyxrD0aXu4MlPjFFRw8Vc0JxNpCIUcrEec0Ge6WTGf2PA5V5B4Ckq21x8Qr9iMB
-	A1YLHbgGZWbcfSB5VlTgGOGz2xrUvDyG4i5Bhop6MOT7XQincVSnBhnb/SfXo9pbvXGxAo
-	FznhS6Q9I3vtQg3/qBOH7b31mnRRI/IPY2ogCbXCBDVS6Wq245cjqU1D8hnfnw==
+	bh=nTn4nbYT9rxJaj934qNLyp9hd52peuylpfLnpfds+2M=;
+	b=kTK83/a6TT8V2b0sqXe5PZwMpUupp1NYn61drl7vrM9FecbZj6W8kxZNgBPau/IWFv+ZAe
+	7Wc1oe0TpJICPGeRJwWoS/aPyww8tvSUDz7XllGUOrdM90804GwUHg+MJqj09Ku5z8qUpn
+	la0ti0cyHag4tA4iG8Wf0SNqshHzD+B+14RqDHnk/ui9rNbtsDBHwZ4S/6p+vaTDh2v/Sw
+	xNZrrxCa389Z12MU2pNF+aMOxxFhd9KFFJdk78ljVi5uFuz4GExB1T9C/YkLjMTXwsiH0T
+	JQ+3uV6I1Ob0J6zSz7OPAVP78Fy99sD8fTzM++JUHyDoHTjIi81HPhSnBgpNIQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768387211;
+	s=2020e; t=1768387212;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J8iqxJn0B9qR7wGo1iFuw2aTfHAqYhwwyCxNQkX7p84=;
-	b=YvACc6+AMrkQhH5EEe3G9V8PM7tjlEGwqwh5LtjmgnW2tZzEmhMSlvTlmxnELQ5y1hS8Rs
-	vHOvxOz0/+tS/1Bw==
+	bh=nTn4nbYT9rxJaj934qNLyp9hd52peuylpfLnpfds+2M=;
+	b=bQfs4qRZvxHrHzXku1hqnu0TQzGoDWomIrthK5d236wJztpSdjWSWmlb8mudAIpGF0B/nj
+	oADmmXTh3hSH3tCA==
 From: "tip-bot2 for Juergen Gross" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/paravirt] x86/paravirt: Move paravirt_sched_clock() related
- code into tsc.c
+Subject:
+ [tip: x86/paravirt] x86/paravirt: Use common code for paravirt_steal_clock()
 Cc: Juergen Gross <jgross@suse.com>, "Borislav Petkov (AMD)" <bp@alien8.de>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260105110520.21356-13-jgross@suse.com>
-References: <20260105110520.21356-13-jgross@suse.com>
+In-Reply-To: <20260105110520.21356-12-jgross@suse.com>
+References: <20260105110520.21356-12-jgross@suse.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176838721060.510.4425027098779923219.tip-bot2@tip-bot2>
+Message-ID: <176838721158.510.8626389043088172090.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,158 +80,114 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/paravirt branch of tip:
 
-Commit-ID:     39965afb11511003cf7d8f34579bd592b8b70b80
-Gitweb:        https://git.kernel.org/tip/39965afb11511003cf7d8f34579bd592b8b=
-70b80
+Commit-ID:     589f41f2f08bb48e041b513e49f9f61eec232d64
+Gitweb:        https://git.kernel.org/tip/589f41f2f08bb48e041b513e49f9f61eec2=
+32d64
 Author:        Juergen Gross <jgross@suse.com>
-AuthorDate:    Mon, 05 Jan 2026 12:05:11 +01:00
+AuthorDate:    Mon, 05 Jan 2026 12:05:10 +01:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 12 Jan 2026 18:47:39 +01:00
+CommitterDate: Mon, 12 Jan 2026 16:48:26 +01:00
 
-x86/paravirt: Move paravirt_sched_clock() related code into tsc.c
+x86/paravirt: Use common code for paravirt_steal_clock()
 
-The only user of paravirt_sched_clock() is in tsc.c, so move the code
-from paravirt.c and paravirt.h to tsc.c.
+Remove the arch-specific variant of paravirt_steal_clock() and use
+the common one instead.
+
+With all archs supporting Xen now having been switched to the common
+variant, including paravirt.h can be dropped from drivers/xen/time.c.
 
 Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260105110520.21356-13-jgross@suse.com
+Link: https://patch.msgid.link/20260105110520.21356-12-jgross@suse.com
 ---
- arch/x86/include/asm/paravirt.h    | 12 ------------
- arch/x86/include/asm/timer.h       |  1 +
- arch/x86/kernel/kvmclock.c         |  1 +
- arch/x86/kernel/paravirt.c         |  7 -------
- arch/x86/kernel/tsc.c              | 10 +++++++++-
- arch/x86/xen/time.c                |  1 +
- drivers/clocksource/hyperv_timer.c |  2 ++
- 7 files changed, 14 insertions(+), 20 deletions(-)
+ arch/x86/Kconfig                | 1 +
+ arch/x86/include/asm/paravirt.h | 7 -------
+ arch/x86/kernel/paravirt.c      | 6 ------
+ arch/x86/xen/time.c             | 1 +
+ drivers/xen/time.c              | 3 ---
+ 5 files changed, 2 insertions(+), 16 deletions(-)
 
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 1f30358..62e1157 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -799,6 +799,7 @@ if HYPERVISOR_GUEST
+ config PARAVIRT
+ 	bool "Enable paravirtualization code"
+ 	depends on HAVE_STATIC_CALL
++	select HAVE_PV_STEAL_CLOCK_GEN
+ 	help
+ 	  This changes the kernel so it can modify itself when it is run
+ 	  under a hypervisor, potentially improving performance significantly
 diff --git a/arch/x86/include/asm/paravirt.h b/arch/x86/include/asm/paravirt.h
-index 766a7ce..b69e75a 100644
+index 0ef797e..766a7ce 100644
 --- a/arch/x86/include/asm/paravirt.h
 +++ b/arch/x86/include/asm/paravirt.h
-@@ -14,20 +14,8 @@
- #ifndef __ASSEMBLER__
- #include <linux/types.h>
- #include <linux/cpumask.h>
--#include <linux/static_call_types.h>
+@@ -17,10 +17,8 @@
+ #include <linux/static_call_types.h>
  #include <asm/frame.h>
 =20
--u64 dummy_sched_clock(void);
--
--DECLARE_STATIC_CALL(pv_sched_clock, dummy_sched_clock);
--
--void paravirt_set_sched_clock(u64 (*func)(void));
--
--static __always_inline u64 paravirt_sched_clock(void)
+-u64 dummy_steal_clock(int cpu);
+ u64 dummy_sched_clock(void);
+=20
+-DECLARE_STATIC_CALL(pv_steal_clock, dummy_steal_clock);
+ DECLARE_STATIC_CALL(pv_sched_clock, dummy_sched_clock);
+=20
+ void paravirt_set_sched_clock(u64 (*func)(void));
+@@ -35,11 +33,6 @@ bool pv_is_native_spin_unlock(void);
+ __visible bool __native_vcpu_is_preempted(long cpu);
+ bool pv_is_native_vcpu_is_preempted(void);
+=20
+-static inline u64 paravirt_steal_clock(int cpu)
 -{
--	return static_call(pv_sched_clock)();
+-	return static_call(pv_steal_clock)(cpu);
 -}
 -
- __visible void __native_queued_spin_unlock(struct qspinlock *lock);
- bool pv_is_native_spin_unlock(void);
- __visible bool __native_vcpu_is_preempted(long cpu);
-diff --git a/arch/x86/include/asm/timer.h b/arch/x86/include/asm/timer.h
-index 23baf8c..fda18bc 100644
---- a/arch/x86/include/asm/timer.h
-+++ b/arch/x86/include/asm/timer.h
-@@ -12,6 +12,7 @@ extern void recalibrate_cpu_khz(void);
- extern int no_timer_check;
-=20
- extern bool using_native_sched_clock(void);
-+void paravirt_set_sched_clock(u64 (*func)(void));
-=20
- /*
-  * We use the full linear equation: f(x) =3D a + b*x, in order to allow
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index ca0a49e..b5991d5 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -19,6 +19,7 @@
- #include <linux/cc_platform.h>
-=20
- #include <asm/hypervisor.h>
-+#include <asm/timer.h>
- #include <asm/x86_init.h>
- #include <asm/kvmclock.h>
-=20
+ #ifdef CONFIG_PARAVIRT_SPINLOCKS
+ void __init paravirt_set_cap(void);
+ #endif
 diff --git a/arch/x86/kernel/paravirt.c b/arch/x86/kernel/paravirt.c
-index 42991d4..4e37db8 100644
+index a3ba474..42991d4 100644
 --- a/arch/x86/kernel/paravirt.c
 +++ b/arch/x86/kernel/paravirt.c
-@@ -60,13 +60,6 @@ void __init native_pv_lock_init(void)
+@@ -60,12 +60,6 @@ void __init native_pv_lock_init(void)
  		static_branch_enable(&virt_spin_lock_key);
  }
 =20
--DEFINE_STATIC_CALL(pv_sched_clock, native_sched_clock);
--
--void paravirt_set_sched_clock(u64 (*func)(void))
+-static u64 native_steal_clock(int cpu)
 -{
--	static_call_update(pv_sched_clock, func);
+-	return 0;
 -}
 -
- static noinstr void pv_native_safe_halt(void)
- {
- 	native_safe_halt();
-diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 7d3e13e..d5d0b50 100644
---- a/arch/x86/kernel/tsc.c
-+++ b/arch/x86/kernel/tsc.c
-@@ -267,19 +267,27 @@ u64 native_sched_clock_from_tsc(u64 tsc)
- /* We need to define a real function for sched_clock, to override the
-    weak default version */
- #ifdef CONFIG_PARAVIRT
-+DEFINE_STATIC_CALL(pv_sched_clock, native_sched_clock);
-+
- noinstr u64 sched_clock_noinstr(void)
- {
--	return paravirt_sched_clock();
-+	return static_call(pv_sched_clock)();
- }
+-DEFINE_STATIC_CALL(pv_steal_clock, native_steal_clock);
+ DEFINE_STATIC_CALL(pv_sched_clock, native_sched_clock);
 =20
- bool using_native_sched_clock(void)
- {
- 	return static_call_query(pv_sched_clock) =3D=3D native_sched_clock;
- }
-+
-+void paravirt_set_sched_clock(u64 (*func)(void))
-+{
-+	static_call_update(pv_sched_clock, func);
-+}
- #else
- u64 sched_clock_noinstr(void) __attribute__((alias("native_sched_clock")));
-=20
- bool using_native_sched_clock(void) { return true; }
-+void paravirt_set_sched_clock(u64 (*func)(void)) { }
- #endif
-=20
- notrace u64 sched_clock(void)
+ void paravirt_set_sched_clock(u64 (*func)(void))
 diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
-index e4754b2..6f9f665 100644
+index 96521b1..e4754b2 100644
 --- a/arch/x86/xen/time.c
 +++ b/arch/x86/xen/time.c
-@@ -19,6 +19,7 @@
- #include <linux/sched/cputime.h>
+@@ -16,6 +16,7 @@
+ #include <linux/slab.h>
+ #include <linux/pvclock_gtod.h>
+ #include <linux/timekeeper_internal.h>
++#include <linux/sched/cputime.h>
 =20
  #include <asm/pvclock.h>
-+#include <asm/timer.h>
+ #include <asm/xen/hypervisor.h>
+diff --git a/drivers/xen/time.c b/drivers/xen/time.c
+index 53b12f5..0b18d8a 100644
+--- a/drivers/xen/time.c
++++ b/drivers/xen/time.c
+@@ -10,9 +10,6 @@
+ #include <linux/static_call.h>
+ #include <linux/sched/cputime.h>
+=20
+-#ifndef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
+-#include <asm/paravirt.h>
+-#endif
  #include <asm/xen/hypervisor.h>
  #include <asm/xen/hypercall.h>
- #include <asm/xen/cpuid.h>
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_=
-timer.c
-index 10356d4..e9f5034 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -535,6 +535,8 @@ static __always_inline void hv_setup_sched_clock(void *sc=
-hed_clock)
- 	sched_clock_register(sched_clock, 64, NSEC_PER_SEC);
- }
- #elif defined CONFIG_PARAVIRT
-+#include <asm/timer.h>
-+
- static __always_inline void hv_setup_sched_clock(void *sched_clock)
- {
- 	/* We're on x86/x64 *and* using PV ops */
+=20
 
