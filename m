@@ -1,75 +1,75 @@
-Return-Path: <linux-tip-commits+bounces-8002-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8003-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B43D1F4FE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 15:09:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F39D1F63D
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 15:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BE270300BBEE
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 14:04:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C7143019BB2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 14:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0D427B34F;
-	Wed, 14 Jan 2026 14:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24AB21D585;
+	Wed, 14 Jan 2026 14:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YP9PyAW1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ndK/+OT4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xUNCybJC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="30OZa91h"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAEF260569;
-	Wed, 14 Jan 2026 14:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B5825F7A5;
+	Wed, 14 Jan 2026 14:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768399451; cv=none; b=mJqnFUAxTdMsnBu3Ao6FKL0wfqkx+1wKc0EjoAW29Er6HEQRJcq/Zyhd3gIgzd2LHjJGGh4Ri7fIfyTueTC6GNlcZkGLzniGmgXHCgI25RMp+v9wZm/4z2694os/3VZ1upBLEcWKjiGBimagYDxGip2RuKz28nUM4CKNMZOgQGM=
+	t=1768400556; cv=none; b=HcoK1LgbbAbgqC9rqsHglszrXOiEQipMMm4zk4MRIZApabfnG6UAiCEzES/bYbfhwZ15iYnefzFkDJ95Crnv0GM8YgIfLZ/uMbj3dSV3nXXG5+JSor7x/x3x3EiEVidAWNuWfcM0U8WU8Xp6YL3aMI36jhOqqx+wLiAhiWV+3dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768399451; c=relaxed/simple;
-	bh=FUtXMwBer67/3hw8migMMmf+hXyD7iW+kacUno+vkyQ=;
+	s=arc-20240116; t=1768400556; c=relaxed/simple;
+	bh=+E0x/IMVmrxp9364nLh4bkKCwG89KEviPiHAOaSDqAc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=D3ev/WYjlr+Zy1H3eDineMAB7q20IBphwd9XoAa/ye+AwFoGpWmjZ+NRFLQGUhShWYhb4hllmRaLCOCYa/HbD29MkMYgRvsHDZSB6alfIrfUjxhJa3AHCj0sC0QLoXsCT5PjPpORE8UqSYSjxrHQr7SkNNZdO8mftUR2MQcevtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YP9PyAW1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ndK/+OT4; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=r8D/kVeMYhZXX06gKKuGVZBvNL9uc2lutvaMz7Wo2A1e7S5tMZDwWz1iKSeyBPuYSUIFIoyKW/YD9LtlJ67xwYyK+fekzSGDk/z9AwsLyIIvX/W+NyITR4WpOr37wcnE8q+zUwFQfZJuEP/v88Y3mdacGLj+TRSLhP0llzIDX8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xUNCybJC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=30OZa91h; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 14 Jan 2026 14:04:05 -0000
+Date: Wed, 14 Jan 2026 14:22:32 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768399447;
+	s=2020; t=1768400553;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sG9qe48DxORxrOlB4WxF3utCfogHLkc3trXzuzscjIg=;
-	b=YP9PyAW1bIq723ENbVQv1PyuafQctIap5o+UHwSZF6McohcIEA8tiNrtq+W4LQBx5yrHiw
-	pFx6Ccm7R9Od16OGGfJPIhoDcrkym+mTXEcB6M+YBuAjqa5vAd3xxzncy5+RmuGXEqA6R5
-	a9nAyNidUSvFbdQDenBj/26/PPt63+3IX+HA1tjjjqCWX1va7z4w2ZSLZ+LXa6YBybdp3S
-	Ag5I7cuk5JcyJN9D2Mwn0KwqzRsV49O3llfp9kJrpIhvAGEWORSQ9UDZlzd3K2OROoSD0k
-	1t6jeh9fV/tW/cgpfisMOZU6/NExCsAsEUtTUA/sOTJCtVxpspbp7/aB+G/b8w==
+	bh=v97oomNKnFdioYkxj6J29Y0LeFt5LmnJ3tKmC8dwYF0=;
+	b=xUNCybJCY+Aljw1yfqrDhl7Rqb3GFO2ZCwLop59brD7PGeSZtbMkeP8FCrFuDPOTxanuo9
+	I1AoM2CxIX0kOiMkcqnStPnNGT+YjOeYxeih9KffzUHOPoIED4jZX8/t/AWt4tZI7aBFO+
+	QLSPh7U1dUNKCma4IuzxojorD9n8ONDZ+5pLhGbnWAFEyaktyJtJiZqFQ4equp1W7fNkIi
+	H7ypN2cjLZmyjeX3qLgIYHCz2K9fjv/LoI9my+LRRnkIy4IN1n6RaM7AfZoKpgNNoQ8/4H
+	TV6B1b95Xe2M8rUIEvnAOLU/Wn/lR9IEpf9q7HuaGTbClYJDd3t15vDKaE5BDQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768399447;
+	s=2020e; t=1768400553;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sG9qe48DxORxrOlB4WxF3utCfogHLkc3trXzuzscjIg=;
-	b=ndK/+OT454lJcSWBmpxZUaIOK0Kwa0MTS6Q+vlNE+e2Jgn/mGhtxTSQkVV7JaKEDxu8Ade
-	d0J1pOPk76sTzaBg==
-From: tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
+	bh=v97oomNKnFdioYkxj6J29Y0LeFt5LmnJ3tKmC8dwYF0=;
+	b=30OZa91h2rsnZdbOyBi5qSXnp++0neCLVrwaC31jfTYpY2sdR45YNx9ol19MVAYEyFjvCx
+	KQbtD8ZbufV3pJBg==
+From: "tip-bot2 for Borislav Petkov (AMD)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/vdso] powerpc/vdso: Provide clock_getres_time64()
-Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@kernel.org>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, x86@kernel.org,
+Subject: [tip: x86/microcode] x86/microcode/AMD: Allow loader debugging to be
+ enabled on baremetal too
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
-References: <20260114-vdso-powerpc-align-v1-1-acf09373d568@linutronix.de>
+In-Reply-To: <20260108165028.27417-1-bp@kernel.org>
+References: <20260108165028.27417-1-bp@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176839944572.510.2743778862864683116.tip-bot2@tip-bot2>
+Message-ID: <176840055231.510.5594008026440508174.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,108 +77,128 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the timers/vdso branch of tip:
+The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     759a1f97373f25770cf438d9fb5f2bddf4d77a54
-Gitweb:        https://git.kernel.org/tip/759a1f97373f25770cf438d9fb5f2bddf4d=
-77a54
-Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-AuthorDate:    Wed, 14 Jan 2026 08:26:05 +01:00
-Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Wed, 14 Jan 2026 14:57:39 +01:00
+Commit-ID:     ac44a110c18ad7bd9de0b809e861479ba97157d2
+Gitweb:        https://git.kernel.org/tip/ac44a110c18ad7bd9de0b809e861479ba97=
+157d2
+Author:        Borislav Petkov (AMD) <bp@alien8.de>
+AuthorDate:    Mon, 06 Oct 2025 17:50:10 +02:00
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Wed, 14 Jan 2026 14:46:44 +01:00
 
-powerpc/vdso: Provide clock_getres_time64()
+x86/microcode/AMD: Allow loader debugging to be enabled on baremetal too
 
-For consistency with __vdso_clock_gettime64() there should also be a
-64-bit variant of clock_getres(). This will allow the extension of
-CONFIG_COMPAT_32BIT_TIME to the vDSO and finally the removal of 32-bit
-time types from the kernel and UAPI.
+Debugging the loader on baremetal does make sense, so enable it there
+too.
 
-Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Link: https://patch.msgid.link/20260114-vdso-powerpc-align-v1-1-acf09373d568@=
-linutronix.de
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://patch.msgid.link/20260108165028.27417-1-bp@kernel.org
 ---
- arch/powerpc/include/asm/vdso/gettimeofday.h |  2 ++
- arch/powerpc/kernel/vdso/gettimeofday.S      | 12 ++++++++++++
- arch/powerpc/kernel/vdso/vdso32.lds.S        |  1 +
- arch/powerpc/kernel/vdso/vgettimeofday.c     |  6 ++++++
- 4 files changed, 21 insertions(+)
+ arch/x86/Kconfig                         |  8 +++++---
+ arch/x86/kernel/cpu/microcode/amd.c      |  4 ++--
+ arch/x86/kernel/cpu/microcode/core.c     | 16 ++++++++++++----
+ arch/x86/kernel/cpu/microcode/internal.h |  1 +
+ 4 files changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/vdso/gettimeofday.h b/arch/powerpc/incl=
-ude/asm/vdso/gettimeofday.h
-index ab3df12..8ea397e 100644
---- a/arch/powerpc/include/asm/vdso/gettimeofday.h
-+++ b/arch/powerpc/include/asm/vdso/gettimeofday.h
-@@ -135,6 +135,8 @@ int __c_kernel_clock_gettime64(clockid_t clock, struct __=
-kernel_timespec *ts,
- 			       const struct vdso_time_data *vd);
- int __c_kernel_clock_getres(clockid_t clock_id, struct old_timespec32 *res,
- 			    const struct vdso_time_data *vd);
-+int __c_kernel_clock_getres_time64(clockid_t clock_id, struct __kernel_times=
-pec *res,
-+				   const struct vdso_time_data *vd);
- #endif
- int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezone=
- *tz,
- 			    const struct vdso_time_data *vd);
-diff --git a/arch/powerpc/kernel/vdso/gettimeofday.S b/arch/powerpc/kernel/vd=
-so/gettimeofday.S
-index 79c9672..1c8e516 100644
---- a/arch/powerpc/kernel/vdso/gettimeofday.S
-+++ b/arch/powerpc/kernel/vdso/gettimeofday.S
-@@ -103,6 +103,18 @@ V_FUNCTION_BEGIN(__kernel_clock_getres)
- 	cvdso_call __c_kernel_clock_getres
- V_FUNCTION_END(__kernel_clock_getres)
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 8052729..c105937 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -1366,10 +1366,12 @@ config MICROCODE_DBG
+ 	default n
+ 	depends on MICROCODE
+ 	help
+-	  Enable code which allows for debugging the microcode loader in
+-	  a guest. Meaning the patch loading is simulated but everything else
++	  Enable code which allows to debug the microcode loader. When running
++	  in a guest the patch loading is simulated but everything else
+ 	  related to patch parsing and handling is done as on baremetal with
+-	  the purpose of debugging solely the software side of things.
++	  the purpose of debugging solely the software side of things. On
++	  baremetal, it simply dumps additional debugging information during
++	  normal operation.
 =20
-+/*
-+ * Exact prototype of clock_getres_time64()
-+ *
-+ * int __kernel_clock_getres(clockid_t clock_id, struct __timespec64 *res);
-+ *
-+ */
-+#ifndef __powerpc64__
-+V_FUNCTION_BEGIN(__kernel_clock_getres_time64)
-+	cvdso_call __c_kernel_clock_getres_time64
-+V_FUNCTION_END(__kernel_clock_getres_time64)
-+#endif
-+
+ 	  You almost certainly want to say n here.
 =20
- /*
-  * Exact prototype of time()
-diff --git a/arch/powerpc/kernel/vdso/vdso32.lds.S b/arch/powerpc/kernel/vdso=
-/vdso32.lds.S
-index 72a1012..3f384a2 100644
---- a/arch/powerpc/kernel/vdso/vdso32.lds.S
-+++ b/arch/powerpc/kernel/vdso/vdso32.lds.S
-@@ -124,6 +124,7 @@ VERSION
- 		__kernel_clock_gettime;
- 		__kernel_clock_gettime64;
- 		__kernel_clock_getres;
-+		__kernel_clock_getres_time64;
- 		__kernel_time;
- 		__kernel_get_tbfreq;
- 		__kernel_sync_dicache;
-diff --git a/arch/powerpc/kernel/vdso/vgettimeofday.c b/arch/powerpc/kernel/v=
-dso/vgettimeofday.c
-index 6f5167d..3c194e1 100644
---- a/arch/powerpc/kernel/vdso/vgettimeofday.c
-+++ b/arch/powerpc/kernel/vdso/vgettimeofday.c
-@@ -35,6 +35,12 @@ int __c_kernel_clock_getres(clockid_t clock_id, struct old=
-_timespec32 *res,
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microc=
+ode/amd.c
+index 4667353..caa0f59 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -322,7 +322,7 @@ static u32 get_patch_level(void)
  {
- 	return __cvdso_clock_getres_time32_data(vd, clock_id, res);
- }
-+
-+int __c_kernel_clock_getres_time64(clockid_t clock_id, struct __kernel_times=
-pec *res,
-+				   const struct vdso_time_data *vd)
-+{
-+	return __cvdso_clock_getres_data(vd, clock_id, res);
-+}
- #endif
+ 	u32 rev, dummy __always_unused;
 =20
- int __c_kernel_gettimeofday(struct __kernel_old_timeval *tv, struct timezone=
- *tz,
+-	if (IS_ENABLED(CONFIG_MICROCODE_DBG)) {
++	if (IS_ENABLED(CONFIG_MICROCODE_DBG) && hypervisor_present) {
+ 		int cpu =3D smp_processor_id();
+=20
+ 		if (!microcode_rev[cpu]) {
+@@ -714,7 +714,7 @@ static bool __apply_microcode_amd(struct microcode_amd *m=
+c, u32 *cur_rev,
+ 			invlpg(p_addr_end);
+ 	}
+=20
+-	if (IS_ENABLED(CONFIG_MICROCODE_DBG))
++	if (IS_ENABLED(CONFIG_MICROCODE_DBG) && hypervisor_present)
+ 		microcode_rev[smp_processor_id()] =3D mc->hdr.patch_id;
+=20
+ 	/* verify patch application was successful */
+diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/micro=
+code/core.c
+index 68049f1..651202e 100644
+--- a/arch/x86/kernel/cpu/microcode/core.c
++++ b/arch/x86/kernel/cpu/microcode/core.c
+@@ -57,6 +57,8 @@ bool force_minrev =3D IS_ENABLED(CONFIG_MICROCODE_LATE_FORC=
+E_MINREV);
+ u32 base_rev;
+ u32 microcode_rev[NR_CPUS] =3D {};
+=20
++bool hypervisor_present;
++
+ /*
+  * Synchronization.
+  *
+@@ -117,7 +119,13 @@ bool __init microcode_loader_disabled(void)
+ 	 * Disable when:
+ 	 *
+ 	 * 1) The CPU does not support CPUID.
+-	 *
++	 */
++	if (!cpuid_feature()) {
++		dis_ucode_ldr =3D true;
++		return dis_ucode_ldr;
++	}
++
++	/*
+ 	 * 2) Bit 31 in CPUID[1]:ECX is clear
+ 	 *    The bit is reserved for hypervisor use. This is still not
+ 	 *    completely accurate as XEN PV guests don't see that CPUID bit
+@@ -127,9 +135,9 @@ bool __init microcode_loader_disabled(void)
+ 	 * 3) Certain AMD patch levels are not allowed to be
+ 	 *    overwritten.
+ 	 */
+-	if (!cpuid_feature() ||
+-	    ((native_cpuid_ecx(1) & BIT(31)) &&
+-	      !IS_ENABLED(CONFIG_MICROCODE_DBG)) ||
++	hypervisor_present =3D native_cpuid_ecx(1) & BIT(31);
++
++	if ((hypervisor_present && !IS_ENABLED(CONFIG_MICROCODE_DBG)) ||
+ 	    amd_check_current_patch_level())
+ 		dis_ucode_ldr =3D true;
+=20
+diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/m=
+icrocode/internal.h
+index a10b547..3b93c06 100644
+--- a/arch/x86/kernel/cpu/microcode/internal.h
++++ b/arch/x86/kernel/cpu/microcode/internal.h
+@@ -48,6 +48,7 @@ extern struct early_load_data early_data;
+ extern struct ucode_cpu_info ucode_cpu_info[];
+ extern u32 microcode_rev[NR_CPUS];
+ extern u32 base_rev;
++extern bool hypervisor_present;
+=20
+ struct cpio_data find_microcode_in_initrd(const char *path);
+=20
 
