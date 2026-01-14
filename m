@@ -1,76 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-7972-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-7975-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4616BD1BD6D
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 01:45:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28AFD1BD91
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 01:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3BA430392AF
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 00:44:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 704373065E35
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 14 Jan 2026 00:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B29F223DFB;
-	Wed, 14 Jan 2026 00:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B6A21FF4D;
+	Wed, 14 Jan 2026 00:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yF+TBofo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RE9EeuE4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="acAnfN3D";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mQRl32/R"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236AC1D5ABA;
-	Wed, 14 Jan 2026 00:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D033221F0C;
+	Wed, 14 Jan 2026 00:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768351498; cv=none; b=ThYpG06j0Dz37J0tdg9W3S5OOZ5HkFpM7wkRbunNarsefH5e8n4XK8akZLB/RIo3iS5bxbiaWxdwQSjV7ZAjp9R7KRFfAwwGzmS8+OySn/UKVmKLbuyPcDMNbDZB5X7uIxPyAIzsTvz8sEd3Qo9ttEI2Xm1Y9t3iWOvNartr8wc=
+	t=1768351505; cv=none; b=K29Ltuozg9bvnfiwltcIYZfGUuC9iHKUN/fJvNwp/pF6MAG4wA3xn025xNvHBz07GjZFQyDJpde9l9kqzGaXkrFg5m+GqeWbPW+JO7RLFHcPJFLDwxcWg0BwYvTPbwsxTw7lgqBJmCNtM7NNspCHP36ZXq+Nym+SWWJGmJxPR1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768351498; c=relaxed/simple;
-	bh=PILRBTweOdya9L4OvF96GAfK/dME+l4AKOfUZU+vozA=;
+	s=arc-20240116; t=1768351505; c=relaxed/simple;
+	bh=rla7SnacnYVKw3LARN6Klc0Qa9b/YNDS2xYl8bEOPIc=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Zpuhh/VBAwCnEJiUN0TxNGcpmu2gPVfLKlkUiGyOBl0q3ELG+kc2P3ga0VjPAAHcJBfgK6HTH+d3Tai9krvZu+3xyti2D5G3UyzI5Kxcq4H8dc3d0DskohD7zMFLUWtsQpIdgQ3/UKxg9JLhswKTqJ6nQ/zedm/3Qf1R+0oteOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yF+TBofo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RE9EeuE4; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=qa0FR/MT5DI9S8JfeYKf1Bj2kwC/BL3eQQByVcOfTraLrEAYmTKYUs1vwHpSAJ4BNhzHTFO1TYbQvRzHQqbACpMv6yz97EJU3IX5Ecz4fiz9ilz8v8bst/4a/oMvmbHC438XWyifwemP9rVJCwPTjrY3FuClQ7T45UNBbryJSmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=acAnfN3D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mQRl32/R; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 14 Jan 2026 00:44:54 -0000
+Date: Wed, 14 Jan 2026 00:44:55 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768351495;
+	s=2020; t=1768351497;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y24+GgFtJdw4D6Y/TzqPS+TGn+kOyiYv1k/zdygBJWY=;
-	b=yF+TBofoyO6R+UPc2tKG06P1W//dfsx66LkPYuBBmXcLqFCxEur5uJY5SK4J22djoYHzxz
-	dTt3UVIcwpB7FR0pFoL0HsIOnTdyXal1DVwk9tVEQ/4DHeHNpR7t5k2O2Psaxx/dhLtfue
-	/M0VP2qUABnFz64GOhNCaQsZUV+SsDeNUmvCBGQHBX/+RWjIgVYj7/Si0a8jVSSbu+22HD
-	ezQXLU+eCH+hDfRL508zdlnkFS65RaJPoQPILpdW4IQD4MHZz2WubmiKIs6k6cLWI0O1ZL
-	Son6vQsiaGwEa23yLB1aoDtcIbHzQS2404Zj/i0UsJk8+IqlgqJtSy5GaZ4H9g==
+	bh=uZH6BwW+VB6QfbJ7yuz60fVXhIAhlqzPetPDJAR8jLQ=;
+	b=acAnfN3DbE5crKwDI0aA9iMA+9oOqzog+t27gCcxcU6c/p1ffYgTs9o4ZTgQZNxQUTSKbe
+	R5QfvOslZbGYtezlrGloTio0Exg7AwKkvRRBTFBNQ1zg5H97pZZPOIfFcwPUUnTOmiLIIz
+	2LMGfbLkEp4NPVCy92+mOpcpUfe015NLxhfQuzMkh1sf4IZnPpqtqruLql7H+hHvX1o+vJ
+	7VIcBqzlAJc75Kf7HVtSBajd1n2WEu5/Btmbb3p2x/1dV63uE1wQqXcOJyKWdOaNCg7lIe
+	jjLOs+dUPK/czOjX/4odnhnkpc/MPKBDugKFHBWtaICzX2Lzy/LMhWkh+3YDRA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768351495;
+	s=2020e; t=1768351497;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y24+GgFtJdw4D6Y/TzqPS+TGn+kOyiYv1k/zdygBJWY=;
-	b=RE9EeuE42YsLWrVX/ny7rUxcGVkgwVzuMG//nU8RhT4/TmvsliIG5akRV3X4VKnv+ZWX3w
-	KjnCbnPSAywS9gCg==
+	bh=uZH6BwW+VB6QfbJ7yuz60fVXhIAhlqzPetPDJAR8jLQ=;
+	b=mQRl32/RPn1CycBOEoNBdNSavGKdoFod9PDilNCptjSRVQeTlGVxt51wW4ab5kw4MpWx9p
+	CzhwG3BCv70VI0Aw==
 From: "tip-bot2 for H. Peter Anvin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] x86/entry/vdso32: Remove SYSCALL_ENTER_KERNEL macro
- in sigreturn.S
+Subject: [tip: x86/entry] x86/entry/vdso32: Don't rely on int80_landing_pad
+ for adjusting ip
 Cc: "H. Peter Anvin (Intel)" <hpa@zytor.com>,
  Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20251216212606.1325678-6-hpa@zytor.com>
-References: <20251216212606.1325678-6-hpa@zytor.com>
+In-Reply-To: <20251216212606.1325678-5-hpa@zytor.com>
+References: <20251216212606.1325678-5-hpa@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176835149466.510.11885289203772426485.tip-bot2@tip-bot2>
+Message-ID: <176835149579.510.18025799979884459481.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,61 +80,63 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the x86/entry branch of tip:
 
-Commit-ID:     98d3e996513ad00b7824ea3bece506fc645547dd
-Gitweb:        https://git.kernel.org/tip/98d3e996513ad00b7824ea3bece506fc645=
-547dd
+Commit-ID:     6e150b71019f386a021004fafea9ef7189bc6aea
+Gitweb:        https://git.kernel.org/tip/6e150b71019f386a021004fafea9ef7189b=
+c6aea
 Author:        H. Peter Anvin <hpa@zytor.com>
-AuthorDate:    Tue, 16 Dec 2025 13:25:59 -08:00
+AuthorDate:    Tue, 16 Dec 2025 13:25:58 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Tue, 13 Jan 2026 16:37:58 -08:00
 
-x86/entry/vdso32: Remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
+x86/entry/vdso32: Don't rely on int80_landing_pad for adjusting ip
 
-A macro SYSCALL_ENTER_KERNEL was defined in sigreturn.S, with the
-ability of overriding it. The override capability, however, is not
-used anywhere, and the macro name is potentially confusing because it
-seems to imply that sysenter/syscall could be used here, which is NOT
-true: the sigreturn system calls MUST use int $0x80.
+There is no fundamental reason to use the int80_landing_pad symbol to
+adjust ip when moving the vdso. If ip falls within the vdso, and the
+vdso is moved, we should change the ip accordingly, regardless of mode
+or location within the vdso. This *currently* can only happen on 32
+bits, but there isn't any reason not to do so generically.
+
+Note that if this is ever possible from a vdso-internal call, then the
+user space stack will also needed to be adjusted (as well as the
+shadow stack, if enabled.) Fortunately this is not currently the case.
+
+At the moment, we don't even consider other threads when moving the
+vdso. The assumption is that it is only used by process freeze/thaw
+for migration, where this is not an issue.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://patch.msgid.link/20251216212606.1325678-6-hpa@zytor.com
+Link: https://patch.msgid.link/20251216212606.1325678-5-hpa@zytor.com
 ---
- arch/x86/entry/vdso/vdso32/sigreturn.S | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/entry/vdso/vma.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vds=
-o32/sigreturn.S
-index 1bd068f..965900c 100644
---- a/arch/x86/entry/vdso/vdso32/sigreturn.S
-+++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
-@@ -3,10 +3,6 @@
- #include <asm/unistd_32.h>
- #include <asm/asm-offsets.h>
-=20
--#ifndef SYSCALL_ENTER_KERNEL
--#define	SYSCALL_ENTER_KERNEL	int $0x80
--#endif
+diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
+index 8f98c2d..e7fd751 100644
+--- a/arch/x86/entry/vdso/vma.c
++++ b/arch/x86/entry/vdso/vma.c
+@@ -65,16 +65,12 @@ static vm_fault_t vdso_fault(const struct vm_special_mapp=
+ing *sm,
+ static void vdso_fix_landing(const struct vdso_image *image,
+ 		struct vm_area_struct *new_vma)
+ {
+-	if (in_ia32_syscall() && image =3D=3D &vdso32_image) {
+-		struct pt_regs *regs =3D current_pt_regs();
+-		unsigned long vdso_land =3D image->sym_int80_landing_pad;
+-		unsigned long old_land_addr =3D vdso_land +
+-			(unsigned long)current->mm->context.vdso;
 -
- 	.text
- 	.globl __kernel_sigreturn
- 	.type __kernel_sigreturn,@function
-@@ -16,7 +12,7 @@ __kernel_sigreturn:
- .LSTART_sigreturn:
- 	popl %eax		/* XXX does this mean it needs unwind info? */
- 	movl $__NR_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_sigreturn:
- SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
-@@ -28,7 +24,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- __kernel_rt_sigreturn:
- .LSTART_rt_sigreturn:
- 	movl $__NR_rt_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_rt_sigreturn:
- SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
+-		/* Fixing userspace landing - look at do_fast_syscall_32 */
+-		if (regs->ip =3D=3D old_land_addr)
+-			regs->ip =3D new_vma->vm_start + vdso_land;
+-	}
++	struct pt_regs *regs =3D current_pt_regs();
++	unsigned long ipoffset =3D regs->ip -
++		(unsigned long)current->mm->context.vdso;
++
++	if (ipoffset < image->size)
++		regs->ip =3D new_vma->vm_start + ipoffset;
+ }
+=20
+ static int vdso_mremap(const struct vm_special_mapping *sm,
 
