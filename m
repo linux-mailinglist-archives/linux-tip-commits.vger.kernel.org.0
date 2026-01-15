@@ -1,76 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-8014-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8015-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FA1D28CC8
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 22:44:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8B5D28CC9
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 22:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCCA6301075A
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 21:44:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 80E48300DB32
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 21:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF792322B67;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61473242D8;
 	Thu, 15 Jan 2026 21:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DJB/VLUd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tCMODviO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JSy/lx1M";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OJPQReX1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378862BE7C3;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB772E090B;
 	Thu, 15 Jan 2026 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768513443; cv=none; b=IXbGwoN1Itbqlik4xiLBpgB7bC3WyziQyKJAIRDPcVeUGJmaruQgc/BJiah8/mzZfcWfURsz1ifMAbclV2XLajeB5jWkj//Xemk1c4nDetdrSb8tXykvxHjaew36OM/NM+f00I9nRCRMLN1wsOQ19uXbEENlI4aO/jAASLlS48s=
+	t=1768513443; cv=none; b=O7ZWVGE0t2bW6vDA+l4DcUMI4gY/QxyLz4DuCEerFwMx/wnfW0bmhon0hN2QZtP18WMVKwwPQtc430V/Eb3J5n9Cf6iMq7oLN72YtDaiFIe2/CcKAp2o5fN5rLgrKcFc/BcHh7CDJaORkHm/G0+cB1299P63h1DwX+w+iitTetg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768513443; c=relaxed/simple;
-	bh=lKu9rLAWJq4AhINx7Py2M7q0Q86grp5xMco5l1gaElQ=;
+	bh=FrzmvX6V7qRiuxZ14PjSs8k4ScQ/vJYLRvEgZVopqjo=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WOT/c86VFTlrUj54eTLBctK4SVNFfjiZ3e4cTY2OzmQMHBC+DJUgWLvCLvumR+sagF4wqmkqlubLuVI44D1Ao0dGvVWXn8khmb+TzVryGUUTAzQrFMccGzN56yk/5dKlfXAB9SYhb/TIX2nvRLedJWidI2DWkRPNnb2wx8WRWiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DJB/VLUd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tCMODviO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=solEJ2erxepbIU6964QkIliqdAfIJ/1JXlwnjRCKgyhH8GpNwSuEwMm2/Rjdn97JXDLDJf496jaq/lvSg7+oQ9gHtwVQyPsdC1JFjHRSLyzyhdtd+3MmUpKlhujQYVEjn3ZB5VXcVFMUw5dk3ShARsLSwe+S9t5H9l5u1U8OMzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JSy/lx1M; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OJPQReX1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 15 Jan 2026 21:43:58 -0000
+Date: Thu, 15 Jan 2026 21:43:59 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768513440;
+	s=2020; t=1768513441;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Nql6VgCOPYqSEGHtSlW/hlvy+iC9VsuvjzGO9FVtO2w=;
-	b=DJB/VLUdZdY0Ugc0fl9lpOJEdtkRITzzf/GkcbMb5qunHWgbyhElveO76dKuJ3aXMTwAOD
-	C2Bnj+6YrT43B3Nxo73ggfQtc9nW60OE60KtZoLASQ4R/KVikJoSPhYlTbb8dNrw4D5E60
-	rnZ1WEVNSo2VK7fBlGckGCcTFww1J5XCWO/lhtwctSxsvvTci9cLP5LQNPH642cwbAxcuc
-	ebJxEes2xkVjM7bvOc7BthXoo7voRNhJopP5f6eSTQ1DgPEnJUzr0S3wMJIFApjfwwgrB2
-	3SUYcGeDOVH8saV30IHATWoKZinDGTxLgyPXB6LtESAQdvTrZJjOg+g8Uc2I2A==
+	bh=tw6mTvNnHe6MOk59VlkTnRvpCs6a5g1X1Jtqc3pK6sE=;
+	b=JSy/lx1MRrHFQ7l9BioKXVacRcyXfcs0/0/tdL3JbpvYCuO2ddZvf5LVpLOgLyuRy892/z
+	z/NbUBsOrzZjGhT8VbB3UvJUVtR/IOyZ8ujJnVaiQhH98+PFBBlHR/P/6zaGLBeewfCsbu
+	NUZYn0Df4wBBYXsED1D/AY4Vlqlnpmw9+cd7jVlpVoS9Ts8lqYzuOITDc7ZZlAsVlVuIPd
+	qYaOF1ZY4bAnOxXqdoFdCQ/O80gu/tzdusa1kAb7YkzLhyRTY5jLEAUZN9I/HCRwhq0v17
+	DuRv/NEbr4o6/Vb9l9BpB1AIUbMIf5XUSxWsXXajovLWdIMveJX0JUd+Zdthhg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768513440;
+	s=2020e; t=1768513441;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Nql6VgCOPYqSEGHtSlW/hlvy+iC9VsuvjzGO9FVtO2w=;
-	b=tCMODviOguMSimDMvgMWOQ+rphD/NCKjRAXhE6CGvHWgj4mfefcpiryLyCDrvcYMyn9/45
-	epKNcyxECsTKD5CA==
-From: "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
+	bh=tw6mTvNnHe6MOk59VlkTnRvpCs6a5g1X1Jtqc3pK6sE=;
+	b=OJPQReX102rGKqCtITErR/gsNXajxnXgZG7DH/AlGUPcFLtkQ0/D3yLEYX656nxZ3IiwuG
+	PvcTfrwAm19KSKCg==
+From: "tip-bot2 for Chen Ni" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/core] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
-Cc: Paulo Andrade <pandrade@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <aWO7Fdxn39piQnxu@redhat.com>
-References: <aWO7Fdxn39piQnxu@redhat.com>
+Subject: [tip: perf/core] perf/x86/intel/uncore: Convert comma to semicolon
+Cc: Chen Ni <nichen@iscas.ac.cn>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Dapeng Mi <dapeng1.mi@linux.intel.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260114023652.3926117-1-nichen@iscas.ac.cn>
+References: <20260114023652.3926117-1-nichen@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176851343815.510.11862479025865189952.tip-bot2@tip-bot2>
+Message-ID: <176851343995.510.17194569540303589238.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,140 +80,55 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     69044a0cbfdcc6e788c8a1f8e050d108038461d6
-Gitweb:        https://git.kernel.org/tip/69044a0cbfdcc6e788c8a1f8e050d108038=
-461d6
-Author:        Oleg Nesterov <oleg@redhat.com>
-AuthorDate:    Sun, 11 Jan 2026 16:00:37 +01:00
+Commit-ID:     10d6d2416db2137a5a0ef9162662e5b7fee56dd4
+Gitweb:        https://git.kernel.org/tip/10d6d2416db2137a5a0ef9162662e5b7fee=
+56dd4
+Author:        Chen Ni <nichen@iscas.ac.cn>
+AuthorDate:    Wed, 14 Jan 2026 10:36:52 +08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 15 Jan 2026 10:04:28 +01:00
 
-x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+perf/x86/intel/uncore: Convert comma to semicolon
 
-This script
+Replace comma between expressions with semicolons.
 
-	#!/usr/bin/bash
+Using a ',' in place of a ';' can have unintended side effects.
+Although that is not the case here, it is seems best to use ';'
+unless ',' is intended.
 
-	echo 0 > /proc/sys/kernel/randomize_va_space
+Found by inspection.
+No functional change intended.
+Compile tested only.
 
-	echo 'void main(void) {}' > TEST.c
-
-	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
-	gcc -m32 -fcf-protection=3Dbranch TEST.c -o test
-
-	bpftrace -e 'uprobe:./test:main {}' -c ./test
-
-"hangs", the probed ./test task enters an endless loop.
-
-The problem is that with randomize_va_space =3D=3D 0
-get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
-just return the "addr =3D=3D TASK_SIZE - PAGE_SIZE" hint, this addr is used
-by the stack vma.
-
-arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
-in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
-vm_unmapped_area() happily returns the high address > TASK_SIZE and then
-get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
-check.
-
-handle_swbp() doesn't report this failure (probably it should) and silently
-restarts the probed insn. Endless loop.
-
-I think that the right fix should change the x86 get_unmapped_area() paths
-to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
-CONFIG_X86_X32_ABI=3Dy, in_x32_syscall() falsely returns true in this case
-because ->orig_ax =3D -1.
-
-But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
-the probed task is 32-bit to make in_ia32_syscall() true.
-
-Fixes: 1b028f784e8c ("86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
-Reported-by: Paulo Andrade <pandrade@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Fixes: e7d5f2ea0923 ("perf/x86/intel/uncore: Add Nova Lake support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://patch.msgid.link/20260114023652.3926117-1-nichen@iscas.ac.cn
 ---
- arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
- include/linux/uprobes.h   |  1 +
- kernel/events/uprobes.c   | 10 +++++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/uncore_snb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 7be8e36..2dbd2e0 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
-=20
- 	return false;
- }
-+
-+#ifdef CONFIG_IA32_EMULATION
-+unsigned long __weak arch_uprobe_get_xol_area(void)
-+{
-+	struct thread_info *ti =3D current_thread_info();
-+	unsigned long vaddr;
-+
-+	/*
-+	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
-+	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
-+	 * vm_unmapped_area_info.high_limit.
-+	 *
-+	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=3Dy case,
-+	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
-+	 * (falsely) returns true because ->orig_ax =3D=3D -1.
-+	 */
-+	if (test_thread_flag(TIF_ADDR32))
-+		ti->status |=3D TS_COMPAT;
-+	vaddr =3D get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+	ti->status &=3D ~TS_COMPAT;
-+
-+	return vaddr;
-+}
-+#endif
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index ee3d36e..f548fea 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
- extern void arch_uprobe_init_state(struct mm_struct *mm);
- extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vad=
-dr);
- extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long =
-vaddr);
-+extern unsigned long arch_uprobe_get_xol_area(void);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
- };
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index a7d7d83..dfbce02 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping =3D=
+diff --git a/arch/x86/events/intel/uncore_snb.c b/arch/x86/events/intel/uncor=
+e_snb.c
+index e8e4474..3dbc6ba 100644
+--- a/arch/x86/events/intel/uncore_snb.c
++++ b/arch/x86/events/intel/uncore_snb.c
+@@ -2005,11 +2005,11 @@ static struct intel_uncore_type *nvl_msr_uncores[] =
+=3D {
+ void nvl_uncore_cpu_init(void)
  {
- 	.mremap =3D xol_mremap,
- };
+ 	mtl_uncore_cbox.num_boxes =3D 12;
+-	mtl_uncore_cbox.perf_ctr =3D NVL_UNC_CBOX_PER_CTR0,
+-	mtl_uncore_cbox.event_ctl =3D NVL_UNC_CBOX_PERFEVTSEL0,
++	mtl_uncore_cbox.perf_ctr =3D NVL_UNC_CBOX_PER_CTR0;
++	mtl_uncore_cbox.event_ctl =3D NVL_UNC_CBOX_PERFEVTSEL0;
 =20
-+unsigned long __weak arch_uprobe_get_xol_area(void)
-+{
-+	/* Try to map as high as possible, this is only a hint. */
-+	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+}
-+
- /* Slot allocation for XOL */
- static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
- {
-@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol=
-_area *area)
- 	}
+-	ptl_uncore_santa.perf_ctr =3D NVL_UNC_SANTA_CTR0,
+-	ptl_uncore_santa.event_ctl =3D NVL_UNC_SANTA_CTRL0,
++	ptl_uncore_santa.perf_ctr =3D NVL_UNC_SANTA_CTR0;
++	ptl_uncore_santa.event_ctl =3D NVL_UNC_SANTA_CTRL0;
 =20
- 	if (!area->vaddr) {
--		/* Try to map as high as possible, this is only a hint. */
--		area->vaddr =3D get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
--						PAGE_SIZE, 0, 0);
-+		area->vaddr =3D arch_uprobe_get_xol_area();
- 		if (IS_ERR_VALUE(area->vaddr)) {
- 			ret =3D area->vaddr;
- 			goto fail;
+ 	mtl_uncore_cncu.box_ctl =3D NVL_UNC_CNCU_BOX_CTL;
+ 	mtl_uncore_cncu.fixed_ctr =3D NVL_UNC_CNCU_FIXED_CTR;
 
