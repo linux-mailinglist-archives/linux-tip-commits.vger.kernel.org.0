@@ -1,76 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-8022-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8023-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0504D28D04
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 22:45:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75597D28D28
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 22:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 69FC8301FD49
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 21:44:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 12C4C3025506
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 21:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F3A33032D;
-	Thu, 15 Jan 2026 21:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B5933065B;
+	Thu, 15 Jan 2026 21:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z1hh977l";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f3RR0Fxs"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kfXSZOT6";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yV39hSXP"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB0C329C6F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0940632FA22;
 	Thu, 15 Jan 2026 21:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768513454; cv=none; b=IYr9L7l0JqJn+zsZIdn/OWYjwQBkJoXLSqHiV+Eyqo1+irrnECooX9aKDQzuPYmJsRRRF2xHlDw8muCbllkVsMrayyzf1MtHiCy4dnA6Uhb7P5ubIPgNnIL2zYvqPR2YwL4dVcaoQpjJ2XfDmIj+sUKUAE5qORlITmsUiwcHFJs=
+	t=1768513455; cv=none; b=eAjdNhisBw/ZASYSLW7Kfw+4o4SU5DbW1k0T90j5H+XxRLZL66haomRyDwrmsnT/BZNaLvIOhnHzUcBtB6JlO/bbSCql9PO+0geQ+O8Pgn9bt9p/bMVuylPVe3MWiiGMn8+6WoSJ3vl78cUHGYnefl85kPERiZsh4nxAvkHEiHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768513454; c=relaxed/simple;
-	bh=mNW8yqk2xoXaMtQbjfXm6kPMh8V2BNVYdaf0oec55zU=;
+	s=arc-20240116; t=1768513455; c=relaxed/simple;
+	bh=huChQ0u2BCn7gXNwfZTkUSsXo9/3LLiXWmTQYYHNToA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DCrXdbVJvlrQ7WoW1O42Kj3K2rUP2FhGD5f9SekG/MYII3n8XwdGYNTycBuGeRZbecKhJSc8R2KZOG77mOL56XKmZZzAS49nU0Mh8lW++vnXvDjScOJxctrTGiIL8YVkogQeMAyAkTG/UEJB1IpzSzl6qswTB1I/sT6qhX/duBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z1hh977l; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f3RR0Fxs; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=dzOcAQWgolnoGcH9QDELkVaQiXDYWrKEMUo/r+sWjSoizLpmTt4BCZPAMtX6E3/d2OkccqiOmYCT41xwI5Zf/wUkkvJlauHFAR0HmakH5jR+xz5uQfgZD/xt//P46Fn14+702u1LBkhgPnHxaMYqNFo1tUs+6As1bvAvhz01XGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kfXSZOT6; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yV39hSXP; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 15 Jan 2026 21:44:08 -0000
+Date: Thu, 15 Jan 2026 21:44:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768513451;
+	s=2020; t=1768513452;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dTv/NvM5Fuph+erO9dnvMqa+0/+n4ubcMZORNeWFfQE=;
-	b=Z1hh977lAcr/Zra8W79ZLy0mw6kq8lZFmDsrEdBgQ4oZRv0Fe0roRRDVUychKaJ+9+A3Ve
-	RZrIL85eJYI7wvO+0JWh971l+aJmlGXi+Wbyod5HBZ+rcuScmPWNjn42AzTzQl2pqdznFH
-	/WGGE3OB7PKEYpQxrHlUQ3nlp70mp6YJu5b7Zd3/T2SwNf0l/We9B2MOlF5tLW07GtSQ0t
-	deT6U6jbjuXXkO96OR4vFUQZsZ0tE9LE/exsy9Ak2lSP/TK6qAbKvj7gVeP883A96iCSno
-	Qu1UbbwminQ+gR9vDdxyHaiFC+90PDnNtQnkpl0+PWuUqJWc/cfcs4sJnamEzw==
+	bh=/iu4QgydaaMi/RSPazc4YJlLrlgiHcP6uG+2nrg8dGE=;
+	b=kfXSZOT6UvhWpYbEXoefWbcOHaGPjDvkaagQd5aScyT8+yYqV78eUY4kYPgq7OTklAST9x
+	sWsEof01zob4jnBnBXJ2l5qHBZveW3Szh0gGc/ZhBZPe3X1WgMsb5to6tDUkwgIyI1Y5ra
+	0tZlh4NabsnD7gIcKLPTNqFUsH1DIKgaDe3O4Plc/rzB9tsSHFHRbLmwHzUQjYiELujC++
+	olu+puQ8tSMuvNCDQNAk2fcQMTeFxslutCOST2pJsTaDmnbS18KXkXbQ2QCkQiX2hVcf+e
+	LWWuETlztw2qSKxn8c9JuB1ybreLWpVK57hQfDQFXxkDHkqnScvOE1+RRn7MqA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768513451;
+	s=2020e; t=1768513452;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dTv/NvM5Fuph+erO9dnvMqa+0/+n4ubcMZORNeWFfQE=;
-	b=f3RR0FxsqHHF4tMLARul6l0hFfDY/9ts4tMXVMFveAnyvuKnFWiPoGa4p9e9FiD0A39NaS
-	xbrXmdyviwPt25Cw==
-From: "tip-bot2 for Dapeng Mi" <tip-bot2@linutronix.de>
+	bh=/iu4QgydaaMi/RSPazc4YJlLrlgiHcP6uG+2nrg8dGE=;
+	b=yV39hSXPG75NJgX7Q1drPa/Rstgkz9tHzwGrsO65b+BBMJpxJCmzvAoDwyOSWp7vxKbIjq
+	3yT/naLOY52woTCg==
+From: "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/x86/intel: Support the 4 new OMR MSRs
- introduced in DMR and NVL
-Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260114011750.350569-2-dapeng1.mi@linux.intel.com>
-References: <20260114011750.350569-2-dapeng1.mi@linux.intel.com>
+Subject: [tip: perf/core] perf/core: Fix slow perf_event_task_exit() with LBR
+ callstacks
+Cc: Rosalie Fang <rosaliefang@google.com>,
+ Peter Zijlstra <peterz@infradead.org>, Namhyung Kim <namhyung@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260112165157.1919624-1-namhyung@kernel.org>
+References: <20260112165157.1919624-1-namhyung@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176851344823.510.2398506994627726203.tip-bot2@tip-bot2>
+Message-ID: <176851345131.510.5041502314619080345.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,166 +80,95 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     4e955c08d6dc76fb60cda9af955ddcebedaa7f69
-Gitweb:        https://git.kernel.org/tip/4e955c08d6dc76fb60cda9af955ddcebeda=
-a7f69
-Author:        Dapeng Mi <dapeng1.mi@linux.intel.com>
-AuthorDate:    Wed, 14 Jan 2026 09:17:44 +08:00
+Commit-ID:     4960626f956d63dce57f099016c2ecbe637a8229
+Gitweb:        https://git.kernel.org/tip/4960626f956d63dce57f099016c2ecbe637=
+a8229
+Author:        Namhyung Kim <namhyung@kernel.org>
+AuthorDate:    Mon, 12 Jan 2026 08:51:57 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Thu, 15 Jan 2026 10:04:26 +01:00
 
-perf/x86/intel: Support the 4 new OMR MSRs introduced in DMR and NVL
+perf/core: Fix slow perf_event_task_exit() with LBR callstacks
 
-Diamond Rapids (DMR) and Nova Lake (NVL) introduce an enhanced
-Off-Module Response (OMR) facility, replacing the Off-Core Response (OCR)
-Performance Monitoring of previous processors.
+I got a report that a task is stuck in perf_event_exit_task() waiting
+for global_ctx_data_rwsem.  On large systems with lots threads, it'd
+have performance issues when it grabs the lock to iterate all threads
+in the system to allocate the context data.
 
-Legacy microarchitectures used the OCR facility to evaluate off-core and
-multi-core off-module transactions. The newly named OMR facility improves
-OCR capabilities for scalable coverage of new memory systems in
-multi-core module systems.
+And it'd block task exit path which is problematic especially under
+memory pressure.
 
-Similar to OCR, 4 additional off-module configuration MSRs
-(OFFMODULE_RSP_0 to OFFMODULE_RSP_3) are introduced to specify attributes
-of off-module transactions. When multiple identical OMR events are
-created, they need to occupy the same OFFMODULE_RSP_x MSR. To ensure
-these multiple identical OMR events can work simultaneously, the
-intel_alt_er() and intel_fixup_er() helpers are enhanced to rotate these
-OMR events across different OFFMODULE_RSP_* MSRs, similar to previous OCR
-events.
+  perf_event_open
+    perf_event_alloc
+      attach_perf_ctx_data
+        attach_global_ctx_data
+          percpu_down_write (global_ctx_data_rwsem)
+            for_each_process_thread
+              alloc_task_ctx_data
+                                               do_exit
+                                                 perf_event_exit_task
+                                                   percpu_down_read (global_c=
+tx_data_rwsem)
 
-For more details about OMR, please refer to section 16.1 "OFF-MODULE
- RESPONSE (OMR) FACILITY" in ISE documentation.
+It should not hold the global_ctx_data_rwsem on the exit path.  Let's
+skip allocation for exiting tasks and free the data carefully.
 
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Reported-by: Rosalie Fang <rosaliefang@google.com>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260114011750.350569-2-dapeng1.mi@linux.intel=
-.com
+Link: https://patch.msgid.link/20260112165157.1919624-1-namhyung@kernel.org
 ---
- arch/x86/events/intel/core.c     | 59 ++++++++++++++++++++++---------
- arch/x86/events/perf_event.h     |  5 +++-
- arch/x86/include/asm/msr-index.h |  5 +++-
- 3 files changed, 52 insertions(+), 17 deletions(-)
+ kernel/events/core.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 1840ca1..3578c66 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3532,17 +3532,32 @@ static int intel_alt_er(struct cpu_hw_events *cpuc,
- 	struct extra_reg *extra_regs =3D hybrid(cpuc->pmu, extra_regs);
- 	int alt_idx =3D idx;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 101da5c..da013b9 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5421,9 +5421,20 @@ attach_task_ctx_data(struct task_struct *task, struct =
+kmem_cache *ctx_cache,
+ 		return -ENOMEM;
 =20
--	if (!(x86_pmu.flags & PMU_FL_HAS_RSP_1))
--		return idx;
--
--	if (idx =3D=3D EXTRA_REG_RSP_0)
--		alt_idx =3D EXTRA_REG_RSP_1;
-+	switch (idx) {
-+	case EXTRA_REG_RSP_0 ... EXTRA_REG_RSP_1:
-+		if (!(x86_pmu.flags & PMU_FL_HAS_RSP_1))
-+			return idx;
-+		if (++alt_idx > EXTRA_REG_RSP_1)
-+			alt_idx =3D EXTRA_REG_RSP_0;
-+		if (config & ~extra_regs[alt_idx].valid_mask)
-+			return idx;
-+		break;
+ 	for (;;) {
+-		if (try_cmpxchg((struct perf_ctx_data **)&task->perf_ctx_data, &old, cd)) {
++		if (try_cmpxchg(&task->perf_ctx_data, &old, cd)) {
+ 			if (old)
+ 				perf_free_ctx_data_rcu(old);
++			/*
++			 * Above try_cmpxchg() pairs with try_cmpxchg() from
++			 * detach_task_ctx_data() such that
++			 * if we race with perf_event_exit_task(), we must
++			 * observe PF_EXITING.
++			 */
++			if (task->flags & PF_EXITING) {
++				/* detach_task_ctx_data() may free it already */
++				if (try_cmpxchg(&task->perf_ctx_data, &cd, NULL))
++					perf_free_ctx_data_rcu(cd);
++			}
+ 			return 0;
+ 		}
 =20
--	if (idx =3D=3D EXTRA_REG_RSP_1)
--		alt_idx =3D EXTRA_REG_RSP_0;
-+	case EXTRA_REG_OMR_0 ... EXTRA_REG_OMR_3:
-+		if (!(x86_pmu.flags & PMU_FL_HAS_OMR))
-+			return idx;
-+		if (++alt_idx > EXTRA_REG_OMR_3)
-+			alt_idx =3D EXTRA_REG_OMR_0;
-+		/*
-+		 * Subtracting EXTRA_REG_OMR_0 ensures to get correct
-+		 * OMR extra_reg entries which start from 0.
-+		 */
-+		if (config & ~extra_regs[alt_idx - EXTRA_REG_OMR_0].valid_mask)
-+			return idx;
-+		break;
+@@ -5469,6 +5480,8 @@ again:
+ 	/* Allocate everything */
+ 	scoped_guard (rcu) {
+ 		for_each_process_thread(g, p) {
++			if (p->flags & PF_EXITING)
++				continue;
+ 			cd =3D rcu_dereference(p->perf_ctx_data);
+ 			if (cd && !cd->global) {
+ 				cd->global =3D 1;
+@@ -14562,8 +14575,11 @@ void perf_event_exit_task(struct task_struct *task)
 =20
--	if (config & ~extra_regs[alt_idx].valid_mask)
--		return idx;
-+	default:
-+		break;
-+	}
-=20
- 	return alt_idx;
+ 	/*
+ 	 * Detach the perf_ctx_data for the system-wide event.
++	 *
++	 * Done without holding global_ctx_data_rwsem; typically
++	 * attach_global_ctx_data() will skip over this task, but otherwise
++	 * attach_task_ctx_data() will observe PF_EXITING.
+ 	 */
+-	guard(percpu_read)(&global_ctx_data_rwsem);
+ 	detach_task_ctx_data(task);
  }
-@@ -3550,16 +3565,26 @@ static int intel_alt_er(struct cpu_hw_events *cpuc,
- static void intel_fixup_er(struct perf_event *event, int idx)
- {
- 	struct extra_reg *extra_regs =3D hybrid(event->pmu, extra_regs);
--	event->hw.extra_reg.idx =3D idx;
-+	int er_idx;
-=20
--	if (idx =3D=3D EXTRA_REG_RSP_0) {
--		event->hw.config &=3D ~INTEL_ARCH_EVENT_MASK;
--		event->hw.config |=3D extra_regs[EXTRA_REG_RSP_0].event;
--		event->hw.extra_reg.reg =3D MSR_OFFCORE_RSP_0;
--	} else if (idx =3D=3D EXTRA_REG_RSP_1) {
-+	event->hw.extra_reg.idx =3D idx;
-+	switch (idx) {
-+	case EXTRA_REG_RSP_0 ... EXTRA_REG_RSP_1:
-+		er_idx =3D idx - EXTRA_REG_RSP_0;
- 		event->hw.config &=3D ~INTEL_ARCH_EVENT_MASK;
--		event->hw.config |=3D extra_regs[EXTRA_REG_RSP_1].event;
--		event->hw.extra_reg.reg =3D MSR_OFFCORE_RSP_1;
-+		event->hw.config |=3D extra_regs[er_idx].event;
-+		event->hw.extra_reg.reg =3D MSR_OFFCORE_RSP_0 + er_idx;
-+		break;
-+
-+	case EXTRA_REG_OMR_0 ... EXTRA_REG_OMR_3:
-+		er_idx =3D idx - EXTRA_REG_OMR_0;
-+		event->hw.config &=3D ~ARCH_PERFMON_EVENTSEL_UMASK;
-+		event->hw.config |=3D 1ULL << (8 + er_idx);
-+		event->hw.extra_reg.reg =3D MSR_OMR_0 + er_idx;
-+		break;
-+
-+	default:
-+		pr_warn("The extra reg idx %d is not supported.\n", idx);
- 	}
- }
-=20
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 3161ec0..586e3fd 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -45,6 +45,10 @@ enum extra_reg_type {
- 	EXTRA_REG_FE		=3D 4,  /* fe_* */
- 	EXTRA_REG_SNOOP_0	=3D 5,  /* snoop response 0 */
- 	EXTRA_REG_SNOOP_1	=3D 6,  /* snoop response 1 */
-+	EXTRA_REG_OMR_0		=3D 7,  /* OMR 0 */
-+	EXTRA_REG_OMR_1		=3D 8,  /* OMR 1 */
-+	EXTRA_REG_OMR_2		=3D 9,  /* OMR 2 */
-+	EXTRA_REG_OMR_3		=3D 10,  /* OMR 3 */
-=20
- 	EXTRA_REG_MAX		      /* number of entries needed */
- };
-@@ -1099,6 +1103,7 @@ do {									\
- #define PMU_FL_RETIRE_LATENCY	0x200 /* Support Retire Latency in PEBS */
- #define PMU_FL_BR_CNTR		0x400 /* Support branch counter logging */
- #define PMU_FL_DYN_CONSTRAINT	0x800 /* Needs dynamic constraint */
-+#define PMU_FL_HAS_OMR		0x1000 /* has 4 equivalent OMR regs */
-=20
- #define EVENT_VAR(_id)  event_attr_##_id
- #define EVENT_PTR(_id) &event_attr_##_id.attr.attr
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-inde=
-x.h
-index 3d0a095..6d1b69e 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -263,6 +263,11 @@
- #define MSR_SNOOP_RSP_0			0x00001328
- #define MSR_SNOOP_RSP_1			0x00001329
-=20
-+#define MSR_OMR_0			0x000003e0
-+#define MSR_OMR_1			0x000003e1
-+#define MSR_OMR_2			0x000003e2
-+#define MSR_OMR_3			0x000003e3
-+
- #define MSR_LBR_SELECT			0x000001c8
- #define MSR_LBR_TOS			0x000001c9
 =20
 
