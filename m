@@ -1,76 +1,76 @@
-Return-Path: <linux-tip-commits+bounces-8013-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8014-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A99D28958
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 22:02:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FA1D28CC8
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 22:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C0E53083697
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 21:01:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCCA6301075A
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 15 Jan 2026 21:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABBD32AACE;
-	Thu, 15 Jan 2026 21:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF792322B67;
+	Thu, 15 Jan 2026 21:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WLEr7Hwr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mFTMij14"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DJB/VLUd";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tCMODviO"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E74E328263;
-	Thu, 15 Jan 2026 21:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378862BE7C3;
+	Thu, 15 Jan 2026 21:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768510868; cv=none; b=hs+8cQqY47/i6HuJZ9ODyd9C/CuEQ4HuqaVfcaeDRuz1i/+mAJQ1XUJAS8rC2ToF+k0liGjLWxS/ZrmN8N7itw+YXhOrSWwJZwXln+Nv7O3V3YX7WYW2MrN7LerKJ45/Ql6mjwKfFF2QLhwVyTy8caDrhmTMGFNdRx2ByP7sBnU=
+	t=1768513443; cv=none; b=IXbGwoN1Itbqlik4xiLBpgB7bC3WyziQyKJAIRDPcVeUGJmaruQgc/BJiah8/mzZfcWfURsz1ifMAbclV2XLajeB5jWkj//Xemk1c4nDetdrSb8tXykvxHjaew36OM/NM+f00I9nRCRMLN1wsOQ19uXbEENlI4aO/jAASLlS48s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768510868; c=relaxed/simple;
-	bh=bcqwIf0KHrelfMZv0YcMpkK7Hrvl1i9nkQj2ruW/8F8=;
+	s=arc-20240116; t=1768513443; c=relaxed/simple;
+	bh=lKu9rLAWJq4AhINx7Py2M7q0Q86grp5xMco5l1gaElQ=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=WyyZSunbyhLZhLAsx/mF/PrCSLEYQdOxQJhtIHCwjmFLRT4ZxS0yug5MTHEiIxrqL6aIhxKwmoiYkWk0i0X8oUMnigDxwaIrCj/9r1TYLlDEpIeA5t0vBtiQBCZm7BfNW3+GfOzzBfNchITrjbI89p6qPYQyqkEWHsxWSe0XCg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WLEr7Hwr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mFTMij14; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=WOT/c86VFTlrUj54eTLBctK4SVNFfjiZ3e4cTY2OzmQMHBC+DJUgWLvCLvumR+sagF4wqmkqlubLuVI44D1Ao0dGvVWXn8khmb+TzVryGUUTAzQrFMccGzN56yk/5dKlfXAB9SYhb/TIX2nvRLedJWidI2DWkRPNnb2wx8WRWiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DJB/VLUd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tCMODviO; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 15 Jan 2026 21:01:04 -0000
+Date: Thu, 15 Jan 2026 21:43:58 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768510865;
+	s=2020; t=1768513440;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=elDq9ijNLlIplF++CMPcIf3+aodvqBSs3Q6JR9X+fgY=;
-	b=WLEr7Hwr41nhDmceCZeQpaEQ/D0d87v3Ual/K80Yc5L3Doc9PEvIAWWwcNiBiXZ0w94PSP
-	qp5XO47cPQTo9NqdT2kQq+R/DsrOhhhrNoLK/9LEPh80kVB90kS+DVujDnP60AD69lunom
-	xexSaQ8Z11NW14qxUTVU5aweBJXINtEHYw6+7C9zSsdXbpA3O4IqkOQs6BvDlHOvAZvsZu
-	fMjF/dj6JWu5EFo/EVvCa6396HEO07mYoB3AGqG1nNh7YpdIOZ9gJiL+JQTqBU/MkMDdAL
-	5dsgcabAWk2kKyde4wnk6KKAk+cVrMJZX6Fr94H9cuUmMsYRvKPAIKGzxFg3Jw==
+	bh=Nql6VgCOPYqSEGHtSlW/hlvy+iC9VsuvjzGO9FVtO2w=;
+	b=DJB/VLUdZdY0Ugc0fl9lpOJEdtkRITzzf/GkcbMb5qunHWgbyhElveO76dKuJ3aXMTwAOD
+	C2Bnj+6YrT43B3Nxo73ggfQtc9nW60OE60KtZoLASQ4R/KVikJoSPhYlTbb8dNrw4D5E60
+	rnZ1WEVNSo2VK7fBlGckGCcTFww1J5XCWO/lhtwctSxsvvTci9cLP5LQNPH642cwbAxcuc
+	ebJxEes2xkVjM7bvOc7BthXoo7voRNhJopP5f6eSTQ1DgPEnJUzr0S3wMJIFApjfwwgrB2
+	3SUYcGeDOVH8saV30IHATWoKZinDGTxLgyPXB6LtESAQdvTrZJjOg+g8Uc2I2A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768510865;
+	s=2020e; t=1768513440;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=elDq9ijNLlIplF++CMPcIf3+aodvqBSs3Q6JR9X+fgY=;
-	b=mFTMij14qRW1OsnguSXDslNsr4NzHVsJufuR4oP7G8mhwSxUcHFjOFpyxx8j/lR3DwFvdp
-	zz4tdAkMMX+380Cw==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=Nql6VgCOPYqSEGHtSlW/hlvy+iC9VsuvjzGO9FVtO2w=;
+	b=tCMODviOguMSimDMvgMWOQ+rphD/NCKjRAXhE6CGvHWgj4mfefcpiryLyCDrvcYMyn9/45
+	epKNcyxECsTKD5CA==
+From: "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
 Subject:
- [tip: sched/urgent] sched/deadline: Ensure get_prio_dl() is up-to-date
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260106104113.GX3707891@noisy.programming.kicks-ass.net>
-References: <20260106104113.GX3707891@noisy.programming.kicks-ass.net>
+ [tip: perf/core] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+Cc: Paulo Andrade <pandrade@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <aWO7Fdxn39piQnxu@redhat.com>
+References: <aWO7Fdxn39piQnxu@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176851086404.510.18122560875480513196.tip-bot2@tip-bot2>
+Message-ID: <176851343815.510.11862479025865189952.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,93 +78,142 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     375410bb9a403009a44af3cc7f087090da076e09
-Gitweb:        https://git.kernel.org/tip/375410bb9a403009a44af3cc7f087090da0=
-76e09
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 06 Jan 2026 11:41:13 +01:00
+Commit-ID:     69044a0cbfdcc6e788c8a1f8e050d108038461d6
+Gitweb:        https://git.kernel.org/tip/69044a0cbfdcc6e788c8a1f8e050d108038=
+461d6
+Author:        Oleg Nesterov <oleg@redhat.com>
+AuthorDate:    Sun, 11 Jan 2026 16:00:37 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Thu, 15 Jan 2026 21:57:52 +01:00
+CommitterDate: Thu, 15 Jan 2026 10:04:28 +01:00
 
-sched/deadline: Ensure get_prio_dl() is up-to-date
+x86/uprobes: Fix XOL allocation failure for 32-bit tasks
 
-Pratheek tripped a WARN and noted the following issue:
+This script
 
-> Inspecting the set of events that led to the warning being triggered
-> showed the following:
->
->     systemd-1  [008] dN.31 ...: do_set_cpus_allowed: set_cpus_allowed begin!
->
->     systemd-1  [008] dN.31 ...: sched_change_begin: Begin!
->     systemd-1  [008] dN.31 ...: sched_change_begin: Before dequeue_task()!
->     systemd-1  [008] dN.31 ...: update_curr_dl_se: update_curr_dl_se: ENQUE=
-UE_REPLENISH
->     systemd-1  [008] dN.31 ...: enqueue_dl_entity: enqueue_dl_entity: ENQUE=
-UE_REPLENISH
->     systemd-1  [008] dN.31 ...: replenish_dl_entity: Replenish before: 1481=
-5760217
->     systemd-1  [008] dN.31 ...: replenish_dl_entity: Replenish after: 14816=
-960047
->     systemd-1  [008] dN.31 ...: sched_change_begin: Before put_prev_task()!
->
->     systemd-1  [008] dN.31 ...: sched_change_end: Before enqueue_task()!
->     systemd-1  [008] dN.31 ...: sched_change_end: Before put_prev_task()!
->     systemd-1  [008] dN.31 ...: prio_changed_dl: Queuing pull task on prio =
-change: 14815760217 -> 14816960047
->     systemd-1  [008] dN.31 ...: prio_changed_dl: Queuing balance callback!
->     systemd-1  [008] dN.31 ...: sched_change_end: End!
->
->     systemd-1  [008] dN.31 ...: do_set_cpus_allowed: set_cpus_allowed end!
->     systemd-1  [008] dN.21 ...: __schedule: Woops! Balance callback found!
->
-> 1. sched_change_begin() from guard(sched_change) in
->    do_set_cpus_allowed() stashes the priority, which for the deadline
->    task, is "p->dl.deadline".
-> 2. The dequeue of the deadline task replenishes the deadline.
-> 3. The task is enqueued back after guard's scope ends and since there is
->    no *_CLASS flags set, sched_change_end() calls
->    dl_sched_class->prio_changed() which compares the deadline.
-> 4. Since deadline was moved on dequeue, prio_changed_dl() sees the value
->    differ from the stashed value and queues a balance pull callback.
-> 5. do_set_cpus_allowed() finishes and drops the rq_lock without doing a
->    do_balance_callbacks().
-> 6. Grabbing the rq_lock() at subsequent __schedule() triggers the
->    warning since the balance pull callback was never executed before
->    dropping the lock.
+	#!/usr/bin/bash
 
-Meaning get_prio_dl() ought to update current and return an up-to-date
-value.
+	echo 0 > /proc/sys/kernel/randomize_va_space
 
-Fixes: 6455ad5346c9 ("sched: Move sched_class::prio_changed() into the change=
- pattern")
-Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
+	echo 'void main(void) {}' > TEST.c
+
+	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+	gcc -m32 -fcf-protection=3Dbranch TEST.c -o test
+
+	bpftrace -e 'uprobe:./test:main {}' -c ./test
+
+"hangs", the probed ./test task enters an endless loop.
+
+The problem is that with randomize_va_space =3D=3D 0
+get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+just return the "addr =3D=3D TASK_SIZE - PAGE_SIZE" hint, this addr is used
+by the stack vma.
+
+arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+check.
+
+handle_swbp() doesn't report this failure (probably it should) and silently
+restarts the probed insn. Endless loop.
+
+I think that the right fix should change the x86 get_unmapped_area() paths
+to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+CONFIG_X86_X32_ABI=3Dy, in_x32_syscall() falsely returns true in this case
+because ->orig_ax =3D -1.
+
+But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+the probed task is 32-bit to make in_ia32_syscall() true.
+
+Fixes: 1b028f784e8c ("86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Reported-by: Paulo Andrade <pandrade@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Link: https://patch.msgid.link/20260106104113.GX3707891@noisy.programming.kic=
-ks-ass.net
+Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
 ---
- kernel/sched/deadline.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
+ include/linux/uprobes.h   |  1 +
+ kernel/events/uprobes.c   | 10 +++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index b5c19b1..b7acf74 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -3296,6 +3296,12 @@ static void switched_to_dl(struct rq *rq, struct task_=
-struct *p)
+diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
+index 7be8e36..2dbd2e0 100644
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
 =20
- static u64 get_prio_dl(struct rq *rq, struct task_struct *p)
- {
-+	/*
-+	 * Make sure to update current so we don't return a stale value.
-+	 */
-+	if (task_current_donor(rq, p))
-+		update_curr_dl(rq);
-+
- 	return p->dl.deadline;
+ 	return false;
  }
++
++#ifdef CONFIG_IA32_EMULATION
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	struct thread_info *ti =3D current_thread_info();
++	unsigned long vaddr;
++
++	/*
++	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
++	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
++	 * vm_unmapped_area_info.high_limit.
++	 *
++	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=3Dy case,
++	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
++	 * (falsely) returns true because ->orig_ax =3D=3D -1.
++	 */
++	if (test_thread_flag(TIF_ADDR32))
++		ti->status |=3D TS_COMPAT;
++	vaddr =3D get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	ti->status &=3D ~TS_COMPAT;
++
++	return vaddr;
++}
++#endif
+diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
+index ee3d36e..f548fea 100644
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
+ extern void arch_uprobe_init_state(struct mm_struct *mm);
+ extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vad=
+dr);
+ extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long =
+vaddr);
++extern unsigned long arch_uprobe_get_xol_area(void);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {
+ };
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index a7d7d83..dfbce02 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping =3D=
+ {
+ 	.mremap =3D xol_mremap,
+ };
 =20
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	/* Try to map as high as possible, this is only a hint. */
++	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++}
++
+ /* Slot allocation for XOL */
+ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ {
+@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol=
+_area *area)
+ 	}
+=20
+ 	if (!area->vaddr) {
+-		/* Try to map as high as possible, this is only a hint. */
+-		area->vaddr =3D get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+-						PAGE_SIZE, 0, 0);
++		area->vaddr =3D arch_uprobe_get_xol_area();
+ 		if (IS_ERR_VALUE(area->vaddr)) {
+ 			ret =3D area->vaddr;
+ 			goto fail;
 
