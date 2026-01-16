@@ -1,58 +1,58 @@
-Return-Path: <linux-tip-commits+bounces-8032-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8033-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCADD2FEA2
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jan 2026 11:53:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDAE3D332FB
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jan 2026 16:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76CFC300D148
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jan 2026 10:50:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5782730FFB1C
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 16 Jan 2026 15:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77A936166C;
-	Fri, 16 Jan 2026 10:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2CE3370ED;
+	Fri, 16 Jan 2026 15:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ifFzQVgQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EmU5w9rp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QHC3Brnq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N/XKr/9s"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C8432AACE;
-	Fri, 16 Jan 2026 10:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B2E204F93;
+	Fri, 16 Jan 2026 15:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768560606; cv=none; b=LCCztAKfBRGNW6uu25YFZtYhpbFpagVeylDgTxw1hqkLb+1jhxBq00MgzwBnSYsu2gSygHNdoROUy3qc4R7+GSVrIqrfITIeHcXTKH/8QQ3dCcGL6np9Vp/c1H+CLDhJtqfWMdA6VM/aVbrKke1p2OFXIqwoDU5G7oKqMRrxGkc=
+	t=1768577243; cv=none; b=Q26loyGHhjcYsmjrJh60zF8C5nrZ3Vdk4ZpZtSpaauNho7yLDBP1+P8HMhi3bT+4cxB9+rZC5igcIavvj7sLb5/RVmt5mNIdXgKPKSIeCJd63mBk+Kn8YuWhsF39ahcWyAvUAWPc69/xI2RXwV1QuIIrr/pGU9XBtSEf9j0HiXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768560606; c=relaxed/simple;
-	bh=XOaluGgtJlQu5fRibfyDjhPGTHZwgCyDnepWxVFHI9c=;
+	s=arc-20240116; t=1768577243; c=relaxed/simple;
+	bh=31c1DeC91a09f42O0ek5nz13JU6eqdoFA/urQj3o8VA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=SPqK6U4Srgj84DW3Q9kE1v4xiWqs7XxgG0qIM+pFcrr3Yr2zjt0GAJuHYrTWWLN7V5P5DaWxInMKS2ADWCAKJ93E+qHdaWrGxcYxXGRO+W2ml6uzTQFSnZ6lOh3fbvTy0shjXO0nAxNb6niZCD8JSI514Bv3uja2M0f3dc44Fd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ifFzQVgQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EmU5w9rp; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=crplepFIKOq6HaYReDmCBn9dzrDQySRO/KKkospVjgsFBg3Q/dJOtWJGjMHPNwFe+3zhTeNP1gALWBOCbCQc1rQ9vJOQ04ULCd/N3tTG4y2P0k7iMtpGAg3Fc5WgREvOHN2lf7EjH2QDtgrEqagCs4JUeDqI3PXVkQh+bKcS1m0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QHC3Brnq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N/XKr/9s; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 Jan 2026 10:49:51 -0000
+Date: Fri, 16 Jan 2026 15:27:18 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768560596;
+	s=2020; t=1768577240;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+AoGx+78koCEd4Ozrx9VquzV+QrGliPdSLjVLeyNCB8=;
-	b=ifFzQVgQq7HsimgsNG/0nP9dyCZ3TfGEJYcfugQFxZ+hrBbzMN1wZJ7lqKyrFYFBePDBTk
-	+6+ALwktL0dyAeMjkS+u1jBGbKBrNGw3jUlkSTkkA2nIKAVmSWLhjfTOyHrjM4VMGVKn9q
-	BhHN8HHrXOAYPqCwbsRJvLTzvXv5zuqDwzeMRzVl2ObMLPCYhC4ZZGcKfhLBlLjFww2MeJ
-	0RX8zE1Qfgix+kgQQ889TrGxG3dCa+bAtiBoDT3d1fxIpi0bKQv5hA77pDYYdx5FQHMsum
-	kXe0/0Xi/MK+0bX5v8/4aBan9/rqOG7V6BNXFYit0hov8jxBtPpfuuumqr3g8w==
+	bh=HtY0sgtQTI5Q94iRvgcX3+6Tm2+EaMbLFKclrW6HaKE=;
+	b=QHC3BrnqvuGF0DGOJSoq4/+9sZy6yq6g7cIq6ZSNCffhuAQNkOcWsm9xgPTEd1PQu1sGqk
+	r9eNn4m1NvMykQNVxHms3dsrrYH4heBCTlK67WvlJ6blTMvbKlyTvDgvxrvaxFm8RIY6yA
+	qJHN3sAWzHA3Jbwff3zDIpKrDpX6ISWkKGqCeroXqou5svJnA+/lHavEdCpxrkJa841ixa
+	Fy+t7tmh273UuZXD705ogPK+EB7keyfGbD0V7b/RjBpgPMBfCsjDXtMXxUjpNroNdggBRU
+	aBmy9n9gCRjNgoU3fiXuZDMqy04T1MnMVX9AyixQPsIgvuxmJ6BfH1a6p+xJ4g==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768560596;
+	s=2020e; t=1768577240;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+AoGx+78koCEd4Ozrx9VquzV+QrGliPdSLjVLeyNCB8=;
-	b=EmU5w9rpvQS2HYqM/0NCOAFcgQG0zQw8dsOWr6XJK/jUMUd7WhFggZd9KaIjFaDELmtJhc
-	WfbFrullNkC5p1Dg==
+	bh=HtY0sgtQTI5Q94iRvgcX3+6Tm2+EaMbLFKclrW6HaKE=;
+	b=N/XKr/9sK18bbtAV9n7uT2locscTiaK5ztWj5AO9fT0Rhkwf5Y6T1rjVNFxG4HFsvs/ZCb
+	sez971OE2cvbegDA==
 From: "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
@@ -70,7 +70,7 @@ List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176856059167.510.9955645112386260072.tip-bot2@tip-bot2>
+Message-ID: <176857723836.510.4242271338759775529.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,13 +80,13 @@ Content-Transfer-Encoding: quoted-printable
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     40bb50531482258bf410d84fa4ecb944e02b887b
-Gitweb:        https://git.kernel.org/tip/40bb50531482258bf410d84fa4ecb944e02=
-b887b
+Commit-ID:     d55c571e4333fac71826e8db3b9753fadfbead6a
+Gitweb:        https://git.kernel.org/tip/d55c571e4333fac71826e8db3b9753fadfb=
+ead6a
 Author:        Oleg Nesterov <oleg@redhat.com>
 AuthorDate:    Sun, 11 Jan 2026 16:00:37 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jan 2026 11:46:25 +01:00
+CommitterDate: Fri, 16 Jan 2026 16:23:54 +01:00
 
 x86/uprobes: Fix XOL allocation failure for 32-bit tasks
 
@@ -127,7 +127,7 @@ because ->orig_ax =3D -1.
 But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
 the probed task is 32-bit to make in_ia32_syscall() true.
 
-Fixes: 1b028f784e8c ("86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
 Reported-by: Paulo Andrade <pandrade@redhat.com>
 Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
