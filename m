@@ -1,175 +1,130 @@
-Return-Path: <linux-tip-commits+bounces-8070-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8071-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B37D3958D
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 14:53:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F01D39750
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 16:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A6173001199
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 13:53:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 004813005B99
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 15:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D03A32C923;
-	Sun, 18 Jan 2026 13:53:35 +0000 (UTC)
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2A02836E;
-	Sun, 18 Jan 2026 13:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03321E1A33;
+	Sun, 18 Jan 2026 15:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qGiA3mVA";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H1kM3xKX"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432331FC7;
+	Sun, 18 Jan 2026 15:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768744415; cv=none; b=g+FO5286Z7BJDVfgEBDmzL3ZoEb3XteNqgZthtADTwbfs+xDnwapNPaidpEo15Ia6Wi+sPn1Kp8l1Fd+dv3xZv+w5wy0psRpMAOW4hvCui7usLb704Grw8yvoWMbqi2XJ437BwjzMJmoZYnb9QOIdpiS5NjVqeUU0/gZTcXPrpQ=
+	t=1768748447; cv=none; b=Wg9sAADU9O6y6cCl21Yn4UpMqRa9MyxDreXcyLMJmTQj2z7wSBL8App4tk4+jhu5saHjCM6gXW7LaG1QZsORC5Z1D8EqULQCv5ILi0pMAzTPR1rRzswqgzJg/Y9Met/2/IN+iTgXJIROGT8e2kZxJQS4RcPNwII7+WJFeJnliwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768744415; c=relaxed/simple;
-	bh=bFUSqSG66HuLbzouKFZ+9YkFAoxOHI/h9V8/kNuLgF4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=MTyIRHGUdsYlCSoGztOO78uEewkVr3DGqUE0/3GiQCxMNhmSbea6ekwfFyWuYG0efxu62i8cdOFFgwjpNcZinDYbrBFb620zm9dsYfrQHJRVWQ05ewC5adbys+eBeAM3Gt8f1hRqU7oiT1y4xvG4OAp8svbPYq7ReHzxK9z7CVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [117.60.74.252])
-	by gateway (Coremail) with SMTP id _____8Dx+8LS5WxpZAoKAA--.32447S3;
-	Sun, 18 Jan 2026 21:53:23 +0800 (CST)
-Received: from chenhuacai$loongson.cn ( [117.60.74.252] ) by
- ajax-webmail-front1 (Coremail) ; Sun, 18 Jan 2026 21:53:20 +0800
- (GMT+08:00)
-Date: Sun, 18 Jan 2026 21:53:20 +0800 (GMT+08:00)
-X-CM-HeaderCharset: UTF-8
-From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org,
-	"Jiaxun Yang" <jiaxun.yang@flygoat.com>,
-	"Thomas Gleixner" <tglx@kernel.org>, x86@kernel.org
-Subject: Re: [tip: irq/drivers] irqchip/loongson-eiointc: Adjust irqchip
- driver for 32BIT/64BIT
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
- 20250609(354f7833) Copyright (c) 2002-2026 www.mailtech.cn loongson
-In-Reply-To: <176874371646.510.14542897108678824117.tip-bot2@tip-bot2>
-References: <20260113085940.3344837-4-chenhuacai@loongson.cn>
- <176874371646.510.14542897108678824117.tip-bot2@tip-bot2>
-Content-Transfer-Encoding: base64
-X-CM-CTRLDATA: pwUPzmZvb3Rlcl90eHQ9NDUwNTo2MTg=
-Content-Type: text/plain; charset=UTF-8
+	s=arc-20240116; t=1768748447; c=relaxed/simple;
+	bh=+Utbp+lBRPgeKV43UaFFHdVa73RqR+cVzQ+u+dz1jXE=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=F1ZnizXZj6DnOgLHgcbkP/UC4y3GJLvrQY4KyCrDIG9tnZgP0pymlOJHxGGF6ylzjpcLEwU5gYVYcrLGFKICntZq+iEFgctl4Wisl83eeCJSzlQ+1j8aWzO1M/zcaNoT3S8/WwC17dcG9MB+lOoSj0FcbfOBicSooNi2GnSyOdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qGiA3mVA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H1kM3xKX; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 18 Jan 2026 15:00:41 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768748444;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FoADQlREfjRFtIt6Y5Y3nvWe/oT+R2/Oden9dhCHevg=;
+	b=qGiA3mVAuj5QbTJW6F7sZzx5gOdp70O94aVmTRLrZyZsOFsxRoKxzAOPOWmBwDIzDQyXx5
+	8Q1CNEU+yZ0i4SDWt0qxkuZUzzFjZ1EjJMkGkeL7SJFgKhHFfL5k5lGWh6fFrYE2s5CaVN
+	LbI59hTLxim2aB2ULUcyhhlJkJzz+UWc7AOZeI3PWcURkGeAGImbLlfkJ8yXwP34rQQlPh
+	knJ+uhqBeodTYJ84GGfq0CodrGvm48KhKJ3FyPAPcZG3gNDxoMTdjunPBBqt0SZ4Y3P/U1
+	ABtdpHTfJJCia8KpBu8GhdXo9jEkt97DCdFDKmqZfPkB3GIGEKtz7hT4m1d8SA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768748444;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FoADQlREfjRFtIt6Y5Y3nvWe/oT+R2/Oden9dhCHevg=;
+	b=H1kM3xKXLUddYxBwkO5geABz/6zOVQF8vvynf2EG8YajH6s5F1CoF7SCCjYovvfJnpn9+5
+	YUGF3VQ0s/6c5IBg==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/vdso] x86/percpu: Make CONFIG_USE_X86_SEG_SUPPORT work
+ with sparse
+Cc: kernel test robot <lkp@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87v7gz0yjv.ffs@tglx>
+References: <87v7gz0yjv.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <780bbd8b.3cf4c.19bd161b63e.Coremail.chenhuacai@loongson.cn>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:qMiowJCxusHQ5WxpqDsjAA--.5363W
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQELBmlsdjgBjQACsI
-X-Coremail-Antispam: 1Uk129KBj93XoWxXF13Cry5Kry3CryUWr4DAwc_yoWrtFy7pF
-	WUCa4DCrW5tFyYg39avr4UCFy5ZFn3JFZFyFZ3W3yxZFyUAr1jkFs7Crs0vr4kCr97Wa12
-	yF4Ygw1xCa15AFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFcxC0VAYjxAxZF
-	0Ew4CEw7xC0wACY4xI67k04243AVC20s07MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
-	c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
-	CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
-	MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
-	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr1l6VAC
-	Y4xI67k04243AbIYCTnIWIevJa73UjIFyTuYvjxU2zV1UUUUU
+Message-ID: <176874844148.510.15534678654047778598.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-SGksIFRob21hcywKCgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6ICJ0aXAt
-Ym90MiBmb3IgSHVhY2FpIENoZW4iIDx0aXAtYm90MkBsaW51dHJvbml4LmRlPgo+IOWPkemAgeaX
-tumXtDoyMDI2LTAxLTE4IDIxOjQxOjU2ICjmmJ/mnJ/ml6UpCj4g5pS25Lu25Lq6OiBsaW51eC10
-aXAtY29tbWl0c0B2Z2VyLmtlcm5lbC5vcmcKPiDmioTpgIE6ICJKaWF4dW4gWWFuZyIgPGppYXh1
-bi55YW5nQGZseWdvYXQuY29tPiwgIkh1YWNhaSBDaGVuIiA8Y2hlbmh1YWNhaUBsb29uZ3Nvbi5j
-bj4sICJUaG9tYXMgR2xlaXhuZXIiIDx0Z2x4QGtlcm5lbC5vcmc+LCB4ODZAa2VybmVsLm9yZywg
-bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZwo+IOS4u+mimDogW3RpcDogaXJxL2RyaXZlcnNd
-IGlycWNoaXAvbG9vbmdzb24tZWlvaW50YzogQWRqdXN0IGlycWNoaXAgZHJpdmVyIGZvciAzMkJJ
-VC82NEJJVAo+IAo+IFRoZSBmb2xsb3dpbmcgY29tbWl0IGhhcyBiZWVuIG1lcmdlZCBpbnRvIHRo
-ZSBpcnEvZHJpdmVycyBicmFuY2ggb2YgdGlwOgo+IAo+IENvbW1pdC1JRDogICAgIDYxZmI1ZTUx
-N2VjNDU3Yzc2MjExZjAzYWIwYjM3OTg4MjI0ODcwNmQKPiBHaXR3ZWI6ICAgICAgICBodHRwczov
-L2dpdC5rZXJuZWwub3JnL3RpcC82MWZiNWU1MTdlYzQ1N2M3NjIxMWYwM2FiMGIzNzk4ODIyNDg3
-MDZkCj4gQXV0aG9yOiAgICAgICAgSHVhY2FpIENoZW4gPGNoZW5odWFjYWlAbG9vbmdzb24uY24+
-Cj4gQXV0aG9yRGF0ZTogICAgVHVlLCAxMyBKYW4gMjAyNiAxNjo1OTozNiArMDg6MDAKPiBDb21t
-aXR0ZXI6ICAgICBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAa2VybmVsLm9yZz4KPiBDb21taXR0ZXJE
-YXRlOiBTdW4sIDE4IEphbiAyMDI2IDE0OjM5OjE3ICswMTowMAo+IAo+IGlycWNoaXAvbG9vbmdz
-b24tZWlvaW50YzogQWRqdXN0IGlycWNoaXAgZHJpdmVyIGZvciAzMkJJVC82NEJJVAo+IAo+IGlv
-Y3NyX3JlYWQ2NCgpL2lvY3NyX3dyaXRlNjQoKSBhcmUgb25seSBhdmFpbGFibGUgb24gNjRCSVQg
-TG9vbmdBcmNoCj4gcGxhdGZvcm0sIHNvIGFkZCBhbmQgdXNlIGEgcGFpciBvZiBoZWxwZXJzLCBp
-LmUuIHJlYWRfaXNyKCkvd3JpdGVfaXNyKCkKPiBpbnN0ZWFkIHRvIG1ha2UgdGhlIGRyaXZlciB3
-b3JrIG9uIGJvdGggMzJCSVQgYW5kIDY0QklUIHBsYXRmb3Jtcy4KPiAKPiBUaGlzIG1ha2VzIGVv
-aWludGNfZW5hYmxlKCkgYSBuby1vcCBmb3IgMzItYml0IGFzIGl0IGlzIG9ubHkgcmVxdWlyZWQg
-b24KPiA2NC1iaXQgc3lzdGVtcy4KSGVyZSBpcyBhIHR5cG8sIGVvaWludGMgc2hvdWxkIGJlIGVp
-b2ludGMuIElmIGl0IGlzIG5vdCB0b28gbGF0ZSBwbGVhc2UgY29uc2lkZXIgdG8gZml4IGl0Li4u
-CgpIdWFjYWkKCj4gCj4gWyB0Z2x4OiBNYWtlIHRoZSBoZWxwZXJzIGlubGluZSBhbmQgZml4dXAg
-dGhlIHZhcmlhYmxlIGRlY2xhcmF0aW9uIG9yZGVyIF0KPiAKPiBDby1kZXZlbG9wZWQtYnk6IEpp
-YXh1biBZYW5nIDxqaWF4dW4ueWFuZ0BmbHlnb2F0LmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBKaWF4
-dW4gWWFuZyA8amlheHVuLnlhbmdAZmx5Z29hdC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogSHVhY2Fp
-IENoZW4gPGNoZW5odWFjYWlAbG9vbmdzb24uY24+Cj4gU2lnbmVkLW9mZi1ieTogVGhvbWFzIEds
-ZWl4bmVyIDx0Z2x4QGtlcm5lbC5vcmc+Cj4gTGluazogaHR0cHM6Ly9wYXRjaC5tc2dpZC5saW5r
-LzIwMjYwMTEzMDg1OTQwLjMzNDQ4MzctNC1jaGVuaHVhY2FpQGxvb25nc29uLmNuCj4gLS0tCj4g
-IGRyaXZlcnMvaXJxY2hpcC9pcnEtbG9vbmdzb24tZWlvaW50Yy5jIHwgMzYgKysrKysrKysrKysr
-KysrKysrKystLS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgMzAgaW5zZXJ0aW9ucygrKSwgNiBkZWxl
-dGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9pcnFjaGlwL2lycS1sb29uZ3Nvbi1l
-aW9pbnRjLmMgYi9kcml2ZXJzL2lycWNoaXAvaXJxLWxvb25nc29uLWVpb2ludGMuYwo+IGluZGV4
-IGFkMjEwNTYuLjM3ZTdlMWYgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9pcnFjaGlwL2lycS1sb29u
-Z3Nvbi1laW9pbnRjLmMKPiArKysgYi9kcml2ZXJzL2lycWNoaXAvaXJxLWxvb25nc29uLWVpb2lu
-dGMuYwo+IEBAIC0zNyw5ICszNyw5IEBACj4gICNkZWZpbmUgIEVYVElPSV9FTkFCTEVfSU5UX0VO
-Q09ERSAgICAgIEJJVCgyKQo+ICAjZGVmaW5lICBFWFRJT0lfRU5BQkxFX0NQVV9FTkNPREUgICAg
-ICBCSVQoMykKPiAgCj4gLSNkZWZpbmUgVkVDX1JFR19DT1VOVAkJNAo+IC0jZGVmaW5lIFZFQ19D
-T1VOVF9QRVJfUkVHCTY0Cj4gLSNkZWZpbmUgVkVDX0NPVU5UCQkoVkVDX1JFR19DT1VOVCAqIFZF
-Q19DT1VOVF9QRVJfUkVHKQo+ICsjZGVmaW5lIFZFQ19DT1VOVAkJMjU2Cj4gKyNkZWZpbmUgVkVD
-X0NPVU5UX1BFUl9SRUcJQklUU19QRVJfTE9ORwo+ICsjZGVmaW5lIFZFQ19SRUdfQ09VTlQJCShW
-RUNfQ09VTlQgLyBCSVRTX1BFUl9MT05HKQo+ICAjZGVmaW5lIFZFQ19SRUdfSURYKGlycV9pZCkJ
-KChpcnFfaWQpIC8gVkVDX0NPVU5UX1BFUl9SRUcpCj4gICNkZWZpbmUgVkVDX1JFR19CSVQoaXJx
-X2lkKSAgICAgKChpcnFfaWQpICUgVkVDX0NPVU5UX1BFUl9SRUcpCj4gICNkZWZpbmUgRUlPSU5U
-Q19BTExfRU5BQkxFCTB4ZmZmZmZmZmYKPiBAQCAtODUsMTEgKzg1LDEzIEBAIHN0YXRpYyBzdHJ1
-Y3QgZWlvaW50Y19wcml2ICplaW9pbnRjX3ByaXZbTUFYX0lPX1BJQ1NdOwo+ICAKPiAgc3RhdGlj
-IHZvaWQgZWlvaW50Y19lbmFibGUodm9pZCkKPiAgewo+ICsjaWZkZWYgQ09ORklHX01BQ0hfTE9P
-TkdTT042NAo+ICAJdWludDY0X3QgbWlzYzsKPiAgCj4gIAltaXNjID0gaW9jc3JfcmVhZDY0KExP
-T05HQVJDSF9JT0NTUl9NSVNDX0ZVTkMpOwo+ICAJbWlzYyB8PSBJT0NTUl9NSVNDX0ZVTkNfRVhU
-X0lPSV9FTjsKPiAgCWlvY3NyX3dyaXRlNjQobWlzYywgTE9PTkdBUkNIX0lPQ1NSX01JU0NfRlVO
-Qyk7Cj4gKyNlbmRpZgo+ICB9Cj4gIAo+ICBzdGF0aWMgaW50IGNwdV90b19laW9fbm9kZShpbnQg
-Y3B1KQo+IEBAIC0yODEsMTIgKzI4MywzNCBAQCBzdGF0aWMgaW50IGVpb2ludGNfcm91dGVyX2lu
-aXQodW5zaWduZWQgaW50IGNwdSkKPiAgCXJldHVybiAwOwo+ICB9Cj4gIAo+ICsjaWYgVkVDX0NP
-VU5UX1BFUl9SRUcgPT0gMzIKPiArc3RhdGljIGlubGluZSB1bnNpZ25lZCBsb25nIHJlYWRfaXNy
-KGludCBpKQo+ICt7Cj4gKwlyZXR1cm4gaW9jc3JfcmVhZDMyKEVJT0lOVENfUkVHX0lTUiArIChp
-IDw8IDIpKTsKPiArfQo+ICsKPiArc3RhdGljIGlubGluZSB2b2lkIHdyaXRlX2lzcihpbnQgaSwg
-dW5zaWduZWQgbG9uZyB2YWwpCj4gK3sKPiArCWlvY3NyX3dyaXRlMzIodmFsLCBFSU9JTlRDX1JF
-R19JU1IgKyAoaSA8PCAyKSk7Cj4gK30KPiArI2Vsc2UKPiArc3RhdGljIGlubGluZSB1bnNpZ25l
-ZCBsb25nIHJlYWRfaXNyKGludCBpKQo+ICt7Cj4gKwlyZXR1cm4gaW9jc3JfcmVhZDY0KEVJT0lO
-VENfUkVHX0lTUiArIChpIDw8IDMpKTsKPiArfQo+ICsKPiArc3RhdGljIGlubGluZSB2b2lkIHdy
-aXRlX2lzcihpbnQgaSwgdW5zaWduZWQgbG9uZyB2YWwpCj4gK3sKPiArCWlvY3NyX3dyaXRlNjQo
-dmFsLCBFSU9JTlRDX1JFR19JU1IgKyAoaSA8PCAzKSk7Cj4gK30KPiArI2VuZGlmCj4gKwo+ICBz
-dGF0aWMgdm9pZCBlaW9pbnRjX2lycV9kaXNwYXRjaChzdHJ1Y3QgaXJxX2Rlc2MgKmRlc2MpCj4g
-IHsKPiAgCXN0cnVjdCBlaW9pbnRjX2lwX3JvdXRlICppbmZvID0gaXJxX2Rlc2NfZ2V0X2hhbmRs
-ZXJfZGF0YShkZXNjKTsKPiAgCXN0cnVjdCBpcnFfY2hpcCAqY2hpcCA9IGlycV9kZXNjX2dldF9j
-aGlwKGRlc2MpOwo+ICsJdW5zaWduZWQgbG9uZyBwZW5kaW5nOwo+ICAJYm9vbCBoYW5kbGVkID0g
-ZmFsc2U7Cj4gLQl1NjQgcGVuZGluZzsKPiAgCWludCBpOwo+ICAKPiAgCWNoYWluZWRfaXJxX2Vu
-dGVyKGNoaXAsIGRlc2MpOwo+IEBAIC0yOTksMTQgKzMyMywxNCBAQCBzdGF0aWMgdm9pZCBlaW9p
-bnRjX2lycV9kaXNwYXRjaChzdHJ1Y3QgaXJxX2Rlc2MgKmRlc2MpCj4gIAkgKiByZWFkIElTUiBm
-b3IgdGhlc2UgNjQgaW50ZXJydXB0IHZlY3RvcnMgcmF0aGVyIHRoYW4gYWxsIHZlY3RvcnMKPiAg
-CSAqLwo+ICAJZm9yIChpID0gaW5mby0+c3RhcnQ7IGkgPCBpbmZvLT5lbmQ7IGkrKykgewo+IC0J
-CXBlbmRpbmcgPSBpb2Nzcl9yZWFkNjQoRUlPSU5UQ19SRUdfSVNSICsgKGkgPDwgMykpOwo+ICsJ
-CXBlbmRpbmcgPSByZWFkX2lzcihpKTsKPiAgCj4gIAkJLyogU2tpcCBoYW5kbGluZyBpZiBwZW5k
-aW5nIGJpdG1hcCBpcyB6ZXJvICovCj4gIAkJaWYgKCFwZW5kaW5nKQo+ICAJCQljb250aW51ZTsK
-PiAgCj4gIAkJLyogQ2xlYXIgdGhlIElSUXMgKi8KPiAtCQlpb2Nzcl93cml0ZTY0KHBlbmRpbmcs
-IEVJT0lOVENfUkVHX0lTUiArIChpIDw8IDMpKTsKPiArCQl3cml0ZV9pc3IoaSwgcGVuZGluZyk7
-Cj4gIAkJd2hpbGUgKHBlbmRpbmcpIHsKPiAgCQkJaW50IGJpdCA9IF9fZmZzKHBlbmRpbmcpOwo+
-ICAJCQlpbnQgaXJxID0gYml0ICsgVkVDX0NPVU5UX1BFUl9SRUcgKiBpOwoNCg0K5pys6YKu5Lu2
-5Y+K5YW26ZmE5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR55qE5ZWG5Lia56eY5a+G5L+h5oGv77yM5LuF
-6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE5Liq5Lq65oiW576k57uE44CC
-56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/55So77yI5YyF5ous5L2G5LiN
-6ZmQ5LqO5YWo6YOo5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi25oiW5pWj5Y+R77yJ5pys6YKu
-5Lu25Y+K5YW26ZmE5Lu25Lit55qE5L+h5oGv44CC5aaC5p6c5oKo6ZSZ5pS25pys6YKu5Lu277yM
-6K+35oKo56uL5Y2z55S16K+d5oiW6YKu5Lu26YCa55+l5Y+R5Lu25Lq65bm25Yig6Zmk5pys6YKu
-5Lu244CCIA0KVGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1lbnRzIGNvbnRhaW4gY29uZmlkZW50
-aWFsIGluZm9ybWF0aW9uIGZyb20gTG9vbmdzb24gVGVjaG5vbG9neSAsIHdoaWNoIGlzIGludGVu
-ZGVkIG9ubHkgZm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdob3NlIGFkZHJlc3MgaXMgbGlzdGVk
-IGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluIGluIGFu
-eSB3YXkgKGluY2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRvLCB0b3RhbCBvciBwYXJ0aWFsIGRp
-c2Nsb3N1cmUsIHJlcHJvZHVjdGlvbiBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJzb25zIG90aGVy
-IHRoYW4gdGhlIGludGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVj
-ZWl2ZSB0aGlzIGVtYWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgYnkgcGhv
-bmUgb3IgZW1haWwgaW1tZWRpYXRlbHkgYW5kIGRlbGV0ZSBpdC4gDQoNCg0K
+The following commit has been merged into the timers/vdso branch of tip:
 
+Commit-ID:     bbef8e2c29c32f048fac8e07f884f827d028f1da
+Gitweb:        https://git.kernel.org/tip/bbef8e2c29c32f048fac8e07f884f827d02=
+8f1da
+Author:        Thomas Gleixner <tglx@kernel.org>
+AuthorDate:    Sun, 18 Jan 2026 15:45:40 +01:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Sun, 18 Jan 2026 15:54:17 +01:00
+
+x86/percpu: Make CONFIG_USE_X86_SEG_SUPPORT work with sparse
+
+Now that sparse builds enforce the usage of typeof_unqual() the casts in
+__raw_cpu_read/write() cause sparse to emit tons of false postive
+warnings:
+
+ warning: cast removes address space '__percpu' of expression
+
+Address this by annotating the casts with __force.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Link: https://patch.msgid.link/87v7gz0yjv.ffs@tglx
+Closes: https://lore.kernel.org/oe-kbuild-all/202601181733.YZOf9XU3-lkp@intel=
+.com/
+---
+ arch/x86/include/asm/percpu.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index 725d0ef..c55058f 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -137,12 +137,12 @@
+=20
+ #define __raw_cpu_read(size, qual, pcp)					\
+ ({									\
+-	*(qual __my_cpu_type(pcp) *)__my_cpu_ptr(&(pcp));		\
++	*(qual __my_cpu_type(pcp) * __force)__my_cpu_ptr(&(pcp));	\
+ })
+=20
+-#define __raw_cpu_write(size, qual, pcp, val)				\
+-do {									\
+-	*(qual __my_cpu_type(pcp) *)__my_cpu_ptr(&(pcp)) =3D (val);	\
++#define __raw_cpu_write(size, qual, pcp, val)					\
++do {										\
++	*(qual __my_cpu_type(pcp) * __force)__my_cpu_ptr(&(pcp)) =3D (val);	\
+ } while (0)
+=20
+ #define __raw_cpu_read_const(pcp)	__raw_cpu_read(, , pcp)
 
