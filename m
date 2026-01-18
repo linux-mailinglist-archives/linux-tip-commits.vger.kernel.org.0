@@ -1,167 +1,175 @@
-Return-Path: <linux-tip-commits+bounces-8064-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8070-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E853AD3955C
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 14:42:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B37D3958D
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 14:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0507300A3C0
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 13:42:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2A6173001199
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 13:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A343328F8;
-	Sun, 18 Jan 2026 13:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G6OhBmiV";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y/DM+6CQ"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6A6331A63;
-	Sun, 18 Jan 2026 13:42:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D03A32C923;
+	Sun, 18 Jan 2026 13:53:35 +0000 (UTC)
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2A02836E;
+	Sun, 18 Jan 2026 13:53:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768743723; cv=none; b=C5W6mHXPlbCMymq+cHFPpZjeTD1MUc/LHYWGSHQuQiM4KjlKg20krKfDPzEsGgAPPeJ7ojxvDdzvvgiQlj2+/hD3HJ33x1WSu2zEoQ+A06lbO6YHN9KDtSOyVhZGA9Kh+lRnqjDV5X7bd92DBRZZQNK4GLhKOdf9Av1efOstzlY=
+	t=1768744415; cv=none; b=g+FO5286Z7BJDVfgEBDmzL3ZoEb3XteNqgZthtADTwbfs+xDnwapNPaidpEo15Ia6Wi+sPn1Kp8l1Fd+dv3xZv+w5wy0psRpMAOW4hvCui7usLb704Grw8yvoWMbqi2XJ437BwjzMJmoZYnb9QOIdpiS5NjVqeUU0/gZTcXPrpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768743723; c=relaxed/simple;
-	bh=YNh7rPMxW30RxwQo+wQk3ewJNJIJ8AZGdy2qqPcBbvQ=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=BFac20+A1TPkUPjkg0V6IoqZyOFtgyLNDDr0ak4kwbC8NR6p3hrUjCEr6oeU0/FmJCsAuiz8nRKI5ejmpY4TKChfAwvwA8TSHOxgcMZef8l2LHFJRnJW/+b1vTwDTkTASylQCBKFWEtb9kDpaErpL6k4AldZqEDV8LRR5ehU+ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G6OhBmiV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y/DM+6CQ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 18 Jan 2026 13:41:58 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768743719;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7xyqQLkkwqg+wMVr0eLLLQfZWdaBZmfa0nYtokz7TKQ=;
-	b=G6OhBmiViz8u0GRPcLfAbpyY14hTmNfol5MiYrNcXWGu/ymszA1AZgW9ZcYaD4Bt+HYCPT
-	reBfNeVHdUWmesfH7hrTSvmS6u56FY243qUr9Go6wRfDT2AzLpD7VvqOv4pRt4OKL6U/vi
-	VoWt1tXc0Jw0QQTpIRE3QHCMnOTA+YhX3Cxq8tmHuIBDn1ULgbrWcughHFs3FS00WMY5m2
-	X0P8ZzVhBy4yiELOQhQvxiDQCq3mjizMlTLhG/1GdOPdhkULhWDh6b6jPkhbNLyLufo0o2
-	s5j7M7YQyYwz2dU7YnNjbjPL0ww82fS2RxutPX9Fk1dUrdK+w3sBr/z5Z+RRhQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768743719;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7xyqQLkkwqg+wMVr0eLLLQfZWdaBZmfa0nYtokz7TKQ=;
-	b=y/DM+6CQwim4CT5nq2hqN650cYq6jr5mtAdVSaqffgJUnfpROlkd7TO6H2Rb8Q7yTYXU0T
-	s7V/RwlQEgvmziAw==
-From: "tip-bot2 for Huacai Chen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/loongarch-avec: Adjust irqchip driver for
- 32BIT/64BIT
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Huacai Chen <chenhuacai@loongson.cn>, Thomas Gleixner <tglx@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260113085940.3344837-2-chenhuacai@loongson.cn>
-References: <20260113085940.3344837-2-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1768744415; c=relaxed/simple;
+	bh=bFUSqSG66HuLbzouKFZ+9YkFAoxOHI/h9V8/kNuLgF4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=MTyIRHGUdsYlCSoGztOO78uEewkVr3DGqUE0/3GiQCxMNhmSbea6ekwfFyWuYG0efxu62i8cdOFFgwjpNcZinDYbrBFb620zm9dsYfrQHJRVWQ05ewC5adbys+eBeAM3Gt8f1hRqU7oiT1y4xvG4OAp8svbPYq7ReHzxK9z7CVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [117.60.74.252])
+	by gateway (Coremail) with SMTP id _____8Dx+8LS5WxpZAoKAA--.32447S3;
+	Sun, 18 Jan 2026 21:53:23 +0800 (CST)
+Received: from chenhuacai$loongson.cn ( [117.60.74.252] ) by
+ ajax-webmail-front1 (Coremail) ; Sun, 18 Jan 2026 21:53:20 +0800
+ (GMT+08:00)
+Date: Sun, 18 Jan 2026 21:53:20 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org,
+	"Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+	"Thomas Gleixner" <tglx@kernel.org>, x86@kernel.org
+Subject: Re: [tip: irq/drivers] irqchip/loongson-eiointc: Adjust irqchip
+ driver for 32BIT/64BIT
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.3-cmXT6 build
+ 20250609(354f7833) Copyright (c) 2002-2026 www.mailtech.cn loongson
+In-Reply-To: <176874371646.510.14542897108678824117.tip-bot2@tip-bot2>
+References: <20260113085940.3344837-4-chenhuacai@loongson.cn>
+ <176874371646.510.14542897108678824117.tip-bot2@tip-bot2>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: pwUPzmZvb3Rlcl90eHQ9NDUwNTo2MTg=
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176874371848.510.1874357246454080379.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <780bbd8b.3cf4c.19bd161b63e.Coremail.chenhuacai@loongson.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:qMiowJCxusHQ5WxpqDsjAA--.5363W
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQELBmlsdjgBjQACsI
+X-Coremail-Antispam: 1Uk129KBj93XoWxXF13Cry5Kry3CryUWr4DAwc_yoWrtFy7pF
+	WUCa4DCrW5tFyYg39avr4UCFy5ZFn3JFZFyFZ3W3yxZFyUAr1jkFs7Crs0vr4kCr97Wa12
+	yF4Ygw1xCa15AFgCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
+	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFcxC0VAYjxAxZF
+	0Ew4CEw7xC0wACY4xI67k04243AVC20s07MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCj
+	c4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4
+	CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1x
+	MIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF
+	4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr1l6VAC
+	Y4xI67k04243AbIYCTnIWIevJa73UjIFyTuYvjxU2zV1UUUUU
 
-The following commit has been merged into the irq/drivers branch of tip:
+SGksIFRob21hcywKCgo+IC0tLS0t5Y6f5aeL6YKu5Lu2LS0tLS0KPiDlj5Hku7bkuro6ICJ0aXAt
+Ym90MiBmb3IgSHVhY2FpIENoZW4iIDx0aXAtYm90MkBsaW51dHJvbml4LmRlPgo+IOWPkemAgeaX
+tumXtDoyMDI2LTAxLTE4IDIxOjQxOjU2ICjmmJ/mnJ/ml6UpCj4g5pS25Lu25Lq6OiBsaW51eC10
+aXAtY29tbWl0c0B2Z2VyLmtlcm5lbC5vcmcKPiDmioTpgIE6ICJKaWF4dW4gWWFuZyIgPGppYXh1
+bi55YW5nQGZseWdvYXQuY29tPiwgIkh1YWNhaSBDaGVuIiA8Y2hlbmh1YWNhaUBsb29uZ3Nvbi5j
+bj4sICJUaG9tYXMgR2xlaXhuZXIiIDx0Z2x4QGtlcm5lbC5vcmc+LCB4ODZAa2VybmVsLm9yZywg
+bGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZwo+IOS4u+mimDogW3RpcDogaXJxL2RyaXZlcnNd
+IGlycWNoaXAvbG9vbmdzb24tZWlvaW50YzogQWRqdXN0IGlycWNoaXAgZHJpdmVyIGZvciAzMkJJ
+VC82NEJJVAo+IAo+IFRoZSBmb2xsb3dpbmcgY29tbWl0IGhhcyBiZWVuIG1lcmdlZCBpbnRvIHRo
+ZSBpcnEvZHJpdmVycyBicmFuY2ggb2YgdGlwOgo+IAo+IENvbW1pdC1JRDogICAgIDYxZmI1ZTUx
+N2VjNDU3Yzc2MjExZjAzYWIwYjM3OTg4MjI0ODcwNmQKPiBHaXR3ZWI6ICAgICAgICBodHRwczov
+L2dpdC5rZXJuZWwub3JnL3RpcC82MWZiNWU1MTdlYzQ1N2M3NjIxMWYwM2FiMGIzNzk4ODIyNDg3
+MDZkCj4gQXV0aG9yOiAgICAgICAgSHVhY2FpIENoZW4gPGNoZW5odWFjYWlAbG9vbmdzb24uY24+
+Cj4gQXV0aG9yRGF0ZTogICAgVHVlLCAxMyBKYW4gMjAyNiAxNjo1OTozNiArMDg6MDAKPiBDb21t
+aXR0ZXI6ICAgICBUaG9tYXMgR2xlaXhuZXIgPHRnbHhAa2VybmVsLm9yZz4KPiBDb21taXR0ZXJE
+YXRlOiBTdW4sIDE4IEphbiAyMDI2IDE0OjM5OjE3ICswMTowMAo+IAo+IGlycWNoaXAvbG9vbmdz
+b24tZWlvaW50YzogQWRqdXN0IGlycWNoaXAgZHJpdmVyIGZvciAzMkJJVC82NEJJVAo+IAo+IGlv
+Y3NyX3JlYWQ2NCgpL2lvY3NyX3dyaXRlNjQoKSBhcmUgb25seSBhdmFpbGFibGUgb24gNjRCSVQg
+TG9vbmdBcmNoCj4gcGxhdGZvcm0sIHNvIGFkZCBhbmQgdXNlIGEgcGFpciBvZiBoZWxwZXJzLCBp
+LmUuIHJlYWRfaXNyKCkvd3JpdGVfaXNyKCkKPiBpbnN0ZWFkIHRvIG1ha2UgdGhlIGRyaXZlciB3
+b3JrIG9uIGJvdGggMzJCSVQgYW5kIDY0QklUIHBsYXRmb3Jtcy4KPiAKPiBUaGlzIG1ha2VzIGVv
+aWludGNfZW5hYmxlKCkgYSBuby1vcCBmb3IgMzItYml0IGFzIGl0IGlzIG9ubHkgcmVxdWlyZWQg
+b24KPiA2NC1iaXQgc3lzdGVtcy4KSGVyZSBpcyBhIHR5cG8sIGVvaWludGMgc2hvdWxkIGJlIGVp
+b2ludGMuIElmIGl0IGlzIG5vdCB0b28gbGF0ZSBwbGVhc2UgY29uc2lkZXIgdG8gZml4IGl0Li4u
+CgpIdWFjYWkKCj4gCj4gWyB0Z2x4OiBNYWtlIHRoZSBoZWxwZXJzIGlubGluZSBhbmQgZml4dXAg
+dGhlIHZhcmlhYmxlIGRlY2xhcmF0aW9uIG9yZGVyIF0KPiAKPiBDby1kZXZlbG9wZWQtYnk6IEpp
+YXh1biBZYW5nIDxqaWF4dW4ueWFuZ0BmbHlnb2F0LmNvbT4KPiBTaWduZWQtb2ZmLWJ5OiBKaWF4
+dW4gWWFuZyA8amlheHVuLnlhbmdAZmx5Z29hdC5jb20+Cj4gU2lnbmVkLW9mZi1ieTogSHVhY2Fp
+IENoZW4gPGNoZW5odWFjYWlAbG9vbmdzb24uY24+Cj4gU2lnbmVkLW9mZi1ieTogVGhvbWFzIEds
+ZWl4bmVyIDx0Z2x4QGtlcm5lbC5vcmc+Cj4gTGluazogaHR0cHM6Ly9wYXRjaC5tc2dpZC5saW5r
+LzIwMjYwMTEzMDg1OTQwLjMzNDQ4MzctNC1jaGVuaHVhY2FpQGxvb25nc29uLmNuCj4gLS0tCj4g
+IGRyaXZlcnMvaXJxY2hpcC9pcnEtbG9vbmdzb24tZWlvaW50Yy5jIHwgMzYgKysrKysrKysrKysr
+KysrKysrKystLS0tLQo+ICAxIGZpbGUgY2hhbmdlZCwgMzAgaW5zZXJ0aW9ucygrKSwgNiBkZWxl
+dGlvbnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9pcnFjaGlwL2lycS1sb29uZ3Nvbi1l
+aW9pbnRjLmMgYi9kcml2ZXJzL2lycWNoaXAvaXJxLWxvb25nc29uLWVpb2ludGMuYwo+IGluZGV4
+IGFkMjEwNTYuLjM3ZTdlMWYgMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy9pcnFjaGlwL2lycS1sb29u
+Z3Nvbi1laW9pbnRjLmMKPiArKysgYi9kcml2ZXJzL2lycWNoaXAvaXJxLWxvb25nc29uLWVpb2lu
+dGMuYwo+IEBAIC0zNyw5ICszNyw5IEBACj4gICNkZWZpbmUgIEVYVElPSV9FTkFCTEVfSU5UX0VO
+Q09ERSAgICAgIEJJVCgyKQo+ICAjZGVmaW5lICBFWFRJT0lfRU5BQkxFX0NQVV9FTkNPREUgICAg
+ICBCSVQoMykKPiAgCj4gLSNkZWZpbmUgVkVDX1JFR19DT1VOVAkJNAo+IC0jZGVmaW5lIFZFQ19D
+T1VOVF9QRVJfUkVHCTY0Cj4gLSNkZWZpbmUgVkVDX0NPVU5UCQkoVkVDX1JFR19DT1VOVCAqIFZF
+Q19DT1VOVF9QRVJfUkVHKQo+ICsjZGVmaW5lIFZFQ19DT1VOVAkJMjU2Cj4gKyNkZWZpbmUgVkVD
+X0NPVU5UX1BFUl9SRUcJQklUU19QRVJfTE9ORwo+ICsjZGVmaW5lIFZFQ19SRUdfQ09VTlQJCShW
+RUNfQ09VTlQgLyBCSVRTX1BFUl9MT05HKQo+ICAjZGVmaW5lIFZFQ19SRUdfSURYKGlycV9pZCkJ
+KChpcnFfaWQpIC8gVkVDX0NPVU5UX1BFUl9SRUcpCj4gICNkZWZpbmUgVkVDX1JFR19CSVQoaXJx
+X2lkKSAgICAgKChpcnFfaWQpICUgVkVDX0NPVU5UX1BFUl9SRUcpCj4gICNkZWZpbmUgRUlPSU5U
+Q19BTExfRU5BQkxFCTB4ZmZmZmZmZmYKPiBAQCAtODUsMTEgKzg1LDEzIEBAIHN0YXRpYyBzdHJ1
+Y3QgZWlvaW50Y19wcml2ICplaW9pbnRjX3ByaXZbTUFYX0lPX1BJQ1NdOwo+ICAKPiAgc3RhdGlj
+IHZvaWQgZWlvaW50Y19lbmFibGUodm9pZCkKPiAgewo+ICsjaWZkZWYgQ09ORklHX01BQ0hfTE9P
+TkdTT042NAo+ICAJdWludDY0X3QgbWlzYzsKPiAgCj4gIAltaXNjID0gaW9jc3JfcmVhZDY0KExP
+T05HQVJDSF9JT0NTUl9NSVNDX0ZVTkMpOwo+ICAJbWlzYyB8PSBJT0NTUl9NSVNDX0ZVTkNfRVhU
+X0lPSV9FTjsKPiAgCWlvY3NyX3dyaXRlNjQobWlzYywgTE9PTkdBUkNIX0lPQ1NSX01JU0NfRlVO
+Qyk7Cj4gKyNlbmRpZgo+ICB9Cj4gIAo+ICBzdGF0aWMgaW50IGNwdV90b19laW9fbm9kZShpbnQg
+Y3B1KQo+IEBAIC0yODEsMTIgKzI4MywzNCBAQCBzdGF0aWMgaW50IGVpb2ludGNfcm91dGVyX2lu
+aXQodW5zaWduZWQgaW50IGNwdSkKPiAgCXJldHVybiAwOwo+ICB9Cj4gIAo+ICsjaWYgVkVDX0NP
+VU5UX1BFUl9SRUcgPT0gMzIKPiArc3RhdGljIGlubGluZSB1bnNpZ25lZCBsb25nIHJlYWRfaXNy
+KGludCBpKQo+ICt7Cj4gKwlyZXR1cm4gaW9jc3JfcmVhZDMyKEVJT0lOVENfUkVHX0lTUiArIChp
+IDw8IDIpKTsKPiArfQo+ICsKPiArc3RhdGljIGlubGluZSB2b2lkIHdyaXRlX2lzcihpbnQgaSwg
+dW5zaWduZWQgbG9uZyB2YWwpCj4gK3sKPiArCWlvY3NyX3dyaXRlMzIodmFsLCBFSU9JTlRDX1JF
+R19JU1IgKyAoaSA8PCAyKSk7Cj4gK30KPiArI2Vsc2UKPiArc3RhdGljIGlubGluZSB1bnNpZ25l
+ZCBsb25nIHJlYWRfaXNyKGludCBpKQo+ICt7Cj4gKwlyZXR1cm4gaW9jc3JfcmVhZDY0KEVJT0lO
+VENfUkVHX0lTUiArIChpIDw8IDMpKTsKPiArfQo+ICsKPiArc3RhdGljIGlubGluZSB2b2lkIHdy
+aXRlX2lzcihpbnQgaSwgdW5zaWduZWQgbG9uZyB2YWwpCj4gK3sKPiArCWlvY3NyX3dyaXRlNjQo
+dmFsLCBFSU9JTlRDX1JFR19JU1IgKyAoaSA8PCAzKSk7Cj4gK30KPiArI2VuZGlmCj4gKwo+ICBz
+dGF0aWMgdm9pZCBlaW9pbnRjX2lycV9kaXNwYXRjaChzdHJ1Y3QgaXJxX2Rlc2MgKmRlc2MpCj4g
+IHsKPiAgCXN0cnVjdCBlaW9pbnRjX2lwX3JvdXRlICppbmZvID0gaXJxX2Rlc2NfZ2V0X2hhbmRs
+ZXJfZGF0YShkZXNjKTsKPiAgCXN0cnVjdCBpcnFfY2hpcCAqY2hpcCA9IGlycV9kZXNjX2dldF9j
+aGlwKGRlc2MpOwo+ICsJdW5zaWduZWQgbG9uZyBwZW5kaW5nOwo+ICAJYm9vbCBoYW5kbGVkID0g
+ZmFsc2U7Cj4gLQl1NjQgcGVuZGluZzsKPiAgCWludCBpOwo+ICAKPiAgCWNoYWluZWRfaXJxX2Vu
+dGVyKGNoaXAsIGRlc2MpOwo+IEBAIC0yOTksMTQgKzMyMywxNCBAQCBzdGF0aWMgdm9pZCBlaW9p
+bnRjX2lycV9kaXNwYXRjaChzdHJ1Y3QgaXJxX2Rlc2MgKmRlc2MpCj4gIAkgKiByZWFkIElTUiBm
+b3IgdGhlc2UgNjQgaW50ZXJydXB0IHZlY3RvcnMgcmF0aGVyIHRoYW4gYWxsIHZlY3RvcnMKPiAg
+CSAqLwo+ICAJZm9yIChpID0gaW5mby0+c3RhcnQ7IGkgPCBpbmZvLT5lbmQ7IGkrKykgewo+IC0J
+CXBlbmRpbmcgPSBpb2Nzcl9yZWFkNjQoRUlPSU5UQ19SRUdfSVNSICsgKGkgPDwgMykpOwo+ICsJ
+CXBlbmRpbmcgPSByZWFkX2lzcihpKTsKPiAgCj4gIAkJLyogU2tpcCBoYW5kbGluZyBpZiBwZW5k
+aW5nIGJpdG1hcCBpcyB6ZXJvICovCj4gIAkJaWYgKCFwZW5kaW5nKQo+ICAJCQljb250aW51ZTsK
+PiAgCj4gIAkJLyogQ2xlYXIgdGhlIElSUXMgKi8KPiAtCQlpb2Nzcl93cml0ZTY0KHBlbmRpbmcs
+IEVJT0lOVENfUkVHX0lTUiArIChpIDw8IDMpKTsKPiArCQl3cml0ZV9pc3IoaSwgcGVuZGluZyk7
+Cj4gIAkJd2hpbGUgKHBlbmRpbmcpIHsKPiAgCQkJaW50IGJpdCA9IF9fZmZzKHBlbmRpbmcpOwo+
+ICAJCQlpbnQgaXJxID0gYml0ICsgVkVDX0NPVU5UX1BFUl9SRUcgKiBpOwoNCg0K5pys6YKu5Lu2
+5Y+K5YW26ZmE5Lu25ZCr5pyJ6b6Z6Iqv5Lit56eR55qE5ZWG5Lia56eY5a+G5L+h5oGv77yM5LuF
+6ZmQ5LqO5Y+R6YCB57uZ5LiK6Z2i5Zyw5Z2A5Lit5YiX5Ye655qE5Liq5Lq65oiW576k57uE44CC
+56aB5q2i5Lu75L2V5YW25LuW5Lq65Lul5Lu75L2V5b2i5byP5L2/55So77yI5YyF5ous5L2G5LiN
+6ZmQ5LqO5YWo6YOo5oiW6YOo5YiG5Zyw5rOE6Zyy44CB5aSN5Yi25oiW5pWj5Y+R77yJ5pys6YKu
+5Lu25Y+K5YW26ZmE5Lu25Lit55qE5L+h5oGv44CC5aaC5p6c5oKo6ZSZ5pS25pys6YKu5Lu277yM
+6K+35oKo56uL5Y2z55S16K+d5oiW6YKu5Lu26YCa55+l5Y+R5Lu25Lq65bm25Yig6Zmk5pys6YKu
+5Lu244CCIA0KVGhpcyBlbWFpbCBhbmQgaXRzIGF0dGFjaG1lbnRzIGNvbnRhaW4gY29uZmlkZW50
+aWFsIGluZm9ybWF0aW9uIGZyb20gTG9vbmdzb24gVGVjaG5vbG9neSAsIHdoaWNoIGlzIGludGVu
+ZGVkIG9ubHkgZm9yIHRoZSBwZXJzb24gb3IgZW50aXR5IHdob3NlIGFkZHJlc3MgaXMgbGlzdGVk
+IGFib3ZlLiBBbnkgdXNlIG9mIHRoZSBpbmZvcm1hdGlvbiBjb250YWluZWQgaGVyZWluIGluIGFu
+eSB3YXkgKGluY2x1ZGluZywgYnV0IG5vdCBsaW1pdGVkIHRvLCB0b3RhbCBvciBwYXJ0aWFsIGRp
+c2Nsb3N1cmUsIHJlcHJvZHVjdGlvbiBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJzb25zIG90aGVy
+IHRoYW4gdGhlIGludGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVj
+ZWl2ZSB0aGlzIGVtYWlsIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgYnkgcGhv
+bmUgb3IgZW1haWwgaW1tZWRpYXRlbHkgYW5kIGRlbGV0ZSBpdC4gDQoNCg0K
 
-Commit-ID:     d9e7035a51b89ef6041ce7c00b629e7877134a51
-Gitweb:        https://git.kernel.org/tip/d9e7035a51b89ef6041ce7c00b629e78771=
-34a51
-Author:        Huacai Chen <chenhuacai@loongson.cn>
-AuthorDate:    Tue, 13 Jan 2026 16:59:34 +08:00
-Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Sun, 18 Jan 2026 14:39:16 +01:00
-
-irqchip/loongarch-avec: Adjust irqchip driver for 32BIT/64BIT
-
-csr_read64() is only available on 64BIT LoongArch platform, so use the
-recently added adaptive csr_read() instead to make the driver work on both
-32BIT and 64BIT platforms.
-
-This makes avecintc_enable() a no-op for 32-bit as it is only required on
-64-bit systems.
-
-Co-developed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260113085940.3344837-2-chenhuacai@loongson.cn
----
- drivers/irqchip/irq-loongarch-avec.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/irqchip/irq-loongarch-avec.c b/drivers/irqchip/irq-loong=
-arch-avec.c
-index ba556c0..fb8efde 100644
---- a/drivers/irqchip/irq-loongarch-avec.c
-+++ b/drivers/irqchip/irq-loongarch-avec.c
-@@ -58,11 +58,13 @@ struct avecintc_data {
-=20
- static inline void avecintc_enable(void)
- {
-+#ifdef CONFIG_MACH_LOONGSON64
- 	u64 value;
-=20
- 	value =3D iocsr_read64(LOONGARCH_IOCSR_MISC_FUNC);
- 	value |=3D IOCSR_MISC_FUNC_AVEC_EN;
- 	iocsr_write64(value, LOONGARCH_IOCSR_MISC_FUNC);
-+#endif
- }
-=20
- static inline void avecintc_ack_irq(struct irq_data *d)
-@@ -167,7 +169,7 @@ void complete_irq_moving(void)
- 	struct pending_list *plist =3D this_cpu_ptr(&pending_list);
- 	struct avecintc_data *adata, *tdata;
- 	int cpu, vector, bias;
--	uint64_t isr;
-+	unsigned long isr;
-=20
- 	guard(raw_spinlock)(&loongarch_avec.lock);
-=20
-@@ -177,16 +179,16 @@ void complete_irq_moving(void)
- 		bias =3D vector / VECTORS_PER_REG;
- 		switch (bias) {
- 		case 0:
--			isr =3D csr_read64(LOONGARCH_CSR_ISR0);
-+			isr =3D csr_read(LOONGARCH_CSR_ISR0);
- 			break;
- 		case 1:
--			isr =3D csr_read64(LOONGARCH_CSR_ISR1);
-+			isr =3D csr_read(LOONGARCH_CSR_ISR1);
- 			break;
- 		case 2:
--			isr =3D csr_read64(LOONGARCH_CSR_ISR2);
-+			isr =3D csr_read(LOONGARCH_CSR_ISR2);
- 			break;
- 		case 3:
--			isr =3D csr_read64(LOONGARCH_CSR_ISR3);
-+			isr =3D csr_read(LOONGARCH_CSR_ISR3);
- 			break;
- 		}
-=20
-@@ -234,7 +236,7 @@ static void avecintc_irq_dispatch(struct irq_desc *desc)
- 	chained_irq_enter(chip, desc);
-=20
- 	while (true) {
--		unsigned long vector =3D csr_read64(LOONGARCH_CSR_IRR);
-+		unsigned long vector =3D csr_read(LOONGARCH_CSR_IRR);
- 		if (vector & IRR_INVALID_MASK)
- 			break;
-=20
 
