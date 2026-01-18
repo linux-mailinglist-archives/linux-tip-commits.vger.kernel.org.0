@@ -1,76 +1,74 @@
-Return-Path: <linux-tip-commits+bounces-8060-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8061-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FCBFD393D2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 11:09:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80435D39559
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 14:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F2EF300A9B2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 10:09:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FD0830021C1
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 18 Jan 2026 13:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7153A2DE6F1;
-	Sun, 18 Jan 2026 10:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F35E1FC7;
+	Sun, 18 Jan 2026 13:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4dPz5tKn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rGDhMpUI"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="giKU+rQy";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lXH+HELu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5DF2D9EE7;
-	Sun, 18 Jan 2026 10:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70152E62C3;
+	Sun, 18 Jan 2026 13:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768730970; cv=none; b=qa83WxQITKsJgaNVeMKENqQj0iw2ijB0DI0rbtBqxDYhu5ow+7iMATvJTLOUPD6eQzIe33lM3eyd+udOdfP3OUuPsQW5F0WfQO7vNkKUBH8+EC7uEPih26EUOOM2JDeERkbQ07vIGlHzwYoZw8w/xoPvoxbY82mRW9CAVvfFr6I=
+	t=1768743720; cv=none; b=LhaD+sejTnYge/PbHGiWg5y8Wa1fPcsrNqT1voNQAaHMPsOSbO7bMdoiSd3bZmdV05O0IN5i76OMP7RlAmy/dX0SI6tee4KkdKaP/3Bmn8e5jzc76fTH3bYAaxP0/hH4Wiv217/ifRsyRQob3eR0VZixBrP6td7owe3rqxhZYL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768730970; c=relaxed/simple;
-	bh=ScSgF0UUf9+Nl3zXMi4vaF5ZpoHk/yQ6Y+gg8bNIchE=;
+	s=arc-20240116; t=1768743720; c=relaxed/simple;
+	bh=fQSvFXZbr7oKKVs44ERyzYLMmpq7fpgHyPQzB0yC0GA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=DbMTuxaSfgiJS0V4kezR43k2Cd7+M8T80H/jSshXKd968+vqbOQp7qb8Qqk3m/MKAjObLbZm4LohQSSq5ydSML6wethDWs18aQgOXS/ZNMh1UF+e7PWp56IhRQ4eKXGWxFWlhlTZfu6BmJUrNC+Ap42exOP/95NZNFL3d57dJmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4dPz5tKn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rGDhMpUI; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=hd69qYf8rjFkyVfIttlJCwujmzWdYa1DY3nEeQhdhOd8CvlOsQBReKLIPwxEUC0qlQwLK4opAH0she/Ry5dZKCKYIoYtp9KWargBRnw4yqdhR+w7ErT9A50AK9d4qF/ZnI5y0nO7z4kudO4WoOUDaf3SdR7KqJKVRBb0uuFlj48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=giKU+rQy; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lXH+HELu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 18 Jan 2026 10:09:25 -0000
+Date: Sun, 18 Jan 2026 13:41:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768730966;
+	s=2020; t=1768743711;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V7+F4o2BnMfI7hw9GQASzv6mrh9cf/twOfwu4BhZHlQ=;
-	b=4dPz5tKnZgYPdp30daXWZsztkOrqxKiiepobj1w6rZn/BOuiFzFBGHkbA3QfYOEHQKGStR
-	/tYT28lHvqYnPpngHLlsuEM3Qj6UPxqqvsprNnBqR69oy5urb78Wffjvq5LwupsQYTGNEl
-	pFMlu8Ac2kX3LYizQucLlj7x8VCEr1j5xjcPiXCX1AoVbpA6jFwtWlDbIthw6LLFFEVBQe
-	DlAYRWes96+hGXQdzwDDa8cNJXOVnU8wlHwcNhu/2Xq7gKzPofo0krZovc1j4i+2zWqclp
-	cLiZn1SXH8GqyFMNtMF3TVUZg33Ys5eCNNFtIKb9yQHlz9w78WhGKGVPXHWajg==
+	bh=g+b8DLW2jPtHvRUmMvMxJkawx47YYWJScr58pJ/mH3c=;
+	b=giKU+rQyx4CkzLqxA284FU4QM47XkiNDyMZAoWT9+7GIq4xoCXkGuL7yxAv4Ajl92vE1o2
+	0OFN5pvmIXXv05sVUlJG8qgwXEJKsYrtOB8vkk2ztIsB6AktX5aiSohmU+l7lxJH2nPGoV
+	BZ+TOJ2q45QE0QGkilKz9kcurFFKIZ/5RHAjJptCiGmhz94FOPn8mqFpTMJQi415XBCZkx
+	YoftPGPp1IgzMEENv5cXvlSEkJCwBMsgaNn3+cgm6HnVUI2nl96hAnCWNWQ21pgzWhhb/I
+	8c7a67QCFTEINjA0KYMUgcg3GSxXLwQkLSminTWOpAE4UYlTMVgsFy/hzWS1Ew==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768730966;
+	s=2020e; t=1768743711;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V7+F4o2BnMfI7hw9GQASzv6mrh9cf/twOfwu4BhZHlQ=;
-	b=rGDhMpUI31kHuvtQ0A1EWE7rUGJBxXJTJJtOSMA9cIz56249JDBQQfaHcHpNR2+78QCD9O
-	i4u4rr4s/dl83VBQ==
-From: "tip-bot2 for Lorenzo Pieralisi" <tip-bot2@linutronix.de>
+	bh=g+b8DLW2jPtHvRUmMvMxJkawx47YYWJScr58pJ/mH3c=;
+	b=lXH+HELu0gQiidFZgC60vF6Z4PWMma58ei4gbJl6r4f/VMw5SHlTrWfVsBDeL3icRP65I+
+	xlp/wuNz/H+SVjCw==
+From: "tip-bot2 for Biju Das" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] irqdomain: Add parent field to struct irqchip_fwid
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>,
- Jonathan Cameron <jonathan.cameron@huawei.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260115-gicv5-host-acpi-v3-1-c13a9a150388@kernel.org>
-References: <20260115-gicv5-host-acpi-v3-1-c13a9a150388@kernel.org>
+Subject: [tip: irq/drivers] irqchip/renesas-rzv2h: Add suspend/resume support
+Cc: Biju Das <biju.das.jz@bp.renesas.com>, Thomas Gleixner <tglx@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260113125315.359967-3-biju.das.jz@bp.renesas.com>
+References: <20260113125315.359967-3-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176873096552.510.6742869475936924219.tip-bot2@tip-bot2>
+Message-ID: <176874370950.510.14547789233129273146.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -78,157 +76,149 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/msi branch of tip:
+The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     22056f655700360518cc8df344ff640b0fb3499e
-Gitweb:        https://git.kernel.org/tip/22056f655700360518cc8df344ff640b0fb=
-3499e
-Author:        Lorenzo Pieralisi <lpieralisi@kernel.org>
-AuthorDate:    Thu, 15 Jan 2026 10:50:47 +01:00
+Commit-ID:     3a74e73b863a2493c0502a08e20ab026a0134ca1
+Gitweb:        https://git.kernel.org/tip/3a74e73b863a2493c0502a08e20ab026a01=
+34ca1
+Author:        Biju Das <biju.das.jz@bp.renesas.com>
+AuthorDate:    Tue, 13 Jan 2026 12:53:12=20
 Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Sun, 18 Jan 2026 11:07:56 +01:00
+CommitterDate: Sun, 18 Jan 2026 14:39:18 +01:00
 
-irqdomain: Add parent field to struct irqchip_fwid
+irqchip/renesas-rzv2h: Add suspend/resume support
 
-The GICv5 driver interrupt domain hierarchy requires adding a parent field
-to struct irqchip_fwid so that the core code can reference a fwnode_handle
-parent for a given fwnode.
+On RZ/G3E using PSCI, s2ram powers down the SoC. Add suspend/resume
+callbacks to restore IRQ type for NMI, TINT and external IRQ interrupts.
 
-Add a parent field to struct irqchip_fwid and update the related kernel API
-functions to initialize and handle it.
-
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Link: https://patch.msgid.link/20260115-gicv5-host-acpi-v3-1-c13a9a150388@ker=
-nel.org
+Link: https://patch.msgid.link/20260113125315.359967-3-biju.das.jz@bp.renesas=
+.com
 ---
- include/linux/irqdomain.h | 30 ++++++++++++++++++++++++++----
- kernel/irq/irqdomain.c    | 14 +++++++++++++-
- 2 files changed, 39 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-renesas-rzv2h.c | 60 ++++++++++++++++++++++++++--
+ 1 file changed, 57 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/irqdomain.h b/include/linux/irqdomain.h
-index 62f81bb..73c25d4 100644
---- a/include/linux/irqdomain.h
-+++ b/include/linux/irqdomain.h
-@@ -257,7 +257,8 @@ static inline void irq_domain_set_pm_device(struct irq_do=
-main *d, struct device=20
+diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesa=
+s-rzv2h.c
+index 0c44b61..69980a8 100644
+--- a/drivers/irqchip/irq-renesas-rzv2h.c
++++ b/drivers/irqchip/irq-renesas-rzv2h.c
+@@ -20,6 +20,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/reset.h>
+ #include <linux/spinlock.h>
++#include <linux/syscore_ops.h>
 =20
- #ifdef CONFIG_IRQ_DOMAIN
- struct fwnode_handle *__irq_domain_alloc_fwnode(unsigned int type, int id,
--						const char *name, phys_addr_t *pa);
-+						const char *name, phys_addr_t *pa,
-+						struct fwnode_handle *parent);
+ /* DT "interrupts" indexes */
+ #define ICU_IRQ_START				1
+@@ -90,6 +91,18 @@
+ #define ICU_RZV2H_TSSEL_MAX_VAL			0x55
 =20
- enum {
- 	IRQCHIP_FWNODE_REAL,
-@@ -267,18 +268,39 @@ enum {
-=20
- static inline struct fwnode_handle *irq_domain_alloc_named_fwnode(const char=
- *name)
- {
--	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL);
-+	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL, NULL);
-+}
+ /**
++ * struct rzv2h_irqc_reg_cache - registers cache (necessary for suspend/resu=
+me)
++ * @nitsr: ICU_NITSR register
++ * @iitsr: ICU_IITSR register
++ * @titsr: ICU_TITSR registers
++ */
++struct rzv2h_irqc_reg_cache {
++	u32	nitsr;
++	u32	iitsr;
++	u32	titsr[2];
++};
 +
-+static inline
-+struct fwnode_handle *irq_domain_alloc_named_parented_fwnode(const char *nam=
-e,
-+							     struct fwnode_handle *parent)
-+{
-+	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED, 0, name, NULL, paren=
-t);
- }
-=20
- static inline struct fwnode_handle *irq_domain_alloc_named_id_fwnode(const c=
-har *name, int id)
- {
- 	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED_ID, id, name,
--					 NULL);
-+					 NULL, NULL);
-+}
-+
-+static inline
-+struct fwnode_handle *irq_domain_alloc_named_id_parented_fwnode(const char *=
-name, int id,
-+								struct fwnode_handle *parent)
-+{
-+	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_NAMED_ID, id, name,
-+					 NULL, parent);
- }
-=20
- static inline struct fwnode_handle *irq_domain_alloc_fwnode(phys_addr_t *pa)
- {
--	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_REAL, 0, NULL, pa);
-+	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_REAL, 0, NULL, pa, NULL);
-+}
-+
-+static inline struct fwnode_handle *irq_domain_alloc_parented_fwnode(phys_ad=
-dr_t *pa,
-+								     struct fwnode_handle *parent)
-+{
-+	return __irq_domain_alloc_fwnode(IRQCHIP_FWNODE_REAL, 0, NULL, pa, parent);
- }
-=20
- void irq_domain_free_fwnode(struct fwnode_handle *fwnode);
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 2652c4c..baf77cd 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -33,6 +33,7 @@ static void irq_domain_free_one_irq(struct irq_domain *doma=
-in, unsigned int virq
-=20
- struct irqchip_fwid {
- 	struct fwnode_handle	fwnode;
-+	struct fwnode_handle	*parent;
- 	unsigned int		type;
- 	char			*name;
- 	phys_addr_t		*pa;
-@@ -53,8 +54,16 @@ static const char *irqchip_fwnode_get_name(const struct fw=
-node_handle *fwnode)
- 	return fwid->name;
- }
-=20
-+static struct fwnode_handle *irqchip_fwnode_get_parent(const struct fwnode_h=
-andle *fwnode)
-+{
-+	struct irqchip_fwid *fwid =3D container_of(fwnode, struct irqchip_fwid, fwn=
-ode);
-+
-+	return fwid->parent;
-+}
-+
- const struct fwnode_operations irqchip_fwnode_ops =3D {
- 	.get_name =3D irqchip_fwnode_get_name,
-+	.get_parent =3D irqchip_fwnode_get_parent,
- };
- EXPORT_SYMBOL_GPL(irqchip_fwnode_ops);
-=20
-@@ -65,6 +74,7 @@ EXPORT_SYMBOL_GPL(irqchip_fwnode_ops);
-  * @id:		Optional user provided id if name !=3D NULL
-  * @name:	Optional user provided domain name
-  * @pa:		Optional user-provided physical address
-+ * @parent:	Optional parent fwnode_handle
-  *
-  * Allocate a struct irqchip_fwid, and return a pointer to the embedded
-  * fwnode_handle (or NULL on failure).
-@@ -76,7 +86,8 @@ EXPORT_SYMBOL_GPL(irqchip_fwnode_ops);
++/**
+  * struct rzv2h_hw_info - Interrupt Control Unit controller hardware info st=
+ructure.
+  * @tssel_lut:		TINT lookup table
+  * @t_offs:		TINT offset
+@@ -118,13 +131,15 @@ struct rzv2h_hw_info {
+  * @fwspec:	IRQ firmware specific data
+  * @lock:	Lock to serialize access to hardware registers
+  * @info:	Pointer to struct rzv2h_hw_info
++ * @cache:	Registers cache for suspend/resume
   */
- struct fwnode_handle *__irq_domain_alloc_fwnode(unsigned int type, int id,
- 						const char *name,
--						phys_addr_t *pa)
-+						phys_addr_t *pa,
-+						struct fwnode_handle *parent)
- {
- 	struct irqchip_fwid *fwid;
- 	char *n;
-@@ -104,6 +115,7 @@ struct fwnode_handle *__irq_domain_alloc_fwnode(unsigned =
-int type, int id,
- 	fwid->type =3D type;
- 	fwid->name =3D n;
- 	fwid->pa =3D pa;
-+	fwid->parent =3D parent;
- 	fwnode_init(&fwid->fwnode, &irqchip_fwnode_ops);
- 	return &fwid->fwnode;
+-struct rzv2h_icu_priv {
++static struct rzv2h_icu_priv {
+ 	void __iomem			*base;
+ 	struct irq_fwspec		fwspec[ICU_NUM_IRQ];
+ 	raw_spinlock_t			lock;
+ 	const struct rzv2h_hw_info	*info;
+-};
++	struct rzv2h_irqc_reg_cache	cache;
++} *rzv2h_icu_data;
+=20
+ void rzv2h_icu_register_dma_req(struct platform_device *icu_dev, u8 dmac_ind=
+ex, u8 dmac_channel,
+ 				u16 req_no)
+@@ -412,6 +427,44 @@ static int rzv2h_icu_set_type(struct irq_data *d, unsign=
+ed int type)
+ 	return irq_chip_set_type_parent(d, IRQ_TYPE_LEVEL_HIGH);
  }
+=20
++static int rzv2h_irqc_irq_suspend(void *data)
++{
++	struct rzv2h_irqc_reg_cache *cache =3D &rzv2h_icu_data->cache;
++	void __iomem *base =3D rzv2h_icu_data->base;
++
++	cache->nitsr =3D readl_relaxed(base + ICU_NITSR);
++	cache->iitsr =3D readl_relaxed(base + ICU_IITSR);
++	for (unsigned int i =3D 0; i < 2; i++)
++		cache->titsr[i] =3D readl_relaxed(base + rzv2h_icu_data->info->t_offs + IC=
+U_TITSR(i));
++
++	return 0;
++}
++
++static void rzv2h_irqc_irq_resume(void *data)
++{
++	struct rzv2h_irqc_reg_cache *cache =3D &rzv2h_icu_data->cache;
++	void __iomem *base =3D rzv2h_icu_data->base;
++
++	/*
++	 * Restore only interrupt type. TSSRx will be restored at the
++	 * request of pin controller to avoid spurious interrupts due
++	 * to invalid PIN states.
++	 */
++	for (unsigned int i =3D 0; i < 2; i++)
++		writel_relaxed(cache->titsr[i], base + rzv2h_icu_data->info->t_offs + ICU_=
+TITSR(i));
++	writel_relaxed(cache->iitsr, base + ICU_IITSR);
++	writel_relaxed(cache->nitsr, base + ICU_NITSR);
++}
++
++static const struct syscore_ops rzv2h_irqc_syscore_ops =3D {
++	.suspend	=3D rzv2h_irqc_irq_suspend,
++	.resume		=3D rzv2h_irqc_irq_resume,
++};
++
++static struct syscore rzv2h_irqc_syscore =3D {
++	.ops =3D &rzv2h_irqc_syscore_ops,
++};
++
+ static const struct irq_chip rzv2h_icu_chip =3D {
+ 	.name			=3D "rzv2h-icu",
+ 	.irq_eoi		=3D rzv2h_icu_eoi,
+@@ -495,7 +548,6 @@ static int rzv2h_icu_probe_common(struct platform_device =
+*pdev, struct device_no
+ {
+ 	struct irq_domain *irq_domain, *parent_domain;
+ 	struct device_node *node =3D pdev->dev.of_node;
+-	struct rzv2h_icu_priv *rzv2h_icu_data;
+ 	struct reset_control *resetn;
+ 	int ret;
+=20
+@@ -553,6 +605,8 @@ static int rzv2h_icu_probe_common(struct platform_device =
+*pdev, struct device_no
+=20
+ 	rzv2h_icu_data->info =3D hw_info;
+=20
++	register_syscore(&rzv2h_irqc_syscore);
++
+ 	/*
+ 	 * coccicheck complains about a missing put_device call before returning, b=
+ut it's a false
+ 	 * positive. We still need &pdev->dev after successfully returning from thi=
+s function.
 
