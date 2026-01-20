@@ -1,78 +1,79 @@
-Return-Path: <linux-tip-commits+bounces-8074-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8075-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B725D3C35D
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 10:25:44 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A51D3C466
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 11:00:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ABACD5065C3
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 09:19:35 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B30386A6ABC
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 09:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8753C1FEE;
-	Tue, 20 Jan 2026 09:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431793C1983;
+	Tue, 20 Jan 2026 09:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dl091rOh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="89D+SmkN"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="avH0471/";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="cipVfxpu"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A024E3D3CF4;
-	Tue, 20 Jan 2026 09:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988C9345724;
+	Tue, 20 Jan 2026 09:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768900608; cv=none; b=Uxu0Zwr1Yu/wpCuAjDxlY2sTbB5sVk0ZZiMsE8yG+mzgxocaci10YenoYICoAbtFcmA8LNfY/BDXS9aw3U17yun15eGgcxd4/RzhAxU6onu4/JVu0CZaR02XG2liZkhBybFyXFpZM6dS2bcjA+S495K7jwjaHB6+9WNXHzPdsCo=
+	t=1768901006; cv=none; b=E+Ss7mKMGs5EfbSL5UHe8vGyPp3+rCI3khAVUGi942SGUM7fUAXKx44fcD/IEtV/Pgwo7MWLwQy3K9/gax9eJmHCDyWFjqmEnWgeOJb4AHANDVyarHdqfIXxoH5QEiSufzCxstulZRQNDdnyQu6VcltuIjbriGvHARt50pf9CNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768900608; c=relaxed/simple;
-	bh=MKnEI4wXGnREWVIvl4mOC36iVROiOD6trGeDI9Bc0PU=;
+	s=arc-20240116; t=1768901006; c=relaxed/simple;
+	bh=HyD+fL7SYM9OsQlA3LSqyHgM1jCI93quzAyEzmLv5e0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=efHl1B+VqjPpXgZ65Gy08KvjqcB1rW8TGHQjwWVoRvXqwwf7LYPW4GT1bOFjLyOlAbPOuU/eaHX0XgvE0BMltvtuVRQVyOfbPVrloBpVFtVu7xwXTarLiSPQ7yEuB0O0yb6Qw2dqEJkdnZISeMt37dmtesVeZUfDjy809KntRQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dl091rOh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=89D+SmkN; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=NPvTLI8nP6sCfnZeEvMOBGEFFRvJsbZelIPveAtoFVRcT3SHHc+b2dwuaYNcTpIbeknNeHEZI5ycpGmw//Mn4q3q33zF2hJ5Hy6Gvo/AzZwAN420FUq9SCd3vgGRjJIvE0GTB9hhio1QQdRK1rn2I/rR5UMAQT9qNz2FBuZL2kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=avH0471/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=cipVfxpu; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Jan 2026 09:16:39 -0000
+Date: Tue, 20 Jan 2026 09:23:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768900604;
+	s=2020; t=1768901002;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hxNhbyJEivzoznFWaiIoRCDOCS9Vu6oTNEvfPxOzV6s=;
-	b=Dl091rOhJ52kp+I4VMfJr8bp4HwuRNG+6x/4zIQAJVJfBAHe9Vot5N7ktJCGss5i9MKbxa
-	Fn+QE2iMb1KJFcxYAPFahYpw3fCciutD9xIkhQ26dZnix2NC2/DxQpCvuH5ckUh4Os0thL
-	Lpy+O9qnotyiyX8hGNNM76OJ8zslSBIgOLkXJ2M21nWWDrd0q0dBK7BGjvTP/j2W7EzBKV
-	IH+69rIN1kQy+KSn+pgTcP/jfEdHeuEPdwd9rFyFv+Z2rUgPoZjWzDp0mk6ith/MalT+8p
-	FvvNyxK7zrSWXvyrbYOMpd4mO5l8hkblSH1E6ZuxRXUbCRx9pMLGRnP3jcYlFw==
+	bh=kvqOS+MYn2Hv2wwFIg15+15KddzCharWpR5ItvqtH6I=;
+	b=avH0471/ATNUe+VrtSVe8HGtjt9KCx/oEGTBZHwTvyj8XbluDEHj7opBVpty0RFBtEGiC+
+	dmxwEsPshsHb7nBj59r9T7G0ebZqZtrPx7qKjBskslgND+9/MercbYHz5sKT+Fg3D/5+Z3
+	PAzMl3OW0+OLfPx/1AJO+KGgUngYxOSXZJy0rRVi30cMD7W7hLzJ2qiCdBMklVGyYxYVNN
+	vNvYzSQLL6LR5IPqvPh9CMJNJCtH8kqyRijZsnQIv1Q29KHQ9IWTd4VMmfSCcOrnGQ9oUq
+	wOuMWZhx+YSWOjwGte5v9woMpeXK924gLvDO0xz+cshOfg7rOWjrDkbXD4f8RQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768900604;
+	s=2020e; t=1768901002;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hxNhbyJEivzoznFWaiIoRCDOCS9Vu6oTNEvfPxOzV6s=;
-	b=89D+SmkNAWsM+NMPQbDeD4oCMZstR1VJLAsF4ev6xi2hjwly8LomENYAHltNOvoKnuGNfB
-	cDUK+uelH4afjuDQ==
-From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
+	bh=kvqOS+MYn2Hv2wwFIg15+15KddzCharWpR5ItvqtH6I=;
+	b=cipVfxpu01H/tjQFLZ0KXvR6lzV349+OW55yQfVfBFAM6HWPuNwFeqTP3dGrHJLv+Q5aQo
+	lKXBMV0kjYZztbCw==
+From: tip-bot2 for Thomas =?utf-8?q?Wei=C3=9Fschuh?= <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] irqchip/gic-v3-its: Avoid truncating memory addresses
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@kernel.org>,
- Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260119201603.2713066-1-arnd@kernel.org>
-References: <20260119201603.2713066-1-arnd@kernel.org>
+Subject: [tip: timers/urgent] timekeeping: Adjust the leap state for the
+ correct auxiliary timekeeper
+Cc: thomas.weissschuh@linutronix.de, Thomas Gleixner <tglx@kernel.org>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To:
+ <20260120-timekeeper-auxclock-leapstate-v1-1-5b358c6b3cfd@linutronix.de>
+References:
+ <20260120-timekeeper-auxclock-leapstate-v1-1-5b358c6b3cfd@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176890059957.510.2813927143084043841.tip-bot2@tip-bot2>
+Message-ID: <176890100118.510.15064772554358918022.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -80,85 +81,60 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the irq/urgent branch of tip:
+The following commit has been merged into the timers/urgent branch of tip:
 
-Commit-ID:     8d76a7d89c12d08382b66e2f21f20d0627d14859
-Gitweb:        https://git.kernel.org/tip/8d76a7d89c12d08382b66e2f21f20d0627d=
-14859
-Author:        Arnd Bergmann <arnd@arndb.de>
-AuthorDate:    Mon, 19 Jan 2026 21:15:12 +01:00
+Commit-ID:     e806f7dde8ba28bc72a7a0898589cac79f6362ac
+Gitweb:        https://git.kernel.org/tip/e806f7dde8ba28bc72a7a0898589cac79f6=
+362ac
+Author:        Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
+AuthorDate:    Tue, 20 Jan 2026 07:55:55 +01:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Tue, 20 Jan 2026 10:11:29 +01:00
+CommitterDate: Tue, 20 Jan 2026 10:18:53 +01:00
 
-irqchip/gic-v3-its: Avoid truncating memory addresses
+timekeeping: Adjust the leap state for the correct auxiliary timekeeper
 
-On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
-allocations to be backed by addresses physical memory above the 32-bit
-address limit, as found while experimenting with larger VMSPLIT
-configurations.
+When __do_ajdtimex() was introduced to handle adjtimex for any
+timekeeper, this reference to tk_core was not updated. When called on an
+auxiliary timekeeper, the core timekeeper would be updated incorrectly.
 
-This caused the qemu virt model to crash in the GICv3 driver, which
-allocates the 'itt' object using GFP_KERNEL. Since all memory below
-the 4GB physical address limit is in ZONE_DMA in this configuration,
-kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
-ITS driver stores the physical address in a 32-bit 'unsigned long'
-variable.
+This gets caught by the lock debugging diagnostics because the
+timekeepers sequence lock gets written to without holding its
+associated spinlock:
 
-Change the itt_addr variable to the correct phys_addr_t type instead,
-along with all other variables in this driver that hold a physical
-address.
+WARNING: include/linux/seqlock.h:226 at __do_adjtimex+0x394/0x3b0, CPU#2: tes=
+t/125
+aux_clock_adj (kernel/time/timekeeping.c:2979)
+__do_sys_clock_adjtime (kernel/time/posix-timers.c:1161 kernel/time/posix-tim=
+ers.c:1173)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entr=
+y/syscall_64.c:94 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
 
-The gicv5 driver correctly uses u64 variables, while all other irqchip
-drivers don't call virt_to_phys or similar interfaces. It's expected that
-other device drivers have similar issues, but fixing this one is
-sufficient for booting a virtio based guest.
+Update the correct auxiliary timekeeper.
 
-Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 775f71ebedd3 ("timekeeping: Make do_adjtimex() reusable")
+Fixes: ecf3e7030491 ("timekeeping: Provide adjtimex() for auxiliary clocks")
+Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
+Link: https://patch.msgid.link/20260120-timekeeper-auxclock-leapstate-v1-1-5b=
+358c6b3cfd@linutronix.de
 ---
- drivers/irqchip/irq-gic-v3-its.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/time/timekeeping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-it=
-s.c
-index ada585b..2988def 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -709,7 +709,7 @@ static struct its_collection *its_build_mapd_cmd(struct i=
-ts_node *its,
- 						 struct its_cmd_block *cmd,
- 						 struct its_cmd_desc *desc)
- {
--	unsigned long itt_addr;
-+	phys_addr_t itt_addr;
- 	u8 size =3D ilog2(desc->its_mapd_cmd.dev->nr_ites);
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 3ec3daa..91fa200 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -2735,7 +2735,7 @@ static int __do_adjtimex(struct tk_data *tkd, struct __=
+kernel_timex *txc,
+ 		timekeeping_update_from_shadow(tkd, TK_CLOCK_WAS_SET);
+ 		result->clock_set =3D true;
+ 	} else {
+-		tk_update_leap_state_all(&tk_core);
++		tk_update_leap_state_all(tkd);
+ 	}
 =20
- 	itt_addr =3D virt_to_phys(desc->its_mapd_cmd.dev->itt);
-@@ -879,7 +879,7 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_nod=
-e *its,
- 					   struct its_cmd_desc *desc)
- {
- 	struct its_vpe *vpe =3D valid_vpe(its, desc->its_vmapp_cmd.vpe);
--	unsigned long vpt_addr, vconf_addr;
-+	phys_addr_t vpt_addr, vconf_addr;
- 	u64 target;
- 	bool alloc;
-=20
-@@ -2477,10 +2477,10 @@ retry_baser:
- 	baser->psz =3D psz;
- 	tmp =3D indirect ? GITS_LVL1_ENTRY_SIZE : esz;
-=20
--	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
-+	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
- 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
- 		its_base_type_string[type],
--		(unsigned long)virt_to_phys(base),
-+		(u64)virt_to_phys(base),
- 		indirect ? "indirect" : "flat", (int)esz,
- 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
-=20
+ 	/* Update the multiplier immediately if frequency was set directly */
 
