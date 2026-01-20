@@ -1,75 +1,78 @@
-Return-Path: <linux-tip-commits+bounces-8073-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8074-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Delivered-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94DFD3AA86
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jan 2026 14:40:08 +0100 (CET)
-Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCE6C300FA06
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 19 Jan 2026 13:40:07 +0000 (UTC)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B725D3C35D
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 10:25:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ABACD5065C3
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 09:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925062D6409;
-	Mon, 19 Jan 2026 13:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8753C1FEE;
+	Tue, 20 Jan 2026 09:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="z8tiaFce";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kCovT2xj"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dl091rOh";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="89D+SmkN"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333B71E633C;
-	Mon, 19 Jan 2026 13:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A024E3D3CF4;
+	Tue, 20 Jan 2026 09:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768830006; cv=none; b=J1DpExjLvvhI0xn19tRASE2JZ8/tFYKvGGhPK8oZdLtM16Ge/XMTNTBUye6rRUViwFHGbnUKcq3mo7aKu1hpw7gAxTVZ9MR5z0zHQGQI4Qyq3TkSRJdPh9/6COEcAe3xyTCypVDDHDhFTFpYC1HF4p+7n43yHXocyMPaw/eGM7E=
+	t=1768900608; cv=none; b=Uxu0Zwr1Yu/wpCuAjDxlY2sTbB5sVk0ZZiMsE8yG+mzgxocaci10YenoYICoAbtFcmA8LNfY/BDXS9aw3U17yun15eGgcxd4/RzhAxU6onu4/JVu0CZaR02XG2liZkhBybFyXFpZM6dS2bcjA+S495K7jwjaHB6+9WNXHzPdsCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768830006; c=relaxed/simple;
-	bh=Lfio0nDr9hrKxkJp06rnVC2oMqSpYzAzhO1Jl35TM5Q=;
+	s=arc-20240116; t=1768900608; c=relaxed/simple;
+	bh=MKnEI4wXGnREWVIvl4mOC36iVROiOD6trGeDI9Bc0PU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=Dt+7mkP6QppGZm3rLGF3+VAWDu7FZUCdfo8qduJ3+UcYxBtCL6MLes69WQPiv+zc4XmORAbX087n0Yklx7QLyCHfRbasxB8TmKzuPMLB3/zEp2I4/jumv1cHXyOK4Q+W3Se05aCeaX94qmK01GcehOUPjrt46SSzVmCJHDxmSP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=z8tiaFce; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kCovT2xj; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=efHl1B+VqjPpXgZ65Gy08KvjqcB1rW8TGHQjwWVoRvXqwwf7LYPW4GT1bOFjLyOlAbPOuU/eaHX0XgvE0BMltvtuVRQVyOfbPVrloBpVFtVu7xwXTarLiSPQ7yEuB0O0yb6Qw2dqEJkdnZISeMt37dmtesVeZUfDjy809KntRQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dl091rOh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=89D+SmkN; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Jan 2026 13:40:01 -0000
+Date: Tue, 20 Jan 2026 09:16:39 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768830003;
+	s=2020; t=1768900604;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W+HUOM8x1ZqqtpVXA4a6nZc4ZDGU4PAb+AQDpNtUSu8=;
-	b=z8tiaFceYunoDdg6hHnX97isUikWcoNv9Q/HwOwhZhTmfAvCB2UJ7l/UqV11+zpLkGBtMJ
-	RXQ55rDtCaSp99as0o/4Btuh07K0d/ks8wadUXTeA03VBhw97oHPheaUL5GLW5NeCm3H0C
-	N/WigR5Ds/Dq45qaaGqmmgK8MDers6E82cJlZSgvsvdFL/ktIyvgSlLeA+a2X58fpN95W3
-	LeVqpwERUPpI0+sJtrprkR7tWHbg8jJ9IulYdEVPRzdH+RghcIZGJeiWD4CmHmBBhoWmr2
-	45sDXAfiIKF1AEqssiaaQnJZD4fOACGTFUN9ow8hPfaEqkBhvspUysCHpNm6Bg==
+	bh=hxNhbyJEivzoznFWaiIoRCDOCS9Vu6oTNEvfPxOzV6s=;
+	b=Dl091rOhJ52kp+I4VMfJr8bp4HwuRNG+6x/4zIQAJVJfBAHe9Vot5N7ktJCGss5i9MKbxa
+	Fn+QE2iMb1KJFcxYAPFahYpw3fCciutD9xIkhQ26dZnix2NC2/DxQpCvuH5ckUh4Os0thL
+	Lpy+O9qnotyiyX8hGNNM76OJ8zslSBIgOLkXJ2M21nWWDrd0q0dBK7BGjvTP/j2W7EzBKV
+	IH+69rIN1kQy+KSn+pgTcP/jfEdHeuEPdwd9rFyFv+Z2rUgPoZjWzDp0mk6ith/MalT+8p
+	FvvNyxK7zrSWXvyrbYOMpd4mO5l8hkblSH1E6ZuxRXUbCRx9pMLGRnP3jcYlFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768830003;
+	s=2020e; t=1768900604;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W+HUOM8x1ZqqtpVXA4a6nZc4ZDGU4PAb+AQDpNtUSu8=;
-	b=kCovT2xjyetvuyJTLp4Tz2e9zux9tnra5iCOCLF6yZEeakLawgb5iy2uDaPxTzTgZZ+knq
-	ayCGjUbqh400vyCw==
-From: "tip-bot2 for Lukas Bulwahn" <tip-bot2@linutronix.de>
+	bh=hxNhbyJEivzoznFWaiIoRCDOCS9Vu6oTNEvfPxOzV6s=;
+	b=89D+SmkNAWsM+NMPQbDeD4oCMZstR1VJLAsF4ev6xi2hjwly8LomENYAHltNOvoKnuGNfB
+	cDUK+uelH4afjuDQ==
+From: "tip-bot2 for Arnd Bergmann" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/entry] MAINTAINERS: Adjust vdso file entry in INTEL SGX
-Cc: Lukas Bulwahn <lukas.bulwahn@redhat.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, x86@kernel.org,
+Subject:
+ [tip: irq/urgent] irqchip/gic-v3-its: Avoid truncating memory addresses
+Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Gleixner <tglx@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260119093835.114554-1-lukas.bulwahn@redhat.com>
-References: <20260119093835.114554-1-lukas.bulwahn@redhat.com>
+In-Reply-To: <20260119201603.2713066-1-arnd@kernel.org>
+References: <20260119201603.2713066-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176883000151.510.15925000772646308622.tip-bot2@tip-bot2>
+Message-ID: <176890059957.510.2813927143084043841.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -77,48 +80,85 @@ Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 
-The following commit has been merged into the x86/entry branch of tip:
+The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     436ee609df7da5671ae5a717d1df867313868baf
-Gitweb:        https://git.kernel.org/tip/436ee609df7da5671ae5a717d1df8673138=
-68baf
-Author:        Lukas Bulwahn <lukas.bulwahn@redhat.com>
-AuthorDate:    Mon, 19 Jan 2026 10:38:35 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 19 Jan 2026 14:33:14 +01:00
+Commit-ID:     8d76a7d89c12d08382b66e2f21f20d0627d14859
+Gitweb:        https://git.kernel.org/tip/8d76a7d89c12d08382b66e2f21f20d0627d=
+14859
+Author:        Arnd Bergmann <arnd@arndb.de>
+AuthorDate:    Mon, 19 Jan 2026 21:15:12 +01:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Tue, 20 Jan 2026 10:11:29 +01:00
 
-MAINTAINERS: Adjust vdso file entry in INTEL SGX
+irqchip/gic-v3-its: Avoid truncating memory addresses
 
-Commit
+On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
+allocations to be backed by addresses physical memory above the 32-bit
+address limit, as found while experimenting with larger VMSPLIT
+configurations.
 
-  693c819fedcd ("x86/entry/vdso: Refactor the vdso build")
+This caused the qemu virt model to crash in the GICv3 driver, which
+allocates the 'itt' object using GFP_KERNEL. Since all memory below
+the 4GB physical address limit is in ZONE_DMA in this configuration,
+kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
+ITS driver stores the physical address in a 32-bit 'unsigned long'
+variable.
 
-moves the vdso sources into common, vdso32, and vdso64 subdirectories, but
-misses to adjust the file entry in the INTEL SGX section of the MAINTAINERS
-file.
+Change the itt_addr variable to the correct phys_addr_t type instead,
+along with all other variables in this driver that hold a physical
+address.
 
-Adjust the file entry in accordance with the file movement of the commit
-above.
+The gicv5 driver correctly uses u64 variables, while all other irqchip
+drivers don't call virt_to_phys or similar interfaces. It's expected that
+other device drivers have similar issues, but fixing this one is
+sufficient for booting a virtio based guest.
 
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@redhat.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://patch.msgid.link/20260119093835.114554-1-lukas.bulwahn@redhat.c=
-om
+Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0d044a5..7bfc0b9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -13008,7 +13008,7 @@ S:	Supported
- Q:	https://patchwork.kernel.org/project/intel-sgx/list/
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git x86/sgx
- F:	Documentation/arch/x86/sgx.rst
--F:	arch/x86/entry/vdso/vsgx.S
-+F:	arch/x86/entry/vdso/vdso64/vsgx.S
- F:	arch/x86/include/asm/sgx.h
- F:	arch/x86/include/uapi/asm/sgx.h
- F:	arch/x86/kernel/cpu/sgx/*
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-it=
+s.c
+index ada585b..2988def 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -709,7 +709,7 @@ static struct its_collection *its_build_mapd_cmd(struct i=
+ts_node *its,
+ 						 struct its_cmd_block *cmd,
+ 						 struct its_cmd_desc *desc)
+ {
+-	unsigned long itt_addr;
++	phys_addr_t itt_addr;
+ 	u8 size =3D ilog2(desc->its_mapd_cmd.dev->nr_ites);
+=20
+ 	itt_addr =3D virt_to_phys(desc->its_mapd_cmd.dev->itt);
+@@ -879,7 +879,7 @@ static struct its_vpe *its_build_vmapp_cmd(struct its_nod=
+e *its,
+ 					   struct its_cmd_desc *desc)
+ {
+ 	struct its_vpe *vpe =3D valid_vpe(its, desc->its_vmapp_cmd.vpe);
+-	unsigned long vpt_addr, vconf_addr;
++	phys_addr_t vpt_addr, vconf_addr;
+ 	u64 target;
+ 	bool alloc;
+=20
+@@ -2477,10 +2477,10 @@ retry_baser:
+ 	baser->psz =3D psz;
+ 	tmp =3D indirect ? GITS_LVL1_ENTRY_SIZE : esz;
+=20
+-	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
++	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
+ 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
+ 		its_base_type_string[type],
+-		(unsigned long)virt_to_phys(base),
++		(u64)virt_to_phys(base),
+ 		indirect ? "indirect" : "flat", (int)esz,
+ 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
+=20
 
