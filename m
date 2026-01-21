@@ -1,240 +1,218 @@
-Return-Path: <linux-tip-commits+bounces-8081-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8082-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJ51MqIWcGlyUwAAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8081-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jan 2026 00:58:26 +0100
+	id +BLNHWavcGmKZAAAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8082-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jan 2026 11:50:14 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE164E36B
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jan 2026 00:58:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC4455838
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jan 2026 11:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E18E23ED9E2
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 20 Jan 2026 14:06:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 329025037DB
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 21 Jan 2026 10:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A240A43C04A;
-	Tue, 20 Jan 2026 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FD83B8D4D;
+	Wed, 21 Jan 2026 10:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yl75fOuR"
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZYNHQsl";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FmB8qQFO"
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF9243635F
-	for <linux-tip-commits@vger.kernel.org>; Tue, 20 Jan 2026 14:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768917796; cv=pass; b=OJ2YCBNdusJsHDHaBkazQH9GUB75Ersai+weZrPP9tLHqxdXr5L9p8+4/S71mNb7zAxtpXxMlIZqBFY4xQQMMpoWIvjLISbVNGPWgI8oA9dNxy0r+CWs2ljdMRVy8JeztOyLo9pb2KWxqQWmJzB7cRnw5tAuFGl4ttlRfB7ADQw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768917796; c=relaxed/simple;
-	bh=JahNnD+2/4ecxTW7P+pOfDNlIX1M8OWskqmPPRsahSQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gh4QOdB21ixUHmOvdfHz6QFRjF5wnYb28YSwG1zhFNoaVicIatufgJzHMOQdhgGNY5dlYnfPmE+b5UnNN/quN+Se2ZIZC6kUqtrFmFsbBO699Qb5422Yt9f0aL8eORcngxXUTNP705TGXIwtwpkR3nBI/iQDtne6YM9ABd5NuLg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yl75fOuR; arc=pass smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-383247376a4so47143571fa.3
-        for <linux-tip-commits@vger.kernel.org>; Tue, 20 Jan 2026 06:03:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768917792; cv=none;
-        d=google.com; s=arc-20240605;
-        b=e2viV2YylgnorO+oOxhFGzFNgqpVqEGM8SS00ivSdu8dMNmmyv76EQJJbXevKzH8Ti
-         uISNf4XK37oPtjMLNmcafMp+gOAG2QOKqiwqyIQkdSSoNRHHyfrERBd0Wng9F0UaZt72
-         ZjnHaq89QbiitMpwK4MWQTnmWSyhYXB8TirWCAcMQ4MCJFXeDn4+kSSBdNkPHkQRi8lh
-         f5RaUd6o+fbuSkcN35ixY5qKFIuVV04qg2bFN24/KLm0q89Jepp/vMDjLqWYwmpGFvZd
-         nAFbwESWMZK+RXpfoT0gT9a3aeiRzkgAMW598sPJ9iLYKx7WEiq9f256O1mlfvfs7jOZ
-         7I6w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ADkzUHtuO/vCn8+gSsN/JWvIgt4gmIA5VnUt9FG4nxY=;
-        fh=D2ZEPL82gtgRsl2Ay54wQfunnR5a6joCCvG9yBIF+S4=;
-        b=iDvnQeoYnj33ymkEf/Q/EQzwL+9rTrKOwYfXiRu08RdDA3RYUnilBR6JkMtOv0L7FH
-         G8WqVz7eJ2nvpcBsH4OuOIno+b1/NlKNy344yvtESpYu2tnTJes0SPXspJNbMkK12/9e
-         vcShvgUtgSFKUw38x3d7FGt21XWUqw7rQpKFVs6+BYfNOW+lBMWUN9ksIdOVFczKGJ9k
-         EK3+sz1JyDRtsvAOp1XfHVEHmv00WLzbBr+4KCKAn2BT4mQe0M9wVq2QGHpLfuDJe6w3
-         Dg8KG6ZR3ndFCcFrXAIhQZREp05A1c9JY0PV8U0qLPTRtVvIh+I2GQ6us9W0Kf4DTzdr
-         hlrw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768917792; x=1769522592; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ADkzUHtuO/vCn8+gSsN/JWvIgt4gmIA5VnUt9FG4nxY=;
-        b=Yl75fOuRKQuU7K6Vazxow60LqcOxqk8T6qjpp359W3KQXABqx9nnTkPnmsA1X27AF8
-         uCtTq54yUxF1/9nnbJ1xBlmT1QncYjMUVicTtxoZmFTlS277McP2naru/iW7H7Ydxddr
-         tDuR9CUYCNsjNP1kvyoZT7cMfZuLC6lQc7Lfbwr1gI6YDM1uevV7dgUlyzYBUBNS7HIH
-         HFgvUmg2Htv+sUz5rDE7GSb+EJMBMIs0sMqeaQgLOW9f/7CsBy8/VXZHQPDbVTr9td8U
-         lQomawWReAQM7uztWEOt2lH4KDJNorPzA30JscVKk6AD2XPFGiLdjvAFKVDxOG02gxSR
-         JrEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768917792; x=1769522592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ADkzUHtuO/vCn8+gSsN/JWvIgt4gmIA5VnUt9FG4nxY=;
-        b=O29Fyi8ZQU1Ga5E7wVUj9S96flTpQuSEsjGGRWNHoGZVNVHce6rTj8KYL/esqUQKIe
-         IJNxFrAx/owFK00dn5L194SBUgr/gopPESdKAqEoNVlNXNwzu8Kno0eKLjNNIEeYqUil
-         HsIdxYoQsJwH35VmiDtb/RpSlH3mFSP/K3w4jXpC7AmD7Lt0WJKCf/hLPXVQpoqXTcCU
-         9QyF1Hh8CqbXpDA/r2NTUO6DSJYVpJ6U1ToJgKovTKw7ThwuR4J8oP70vofO+6ansjjj
-         oKXOslGo50Y2ivdBuWopaHsfm6LncbTSyu2cd5voCSRjv3WQTxI0VZTTIPh2B9zokIeq
-         owzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/IKXiXpIuo/VZYTYTFLBKo07wYASLcxBXP6X9qhp5a13zUhxtue1FiiUa2o0WRPeOfIqNakOzDHKZRIiyi6uAHA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbZo9LewEfTmhpfePk+vjM+Q8dPLA2Tkfk+ZUKwy90TQQj8tJK
-	w8yJDkj5FIFG58fT9TkozDUlDOL61qPh3xjc+xKMQit0XhzqBVux6AcFF02JoTM+kQIHlLOs9n5
-	yRtRnb2D/kwjZcRuDA9S76OFgONbGRfA=
-X-Gm-Gg: AZuq6aK332znEqRfamVMsPNIdnAESFfAV/KSjFQc6QJC4hz+Rli806UkEhKH+mgdqBH
-	68iogjWafQtGhN7rZ6LGeISh2c13uoPz0GiE2Vo6EaA1B5vyIaeEZRp0sDeKvzmgUIuRk4o9iCC
-	BFA9Xckuw4msEmHYJV1hVt3Moe5D8Q8chymTbaFPz+5gIyFJF4rnCcwRd58iWPFJglYqzkS0zge
-	SjxwUkXdEW5J6C6AJBVSdLiSSzOMYhu2HDx6ZHd2YVL8AekxDy/GuqR6WGC1/R6biKp9uyBbk2K
-	WFQ6Gsa2X1z+1b/PLBMN7ClY7qujgBp+kBQZuA==
-X-Received: by 2002:a05:6512:63c7:10b0:59b:b020:a71c with SMTP id
- 2adb3069b0e04-59bb020a733mr3213757e87.13.1768917791437; Tue, 20 Jan 2026
- 06:03:11 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF92328627;
+	Wed, 21 Jan 2026 10:37:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768991838; cv=none; b=f9GK4KEWTpbLe2sbUWB63srW6v1arAKboHm/5LLRid+xKBs2FbvfKDf62+KkiTtl/pxI5nuFKcnnZusDcWkFo1g9S0y4q6hD68rEZ33l893aFVexVAILXESo2VpgdDvxI/O1EBuJkbkI5GcqNMNqwsQ2mMFAv/148WXDGWSJdeI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768991838; c=relaxed/simple;
+	bh=Hg+WPbjikTmQJ82KhCwopAAkEFEZFLZ4iJjZiyPJ+o0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=eXySOGbkAqJxo9sf4EiP7qLaWx57GzByozjI61m4KO3UCLCTCwUQQ4qOv5X4jRDLbAOClmiG1YDr8LHIdIwWsDeyfqJGE/Jl9L4L0HFD78nHcFDxvDYrqUARD8LrwghKSiCE4HAocbVXTbsFdDNqqh5LEWKiVXEIyVdt8YxpsMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZYNHQsl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FmB8qQFO; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 21 Jan 2026 10:37:05 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768991830;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CFbv3innd7HXx9Lftsndv4Fl9YuV0CRxqdAvyD+Stn4=;
+	b=vZYNHQslw8AhwEDuemOPLdGFop5zB98tU/DRyGWrJGc03+MYmiSwiFXZQRF3a/9eOwlGXY
+	haegcOuRUBeqqvlLCtuNDxVL1IIY/WzE1fS9iBCn++6Xvnsrg7Pmb+viVK0d0XdDyW2FMb
+	6Pg2H3dwB7NiLf/dY6L6OdhU1yOKOBCXBpc8EUL8f02G/5ibHROD6jZ7lgs1JlJXxwKlLC
+	yPE7sSdZRJsPv/KSbFucr11LO/s4mGHz7JElVPxiJ8JKybe4ZwaWqWsO81A/8fZ43EPFzq
+	Frb/qwPgjsh9WQS4kqJuVmj5Dqu1s1LJIUuTpPBUREJo5GBFUD1OL0azBHoTWg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768991830;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CFbv3innd7HXx9Lftsndv4Fl9YuV0CRxqdAvyD+Stn4=;
+	b=FmB8qQFOXkqPezliC7PazAxhbIqoqq89jDdomOyo/VGDego9OTqbGuF0z5HuSRAM7zmiyE
+	MmLUWygaNMbSvRBQ==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] clocksource: Reduce watchdog readout delay limit
+ to prevent false positives
+Cc: Daniel J Blueman <daniel@quora.org>, Thomas Gleixner <tglx@linutronix.de>,
+ "Paul E. McKenney" <paulmck@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <87bjjxc9dq.ffs@tglx>
+References: <87bjjxc9dq.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105090422.6243-1-ubizjak@gmail.com> <176891088183.510.8607818928752445249.tip-bot2@tip-bot2>
- <3A54B6DC-2462-41DA-8C34-D38CCD2A9A2B@zytor.com> <CAFULd4Z8PG88oNvzUQ_K0MV+wjsrGK=b=gPzdgkTGm3ceo9gdg@mail.gmail.com>
-In-Reply-To: <CAFULd4Z8PG88oNvzUQ_K0MV+wjsrGK=b=gPzdgkTGm3ceo9gdg@mail.gmail.com>
-From: Uros Bizjak <ubizjak@gmail.com>
-Date: Tue, 20 Jan 2026 15:02:59 +0100
-X-Gm-Features: AZwV_QiNYJKWN3m86GfkNQJiJZbKj1Hxwa6GB-pvz7lyonQf8EIFsyeE7L-Atbw
-Message-ID: <CAFULd4aAWAm8SxZQQZXTDB0ERG5AcOt1SD1-cUy4LudKCqKqoQ@mail.gmail.com>
-Subject: Re: [tip: x86/cleanups] x86/segment: Use MOVL when reading segment registers
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, 
-	tip-bot2 for Uros Bizjak <tip-bot2@linutronix.de>, linux-tip-commits@vger.kernel.org, 
-	"Borislav Petkov (AMD)" <bp@alien8.de>, Michael Kelley <mhklinux@outlook.com>, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <176899182593.510.16384647073619939928.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-1.46 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8081-lists,linux-tip-commits=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linutronix.de,alien8.de,outlook.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,quora.org:email,msgid.link:url,linutronix.de:email,linutronix.de:dkim,vger.kernel.org:replyto];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-8082-lists,linux-tip-commits=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ubizjak@gmail.com,linux-tip-commits@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linutronix.de,none];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,zytor.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,outlook.com:email,linutronix.de:email]
-X-Rspamd-Queue-Id: 6FE164E36B
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+X-Rspamd-Queue-Id: EBC4455838
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 2:47=E2=80=AFPM Uros Bizjak <ubizjak@gmail.com> wro=
-te:
->
-> On Tue, Jan 20, 2026 at 1:38=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wr=
-ote:
-> >
-> > On January 20, 2026 4:08:01 AM PST, tip-bot2 for Uros Bizjak <tip-bot2@=
-linutronix.de> wrote:
-> > >The following commit has been merged into the x86/cleanups branch of t=
-ip:
-> > >
-> > >Commit-ID:     53ed3d91a141f5c8b3bce45b0004fbbfefe77956
-> > >Gitweb:        https://git.kernel.org/tip/53ed3d91a141f5c8b3bce45b0004=
-fbbfefe77956
-> > >Author:        Uros Bizjak <ubizjak@gmail.com>
-> > >AuthorDate:    Mon, 05 Jan 2026 10:02:32 +01:00
-> > >Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-> > >CommitterDate: Tue, 20 Jan 2026 12:34:58 +01:00
-> > >
-> > >x86/segment: Use MOVL when reading segment registers
-> > >
-> > >Use MOVL when reading segment registers to avoid 0x66 operand-size ove=
-rride
-> > >insn prefix. The segment value is always 16-bit and gets zero-extended=
- to the
-> > >full 32-bit size.
-> > >
-> > >Example:
-> > >
-> > >  4e4:       66 8c c0                mov    %es,%ax
-> > >  4e7:       66 89 83 80 0b 00 00    mov    %ax,0xb80(%rbx)
-> > >
-> > >  4e4:       8c c0                   mov    %es,%eax
-> > >  4e6:       66 89 83 80 0b 00 00    mov    %ax,0xb80(%rbx)
-> > >
-> > >Also, use the %k0 modifier which generates the SImode (signed integer)
-> > >register name for the target register.
-> > >
-> > >  [ bp: Extend and clarify commit message. ]
-> > >
-> > >Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-> > >Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> > >Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> > >Tested-by: Michael Kelley <mhklinux@outlook.com>
-> > >Link: https://patch.msgid.link/20260105090422.6243-1-ubizjak@gmail.com
-> > >---
-> > > arch/x86/include/asm/segment.h | 2 +-
-> > > 1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > >diff --git a/arch/x86/include/asm/segment.h b/arch/x86/include/asm/seg=
-ment.h
-> > >index f59ae71..9f5be2b 100644
-> > >--- a/arch/x86/include/asm/segment.h
-> > >+++ b/arch/x86/include/asm/segment.h
-> > >@@ -348,7 +348,7 @@ static inline void __loadsegment_fs(unsigned short=
- value)
-> > >  * Save a segment register away:
-> > >  */
-> > > #define savesegment(seg, value)                               \
-> > >-      asm("mov %%" #seg ",%0":"=3Dr" (value) : : "memory")
-> > >+      asm("movl %%" #seg ",%k0" : "=3Dr" (value) : : "memory")
-> > >
-> > > #endif /* !__ASSEMBLER__ */
-> > > #endif /* __KERNEL__ */
-> > >
-> >
-> > Incidentally, why aren't we using =3Drm here? Segment moves support mem=
-ory operands.
->
-> I have tried it with "=3Drm", and there were no cases when memory output
-> applies. Also, it would need to use  ASM_OUTPUT_RM to handle clang
-> issues with memory output alternatives.
+The following commit has been merged into the timers/urgent branch of tip:
 
-Also, savesegment() is defined as a macro, so e.g.:
+Commit-ID:     c06343be0b4e03fe319910dd7a5d5b9929e1c0cb
+Gitweb:        https://git.kernel.org/tip/c06343be0b4e03fe319910dd7a5d5b9929e=
+1c0cb
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 17 Dec 2025 18:21:05 +01:00
+Committer:     Thomas Gleixner <tglx@kernel.org>
+CommitterDate: Wed, 21 Jan 2026 11:33:11 +01:00
 
---cut here--
-#define savesegment(seg, value)                \
-    asm("mov %%" #seg ",%0":"=3Drm" (value) : : "memory")
+clocksource: Reduce watchdog readout delay limit to prevent false positives
 
-char c;
+The "valid" readout delay between the two reads of the watchdog is larger
+than the valid delta between the resulting watchdog and clocksource
+intervals, which results in false positive watchdog results.
 
-void foo (void)
-{
-  savesegment (gs, c);
-}
---cut here--
+Assume TSC is the clocksource and HPET is the watchdog and both have a
+uncertainty margin of 250us (default). The watchdog readout does:
 
-would result in a wrong code, where word sized 16-bit value is moved
-to the location of "c".
+  1) wdnow =3D read(HPET);
+  2) csnow =3D read(TSC);
+  3) wdend =3D read(HPET);
 
-Uros.
+The valid window for the delta between #1 and #3 is calculated by the
+uncertainty margins of the watchdog and the clocksource:
+
+   m =3D 2 * watchdog.uncertainty_margin + cs.uncertainty margin;
+
+which results in 750us for the TSC/HPET case.
+
+The actual interval comparison uses a smaller margin:
+
+   m =3D watchdog.uncertainty_margin + cs.uncertainty margin;
+
+which results in 500us for the TSC/HPET case.
+
+That means the following scenario will trigger the watchdog:
+
+ Watchdog cycle N:
+
+ 1)       wdnow[N] =3D read(HPET);
+ 2)       csnow[N] =3D read(TSC);
+ 3)       wdend[N] =3D read(HPET);
+
+Assume the delay between #1 and #2 is 100us and the delay between #1 and
+
+ Watchdog cycle N + 1:
+
+ 4)       wdnow[N + 1] =3D read(HPET);
+ 5)       csnow[N + 1] =3D read(TSC);
+ 6)       wdend[N + 1] =3D read(HPET);
+
+If the delay between #4 and #6 is within the 750us margin then any delay
+between #4 and #5 which is larger than 600us will fail the interval check
+and mark the TSC unstable because the intervals are calculated against the
+previous value:
+
+    wd_int =3D wdnow[N + 1] - wdnow[N];
+    cs_int =3D csnow[N + 1] - csnow[N];
+
+Putting the above delays in place this results in:
+
+    cs_int =3D (wdnow[N + 1] + 610us) - (wdnow[N] + 100us);
+ -> cs_int =3D wd_int + 510us;
+
+which is obviously larger than the allowed 500us margin and results in
+marking TSC unstable.
+
+Fix this by using the same margin as the interval comparison. If the delay
+between two watchdog reads is larger than that, then the readout was either
+disturbed by interconnect congestion, NMIs or SMIs.
+
+Fixes: 4ac1dd3245b9 ("clocksource: Set cs_watchdog_read() checks based on .un=
+certainty_margin")
+Reported-by: Daniel J Blueman <daniel@quora.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/lkml/20250602223251.496591-1-daniel@quora.org/
+Link: https://patch.msgid.link/87bjjxc9dq.ffs@tglx
+---
+ kernel/time/clocksource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index a1890a0..df71949 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -252,7 +252,7 @@ enum wd_read_status {
+=20
+ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csn=
+ow, u64 *wdnow)
+ {
+-	int64_t md =3D 2 * watchdog->uncertainty_margin;
++	int64_t md =3D watchdog->uncertainty_margin;
+ 	unsigned int nretries, max_retries;
+ 	int64_t wd_delay, wd_seq_delay;
+ 	u64 wd_end, wd_end2;
 
