@@ -1,40 +1,40 @@
-Return-Path: <linux-tip-commits+bounces-8116-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8115-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qKP6Ez+Ld2m9hgEAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8116-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jan 2026 16:41:51 +0100
+	id cPfODz6Ld2m9hgEAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8115-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jan 2026 16:41:50 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0190C8A429
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jan 2026 16:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9778A422
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jan 2026 16:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77EAB3019CA6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jan 2026 15:41:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57EF33017042
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 26 Jan 2026 15:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9019033FE2F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7170533E373;
 	Mon, 26 Jan 2026 15:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YX7jnWJQ";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6XOvq/Mi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GzbSmPx5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uAVCimgt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0912838DF9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091B733A716;
 	Mon, 26 Jan 2026 15:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769442078; cv=none; b=k1efSK6ltJPqLToKmHlX5vawC9UYHvNs+lcIATkDh3nasDiRkebovdffZcxen4pw41uWeNusMPmdUuP+j5G9fN608RWwr/WajJnKI3UNVxHAD9Y3i72ACiJL2+b5uNJkWYzQJdAzi0twSuYRIThKbNMC3yRE1wgrdBzkVznN/hU=
+	t=1769442078; cv=none; b=WQ/Vcdircr64JY+oV8s6Rs8eE7Fs09FZWaZ+PZnP2p/5DOsP6nTciMdVErjypsWQylIfXp5UlPEBREoSI1ghdTcn/botCk3aJfuduyM8ejQGPy6vPS+YakzNBzCydzL4QYTwNpOo/g1wwdN/tf/LXEkDTX1NrBuvPtGww39K1HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769442078; c=relaxed/simple;
-	bh=w5cozCyd8EjSbrzLMpUYxCsslKHFQpCn7ldwuTjGObA=;
+	bh=uECqVvmpjinwkKyhcBi6gJ8rYjdPs8DPW2LhvLzqHPA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=hXQVLITPjPROw0oai2Xrnk/eozmwMlGxHfKymv3BAu544HXlXckr7JOnFe+z2EVizkqjZTgmvenZvJ2jQElNGAGk1sHU6jrUf14mkvE3wfdCHDAu2LY8J75+U4tnLI0tNnj2agaa+b15zg4jZewuAM5px006gsTe+0rHcEU0+b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YX7jnWJQ; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6XOvq/Mi; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=Z8u40mAxZ7aAuHp0qSrPioJik2hRFsicBQilHg3y/kRDhZDdaH67BSj0BkUUtZJx4E6icNlqWcjdmTASzN5SthL1a4Bl0MxlTXO+vPOIn7YE0eomPUhBh8QSefpfxuUSrfpdDQZ1lGBgj4zJgksumZ/D0W5Pfl0s7TSjzdgtg0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GzbSmPx5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uAVCimgt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Jan 2026 15:41:12 -0000
+Date: Mon, 26 Jan 2026 15:41:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1769442074;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -42,12 +42,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=muE7V5/pHp4zGNoyP6L2KqA2N63VnR5GA53KUXIO/x0=;
-	b=YX7jnWJQpLY4lVVwtoEP3e/6aUU0m8auoYjthvULAW2F4Rbwr+3lco/TyUdzXLQaUxVzIU
-	YUonium2Cd7ZzqyQLZEcos0jL6khvEf+4coaoooQSV1pQUjedm5VXnsHStwfz9hfIPkgx7
-	fwWBcuS6b3Xda+n+6dBOh/baDMV8ADi8wOSCniL5l53W/mzlNH5xcUd8Qj9swKw0HZG/Xm
-	dvnLGjFmiOZUx+qMcNQmklrF7l87RlpQbRo3cP9EetKRXli0mV/dPlXlHzekFwxcOrzlCA
-	Dl0oBn8HrPwlUoxFstmrU/nx6KwcZqlt6rm2/VlTQplYaFud1rVzAkd0ifTnuQ==
+	bh=RvolQ4mCPzjFPSW5UEopdgb3v0ZTxxfScPGvBHjHZHE=;
+	b=GzbSmPx5uSy1HeFisM4SARs5MCkZPPZqx8QWlUT841TEA2InFowey1bj8TZDP+HjXsGIpe
+	Yy5cbVnRikSdut5axqU7AY82os/hmmuaLNblVLMo/sxHQ/H/iAPcEP0ZsBYwz88EqMsVGI
+	g6PsHN0/3HJg4pWZ7MjrBS8oHc8Xd2sDpvv6Pd4KFRmpK2XZbIPYrP2Y9oEO7Thk4KgcPd
+	bvD4OVhPJSEhSxX0faP7igORjQFEBxkEKghttiaItJIlqQ5jc4cOxaIwVVRJbAn4BqtSlA
+	Dxfnzh73P9sT1TcAj4ypUB01+80a6XXY65KFWq9DO5wyRy4V1W2bhBCGGxqaSQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1769442074;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -55,26 +55,27 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=muE7V5/pHp4zGNoyP6L2KqA2N63VnR5GA53KUXIO/x0=;
-	b=6XOvq/MiflH2m3n2VY+cNdBhEY2vHq0rosYc0+lnsLX36dxcqMVABeGsbgpj2As7Bm30P6
-	g7NudUOV19li+GBg==
+	bh=RvolQ4mCPzjFPSW5UEopdgb3v0ZTxxfScPGvBHjHZHE=;
+	b=uAVCimgtaOWe4+SecVB+kqP3qfVii3u6vop2ZoinWkHI7gkH3oMxXyAwwAFEPrrAiSPAd0
+	18LQzcA4a0tbFtCg==
 From: "tip-bot2 for Aniket Limaye" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/drivers] irqchip/ti-sci-intr: Allow parsing interrupt-types
- per-line
+Subject: [tip: irq/drivers] dt-bindings: interrupt-controller: ti,sci-intr:
+ Per-line interrupt-types
 Cc: Aniket Limaye <a-limaye@ti.com>, Thomas Gleixner <tglx@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260123-ul-driver-i2c-j722s-v4-2-b08625c487d5@ti.com>
-References: <20260123-ul-driver-i2c-j722s-v4-2-b08625c487d5@ti.com>
+ "Rob Herring (Arm)" <robh@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260123-ul-driver-i2c-j722s-v4-1-b08625c487d5@ti.com>
+References: <20260123-ul-driver-i2c-j722s-v4-1-b08625c487d5@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176944207229.510.8507537492169657639.tip-bot2@tip-bot2>
+Message-ID: <176944207369.510.9607619137690283844.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -92,8 +93,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8116-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,msgid.link:url,linutronix.de:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	TAGGED_FROM(0.00)[bounces-8115-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -101,7 +102,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -111,156 +112,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 0190C8A429
+X-Rspamd-Queue-Id: DC9778A422
 X-Rspamd-Action: no action
 
 The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     3d9617ea8ab5ca779a227d1e7d23741f5f8400c1
-Gitweb:        https://git.kernel.org/tip/3d9617ea8ab5ca779a227d1e7d23741f5f8=
-400c1
+Commit-ID:     7a30a7a6c81e8343e27056ac0bddd5fcbc33b8a8
+Gitweb:        https://git.kernel.org/tip/7a30a7a6c81e8343e27056ac0bddd5fcbc3=
+3b8a8
 Author:        Aniket Limaye <a-limaye@ti.com>
-AuthorDate:    Fri, 23 Jan 2026 12:25:46 +05:30
+AuthorDate:    Fri, 23 Jan 2026 12:25:45 +05:30
 Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Mon, 26 Jan 2026 16:40:04 +01:00
+CommitterDate: Mon, 26 Jan 2026 16:40:03 +01:00
 
-irqchip/ti-sci-intr: Allow parsing interrupt-types per-line
+dt-bindings: interrupt-controller: ti,sci-intr: Per-line interrupt-types
 
-Some INTR router instances act as simple passthroughs that preserve the
-source interrupt type unchanged at the output line, rather than
-converting all interrupts to a fixed type.
+Update the bindings to allow setting per-line interrupt-types.
 
-When interrupt sources are not homogeneous with respect to trigger type,
-the driver needs to read each source's interrupt type from DT and pass
-it unchanged to its interrupt parent.
+Some Interrupt Router instances can only work with a specific trigger
+type (edge or level), while others act as simple passthroughs that
+preserve the source interrupt type unchanged.
 
-Add support to check for absence of "ti,intr-trigger-type" to indicate
-passthrough mode. When this property is absent, parse interrupt type
-per-line from the DT fwspec provided by the interrupt source. Else, use
-the global setting for all interrupt lines.
+Make "ti,intr-trigger-type" property optional, with its absence
+indicating that the router acts as a passthrough. When absent,
+"#interrupt-cells" must be 2 to allow each interrupt source to specify
+its trigger type per-line.
 
 Signed-off-by: Aniket Limaye <a-limaye@ti.com>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260123-ul-driver-i2c-j722s-v4-2-b08625c487d5=
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20260123-ul-driver-i2c-j722s-v4-1-b08625c487d5=
 @ti.com
 ---
- drivers/irqchip/irq-ti-sci-intr.c | 54 ++++++++++++++++++++----------
- 1 file changed, 36 insertions(+), 18 deletions(-)
+ Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml | 38=
+ +++++++++++++++++++++++++++++++++-----
+ 1 file changed, 33 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/irqchip/irq-ti-sci-intr.c b/drivers/irqchip/irq-ti-sci-i=
-ntr.c
-index 354613e..0ea1704 100644
---- a/drivers/irqchip/irq-ti-sci-intr.c
-+++ b/drivers/irqchip/irq-ti-sci-intr.c
-@@ -61,12 +61,21 @@ static int ti_sci_intr_irq_domain_translate(struct irq_do=
-main *domain,
- {
- 	struct ti_sci_intr_irq_domain *intr =3D domain->host_data;
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-in=
+tr.yaml b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.=
+yaml
+index c99cc73..de45f0c 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.yaml
+@@ -15,8 +15,7 @@ allOf:
+ description: |
+   The Interrupt Router (INTR) module provides a mechanism to mux M
+   interrupt inputs to N interrupt outputs, where all M inputs are selectable
+-  to be driven per N output. An Interrupt Router can either handle edge
+-  triggered or level triggered interrupts and that is fixed in hardware.
++  to be driven per N output.
 =20
--	if (fwspec->param_count !=3D 1)
--		return -EINVAL;
-+	if (intr->type) {
-+		/* Global interrupt-type */
-+		if (fwspec->param_count !=3D 1)
-+			return -EINVAL;
+                                    Interrupt Router
+                                +----------------------+
+@@ -64,9 +63,14 @@ properties:
+   interrupt-controller: true
 =20
--	*hwirq =3D fwspec->param[0];
--	*type =3D intr->type;
-+		*hwirq =3D fwspec->param[0];
-+		*type =3D intr->type;
-+	} else {
-+		/* Per-Line interrupt-type */
-+		if (fwspec->param_count !=3D 2)
-+			return -EINVAL;
+   '#interrupt-cells':
+-    const: 1
++    enum: [1, 2]
+     description: |
+-      The 1st cell should contain interrupt router input hw number.
++      Number of cells in interrupt specifier. Depends on ti,intr-trigger-typ=
+e:
++      - If ti,intr-trigger-type is present: must be 1
++        The 1st cell should contain interrupt router input hw number.
++      - If ti,intr-trigger-type is absent: must be 2
++        The 1st cell should contain interrupt router input hw number.
++        The 2nd cell should contain interrupt trigger type (preserved by rou=
+ter).
 =20
-+		*hwirq =3D fwspec->param[0];
-+		*type =3D fwspec->param[1];
-+	}
- 	return 0;
- }
+   ti,interrupt-ranges:
+     $ref: /schemas/types.yaml#/definitions/uint32-matrix
+@@ -82,9 +86,22 @@ properties:
+         - description: |
+             "limit" specifies the limit for translation
 =20
-@@ -128,11 +137,12 @@ static void ti_sci_intr_irq_domain_free(struct irq_doma=
-in *domain,
-  * @domain:	Pointer to the interrupt router IRQ domain
-  * @virq:	Corresponding Linux virtual IRQ number
-  * @hwirq:	Corresponding hwirq for the IRQ within this IRQ domain
-+ * @hwirq_type:	Corresponding hwirq trigger type for the IRQ within this IRQ=
- domain
-  *
-  * Returns intr output irq if all went well else appropriate error pointer.
-  */
--static int ti_sci_intr_alloc_parent_irq(struct irq_domain *domain,
--					unsigned int virq, u32 hwirq)
-+static int ti_sci_intr_alloc_parent_irq(struct irq_domain *domain, unsigned =
-int virq,
-+					u32 hwirq, u32 hwirq_type)
- {
- 	struct ti_sci_intr_irq_domain *intr =3D domain->host_data;
- 	struct device_node *parent_node;
-@@ -156,11 +166,22 @@ static int ti_sci_intr_alloc_parent_irq(struct irq_doma=
-in *domain,
- 		fwspec.param_count =3D 3;
- 		fwspec.param[0] =3D 0;	/* SPI */
- 		fwspec.param[1] =3D p_hwirq - 32; /* SPI offset */
--		fwspec.param[2] =3D intr->type;
-+		fwspec.param[2] =3D hwirq_type;
- 	} else {
- 		/* Parent is Interrupt Router */
--		fwspec.param_count =3D 1;
--		fwspec.param[0] =3D p_hwirq;
-+		u32 parent_trigger_type;
++if:
++  required:
++    - ti,intr-trigger-type
++then:
++  properties:
++    '#interrupt-cells':
++      const: 1
++      description: Interrupt ID only. Interrupt type is specified globally
++else:
++  properties:
++    '#interrupt-cells':
++      const: 2
++      description: Interrupt ID and corresponding interrupt type
 +
-+		if (!of_property_read_u32(parent_node, "ti,intr-trigger-type",
-+					  &parent_trigger_type)) {
-+			/* Parent has global trigger type */
-+			fwspec.param_count =3D 1;
-+			fwspec.param[0] =3D p_hwirq;
-+		} else {
-+			/* Parent supports per-line trigger types */
-+			fwspec.param_count =3D 2;
-+			fwspec.param[0] =3D p_hwirq;
-+			fwspec.param[1] =3D hwirq_type;
-+		}
- 	}
-=20
- 	err =3D irq_domain_alloc_irqs_parent(domain, virq, 1, &fwspec);
-@@ -196,15 +217,15 @@ static int ti_sci_intr_irq_domain_alloc(struct irq_doma=
-in *domain,
- 					void *data)
- {
- 	struct irq_fwspec *fwspec =3D data;
-+	unsigned int hwirq_type;
- 	unsigned long hwirq;
--	unsigned int flags;
- 	int err, out_irq;
-=20
--	err =3D ti_sci_intr_irq_domain_translate(domain, fwspec, &hwirq, &flags);
-+	err =3D ti_sci_intr_irq_domain_translate(domain, fwspec, &hwirq, &hwirq_typ=
-e);
- 	if (err)
- 		return err;
-=20
--	out_irq =3D ti_sci_intr_alloc_parent_irq(domain, virq, hwirq);
-+	out_irq =3D ti_sci_intr_alloc_parent_irq(domain, virq, hwirq, hwirq_type);
- 	if (out_irq < 0)
- 		return out_irq;
-=20
-@@ -247,12 +268,9 @@ static int ti_sci_intr_irq_domain_probe(struct platform_=
-device *pdev)
- 		return -ENOMEM;
-=20
- 	intr->dev =3D dev;
--	ret =3D of_property_read_u32(dev_of_node(dev), "ti,intr-trigger-type",
--				   &intr->type);
--	if (ret) {
--		dev_err(dev, "missing ti,intr-trigger-type property\n");
--		return -EINVAL;
--	}
+ required:
+   - compatible
+-  - ti,intr-trigger-type
+   - interrupt-controller
+   - '#interrupt-cells'
+   - ti,sci
+@@ -105,3 +122,14 @@ examples:
+         ti,sci-dev-id =3D <131>;
+         ti,interrupt-ranges =3D <0 360 32>;
+     };
 +
-+	if (of_property_read_u32(dev_of_node(dev), "ti,intr-trigger-type", &intr->t=
-ype))
-+		intr->type =3D IRQ_TYPE_NONE;
-=20
- 	intr->sci =3D devm_ti_sci_get_by_phandle(dev, "ti,sci");
- 	if (IS_ERR(intr->sci))
++  - |
++    interrupt-controller {
++        compatible =3D "ti,sci-intr";
++        interrupt-controller;
++        interrupt-parent =3D <&gic500>;
++        #interrupt-cells =3D <2>;
++        ti,sci =3D <&dmsc>;
++        ti,sci-dev-id =3D <131>;
++        ti,interrupt-ranges =3D <0 360 32>;
++    };
 
