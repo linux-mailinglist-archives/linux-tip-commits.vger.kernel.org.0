@@ -1,213 +1,182 @@
-Return-Path: <linux-tip-commits+bounces-8136-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8137-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oM+uMfJoemmB5gEAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8136-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jan 2026 20:52:18 +0100
+	id yB0qBFmSemlC8AEAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8137-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jan 2026 23:48:57 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A13A84B2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jan 2026 20:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF56A9BFD
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jan 2026 23:48:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A52EA3040FAA
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jan 2026 19:51:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B40A300A4D2
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 28 Jan 2026 22:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4716376497;
-	Wed, 28 Jan 2026 19:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA433EBF04;
+	Wed, 28 Jan 2026 22:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fSCRac5x";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="32zeif+j"
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CvCybvKn"
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468FF376484;
-	Wed, 28 Jan 2026 19:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C82724CEEA
+	for <linux-tip-commits@vger.kernel.org>; Wed, 28 Jan 2026 22:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769629879; cv=none; b=pT6TqRVtZcf0iUf+Rrpb18YKDcqm+hFdP+E7tpTxx4Q6Nxp98F4hg1UitX2rJQHnlBCbsfe21/IGIjpSwMxunHzWBAM5SbrNdL+Vpmf8kep7qt/gFbGRdcLwpS46N0V2jRGP4r7LTBKi6k4b8SDSD7bFuLb3Y6FSjxdlh0aEt+A=
+	t=1769640533; cv=none; b=gifu4z7hpE5ZKvvBAa3kdo45RDneGXR6Giv49AKrcksArh/czRladLVe/x5rkWkhHuIXqNSTO2oo0FowNMiKavJNu/V8FU1APt9cE5TD/fxqowIBvrOkR0UT0fuf+Q9I8HWZWtqFFV3Wg0fOaBnkYsLiJ2ye9S7KZNtzxWqR3ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769629879; c=relaxed/simple;
-	bh=8+wuQByuSs/zlhocxDdq4277t26sSvBf8dUvM/PDsws=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=izVvjCEb8IaP5994Cgw/hqgMXPGksOL0cpN04758rHbXsoESb2pzHPrwrXgwnHXATqAObuEvxLydd8sfnGe2wAxDcMMXwBglejnFakocbFAyNoq0lB8ZSIoeFNOdrtQVsqeYyHnFgyj7dyjD1wd+GkNTjYCTcJiFYaVjf1leQzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fSCRac5x; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=32zeif+j; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 28 Jan 2026 19:51:15 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769629876;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1769640533; c=relaxed/simple;
+	bh=9lde7Ivrwg7Fj7JNiDH/ELhD3pjs8jGXKfeRyrJfImk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=drYxcq7q8xD5G94CnRxIXbUhoOsGgZtMFAvvOnolSrbcYAXDcYBHGyXDCi5knUC1uhyHmA1yV0EkenvrNrN7NJlZ738AJh2FR5tn+tWk9+lCnIA7Sc+gyq2/9+lDafRfIi0pVM2PSgAyqLuO8SW6HcLn+gspS5cQyP5ZR8AcoeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CvCybvKn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769640531;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eNWVnDts6rd2IWsOVMcpfQpGdB03jqdvRzqnYvk3ZkE=;
-	b=fSCRac5xxazMd1Qj+EFUYAmvN8A7I87G/FdZ7oj9xLO6wgGtjQFNzB61SvDqVyztepCM/n
-	ueVIsWNyFeP6eCpztGWOPpIXQ8f5342yv3UYJ08gvsQwtuQeGhqcIZKiFI2a/ahOi/bxxO
-	UDdyIzcCWt+miDjpyOyZiKH+FaFkFaJ99E6MN78Vz8ii2Oho/7eGv1/klhFp28fGuPMxJF
-	ruhrCG36PSolSovkS/KCcpHIVydFwAkH5iL6Hq5KiFVORrmm1oiijGv7BzoDZDJLi9MJb1
-	NfAfSJiKoeDYwNYnShwyu2xR5Hn/8NAPXRSigoUDMKv6vopx9xoxqKtUZK+axw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769629876;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eNWVnDts6rd2IWsOVMcpfQpGdB03jqdvRzqnYvk3ZkE=;
-	b=32zeif+jmoHmtEz4bY/q23Cr5N3lI2I0zQuop6Nq0yGAD4CCUtHSXN4qH3ryV0D68rVsoB
-	992wlwF0XSnkRPCw==
-From: "tip-bot2 for Marco Elver" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/core] cleanup: Make __DEFINE_LOCK_GUARD handle commas
- in initializers
-Cc: kernel test robot <lkp@intel.com>, Marco Elver <elver@google.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260119094029.1344361-2-elver@google.com>
-References: <20260119094029.1344361-2-elver@google.com>
+	bh=ZSit5hT7x15zRkxpWSCotyN0t1cBlE4U/MDOqNefmRs=;
+	b=CvCybvKnC2D2joAFMYM+fpi0NPVlhhHBASA4QvBbbCSRQ6jSAn6FC+L2jnqh1RhpmFsHMq
+	9com4hF4qb6w9XeC/Ru07TtVUA0AvVjk3A8MjvBgQjkiSMLCsEO65xisysjLvARWEsQT+r
+	daW1DM0GkbBeU7wE633Uhdz0Xz6wKow=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-638-Glz2ISrdM32urSl3tdKprQ-1; Wed,
+ 28 Jan 2026 17:48:49 -0500
+X-MC-Unique: Glz2ISrdM32urSl3tdKprQ-1
+X-Mimecast-MFC-AGG-ID: Glz2ISrdM32urSl3tdKprQ_1769640528
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4235D18005AD;
+	Wed, 28 Jan 2026 22:48:48 +0000 (UTC)
+Received: from pauld.westford.csb (unknown [10.22.89.161])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B8D2530001A2;
+	Wed, 28 Jan 2026 22:48:45 +0000 (UTC)
+Date: Wed, 28 Jan 2026 17:48:43 -0500
+From: Phil Auld <pauld@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Gabriele Monaco <gmonaco@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org
+Subject: Re: [tip: sched/core] sched: Fix build for modules using
+ set_tsk_need_resched()
+Message-ID: <20260128224843.GA185446@pauld.westford.csb>
+References: <20260112140413.362202-1-gmonaco@redhat.com>
+ <176851345987.510.6507406232761244840.tip-bot2@tip-bot2>
+ <20260115233803.GD1039042@pauld.westford.csb>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176962987569.2495410.4252123660824990120.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115233803.GD1039042@pauld.westford.csb>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8136-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,infradead.org:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:dkim,vger.kernel.org:replyto];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pauld@redhat.com,linux-tip-commits@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	TAGGED_FROM(0.00)[bounces-8137-lists,linux-tip-commits=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 68A13A84B2
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+]
+X-Rspamd-Queue-Id: 4CF56A9BFD
 X-Rspamd-Action: no action
 
-The following commit has been merged into the locking/core branch of tip:
+Hi Peter and Gabriele,
 
-Commit-ID:     3b9ed30344a866f6f96896b3ce64303b9074682b
-Gitweb:        https://git.kernel.org/tip/3b9ed30344a866f6f96896b3ce64303b907=
-4682b
-Author:        Marco Elver <elver@google.com>
-AuthorDate:    Mon, 19 Jan 2026 10:05:51 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 28 Jan 2026 20:45:24 +01:00
+On Thu, Jan 15, 2026 at 06:38:03PM -0500 Phil Auld wrote:
+> On Thu, Jan 15, 2026 at 09:44:19PM -0000 tip-bot2 for Gabriele Monaco wrote:
+> > The following commit has been merged into the sched/core branch of tip:
+> > 
+> > Commit-ID:     8d737320166bd145af70a3133a9964b00ca81cba
+> > Gitweb:        https://git.kernel.org/tip/8d737320166bd145af70a3133a9964b00ca81cba
+> > Author:        Gabriele Monaco <gmonaco@redhat.com>
+> > AuthorDate:    Mon, 12 Jan 2026 15:04:13 +01:00
+> > Committer:     Peter Zijlstra <peterz@infradead.org>
+> > CommitterDate: Thu, 15 Jan 2026 22:41:26 +01:00
+> >
+> 
+> Thank you for both of these, Peter!
 
-cleanup: Make __DEFINE_LOCK_GUARD handle commas in initializers
+Well, I think this one and the related one need to lose the _GPL because
+they are called from things, like wake_up_process(), which are exported
+without that restriction. This essentially adds _GPL to that and
+anything else that ends up in resched_curr().
 
-Initialization macros can expand to structure initializers containing
-commas, which when used as a "lock" function resulted in errors such as:
+I prefer to add new symbols _GPL too but this case seems different.
 
->> include/linux/spinlock.h:582:56: error: too many arguments provided to fun=
-ction-like macro invocation
-     582 | DEFINE_LOCK_GUARD_1(raw_spinlock_init, raw_spinlock_t, raw_spin_lo=
-ck_init(_T->lock), /* */)
-         |                                                        ^
-   include/linux/spinlock.h:113:17: note: expanded from macro 'raw_spin_lock_=
-init'
-     113 |         do { *(lock) =3D __RAW_SPIN_LOCK_UNLOCKED(lock); } while (=
-0)
-         |                        ^
-   include/linux/spinlock_types_raw.h:70:19: note: expanded from macro '__RAW=
-_SPIN_LOCK_UNLOCKED'
-      70 |         (raw_spinlock_t) __RAW_SPIN_LOCK_INITIALIZER(lockname)
-         |                          ^
-   include/linux/spinlock_types_raw.h:67:34: note: expanded from macro '__RAW=
-_SPIN_LOCK_INITIALIZER'
-      67 |         RAW_SPIN_DEP_MAP_INIT(lockname) }
-         |                                         ^
-   include/linux/cleanup.h:496:9: note: macro '__DEFINE_LOCK_GUARD_1' defined=
- here
-     496 | #define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)                =
-      \
-         |         ^
-   include/linux/spinlock.h:582:1: note: parentheses are required around macr=
-o argument containing braced initializer list
-     582 | DEFINE_LOCK_GUARD_1(raw_spinlock_init, raw_spinlock_t, raw_spin_lo=
-ck_init(_T->lock), /* */)
-         | ^
-         |                                                        (
-   include/linux/cleanup.h:558:60: note: expanded from macro 'DEFINE_LOCK_GUA=
-RD_1'
-     558 | __DEFINE_UNLOCK_GUARD(_name, _type, _unlock, __VA_ARGS__)         =
-      \
-         |                                                                   =
-      ^
+Thoughts?
 
-Make __DEFINE_LOCK_GUARD_0 and __DEFINE_LOCK_GUARD_1 variadic so that
-__VA_ARGS__ captures everything.
+I can spin up a patch against tip:sched/core if you want it.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Marco Elver <elver@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260119094029.1344361-2-elver@google.com
----
- include/linux/cleanup.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/cleanup.h b/include/linux/cleanup.h
-index ee6df68..dbc4162 100644
---- a/include/linux/cleanup.h
-+++ b/include/linux/cleanup.h
-@@ -493,22 +493,22 @@ static __always_inline void class_##_name##_destructor(=
-class_##_name##_t *_T) \
- 									\
- __DEFINE_GUARD_LOCK_PTR(_name, &_T->lock)
-=20
--#define __DEFINE_LOCK_GUARD_1(_name, _type, _lock)			\
-+#define __DEFINE_LOCK_GUARD_1(_name, _type, ...)			\
- static __always_inline class_##_name##_t class_##_name##_constructor(_type *=
-l) \
- 	__no_context_analysis						\
- {									\
- 	class_##_name##_t _t =3D { .lock =3D l }, *_T =3D &_t;		\
--	_lock;								\
-+	__VA_ARGS__;							\
- 	return _t;							\
- }
-=20
--#define __DEFINE_LOCK_GUARD_0(_name, _lock)				\
-+#define __DEFINE_LOCK_GUARD_0(_name, ...)				\
- static __always_inline class_##_name##_t class_##_name##_constructor(void) \
- 	__no_context_analysis						\
- {									\
- 	class_##_name##_t _t =3D { .lock =3D (void*)1 },			\
- 			 *_T __maybe_unused =3D &_t;			\
--	_lock;								\
-+	__VA_ARGS__;							\
- 	return _t;							\
- }
-=20
+Cheers,
+Phil
+
+> 
+> > sched: Fix build for modules using set_tsk_need_resched()
+> > 
+> > Commit adcc3bfa8806 ("sched: Adapt sched tracepoints for RV task model")
+> > added a tracepoint to the need_resched action that can be triggered also
+> > by set_tsk_need_resched.
+> > This function was previously accessible from out-of-tree modules but
+> > it's no longer available because the __trace_set_need_resched() symbol
+> > is not exported (together with the tracepoint itself, which was exported
+> > in a separate patch) and building such modules fails.
+> > 
+> > Export __trace_set_need_resched to modules to fix those build issues.
+> > 
+> > Fixes: adcc3bfa8806 ("sched: Adapt sched tracepoints for RV task model")
+> > Signed-off-by: Gabriele Monaco <gmonaco@redhat.com>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Reviewed-by: Phil Auld <pauld@redhat.com>
+> > Link: https://patch.msgid.link/20260112140413.362202-1-gmonaco@redhat.com
+> > ---
+> >  kernel/sched/core.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> > index b033f97..3cca012 100644
+> > --- a/kernel/sched/core.c
+> > +++ b/kernel/sched/core.c
+> > @@ -1139,6 +1139,7 @@ void __trace_set_need_resched(struct task_struct *curr, int tif)
+> >  {
+> >  	trace_sched_set_need_resched_tp(curr, smp_processor_id(), tif);
+> >  }
+> > +EXPORT_SYMBOL_GPL(__trace_set_need_resched);
+> >  
+> >  void resched_curr(struct rq *rq)
+> >  {
+> > 
+> 
+> -- 
+> 
+
+-- 
+
 
