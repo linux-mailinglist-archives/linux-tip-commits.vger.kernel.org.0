@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-8157-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8156-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPH7H1pKfWlZRQIAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8157-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Jan 2026 01:18:34 +0100
+	id +KacKFJKfWlZRQIAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8156-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Jan 2026 01:18:26 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247A5BF993
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Jan 2026 01:18:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4865BBF97C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Jan 2026 01:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD49930156F1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Jan 2026 00:18:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA9BE30022CC
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 31 Jan 2026 00:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01632F745D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB852F5A3D;
 	Sat, 31 Jan 2026 00:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3or3TYVi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TieKVLxD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E//o3Evu";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NfRmePK6"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B260126ED25;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B257D224249;
 	Sat, 31 Jan 2026 00:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769818702; cv=none; b=LB2Nvy92J7oQI8JX4WnmIce8Wgprfb94K5wOXn9YNvpz8yA9W8JXxwLtqcogxOYQw94pPx8VQmG+SlvE5kkQylBZHt+tsmzjhfcCSp7Y2ugg41wAH+xM+Hey4ZSFiK/A/9i0oXNZM2jlTTnZNRYcNAefJ9QSj4+JMRmfKoK5gFg=
+	t=1769818702; cv=none; b=ekO98XApbwpw0hGv8Ra45b81v9NITpFAzJtI6hMZqVMB13gbqo3ZbFTH9DHWL5qZgoRmtKsRambDdrVKjA41SQtXw/3xZ6Ye1N/4wbAR+wL066O3oucTqWf/JHeed4pgQbZIb/g4QGwtpfwykfJYHibeb6joErfGT462k5G4qA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769818702; c=relaxed/simple;
-	bh=yD3DRAWI88uLdPsLY0ccQ50SnXpLCQYi4Ibh/pIL7Vo=;
+	bh=U56xa28Z1eeY0xClpFefsNjQaryEsPFrlQWxH4Trnh0=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=QXjzRX6D4k4q0hpYUdpgaxttt0yqtFBgqxS5Zp1WiBEU5sleNfobqoJw5Tgf/Iop8bhLatlR3knGRfMe1rS6ScsnSBS2EMy0vigSYh94K7h2mhLcXxi5oGdTZRW8wR6qU1HPmQByummlj+tfK7Xuy/PAqqzTNlGsQQx64CKUwlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3or3TYVi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TieKVLxD; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=tYMGdqLdrX5AYH+ODW+4E2VI+Qz9DGU5Ij1oK2mHb3HkA8DEoSE8LSYBcGp/ekb1ih1JHy46gVuo5KwBK770q4gguqThCITAm2E8V7+z23LX7tjOcJddi7VgSJb6igP0KnQrK90nUf9mQJZt35AcIUElCO5mChFRltr1OCX4Ul0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E//o3Evu; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NfRmePK6; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 31 Jan 2026 00:18:14 -0000
+Date: Sat, 31 Jan 2026 00:18:15 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769818696;
+	s=2020; t=1769818697;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mlHC5Oc/wPfJ31HEj1ju7nH9g6ibBIbC1zhAHaSBltU=;
-	b=3or3TYVicrO0EErAd8LbHUod53MYP+U9DcFLX5HS1f71/gH4fuLjtCjlp/N3EfrCj/s52/
-	Eq0OyT3O56R9Rz8/LhNP+CqAXYqVqAu7STZt1rF6lHL3PhxYs/yB4LTI+IVPDYn1sDmTpn
-	iQCkyildTiWqon4QpWTB9xRdAos1IkqW4RtDT70MgOwnXMcBx5lE1ziZ1hCxe1crihTjHC
-	CofRs00Dd9H8uPhhAU5kDze6LH3p17rn6J6+ALrgGFL1eEb1P1ujDALqd6rH0YMuEm9ovt
-	qf24CztAdNwf62XsBt8pHpsiegEQ2l8MIImi76hY9/SFEQGrT8p2Lw9MvXxiyg==
+	bh=2dfKgyDaqZKafir2gtcHpIAbX1jTdshJd1NZxkEKIss=;
+	b=E//o3EvuPo0UC3wngfpNQgJimqQhKZzIEjNq4hqyMjcs71ZVqSV+xtteO1SXC08Dh9ujb9
+	xl/MEaYSoVbAMobj/CwBPpmdASf4gpEhYJEYXmKpUhHDl++FhNkfI3oEGY+SqOW0zgQNSF
+	SJvSQLOl3eQhHRnm9m87TY6p3IHErxkmRNt/iyra7uWjRPUIlSQStyUZq9iJDz6/HhtCde
+	cqm7Vo5VQoVMgu7JxSLBIP+qc0VXv594ScxN0S7R/NnXjFWLvD6LCPI3bOE59zTKEO7rR5
+	z21IENWTu9pGy8c5oP1cSDqZiKKxylHR81gVOBu4F5vesVyCNHP+LMs2Ue+tfw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769818696;
+	s=2020e; t=1769818697;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mlHC5Oc/wPfJ31HEj1ju7nH9g6ibBIbC1zhAHaSBltU=;
-	b=TieKVLxDFry2I7eQ2ZirgZg2/j3QMYO14gnjk5OkvEIt8hx5YOY56VaelO+nFoOyISsqJR
-	ExoD2DevqKlo8JCA==
+	bh=2dfKgyDaqZKafir2gtcHpIAbX1jTdshJd1NZxkEKIss=;
+	b=NfRmePK6ZbA7tgzDFclr1pefFOhFnXH83IsXARgSOP9zM3AFI8CJ2odio5gnTy0ROerPqM
+	QtYADK44yb4jHxCw==
 From: "tip-bot2 for Vivian Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/msi] ALSA: hda/intel: Make MSI address limit based on the
- device DMA limit
+Subject: [tip: irq/msi] drm/radeon: Make MSI address limit based on the device
+ DMA limit
 Cc: Vivian Wang <wangruikang@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
- Takashi Iwai <tiwai@suse.de>, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260129-pci-msi-addr-mask-v4-4-70da998f2750@iscas.ac.cn>
-References: <20260129-pci-msi-addr-mask-v4-4-70da998f2750@iscas.ac.cn>
+ christian.koenig@amd.com, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260129-pci-msi-addr-mask-v4-3-70da998f2750@iscas.ac.cn>
+References: <20260129-pci-msi-addr-mask-v4-3-70da998f2750@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176981869456.2495410.17840609442257116657.tip-bot2@tip-bot2>
+Message-ID: <176981869569.2495410.10603060915971455685.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8157-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto,linutronix.de:dkim,msgid.link:url];
+	TAGGED_FROM(0.00)[bounces-8156-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,amd.com:email,linutronix.de:dkim,vger.kernel.org:replyto];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -107,29 +107,29 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 247A5BF993
+X-Rspamd-Queue-Id: 4865BBF97C
 X-Rspamd-Action: no action
 
 The following commit has been merged into the irq/msi branch of tip:
 
-Commit-ID:     cb9b6f9d2be6bda1b0117b147df40f982ce06888
-Gitweb:        https://git.kernel.org/tip/cb9b6f9d2be6bda1b0117b147df40f982ce=
-06888
+Commit-ID:     617562bbe12df796fc21df5fbf262eadf083a90f
+Gitweb:        https://git.kernel.org/tip/617562bbe12df796fc21df5fbf262eadf08=
+3a90f
 Author:        Vivian Wang <wangruikang@iscas.ac.cn>
-AuthorDate:    Thu, 29 Jan 2026 09:56:09 +08:00
+AuthorDate:    Thu, 29 Jan 2026 09:56:08 +08:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
 CommitterDate: Sat, 31 Jan 2026 01:11:48 +01:00
 
-ALSA: hda/intel: Make MSI address limit based on the device DMA limit
+drm/radeon: Make MSI address limit based on the device DMA limit
 
-The hda/intel driver restricts the MSI message address for devices which do
-not advertise full 64-bit DMA address space support to 32-bit due to the
-former restrictions of the PCI/MSI code which only allowed either 32-bit or
-a full 64-bit address range.
+The radeon driver restricts the MSI message address for devices older than
+the BONAIR generation to 32-bit MSI addresses due to the former
+restrictions of the PCI/MSI code which only allowed either 32-bit or full
+64-bit address range.
 
 This does not work on platforms which have a MSI doorbell address above the
 32-bit boundary but do not support the full 64 bit address range.
@@ -146,39 +146,47 @@ the 32-bit limit as long as it is within the hardware's addressable range.
 
 Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Acked-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20260129-pci-msi-addr-mask-v4-4-70da998f2750@i=
+Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+Link: https://patch.msgid.link/20260129-pci-msi-addr-mask-v4-3-70da998f2750@i=
 scas.ac.cn
 ---
- sound/hda/controllers/intel.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/radeon/radeon_device.c  |  1 +
+ drivers/gpu/drm/radeon/radeon_irq_kms.c | 10 ----------
+ 2 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/sound/hda/controllers/intel.c b/sound/hda/controllers/intel.c
-index c9542eb..a44de23 100644
---- a/sound/hda/controllers/intel.c
-+++ b/sound/hda/controllers/intel.c
-@@ -1903,11 +1903,6 @@ static int azx_first_init(struct azx *chip)
- 		chip->gts_present =3D true;
- #endif
+diff --git a/drivers/gpu/drm/radeon/radeon_device.c b/drivers/gpu/drm/radeon/=
+radeon_device.c
+index 60afaa8..5faae03 100644
+--- a/drivers/gpu/drm/radeon/radeon_device.c
++++ b/drivers/gpu/drm/radeon/radeon_device.c
+@@ -1374,6 +1374,7 @@ int radeon_device_init(struct radeon_device *rdev,
+ 		pr_warn("radeon: No suitable DMA available\n");
+ 		return r;
+ 	}
++	rdev->pdev->msi_addr_mask =3D DMA_BIT_MASK(dma_bits);
+ 	rdev->need_swiotlb =3D drm_need_swiotlb(dma_bits);
 =20
--	if (chip->msi && chip->driver_caps & AZX_DCAPS_NO_MSI64) {
--		dev_dbg(card->dev, "Disabling 64bit MSI\n");
--		pci->msi_addr_mask =3D DMA_BIT_MASK(32);
+ 	/* Registers mapping */
+diff --git a/drivers/gpu/drm/radeon/radeon_irq_kms.c b/drivers/gpu/drm/radeon=
+/radeon_irq_kms.c
+index d550554..839d619 100644
+--- a/drivers/gpu/drm/radeon/radeon_irq_kms.c
++++ b/drivers/gpu/drm/radeon/radeon_irq_kms.c
+@@ -245,16 +245,6 @@ static bool radeon_msi_ok(struct radeon_device *rdev)
+ 	if (rdev->flags & RADEON_IS_AGP)
+ 		return false;
+=20
+-	/*
+-	 * Older chips have a HW limitation, they can only generate 40 bits
+-	 * of address for "64-bit" MSIs which breaks on some platforms, notably
+-	 * IBM POWER servers, so we limit them
+-	 */
+-	if (rdev->family < CHIP_BONAIRE) {
+-		dev_info(rdev->dev, "radeon: MSI limited to 32-bit\n");
+-		rdev->pdev->msi_addr_mask =3D DMA_BIT_MASK(32);
 -	}
 -
- 	pci_set_master(pci);
-=20
- 	gcap =3D azx_readw(chip, GCAP);
-@@ -1958,6 +1953,11 @@ static int azx_first_init(struct azx *chip)
- 		dma_set_mask_and_coherent(&pci->dev, DMA_BIT_MASK(32));
- 	dma_set_max_seg_size(&pci->dev, UINT_MAX);
-=20
-+	if (chip->msi && chip->driver_caps & AZX_DCAPS_NO_MSI64) {
-+		dev_dbg(card->dev, "Restricting MSI to %u-bit\n", dma_bits);
-+		pci->msi_addr_mask =3D DMA_BIT_MASK(dma_bits);
-+	}
-+
- 	/* read number of streams from GCAP register instead of using
- 	 * hardcoded value
- 	 */
+ 	/* force MSI on */
+ 	if (radeon_msi =3D=3D 1)
+ 		return true;
 
