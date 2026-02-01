@@ -1,82 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-8166-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8168-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mPIVKE6Kf2kKtQIAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8166-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:15:58 +0100
+	id OJR0N56Kf2kKtQIAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8168-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:17:18 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB9CC6AE2
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:15:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43208C6B06
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 004AD302FABB
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Feb 2026 17:13:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CA491304227F
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Feb 2026 17:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FBD280A51;
-	Sun,  1 Feb 2026 17:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8B7226CF6;
+	Sun,  1 Feb 2026 17:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="J6dA7WSM";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="eU05/wYf"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IEOrNzL0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="/dkyQugE"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434C927FB1E;
-	Sun,  1 Feb 2026 17:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD62827E074;
+	Sun,  1 Feb 2026 17:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769966023; cv=none; b=E5x01HQCt2X4xnHhD6TpYD1CcZPBfbw2gkseVh/q2MXqY/eoE1NBGCG++ovKQ+nk/yAvV3VvVHqgLgw32W6B49HjY/IngX+0K70CRSvwlAxrA1FtdOsQ6IzacvauafZTwnJM/yx5VhE2cKCk8qe0ZqTi9kjV6h6UjypxptxQEU4=
+	t=1769966027; cv=none; b=X+xVzwPit4tnlleE6Zj/eC0il0Wb6fkCzSGTlZ9lyCU8i6Jt/5aCzXpcL8XHBWMt4X7BuQpTpJgJvrJS123A5kTq0yukAAqreR90WowhmuaSz84Q91YZnasv0MgW2EKRS8Hs3SZQ+WbB6FMUOhjw1vwzHcwfYafxWmlcjJEd/Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769966023; c=relaxed/simple;
-	bh=7x2vWtRhLo5bW6TrP0zcmJMrX6V7euUbkf7A/lKIRZQ=;
+	s=arc-20240116; t=1769966027; c=relaxed/simple;
+	bh=68iIDkke98AieQkGRPxD8NMULy5zh7yhiD65Xnsi0jA=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=G6A1swqWXRgwLtu0KnGF5TwpitSdltVlnkn1a0SnVn4/Mmj35NVpfBUhUlm58OX81mtsRQuyOVwIQKfvFPm+ZSgSNIfcmtye7cRcHEsdPlU3e43ZaaFpUu3JPGU782hd9Fnq/Jvnj88WACWrDfZwbZnT71gRab4L16WM/T0CLx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=J6dA7WSM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=eU05/wYf; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=JSNHoYzBZnz5blAn9wCopn5OHeKdSwhAvE5+wPzksEeXiHMJKnXPoNUv1kKE/ajkjeKTDuAE03gd4Q1jGXfF6nefylzcAqQYoD17C6ii+wDxHyhyw2QmX02xtb1jwiw5MXOAREoSdUD+L3ByToQXEQ6Dg2uh22aN0qRKPh56Y1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IEOrNzL0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=/dkyQugE; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 01 Feb 2026 17:13:39 -0000
+Date: Sun, 01 Feb 2026 17:13:40 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769966020;
+	s=2020; t=1769966021;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ks8WfXs2v8lijH+ybLnWizSRitHJ19HyR6BDy6odscM=;
-	b=J6dA7WSMXLmzVyULIxn06Rgs4eikhGXBsCl2tV58lP/FldOsE0QNUtcLEJLoNlZVPJErTE
-	mfVwa5PYoHCYbAkn8csYFbuVcl2bOCycslghEDQrOWJt7FIi3v9NsredoGZgoUOuWpZ2d1
-	n+1W7cN/vMzQNEirbqlg5VPeNwrxbV46Do18J+/WwjF2p1cpGBQnWm3gIjo1w9VssjksFy
-	po9Kv5JD6iOMFYbk/A3L9xhzZ9h8kRIxZJbKPTwzz92sR5JXwGqj3Pvq7gnYF28PBRVVuy
-	I9cdaQxGH5PkhaStNn2xGE8Kvl4zalMoBiwE7Jrz+rTPJYqASmPM+JzvIooyqw==
+	bh=a+CWnUcf99DCjcW8Dqbss/jKzMFK/g7TxWTTBe3V48Q=;
+	b=IEOrNzL0laFxgvc2BQfeaHJdC+fUe0ZPkF2+OgUaDgYDAysj+UAp+iMNWxhQ+xIZabat4c
+	mnl/hPIR4s6FQYEHhf0D8lQo1/RxpIdtjefv7L1G+jHR58a1NcZp5yJerY2A2vurkxbhbH
+	7dM2Fwa6uLjHbgSbmUBZ8QDdpOCrejy0Vf3UflxLRLwjA8dKH/+mmKW6E8hlQq+7KGK1So
+	NqBDJc0RQ/wFC5wAEXbDvybyu38Xpk+jlqN3mZlaAWLDKRmDbtZ9bAAO6KVxkq5N66g/5F
+	/c8jyJCvMyrqsDYDD8tFehb39zWoEgNMh1l5tJ+wmUrgGkrKU49GO/1pa4oBww==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769966020;
+	s=2020e; t=1769966021;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ks8WfXs2v8lijH+ybLnWizSRitHJ19HyR6BDy6odscM=;
-	b=eU05/wYfuVRID9J8IcTXX+Kumq32pJO9WVFWqsrCPB2ZT/qOtjZkbWH9rBPZvKNCImdl3s
-	wy7hBejvqNOlFUBg==
+	bh=a+CWnUcf99DCjcW8Dqbss/jKzMFK/g7TxWTTBe3V48Q=;
+	b=/dkyQugE+xUrRlkKES9umz/JBIpYa2mILMSGebpj2RENm25eRszB49cvg4l224uWxKmeZ3
+	gDrnoYorQ/xS3DAQ==
 From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/cleanups] mfd: wm8350-core: Use IRQF_ONESHOT
+Subject: [tip: irq/cleanups] thermal/qcom/lmh: Replace IRQF_ONESHOT with
+ IRQF_NO_THREAD
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Thomas Gleixner <tglx@kernel.org>,
- Charles Keepax <ckeepax@opensource.cirrus.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, x86@kernel.org,
+ Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260128095540.863589-16-bigeasy@linutronix.de>
-References: <20260128095540.863589-16-bigeasy@linutronix.de>
+In-Reply-To: <20260128095540.863589-14-bigeasy@linutronix.de>
+References: <20260128095540.863589-14-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176996601936.2495410.10061491452514216506.tip-bot2@tip-bot2>
+Message-ID: <176996602051.2495410.18164219485843702566.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -93,9 +92,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-8166-lists,linux-tip-commits=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-8168-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:email,linutronix.de:dkim];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -103,66 +102,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linutronix.de:email,linutronix.de:dkim,cirrus.com:email]
-X-Rspamd-Queue-Id: 0BB9CC6AE2
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+X-Rspamd-Queue-Id: 43208C6B06
 X-Rspamd-Action: no action
 
 The following commit has been merged into the irq/cleanups branch of tip:
 
-Commit-ID:     553b4999cbe231b5011cb8db05a3092dec168aca
-Gitweb:        https://git.kernel.org/tip/553b4999cbe231b5011cb8db05a3092dec1=
-68aca
+Commit-ID:     781b391557a74f6630d46a0813b389a8ca30b6c8
+Gitweb:        https://git.kernel.org/tip/781b391557a74f6630d46a0813b389a8ca3=
+0b6c8
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Wed, 28 Jan 2026 10:55:35 +01:00
+AuthorDate:    Wed, 28 Jan 2026 10:55:33 +01:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
 CommitterDate: Sun, 01 Feb 2026 17:37:16 +01:00
 
-mfd: wm8350-core: Use IRQF_ONESHOT
+thermal/qcom/lmh: Replace IRQF_ONESHOT with IRQF_NO_THREAD
 
-Using a threaded interrupt without a dedicated primary handler mandates
-the IRQF_ONESHOT flag to mask the interrupt source while the threaded
-handler is active. Otherwise the interrupt can fire again before the
-threaded handler had a chance to run.
+Passing IRQF_ONESHOT ensures that the interrupt source is masked until
+the secondary (threaded) handler is done. If only a primary handler is
+used then the flag makes no sense because the interrupt can not fire
+(again) while its handler is running.
 
-Mark explained that this should not happen with this hardware since it
-is a slow irqchip which is behind an I2C/ SPI bus but the IRQ-core will
-refuse to accept such a handler.
+The flag also prevents force-threading of the primary handler and the
+irq-core will warn about this.
 
-Set IRQF_ONESHOT so the interrupt source is masked until the secondary
-handler is done.
+The intention here was probably to not allow forced-threading.
 
-Fixes: 1c6c69525b40e ("genirq: Reject bogus threaded irq requests")
+Replace IRQF_ONESHOT with IRQF_NO_THREAD.
+
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20260128095540.863589-16-bigeasy@linutronix.de
+Link: https://patch.msgid.link/20260128095540.863589-14-bigeasy@linutronix.de
 ---
- include/linux/mfd/wm8350/core.h | 2 +-
+ drivers/thermal/qcom/lmh.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mfd/wm8350/core.h b/include/linux/mfd/wm8350/core.h
-index 5f70d3b..097ef4d 100644
---- a/include/linux/mfd/wm8350/core.h
-+++ b/include/linux/mfd/wm8350/core.h
-@@ -667,7 +667,7 @@ static inline int wm8350_register_irq(struct wm8350 *wm83=
-50, int irq,
- 		return -ENODEV;
-=20
- 	return request_threaded_irq(irq + wm8350->irq_base, NULL,
--				    handler, flags, name, data);
-+				    handler, flags | IRQF_ONESHOT, name, data);
- }
-=20
- static inline void wm8350_free_irq(struct wm8350 *wm8350, int irq, void *dat=
-a)
+diff --git a/drivers/thermal/qcom/lmh.c b/drivers/thermal/qcom/lmh.c
+index ddadcfa..3d072b7 100644
+--- a/drivers/thermal/qcom/lmh.c
++++ b/drivers/thermal/qcom/lmh.c
+@@ -220,7 +220,7 @@ static int lmh_probe(struct platform_device *pdev)
+ 	/* Disable the irq and let cpufreq enable it when ready to handle the inter=
+rupt */
+ 	irq_set_status_flags(lmh_data->irq, IRQ_NOAUTOEN);
+ 	ret =3D devm_request_irq(dev, lmh_data->irq, lmh_handle_irq,
+-			       IRQF_ONESHOT | IRQF_NO_SUSPEND,
++			       IRQF_NO_THREAD | IRQF_NO_SUSPEND,
+ 			       "lmh-irq", lmh_data);
+ 	if (ret) {
+ 		dev_err(dev, "Error %d registering irq %x\n", ret, lmh_data->irq);
 
