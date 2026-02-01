@@ -1,81 +1,83 @@
-Return-Path: <linux-tip-commits+bounces-8176-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8179-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INaKAQmKf2kKtQIAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8176-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:14:49 +0100
+	id 8DA3JUGKf2kKtQIAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8179-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:15:45 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AFAC6A97
-	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:14:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B18C6ACD
+	for <lists+linux-tip-commits@lfdr.de>; Sun, 01 Feb 2026 18:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6C9103008D41
-	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Feb 2026 17:14:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BA99E300DD78
+	for <lists+linux-tip-commits@lfdr.de>; Sun,  1 Feb 2026 17:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9EAF285072;
-	Sun,  1 Feb 2026 17:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9FC27F749;
+	Sun,  1 Feb 2026 17:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LD6A9fft";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YXLEkX0X"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RiEfI4ac";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="A8wIvkmt"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D95228640B;
-	Sun,  1 Feb 2026 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E0428688D;
+	Sun,  1 Feb 2026 17:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769966037; cv=none; b=Pz2OTi0U4vaKSzoT/7Am7+Mf3CMi+1M0Js7O/DQ6VUjqsa5RXk/6QqlWv+4vnYCfQb5VEma6Dkwn+7NUexE/ECBK0cYRr38bcE7kICIikbUmJQGFXHwSXzp3AyYgIKrw7QRmrNTwlpUPfNzNA5voc5qcpDqPBO5w1CjnibzSexk=
+	t=1769966043; cv=none; b=EhFJEzEzna63EQ8WBb8ZrPDkNudQeEJOVoqFXdTFQkIQ6x2JHBkrkbAiI90UkYL9vH83DCB+OHd7bPxDWu/Mu9ow1RhPiyOM1NLU+b2uJz7ys4sanuIBaXp+GYdhYZ0eGRqcB0Lr6ZkdR0Sv9RFBaBZ7sGLnV3VEFyieKMDP2Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769966037; c=relaxed/simple;
-	bh=keuil+WLiSYfzqd3+SA9VPEstMzDJuY8/gK25tp2/74=;
+	s=arc-20240116; t=1769966043; c=relaxed/simple;
+	bh=J1waG+0qLbRNAu1D9idabhax+PeJpJ0aqyKMm2OY9bM=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=fqW7IX6pIhJGCMnQyyVyKfkQaRJG4YYXZBMNOsogxifRVaK5hp7d3HIGAw4YVkNUp7I9WsT7lUyWOLAHUMiouty8I/ChPHOK3dpY1g6NDHr7iWgBjMiDF6Z4hCiHBjF9s+UmSGVN59VzTfrUz2MmJY396fvJ08+feVkZ/Nlfyy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LD6A9fft; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YXLEkX0X; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=SWbgbp9AQR47S1nlQRn2ZEBPAah3t5a11TW6VdzuRq7+MHzD1qrtbc0T3cz/HzHXqJvqsXCplr6RMvPlJNESRV1RpRAplGd9ToNkN5/7zi8ySvh3QEOyRaHPdHotxEhxYzoV0JZe9WWy9YC24CWaM7yNZdMzCpeFzYqLoO9j7tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RiEfI4ac; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=A8wIvkmt; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 01 Feb 2026 17:13:51 -0000
+Date: Sun, 01 Feb 2026 17:13:52 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769966032;
+	s=2020; t=1769966033;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9BOO9L+03Ur2kIqSJkt/r4uDa2BbXs6/sV11NjCgTiM=;
-	b=LD6A9ffta2WxlCkWvjnw0ehF1nZeRWe6/4Jc6Ic11ObHd+34LaWCDmmRmbDvtG5MuMOKxk
-	vy/x2h5EYgxuEfDOS6DR9N0AlT28nJ91q0zkcSLvuZrzMv9JNKrtNnoRP06KRpw61RxyhC
-	7VSY1qLmoT9yMqMZkFdcqSvQiDoHXWtF46klsd/D+Kf5Da+D0deR9k7V7/z/1nidkbHwxz
-	bPjUmEFdJuFJNq8e+5hm0Oaka8z7iELUFGkosBMx4KcCmwOD+XY/cxLec2cQrG/U4dz9G8
-	E4Ugm8v79lAa82jl4HUdkh090050J3EAgoNMocXH5XZxr6SFV1OoNuPkLOZdyA==
+	bh=+7dLNl9bHpCOcr6wqvmZphi8zXoLsPqnE/QfBQWrsC0=;
+	b=RiEfI4acrgFA9blCmV+Vd9/5N40P56JBMtMZgez+KJqteV4ls1grmcZTd0v3O6EXGR/hQo
+	mb8J3rrQz4u+HQVJBvUwrTOPg5+xeep4mfY9QJqLeWEo9k6TktL5XYEQqom/TKn+spYeaY
+	LjL+fJMBnP/1UpTr2/8wVCxfIu9OmIpCGCtnsMYW4KUCQrhvlmOjMeCt4kAxsz5eJmIB54
+	CvGIXMAIRMgzTk4eElMSkLP7/aXh0SIGuO19hpKPtX+uGiR6G3vl1oUg6o6/VMxNPkkTcT
+	ZDoCgvvFOmasdPvzq6ogUVtuNLGf1tUN/UzJA/8v5fePeCGhGD6Thl9t+uzSig==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769966032;
+	s=2020e; t=1769966033;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9BOO9L+03Ur2kIqSJkt/r4uDa2BbXs6/sV11NjCgTiM=;
-	b=YXLEkX0XAuvEiZ3u3ObrJyJwATk2aJDMdNeRE0kgWZfDMu/4A6JsjgJPIATDCzxnPO4/dp
-	hEmzPBwI3OHR+kAg==
+	bh=+7dLNl9bHpCOcr6wqvmZphi8zXoLsPqnE/QfBQWrsC0=;
+	b=A8wIvkmtOQwl2XWNzg2ifqu6gsAhBVFyvdnhqTy9lXuv1tENULrBaSPrdZMP5yaykQtz8W
+	YTQNNZKzC9hoLZCA==
 From: "tip-bot2 for Sebastian Andrzej Siewior" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/cleanups] iommu/amd: Use core's primary handler and set
- IRQF_ONESHOT
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260128095540.863589-4-bigeasy@linutronix.de>
-References: <20260128095540.863589-4-bigeasy@linutronix.de>
+Subject: [tip: irq/cleanups] platform/x86: int0002: Remove IRQF_ONESHOT from
+ request_irq()
+Cc: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Thomas Gleixner <tglx@kernel.org>,
+ Hans de Goede <johannes.goede@oss.qualcomm.com>,
+ ilpo.jarvinen@linux.intel.com, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260128095540.863589-3-bigeasy@linutronix.de>
+References: <20260128095540.863589-3-bigeasy@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176996603153.2495410.8007230412946283843.tip-bot2@tip-bot2>
+Message-ID: <176996603257.2495410.6898984647181446363.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -88,13 +90,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-8179-lists,linux-tip-commits=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8176-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linutronix.de:email,linutronix.de:dkim,vger.kernel.org:replyto,msgid.link:url];
+	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -102,112 +104,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 97AFAC6A97
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linutronix.de:email,linutronix.de:dkim,vger.kernel.org:replyto,msgid.link:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: 44B18C6ACD
 X-Rspamd-Action: no action
 
 The following commit has been merged into the irq/cleanups branch of tip:
 
-Commit-ID:     5bfcdccb4d18d3909b7f87942be67fd6bdc00c1d
-Gitweb:        https://git.kernel.org/tip/5bfcdccb4d18d3909b7f87942be67fd6bdc=
-00c1d
+Commit-ID:     f6bc712877f24dc89bdfd7bdbf1a32f3b9960b34
+Gitweb:        https://git.kernel.org/tip/f6bc712877f24dc89bdfd7bdbf1a32f3b99=
+60b34
 Author:        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-AuthorDate:    Wed, 28 Jan 2026 10:55:23 +01:00
+AuthorDate:    Wed, 28 Jan 2026 10:55:22 +01:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
 CommitterDate: Sun, 01 Feb 2026 17:37:13 +01:00
 
-iommu/amd: Use core's primary handler and set IRQF_ONESHOT
+platform/x86: int0002: Remove IRQF_ONESHOT from request_irq()
 
-request_threaded_irq() is invoked with a primary and a secondary handler
-and no flags are passed. The primary handler is the same as
-irq_default_primary_handler() so there is no need to have an identical
-copy.
+Passing IRQF_ONESHOT ensures that the interrupt source is masked until the
+secondary (threaded) handler is done. If only a primary handler is used
+then the flag makes no sense because the interrupt cannot fire (again)
+while its handler is running.
 
-The lack of the IRQF_ONESHOT can be dangerous because the interrupt
-source is not masked while the threaded handler is active. This means,
-especially on LEVEL typed interrupt lines, the interrupt can fire again
-before the threaded handler had a chance to run.
+The flag also prevents force-threading of the primary handler and the
+irq-core will warn about this.
 
-Use the default primary interrupt handler by specifying NULL and set
-IRQF_ONESHOT so the interrupt source is masked until the secondary
-handler is done.
+The flag was added to match the flag on the shared handler which uses a
+threaded handler and therefore IRQF_ONESHOT. This is no longer needed
+because devm_request_irq() now passes IRQF_COND_ONESHOT for this case.
 
-Fixes: 72fe00f01f9a3 ("x86/amd-iommu: Use threaded interupt handler")
+Revert adding IRQF_ONESHOT to irqflags.
+
+Fixes: 8f812373d1958 ("platform/x86: intel: int0002_vgpio: Pass IRQF_ONESHOT =
+to request_irq()")
+Reported-by: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260128095540.863589-4-bigeasy@linutronix.de
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Acked-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260128095540.863589-3-bigeasy@linutronix.de
+Closes: https://lore.kernel.org/all/555f1c56-0f74-41bf-8bd2-6217e0aab0c6@inte=
+l.com
 ---
- drivers/iommu/amd/amd_iommu.h |  1 -
- drivers/iommu/amd/init.c      | 12 ++++--------
- drivers/iommu/amd/iommu.c     |  5 -----
- 3 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/platform/x86/intel/int0002_vgpio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index b742ef1..df1c238 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -15,7 +15,6 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data);
- irqreturn_t amd_iommu_int_thread_evtlog(int irq, void *data);
- irqreturn_t amd_iommu_int_thread_pprlog(int irq, void *data);
- irqreturn_t amd_iommu_int_thread_galog(int irq, void *data);
--irqreturn_t amd_iommu_int_handler(int irq, void *data);
- void amd_iommu_restart_log(struct amd_iommu *iommu, const char *evt_type,
- 			   u8 cntrl_intr, u8 cntrl_log,
- 			   u32 status_run_mask, u32 status_overflow_mask);
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 384c90b..62a7a71 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -2356,12 +2356,8 @@ static int iommu_setup_msi(struct amd_iommu *iommu)
- 	if (r)
- 		return r;
-=20
--	r =3D request_threaded_irq(iommu->dev->irq,
--				 amd_iommu_int_handler,
--				 amd_iommu_int_thread,
--				 0, "AMD-Vi",
--				 iommu);
--
-+	r =3D request_threaded_irq(iommu->dev->irq, NULL, amd_iommu_int_thread,
-+				 IRQF_ONESHOT, "AMD-Vi", iommu);
- 	if (r) {
- 		pci_disable_msi(iommu->dev);
- 		return r;
-@@ -2535,8 +2531,8 @@ static int __iommu_setup_intcapxt(struct amd_iommu *iom=
-mu, const char *devname,
- 		return irq;
- 	}
-=20
--	ret =3D request_threaded_irq(irq, amd_iommu_int_handler,
--				   thread_fn, 0, devname, iommu);
-+	ret =3D request_threaded_irq(irq, NULL, thread_fn, IRQF_ONESHOT, devname,
-+				   iommu);
+diff --git a/drivers/platform/x86/intel/int0002_vgpio.c b/drivers/platform/x8=
+6/intel/int0002_vgpio.c
+index 6f5629d..562e880 100644
+--- a/drivers/platform/x86/intel/int0002_vgpio.c
++++ b/drivers/platform/x86/intel/int0002_vgpio.c
+@@ -206,8 +206,8 @@ static int int0002_probe(struct platform_device *pdev)
+ 	 * FIXME: augment this if we managed to pull handling of shared
+ 	 * IRQs into gpiolib.
+ 	 */
+-	ret =3D devm_request_irq(dev, irq, int0002_irq,
+-			       IRQF_ONESHOT | IRQF_SHARED, "INT0002", chip);
++	ret =3D devm_request_irq(dev, irq, int0002_irq, IRQF_SHARED, "INT0002",
++			       chip);
  	if (ret) {
- 		irq_domain_free_irqs(irq, 1);
- 		irq_domain_remove(domain);
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 5d45795..bd57785 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -1151,11 +1151,6 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data)
- 	return IRQ_HANDLED;
- }
-=20
--irqreturn_t amd_iommu_int_handler(int irq, void *data)
--{
--	return IRQ_WAKE_THREAD;
--}
--
- /****************************************************************************
-  *
-  * IOMMU command queuing functions
+ 		dev_err(dev, "Error requesting IRQ %d: %d\n", irq, ret);
+ 		return ret;
 
