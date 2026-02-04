@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-8197-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8198-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJGNAegag2l9hwMAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8197-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Feb 2026 11:09:44 +0100
+	id 4AitAIcdg2nehwMAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8198-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Feb 2026 11:20:55 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D195E44B2
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Feb 2026 11:09:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F8DE4657
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Feb 2026 11:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF18C3019F3B
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Feb 2026 10:08:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ACC453000B92
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Feb 2026 10:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233E23D6484;
-	Wed,  4 Feb 2026 10:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450453D3D06;
+	Wed,  4 Feb 2026 10:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bCgXeZTY";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m/SUMuvD"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LN3IX7WT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s+plRuLU"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9600A3D5237;
-	Wed,  4 Feb 2026 10:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94933D412E;
+	Wed,  4 Feb 2026 10:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770199725; cv=none; b=ma3gqJ8FcHWIlGCvzrvNum6kzM/GoOo9f31S4Fv/bzinlLFNhyBxb7o7ZKTbzWtxpQcDh0M5hDLuAgKeshOJWsYQYiJekpCw1Qv1/U6kWdcfQW2OIMbRIYzcRwO7AVAKLGZckCZ7WZBAWlFgDLRt/5FFmF68Z5k4mLVr+vOFuBo=
+	t=1770200450; cv=none; b=sMNoDtHlJFNUFILLiZDPzUCCenZSwL7bxPOsY4PWUZtNx+EWaIL/QTlfMQSGcSzC3eOsususHYoqqdisxscmhkZjm2dwy2Yj1Ry9qRBqKU6DiBYrZTI7SolIYTwXLMXGPdlAoGOujjMoWS+5kCtfAqxrymvjyW4Ym3ECwEgVts8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770199725; c=relaxed/simple;
-	bh=UfhEI1B9EVtGt9/5EYF2+fTN084B+C8nip09FKJrdME=;
+	s=arc-20240116; t=1770200450; c=relaxed/simple;
+	bh=I06696zq2Yh55JLChck134cxivi/wGS1uJowHvU5V6Y=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=W8b5sl7V3T8STLF9zwQVcQZZbsl75vDvzS7zI8EHjDKerHnnenKhYL9xeNKlsF7HNffFL0a0yhhPuQf1bHhGgbOooRsxOhzE4W/mmMZGH/XFQGlpr2JtXa+pfQ96eO/8cuMbqJA32Z3xfq0Jnq3aVb7HwcRVu2ca0fQecp/XoVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bCgXeZTY; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m/SUMuvD; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=TQbRHPB38KHGHrYxoSz8zioNVpWY5BWMCOotfYg9bIV4voKNon0mBPX/fqNj7YKqHsQxUm0usNMkM5IALG4IPwihtTaeze5uMOq4dqkvBfkorejA5tAt+89DU8farRbJ4kYtGA+EzDFgVHk3UEn3fIEgzNqmZy1SPRW5YQTUCLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LN3IX7WT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s+plRuLU; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 04 Feb 2026 10:08:40 -0000
+Date: Wed, 04 Feb 2026 10:20:46 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1770199722;
+	s=2020; t=1770200448;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UYZiEueiALawpyRS1o61/P5k8+6z3NsyoIHoixuYKbc=;
-	b=bCgXeZTYO+rqFyJVgConfyJq9IwF6IRgawiv+KT+wCvhLRvJDq5DYf0/M0bear0xmMPOfn
-	/c6nkOJhzuL1sgaVTunPoaGfw4Hjz3yeNxCNQT1aWton8gJPWv+dASULK5oqd7Clcylb6j
-	aPSMBe3U8kkN4ip//hLup/psEcM6+pvuAH7d4PQ4aJ4T+yoz2d4JOVv0kHTIkqcFUHSb3S
-	vf/GGjYns+t7h6Br2IHCDtSD8nuCIk58akC7psCWFxxE7dpJAaG3cX6aTmQjpm7Z2SBVOc
-	Un1gDiOqpMVqEsPhHHnvlulqYrwZ5ZF5kbW8l1xjX9/A0AE6ujAEzhnaStmkVw==
+	bh=EIxJ4p2UNRO/kKqc+c+NrJdpQTtF9mTMGvmsXdKi/uA=;
+	b=LN3IX7WTX/7wXmhjMs7+rEG7KcwEvDniJRnoqMwJ6RzsDq2QCWenVtxhbeomORxxQGKWtI
+	lbbz/PRLPCZCVNi1a/1O1t7GqaHjd3eqOVHdGUg3gzLOWDVJCMUYfnCGogDVzG8Wa4ayjB
+	NIS6HfzZjvJGWIGdmdMzjGHjebSWSv6wJlualj9HOe865ZNgW+f/8T4YgX4QHn8lkynLCU
+	tYKGaF1rnBoQyxHIZdffzSmxdCeyvYPMnFBcsNFdX6k8AeFb7SznjqMPKVUwjExkZGpDcy
+	rEi4vN7Dr00W3t5Q2py0MHrDMfzU8w4B3sQMb1HvBKmTCHFStdJO8erqnWjhFw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1770199722;
+	s=2020e; t=1770200448;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UYZiEueiALawpyRS1o61/P5k8+6z3NsyoIHoixuYKbc=;
-	b=m/SUMuvDYphDcI+InxWBJbazNrY0rMGcbrGePm4IUL60t2cC4QxC3ia/gxOnhCAH+e0HAV
-	hQ+TS8C0J6KBWdDA==
-From: "tip-bot2 for Yuwen Chen" <tip-bot2@linutronix.de>
+	bh=EIxJ4p2UNRO/kKqc+c+NrJdpQTtF9mTMGvmsXdKi/uA=;
+	b=s+plRuLUK7UuDU2u3FPUI0jBc712IlblXnB64TWRUkhSE2MyZXMyG790MPxYzIlvMyuoCB
+	cKZDOLf8zYvduzDA==
+From: "tip-bot2 for Yangyu Chen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: locking/futex] selftests/futex: Fix incorrect result reporting
- of futex_requeue test item
-Cc: Yuwen Chen <ywen.chen@foxmail.com>, Thomas Gleixner <tglx@kernel.org>,
+Subject: [tip: irq/drivers] dt-bindings: interrupt-controller: sifive,plic:
+ Clarify the riscv,ndev meaning in PLIC
+Cc: Yangyu Chen <cyy@cyyself.name>, Thomas Gleixner <tglx@kernel.org>,
  x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <tencent_51851B741CC4B5EC9C22AFF70BA82BB60805@qq.com>
-References: <tencent_51851B741CC4B5EC9C22AFF70BA82BB60805@qq.com>
+In-Reply-To: <tencent_720A4669773B1EE15EC720869C35C2F0490A@qq.com>
+References: <tencent_720A4669773B1EE15EC720869C35C2F0490A@qq.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177019972082.2495410.8441988381020898500.tip-bot2@tip-bot2>
+Message-ID: <177020044678.2495410.7909430195430121858.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,154 +87,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8197-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,foxmail.com:email,vger.kernel.org:replyto];
+	TAGGED_FROM(0.00)[bounces-8198-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:replyto,linutronix.de:dkim,cyyself.name:email];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[foxmail.com,kernel.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 6D195E44B2
+X-Rspamd-Queue-Id: 23F8DE4657
 X-Rspamd-Action: no action
 
-The following commit has been merged into the locking/futex branch of tip:
+The following commit has been merged into the irq/drivers branch of tip:
 
-Commit-ID:     d317e2ef9dcf673c9f37cda784284af7c6812757
-Gitweb:        https://git.kernel.org/tip/d317e2ef9dcf673c9f37cda784284af7c68=
-12757
-Author:        Yuwen Chen <ywen.chen@foxmail.com>
-AuthorDate:    Wed, 28 Jan 2026 10:03:10 +08:00
+Commit-ID:     889588d750506d86ba16ae3b968b5ffc5937d5f8
+Gitweb:        https://git.kernel.org/tip/889588d750506d86ba16ae3b968b5ffc593=
+7d5f8
+Author:        Yangyu Chen <cyy@cyyself.name>
+AuthorDate:    Wed, 04 Feb 2026 01:21:48 +08:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Wed, 04 Feb 2026 10:51:46 +01:00
+CommitterDate: Wed, 04 Feb 2026 11:13:58 +01:00
 
-selftests/futex: Fix incorrect result reporting of futex_requeue test item
+dt-bindings: interrupt-controller: sifive,plic: Clarify the riscv,ndev meanin=
+g in PLIC
 
-When using the TEST_HARNESS_MAIN macro definition to declare the main
-function, it is required to use the EXPECT*() and ASSERT*() macros in
-conjunction and not ksft_test_result_*(). Otherwise, even if a test item
-fails, the test will still return a success result because
-ksft_test_result_*() does not affect the test harness state.
+In PLIC, interrupt source 0 is reserved and should not be used.
+Therefore, the valid interrupt sources are from 1 to riscv,ndev
+inclusive.
 
-Convert the code to use EXPECT/ASSERT() variants, which ensures that the
-overall test result is fail if one of the EXPECT()s fails.
+Update the documentation to clarify this point.
 
-[ tglx: Massaged change log to explain _why_ ksft_test_result*() is the wrong
-  	choice ]
+[ tglx: Fixup subject prefix ]
 
-Fixes: f341a20f6d7e ("selftests/futex: Refactor futex_requeue with kselftest_=
-harness.h")
-Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
+Signed-off-by: Yangyu Chen <cyy@cyyself.name>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/tencent_51851B741CC4B5EC9C22AFF70BA82BB60805@q=
+Link: https://patch.msgid.link/tencent_720A4669773B1EE15EC720869C35C2F0490A@q=
 q.com
 ---
- tools/testing/selftests/futex/functional/futex_requeue.c | 49 +------
- 1 file changed, 8 insertions(+), 41 deletions(-)
+ Documentation/devicetree/bindings/interrupt-controller/sifive,plic-1.0.0.yam=
+l | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/futex/functional/futex_requeue.c b/tools=
-/testing/selftests/futex/functional/futex_requeue.c
-index 35d4be2..dcf0d5f 100644
---- a/tools/testing/selftests/futex/functional/futex_requeue.c
-+++ b/tools/testing/selftests/futex/functional/futex_requeue.c
-@@ -34,34 +34,18 @@ TEST(requeue_single)
- 	volatile futex_t _f1 =3D 0;
- 	volatile futex_t f2 =3D 0;
- 	pthread_t waiter[10];
--	int res;
+diff --git a/Documentation/devicetree/bindings/interrupt-controller/sifive,pl=
+ic-1.0.0.yaml b/Documentation/devicetree/bindings/interrupt-controller/sifive=
+,plic-1.0.0.yaml
+index 388fc2c..e026722 100644
+--- a/Documentation/devicetree/bindings/interrupt-controller/sifive,plic-1.0.=
+0.yaml
++++ b/Documentation/devicetree/bindings/interrupt-controller/sifive,plic-1.0.=
+0.yaml
+@@ -108,7 +108,9 @@ properties:
+   riscv,ndev:
+     $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+-      Specifies how many external interrupts are supported by this controlle=
+r.
++      Specifies how many external (device) interrupts are supported by this
++      controller.  Note that source 0 is reserved in PLIC, so the valid
++      interrupt sources are 1 to riscv,ndev inclusive.
 =20
- 	f1 =3D &_f1;
+   clocks: true
 =20
- 	/*
- 	 * Requeue a waiter from f1 to f2, and wake f2.
- 	 */
--	if (pthread_create(&waiter[0], NULL, waiterfn, NULL))
--		ksft_exit_fail_msg("pthread_create failed\n");
-+	ASSERT_EQ(0, pthread_create(&waiter[0], NULL, waiterfn, NULL));
-=20
- 	usleep(WAKE_WAIT_US);
-=20
--	ksft_print_dbg_msg("Requeuing 1 futex from f1 to f2\n");
--	res =3D futex_cmp_requeue(f1, 0, &f2, 0, 1, 0);
--	if (res !=3D 1)
--		ksft_test_result_fail("futex_requeue simple returned: %d %s\n",
--				      res ? errno : res,
--				      res ? strerror(errno) : "");
--
--	ksft_print_dbg_msg("Waking 1 futex at f2\n");
--	res =3D futex_wake(&f2, 1, 0);
--	if (res !=3D 1) {
--		ksft_test_result_fail("futex_requeue simple returned: %d %s\n",
--				      res ? errno : res,
--				      res ? strerror(errno) : "");
--	} else {
--		ksft_test_result_pass("futex_requeue simple succeeds\n");
--	}
-+	EXPECT_EQ(1, futex_cmp_requeue(f1, 0, &f2, 0, 1, 0));
-+	EXPECT_EQ(1, futex_wake(&f2, 1, 0));
- }
-=20
- TEST(requeue_multiple)
-@@ -69,7 +53,7 @@ TEST(requeue_multiple)
- 	volatile futex_t _f1 =3D 0;
- 	volatile futex_t f2 =3D 0;
- 	pthread_t waiter[10];
--	int res, i;
-+	int i;
-=20
- 	f1 =3D &_f1;
-=20
-@@ -77,30 +61,13 @@ TEST(requeue_multiple)
- 	 * Create 10 waiters at f1. At futex_requeue, wake 3 and requeue 7.
- 	 * At futex_wake, wake INT_MAX (should be exactly 7).
- 	 */
--	for (i =3D 0; i < 10; i++) {
--		if (pthread_create(&waiter[i], NULL, waiterfn, NULL))
--			ksft_exit_fail_msg("pthread_create failed\n");
--	}
-+	for (i =3D 0; i < 10; i++)
-+		ASSERT_EQ(0, pthread_create(&waiter[i], NULL, waiterfn, NULL));
-=20
- 	usleep(WAKE_WAIT_US);
-=20
--	ksft_print_dbg_msg("Waking 3 futexes at f1 and requeuing 7 futexes from f1 =
-to f2\n");
--	res =3D futex_cmp_requeue(f1, 0, &f2, 3, 7, 0);
--	if (res !=3D 10) {
--		ksft_test_result_fail("futex_requeue many returned: %d %s\n",
--				      res ? errno : res,
--				      res ? strerror(errno) : "");
--	}
--
--	ksft_print_dbg_msg("Waking INT_MAX futexes at f2\n");
--	res =3D futex_wake(&f2, INT_MAX, 0);
--	if (res !=3D 7) {
--		ksft_test_result_fail("futex_requeue many returned: %d %s\n",
--				      res ? errno : res,
--				      res ? strerror(errno) : "");
--	} else {
--		ksft_test_result_pass("futex_requeue many succeeds\n");
--	}
-+	EXPECT_EQ(10, futex_cmp_requeue(f1, 0, &f2, 3, 7, 0));
-+	EXPECT_EQ(7, futex_wake(&f2, INT_MAX, 0));
- }
-=20
- TEST_HARNESS_MAIN
 
