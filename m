@@ -1,81 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-8215-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8216-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UC2/DhA9lGmTAwIAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8215-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Feb 2026 11:04:00 +0100
+	id WMeOKRg9lGmTAwIAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8216-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Feb 2026 11:04:08 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F16614AA5A
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Feb 2026 11:03:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8C214AA71
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Feb 2026 11:04:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D676301AD08
-	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Feb 2026 10:02:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26FA23029268
+	for <lists+linux-tip-commits@lfdr.de>; Tue, 17 Feb 2026 10:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2431320A00;
-	Tue, 17 Feb 2026 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3FA320CAD;
+	Tue, 17 Feb 2026 10:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="et0N0IO1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="syJaosc4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xRJzTsSn";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="q9WgXhCK"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB893203B6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF59528D8FD;
 	Tue, 17 Feb 2026 10:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771322577; cv=none; b=MsiuLwyIbjfgIjaL1Sgdk7nYhj8cAZbg0VFbrmBveVs0syAzKcVaiKWtKT8N1r8S8DNM8L3XCPXrigQxyfD045CrDB2N9L41ToZNQQ4mupfey/4iqTTpA5FkBTE8xHt77FcZaIWS5Qubb3Dr2yBPSBlEWH5PW+r8Jg1ST3huaug=
+	t=1771322578; cv=none; b=svLZ78w0UWtaTYBHTBhe/dTkN1fPriaDbpVHtZ4seOYPxSx9Eh8AWHnUAe0JEq97tqk1JiOfQsrPL8yM9Vses0R4qvoiKVsr8w4gbad4INU6tKHNd4yVAt27tUT2mN4MJN3yCPhlKNFnVVeAWYjnjbI/teQXr9Hj/Anzp9YZStc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771322577; c=relaxed/simple;
-	bh=MgnBL94bxY9U9GLLXWSR9DilnmY3dR23Z3dSVOtxSfk=;
+	s=arc-20240116; t=1771322578; c=relaxed/simple;
+	bh=1nvNECm0m3yS4Ex03pByxsNNtLBWuCruIQixaI19bxk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=lP5DtV4U2Sw0HPwoS4HjTRkb8crrEGkmE4hmx2UZvEdMbNNTq+yxkzOjWKpFjYg0R2IN8rHS7ooPC6RiMQP0QTfp+SDk7QfujW3CYd+bW3eMVWNZfI6i7AH7AMo1rOlsS0DXDAXkKV5cPD984WXegMfXt0Vstep4AUArJbsVXwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=et0N0IO1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=syJaosc4; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=CLQhh+i9uSBHNcbOWXHUy0WbLnEVvXBRw1bPVliGwvS6Z6pBr7mIHI0xeciQqAZ/JjcdaTzEKm70KrS5hbbr3LzZaeJohxisFR9hjQgRyIeWAF3PcX7am6hvpySrzy34LvzeO0Jbfwn5UXrx8SeSW2VP7qvIKVVcmCYVh0s1qe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xRJzTsSn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=q9WgXhCK; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 17 Feb 2026 10:02:52 -0000
+Date: Tue, 17 Feb 2026 10:02:54 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1771322574;
+	s=2020; t=1771322575;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SDh1/BBH3Iu8px0I1Zge1iKEBif9YBXmGehJvtxYseM=;
-	b=et0N0IO1Flx48QgSYCU9TXioi6d7BA5vXSejaBQoZ5QnstDAfi/9/LNNofvvr1A4hCjmKN
-	iNjO1btrGzDFRs5UR9pJPRwm2MuaOqd9XGY/97VQowG0HSdP3JJLqtT9TOXZ8618WK7sL7
-	atERf+tZ0/sY53gBpHCKBzCgptkec5z7QKmAaqdvss/PDbsq7tI6vYn7ZlQ5OvM6oUoh7L
-	m73v+mE0hsBOokS5tqFQz85a/N1X8uypVVPO4mvXo7kvjyksXGxzEDdtm+VN6L2u0MqBuS
-	N3FeqYxjaWjgSz0or/NbH2K3PBm5qzjnijHQ+AoS2O+c0cDMrMGFJfMBNVmcuw==
+	bh=8jRDrOOvcDCpip3jrpVtvUK6yidrYwLmHTnygBtmKek=;
+	b=xRJzTsSnfcqJNq7NCx7jKVDpAJ/z8ZLfpXLkHu+0yqqjYrGbCZSbMI5SQpUuFumm+rBkqU
+	jhftby2dR8D/YCy3DOo5g3KXRM3cG1xYDziMGbanmVIjLpogZVNxZ+7G5rzvFyUzV+0DpU
+	KTRth3DwAQxCnxSt3Ug4uH5WBguSvBmGeA13lq61FZGrlqxqmYXNefh/htmYdXjCg0Kt/I
+	2h1yMUyF0kZU8EPMZEPeqEUIVfGxLhu7JVoBfI3TcNUIhiu+e5TQIVZFdwE70xGf14iXrO
+	kmGyeTcFKHAkDclpBICHz6C/tVap31V3w/C76AAe/FY6R4DnAQliccYrLIdxYA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1771322574;
+	s=2020e; t=1771322575;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SDh1/BBH3Iu8px0I1Zge1iKEBif9YBXmGehJvtxYseM=;
-	b=syJaosc4vLGLZ9nlI+38iakrWzvNaIQJi9jQvkgMsDm+2lo9CAy/QmGhj3O18cKrx8tOoE
-	TKrQ4Y9ieYBN8HCQ==
-From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
+	bh=8jRDrOOvcDCpip3jrpVtvUK6yidrYwLmHTnygBtmKek=;
+	b=q9WgXhCK5JhhA7SdqnlCBbT9P/QPZ9G7n8o5Df1ETlMcb4Rm8HbNKXfXFNwjjLTJ5d7nTj
+	LM0K25VUMoNgjADA==
+From: "tip-bot2 for Nam Cao" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Limit number of per-device MSIs
- to the range the ITS supports
-Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Zenghui Yu <zenghui.yu@linux.dev>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260206154816.3582887-1-maz@kernel.org>
-References: <20260206154816.3582887-1-maz@kernel.org>
+Subject: [tip: irq/urgent] irqchip/sifive-plic: Fix frozen interrupt due to
+ affinity setting
+Cc: Nam Cao <namcao@linutronix.de>, Thomas Gleixner <tglx@kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20260212114125.3148067-1-namcao@linutronix.de>
+References: <20260212114125.3148067-1-namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177132257280.542.645556472830907489.tip-bot2@tip-bot2>
+Message-ID: <177132257426.542.987275771549324608.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -85,107 +84,101 @@ Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linutronix.de:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:replyto];
 	RCVD_TLS_LAST(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8215-lists,linux-tip-commits=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-8216-lists,linux-tip-commits=lfdr.de];
 	DKIM_TRACE(0.00)[linutronix.de:+];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linutronix.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,vger.kernel.org:replyto,linux.dev:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8F16614AA5A
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+X-Rspamd-Queue-Id: 3E8C214AA71
 X-Rspamd-Action: no action
 
 The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8
-Gitweb:        https://git.kernel.org/tip/ce9e40a9a5e5cff0b1b0d2fa582b3d71a8c=
-e68e8
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Fri, 06 Feb 2026 15:48:16=20
+Commit-ID:     1072020685f4b81f6efad3b412cdae0bd62bb043
+Gitweb:        https://git.kernel.org/tip/1072020685f4b81f6efad3b412cdae0bd62=
+bb043
+Author:        Nam Cao <namcao@linutronix.de>
+AuthorDate:    Thu, 12 Feb 2026 12:41:25 +01:00
 Committer:     Thomas Gleixner <tglx@kernel.org>
 CommitterDate: Tue, 17 Feb 2026 11:00:43 +01:00
 
-irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supp=
-orts
+irqchip/sifive-plic: Fix frozen interrupt due to affinity setting
 
-The ITS driver blindly assumes that EventIDs are in abundant supply, to the
-point where it never checks how many the hardware actually supports.
+PLIC ignores interrupt completion message for disabled interrupt, explained
+by the specification:
 
-It turns out that some pretty esoteric integrations make it so that only a
-few bits are available, all the way down to a single bit.
+    The PLIC signals it has completed executing an interrupt handler by
+    writing the interrupt ID it received from the claim to the
+    claim/complete register. The PLIC does not check whether the completion
+    ID is the same as the last claim ID for that target. If the completion
+    ID does not match an interrupt source that is currently enabled for
+    the target, the completion is silently ignored.
 
-Enforce the advertised limitation at the point of allocating the device
-structure, and hope that the endpoint driver can deal with such limitation.
+This caused problems in the past, because an interrupt can be disabled
+while still being handled and plic_irq_eoi() had no effect. That was fixed
+by checking if the interrupt is disabled, and if so enable it, before
+sending the completion message. That check is done with irqd_irq_disabled().
 
-Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configurati=
-on")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+However, that is not sufficient because the enable bit for the handling
+hart can be zero despite irqd_irq_disabled(d) being false. This can happen
+when affinity setting is changed while a hart is still handling the
+interrupt.
+
+This problem is easily reproducible by dumping a large file to uart (which
+generates lots of interrupts) and at the same time keep changing the uart
+interrupt's affinity setting. The uart port becomes frozen almost
+instantaneously.
+
+Fix this by checking PLIC's enable bit instead of irqd_irq_disabled().
+
+Fixes: cc9f04f9a84f ("irqchip/sifive-plic: Implement irq_set_affinity() for S=
+MP host")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
+Link: https://patch.msgid.link/20260212114125.3148067-1-namcao@linutronix.de
 ---
- drivers/irqchip/irq-gic-v3-its.c   | 4 ++++
- include/linux/irqchip/arm-gic-v3.h | 1 +
- 2 files changed, 5 insertions(+)
+ drivers/irqchip/irq-sifive-plic.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-it=
-s.c
-index 2988def..a51e8e6 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3475,6 +3475,7 @@ static struct its_device *its_create_device(struct its_=
-node *its, u32 dev_id,
- 	int lpi_base;
- 	int nr_lpis;
- 	int nr_ites;
-+	int id_bits;
- 	int sz;
+diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-p=
+lic.c
+index 60fd8f9..7005887 100644
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -172,8 +172,13 @@ static void plic_irq_disable(struct irq_data *d)
+ static void plic_irq_eoi(struct irq_data *d)
+ {
+ 	struct plic_handler *handler =3D this_cpu_ptr(&plic_handlers);
++	u32 __iomem *reg;
++	bool enabled;
++
++	reg =3D handler->enable_base + (d->hwirq / 32) * sizeof(u32);
++	enabled =3D readl(reg) & BIT(d->hwirq % 32);
 =20
- 	if (!its_alloc_device_table(its, dev_id))
-@@ -3486,7 +3487,10 @@ static struct its_device *its_create_device(struct its=
-_node *its, u32 dev_id,
- 	/*
- 	 * Even if the device wants a single LPI, the ITT must be
- 	 * sized as a power of two (and you need at least one bit...).
-+	 * Also honor the ITS's own EID limit.
- 	 */
-+	id_bits =3D FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
-+	nvecs =3D min_t(unsigned int, nvecs, BIT(id_bits));
- 	nr_ites =3D max(2, nvecs);
- 	sz =3D nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
- 	sz =3D max(sz, ITS_ITT_ALIGN);
-diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-g=
-ic-v3.h
-index 70c0948..0225121 100644
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -394,6 +394,7 @@
- #define GITS_TYPER_VLPIS		(1UL << 1)
- #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
- #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
-+#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
- #define GITS_TYPER_IDBITS_SHIFT		8
- #define GITS_TYPER_DEVBITS_SHIFT	13
- #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
+-	if (unlikely(irqd_irq_disabled(d))) {
++	if (unlikely(!enabled)) {
+ 		plic_toggle(handler, d->hwirq, 1);
+ 		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+ 		plic_toggle(handler, d->hwirq, 0);
 
