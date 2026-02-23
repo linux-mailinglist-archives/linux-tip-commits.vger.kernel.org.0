@@ -1,74 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-8228-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8229-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KLw7JuUsnGmcAQQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8228-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Feb 2026 11:33:09 +0100
+	id kNjuJdYrnGmcAQQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8229-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Feb 2026 11:28:38 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7961174F0F
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Feb 2026 11:33:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C78A174E0D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Feb 2026 11:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B366D30B65A6
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Feb 2026 10:26:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EAE13302BBE6
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 23 Feb 2026 10:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFEF362139;
-	Mon, 23 Feb 2026 10:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4455E362153;
+	Mon, 23 Feb 2026 10:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jJE08f+/";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Ai7F8mA2"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LVXWIdgC";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4+6O5KL1"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F46361DCA;
-	Mon, 23 Feb 2026 10:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DCC3624A7;
+	Mon, 23 Feb 2026 10:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771842328; cv=none; b=W1dmfdjJz1w0imM35/M2NMF6EHToQZ9wN6nzhQqIRkxXJeBiHqIi2CyXtDeq8NYRvvMWiv8DQJZ2kVF7bwpWaATl4TP9mETezo/DuU7XFOAe8T97hw4t8nrnpIK8PplQWN+qJ8YsdGXLoeLQrYQhySJkJN0l/4GhsJcs85Wf3hI=
+	t=1771842331; cv=none; b=ckOj7UTxz4ILtCtZeqjP+tTcCGPd7ljueJu0J7NDpvuxaQQphmW7pfRun1A1YkK6ye6OLOvjIL7pVITrGRA37yDyKka1x3dwnI8A7GyZF4OBrBNbNm7KT5VV0RFjdzvi724Zx0v4Bjg7PzZfvzKdWlcW3MzjGA4ONS/pb47m7xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771842328; c=relaxed/simple;
-	bh=iA2stz/A/IOJb5b7BJwAFPjppNrND4F0DCCfzkkQqws=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Z57l0zlsh0HdvDMT9A+0ZcBYuY/uh6wjmdrwE7zaMquFT3z9wS9DPUOmpyQfE998Tt6f/iy/xbbK69y52W2ybWCmPrG3tw4LfaSTiitbXRtAeCbXpES4XQdoD667XC+0Dw4xT6jQDShw2Izjat9AbL9aJdl5iBOldnZQEPXCuus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jJE08f+/; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Ai7F8mA2; arc=none smtp.client-ip=193.142.43.55
+	s=arc-20240116; t=1771842331; c=relaxed/simple;
+	bh=6qPIo2KyLYTarwh6JORif6gHsvIYoQoU/8x8I27qFSA=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=BYRtfr5NbW3E/93thxyz5o35qN0kIapMv1uGkP0m++1UhLbRBzl6jwJdesHQIG7RD3pku1c379YwBR1D3EvZjx29wJKX0m40eWsiF0tDFHfb+VF9NTATYdThBIc8LzUT/QzJU1XhjH8dAUCZ+hlQ2Bcvm0sRLhtFvbrU/xA1QMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LVXWIdgC; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4+6O5KL1; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 23 Feb 2026 10:25:24 -0000
+Date: Mon, 23 Feb 2026 10:25:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1771842325;
+	s=2020; t=1771842328;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=WNoAPzvRadgJM9zzs18E3d8CMDR9c4OTCS0N+RhU67w=;
-	b=jJE08f+/ODeNpe4/fsDLmK6fWjGphIbv3OuVOX3eaIfl0qpPmkuc4u2eOkWb7uXydy2gGC
-	KJVp7byWMbAZOP2idTNVEAT7XMpUvL9qD2dl35iWx6CX/pf2Uldye4Q8+yDinIqMO52lXD
-	8qKxK258oUkKmJ3rHBWngZrLZqF8gjNb6wDrtb8M+6KKgl7ZV6z+3rnQsYMiZdPfwNrucY
-	u9VETOD2D0cldLOptgkUaiPjwMCC4dI3mZqT15YpXrRUESMNNa2RJbMomZycPUahbOWv3S
-	8BzhXTuDi8T3262aIsR6Fia2g5NHqptgj31oVkAOc1iBRGTtGpRHLrb2wWiLsw==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iDOFvxYRL8UA/KYh7PuX/WfFe85btC3lYDMHSzVUzRg=;
+	b=LVXWIdgCzKgD8Ud0Rmq7Ez2TJJ3PqZBeOgwn/P43X0i4PAPQC8UuvlzfKK4MsrC2cN05PC
+	vY1KnZhzUKlnIEIr5j6do51SKeaQgldVVk1A+mz58oaSQZ8md8PQErCelD0kZl9flHieYr
+	eDZDYgZ+OKGMonhW2cYWSZRK4P61xoW7hKLJOUDMGyYpXEGJi9FuYNwLGutOd2NgnmPcww
+	v6TgW4JOQOEf355E+k221yvRx3bfyaGmmY3kGAd11W6epJlOMHL3jeowOPVnpy2KJKNbuc
+	8KycOl8z8y3wX1A1pPntv7EQ2Khnuvz3L77FsuWDsgQFD94oHqkSxgyT4ddbiA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1771842325;
+	s=2020e; t=1771842328;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=WNoAPzvRadgJM9zzs18E3d8CMDR9c4OTCS0N+RhU67w=;
-	b=Ai7F8mA2KaIo1d3NZwKId8yJwGjlpiMwQ9lBnnYfGHLs+P/69RgIgb9/Dcb/HsqMXJa14Y
-	9SoBj3b7OZk6l4Bg==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iDOFvxYRL8UA/KYh7PuX/WfFe85btC3lYDMHSzVUzRg=;
+	b=4+6O5KL1Ft/zhNQe7F86W44oFUcFNyl2Th8i6/wFU/vJ7Ni5KMQFhoNqns5q1y1RTDM++j
+	xF436h5DzoKkF1CQ==
+From: "tip-bot2 for Thomas Huth" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/fair: Fix zero_vruntime tracking
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Shubhang Kaushik <shubhang@os.amperecomputing.com>, x86@kernel.org,
+Subject: [tip: x86/urgent] x86/headers: Replace __ASSEMBLY__ stragglers with
+ __ASSEMBLER__
+Cc: Thomas Huth <thuth@redhat.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
+In-Reply-To: <20251218182029.166993-1-thuth@redhat.com>
+References: <20251218182029.166993-1-thuth@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177184232472.1647592.11362297419769330533.tip-bot2@tip-bot2>
+Message-ID: <177184232725.1647592.7601187609397681941.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,13 +88,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8228-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,amd.com:email,linutronix.de:dkim,amperecomputing.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:replyto];
+	TAGGED_FROM(0.00)[bounces-8229-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linutronix.de:dkim,infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vger.kernel.org:replyto];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -95,254 +102,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: C7961174F0F
+X-Rspamd-Queue-Id: 3C78A174E0D
 X-Rspamd-Action: no action
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     b3d99f43c72b56cf7a104a364e7fb34b0702828b
-Gitweb:        https://git.kernel.org/tip/b3d99f43c72b56cf7a104a364e7fb34b070=
-2828b
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Mon, 09 Feb 2026 15:28:16 +01:00
+Commit-ID:     237dc6a054f6787c2a8f61c59086030267e5e1c5
+Gitweb:        https://git.kernel.org/tip/237dc6a054f6787c2a8f61c59086030267e=
+5e1c5
+Author:        Thomas Huth <thuth@redhat.com>
+AuthorDate:    Thu, 18 Dec 2025 19:20:29 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Mon, 23 Feb 2026 11:19:17 +01:00
+CommitterDate: Mon, 23 Feb 2026 11:19:12 +01:00
 
-sched/fair: Fix zero_vruntime tracking
+x86/headers: Replace __ASSEMBLY__ stragglers with __ASSEMBLER__
 
-It turns out that zero_vruntime tracking is broken when there is but a single
-task running. Current update paths are through __{en,de}queue_entity(), and
-when there is but a single task, pick_next_task() will always return that one
-task, and put_prev_set_next_task() will end up in neither function.
+After converting the __ASSEMBLY__ statements to __ASSEMBLER__ in
+commit 24a295e4ef1ca ("x86/headers: Replace __ASSEMBLY__ with
+__ASSEMBLER__ in non-UAPI headers"), some new code has been
+added that uses __ASSEMBLY__ again. Convert these stragglers, too.
 
-This can cause entity_key() to grow indefinitely large and cause overflows,
-leading to much pain and suffering.
+This is a mechanical patch, done with a simple "sed -i" command.
 
-Furtermore, doing update_zero_vruntime() from __{de,en}queue_entity(), which
-are called from {set_next,put_prev}_entity() has problems because:
-
- - set_next_entity() calls __dequeue_entity() before it does cfs_rq->curr =3D=
- se.
-   This means the avg_vruntime() will see the removal but not current, missing
-   the entity for accounting.
-
- - put_prev_entity() calls __enqueue_entity() before it does cfs_rq->curr =3D
-   NULL. This means the avg_vruntime() will see the addition *and* current,
-   leading to double accounting.
-
-Both cases are incorrect/inconsistent.
-
-Noting that avg_vruntime is already called on each {en,de}queue, remove the
-explicit avg_vruntime() calls (which removes an extra 64bit division for each
-{en,de}queue) and have avg_vruntime() update zero_vruntime itself.
-
-Additionally, have the tick call avg_vruntime() -- discarding the result, but
-for the side-effect of updating zero_vruntime.
-
-While there, optimize avg_vruntime() by noting that the average of one value =
-is
-rather trivial to compute.
-
-Test case:
-  # taskset -c -p 1 $$
-  # taskset -c 2 bash -c 'while :; do :; done&'
-  # cat /sys/kernel/debug/sched/debug | awk '/^cpu#/ {P=3D0} /^cpu#2,/ {P=3D1=
-} {if (P) print $0}' | grep -e zero_vruntime -e "^>"
-
-PRE:
-    .zero_vruntime                 : 31316.407903
-  >R            bash   487     50787.345112   E       50789.145972           =
-2.800000     50780.298364        16     120         0.000000         0.000000=
-         0.000000        /
-    .zero_vruntime                 : 382548.253179
-  >R            bash   487    427275.204288   E      427276.003584           =
-2.800000    427268.157540        23     120         0.000000         0.000000=
-         0.000000        /
-
-POST:
-    .zero_vruntime                 : 17259.709467
-  >R            bash   526     17259.709467   E       17262.509467           =
-2.800000     16915.031624         9     120         0.000000         0.000000=
-         0.000000        /
-    .zero_vruntime                 : 18702.723356
-  >R            bash   526     18702.723356   E       18705.523356           =
-2.800000     18358.045513         9     120         0.000000         0.000000=
-         0.000000        /
-
-Fixes: 79f3f9bedd14 ("sched/eevdf: Fix min_vruntime vs avg_vruntime")
-Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Tested-by: Shubhang Kaushik <shubhang@os.amperecomputing.com>
-Link: https://patch.msgid.link/20260219080624.438854780%40infradead.org
+Link: https://patch.msgid.link/20251218182029.166993-1-thuth@redhat.com
 ---
- kernel/sched/fair.c | 84 +++++++++++++++++++++++++++++---------------
- 1 file changed, 57 insertions(+), 27 deletions(-)
+ arch/x86/include/asm/bug.h           | 6 +++---
+ arch/x86/include/asm/irqflags.h      | 4 ++--
+ arch/x86/include/asm/percpu.h        | 2 +-
+ arch/x86/include/asm/runtime-const.h | 6 +++---
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index eea99ec..56dddd4 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -589,6 +589,21 @@ static inline bool entity_before(const struct sched_enti=
-ty *a,
- 	return vruntime_cmp(a->deadline, "<", b->deadline);
- }
+diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
+index 9b4e046..80c1696 100644
+--- a/arch/x86/include/asm/bug.h
++++ b/arch/x86/include/asm/bug.h
+@@ -7,7 +7,7 @@
+ #include <linux/objtool.h>
+ #include <asm/asm.h>
 =20
-+/*
-+ * Per avg_vruntime() below, cfs_rq::zero_vruntime is only slightly stale
-+ * and this value should be no more than two lag bounds. Which puts it in the
-+ * general order of:
-+ *
-+ *	(slice + TICK_NSEC) << NICE_0_LOAD_SHIFT
-+ *
-+ * which is around 44 bits in size (on 64bit); that is 20 for
-+ * NICE_0_LOAD_SHIFT, another 20 for NSEC_PER_MSEC and then a handful for
-+ * however many msec the actual slice+tick ends up begin.
-+ *
-+ * (disregarding the actual divide-by-weight part makes for the worst case
-+ * weight of 2, which nicely cancels vs the fuzz in zero_vruntime not actual=
-ly
-+ * being the zero-lag point).
-+ */
- static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
- 	return vruntime_op(se->vruntime, "-", cfs_rq->zero_vruntime);
-@@ -676,39 +691,61 @@ sum_w_vruntime_sub(struct cfs_rq *cfs_rq, struct sched_=
-entity *se)
- }
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ struct bug_entry;
+ extern void __WARN_trap(struct bug_entry *bug, ...);
+ #endif
+@@ -137,7 +137,7 @@ do {									\
 =20
- static inline
--void sum_w_vruntime_update(struct cfs_rq *cfs_rq, s64 delta)
-+void update_zero_vruntime(struct cfs_rq *cfs_rq, s64 delta)
- {
- 	/*
--	 * v' =3D v + d =3D=3D> sum_w_vruntime' =3D sum_runtime - d*sum_weight
-+	 * v' =3D v + d =3D=3D> sum_w_vruntime' =3D sum_w_vruntime - d*sum_weight
- 	 */
- 	cfs_rq->sum_w_vruntime -=3D cfs_rq->sum_weight * delta;
-+	cfs_rq->zero_vruntime +=3D delta;
- }
+ #ifdef HAVE_ARCH_BUG_FORMAT_ARGS
 =20
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ #include <linux/static_call_types.h>
+ DECLARE_STATIC_CALL(WARN_trap, __WARN_trap);
+=20
+@@ -153,7 +153,7 @@ struct arch_va_list {
+ 	struct sysv_va_list args;
+ };
+ extern void *__warn_args(struct arch_va_list *args, struct pt_regs *regs);
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+=20
+ #define __WARN_bug_entry(flags, format) ({				\
+ 	struct bug_entry *bug;						\
+diff --git a/arch/x86/include/asm/irqflags.h b/arch/x86/include/asm/irqflags.h
+index a1193e9..462754b 100644
+--- a/arch/x86/include/asm/irqflags.h
++++ b/arch/x86/include/asm/irqflags.h
+@@ -77,7 +77,7 @@ static __always_inline void native_local_irq_restore(unsign=
+ed long flags)
+ #endif
+=20
+ #ifndef CONFIG_PARAVIRT
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
  /*
-- * Specifically: avg_runtime() + 0 must result in entity_eligible() :=3D true
-+ * Specifically: avg_vruntime() + 0 must result in entity_eligible() :=3D tr=
-ue
-  * For this to be so, the result of this function must have a left bias.
-+ *
-+ * Called in:
-+ *  - place_entity()      -- before enqueue
-+ *  - update_entity_lag() -- before dequeue
-+ *  - entity_tick()
-+ *
-+ * This means it is one entry 'behind' but that puts it close enough to where
-+ * the bound on entity_key() is at most two lag bounds.
-  */
- u64 avg_vruntime(struct cfs_rq *cfs_rq)
+  * Used in the idle loop; sti takes one instruction cycle
+  * to complete:
+@@ -95,7 +95,7 @@ static __always_inline void halt(void)
  {
- 	struct sched_entity *curr =3D cfs_rq->curr;
--	s64 avg =3D cfs_rq->sum_w_vruntime;
--	long load =3D cfs_rq->sum_weight;
-+	long weight =3D cfs_rq->sum_weight;
-+	s64 delta =3D 0;
+ 	native_halt();
+ }
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ #endif /* CONFIG_PARAVIRT */
 =20
--	if (curr && curr->on_rq) {
--		unsigned long weight =3D scale_load_down(curr->load.weight);
-+	if (curr && !curr->on_rq)
-+		curr =3D NULL;
+ #ifdef CONFIG_PARAVIRT_XXL
+diff --git a/arch/x86/include/asm/percpu.h b/arch/x86/include/asm/percpu.h
+index c55058f..4099814 100644
+--- a/arch/x86/include/asm/percpu.h
++++ b/arch/x86/include/asm/percpu.h
+@@ -20,7 +20,7 @@
 =20
--		avg +=3D entity_key(cfs_rq, curr) * weight;
--		load +=3D weight;
--	}
-+	if (weight) {
-+		s64 runtime =3D cfs_rq->sum_w_vruntime;
-+
-+		if (curr) {
-+			unsigned long w =3D scale_load_down(curr->load.weight);
-+
-+			runtime +=3D entity_key(cfs_rq, curr) * w;
-+			weight +=3D w;
-+		}
+ #define PER_CPU_VAR(var)	__percpu(var)__percpu_rel
 =20
--	if (load) {
- 		/* sign flips effective floor / ceiling */
--		if (avg < 0)
--			avg -=3D (load - 1);
--		avg =3D div_s64(avg, load);
-+		if (runtime < 0)
-+			runtime -=3D (weight - 1);
-+
-+		delta =3D div_s64(runtime, weight);
-+	} else if (curr) {
-+		/*
-+		 * When there is but one element, it is the average.
-+		 */
-+		delta =3D curr->vruntime - cfs_rq->zero_vruntime;
+-#else /* !__ASSEMBLY__: */
++#else /* !__ASSEMBLER__: */
+=20
+ #include <linux/args.h>
+ #include <linux/bits.h>
+diff --git a/arch/x86/include/asm/runtime-const.h b/arch/x86/include/asm/runt=
+ime-const.h
+index e5a13dc..4cd94fd 100644
+--- a/arch/x86/include/asm/runtime-const.h
++++ b/arch/x86/include/asm/runtime-const.h
+@@ -6,7 +6,7 @@
+   #error "Cannot use runtime-const infrastructure from modules"
+ #endif
+=20
+-#ifdef __ASSEMBLY__
++#ifdef __ASSEMBLER__
+=20
+ .macro RUNTIME_CONST_PTR sym reg
+ 	movq	$0x0123456789abcdef, %\reg
+@@ -16,7 +16,7 @@
+ 	.popsection
+ .endm
+=20
+-#else /* __ASSEMBLY__ */
++#else /* __ASSEMBLER__ */
+=20
+ #define runtime_const_ptr(sym) ({				\
+ 	typeof(sym) __ret;					\
+@@ -74,5 +74,5 @@ static inline void runtime_const_fixup(void (*fn)(void *, u=
+nsigned long),
  	}
-=20
--	return cfs_rq->zero_vruntime + avg;
-+	update_zero_vruntime(cfs_rq, delta);
-+
-+	return cfs_rq->zero_vruntime;
  }
 =20
- /*
-@@ -777,16 +814,6 @@ int entity_eligible(struct cfs_rq *cfs_rq, struct sched_=
-entity *se)
- 	return vruntime_eligible(cfs_rq, se->vruntime);
- }
-=20
--static void update_zero_vruntime(struct cfs_rq *cfs_rq)
--{
--	u64 vruntime =3D avg_vruntime(cfs_rq);
--	s64 delta =3D vruntime_op(vruntime, "-", cfs_rq->zero_vruntime);
--
--	sum_w_vruntime_update(cfs_rq, delta);
--
--	cfs_rq->zero_vruntime =3D vruntime;
--}
--
- static inline u64 cfs_rq_min_slice(struct cfs_rq *cfs_rq)
- {
- 	struct sched_entity *root =3D __pick_root_entity(cfs_rq);
-@@ -856,7 +883,6 @@ RB_DECLARE_CALLBACKS(static, min_vruntime_cb, struct sche=
-d_entity,
- static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
- {
- 	sum_w_vruntime_add(cfs_rq, se);
--	update_zero_vruntime(cfs_rq);
- 	se->min_vruntime =3D se->vruntime;
- 	se->min_slice =3D se->slice;
- 	rb_add_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
-@@ -868,7 +894,6 @@ static void __dequeue_entity(struct cfs_rq *cfs_rq, struc=
-t sched_entity *se)
- 	rb_erase_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
- 				  &min_vruntime_cb);
- 	sum_w_vruntime_sub(cfs_rq, se);
--	update_zero_vruntime(cfs_rq);
- }
-=20
- struct sched_entity *__pick_root_entity(struct cfs_rq *cfs_rq)
-@@ -5524,6 +5549,11 @@ entity_tick(struct cfs_rq *cfs_rq, struct sched_entity=
- *curr, int queued)
- 	update_load_avg(cfs_rq, curr, UPDATE_TG);
- 	update_cfs_group(curr);
-=20
-+	/*
-+	 * Pulls along cfs_rq::zero_vruntime.
-+	 */
-+	avg_vruntime(cfs_rq);
-+
- #ifdef CONFIG_SCHED_HRTICK
- 	/*
- 	 * queued ticks are scheduled to match the slice, so don't bother
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ #endif
 
