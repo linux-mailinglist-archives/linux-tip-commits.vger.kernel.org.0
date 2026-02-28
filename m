@@ -1,80 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-8285-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8286-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULILEMTMomkj5gQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8285-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:08:52 +0100
+	id mMEWA9/Momkj5gQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8286-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:09:19 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBAE1C27A1
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:08:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE81C27B7
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:09:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D4683076512
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:07:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE9E030A5E8B
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4F442E01A;
-	Sat, 28 Feb 2026 11:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD2042EEB4;
+	Sat, 28 Feb 2026 11:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="H7oJhm0T";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DkERLNBt"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mwBa6WpT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aIhGi6Co"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FBA42DFF8;
-	Sat, 28 Feb 2026 11:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF17A937;
+	Sat, 28 Feb 2026 11:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772276866; cv=none; b=FxcKjdBb8lhQou9MhTfsP9AXCTS0x1jK9H4qAUQeR/dmQNEjiNxUtdLmhyl1M3qsETeTTcsWkuv2XECQksRPTvf7wxQtgpBZ0iGWdsuH+9WyHJfxrEIYrcpwQj2aD5lnmj3cTldxhV1BpvVVnS/mSwYoW3g9zL5xN1XMaCmVPUE=
+	t=1772276867; cv=none; b=TyllvZORwdgDvRFzygMf9JC8kA5DXcPQb/8O4711tqjESMwUeO5du7paUbYaPM0s7ppCXRjsiNA/fWySclNBqYqKYp1JLtm6tQFxjk+TqRMzavZF+9suLMiKnJ8lO7J4jFIKVsMmGjknTZiwwZkuSxo0SSQKE3fF9Ia+/qBYSc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772276866; c=relaxed/simple;
-	bh=6r9irqBREcK2Vw7TUsyGrU4mfyM/0CIQOGrN66KkDlo=;
+	s=arc-20240116; t=1772276867; c=relaxed/simple;
+	bh=AI7pCDtOxrvvzbpnsfLFkLML0DoiKvCrpkRoklveI2k=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VcNOiZQazP8H7wvghxTsfnPlZu3Ond2KM+VXNF4xl3jD4Pi0uIMuUHyWHKWPc6se7MsXXC/TXrnCiGWNyCjvoZk3e/GgxNGP+K0OHZk6+XZpLecqMSZPbrdQ84PNw0Fhmsr/bk9jTsVLNMKqvKGZ4d5ikJbsTl1Koz5YTdzy0M8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=H7oJhm0T; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DkERLNBt; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=b2Lr+b6/+75KQoaxz4GIB14fAFqilybpgjB/94Sn4Sf4pUZyN2sPS/JUYKgaMlBEIz2D92YB0xEtxIPtTGqigXkOoa2rnTSJR/eIzBnjiITjPgbtojIgnDCAHhb8W9ysDJEbGhW/+biGVpv66bS1HfCNBCJwnAnQ7LiEMJ3lxtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mwBa6WpT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aIhGi6Co; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Feb 2026 11:07:42 -0000
+Date: Sat, 28 Feb 2026 11:07:43 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772276863;
+	s=2020; t=1772276864;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ekdm68ILi+NDH/ngvWY5DNdfrKm+qFCG4DLrcinIa9w=;
-	b=H7oJhm0TZG2a9ct0NwuwB6Yt8pq11vf9EBe68WvmTxdBAjh9jtxm/enO2fxBkxFVqORJZi
-	VBwULJ2OI53y/YZVMoaz7Q/R11dNX1h65/IXDjrFOiH12sG8dehiyzEPiSy+HbkIbsMN1n
-	pmEG4BsBHcMTOiGc3gXH3orpO/UeTSa9FSYJfAq1BejdBMu/W9CG6/5MSEgoCFl2FgLMg9
-	UJ8vP3BEkLXEQzO8CcPXomtUwY1jj+YqKIn+tEXe4sbElLI3wsGRKQcgsJmNCOS//8PtJ2
-	NG65SGb4rOsnrdUokxbhuj+xM6cWCdpe2o2ySF3K3lQ07/dTEo1BlTap5N17+Q==
+	bh=/Q/hNuYyKx6km5ULp81l7yvpj27zm34NIowSX5T9ZNw=;
+	b=mwBa6WpTd95s7dWJSjN1hYVXBIh/oedWTpG+VhcuWOe5R9FHam0rUG0F610GrLoNygmmKu
+	9h6Mmf61iah/KdSp/6ZTZzTZB2C8fA3hqGR+0tASKwV02AiWVOoiwWnSATvHgF/uzHTe8Z
+	+w39SBRRLk4Ld5WL21HIlwYvsNyFOcw/9iPbGWy4GibztCoVjtTJdBCyS7aQxdOt9t1kD+
+	R7mImGQxnuDtz48dG5qEVTMT82tIuEIbx7t5sw9K0l70mucP0YAav8suKraDIdzY/vtdl0
+	xjKD/nRxdKVpM1P/vPdBA9vJcyhzoOnVkYIepbFPTBXQobVD0UMbfrkWpS5yiA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772276863;
+	s=2020e; t=1772276864;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ekdm68ILi+NDH/ngvWY5DNdfrKm+qFCG4DLrcinIa9w=;
-	b=DkERLNBtC9eXyS6cNwliPA6P+h5QV5FTpAsnRqGdJtyFVNMF2KSAZ1XfCEqXqKPARnEKRK
-	FXrOpn66wIlfG1BA==
+	bh=/Q/hNuYyKx6km5ULp81l7yvpj27zm34NIowSX5T9ZNw=;
+	b=aIhGi6ConoCcEl5KKvtDtK+NgqVqxSsIgc5wDMI3eykmdCJLHv5cJoTYh9IOcqccrgN+q+
+	cMlWzlfdBSnLh1DA==
 From: "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/ibs: Enable fetch latency filtering
+Subject: [tip: perf/core] perf/amd/ibs: Support IBS_{FETCH|OP}_CTL2[Dis] to
+ eliminate RMW race
 Cc: Ravi Bangoria <ravi.bangoria@amd.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260216042530.1546-5-ravi.bangoria@amd.com>
-References: <20260216042530.1546-5-ravi.bangoria@amd.com>
+In-Reply-To: <20260216042530.1546-4-ravi.bangoria@amd.com>
+References: <20260216042530.1546-4-ravi.bangoria@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177227686219.1647592.1502804905828368056.tip-bot2@tip-bot2>
+Message-ID: <177227686332.1647592.8336320541328996100.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -92,7 +93,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8285-lists,linux-tip-commits=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-8286-lists,linux-tip-commits=lfdr.de];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:dkim,infradead.org:email];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -111,190 +112,178 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 8DBAE1C27A1
+X-Rspamd-Queue-Id: 9FCE81C27B7
 X-Rspamd-Action: no action
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     35247fa60b74e1c643423c3bc7c6a59cbca262bb
-Gitweb:        https://git.kernel.org/tip/35247fa60b74e1c643423c3bc7c6a59cbca=
-262bb
+Commit-ID:     efa5700ec0da66662dc8375fe4e4b888487a6b84
+Gitweb:        https://git.kernel.org/tip/efa5700ec0da66662dc8375fe4e4b888487=
+a6b84
 Author:        Ravi Bangoria <ravi.bangoria@amd.com>
-AuthorDate:    Mon, 16 Feb 2026 04:25:27=20
+AuthorDate:    Mon, 16 Feb 2026 04:25:26=20
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 28 Feb 2026 12:03:29 +01:00
+CommitterDate: Sat, 28 Feb 2026 12:02:49 +01:00
 
-perf/amd/ibs: Enable fetch latency filtering
+perf/amd/ibs: Support IBS_{FETCH|OP}_CTL2[Dis] to eliminate RMW race
 
-IBS Fetch on future hardware adds fetch latency filtering which
-generates interrupt only when FetchLat value exceeds a programmable
-threshold.
+The existing IBS_{FETCH|OP}_CTL MSRs combine control and status bits
+which leads to RMW race between HW and SW:
 
-Hardware allows threshold in 128-cycle increment (i.e. 128, 256, 384
-etc.) from 128 to 1920 cycles. Like the existing IBS filters, samples
-that fail the latency test are dropped and IBS restarts internally.
+  HW                               SW
+  ------------------------         ------------------------------
+                                   config =3D rdmsr(IBS_OP_CTL);
+                                   config &=3D ~EN;
+  Set IBS_OP_CTL[Val] to 1
+  trigger NMI
+                                   wrmsr(IBS_OP_CTL, config);
+                                   // Val is accidentally cleared
 
-Since hardware supports threshold in multiple of 128, add a software
-filter on top to support latency threshold with the granularity of 1
-cycle in between [128-1920].
+Future hardware adds a control-only MSR, IBS_{FETCH|OP}_CTL2, which
+provides a second-level "disable" bit (Dis). IBS is now:
 
-Example:
-  # perf record -e ibs_fetch/fetchlat=3D128/ -c 10000 -a -- sleep 5
+  Enabled:  IBS_{FETCH|OP}_CTL[En] =3D 1 && IBS_{FETCH|OP}_CTL2[Dis] =3D 0
+  Disabled: IBS_{FETCH|OP}_CTL[En] =3D 0 || IBS_{FETCH|OP}_CTL2[Dis] =3D 1
+
+The separate "Dis" bit lets software disable IBS without touching any
+status fields, eliminating the hardware/software race.
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260216042530.1546-5-ravi.bangoria@amd.com
+Link: https://patch.msgid.link/20260216042530.1546-4-ravi.bangoria@amd.com
 ---
- arch/x86/events/amd/ibs.c | 66 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+ arch/x86/events/amd/ibs.c | 45 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 45 insertions(+)
 
 diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index b7f0aad..cb3ae4e 100644
+index 2e8fb06..b7f0aad 100644
 --- a/arch/x86/events/amd/ibs.c
 +++ b/arch/x86/events/amd/ibs.c
-@@ -35,6 +35,8 @@ static u32 ibs_caps;
- /* attr.config1 */
- #define IBS_OP_CONFIG1_LDLAT_MASK		(0xFFFULL <<  0)
+@@ -86,9 +86,11 @@ struct cpu_perf_ibs {
+ struct perf_ibs {
+ 	struct pmu			pmu;
+ 	unsigned int			msr;
++	unsigned int			msr2;
+ 	u64				config_mask;
+ 	u64				cnt_mask;
+ 	u64				enable_mask;
++	u64				disable_mask;
+ 	u64				valid_mask;
+ 	u16				min_period;
+ 	u64				max_period;
+@@ -292,6 +294,8 @@ static int perf_ibs_init(struct perf_event *event)
+ 		return -ENOENT;
 =20
-+#define IBS_FETCH_CONFIG1_FETCHLAT_MASK		(0x7FFULL <<  0)
-+
- /*
-  * IBS states:
-  *
-@@ -282,6 +284,14 @@ static bool perf_ibs_ldlat_event(struct perf_ibs *perf_i=
-bs,
- 	       (event->attr.config1 & IBS_OP_CONFIG1_LDLAT_MASK);
- }
+ 	config =3D event->attr.config;
++	hwc->extra_reg.config =3D 0;
++	hwc->extra_reg.reg =3D 0;
 =20
-+static bool perf_ibs_fetch_lat_event(struct perf_ibs *perf_ibs,
-+				     struct perf_event *event)
-+{
-+	return perf_ibs =3D=3D &perf_ibs_fetch &&
-+	       (ibs_caps & IBS_CAPS_FETCHLAT) &&
-+	       (event->attr.config1 & IBS_FETCH_CONFIG1_FETCHLAT_MASK);
-+}
-+
- static int perf_ibs_init(struct perf_event *event)
- {
- 	struct hw_perf_event *hwc =3D &event->hw;
-@@ -377,6 +387,17 @@ static int perf_ibs_init(struct perf_event *event)
- 			config |=3D IBS_OP_L3MISSONLY;
- 	}
+ 	if (event->pmu !=3D &perf_ibs->pmu)
+ 		return -ENOENT;
+@@ -319,6 +323,11 @@ static int perf_ibs_init(struct perf_event *event)
+ 	if (perf_allow_kernel())
+ 		hwc->flags |=3D PERF_X86_EVENT_UNPRIVILEGED;
 =20
-+	if (perf_ibs_fetch_lat_event(perf_ibs, event)) {
-+		u64 fetchlat =3D event->attr.config1 & IBS_FETCH_CONFIG1_FETCHLAT_MASK;
-+
-+		if (fetchlat < 128 || fetchlat > 1920)
-+			return -EINVAL;
-+		fetchlat >>=3D 7;
-+
++	if (ibs_caps & IBS_CAPS_DIS) {
++		hwc->extra_reg.config &=3D ~perf_ibs->disable_mask;
 +		hwc->extra_reg.reg =3D perf_ibs->msr2;
-+		hwc->extra_reg.config |=3D fetchlat << IBS_FETCH_2_FETCHLAT_FILTER_SHIFT;
 +	}
 +
- 	/*
- 	 * If we modify hwc->sample_period, we also need to update
- 	 * hwc->last_period and hwc->period_left.
-@@ -665,6 +686,8 @@ PMU_EVENT_ATTR_STRING(ldlat, ibs_op_ldlat_format, "config=
-1:0-11");
- PMU_EVENT_ATTR_STRING(zen4_ibs_extensions, zen4_ibs_extensions, "1");
- PMU_EVENT_ATTR_STRING(ldlat, ibs_op_ldlat_cap, "1");
- PMU_EVENT_ATTR_STRING(dtlb_pgsize, ibs_op_dtlb_pgsize_cap, "1");
-+PMU_EVENT_ATTR_STRING(fetchlat, ibs_fetch_lat_format, "config1:0-10");
-+PMU_EVENT_ATTR_STRING(fetchlat, ibs_fetch_lat_cap, "1");
+ 	if (hwc->sample_period) {
+ 		if (config & perf_ibs->cnt_mask)
+ 			/* raw max_cnt may not be set */
+@@ -448,6 +457,9 @@ static inline void perf_ibs_enable_event(struct perf_ibs =
+*perf_ibs,
+ 		wrmsrq(hwc->config_base, tmp & ~perf_ibs->enable_mask);
 =20
- static umode_t
- zen4_ibs_extensions_is_visible(struct kobject *kobj, struct attribute *attr,=
- int i)
-@@ -673,6 +696,12 @@ zen4_ibs_extensions_is_visible(struct kobject *kobj, str=
-uct attribute *attr, int
+ 	wrmsrq(hwc->config_base, tmp | perf_ibs->enable_mask);
++
++	if (hwc->extra_reg.reg)
++		wrmsrq(hwc->extra_reg.reg, hwc->extra_reg.config);
  }
 =20
- static umode_t
-+ibs_fetch_lat_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-+{
-+	return ibs_caps & IBS_CAPS_FETCHLAT ? attr->mode : 0;
-+}
-+
-+static umode_t
- ibs_op_ldlat_is_visible(struct kobject *kobj, struct attribute *attr, int i)
+ /*
+@@ -460,6 +472,11 @@ static inline void perf_ibs_enable_event(struct perf_ibs=
+ *perf_ibs,
+ static inline void perf_ibs_disable_event(struct perf_ibs *perf_ibs,
+ 					  struct hw_perf_event *hwc, u64 config)
  {
- 	return ibs_caps & IBS_CAPS_OPLDLAT ? attr->mode : 0;
-@@ -700,6 +729,16 @@ static struct attribute *zen4_ibs_extensions_attrs[] =3D=
- {
- 	NULL,
- };
-=20
-+static struct attribute *ibs_fetch_lat_format_attrs[] =3D {
-+	&ibs_fetch_lat_format.attr.attr,
-+	NULL,
-+};
-+
-+static struct attribute *ibs_fetch_lat_cap_attrs[] =3D {
-+	&ibs_fetch_lat_cap.attr.attr,
-+	NULL,
-+};
-+
- static struct attribute *ibs_op_ldlat_cap_attrs[] =3D {
- 	&ibs_op_ldlat_cap.attr.attr,
- 	NULL,
-@@ -727,6 +766,18 @@ static struct attribute_group group_zen4_ibs_extensions =
-=3D {
- 	.is_visible =3D zen4_ibs_extensions_is_visible,
- };
-=20
-+static struct attribute_group group_ibs_fetch_lat_cap =3D {
-+	.name =3D "caps",
-+	.attrs =3D ibs_fetch_lat_cap_attrs,
-+	.is_visible =3D ibs_fetch_lat_is_visible,
-+};
-+
-+static struct attribute_group group_ibs_fetch_lat_format =3D {
-+	.name =3D "format",
-+	.attrs =3D ibs_fetch_lat_format_attrs,
-+	.is_visible =3D ibs_fetch_lat_is_visible,
-+};
-+
- static struct attribute_group group_ibs_op_ldlat_cap =3D {
- 	.name =3D "caps",
- 	.attrs =3D ibs_op_ldlat_cap_attrs,
-@@ -748,6 +799,8 @@ static const struct attribute_group *fetch_attr_groups[] =
-=3D {
- static const struct attribute_group *fetch_attr_update[] =3D {
- 	&group_fetch_l3missonly,
- 	&group_zen4_ibs_extensions,
-+	&group_ibs_fetch_lat_cap,
-+	&group_ibs_fetch_lat_format,
- 	NULL,
- };
-=20
-@@ -1191,7 +1244,8 @@ static int perf_ibs_get_offset_max(struct perf_ibs *per=
-f_ibs,
- {
- 	if (event->attr.sample_type & PERF_SAMPLE_RAW ||
- 	    perf_ibs_is_mem_sample_type(perf_ibs, event) ||
--	    perf_ibs_ldlat_event(perf_ibs, event))
-+	    perf_ibs_ldlat_event(perf_ibs, event) ||
-+	    perf_ibs_fetch_lat_event(perf_ibs, event))
- 		return perf_ibs->offset_max;
- 	else if (check_rip)
- 		return 3;
-@@ -1333,6 +1387,16 @@ fail:
- 		}
- 	}
-=20
-+	if (perf_ibs_fetch_lat_event(perf_ibs, event)) {
-+		union ibs_fetch_ctl fetch_ctl;
-+
-+		fetch_ctl.val =3D ibs_data.regs[ibs_fetch_msr_idx(MSR_AMD64_IBSFETCHCTL)];
-+		if (fetch_ctl.fetch_lat < (event->attr.config1 & IBS_FETCH_CONFIG1_FETCHLA=
-T_MASK)) {
-+			throttle =3D perf_event_account_interrupt(event);
-+			goto out;
-+		}
++	if (ibs_caps & IBS_CAPS_DIS) {
++		wrmsrq(hwc->extra_reg.reg, perf_ibs->disable_mask);
++		return;
 +	}
 +
- 	/*
- 	 * Read IbsBrTarget, IbsOpData4, and IbsExtdCtl separately
- 	 * depending on their availability.
+ 	config &=3D ~perf_ibs->cnt_mask;
+ 	if (boot_cpu_data.x86 =3D=3D 0x10)
+ 		wrmsrq(hwc->config_base, config);
+@@ -812,6 +829,7 @@ static struct perf_ibs perf_ibs_fetch =3D {
+ 		.check_period	=3D perf_ibs_check_period,
+ 	},
+ 	.msr			=3D MSR_AMD64_IBSFETCHCTL,
++	.msr2			=3D MSR_AMD64_IBSFETCHCTL2,
+ 	.config_mask		=3D IBS_FETCH_MAX_CNT | IBS_FETCH_RAND_EN,
+ 	.cnt_mask		=3D IBS_FETCH_MAX_CNT,
+ 	.enable_mask		=3D IBS_FETCH_ENABLE,
+@@ -837,6 +855,7 @@ static struct perf_ibs perf_ibs_op =3D {
+ 		.check_period	=3D perf_ibs_check_period,
+ 	},
+ 	.msr			=3D MSR_AMD64_IBSOPCTL,
++	.msr2			=3D MSR_AMD64_IBSOPCTL2,
+ 	.config_mask		=3D IBS_OP_MAX_CNT,
+ 	.cnt_mask		=3D IBS_OP_MAX_CNT | IBS_OP_CUR_CNT |
+ 				  IBS_OP_CUR_CNT_RAND,
+@@ -1394,6 +1413,9 @@ fail:
+=20
+ out:
+ 	if (!throttle) {
++		if (ibs_caps & IBS_CAPS_DIS)
++			wrmsrq(hwc->extra_reg.reg, perf_ibs->disable_mask);
++
+ 		if (perf_ibs =3D=3D &perf_ibs_op) {
+ 			if (ibs_caps & IBS_CAPS_OPCNTEXT) {
+ 				new_config =3D period & IBS_OP_MAX_CNT_EXT_MASK;
+@@ -1465,6 +1487,9 @@ static __init int perf_ibs_fetch_init(void)
+ 	if (ibs_caps & IBS_CAPS_ZEN4)
+ 		perf_ibs_fetch.config_mask |=3D IBS_FETCH_L3MISSONLY;
+=20
++	if (ibs_caps & IBS_CAPS_DIS)
++		perf_ibs_fetch.disable_mask =3D IBS_FETCH_2_DIS;
++
+ 	perf_ibs_fetch.pmu.attr_groups =3D fetch_attr_groups;
+ 	perf_ibs_fetch.pmu.attr_update =3D fetch_attr_update;
+=20
+@@ -1486,6 +1511,9 @@ static __init int perf_ibs_op_init(void)
+ 	if (ibs_caps & IBS_CAPS_ZEN4)
+ 		perf_ibs_op.config_mask |=3D IBS_OP_L3MISSONLY;
+=20
++	if (ibs_caps & IBS_CAPS_DIS)
++		perf_ibs_op.disable_mask =3D IBS_OP_2_DIS;
++
+ 	perf_ibs_op.pmu.attr_groups =3D op_attr_groups;
+ 	perf_ibs_op.pmu.attr_update =3D op_attr_update;
+=20
+@@ -1732,6 +1760,23 @@ static void clear_APIC_ibs(void)
+ static int x86_pmu_amd_ibs_starting_cpu(unsigned int cpu)
+ {
+ 	setup_APIC_ibs();
++
++	if (ibs_caps & IBS_CAPS_DIS) {
++		/*
++		 * IBS enable sequence:
++		 *   CTL[En] =3D 1;
++		 *   CTL2[Dis] =3D 0;
++		 *
++		 * IBS disable sequence:
++		 *   CTL2[Dis] =3D 1;
++		 *
++		 * Set CTL2[Dis] when CPU comes up. This is needed to make
++		 * enable sequence effective.
++		 */
++		wrmsrq(MSR_AMD64_IBSFETCHCTL2, IBS_FETCH_2_DIS);
++		wrmsrq(MSR_AMD64_IBSOPCTL2, IBS_OP_2_DIS);
++	}
++
+ 	return 0;
+ }
+=20
 
