@@ -1,81 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-8329-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8332-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMFXIAURo2kf9gQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8329-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 17:00:05 +0100
+	id 8MEhNhYRo2kf9gQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8332-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 17:00:22 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B8B1C4318
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 17:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CCA1C4326
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 17:00:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 064E03070DCB
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 15:40:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CCD7B30DAD32
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 15:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89840481A9E;
-	Sat, 28 Feb 2026 15:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A2481ABF;
+	Sat, 28 Feb 2026 15:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bENjfcTc";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zy0NMiZV"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1lzHdVM0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vEGAqDGF"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F096248123C;
-	Sat, 28 Feb 2026 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0B3481252;
+	Sat, 28 Feb 2026 15:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772293028; cv=none; b=DbNAM3Gst4OGY04EHeoWpxvCtKvyf6z4tNTgaAAfEk6tnXUXqPtvwjlPzYdlRFzzKovem0iZuzKarcBR1xtn2rXwjd14fmHvRvKI0bcvbQ1I3QjI/K8COHn7voNE3pIHrevxVDN6STy80btO1sM1ZIm7K83DqIlxcaOMgJUiBo8=
+	t=1772293029; cv=none; b=mmoLTk19oEI5VeFvWFYUlbTstbcj26Df/ZEhDKOhrU+681nzbG2aOyzq4J7J0LZ8YtUHARV3dWFw/7xbGsM/Bt/BwYj0/ZRQsmvzkHMe1wCAA1k5mmzap+L+Six+UiIxmu46mHoXQW1HTbCHo/YGIAiRZUfm4d30Wm9QnKMID28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772293028; c=relaxed/simple;
-	bh=dyo7Ictp9aQ4U/6VnBPw8rqs71KsLGbG/iV5WBpScp8=;
+	s=arc-20240116; t=1772293029; c=relaxed/simple;
+	bh=zls7RdYOLeL2asUk1KXw/BMe5qRDdSDWPWWEwWHSHIk=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VA54v+1d96scfuGZOtd8SPPr6o+2libLjGn0Up0eZTQ4WmsK/960L1utxMezYuASZTAZIAAMDIq9BanqmKImNOynKpS+g4j/FLtvWXL+pK0wofnlJNiN16ijmMcCu9/ImAS6iEaf/KwkJcLPFPSLt0Tog+hcRs/3DUTGr4pQXGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bENjfcTc; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zy0NMiZV; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=XutcyaeRi/09gsjYf20qthLiWj2uCeIwRQ+iZw30u7ZSmq9hrnnoSUJo6J+WV2YZolJTdC/zhrpewDTz0mkoTMdSGPdbtcavL5LpTWOXRvVec664Kzwdjtk2M5YI9UZMBgIT3L7doAb9grYB0KSfadtJo57Cu538Rp67YcycyBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1lzHdVM0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vEGAqDGF; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Feb 2026 15:36:59 -0000
+Date: Sat, 28 Feb 2026 15:37:00 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772293020;
+	s=2020; t=1772293021;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MpDD/+/RKkvKsUrszxgFtHqYfBvEjeGG2w4/znaSDOM=;
-	b=bENjfcTcVtiPfCqXqqBk3t5V4xsGN4zQnw54eI3BytEQwB9Bln8SCe9KZKWCLjJVbFeBz0
-	f/ywRKxV3JC+u0s2WVs3+SbTQEKCRCRNN5tF4p9MIpe3K1bQbBflCASzAEmxUfNK0MxoRo
-	TIqyn0d98Qf9D4mwKIYa42BJ0HmPqw4Hnj7Mjp0V+BP983cv02YP5y7yaX1qNmp+y2RXWz
-	YHtZqOS1TpK3BoGyMuj9tyv6tDC6SjEzLxfqSRf3O9mYqWkCcXQqq5MLfpLPXcWXobAjf0
-	u2jTc4JAFi9D+i3OlFyeaTa7zsF0aa6tT+h+ZozswBHLEHMutfmutU6V4eSPuw==
+	bh=wb89KAHbcVceWUZFY/+J3Jj4XpTrOZLu8cYxhARHNb0=;
+	b=1lzHdVM0W47QoJ3+TIHdN0fLBaR7WoPcL7IE8Oxic7IlP0oDJAWgHq/EkSrsNeCQtZtEUs
+	QdqLi88KKD7p8eqEBPQ/qa5aM3+VaJO+C2h7J2ssJzqMIbeIE/15GXADq96el1Q1HDt35t
+	UJGAHRIrtBZD6qo/lMW+vkZfWd1EMHsh6jT3j2GpQ+kHwY+v2UUjCLBfxyEL2rEFcFuJPH
+	zorOrUoNbYmms0jvRz5f35cBWyIEFThFLgnP2Oh46MkKrnTyP453MEB0wRDmwBsz9BFh0J
+	9QVM9HAAcI6GmOBiDQJdonUVdpjeWngNg937CEtrIl4L0vzuEhKuTDlSvxFQcQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772293020;
+	s=2020e; t=1772293021;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MpDD/+/RKkvKsUrszxgFtHqYfBvEjeGG2w4/znaSDOM=;
-	b=zy0NMiZVhO2otnwZvgmm0BY/TvTRyQa1jjiFx3uvRk0x7BVqoBZ4HeAOQwyavs8QNCiB3H
-	6UL2WnBGNl9SzYAQ==
-From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
+	bh=wb89KAHbcVceWUZFY/+J3Jj4XpTrOZLu8cYxhARHNb0=;
+	b=vEGAqDGFsInoiycysnB2N9UbCRzEgc5/B9IU8KbQA5xtspS8lVDHcZIXmP3nvhTER3qpto
+	R2aSTfJYcJSBc4Ag==
+From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/hrtick] hrtimer: Avoid pointless reprogramming in
- __hrtimer_start_range_ns()
-Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
- Thomas Gleixner <tglx@kernel.org>, Juri Lelli <juri.lelli@redhat.com>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260224163429.069535561@kernel.org>
-References: <20260224163429.069535561@kernel.org>
+Subject: [tip: sched/hrtick] sched: Avoid ktime_get() indirection
+Cc: Thomas Gleixner <tglx@kernel.org>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260224163429.001511662@kernel.org>
+References: <20260224163429.001511662@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177229301912.1647592.5477764775060482953.tip-bot2@tip-bot2>
+Message-ID: <177229302015.1647592.15855095407485608814.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -93,7 +92,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8329-lists,linux-tip-commits=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-8332-lists,linux-tip-commits=lfdr.de];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,infradead.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,vger.kernel.org:replyto,msgid.link:url];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -102,7 +101,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -112,52 +111,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: C8B8B1C4318
+X-Rspamd-Queue-Id: 06CCA1C4326
 X-Rspamd-Action: no action
 
 The following commit has been merged into the sched/hrtick branch of tip:
 
-Commit-ID:     d19ff16c11db38f3ee179d72751fb9b340174330
-Gitweb:        https://git.kernel.org/tip/d19ff16c11db38f3ee179d72751fb9b3401=
-74330
-Author:        Peter Zijlstra <peterz@infradead.org>
-AuthorDate:    Tue, 24 Feb 2026 17:35:37 +01:00
+Commit-ID:     d70c1080a957a5144e6c40e95bcbe04ab542fe05
+Gitweb:        https://git.kernel.org/tip/d70c1080a957a5144e6c40e95bcbe04ab54=
+2fe05
+Author:        Thomas Gleixner <tglx@kernel.org>
+AuthorDate:    Tue, 24 Feb 2026 17:35:32 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 27 Feb 2026 16:40:04 +01:00
 
-hrtimer: Avoid pointless reprogramming in __hrtimer_start_range_ns()
+sched: Avoid ktime_get() indirection
 
-Much like hrtimer_reprogram(), skip programming if the cpu_base is running
-the hrtimer interrupt.
+The clock of the hrtick and deadline timers is known to be CLOCK_MONOTONIC.
+No point in looking it up via hrtimer_cb_get_time().
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Just use ktime_get() directly.
+
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260224163429.069535561@kernel.org
+Link: https://patch.msgid.link/20260224163429.001511662@kernel.org
 ---
- kernel/time/hrtimer.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/sched/core.c     | 3 +--
+ kernel/sched/deadline.c | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 860af7a..3088db4 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1269,6 +1269,14 @@ static int __hrtimer_start_range_ns(struct hrtimer *ti=
-mer, ktime_t tim,
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 7597776..a716cc6 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -925,7 +925,6 @@ static void __hrtick_start(void *arg)
+  */
+ void hrtick_start(struct rq *rq, u64 delay)
+ {
+-	struct hrtimer *timer =3D &rq->hrtick_timer;
+ 	s64 delta;
+=20
+ 	/*
+@@ -933,7 +932,7 @@ void hrtick_start(struct rq *rq, u64 delay)
+ 	 * doesn't make sense and can cause timer DoS.
+ 	 */
+ 	delta =3D max_t(s64, delay, 10000LL);
+-	rq->hrtick_time =3D ktime_add_ns(hrtimer_cb_get_time(timer), delta);
++	rq->hrtick_time =3D ktime_add_ns(ktime_get(), delta);
+=20
+ 	if (rq =3D=3D this_rq())
+ 		__hrtick_restart(rq);
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index d08b004..9d619a4 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1097,7 +1097,7 @@ static int start_dl_timer(struct sched_dl_entity *dl_se)
+ 		act =3D ns_to_ktime(dl_next_period(dl_se));
  	}
 =20
- 	first =3D enqueue_hrtimer(timer, new_base, mode);
-+
-+	/*
-+	 * If the hrtimer interrupt is running, then it will reevaluate the
-+	 * clock bases and reprogram the clock event device.
-+	 */
-+	if (new_base->cpu_base->in_hrtirq)
-+		return false;
-+
- 	if (!force_local) {
- 		/*
- 		 * If the current CPU base is online, then the timer is
+-	now =3D hrtimer_cb_get_time(timer);
++	now =3D ktime_get();
+ 	delta =3D ktime_to_ns(now) - rq_clock(rq);
+ 	act =3D ktime_add_ns(act, delta);
+=20
 
