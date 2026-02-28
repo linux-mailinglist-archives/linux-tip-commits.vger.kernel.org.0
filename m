@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-8279-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8280-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGZcEGDKomnz5QQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8279-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:58:40 +0100
+	id 8I5MEerKomnz5QQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8280-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:00:58 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87681C2616
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:58:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C76551C26A0
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B074A30371B9
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 10:57:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD0793085A59
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 10:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F9B43D4E5;
-	Sat, 28 Feb 2026 10:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 756A542E004;
+	Sat, 28 Feb 2026 10:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ivXllBkt";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oyIFzC3X"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dGb+67uK";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CsjZwOTA"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B290643CEDD;
-	Sat, 28 Feb 2026 10:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1AF43D4F1;
+	Sat, 28 Feb 2026 10:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772276211; cv=none; b=vAzPa4BFie3+2CxuLtWnAtKGpJj4s1I3JYIv4WszhvcGH8yCgWWTy985QWO7XY0XRFCb/S4RVtVUdc7Eqm06qAOJrXNG7DxSqXfaYCrDtfR6BBLi/gwM5cgg9S+bF1o0tYJLjdEVHpUSt6kkzOUPnZV/B//do7pmKMK/t2tVaSM=
+	t=1772276216; cv=none; b=F5Wj3KUhhBlzDCsayi3VL+nZYNjD8hjUfi08wxnm4YLRxdUOg7jreScXHji7RSGcBEwQYBlbnovOQafjYyuC2bbaHkQxOBW9pthQWZZLhNZ0be7Z8ZIpB0L7gXY2CWhoQRbF5Yp2iNsDjFTlpxl115JkYi1oP86XSYsfn0GrDW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772276211; c=relaxed/simple;
-	bh=J2bK3NI+/EJ1hKabXhgvW73K41p9idZYxNHa+tTpIwk=;
+	s=arc-20240116; t=1772276216; c=relaxed/simple;
+	bh=5WK8N/q/QQl/Y0nKO2ByYDrPl9mJ7Nj0cV9fcl4N0Y8=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=nbciVkjtiBb3DRebG1oeQF4mI/9o8JJTp6hWSwJpJ3z0HdouBdN4zKsLyk+qP6aVE6TkzoAJeiWPpNeS+zaawaqd15W+UZ//oRgSDbUrM3ggS+f07h5DsrsTp+7FZZkisLzCJJAf6j/8zyYgGZWprW5dALsf54eFuGMWg7aElOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ivXllBkt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oyIFzC3X; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=KjiZIcr3Sb/Cayl81p2wgFrydElsF3K3u4eo5UYcqsOcdCyWzVBK5ScqFUB8eGB97zf9Y/sHIvEkxQEP2dNwBQlFvdzgKOJLYdY2vaTjd68Mp6x3YJA6h9icamvceohZR7cIzxcwAIe5Yp9Qsvv8J9aQMtCHt37sUMIB7k6MusQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dGb+67uK; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CsjZwOTA; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Feb 2026 10:56:48 -0000
+Date: Sat, 28 Feb 2026 10:56:49 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772276209;
+	s=2020; t=1772276210;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3ziPHWkxEacC3eI1p7yUm3ecTg8ey2n2a+q3NyFiZ1o=;
-	b=ivXllBktRDy65LQUKlkcD6axhq1r7etG4EVhLGLVvUqGbqwHdAAzaEBj0TlMrb4IadnNwI
-	6IYpn3MB3Bu8uf9iZWtfeqt5ttta55u8tlfZxstqeybTwSsBo57uFMD8uFRFSkfzdMxuvs
-	PVNGW0H7jfNgv8JeEoBejNNR6Sah3lOhrKsU0EFyXcWfqnCaK66ftbJgnZ+hPiRK/R3R1u
-	cDWt8pcJZsurns6RUQmV8xvfbfd2GVwHU2+CA/B4K11s2BdFbgBfxhm9o6BKSFC+TvGNlF
-	dKWyY3v47fgY5Kgft56ZGZrxPMhy5VLLGo3onsakD2k8AqVIQOM/0X80W6uP6Q==
+	bh=bgrhWZcQUmj9nOhiwe+OaVSlCNAGn1IWJJdmxw/nVyg=;
+	b=dGb+67uKtAY/wi41Hr35KaIUCpyToY1QzFb/QImX0eMj2/V3gCwyeyIkY8k8uvHIKj1ewu
+	jNGLzfmZJbITQ160lhCVs5mrpx3/uBlNgIBe53eLlP0+HSKbbKtgIhZ+fOYQSkrnOLilWy
+	5aeDBVBrEE65hyKKgrSiR3UiZsiW4XShGfYOGFEhGDn4cnA4h9Y45R63eUDd1uQaEV0emQ
+	dcbgPexfe+kMl+wD9jTr6EVt34IWbJJ2tylZbpbJnA2oQzLQotZQ8fv7tcUKs1p5BGa947
+	sfLOj5xsSwhYY1HRyezybzXoObBn5Y6UjwAwh22fKAN0n+QMmyQ5aOsMJ5Dh3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772276209;
+	s=2020e; t=1772276210;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3ziPHWkxEacC3eI1p7yUm3ecTg8ey2n2a+q3NyFiZ1o=;
-	b=oyIFzC3XzNaDmDbKGMd5kyWfmqUC+YNN25NU7cA0g5uK9tE4XVlRw2h40v157wSwo/rtN+
-	s2MrNgXIkud2nRBQ==
+	bh=bgrhWZcQUmj9nOhiwe+OaVSlCNAGn1IWJJdmxw/nVyg=;
+	b=CsjZwOTAJ0BIwNymw+e6fLQjrrvoie+5Yb0iF+9TYCbTEHNRdNgFYljcP6qSSLtnDaXUlB
+	BAkGWeRiDeMz5+Aw==
 From: "tip-bot2 for Namhyung Kim" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/core: Try to allocate task_ctx_data quickly
+Subject: [tip: perf/core] perf/core: Pass GFP flags to attach_task_ctx_data()
 Cc: Namhyung Kim <namhyung@kernel.org>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260211223222.3119790-3-namhyung@kernel.org>
-References: <20260211223222.3119790-3-namhyung@kernel.org>
+In-Reply-To: <20260211223222.3119790-2-namhyung@kernel.org>
+References: <20260211223222.3119790-2-namhyung@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177227620828.1647592.5545880097120712984.tip-bot2@tip-bot2>
+Message-ID: <177227620940.1647592.8976791210708047470.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8279-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linutronix.de:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,vger.kernel.org:replyto];
+	TAGGED_FROM(0.00)[bounces-8280-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linutronix.de:dkim,msgid.link:url,vger.kernel.org:replyto];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -107,55 +107,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: D87681C2616
+X-Rspamd-Queue-Id: C76551C26A0
 X-Rspamd-Action: no action
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     bec2ee2390c95ed0c44494340464e69e79802e4a
-Gitweb:        https://git.kernel.org/tip/bec2ee2390c95ed0c44494340464e69e798=
-02e4a
+Commit-ID:     28c75fbfec8f024db1278194918e5f6eda4c570f
+Gitweb:        https://git.kernel.org/tip/28c75fbfec8f024db1278194918e5f6eda4=
+c570f
 Author:        Namhyung Kim <namhyung@kernel.org>
-AuthorDate:    Wed, 11 Feb 2026 14:32:20 -08:00
+AuthorDate:    Wed, 11 Feb 2026 14:32:19 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 27 Feb 2026 16:40:21 +01:00
 
-perf/core: Try to allocate task_ctx_data quickly
+perf/core: Pass GFP flags to attach_task_ctx_data()
 
-The attach_global_ctx_data() has O(N^2) algorithm to allocate the
-context data for each thread.  This caused perfomance problems on large
-systems with O(100k) threads.
-
-Because kmalloc(GFP_KERNEL) can go sleep it cannot be called under the
-RCU lock.  So let's try with GFP_NOWAIT first so that it can proceed in
-normal cases.
+This is a preparation for the next change to reduce the computational
+complexity in the global context data handling for LBR callstacks.
 
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260211223222.3119790-3-namhyung@kernel.org
+Link: https://patch.msgid.link/20260211223222.3119790-2-namhyung@kernel.org
 ---
- kernel/events/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/events/core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 90b0c93..d357714 100644
+index ac70d68..90b0c93 100644
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -5489,6 +5489,12 @@ again:
- 					cd =3D NULL;
- 			}
- 			if (!cd) {
-+				/*
-+				 * Try to allocate context quickly before
-+				 * traversing the whole thread list again.
-+				 */
-+				if (!attach_task_ctx_data(p, ctx_cache, true, GFP_NOWAIT))
-+					continue;
- 				get_task_struct(p);
- 				goto alloc;
- 			}
+@@ -5370,15 +5370,15 @@ static void unaccount_freq_event(void)
+=20
+=20
+ static struct perf_ctx_data *
+-alloc_perf_ctx_data(struct kmem_cache *ctx_cache, bool global)
++alloc_perf_ctx_data(struct kmem_cache *ctx_cache, bool global, gfp_t gfp_fla=
+gs)
+ {
+ 	struct perf_ctx_data *cd;
+=20
+-	cd =3D kzalloc_obj(*cd);
++	cd =3D kzalloc_obj(*cd, gfp_flags);
+ 	if (!cd)
+ 		return NULL;
+=20
+-	cd->data =3D kmem_cache_zalloc(ctx_cache, GFP_KERNEL);
++	cd->data =3D kmem_cache_zalloc(ctx_cache, gfp_flags);
+ 	if (!cd->data) {
+ 		kfree(cd);
+ 		return NULL;
+@@ -5412,11 +5412,11 @@ static inline void perf_free_ctx_data_rcu(struct perf=
+_ctx_data *cd)
+=20
+ static int
+ attach_task_ctx_data(struct task_struct *task, struct kmem_cache *ctx_cache,
+-		     bool global)
++		     bool global, gfp_t gfp_flags)
+ {
+ 	struct perf_ctx_data *cd, *old =3D NULL;
+=20
+-	cd =3D alloc_perf_ctx_data(ctx_cache, global);
++	cd =3D alloc_perf_ctx_data(ctx_cache, global, gfp_flags);
+ 	if (!cd)
+ 		return -ENOMEM;
+=20
+@@ -5499,7 +5499,7 @@ again:
+=20
+ 	return 0;
+ alloc:
+-	ret =3D attach_task_ctx_data(p, ctx_cache, true);
++	ret =3D attach_task_ctx_data(p, ctx_cache, true, GFP_KERNEL);
+ 	put_task_struct(p);
+ 	if (ret) {
+ 		__detach_global_ctx_data();
+@@ -5519,7 +5519,7 @@ attach_perf_ctx_data(struct perf_event *event)
+ 		return -ENOMEM;
+=20
+ 	if (task)
+-		return attach_task_ctx_data(task, ctx_cache, false);
++		return attach_task_ctx_data(task, ctx_cache, false, GFP_KERNEL);
+=20
+ 	ret =3D attach_global_ctx_data(ctx_cache);
+ 	if (ret)
+@@ -9240,7 +9240,7 @@ perf_event_alloc_task_data(struct task_struct *child,
+=20
+ 	return;
+ attach:
+-	attach_task_ctx_data(child, ctx_cache, true);
++	attach_task_ctx_data(child, ctx_cache, true, GFP_KERNEL);
+ }
+=20
+ void perf_event_fork(struct task_struct *task)
 
