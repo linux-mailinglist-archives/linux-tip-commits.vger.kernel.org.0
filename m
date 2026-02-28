@@ -1,80 +1,80 @@
-Return-Path: <linux-tip-commits+bounces-8283-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8284-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCvcAIPMomkj5gQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8283-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:07:47 +0100
+	id qE/RMaTMomkj5gQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8284-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:08:20 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9782B1C2740
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:07:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634AF1C276C
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:08:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DFBC93011171
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:07:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2069301874F
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22668428824;
-	Sat, 28 Feb 2026 11:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E8942E001;
+	Sat, 28 Feb 2026 11:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="m5Zuziqe";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yJ6Hv1xO"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ay7SLHDX";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6oadgMWY"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71B72848AD;
-	Sat, 28 Feb 2026 11:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14274218B9;
+	Sat, 28 Feb 2026 11:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772276864; cv=none; b=enAk/WRikG2bVtY/NWsldteqcvCLsRqwHQqEbcvXGh+6JM5P/FpP2vYccRaSMGaO5VFbhAsrSNZq8Kuj0YLozk2ePXrzZzzqeOqqBwIMJq5BfTSrv3lSZahQhQLwy8QS4vswMJbUeVblRB8sszluPiGW3GAkfvT1SVKdGPhI/i4=
+	t=1772276865; cv=none; b=nnlx9sek8dndgaWOyjxX/pn9Sc/RJcUBv1v0akUZXKDgXiJ8GGJon24+VuxTdNwmcAwhi1waFqLWHkUvvZKPQeWynhZT7WAOwBZJ6bB6c1dFrq3nzjN4MbdyThGh7PEhrLVWFtNBSORKmeuJWmlbHUrn+gqYQMYhZfEkzT7N27s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772276864; c=relaxed/simple;
-	bh=ujnR22b+PBbdlgiKBwqH6pO9vrCEMJq8iAZYJ7dm+fQ=;
+	s=arc-20240116; t=1772276865; c=relaxed/simple;
+	bh=5kqyJW0iHdkqPePhVDvT7LS/Z7dYDYsI28brYxU8Vb4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JYPPChHf0tgB4OqT+r7tLLCBrJdH112BOzoQvskASX1CNIwS5Q6JVKdiQY9hgnlLi9L1TbLLRJ2PKgEo0lqYaq8K3HU8Im3TwWOfJU43EF1iRVfdjt6SToIyBSKO+byZw8giWfJ2ba5x6zo3Uiw8ZqfGgcoxDhNIn8qmWamP/Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=m5Zuziqe; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yJ6Hv1xO; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=JlzeFZP0enVt6siipPa3HTF6cPaFgWmBVMRhuq0+v9aXh/7RzWpogKwiS75qNG7o2b3FBFIczGAiWxIKA3rvzjMAC1XhiF4iMGoCe3y8Q5zofPYx6QIT9LvFeTuyiJZM/7MZ6Hg0EQAA3/xAjsIqFgARrQ8Mi+LmpyEVY9u8qIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ay7SLHDX; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6oadgMWY; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Feb 2026 11:07:39 -0000
+Date: Sat, 28 Feb 2026 11:07:41 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772276861;
+	s=2020; t=1772276862;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HYdtpdXMr4PNOv9zcF6+as8sVE4OKl/4YrxElhVueic=;
-	b=m5ZuziqekLMXECvhOQSsM7MWoevKOXI7lw92RkHY7sJ92zxq+NV4QC1kMkKneqKfUmEn3y
-	/zpDwIM0JSu+cYZ0zSElsSN8/TZW1hGb4c/5F6a+3ujRP8/P/mcUcqHrzp9zxHDgk0M5kt
-	GdyaHJRhxTOYoH5nZ2baRNQevgNRT1BiZ2xTWvSBBJ95rri8xdQ8/UxcIYj5NETIUkTFzB
-	SRo1GKDmJ+GT2sl8F0hpBNs/K54NgqvhPILhZsipEavqJ0C/8hYI1FjvpYbQaza+pSMUCs
-	/bVavYrjj34mvhT5KRfbScAbKGqbG9u9ucrzMEBLCL4/GBoSTcv1B80oNk96Gw==
+	bh=7DzVXuaag7XbpHcaYnZl8R0MTa3Tmx4LdCnfpjobWN8=;
+	b=ay7SLHDXMEhBtXyvkvOy6ngIH42MnqG0h5WBvCMHhiuNXf3IpTA3ODWIczcfZuwi3ENQ+l
+	zh4vEbHGOCjSVE2w1OjFbNyZpN74P6qL2hICx6bldzmIriidXlOl0T+JZx2CPPbgW1tYTt
+	+F9aIjggHD30qIRPmnpU4iBhr9Vwh6EZQ/wNde2IzNJYLcJfP8Tao4tuKhudPKqyFP6dMg
+	Rk3E57KvufWSfpydMHE/p77qYCZKKFBOohzWZY84ycujp2Thwf7ZgAyY/xaGzSf/iiAO4/
+	QxCTaRxLC0ymVTabeg04PE/p3luKod3yvp5SP0LP6FyFhWXMre/w5saUq2XEyw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772276861;
+	s=2020e; t=1772276862;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HYdtpdXMr4PNOv9zcF6+as8sVE4OKl/4YrxElhVueic=;
-	b=yJ6Hv1xOqfDJTvMa9XLi/dJEWrwEd62TyCm9t8n1VOo7CSUJ02Biy62gbN4ReleInCn5tv
-	l7OaHyu7zlhEZsCg==
+	bh=7DzVXuaag7XbpHcaYnZl8R0MTa3Tmx4LdCnfpjobWN8=;
+	b=6oadgMWYTfSxxlzyoSAyTXQ/xi0VxMfs1f4OdmvSyiZM6BiBQeA1Xkg/Zqc9iLYwCLNRhU
+	A8y8y/kTQhWCLQAg==
 From: "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/ibs: Enable streaming store filter
+Subject: [tip: perf/core] perf/amd/ibs: Enable RIP bit63 hardware filtering
 Cc: Ravi Bangoria <ravi.bangoria@amd.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260216042530.1546-7-ravi.bangoria@amd.com>
-References: <20260216042530.1546-7-ravi.bangoria@amd.com>
+In-Reply-To: <20260216042530.1546-6-ravi.bangoria@amd.com>
+References: <20260216042530.1546-6-ravi.bangoria@amd.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177227685991.1647592.16249172934678072524.tip-bot2@tip-bot2>
+Message-ID: <177227686107.1647592.167745224835476935.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,13 +87,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8283-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,vger.kernel.org:replyto,msgid.link:url,linutronix.de:dkim];
+	TAGGED_FROM(0.00)[bounces-8284-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:dkim,amd.com:email,vger.kernel.org:replyto,msgid.link:url,infradead.org:email];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -107,187 +107,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 9782B1C2740
+X-Rspamd-Queue-Id: 634AF1C276C
 X-Rspamd-Action: no action
 
 The following commit has been merged into the perf/core branch of tip:
 
-Commit-ID:     8ae68bfec97596a3656ce8d0a7b1240d888eab10
-Gitweb:        https://git.kernel.org/tip/8ae68bfec97596a3656ce8d0a7b1240d888=
-eab10
+Commit-ID:     8c63c4af92ac5f041ce437c1f2a31ce3ef03c585
+Gitweb:        https://git.kernel.org/tip/8c63c4af92ac5f041ce437c1f2a31ce3ef0=
+3c585
 Author:        Ravi Bangoria <ravi.bangoria@amd.com>
-AuthorDate:    Mon, 16 Feb 2026 04:25:29=20
+AuthorDate:    Mon, 16 Feb 2026 04:25:28=20
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Sat, 28 Feb 2026 12:03:29 +01:00
 
-perf/amd/ibs: Enable streaming store filter
+perf/amd/ibs: Enable RIP bit63 hardware filtering
 
-IBS OP on future hardware supports recording samples only for instructions
-that does streaming store. Like the existing IBS filters, samples pointing
-to instruction which does not cause streaming store are discarded and IBS
-restarts internally.
+IBS on future hardware adds the ability to filter IBS events by examining
+RIP bit 63. Because Linux kernel addresses always have bit 63 set while
+user-space addresses never do, this capability can be used as a privilege
+filter.
 
-Example:
+So far, IBS supports privilege filtering in software (swfilt=3D1), where
+samples are dropped in the NMI handler. The RIP bit63 hardware filter
+enables IBS to be usable by unprivileged users without passing swfilt
+flag. So, swfilt flag will silently be ignored when the hardware
+filtering capability is present.
 
-  $ perf record -e ibs_op/strmst=3D1/ -- <workload>
+Example (non-root user):
+  $ perf record -e ibs_op//u -- <workload>
 
 Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260216042530.1546-7-ravi.bangoria@amd.com
+Link: https://patch.msgid.link/20260216042530.1546-6-ravi.bangoria@amd.com
 ---
- arch/x86/events/amd/ibs.c      | 51 +++++++++++++++++++++++++++++++++-
- arch/x86/include/asm/amd/ibs.h |  3 +-
- 2 files changed, 53 insertions(+), 1 deletion(-)
+ arch/x86/events/amd/ibs.c | 46 +++++++++++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 8 deletions(-)
 
 diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 13ecc8d..0a8313e 100644
+index cb3ae4e..13ecc8d 100644
 --- a/arch/x86/events/amd/ibs.c
 +++ b/arch/x86/events/amd/ibs.c
-@@ -34,6 +34,8 @@ static u32 ibs_caps;
+@@ -321,11 +321,6 @@ static int perf_ibs_init(struct perf_event *event)
+ 	    event->attr.exclude_idle)
+ 		return -EINVAL;
 =20
- /* attr.config1 */
- #define IBS_OP_CONFIG1_LDLAT_MASK		(0xFFFULL <<  0)
-+#define IBS_OP_CONFIG1_STRMST_MASK		    (1ULL << 12)
-+#define IBS_OP_CONFIG1_STRMST_SHIFT			    (12)
-=20
- #define IBS_FETCH_CONFIG1_FETCHLAT_MASK		(0x7FFULL <<  0)
-=20
-@@ -292,6 +294,14 @@ static bool perf_ibs_fetch_lat_event(struct perf_ibs *pe=
-rf_ibs,
- 	       (event->attr.config1 & IBS_FETCH_CONFIG1_FETCHLAT_MASK);
- }
-=20
-+static bool perf_ibs_strmst_event(struct perf_ibs *perf_ibs,
-+				  struct perf_event *event)
-+{
-+	return perf_ibs =3D=3D &perf_ibs_op &&
-+	       (ibs_caps & IBS_CAPS_STRMST_RMTSOCKET) &&
-+	       (event->attr.config1 & IBS_OP_CONFIG1_STRMST_MASK);
-+}
-+
- static int perf_ibs_init(struct perf_event *event)
- {
- 	struct hw_perf_event *hwc =3D &event->hw;
-@@ -419,6 +429,15 @@ static int perf_ibs_init(struct perf_event *event)
- 		hwc->extra_reg.config |=3D fetchlat << IBS_FETCH_2_FETCHLAT_FILTER_SHIFT;
+-	if (!(event->attr.config2 & IBS_SW_FILTER_MASK) &&
+-	    (event->attr.exclude_kernel || event->attr.exclude_user ||
+-	     event->attr.exclude_hv))
+-		return -EINVAL;
+-
+ 	ret =3D validate_group(event);
+ 	if (ret)
+ 		return ret;
+@@ -338,6 +333,32 @@ static int perf_ibs_init(struct perf_event *event)
+ 		hwc->extra_reg.reg =3D perf_ibs->msr2;
  	}
 =20
-+	if (perf_ibs_strmst_event(perf_ibs, event)) {
-+		u64 strmst =3D event->attr.config1 & IBS_OP_CONFIG1_STRMST_MASK;
-+
-+		strmst >>=3D IBS_OP_CONFIG1_STRMST_SHIFT;
-+
-+		hwc->extra_reg.reg =3D perf_ibs->msr2;
-+		hwc->extra_reg.config |=3D strmst << IBS_OP_2_STRM_ST_FILTER_SHIFT;
++	if (ibs_caps & IBS_CAPS_BIT63_FILTER) {
++		if (perf_ibs =3D=3D &perf_ibs_fetch) {
++			if (event->attr.exclude_kernel) {
++				hwc->extra_reg.config |=3D IBS_FETCH_2_EXCL_RIP_63_EQ_1;
++				hwc->extra_reg.reg =3D perf_ibs->msr2;
++			}
++			if (event->attr.exclude_user) {
++				hwc->extra_reg.config |=3D IBS_FETCH_2_EXCL_RIP_63_EQ_0;
++				hwc->extra_reg.reg =3D perf_ibs->msr2;
++			}
++		} else {
++			if (event->attr.exclude_kernel) {
++				hwc->extra_reg.config |=3D IBS_OP_2_EXCL_RIP_63_EQ_1;
++				hwc->extra_reg.reg =3D perf_ibs->msr2;
++			}
++			if (event->attr.exclude_user) {
++				hwc->extra_reg.config |=3D IBS_OP_2_EXCL_RIP_63_EQ_0;
++				hwc->extra_reg.reg =3D perf_ibs->msr2;
++			}
++		}
++	} else if (!(event->attr.config2 & IBS_SW_FILTER_MASK) &&
++		   (event->attr.exclude_kernel || event->attr.exclude_user ||
++		    event->attr.exclude_hv)) {
++		return -EINVAL;
 +	}
 +
- 	/*
- 	 * If we modify hwc->sample_period, we also need to update
- 	 * hwc->last_period and hwc->period_left.
-@@ -709,6 +728,8 @@ PMU_EVENT_ATTR_STRING(ldlat, ibs_op_ldlat_cap, "1");
- PMU_EVENT_ATTR_STRING(dtlb_pgsize, ibs_op_dtlb_pgsize_cap, "1");
- PMU_EVENT_ATTR_STRING(fetchlat, ibs_fetch_lat_format, "config1:0-10");
- PMU_EVENT_ATTR_STRING(fetchlat, ibs_fetch_lat_cap, "1");
-+PMU_EVENT_ATTR_STRING(strmst, ibs_op_strmst_format, "config1:12");
-+PMU_EVENT_ATTR_STRING(strmst, ibs_op_strmst_cap, "1");
-=20
- static umode_t
- zen4_ibs_extensions_is_visible(struct kobject *kobj, struct attribute *attr,=
- int i)
-@@ -723,6 +744,12 @@ ibs_fetch_lat_is_visible(struct kobject *kobj, struct at=
-tribute *attr, int i)
+ 	if (hwc->sample_period) {
+ 		if (config & perf_ibs->cnt_mask)
+ 			/* raw max_cnt may not be set */
+@@ -1280,7 +1301,7 @@ static bool perf_ibs_is_kernel_br_target(struct perf_ev=
+ent *event,
+ 			op_data.op_brn_ret && kernel_ip(br_target));
  }
 =20
- static umode_t
-+ibs_op_strmst_is_visible(struct kobject *kobj, struct attribute *attr, int i)
-+{
-+	return ibs_caps & IBS_CAPS_STRMST_RMTSOCKET ? attr->mode : 0;
-+}
-+
-+static umode_t
- ibs_op_ldlat_is_visible(struct kobject *kobj, struct attribute *attr, int i)
+-static bool perf_ibs_swfilt_discard(struct perf_ibs *perf_ibs, struct perf_e=
+vent *event,
++static bool perf_ibs_discard_sample(struct perf_ibs *perf_ibs, struct perf_e=
+vent *event,
+ 				    struct pt_regs *regs, struct perf_ibs_data *ibs_data,
+ 				    int br_target_idx)
  {
- 	return ibs_caps & IBS_CAPS_OPLDLAT ? attr->mode : 0;
-@@ -770,6 +797,11 @@ static struct attribute *ibs_op_dtlb_pgsize_cap_attrs[] =
-=3D {
- 	NULL,
- };
+@@ -1435,8 +1456,9 @@ fail:
+ 		regs.flags |=3D PERF_EFLAGS_EXACT;
+ 	}
 =20
-+static struct attribute *ibs_op_strmst_cap_attrs[] =3D {
-+	&ibs_op_strmst_cap.attr.attr,
-+	NULL,
-+};
+-	if ((event->attr.config2 & IBS_SW_FILTER_MASK) &&
+-	    perf_ibs_swfilt_discard(perf_ibs, event, &regs, &ibs_data, br_target_id=
+x)) {
++	if (((ibs_caps & IBS_CAPS_BIT63_FILTER) ||
++	     (event->attr.config2 & IBS_SW_FILTER_MASK)) &&
++	    perf_ibs_discard_sample(perf_ibs, event, &regs, &ibs_data, br_target_id=
+x)) {
+ 		throttle =3D perf_event_account_interrupt(event);
+ 		goto out;
+ 	}
+@@ -1899,6 +1921,14 @@ static __init int amd_ibs_init(void)
+=20
+ 	perf_ibs_pm_init();
+=20
++#ifdef CONFIG_X86_32
++	/*
++	 * IBS_CAPS_BIT63_FILTER is used for exclude_kernel/user filtering,
++	 * which obviously won't work for 32 bit kernel.
++	 */
++	caps &=3D ~IBS_CAPS_BIT63_FILTER;
++#endif
 +
- static struct attribute_group group_fetch_formats =3D {
- 	.name =3D "format",
- 	.attrs =3D fetch_attrs,
-@@ -811,6 +843,12 @@ static struct attribute_group group_ibs_op_dtlb_pgsize_c=
-ap =3D {
- 	.is_visible =3D ibs_op_dtlb_pgsize_is_visible,
- };
-=20
-+static struct attribute_group group_ibs_op_strmst_cap =3D {
-+	.name =3D "caps",
-+	.attrs =3D ibs_op_strmst_cap_attrs,
-+	.is_visible =3D ibs_op_strmst_is_visible,
-+};
-+
- static const struct attribute_group *fetch_attr_groups[] =3D {
- 	&group_fetch_formats,
- 	&empty_caps_group,
-@@ -856,6 +894,11 @@ static struct attribute *ibs_op_ldlat_format_attrs[] =3D=
- {
- 	NULL,
- };
-=20
-+static struct attribute *ibs_op_strmst_format_attrs[] =3D {
-+	&ibs_op_strmst_format.attr.attr,
-+	NULL,
-+};
-+
- static struct attribute_group group_cnt_ctl =3D {
- 	.name =3D "format",
- 	.attrs =3D cnt_ctl_attrs,
-@@ -880,6 +923,12 @@ static struct attribute_group group_ibs_op_ldlat_format =
-=3D {
- 	.is_visible =3D ibs_op_ldlat_is_visible,
- };
-=20
-+static struct attribute_group group_ibs_op_strmst_format =3D {
-+	.name =3D "format",
-+	.attrs =3D ibs_op_strmst_format_attrs,
-+	.is_visible =3D ibs_op_strmst_is_visible,
-+};
-+
- static const struct attribute_group *op_attr_update[] =3D {
- 	&group_cnt_ctl,
- 	&group_op_l3missonly,
-@@ -887,6 +936,8 @@ static const struct attribute_group *op_attr_update[] =3D=
- {
- 	&group_ibs_op_ldlat_cap,
- 	&group_ibs_op_ldlat_format,
- 	&group_ibs_op_dtlb_pgsize_cap,
-+	&group_ibs_op_strmst_cap,
-+	&group_ibs_op_strmst_format,
- 	NULL,
- };
-=20
-diff --git a/arch/x86/include/asm/amd/ibs.h b/arch/x86/include/asm/amd/ibs.h
-index fcc8a5a..020916e 100644
---- a/arch/x86/include/asm/amd/ibs.h
-+++ b/arch/x86/include/asm/amd/ibs.h
-@@ -99,7 +99,8 @@ union ibs_op_data2 {
- 			rmt_node:1,	/* 4: destination node */
- 			cache_hit_st:1,	/* 5: cache hit state */
- 			data_src_hi:2,	/* 6-7: data source high */
--			reserved1:56;	/* 8-63: reserved */
-+			strm_st:1,	/* 8: streaming store */
-+			reserved1:55;	/* 9-63: reserved */
- 	};
- };
-=20
+ 	ibs_caps =3D caps;
+ 	/* make ibs_caps visible to other cpus: */
+ 	smp_mb();
 
