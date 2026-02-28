@@ -1,81 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-8286-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8287-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMEWA9/Momkj5gQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8286-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:09:19 +0100
+	id CGaKIHMLo2nY9AQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8287-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 16:36:19 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCE81C27B7
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 12:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03521C3FD1
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 16:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE9E030A5E8B
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 11:07:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 534D330CC7B5
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 15:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD2042EEB4;
-	Sat, 28 Feb 2026 11:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E957847AF75;
+	Sat, 28 Feb 2026 15:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mwBa6WpT";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aIhGi6Co"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ut2wvG1s";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6LxU/9Yg"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF17A937;
-	Sat, 28 Feb 2026 11:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC79F32ED2E;
+	Sat, 28 Feb 2026 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772276867; cv=none; b=TyllvZORwdgDvRFzygMf9JC8kA5DXcPQb/8O4711tqjESMwUeO5du7paUbYaPM0s7ppCXRjsiNA/fWySclNBqYqKYp1JLtm6tQFxjk+TqRMzavZF+9suLMiKnJ8lO7J4jFIKVsMmGjknTZiwwZkuSxo0SSQKE3fF9Ia+/qBYSc8=
+	t=1772292976; cv=none; b=nuuFrpGwYtvOIWp/pvU8uiWYp89kQdtJ6DghMuNG/52Jfgjo9LlJHnAQWXntU7IpAYOFv+a+fB9e41cx/L2pRlCXFHJ4i6Gh536JvimbdxsXvOEaNhrWmKFrnDMRq+zyX5CUSpgNYSXRBu2pQ9bv6I6MsNAUJ3vaxCgqPsLLBz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772276867; c=relaxed/simple;
-	bh=AI7pCDtOxrvvzbpnsfLFkLML0DoiKvCrpkRoklveI2k=;
+	s=arc-20240116; t=1772292976; c=relaxed/simple;
+	bh=Gee+FCAqn67/flbWP2SeQWmEuKdL3wdVYy4WZixJZhU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=b2Lr+b6/+75KQoaxz4GIB14fAFqilybpgjB/94Sn4Sf4pUZyN2sPS/JUYKgaMlBEIz2D92YB0xEtxIPtTGqigXkOoa2rnTSJR/eIzBnjiITjPgbtojIgnDCAHhb8W9ysDJEbGhW/+biGVpv66bS1HfCNBCJwnAnQ7LiEMJ3lxtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mwBa6WpT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aIhGi6Co; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=cMSNr+/n+FKH7e/lsxCav8GtgPKRK1S5P+NvTZr4RFhu3SJUpGacbjse5/lI1/Rdu/915Czvwi+GW9fRQTVDn7Za3rQQEk3+lTZuUwljCTvG6e8KmSnkR1AG7Bq5jRl+IfIfpG1XJVh5HAuCTBzzeaa+p57mlSeJnRgBpGQQhu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ut2wvG1s; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6LxU/9Yg; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Feb 2026 11:07:43 -0000
+Date: Sat, 28 Feb 2026 15:36:11 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772276864;
+	s=2020; t=1772292973;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/Q/hNuYyKx6km5ULp81l7yvpj27zm34NIowSX5T9ZNw=;
-	b=mwBa6WpTd95s7dWJSjN1hYVXBIh/oedWTpG+VhcuWOe5R9FHam0rUG0F610GrLoNygmmKu
-	9h6Mmf61iah/KdSp/6ZTZzTZB2C8fA3hqGR+0tASKwV02AiWVOoiwWnSATvHgF/uzHTe8Z
-	+w39SBRRLk4Ld5WL21HIlwYvsNyFOcw/9iPbGWy4GibztCoVjtTJdBCyS7aQxdOt9t1kD+
-	R7mImGQxnuDtz48dG5qEVTMT82tIuEIbx7t5sw9K0l70mucP0YAav8suKraDIdzY/vtdl0
-	xjKD/nRxdKVpM1P/vPdBA9vJcyhzoOnVkYIepbFPTBXQobVD0UMbfrkWpS5yiA==
+	bh=oMa8PRMYo9qFPU5LKR35CpPA+sDcxIdl28As8q4EiOg=;
+	b=ut2wvG1shA3u2jZS+h5QiEPYzP9I3I50HbKf7sXC7GC6K8KgfM4C35/pAfa+3fFxVRpVGc
+	LBxY5v939S/38c3A5Lhon7fcHNNbhaB5RHZNcCQvz33k9Qs6M3DNIcwB4EZxyOeM/mGMjK
+	Mi2EsVQ/48IcInv6/2rIs1ytew9kr1u015LfY7i/U/7ijgVpfeLZdzk+5RrKBd4tATvlQ1
+	oLBH+RAYBaF5z46FUnHF3UbXxPSjQpmrHzM0hPNFIQSA5PssdibgwS6Ypzh97VJ4wB7VgA
+	MBGNa7rccdpClhi8JdBvsGqCKh96W4KF9K3VYPEf9Dhm8M8Eo+pbC/KGnVdHaA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772276864;
+	s=2020e; t=1772292973;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/Q/hNuYyKx6km5ULp81l7yvpj27zm34NIowSX5T9ZNw=;
-	b=aIhGi6ConoCcEl5KKvtDtK+NgqVqxSsIgc5wDMI3eykmdCJLHv5cJoTYh9IOcqccrgN+q+
-	cMlWzlfdBSnLh1DA==
-From: "tip-bot2 for Ravi Bangoria" <tip-bot2@linutronix.de>
+	bh=oMa8PRMYo9qFPU5LKR35CpPA+sDcxIdl28As8q4EiOg=;
+	b=6LxU/9YgJmSzZ5hazE8UyGVI3mLIL9aQ2HZ4aTIQfnisHxwO5ZJnWNq/4paJrxn3/iCAnn
+	VbiCdr3q32laaDDw==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf/amd/ibs: Support IBS_{FETCH|OP}_CTL2[Dis] to
- eliminate RMW race
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/hrtick] sched: Default enable HRTICK when deferred
+ rearming is enabled
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260216042530.1546-4-ravi.bangoria@amd.com>
-References: <20260216042530.1546-4-ravi.bangoria@amd.com>
+In-Reply-To: <20260224163431.937531564@kernel.org>
+References: <20260224163431.937531564@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177227686332.1647592.8336320541328996100.tip-bot2@tip-bot2>
+Message-ID: <177229297171.1647592.1629528576553596315.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -93,8 +93,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8286-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linutronix.de:dkim,infradead.org:email];
+	TAGGED_FROM(0.00)[bounces-8287-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email,linutronix.de:dkim];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -112,178 +112,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: 9FCE81C27B7
+X-Rspamd-Queue-Id: E03521C3FD1
 X-Rspamd-Action: no action
 
-The following commit has been merged into the perf/core branch of tip:
+The following commit has been merged into the sched/hrtick branch of tip:
 
-Commit-ID:     efa5700ec0da66662dc8375fe4e4b888487a6b84
-Gitweb:        https://git.kernel.org/tip/efa5700ec0da66662dc8375fe4e4b888487=
-a6b84
-Author:        Ravi Bangoria <ravi.bangoria@amd.com>
-AuthorDate:    Mon, 16 Feb 2026 04:25:26=20
+Commit-ID:     9213aa4784cf4e63e6d8d30ba71fd61c3d110247
+Gitweb:        https://git.kernel.org/tip/9213aa4784cf4e63e6d8d30ba71fd61c3d1=
+10247
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 24 Feb 2026 17:39:08 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Sat, 28 Feb 2026 12:02:49 +01:00
+CommitterDate: Fri, 27 Feb 2026 16:40:17 +01:00
 
-perf/amd/ibs: Support IBS_{FETCH|OP}_CTL2[Dis] to eliminate RMW race
+sched: Default enable HRTICK when deferred rearming is enabled
 
-The existing IBS_{FETCH|OP}_CTL MSRs combine control and status bits
-which leads to RMW race between HW and SW:
+The deferred rearm of the clock event device after an interrupt and and
+other hrtimer optimizations allow now to enable HRTICK for generic entry
+architectures.
 
-  HW                               SW
-  ------------------------         ------------------------------
-                                   config =3D rdmsr(IBS_OP_CTL);
-                                   config &=3D ~EN;
-  Set IBS_OP_CTL[Val] to 1
-  trigger NMI
-                                   wrmsr(IBS_OP_CTL, config);
-                                   // Val is accidentally cleared
+This decouples preemption from CONFIG_HZ, leaving only the periodic
+load-balancer and various accounting things relying on the tick.
 
-Future hardware adds a control-only MSR, IBS_{FETCH|OP}_CTL2, which
-provides a second-level "disable" bit (Dis). IBS is now:
-
-  Enabled:  IBS_{FETCH|OP}_CTL[En] =3D 1 && IBS_{FETCH|OP}_CTL2[Dis] =3D 0
-  Disabled: IBS_{FETCH|OP}_CTL[En] =3D 0 || IBS_{FETCH|OP}_CTL2[Dis] =3D 1
-
-The separate "Dis" bit lets software disable IBS without touching any
-status fields, eliminating the hardware/software race.
-
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260216042530.1546-4-ravi.bangoria@amd.com
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260224163431.937531564@kernel.org
 ---
- arch/x86/events/amd/ibs.c | 45 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+)
+ kernel/sched/features.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
-index 2e8fb06..b7f0aad 100644
---- a/arch/x86/events/amd/ibs.c
-+++ b/arch/x86/events/amd/ibs.c
-@@ -86,9 +86,11 @@ struct cpu_perf_ibs {
- struct perf_ibs {
- 	struct pmu			pmu;
- 	unsigned int			msr;
-+	unsigned int			msr2;
- 	u64				config_mask;
- 	u64				cnt_mask;
- 	u64				enable_mask;
-+	u64				disable_mask;
- 	u64				valid_mask;
- 	u16				min_period;
- 	u64				max_period;
-@@ -292,6 +294,8 @@ static int perf_ibs_init(struct perf_event *event)
- 		return -ENOENT;
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 136a658..d062284 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -63,8 +63,13 @@ SCHED_FEAT(DELAY_ZERO, true)
+  */
+ SCHED_FEAT(WAKEUP_PREEMPTION, true)
 =20
- 	config =3D event->attr.config;
-+	hwc->extra_reg.config =3D 0;
-+	hwc->extra_reg.reg =3D 0;
-=20
- 	if (event->pmu !=3D &perf_ibs->pmu)
- 		return -ENOENT;
-@@ -319,6 +323,11 @@ static int perf_ibs_init(struct perf_event *event)
- 	if (perf_allow_kernel())
- 		hwc->flags |=3D PERF_X86_EVENT_UNPRIVILEGED;
-=20
-+	if (ibs_caps & IBS_CAPS_DIS) {
-+		hwc->extra_reg.config &=3D ~perf_ibs->disable_mask;
-+		hwc->extra_reg.reg =3D perf_ibs->msr2;
-+	}
-+
- 	if (hwc->sample_period) {
- 		if (config & perf_ibs->cnt_mask)
- 			/* raw max_cnt may not be set */
-@@ -448,6 +457,9 @@ static inline void perf_ibs_enable_event(struct perf_ibs =
-*perf_ibs,
- 		wrmsrq(hwc->config_base, tmp & ~perf_ibs->enable_mask);
-=20
- 	wrmsrq(hwc->config_base, tmp | perf_ibs->enable_mask);
-+
-+	if (hwc->extra_reg.reg)
-+		wrmsrq(hwc->extra_reg.reg, hwc->extra_reg.config);
- }
++#ifdef CONFIG_HRTIMER_REARM_DEFERRED
++SCHED_FEAT(HRTICK, true)
++SCHED_FEAT(HRTICK_DL, true)
++#else
+ SCHED_FEAT(HRTICK, false)
+ SCHED_FEAT(HRTICK_DL, false)
++#endif
 =20
  /*
-@@ -460,6 +472,11 @@ static inline void perf_ibs_enable_event(struct perf_ibs=
- *perf_ibs,
- static inline void perf_ibs_disable_event(struct perf_ibs *perf_ibs,
- 					  struct hw_perf_event *hwc, u64 config)
- {
-+	if (ibs_caps & IBS_CAPS_DIS) {
-+		wrmsrq(hwc->extra_reg.reg, perf_ibs->disable_mask);
-+		return;
-+	}
-+
- 	config &=3D ~perf_ibs->cnt_mask;
- 	if (boot_cpu_data.x86 =3D=3D 0x10)
- 		wrmsrq(hwc->config_base, config);
-@@ -812,6 +829,7 @@ static struct perf_ibs perf_ibs_fetch =3D {
- 		.check_period	=3D perf_ibs_check_period,
- 	},
- 	.msr			=3D MSR_AMD64_IBSFETCHCTL,
-+	.msr2			=3D MSR_AMD64_IBSFETCHCTL2,
- 	.config_mask		=3D IBS_FETCH_MAX_CNT | IBS_FETCH_RAND_EN,
- 	.cnt_mask		=3D IBS_FETCH_MAX_CNT,
- 	.enable_mask		=3D IBS_FETCH_ENABLE,
-@@ -837,6 +855,7 @@ static struct perf_ibs perf_ibs_op =3D {
- 		.check_period	=3D perf_ibs_check_period,
- 	},
- 	.msr			=3D MSR_AMD64_IBSOPCTL,
-+	.msr2			=3D MSR_AMD64_IBSOPCTL2,
- 	.config_mask		=3D IBS_OP_MAX_CNT,
- 	.cnt_mask		=3D IBS_OP_MAX_CNT | IBS_OP_CUR_CNT |
- 				  IBS_OP_CUR_CNT_RAND,
-@@ -1394,6 +1413,9 @@ fail:
-=20
- out:
- 	if (!throttle) {
-+		if (ibs_caps & IBS_CAPS_DIS)
-+			wrmsrq(hwc->extra_reg.reg, perf_ibs->disable_mask);
-+
- 		if (perf_ibs =3D=3D &perf_ibs_op) {
- 			if (ibs_caps & IBS_CAPS_OPCNTEXT) {
- 				new_config =3D period & IBS_OP_MAX_CNT_EXT_MASK;
-@@ -1465,6 +1487,9 @@ static __init int perf_ibs_fetch_init(void)
- 	if (ibs_caps & IBS_CAPS_ZEN4)
- 		perf_ibs_fetch.config_mask |=3D IBS_FETCH_L3MISSONLY;
-=20
-+	if (ibs_caps & IBS_CAPS_DIS)
-+		perf_ibs_fetch.disable_mask =3D IBS_FETCH_2_DIS;
-+
- 	perf_ibs_fetch.pmu.attr_groups =3D fetch_attr_groups;
- 	perf_ibs_fetch.pmu.attr_update =3D fetch_attr_update;
-=20
-@@ -1486,6 +1511,9 @@ static __init int perf_ibs_op_init(void)
- 	if (ibs_caps & IBS_CAPS_ZEN4)
- 		perf_ibs_op.config_mask |=3D IBS_OP_L3MISSONLY;
-=20
-+	if (ibs_caps & IBS_CAPS_DIS)
-+		perf_ibs_op.disable_mask =3D IBS_OP_2_DIS;
-+
- 	perf_ibs_op.pmu.attr_groups =3D op_attr_groups;
- 	perf_ibs_op.pmu.attr_update =3D op_attr_update;
-=20
-@@ -1732,6 +1760,23 @@ static void clear_APIC_ibs(void)
- static int x86_pmu_amd_ibs_starting_cpu(unsigned int cpu)
- {
- 	setup_APIC_ibs();
-+
-+	if (ibs_caps & IBS_CAPS_DIS) {
-+		/*
-+		 * IBS enable sequence:
-+		 *   CTL[En] =3D 1;
-+		 *   CTL2[Dis] =3D 0;
-+		 *
-+		 * IBS disable sequence:
-+		 *   CTL2[Dis] =3D 1;
-+		 *
-+		 * Set CTL2[Dis] when CPU comes up. This is needed to make
-+		 * enable sequence effective.
-+		 */
-+		wrmsrq(MSR_AMD64_IBSFETCHCTL2, IBS_FETCH_2_DIS);
-+		wrmsrq(MSR_AMD64_IBSOPCTL2, IBS_OP_2_DIS);
-+	}
-+
- 	return 0;
- }
-=20
+  * Decrement CPU capacity based on time not spent running tasks
 
