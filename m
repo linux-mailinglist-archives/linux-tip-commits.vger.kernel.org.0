@@ -1,80 +1,81 @@
-Return-Path: <linux-tip-commits+bounces-8296-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8297-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGFAEWsMo2nY9AQAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8296-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 16:40:27 +0100
+	id aFe3FYcMo2nY9AQAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8297-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 16:40:55 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18311C40A4
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 16:40:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9291C40BB
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 16:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 632703173AAE
-	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 15:36:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45060318332A
+	for <lists+linux-tip-commits@lfdr.de>; Sat, 28 Feb 2026 15:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A3547DD40;
-	Sat, 28 Feb 2026 15:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FAC147DD4C;
+	Sat, 28 Feb 2026 15:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rTWpvofk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qkudomq4"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="maDJ5z3a";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="y8baPlk7"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAC0280CF6;
-	Sat, 28 Feb 2026 15:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C809C47CC81;
+	Sat, 28 Feb 2026 15:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772292986; cv=none; b=WRecDrq/q7AoD/iAyrWLgO3uzikbI32USDy/0oNv792ehWrvk8HN2J3bpNtNk3ktyIagqHAsvI2oMRgfLAk+JSh4htbvxq0xt8uJtpWhr0AdpCGoZAwE+pSQRIywfVLiMam1KZBRj93gFyirAXJHHep2Msg5cINbBAlcBP6KW6E=
+	t=1772292987; cv=none; b=kmewgeOgy+YGhDTxjTErX+RDHznT6l8oEdQsiRrMYRcuIWn37X3hYsIcfDiSC7ASffL4aiXUH22mDIhz5U0fqJ8Aja35ZxnImDmOC1o35I8vFswTZ/B/jNni8/1xRl4J0gITjSfk9l9StT1txu7BZ6elf3q/kFBQyzaKpp7pJnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772292986; c=relaxed/simple;
-	bh=Ihzwd0IT+9IparAGtjSHr4ICbxRxpWaIhjPIBL5SLYU=;
+	s=arc-20240116; t=1772292987; c=relaxed/simple;
+	bh=hfhRPHLPmBozTxjyOT0SZbnUzLHvkw+vCqpL29qb30M=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=HPBlSzbdr4o/PsI/oDdB4e0NFY7r/7HKbEFAshzKbiWQl0njLIKp7EAro5YlIX+rJePM4un3XpPb/cszJ1VqRqgFHydT2Nw6ztHal+tw12Ym9otkM7vlZ+rnXkhbGwfKXDpkvxcZXbDfj75ZkZoQE4/ahMwgpXzUn8y7DermMY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rTWpvofk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qkudomq4; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ez5nYHD7MQMf4bVMw7tMZNMGU3M8oil588TH0xlDQggX/B2h1J1x+WhrrGzXRhpZ/DgMFNyshV9sMaTgq/wfSbKsTXMNldjJomLR5Ugr2Z+GUOqEn9op84rEbxC54R2+6z8zcLmZNjbHJQZuxUtZtCyz6/93iummL0arjJ423us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=maDJ5z3a; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=y8baPlk7; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 28 Feb 2026 15:36:21 -0000
+Date: Sat, 28 Feb 2026 15:36:23 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772292983;
+	s=2020; t=1772292984;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1Oi1NMM5Tp/rQXRk1yYHqo3C5SYuCoA9H9EbJX6Nz5k=;
-	b=rTWpvofkmGRbmO20nCJ0k+Lvds7c7IiUjj3xwCzz7Wa9oGXBFR5w8YU7hGpzBlY7DzjZov
-	Qn3SzjKAe0d8Us1CTf0+D/Jvp1sDfRW1ia2HIGBzqmTo8KDariuwjWmhRQk6sAtATYIeEr
-	Icd/eftgojvF+hWHb9hsh0lvc3llYA2cvqUSnAKQuvVCj78xKIf+sEYfoTMz/1zuxzVbW3
-	rPG2MBYHNymnZR66um1/N8i0N7RA6YgzytdXxRQa78CsWw3QyXgneeRsOUv2SD+LaJMm0N
-	LySW7l+9JwntjhhmOMjqdS+4Jx4bqDGT8Hbsa9lywJ0H1+of1W86+W6r3HsRcQ==
+	bh=mOIDPmcMtFpu573IR5WMDenAhj3JuymQZlIQwVH17+w=;
+	b=maDJ5z3ac5FkTWHsBDvsclsG5dPLCTJIhi5EKi3KYLSJZXmz9fXl41s3Ukx6Wj62QFP9nR
+	kfoE3cSzp46sjcwiS3eDFm2NEPS3B9RbSirm9EHkd7ub+9EAh0n0mz1wLcBT+cJqaETuYV
+	5HcgwVjLcgW2fDN7HETqxeg5hZk2EcZ/wJjZ+RM8AgQw6QWnTHprDKBaJyKBpKuNTi9Did
+	ZD2YmkBY976BGOEzoklHApF51v7++JUrLUV5vfawxAOseb+FlXjDsisbshkbXafz2gWtix
+	CNVdtaWBYhKjerw6cqCRDSKj3ngCnFZke/3yh3WUrVbMjCivIO59kdfsHWYkQg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772292983;
+	s=2020e; t=1772292984;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1Oi1NMM5Tp/rQXRk1yYHqo3C5SYuCoA9H9EbJX6Nz5k=;
-	b=Qkudomq4mSxPf2GBy/aYxAOhhddpNieam1MQmHZZLFdhsH/GYlFlQV8YKQ7C5wZOsRiqYV
-	+IM+sWWh36hXDAAQ==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+	bh=mOIDPmcMtFpu573IR5WMDenAhj3JuymQZlIQwVH17+w=;
+	b=y8baPlk7DPrUK50K9POCNSECD3iL5FskeUZ/JyQocSCDUr8ZXmSuFU8/1cGF+qfm2erch7
+	2yxoyxqbqPsKJHCA==
+From: "tip-bot2 for Peter Zijlstra" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/hrtick] hrtimer: Avoid re-evaluation when nothing changed
-Cc: Thomas Gleixner <tglx@kernel.org>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
+Subject: [tip: sched/hrtick] hrtimer: Push reprogramming timers into the
+ interrupt return path
+Cc: "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260224163431.338569372@kernel.org>
-References: <20260224163431.338569372@kernel.org>
+In-Reply-To: <20260224163431.273488269@kernel.org>
+References: <20260224163431.273488269@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177229298193.1647592.15940221507703270036.tip-bot2@tip-bot2>
+Message-ID: <177229298305.1647592.12341379144974877623.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -87,12 +88,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8296-lists,linux-tip-commits=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-8297-lists,linux-tip-commits=lfdr.de];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,linutronix.de:dkim,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -107,246 +108,252 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
-X-Rspamd-Queue-Id: A18311C40A4
+X-Rspamd-Queue-Id: DE9291C40BB
 X-Rspamd-Action: no action
 
 The following commit has been merged into the sched/hrtick branch of tip:
 
-Commit-ID:     b95c4442b02162904e9012e670b602ebeb3c6c1b
-Gitweb:        https://git.kernel.org/tip/b95c4442b02162904e9012e670b602ebeb3=
-c6c1b
-Author:        Thomas Gleixner <tglx@kernel.org>
-AuthorDate:    Tue, 24 Feb 2026 17:38:23 +01:00
+Commit-ID:     15dd3a9488557d3e6ebcecacab79f4e56b69ab54
+Gitweb:        https://git.kernel.org/tip/15dd3a9488557d3e6ebcecacab79f4e56b6=
+9ab54
+Author:        Peter Zijlstra <peterz@infradead.org>
+AuthorDate:    Tue, 24 Feb 2026 17:38:18 +01:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Fri, 27 Feb 2026 16:40:14 +01:00
 
-hrtimer: Avoid re-evaluation when nothing changed
+hrtimer: Push reprogramming timers into the interrupt return path
 
-Most times there is no change between hrtimer_interrupt() deferring the rearm
-and the invocation of hrtimer_rearm_deferred(). In those cases it's a pointle=
-ss
-exercise to re-evaluate the next expiring timer.
+Currently hrtimer_interrupt() runs expired timers, which can re-arm
+themselves, after which it computes the next expiration time and
+re-programs the hardware.
 
-Cache the required data and use it if nothing changed.
+However, things like HRTICK, a highres timer driving preemption, cannot
+re-arm itself at the point of running, since the next task has not been
+determined yet. The schedule() in the interrupt return path will switch to
+the next task, which then causes a new hrtimer to be programmed.
 
+This then results in reprogramming the hardware at least twice, once after
+running the timers, and once upon selecting the new task.
+
+Notably, *both* events happen in the interrupt.
+
+By pushing the hrtimer reprogram all the way into the interrupt return
+path, it runs after schedule() picks the new task and the double reprogram
+can be avoided.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Thomas Gleixner <tglx@kernel.org>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260224163431.338569372@kernel.org
+Link: https://patch.msgid.link/20260224163431.273488269@kernel.org
 ---
- include/linux/hrtimer_defs.h | 53 +++++++++++++++++------------------
- kernel/time/hrtimer.c        | 45 ++++++++++++++++++++----------
- 2 files changed, 58 insertions(+), 40 deletions(-)
+ include/asm-generic/thread_info_tif.h |  5 +-
+ include/linux/hrtimer_rearm.h         | 72 ++++++++++++++++++++++++--
+ kernel/time/Kconfig                   |  4 +-
+ kernel/time/hrtimer.c                 | 38 ++++++++++++--
+ 4 files changed, 107 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/hrtimer_defs.h b/include/linux/hrtimer_defs.h
-index 2c3bdbd..b6846ef 100644
---- a/include/linux/hrtimer_defs.h
-+++ b/include/linux/hrtimer_defs.h
-@@ -47,32 +47,31 @@ enum  hrtimer_base_type {
+diff --git a/include/asm-generic/thread_info_tif.h b/include/asm-generic/thre=
+ad_info_tif.h
+index da1610a..528e6fc 100644
+--- a/include/asm-generic/thread_info_tif.h
++++ b/include/asm-generic/thread_info_tif.h
+@@ -41,11 +41,14 @@
+ #define _TIF_PATCH_PENDING	BIT(TIF_PATCH_PENDING)
 =20
- /**
-  * struct hrtimer_cpu_base - the per cpu clock bases
-- * @lock:		lock protecting the base and associated clock bases
-- *			and timers
-- * @cpu:		cpu number
-- * @active_bases:	Bitfield to mark bases with active timers
-- * @clock_was_set_seq:	Sequence counter of clock was set events
-- * @hres_active:	State of high resolution mode
-- * @deferred_rearm:	A deferred rearm is pending
-- * @hang_detected:	The last hrtimer interrupt detected a hang
-- * @softirq_activated:	displays, if the softirq is raised - update of softirq
-- *			related settings is not required then.
-- * @nr_events:		Total number of hrtimer interrupt events
-- * @nr_retries:		Total number of hrtimer interrupt retries
-- * @nr_hangs:		Total number of hrtimer interrupt hangs
-- * @max_hang_time:	Maximum time spent in hrtimer_interrupt
-- * @softirq_expiry_lock: Lock which is taken while softirq based hrtimer are
-- *			 expired
-- * @online:		CPU is online from an hrtimers point of view
-- * @timer_waiters:	A hrtimer_cancel() invocation waits for the timer
-- *			callback to finish.
-- * @expires_next:	absolute time of the next event, is required for remote
-- *			hrtimer enqueue; it is the total first expiry time (hard
-- *			and soft hrtimer are taken into account)
-- * @next_timer:		Pointer to the first expiring timer
-- * @softirq_expires_next: Time to check, if soft queues needs also to be exp=
-ired
-- * @softirq_next_timer: Pointer to the first expiring softirq based timer
-- * @clock_base:		array of clock bases for this cpu
-+ * @lock:			lock protecting the base and associated clock bases and timers
-+ * @cpu:			cpu number
-+ * @active_bases:		Bitfield to mark bases with active timers
-+ * @clock_was_set_seq:		Sequence counter of clock was set events
-+ * @hres_active:		State of high resolution mode
-+ * @deferred_rearm:		A deferred rearm is pending
-+ * @deferred_needs_update:	The deferred rearm must re-evaluate the first tim=
-er
-+ * @hang_detected:		The last hrtimer interrupt detected a hang
-+ * @softirq_activated:		displays, if the softirq is raised - update of softi=
-rq
-+ *				related settings is not required then.
-+ * @nr_events:			Total number of hrtimer interrupt events
-+ * @nr_retries:			Total number of hrtimer interrupt retries
-+ * @nr_hangs:			Total number of hrtimer interrupt hangs
-+ * @max_hang_time:		Maximum time spent in hrtimer_interrupt
-+ * @softirq_expiry_lock:	Lock which is taken while softirq based hrtimer are=
- expired
-+ * @online:			CPU is online from an hrtimers point of view
-+ * @timer_waiters:		A hrtimer_cancel() waiters for the timer callback to fin=
-ish.
-+ * @expires_next:		Absolute time of the next event, is required for remote
-+ *				hrtimer enqueue; it is the total first expiry time (hard
-+ *				and soft hrtimer are taken into account)
-+ * @next_timer:			Pointer to the first expiring timer
-+ * @softirq_expires_next:	Time to check, if soft queues needs also to be exp=
-ired
-+ * @softirq_next_timer:		Pointer to the first expiring softirq based timer
-+ * @deferred_expires_next:	Cached expires next value for deferred rearm
-+ * @clock_base:			Array of clock bases for this cpu
-  *
-  * Note: next_timer is just an optimization for __remove_hrtimer().
-  *	 Do not dereference the pointer because it is not reliable on
-@@ -85,6 +84,7 @@ struct hrtimer_cpu_base {
- 	unsigned int			clock_was_set_seq;
- 	bool				hres_active;
- 	bool				deferred_rearm;
-+	bool				deferred_needs_update;
- 	bool				hang_detected;
- 	bool				softirq_activated;
- 	bool				online;
-@@ -102,6 +102,7 @@ struct hrtimer_cpu_base {
- 	struct hrtimer			*next_timer;
- 	ktime_t				softirq_expires_next;
- 	struct hrtimer			*softirq_next_timer;
-+	ktime_t				deferred_expires_next;
- 	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
- 	call_single_data_t		csd;
- } ____cacheline_aligned;
+ #ifdef HAVE_TIF_RESTORE_SIGMASK
+-# define TIF_RESTORE_SIGMASK	10	// Restore signal mask in do_signal() */
++# define TIF_RESTORE_SIGMASK	10	// Restore signal mask in do_signal()
+ # define _TIF_RESTORE_SIGMASK	BIT(TIF_RESTORE_SIGMASK)
+ #endif
+=20
+ #define TIF_RSEQ		11	// Run RSEQ fast path
+ #define _TIF_RSEQ		BIT(TIF_RSEQ)
+=20
++#define TIF_HRTIMER_REARM	12       // re-arm the timer
++#define _TIF_HRTIMER_REARM	BIT(TIF_HRTIMER_REARM)
++
+ #endif /* _ASM_GENERIC_THREAD_INFO_TIF_H_ */
+diff --git a/include/linux/hrtimer_rearm.h b/include/linux/hrtimer_rearm.h
+index 6293076..a6f2e5d 100644
+--- a/include/linux/hrtimer_rearm.h
++++ b/include/linux/hrtimer_rearm.h
+@@ -3,12 +3,74 @@
+ #define _LINUX_HRTIMER_REARM_H
+=20
+ #ifdef CONFIG_HRTIMER_REARM_DEFERRED
+-static __always_inline void __hrtimer_rearm_deferred(void) { }
+-static __always_inline void hrtimer_rearm_deferred(void) { }
+-static __always_inline void hrtimer_rearm_deferred_tif(unsigned long tif_wor=
+k) { }
++#include <linux/thread_info.h>
++
++void __hrtimer_rearm_deferred(void);
++
++/*
++ * This is purely CPU local, so check the TIF bit first to avoid the overhea=
+d of
++ * the atomic test_and_clear_bit() operation for the common case where the b=
+it
++ * is not set.
++ */
++static __always_inline bool hrtimer_test_and_clear_rearm_deferred_tif(unsign=
+ed long tif_work)
++{
++	lockdep_assert_irqs_disabled();
++
++	if (unlikely(tif_work & _TIF_HRTIMER_REARM)) {
++		clear_thread_flag(TIF_HRTIMER_REARM);
++		return true;
++	}
++	return false;
++}
++
++#define TIF_REARM_MASK	(_TIF_NEED_RESCHED | _TIF_NEED_RESCHED_LAZY | _TIF_HR=
+TIMER_REARM)
++
++/* Invoked from the exit to user before invoking exit_to_user_mode_loop() */
+ static __always_inline bool
+-hrtimer_rearm_deferred_user_irq(unsigned long *tif_work, const unsigned long=
+ tif_mask) { return false; }
+-static __always_inline bool hrtimer_test_and_clear_rearm_deferred(void) { re=
+turn false; }
++hrtimer_rearm_deferred_user_irq(unsigned long *tif_work, const unsigned long=
+ tif_mask)
++{
++	/* Help the compiler to optimize the function out for syscall returns */
++	if (!(tif_mask & _TIF_HRTIMER_REARM))
++		return false;
++	/*
++	 * Rearm the timer if none of the resched flags is set before going into
++	 * the loop which re-enables interrupts.
++	 */
++	if (unlikely((*tif_work & TIF_REARM_MASK) =3D=3D _TIF_HRTIMER_REARM)) {
++		clear_thread_flag(TIF_HRTIMER_REARM);
++		__hrtimer_rearm_deferred();
++		/* Don't go into the loop if HRTIMER_REARM was the only flag */
++		*tif_work &=3D ~TIF_HRTIMER_REARM;
++		return !*tif_work;
++	}
++	return false;
++}
++
++/* Invoked from the time slice extension decision function */
++static __always_inline void hrtimer_rearm_deferred_tif(unsigned long tif_wor=
+k)
++{
++	if (hrtimer_test_and_clear_rearm_deferred_tif(tif_work))
++		__hrtimer_rearm_deferred();
++}
++
++/*
++ * This is to be called on all irqentry_exit() paths that will enable
++ * interrupts.
++ */
++static __always_inline void hrtimer_rearm_deferred(void)
++{
++	hrtimer_rearm_deferred_tif(read_thread_flags());
++}
++
++/*
++ * Invoked from the scheduler on entry to __schedule() so it can defer
++ * rearming after the load balancing callbacks which might change hrtick.
++ */
++static __always_inline bool hrtimer_test_and_clear_rearm_deferred(void)
++{
++	return hrtimer_test_and_clear_rearm_deferred_tif(read_thread_flags());
++}
++
+ #else  /* CONFIG_HRTIMER_REARM_DEFERRED */
+ static __always_inline void __hrtimer_rearm_deferred(void) { }
+ static __always_inline void hrtimer_rearm_deferred(void) { }
+diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+index b95bfee..6d6aace 100644
+--- a/kernel/time/Kconfig
++++ b/kernel/time/Kconfig
+@@ -60,7 +60,9 @@ config GENERIC_CMOS_UPDATE
+=20
+ # Deferred rearming of the hrtimer interrupt
+ config HRTIMER_REARM_DEFERRED
+-       def_bool n
++       def_bool y
++       depends on GENERIC_ENTRY && HAVE_GENERIC_TIF_BITS
++       depends on HIGH_RES_TIMERS && SCHED_HRTICK
+=20
+ # Select to handle posix CPU timers from task_work
+ # and not from the timer interrupt context
 diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 2e5f0e2..e9592cb 100644
+index 6f05d25..2e5f0e2 100644
 --- a/kernel/time/hrtimer.c
 +++ b/kernel/time/hrtimer.c
-@@ -919,8 +919,10 @@ static bool update_needs_ipi(struct hrtimer_cpu_base *cp=
-u_base, unsigned int act
- 		return false;
-=20
- 	/* If a deferred rearm is pending the remote CPU will take care of it */
--	if (cpu_base->deferred_rearm)
-+	if (cpu_base->deferred_rearm) {
-+		cpu_base->deferred_needs_update =3D true;
- 		return false;
-+	}
-=20
- 	/*
- 	 * Walk the affected clock bases and check whether the first expiring
-@@ -1141,7 +1143,12 @@ static void __remove_hrtimer(struct hrtimer *timer, st=
-ruct hrtimer_clock_base *b
- 	 * a local timer is removed to be immediately restarted. That's handled
- 	 * at the call site.
- 	 */
--	if (reprogram && timer =3D=3D cpu_base->next_timer && !timer->is_lazy)
-+	if (!reprogram || timer !=3D cpu_base->next_timer || timer->is_lazy)
-+		return;
-+
-+	if (cpu_base->deferred_rearm)
-+		cpu_base->deferred_needs_update =3D true;
-+	else
- 		hrtimer_force_reprogram(cpu_base, /* skip_equal */ true);
- }
-=20
-@@ -1328,8 +1335,10 @@ static bool __hrtimer_start_range_ns(struct hrtimer *t=
-imer, ktime_t tim, u64 del
- 	}
-=20
- 	/* If a deferred rearm is pending skip reprogramming the device */
--	if (cpu_base->deferred_rearm)
-+	if (cpu_base->deferred_rearm) {
-+		cpu_base->deferred_needs_update =3D true;
- 		return false;
-+	}
-=20
- 	if (!was_first || cpu_base !=3D this_cpu_base) {
- 		/*
-@@ -1939,8 +1948,7 @@ static __latent_entropy void hrtimer_run_softirq(void)
+@@ -1939,10 +1939,9 @@ static __latent_entropy void hrtimer_run_softirq(void)
   * Very similar to hrtimer_force_reprogram(), except it deals with
   * deferred_rearm and hang_detected.
   */
--static void hrtimer_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now,
--			  ktime_t expires_next, bool deferred)
-+static void hrtimer_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t expires=
-_next, bool deferred)
+-static void hrtimer_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now)
++static void hrtimer_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now,
++			  ktime_t expires_next, bool deferred)
  {
+-	ktime_t expires_next =3D hrtimer_update_next_event(cpu_base);
+-
  	cpu_base->expires_next =3D expires_next;
  	cpu_base->deferred_rearm =3D false;
-@@ -1950,7 +1958,7 @@ static void hrtimer_rearm(struct hrtimer_cpu_base *cpu_=
-base, ktime_t now,
- 		 * Give the system a chance to do something else than looping
- 		 * on hrtimer interrupts.
- 		 */
--		expires_next =3D ktime_add_ns(now, 100 * NSEC_PER_MSEC);
-+		expires_next =3D ktime_add_ns(ktime_get(), 100 * NSEC_PER_MSEC);
+=20
+@@ -1954,9 +1953,37 @@ static void hrtimer_rearm(struct hrtimer_cpu_base *cpu=
+_base, ktime_t now)
+ 		expires_next =3D ktime_add_ns(now, 100 * NSEC_PER_MSEC);
  		cpu_base->hang_detected =3D false;
  	}
- 	hrtimer_rearm_event(expires_next, deferred);
-@@ -1960,27 +1968,36 @@ static void hrtimer_rearm(struct hrtimer_cpu_base *cp=
-u_base, ktime_t now,
- void __hrtimer_rearm_deferred(void)
- {
- 	struct hrtimer_cpu_base *cpu_base =3D this_cpu_ptr(&hrtimer_bases);
--	ktime_t now, expires_next;
-+	ktime_t expires_next;
-=20
- 	if (!cpu_base->deferred_rearm)
- 		return;
-=20
- 	guard(raw_spinlock)(&cpu_base->lock);
--	now =3D hrtimer_update_base(cpu_base);
--	expires_next =3D hrtimer_update_next_event(cpu_base);
--	hrtimer_rearm(cpu_base, now, expires_next, true);
-+	if (cpu_base->deferred_needs_update) {
-+		hrtimer_update_base(cpu_base);
-+		expires_next =3D hrtimer_update_next_event(cpu_base);
-+	} else {
-+		/* No timer added/removed. Use the cached value */
-+		expires_next =3D cpu_base->deferred_expires_next;
-+	}
-+	hrtimer_rearm(cpu_base, expires_next, true);
+-	hrtimer_rearm_event(expires_next, false);
++	hrtimer_rearm_event(expires_next, deferred);
++}
++
++#ifdef CONFIG_HRTIMER_REARM_DEFERRED
++void __hrtimer_rearm_deferred(void)
++{
++	struct hrtimer_cpu_base *cpu_base =3D this_cpu_ptr(&hrtimer_bases);
++	ktime_t now, expires_next;
++
++	if (!cpu_base->deferred_rearm)
++		return;
++
++	guard(raw_spinlock)(&cpu_base->lock);
++	now =3D hrtimer_update_base(cpu_base);
++	expires_next =3D hrtimer_update_next_event(cpu_base);
++	hrtimer_rearm(cpu_base, now, expires_next, true);
  }
 =20
- static __always_inline void
--hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now, ktim=
++static __always_inline void
++hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now, ktim=
 e_t expires_next)
-+hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t expires_n=
-ext)
- {
-+	/* hrtimer_interrupt() just re-evaluated the first expiring timer */
-+	cpu_base->deferred_needs_update =3D false;
-+	/* Cache the expiry time */
-+	cpu_base->deferred_expires_next =3D expires_next;
- 	set_thread_flag(TIF_HRTIMER_REARM);
- }
- #else  /* CONFIG_HRTIMER_REARM_DEFERRED */
- static __always_inline void
--hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now, ktim=
++{
++	set_thread_flag(TIF_HRTIMER_REARM);
++}
++#else  /* CONFIG_HRTIMER_REARM_DEFERRED */
++static __always_inline void
++hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t now, ktim=
 e_t expires_next)
-+hrtimer_interrupt_rearm(struct hrtimer_cpu_base *cpu_base, ktime_t expires_n=
-ext)
- {
--	hrtimer_rearm(cpu_base, now, expires_next, false);
-+	hrtimer_rearm(cpu_base, expires_next, false);
- }
- #endif  /* !CONFIG_HRTIMER_REARM_DEFERRED */
-=20
-@@ -2041,7 +2058,7 @@ retry:
++{
++	hrtimer_rearm(cpu_base, now, expires_next, false);
++}
++#endif  /* !CONFIG_HRTIMER_REARM_DEFERRED */
++
+ /*
+  * High resolution timer interrupt
+  * Called with interrupts disabled
+@@ -2014,9 +2041,10 @@ retry:
  		cpu_base->hang_detected =3D true;
  	}
 =20
--	hrtimer_interrupt_rearm(cpu_base, now, expires_next);
-+	hrtimer_interrupt_rearm(cpu_base, expires_next);
+-	hrtimer_rearm(cpu_base, now);
++	hrtimer_interrupt_rearm(cpu_base, now, expires_next);
  	raw_spin_unlock_irqrestore(&cpu_base->lock, flags);
  }
++
+ #endif /* !CONFIG_HIGH_RES_TIMERS */
 =20
+ /*
 
