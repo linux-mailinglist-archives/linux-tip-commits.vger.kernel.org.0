@@ -1,81 +1,84 @@
-Return-Path: <linux-tip-commits+bounces-8335-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8336-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLUGJ7NppWkaAQYAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8335-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 02 Mar 2026 11:42:59 +0100
+	id 0OwYB2lopWmx+wUAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8336-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 02 Mar 2026 11:37:29 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D9A1D6BBB
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 02 Mar 2026 11:42:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AFC1D6A8D
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 02 Mar 2026 11:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 254BB300B055
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Mar 2026 10:32:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5E24300D72A
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  2 Mar 2026 10:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D481330D29;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E551133030F;
 	Mon,  2 Mar 2026 10:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KuPyROme";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Z8f//cXP"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="34ddcHF1";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="X+PXoftM"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC0C318EE1;
-	Mon,  2 Mar 2026 10:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8904232ABCD;
+	Mon,  2 Mar 2026 10:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772447549; cv=none; b=XVZL5xeopYF0wkvGtwSb6wIFStQ00ItuXNRJcOKc6w93q10t6aLc4TTSe/YCo4OfJUip0uuZFu45GfEJ5tdSggQiYGQ4g2pzjQQe24gtb5x8A3VCG31anOehFlvmK/LvIieLCqMNi2CUl25PHmD59vX8CQHqmhyOrgvT6DgB1/U=
+	t=1772447549; cv=none; b=W49W4WFafyD2wziftQOp2K/cJWBT7XdsE3pNCWXX7m5e4zEPqcu+0fx/gdjeGPJjh/dq8DqXofUPMmBie7ogHNHyM++NoLvUhuL7tnpALOZZ26BsttVgTv6EgXj954Eu9d8+AO55qHxUklhZKOJ2QxccDNxsT2pSdq7Z/OutcR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772447549; c=relaxed/simple;
-	bh=aO57Ou1MH+quxkiL25nMckAqwDtDBBl9XzSzP4oRZqY=;
+	bh=a+h43aMFRtxSVb9RO2805noywvtdGvo0VfuqXMJbjaE=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=aFxwi6BN+Jt0EvzxxbPYzhUuz/6cxIjlyaUgnRIv8p8bfNiUMZGP7SVF2U7nRP7l2JVF7ndgoOHstHB2IDpqBeqgFtPmIZvULxPWrsrtqNJvqViLGkwB6vzEpscSFtS+CBc9WW/GncJMULqIxC0JB0BAvmhPGjn/gFfmAtb2kso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KuPyROme; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Z8f//cXP; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=raJuTd5/7C/gsksf5FGUucygsGDe9vNNZinNdHN8mdzUvoj8xTM+WuPKwIHGPM8pjVSKAj9YbZhEseNRaezLGEwn82b3DZBOR5AihJs3zaJS0yHYwiexdD3zL84F4/+bal0+tmgf6PQ/TTNv4ekT9si/H9xyw96rJ+8i8Q34t9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=34ddcHF1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=X+PXoftM; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 02 Mar 2026 10:32:24 -0000
+Date: Mon, 02 Mar 2026 10:32:25 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772447546;
+	s=2020; t=1772447547;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ryPwT1BqglLr23CRv5b6zRB5alFrzbQu8J/OLcWz/k8=;
-	b=KuPyROme+rgQEcm4kwolRlaPgHwnqOxYOo2U6P5anhXQhYk69RWWIVH3RVENf+CfMUomqR
-	jtCih1HSDr95y0OunKkw2Xox3/OEmuG9/slN1sBkEO/tNNINxdf7OEGV0oJBlvHTF+sqjn
-	0t6RS3wb1dVLcvSMJlvQNOnG0u82MEtuwKFFtvH0aTVO255XJfZN/dk8XtbXi1QE+lHc05
-	K5/emDchJMOQDuGh28OiQzWe564HRwJWp9K1tqopx0ZlixuAdnavlZVgaZ8nmdNLm7tzUj
-	OS9RiqQ0bNRhU9e6x8gU0AYsALcMJQ2vgBpCIaMMwbhJ9gdOHiqaqNdqh1zcmQ==
+	bh=p0ztioGz8P/XNXK3nDNFZJNrzJJPB1gxSoMAXQzGG/k=;
+	b=34ddcHF1kj+M6B8Gj0R127f2gjHy8Qh75zBclz6HKjAmmj+Y/cmzorLvJFCTXGu48mo8nQ
+	u6tBj8uSRza6xrOOZdjHy7bjgv1VoNXmRVM8rCNZdW+NqTHMI0qQWstcue8GOKDgCNM0tG
+	Qdbovy3wiwujD/KlOLIkZQ6C2wc+GOXxnTHkj2JCwqu+JskF22KUdZtuMch8iLMOaP5FoL
+	CY3TTom4B2MtiNSZty1lRqL7RrQZgaWVEbuxxZJ//VFZHvx6ihoBHdNq8or9bGLSLc9U9x
+	H/HjN14Uuw7r+45Idsz+5EZxmm+F4D0RD2hsXismAsi9dxI7sD6yVH+jScwuJQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772447546;
+	s=2020e; t=1772447547;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ryPwT1BqglLr23CRv5b6zRB5alFrzbQu8J/OLcWz/k8=;
-	b=Z8f//cXPWYSN9/H0DWRQKj8ElcGG+xjqfkDWr+h934kqQ9dzYceV2ykpIuD8d28CGFuFbC
-	81CoCusABKuAPjBg==
-From: "tip-bot2 for Kim Phillips" <tip-bot2@linutronix.de>
+	bh=p0ztioGz8P/XNXK3nDNFZJNrzJJPB1gxSoMAXQzGG/k=;
+	b=X+PXoftMhgZAhMnx53l4wbTOJK8TQ4MxHiDMv7DPqxNeftrr1/8GJZnKBxFlj7y+i25/1S
+	LO2S+6NM9tCtGWCQ==
+From: "tip-bot2 for Tom Lendacky" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Allow IBPB-on-Entry feature for SNP guests
-Cc: Kim Phillips <kim.phillips@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Nikunj A Dadhania <nikunj@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, stable@kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260203222405.4065706-2-kim.phillips@amd.com>
-References: <20260203222405.4065706-2-kim.phillips@amd.com>
+Subject: [tip: x86/urgent] x86/boot/sev: Move SEV decompressor variables into
+ the .data section
+Cc: Tom Lendacky <thomas.lendacky@amd.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, Ard Biesheuvel <ardb@kernel.org>,
+ Changyuan Lyu <changyuanl@google.com>, Kevin Hui <kevinhui@meta.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: =?utf-8?q?=3C5648b7de5b0a5d0dfef3785f9582b718678c6448=2E1770217?=
+ =?utf-8?q?260=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
+References: =?utf-8?q?=3C5648b7de5b0a5d0dfef3785f9582b718678c6448=2E17702172?=
+ =?utf-8?q?60=2Egit=2Ethomas=2Elendacky=40amd=2Ecom=3E?=
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177244754464.1647592.8698682194686122019.tip-bot2@tip-bot2>
+Message-ID: <177244754589.1647592.11010795601532256454.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -88,11 +91,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-8335-lists,linux-tip-commits=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-8336-lists,linux-tip-commits=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
@@ -103,97 +106,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
 	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,vger.kernel.org:replyto,linutronix.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: F3D9A1D6BBB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[meta.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto,linutronix.de:dkim,msgid.link:url,amd.com:email,alien8.de:email]
+X-Rspamd-Queue-Id: 89AFC1D6A8D
 X-Rspamd-Action: no action
 
 The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     9073428bb204d921ae15326bb7d4558d9d269aab
-Gitweb:        https://git.kernel.org/tip/9073428bb204d921ae15326bb7d4558d9d2=
-69aab
-Author:        Kim Phillips <kim.phillips@amd.com>
-AuthorDate:    Tue, 03 Feb 2026 16:24:03 -06:00
+Commit-ID:     4ca191cec17a997d0e3b2cd312f3a884288acc27
+Gitweb:        https://git.kernel.org/tip/4ca191cec17a997d0e3b2cd312f3a884288=
+acc27
+Author:        Tom Lendacky <thomas.lendacky@amd.com>
+AuthorDate:    Wed, 04 Feb 2026 09:01:00 -06:00
 Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Mon, 02 Mar 2026 11:08:59 +01:00
+CommitterDate: Mon, 02 Mar 2026 11:08:33 +01:00
 
-x86/sev: Allow IBPB-on-Entry feature for SNP guests
+x86/boot/sev: Move SEV decompressor variables into the .data section
 
-The SEV-SNP IBPB-on-Entry feature does not require a guest-side
-implementation. It was added in Zen5 h/w, after the first SNP Zen
-implementation, and thus was not accounted for when the initial set of SNP
-features were added to the kernel.
+As part of the work to remove the dependency on calling into the decompressor
+code (startup_64()) for a UEFI boot, a call to rmpadjust() was removed from
+sev_enable() in favor of checking the value of the snp_vmpl variable.
 
-In its abundant precaution, commit
+When booting through a non-UEFI path and calling startup_64(), the call to
+sev_enable() is performed before the BSS section is zeroed. With the removal
+of the rmpadjust() call and the corresponding check of the return code, the
+snp_vmpl variable is checked.
 
-  8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
+Since the kernel is running at VMPL0, the snp_vmpl variable will not have been
+set and should be the default value of 0.  However, since the call occurs
+before the BSS is zeroed, the snp_vmpl variable may not actually be zero,
+which will cause the guest boot to fail.
 
-included SEV_STATUS' IBPB-on-Entry bit as a reserved bit, thereby masking
-guests from using the feature.
+Since the decompressor relocates itself, the BSS would need to be cleared both
+before and after the relocation, but this would, in effect, cause all of the
+changes to BSS variables before relocation to be lost after relocation.
 
-Allow guests to make use of IBPB-on-Entry when supported by the hypervisor, as
-the bit is now architecturally defined and safe to expose.
+Instead, move the snp_vmpl variable into the .data section so that it is
+initialized and the value made safe during relocation. As a pre-caution
+against future changes, move other SEV-related decompressor variables into the
+.data section, too.
 
-Fixes: 8c29f0165405 ("x86/sev: Add SEV-SNP guest feature negotiation support")
-Signed-off-by: Kim Phillips <kim.phillips@amd.com>
+Fixes: 68a501d7fd82 ("x86/boot: Drop redundant RMPADJUST in SEV SVSM presence=
+ check")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Nikunj A Dadhania <nikunj@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260203222405.4065706-2-kim.phillips@amd.com
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Changyuan Lyu <changyuanl@google.com>
+Tested-by: Kevin Hui <kevinhui@meta.com>
+Tested-by: Changyuan Lyu <changyuanl@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/5648b7de5b0a5d0dfef3785f9582b718678c6448.17702=
+17260.git.thomas.lendacky@amd.com
 ---
- arch/x86/boot/compressed/sev.c   | 1 +
- arch/x86/coco/sev/core.c         | 1 +
- arch/x86/include/asm/msr-index.h | 5 ++++-
- 3 files changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/sev.c     | 8 ++++----
+ arch/x86/boot/startup/sev-shared.c | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
-index 46b5472..e468476 100644
+index c8c1464..46b5472 100644
 --- a/arch/x86/boot/compressed/sev.c
 +++ b/arch/x86/boot/compressed/sev.c
-@@ -188,6 +188,7 @@ bool sev_es_check_ghcb_fault(unsigned long address)
- 				 MSR_AMD64_SNP_RESERVED_BIT13 |		\
- 				 MSR_AMD64_SNP_RESERVED_BIT15 |		\
- 				 MSR_AMD64_SNP_SECURE_AVIC |		\
-+				 MSR_AMD64_SNP_RESERVED_BITS19_22 |	\
- 				 MSR_AMD64_SNP_RESERVED_MASK)
+@@ -28,17 +28,17 @@
+ #include "sev.h"
 =20
- #ifdef CONFIG_AMD_SECURE_AVIC
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 907981b..7ed3da9 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -89,6 +89,7 @@ static const char * const sev_status_feat_names[] =3D {
- 	[MSR_AMD64_SNP_VMSA_REG_PROT_BIT]	=3D "VMSARegProt",
- 	[MSR_AMD64_SNP_SMT_PROT_BIT]		=3D "SMTProt",
- 	[MSR_AMD64_SNP_SECURE_AVIC_BIT]		=3D "SecureAVIC",
-+	[MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT]	=3D "IBPBOnEntry",
- };
+ static struct ghcb boot_ghcb_page __aligned(PAGE_SIZE);
+-struct ghcb *boot_ghcb;
++struct ghcb *boot_ghcb __section(".data");
 =20
- /*
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-inde=
-x.h
-index da5275d..6673601 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -740,7 +740,10 @@
- #define MSR_AMD64_SNP_SMT_PROT		BIT_ULL(MSR_AMD64_SNP_SMT_PROT_BIT)
- #define MSR_AMD64_SNP_SECURE_AVIC_BIT	18
- #define MSR_AMD64_SNP_SECURE_AVIC	BIT_ULL(MSR_AMD64_SNP_SECURE_AVIC_BIT)
--#define MSR_AMD64_SNP_RESV_BIT		19
-+#define MSR_AMD64_SNP_RESERVED_BITS19_22 GENMASK_ULL(22, 19)
-+#define MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT	23
-+#define MSR_AMD64_SNP_IBPB_ON_ENTRY	BIT_ULL(MSR_AMD64_SNP_IBPB_ON_ENTRY_BIT)
-+#define MSR_AMD64_SNP_RESV_BIT		24
- #define MSR_AMD64_SNP_RESERVED_MASK	GENMASK_ULL(63, MSR_AMD64_SNP_RESV_BIT)
- #define MSR_AMD64_SAVIC_CONTROL		0xc0010138
- #define MSR_AMD64_SAVIC_EN_BIT		0
+ #undef __init
+ #define __init
+=20
+ #define __BOOT_COMPRESSED
+=20
+-u8 snp_vmpl;
+-u16 ghcb_version;
++u8 snp_vmpl __section(".data");
++u16 ghcb_version __section(".data");
+=20
+-u64 boot_svsm_caa_pa;
++u64 boot_svsm_caa_pa __section(".data");
+=20
+ /* Include code for early handlers */
+ #include "../../boot/startup/sev-shared.c"
+diff --git a/arch/x86/boot/startup/sev-shared.c b/arch/x86/boot/startup/sev-s=
+hared.c
+index a0fa8bb..d9ac3a9 100644
+--- a/arch/x86/boot/startup/sev-shared.c
++++ b/arch/x86/boot/startup/sev-shared.c
+@@ -31,7 +31,7 @@ static u32 cpuid_std_range_max __ro_after_init;
+ static u32 cpuid_hyp_range_max __ro_after_init;
+ static u32 cpuid_ext_range_max __ro_after_init;
+=20
+-bool sev_snp_needs_sfw;
++bool sev_snp_needs_sfw __section(".data");
+=20
+ void __noreturn
+ sev_es_terminate(unsigned int set, unsigned int reason)
 
