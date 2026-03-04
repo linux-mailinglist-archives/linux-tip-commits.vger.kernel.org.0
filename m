@@ -1,88 +1,89 @@
-Return-Path: <linux-tip-commits+bounces-8356-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8357-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEkBMQ+PqGmzvgAAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8356-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Mar 2026 20:59:11 +0100
+	id QGPbJhCPqGmzvgAAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8357-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Mar 2026 20:59:12 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0178207547
-	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Mar 2026 20:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4434207549
+	for <lists+linux-tip-commits@lfdr.de>; Wed, 04 Mar 2026 20:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E769E3028D75
-	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2026 19:59:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA214302A7FC
+	for <lists+linux-tip-commits@lfdr.de>; Wed,  4 Mar 2026 19:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4413DFC69;
-	Wed,  4 Mar 2026 19:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7843DFC89;
+	Wed,  4 Mar 2026 19:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xqPyr+6c";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lgruJtZa"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="AhLxwjWd";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Owj9aU3z"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117153D75B6;
-	Wed,  4 Mar 2026 19:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37413D567A;
+	Wed,  4 Mar 2026 19:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772654346; cv=none; b=LOpiJuY/9Dh8IzNGXAUNvFLylYy4shA78hjW7ZzhQnW2fC5n10yIOtaOTeeLwXtUM7Xpp7tlgTVbEwXG2Kl+p3HgvZ2wdrAIiUkzs+52Pm0BXJObrtmxBoWl2sGmLaiWMuIH8RB/pODT5morgVlb0wTcQbmlOB/vv9D6v4BQGN8=
+	t=1772654347; cv=none; b=T3VKY/ArGpdHEC6gKowOTR2ezLbEmmJ4pXlk25O4ngIz8GlyITPsfG+yrqN3yrXU+g/ImnsjGHN2JjcssU08+ravyXRV271zxuu8hecKwUpZoEM2YI3v/ePr3a9iMIEshmH8pl0/OWGiP/v1hZVZ/ONYl+vA4ovrGuP3eujRCDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772654346; c=relaxed/simple;
-	bh=+7e2+ulEyTsk0R5pYpiv/Y8G2wG5FyPhMeqpbMQMOxc=;
+	s=arc-20240116; t=1772654347; c=relaxed/simple;
+	bh=yu9S46LdnzMMstPRY8h2+nfjfi4r91HfD1/DDwxq76o=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=QrnZBFQYbr2waiQnCQJEHBQ1cj2vOQtkj3163/DiLuVtJ3ZnoC46j6LkRzlUmpj32dCPN6HQundnr7uRo4/RDGMnX15bBGhC3vMvxaT13dV71CtmATKsssbZ/XZrfQB7JlkTY38/VgNdiEiyMtU6yfX38tYrAonh3oZl+KLXM7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xqPyr+6c; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lgruJtZa; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=IkjMnGIyMdGiWTsz0ELWnbU8xZpwqBr7Z087FBjLOGpQ7Pv5xalbOWof3pQD47CAj0pQwMxGXD7ufwiCyegSraVeIJJeKXALUJII14vQCeXapD+YVAqlgFkV3FR/kf+ZIUW5gSuyiNT0A5WK/wb3Fbxey39y5sq6rwFUnF+u2QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=AhLxwjWd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Owj9aU3z; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 04 Mar 2026 19:59:02 -0000
+Date: Wed, 04 Mar 2026 19:59:03 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772654343;
+	s=2020; t=1772654344;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2PMEx5UW2X5o/XdNgqS/tkXuOvTpd5E0WF2LHHy/2Jo=;
-	b=xqPyr+6cnxoAQyr90kFKjoboqYTrG/1bfYMgi2UZw0oiVc3lzyWCrOAV2K9357FKClYD9Z
-	a/KzYPTOOsAE4dictYQD1625xJ0qn8uLGJs5KZslnBJje0tBL98oYEr2nDvG+oHzqcPcj1
-	Ysre4636QXRzl3+21o2DQTNZ3GVxQcYogwCQ7QeFUiaJuxrJC59CudsKxVdhnR7nxqzHdp
-	y/ebWVISOkN4xehngJrHrvrv/Jy8Ay6AUbg9hoVeplW6zwyFLzzrK6ZaqMqBvlqMLYqh1F
-	/vnX9+ZX2Xy6r3KwN5BhMBDyBweCDVEuU6oRexWpc7u4ypLQBjqjpc5D8txnyg==
+	bh=47rE7sbafQtfT476qeGsNlRq4P7zFc7sxjDPSvn27Pc=;
+	b=AhLxwjWdtoNbG8ypIvI7wE/+b7tl6Lm+qtVgppsYN3x9Aowy3MmwPxjDDDnS3fpM52gSHj
+	sV8yrLEBiMqtQ2xsKGKY3J5E5zR6QhOvvNFHQC3lZ0psCUiZc/7dJwwxqrgvEGSc7AD45V
+	UTo/QNwNSAmH6G8u+xnJnF9Mn5WaBrkh10aJDp1mpR97FaZfyoRV7Ms5FVuK7d5p+hSJJS
+	PUr0+NvcOGEsHBh0yZmVP+NJW3AwZZTWauZfDDgBLQPRLhILNxYv/jnoa+c/uTs8gVRBtY
+	+fJXUIHhBehgo366YWpyrbF0ZMwEhBSz50+fZC8XLmPpRMXyOXYwSmnNEFaJpQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772654343;
+	s=2020e; t=1772654344;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2PMEx5UW2X5o/XdNgqS/tkXuOvTpd5E0WF2LHHy/2Jo=;
-	b=lgruJtZatUz1RYNdRbpoptMu5OwxHZlQrOQhROpa+57ujgGlHkF6Ua7sjZp1qQIJECMCSD
-	ItA1ARpy6pjMoMCA==
+	bh=47rE7sbafQtfT476qeGsNlRq4P7zFc7sxjDPSvn27Pc=;
+	b=Owj9aU3zmYrzolHMMcWe8kEYmRkwdg/pW8OcVrYqx7VizKQ0iQhwA5pYBDbYDjeRgBv9oC
+	ex9ZEGOfxjCiwYBQ==
 From: "tip-bot2 for Vishal Moola (Oracle)" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/mm] x86/mm/pat: Convert split_large_page() to use ptdescs
+Subject:
+ [tip: x86/mm] x86/mm/pat: Convert populate_pgd() to use page table apis
 Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <20260303194828.1406905-5-vishal.moola@gmail.com>
-References: <20260303194828.1406905-5-vishal.moola@gmail.com>
+In-Reply-To: <20260303194828.1406905-4-vishal.moola@gmail.com>
+References: <20260303194828.1406905-4-vishal.moola@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177265434203.1647592.15648754014140184815.tip-bot2@tip-bot2>
+Message-ID: <177265434322.1647592.2472511505969712816.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D0178207547
+X-Rspamd-Queue-Id: D4434207549
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -94,8 +95,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8356-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,intel.com:email,msgid.link:url,linutronix.de:dkim];
+	TAGGED_FROM(0.00)[bounces-8357-lists,linux-tip-commits=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:rdns,sin.lore.kernel.org:helo,msgid.link:url,intel.com:email,linutronix.de:dkim];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -118,69 +119,70 @@ X-Rspamd-Action: no action
 
 The following commit has been merged into the x86/mm branch of tip:
 
-Commit-ID:     e751303e0ad2e998f421d104193f6904df3516d1
-Gitweb:        https://git.kernel.org/tip/e751303e0ad2e998f421d104193f6904df3=
-516d1
+Commit-ID:     b2203a9bf53237368a7c7fc976c9616b5562af8e
+Gitweb:        https://git.kernel.org/tip/b2203a9bf53237368a7c7fc976c9616b556=
+2af8e
 Author:        Vishal Moola (Oracle) <vishal.moola@gmail.com>
-AuthorDate:    Tue, 03 Mar 2026 11:48:27 -08:00
+AuthorDate:    Tue, 03 Mar 2026 11:48:26 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
 CommitterDate: Wed, 04 Mar 2026 10:08:54 -08:00
 
-x86/mm/pat: Convert split_large_page() to use ptdescs
+x86/mm/pat: Convert populate_pgd() to use page table apis
 
-Use the ptdesc APIs for all page table allocation and free sites to
-allow their separate allocation from struct page in the future.
+Use the ptdesc APIs for all page table allocation and free sites to allow
+their separate allocation from struct page in the future. Convert the
+remaining get_zeroed_page() calls to the generic page table APIs, as they
+already use ptdescs.
 
-Update split_large_page() to allocate a ptdesc instead of allocating a
-page for use as a page table.
+Pass through init_mm since these are kernel page tables, as
+both functions require it to identify kernel page tables. Because the
+generic implementations do not use the second argument, pass a
+placeholder to avoid reimplementing them or risking breakage on other
+architectures.
+
+It is not obvious whether these pages are freed. Regardless, convert the
+remaining free paths as needed, noting that the only other possible free
+paths have already been converted and that a frozen page table test
+kernel has not reported any issues.
 
 Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Link: https://patch.msgid.link/20260303194828.1406905-5-vishal.moola@gmail.com
+Link: https://patch.msgid.link/20260303194828.1406905-4-vishal.moola@gmail.com
 ---
- arch/x86/mm/pat/set_memory.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/mm/pat/set_memory.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 17c1c28..cba907c 100644
+index 72a2600..17c1c28 100644
 --- a/arch/x86/mm/pat/set_memory.c
 +++ b/arch/x86/mm/pat/set_memory.c
-@@ -1119,9 +1119,10 @@ set:
+@@ -1747,7 +1747,11 @@ static int populate_pgd(struct cpa_data *cpa, unsigned=
+ long addr)
+ 	pgd_entry =3D cpa->pgd + pgd_index(addr);
 =20
- static int
- __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
--		   struct page *base)
-+		   struct ptdesc *ptdesc)
- {
- 	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc =3D 1;
-+	struct page *base =3D ptdesc_page(ptdesc);
- 	pte_t *pbase =3D (pte_t *)page_address(base);
- 	unsigned int i, level;
- 	pgprot_t ref_prot;
-@@ -1226,18 +1227,18 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte,=
- unsigned long address,
- static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 			    unsigned long address)
- {
--	struct page *base;
-+	struct ptdesc *ptdesc;
+ 	if (pgd_none(*pgd_entry)) {
+-		p4d =3D (p4d_t *)get_zeroed_page(GFP_KERNEL);
++		/*
++		 * Pass 0 as a placeholder for the second argument, since the
++		 * generic implementation of p4d_alloc_one() does not use it.
++		 */
++		p4d =3D p4d_alloc_one(&init_mm, 0);
+ 		if (!p4d)
+ 			return -1;
 =20
- 	if (!debug_pagealloc_enabled())
- 		spin_unlock(&cpa_lock);
--	base =3D alloc_pages(GFP_KERNEL, 0);
-+	ptdesc =3D pagetable_alloc(GFP_KERNEL, 0);
- 	if (!debug_pagealloc_enabled())
- 		spin_lock(&cpa_lock);
--	if (!base)
-+	if (!ptdesc)
- 		return -ENOMEM;
+@@ -1759,7 +1763,11 @@ static int populate_pgd(struct cpa_data *cpa, unsigned=
+ long addr)
+ 	 */
+ 	p4d =3D p4d_offset(pgd_entry, addr);
+ 	if (p4d_none(*p4d)) {
+-		pud =3D (pud_t *)get_zeroed_page(GFP_KERNEL);
++		/*
++		 * Pass 0 as a placeholder for the second argument, since the
++		 * generic implementation of pud_alloc_one() does not use it.
++		 */
++		pud =3D pud_alloc_one(&init_mm, 0);
+ 		if (!pud)
+ 			return -1;
 =20
--	if (__split_large_page(cpa, kpte, address, base))
--		__free_page(base);
-+	if (__split_large_page(cpa, kpte, address, ptdesc))
-+		pagetable_free(ptdesc);
-=20
- 	return 0;
- }
 
