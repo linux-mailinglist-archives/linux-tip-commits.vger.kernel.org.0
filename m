@@ -1,102 +1,101 @@
-Return-Path: <linux-tip-commits+bounces-8365-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8369-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGTrC7PUqWmcFwEAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8365-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 05 Mar 2026 20:08:35 +0100
+	id 8DbpHIPnqWnuHQEAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8369-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 05 Mar 2026 21:28:51 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836DE217402
-	for <lists+linux-tip-commits@lfdr.de>; Thu, 05 Mar 2026 20:08:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E4D218230
+	for <lists+linux-tip-commits@lfdr.de>; Thu, 05 Mar 2026 21:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1CB7230CD902
-	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Mar 2026 19:07:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B0993031AC3
+	for <lists+linux-tip-commits@lfdr.de>; Thu,  5 Mar 2026 20:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F69308F0A;
-	Thu,  5 Mar 2026 19:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78859339708;
+	Thu,  5 Mar 2026 20:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="wmGEYfm4";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Qe/JbuYU"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0SseXG/0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E5BlwSWz"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8B3016F2;
-	Thu,  5 Mar 2026 19:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52891FF7B3;
+	Thu,  5 Mar 2026 20:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772737659; cv=none; b=dQtRNy9EZb31OTSaE7UYn5WTXzEPP8xRXHDpiatQvArFilPhQrXibe531Eq2u7Wm988wPBk6Fj+L1RiEu/3lSDLuF2facR3Oov/mVxVYJJ+KXFW80/7WVeefzHb+GhQQgEfd1tCfZb158hNo5USpOZ2PJTUyY9JAv8JGv62dO4Y=
+	t=1772742517; cv=none; b=kJDXefHQL0GUBzqV08pvw3ydJhshHpNL63mu1Mn9aKkwGTUxdeibZ7hYXVSw4m2hc7RfvOlCH8Mh9VJg15A04lSTRegO8+5GYN3UEirDCKU1miKTXKnZjI5SIXLh2dT47U+ob+n3gVR2Taqam33m4VXMalOLuoS2obefhgNSt+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772737659; c=relaxed/simple;
-	bh=axG+zIBW6ssfecUC3lNaf6bl8OF1skqutrVDlkhwwz8=;
+	s=arc-20240116; t=1772742517; c=relaxed/simple;
+	bh=alIjhtozDglm4NrCKVrdUzjDEDHDa/Lw3ta5Em8Gl7o=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=adgy7kjoAWKIgxcvMorND9zCtuNUns29+a1FsTAjHpwX0z/2jHHHKYxKzGJ5vCHKQVvMQOJ1Drvh1ixP0eI/OzGX6Bx7UlL70wBe2435PIAMBLoTnBjrxhzMpyEQ2hau3Tzz0YQd4L8sTOnsutGerLX8l/uUO598pLnzm16nL9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=wmGEYfm4; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Qe/JbuYU; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=AnKPqabY3oepl8Z0LFrVyu2jdtDgLHYvoMKcXnym5CNq95Y+/Y2K0oGVpOqM0WpVKQzHBsu50uOcSEA5H7Vt2NLlSUHSjyHSb1kbJPYgHpj7XGsEDAz4T032vQIWHrge3X0oSaYkvHs/ZXp6wIrm5TyZykdqX2YZCeOKO66SePQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0SseXG/0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E5BlwSWz; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 05 Mar 2026 19:07:35 -0000
+Date: Thu, 05 Mar 2026 20:28:30 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772737656;
+	s=2020; t=1772742511;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cp2IeNS55szO0baUDI9fZ52QaQXYnx0TLxyyGHHr7BI=;
-	b=wmGEYfm4LdP0D7ONqYDtbiyqqupIGe3eIDu9+RlOYpSN3lxU4uCko/iY35En+pojjgE0QE
-	mwbZ7KsMipGShmNjliRhTAnq9FDsu5Tl6Sserp2DXtBX/KUEhtnibZuuOAGADjBiRw2mT9
-	2OFiRQMs99ml/C5g1PvOTYqraYcccTWeJe484EYwSweeo4no7v9FOvZ3vcubrrT4g+6/43
-	CqgqWzkgXvq0WjkMj0yPFjkgPxbv6/vwmJ1s4yxTSxCbJ/BMcdFRBednJshdv1EyKB9rNP
-	Q20kDoUYQuEcXBLfQdxYASlPsc5+3fdjZysSkooiOu7bwaTHDkIoXfXsUL8JvQ==
+	bh=0hGGl8pXWmD78s2OPnWtCKzt9NpNOM3dBZpv2CVCFG4=;
+	b=0SseXG/0fJDPZl7uHAdcxZzBaA9T9/Hwnhq3UxcKZfVX/L/W9ZH214416lOywKVDfDaIzi
+	9dxXaEdoQpkxF6lUAC3b8Kr20XyyCNA2NI2tORuWa+QcOG94wm13zZU2zXkTgr84fV5NJv
+	TblPLd0wBguHLehKDMhJF+pjfk4voONiNdndK0VBNdl0czPrOXSzwc3V/Kzvfniq6PH98g
+	vnXGl9CXpGRW5Bzu7W3iz2/H7dp0fYqllk0cimeqafGftAWBpjiP7kYYd5XpjgPK6OkKBJ
+	gUzvhNhMnx9mEDhyBiJ73ZX+01S5ADao+7CG/1DwJsTr/e84oe6emIVjcxIsUg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772737656;
+	s=2020e; t=1772742511;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cp2IeNS55szO0baUDI9fZ52QaQXYnx0TLxyyGHHr7BI=;
-	b=Qe/JbuYUgxiF3PihWDJgEVxVn6NHT4Gbv+fHiZHFFhAPMTn1SqtWKJdOD7f+JljrgNpD3x
-	Hyp32pMkC0ATvnCg==
+	bh=0hGGl8pXWmD78s2OPnWtCKzt9NpNOM3dBZpv2CVCFG4=;
+	b=E5BlwSWzs8KKqxkOJFCcQNItWlIWQUy6Tz/wTXrZ2gLKqB/+Egor6R0DCh1CgNl9GAggDM
+	AEK06kofm3uGLwBw==
 From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/microcode] x86/microcode: Refactor platform ID enumeration
- into a helper
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Sohil Mehta <sohil.mehta@intel.com>,
- Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260304181018.EB6404F8@davehans-spike.ostc.intel.com>
-References: <20260304181018.EB6404F8@davehans-spike.ostc.intel.com>
+Subject: [tip: x86/microcode] x86/microcode: Add platform mask to Intel
+ microcode "old" list
+Cc: Jon Kohler <jon@nutanix.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Sohil Mehta <sohil.mehta@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260304181024.76E3F038@davehans-spike.ostc.intel.com>
+References: <20260304181024.76E3F038@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177273765504.1647592.6727522916584514244.tip-bot2@tip-bot2>
+Message-ID: <177274251015.1647592.6988444041360518631.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 836DE217402
+X-Rspamd-Queue-Id: B1E4D218230
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-8369-lists,linux-tip-commits=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8365-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vger.kernel.org:replyto,intel.com:email,msgid.link:url,linutronix.de:dkim,sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo];
+	FROM_HAS_DN(0.00)[];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
@@ -104,148 +103,1179 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linutronix.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:rdns,tor.lore.kernel.org:helo,vger.kernel.org:replyto,linutronix.de:dkim,msgid.link:url,intel.com:email,nutanix.com:email]
 X-Rspamd-Action: no action
 
 The following commit has been merged into the x86/microcode branch of tip:
 
-Commit-ID:     da67a0320397125fcbb2e856a31889150c648f3a
-Gitweb:        https://git.kernel.org/tip/da67a0320397125fcbb2e856a31889150c6=
-48f3a
+Commit-ID:     7989c39341348e3507282d88a564cb20d83a0829
+Gitweb:        https://git.kernel.org/tip/7989c39341348e3507282d88a564cb20d83=
+a0829
 Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Wed, 04 Mar 2026 10:10:18 -08:00
+AuthorDate:    Wed, 04 Mar 2026 10:10:24 -08:00
 Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Thu, 05 Mar 2026 10:41:10 -08:00
+CommitterDate: Thu, 05 Mar 2026 12:25:45 -08:00
 
-x86/microcode: Refactor platform ID enumeration into a helper
+x86/microcode: Add platform mask to Intel microcode "old" list
 
-Today, the only code that cares about the platform ID is the microcode
-update code itself. To facilitate storing the platform ID in a more
-generic place and using it outside of the microcode update itself, put
-the enumeration into a helper function. Mirror
-intel_get_microcode_revision()'s naming and location.
+Intel sometimes has CPUs with identical family/model/stepping but
+which need different microcode. These CPUs are differentiated with the
+platform ID.
 
-But, moving away from intel_collect_cpu_info() means that the model
-and family information in CPUID is not readily available. Just call
-CPUID again.
+The Intel "microcode-20250512" release was used to generate the
+existing contents of intel-ucode-defs.h. Use that same release and add
+the platform mask to the definitions.
 
-Note that the microcode header is a mask of supported platform IDs.
-Only stick the ID part in the helper. Leave the 1<<id part in the
-microcode handling.
+This makes the list a few entries longer because some CPUs previously
+that shared a definition now need two or more. for example for the
+ancient Pentium III there are two CPUs that differ only in their
+platform and have two different microcode versions (note:
+.driver_data is the microcode version):
 
-Also note that the PII is weird. It does not really have a platform
-ID because it doesn't even have the MSR. Just consider it to be
-platform ID 0. Instead of saying >=3DPII, say <=3DPII. The PII is the
-real oddball here being the only CPU with Linux microcode updates
-but no platform ID. It's worth calling it out by name.
+	{ ..., .model =3D 0x05, .steppings =3D 0x0001, .platform_mask =3D 0x01, .dri=
+ver_data =3D 0x40 },
+	{ ..., .model =3D 0x05, .steppings =3D 0x0001, .platform_mask =3D 0x08, .dri=
+ver_data =3D 0x45 },
 
-This does subtly change the sig->pf for the PII though from 0x0
-to 0x1. Make up for that by ignoring sig->pf when the microcode
-update platform mask is 0x0.
+Another example is the state-of-the-art Granite Rapids:
 
-[ dhansen: reflow comment for bpetkov ]
+	{ ...,  .model =3D 0xad, .steppings =3D 0x0002, .platform_mask =3D 0x20, .dr=
+iver_data =3D 0xa0000d1 },
+	{ ...,  .model =3D 0xad, .steppings =3D 0x0002, .platform_mask =3D 0x95, .dr=
+iver_data =3D 0x10003a2 },
 
---
+As you can see, this differentiation with platform ID has been
+necessary for a long time and is still relevant today.
 
-Changes from v3:
- * Handle the empty platform mask on the PII
+Without the platform matching, the old microcode table is incomplete.
+For instance, it might lead someone with a Pentium III, platform 0x0,
+and microcode 0x40 to think that they should have microcode 0x45,
+which is really only for platform 0x4 (.platform_mask=3D=3D0x08).
 
+In practice, this meant that folks with fully updated microcode were
+seeing "Vulnerable" in the "old_microcode" file.
+
+1. https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files
+
+Closes: https://lore.kernel.org/all/38660F8F-499E-48CD-B58B-4822228A5941@nuta=
+nix.com/
+Fixes: 4e2c719782a8 ("x86/cpu: Help users notice when running old Intel micro=
+code")
+Reported-by: Jon Kohler <jon@nutanix.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Link: https://patch.msgid.link/20260304181018.EB6404F8@davehans-spike.ostc.in=
+Tested-by: Zhao Liu <zhao1.liu@intel.com>
+Link: https://lore.kernel.org/all/3ECBB974-C6F0-47A7-94B6-3646347F1CC2@nutani=
+x.com/
+Link: https://patch.msgid.link/20260304181024.76E3F038@davehans-spike.ostc.in=
 tel.com
 ---
- arch/x86/kernel/cpu/microcode/intel.c | 54 ++++++++++++++++++++------
- 1 file changed, 43 insertions(+), 11 deletions(-)
+ arch/x86/kernel/cpu/microcode/intel-ucode-defs.h | 398 ++++++++------
+ 1 file changed, 238 insertions(+), 160 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/micr=
-ocode/intel.c
-index 8744f3a..83c6cd2 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -120,19 +120,44 @@ static inline unsigned int exttable_size(struct extende=
-d_sigtable *et)
- 	return et->count * EXT_SIGNATURE_SIZE + EXT_HEADER_SIZE;
- }
-=20
-+
-+/*
-+ * Use CPUID to generate a "vfm" value. Useful before cpuinfo_x86
-+ * structures are populated.
-+ */
-+static u32 intel_cpuid_vfm(void)
-+{
-+	u32 eax   =3D cpuid_eax(1);
-+	u32 fam   =3D x86_family(eax);
-+	u32 model =3D x86_model(eax);
-+
-+	return IFM(fam, model);
-+}
-+
-+static u32 intel_get_platform_id(void)
-+{
-+	unsigned int val[2];
-+
-+	/*
-+	 * This can be called early. Use CPUID directly instead of
-+	 * relying on cpuinfo_x86 which may not be fully initialized.
-+	 * The PII does not have MSR_IA32_PLATFORM_ID. Everything
-+	 * before _it_ has no microcode (for Linux at least).
-+	 */
-+	if (intel_cpuid_vfm() <=3D INTEL_PENTIUM_II_KLAMATH)
-+		return 0;
-+
-+	/* get processor flags from MSR 0x17 */
-+	native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
-+
-+	return (val[1] >> 18) & 7;
-+}
-+
- void intel_collect_cpu_info(struct cpu_signature *sig)
- {
- 	sig->sig =3D cpuid_eax(1);
--	sig->pf =3D 0;
- 	sig->rev =3D intel_get_microcode_revision();
--
--	if (IFM(x86_family(sig->sig), x86_model(sig->sig)) >=3D INTEL_PENTIUM_III_D=
-ESCHUTES) {
--		unsigned int val[2];
--
--		/* get processor flags from MSR 0x17 */
--		native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
--		sig->pf =3D 1 << ((val[1] >> 18) & 7);
--	}
-+	sig->pf  =3D 1 << intel_get_platform_id();
- }
- EXPORT_SYMBOL_GPL(intel_collect_cpu_info);
-=20
-@@ -142,8 +167,15 @@ static inline bool cpu_signatures_match(struct cpu_signa=
-ture *s1, unsigned int s
- 	if (s1->sig !=3D sig2)
- 		return false;
-=20
--	/* Processor flags are either both 0 or they intersect. */
--	return ((!s1->pf && !pf2) || (s1->pf & pf2));
-+	/*
-+	 * Consider an empty mask to match everything. This
-+	 * should only occur for one CPU model, the PII.
-+	 */
-+	if (!pf2)
-+		return true;
-+
-+	/* Is the CPU's platform ID in the signature mask? */
-+	return s1->pf & pf2;
- }
-=20
- bool intel_find_matching_signature(void *mc, struct cpu_signature *sig)
+diff --git a/arch/x86/kernel/cpu/microcode/intel-ucode-defs.h b/arch/x86/kern=
+el/cpu/microcode/intel-ucode-defs.h
+index 2d48e65..72c8809 100644
+--- a/arch/x86/kernel/cpu/microcode/intel-ucode-defs.h
++++ b/arch/x86/kernel/cpu/microcode/intel-ucode-defs.h
+@@ -1,160 +1,238 @@
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x03, .steppings =3D 0x0004, .driver_data =3D 0x2 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0001, .driver_data =3D 0x45 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0002, .driver_data =3D 0x40 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0004, .driver_data =3D 0x2c },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0008, .driver_data =3D 0x10 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0001, .driver_data =3D 0xa },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0020, .driver_data =3D 0x3 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0400, .driver_data =3D 0xd },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x2000, .driver_data =3D 0x7 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x07, .steppings =3D 0x0002, .driver_data =3D 0x14 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x07, .steppings =3D 0x0004, .driver_data =3D 0x38 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x07, .steppings =3D 0x0008, .driver_data =3D 0x2e },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0002, .driver_data =3D 0x11 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0008, .driver_data =3D 0x8 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0040, .driver_data =3D 0xc },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0400, .driver_data =3D 0x5 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x09, .steppings =3D 0x0020, .driver_data =3D 0x47 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0a, .steppings =3D 0x0001, .driver_data =3D 0x3 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0a, .steppings =3D 0x0002, .driver_data =3D 0x1 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0b, .steppings =3D 0x0002, .driver_data =3D 0x1d },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0b, .steppings =3D 0x0010, .driver_data =3D 0x2 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0d, .steppings =3D 0x0040, .driver_data =3D 0x18 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0e, .steppings =3D 0x0100, .driver_data =3D 0x39 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0e, .steppings =3D 0x1000, .driver_data =3D 0x59 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0004, .driver_data =3D 0x5d },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0040, .driver_data =3D 0xd2 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0080, .driver_data =3D 0x6b },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0400, .driver_data =3D 0x95 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .driver_data =3D 0xbc },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x2000, .driver_data =3D 0xa4 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x16, .steppings =3D 0x0002, .driver_data =3D 0x44 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0040, .driver_data =3D 0x60f =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0080, .driver_data =3D 0x70a =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0400, .driver_data =3D 0xa0b =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1a, .steppings =3D 0x0010, .driver_data =3D 0x12 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1a, .steppings =3D 0x0020, .driver_data =3D 0x1d },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0004, .driver_data =3D 0x219 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0400, .driver_data =3D 0x107 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1d, .steppings =3D 0x0002, .driver_data =3D 0x29 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1e, .steppings =3D 0x0020, .driver_data =3D 0xa },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x25, .steppings =3D 0x0004, .driver_data =3D 0x11 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x25, .steppings =3D 0x0020, .driver_data =3D 0x7 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x26, .steppings =3D 0x0002, .driver_data =3D 0x105 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2a, .steppings =3D 0x0080, .driver_data =3D 0x2f },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2c, .steppings =3D 0x0004, .driver_data =3D 0x1f },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2d, .steppings =3D 0x0040, .driver_data =3D 0x621 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2d, .steppings =3D 0x0080, .driver_data =3D 0x71a =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2e, .steppings =3D 0x0040, .driver_data =3D 0xd },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2f, .steppings =3D 0x0004, .driver_data =3D 0x3b },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x37, .steppings =3D 0x0100, .driver_data =3D 0x838 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x37, .steppings =3D 0x0200, .driver_data =3D 0x90d =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3a, .steppings =3D 0x0200, .driver_data =3D 0x21 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3c, .steppings =3D 0x0008, .driver_data =3D 0x28 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3d, .steppings =3D 0x0010, .driver_data =3D 0x2f },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3e, .steppings =3D 0x0010, .driver_data =3D 0x42e =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3e, .steppings =3D 0x0040, .driver_data =3D 0x600 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3e, .steppings =3D 0x0080, .driver_data =3D 0x715 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3f, .steppings =3D 0x0004, .driver_data =3D 0x49 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3f, .steppings =3D 0x0010, .driver_data =3D 0x1a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x45, .steppings =3D 0x0002, .driver_data =3D 0x26 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x46, .steppings =3D 0x0002, .driver_data =3D 0x1c },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x47, .steppings =3D 0x0002, .driver_data =3D 0x22 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4c, .steppings =3D 0x0008, .driver_data =3D 0x368 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4c, .steppings =3D 0x0010, .driver_data =3D 0x411 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4d, .steppings =3D 0x0100, .driver_data =3D 0x12d =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4e, .steppings =3D 0x0008, .driver_data =3D 0xf0 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0008, .driver_data =3D 0x1000=
+191 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0010, .driver_data =3D 0x2007=
+006 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0020, .driver_data =3D 0x3000=
+010 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0080, .driver_data =3D 0x5003=
+901 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0800, .driver_data =3D 0x7002=
+b01 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0004, .driver_data =3D 0x1c },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0008, .driver_data =3D 0x7000=
+01c },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0010, .driver_data =3D 0xf000=
+01a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0020, .driver_data =3D 0xe000=
+015 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5c, .steppings =3D 0x0004, .driver_data =3D 0x14 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5c, .steppings =3D 0x0200, .driver_data =3D 0x48 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5c, .steppings =3D 0x0400, .driver_data =3D 0x28 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5e, .steppings =3D 0x0008, .driver_data =3D 0xf0 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5f, .steppings =3D 0x0002, .driver_data =3D 0x3e },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x66, .steppings =3D 0x0008, .driver_data =3D 0x2a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x6a, .steppings =3D 0x0020, .driver_data =3D 0xc000=
+2f0 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x6a, .steppings =3D 0x0040, .driver_data =3D 0xd000=
+404 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x6c, .steppings =3D 0x0002, .driver_data =3D 0x1000=
+2d0 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x7a, .steppings =3D 0x0002, .driver_data =3D 0x42 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x7a, .steppings =3D 0x0100, .driver_data =3D 0x26 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x7e, .steppings =3D 0x0020, .driver_data =3D 0xca },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8a, .steppings =3D 0x0002, .driver_data =3D 0x33 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8c, .steppings =3D 0x0002, .driver_data =3D 0xbc },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8c, .steppings =3D 0x0004, .driver_data =3D 0x3c },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8d, .steppings =3D 0x0002, .driver_data =3D 0x56 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0200, .driver_data =3D 0xf6 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0400, .driver_data =3D 0xf6 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0800, .driver_data =3D 0xf6 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x1000, .driver_data =3D 0x100 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0010, .driver_data =3D 0x2c00=
+03f7 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0020, .driver_data =3D 0x2c00=
+03f7 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0040, .driver_data =3D 0x2c00=
+03f7 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0080, .driver_data =3D 0x2b00=
+0639 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0100, .driver_data =3D 0x2c00=
+03f7 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x96, .steppings =3D 0x0002, .driver_data =3D 0x1a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x97, .steppings =3D 0x0004, .driver_data =3D 0x3a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x97, .steppings =3D 0x0020, .driver_data =3D 0x3a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9a, .steppings =3D 0x0008, .driver_data =3D 0x437 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9a, .steppings =3D 0x0010, .driver_data =3D 0x437 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9c, .steppings =3D 0x0001, .driver_data =3D 0x2400=
+0026 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x0200, .driver_data =3D 0xf8 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x0400, .driver_data =3D 0xfa },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x0800, .driver_data =3D 0xf6 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x1000, .driver_data =3D 0xf8 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x2000, .driver_data =3D 0x104 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa5, .steppings =3D 0x0004, .driver_data =3D 0x100 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa5, .steppings =3D 0x0008, .driver_data =3D 0x100 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa5, .steppings =3D 0x0020, .driver_data =3D 0x100 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa6, .steppings =3D 0x0001, .driver_data =3D 0x102 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa6, .steppings =3D 0x0002, .driver_data =3D 0x100 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa7, .steppings =3D 0x0002, .driver_data =3D 0x64 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xaa, .steppings =3D 0x0010, .driver_data =3D 0x24 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xad, .steppings =3D 0x0002, .driver_data =3D 0xa000=
+0d1 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xaf, .steppings =3D 0x0008, .driver_data =3D 0x3000=
+341 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xb5, .steppings =3D 0x0001, .driver_data =3D 0xa },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xb7, .steppings =3D 0x0002, .driver_data =3D 0x12f =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xb7, .steppings =3D 0x0010, .driver_data =3D 0x12f =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xba, .steppings =3D 0x0004, .driver_data =3D 0x4128=
+ },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xba, .steppings =3D 0x0008, .driver_data =3D 0x4128=
+ },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xba, .steppings =3D 0x0100, .driver_data =3D 0x4128=
+ },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbd, .steppings =3D 0x0002, .driver_data =3D 0x11f =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbe, .steppings =3D 0x0001, .driver_data =3D 0x1d },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0004, .driver_data =3D 0x3a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0020, .driver_data =3D 0x3a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0040, .driver_data =3D 0x3a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0080, .driver_data =3D 0x3a },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xc5, .steppings =3D 0x0004, .driver_data =3D 0x118 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xc6, .steppings =3D 0x0004, .driver_data =3D 0x118 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xc6, .steppings =3D 0x0010, .driver_data =3D 0x118 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xca, .steppings =3D 0x0004, .driver_data =3D 0x118 =
+},
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xcf, .steppings =3D 0x0002, .driver_data =3D 0x2100=
+02a9 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xcf, .steppings =3D 0x0004, .driver_data =3D 0x2100=
+02a9 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0080, .driver_data =3D 0x12 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0400, .driver_data =3D 0x15 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x01, .steppings =3D 0x0004, .driver_data =3D 0x2e },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0010, .driver_data =3D 0x21 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0020, .driver_data =3D 0x2c },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0040, .driver_data =3D 0x10 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0080, .driver_data =3D 0x39 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0200, .driver_data =3D 0x2f },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x03, .steppings =3D 0x0004, .driver_data =3D 0xa },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x03, .steppings =3D 0x0008, .driver_data =3D 0xc },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x03, .steppings =3D 0x0010, .driver_data =3D 0x17 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0002, .driver_data =3D 0x17 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0008, .driver_data =3D 0x5 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0010, .driver_data =3D 0x6 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0080, .driver_data =3D 0x3 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0100, .driver_data =3D 0xe },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0200, .driver_data =3D 0x3 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0400, .driver_data =3D 0x4 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0004, .driver_data =3D 0xf },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0010, .driver_data =3D 0x4 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0020, .driver_data =3D 0x8 },
+-{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0100, .driver_data =3D 0x9 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x03, .steppings =3D 0x0004, .platform_mask =3D 0x00=
+, .driver_data =3D 0x2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0001, .platform_mask =3D 0x01=
+, .driver_data =3D 0x40 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0001, .platform_mask =3D 0x02=
+, .driver_data =3D 0x41 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0001, .platform_mask =3D 0x08=
+, .driver_data =3D 0x45 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0x40 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0004, .platform_mask =3D 0x01=
+, .driver_data =3D 0x2a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0004, .platform_mask =3D 0x02=
+, .driver_data =3D 0x2c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0004, .platform_mask =3D 0x04=
+, .driver_data =3D 0x2b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0008, .platform_mask =3D 0x01=
+, .driver_data =3D 0x10 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0008, .platform_mask =3D 0x02=
+, .driver_data =3D 0xc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0008, .platform_mask =3D 0x04=
+, .driver_data =3D 0xb },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x05, .steppings =3D 0x0008, .platform_mask =3D 0x08=
+, .driver_data =3D 0xd },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0001, .platform_mask =3D 0x01=
+, .driver_data =3D 0xa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0020, .platform_mask =3D 0x10=
+, .driver_data =3D 0x3 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0400, .platform_mask =3D 0x02=
+, .driver_data =3D 0xc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0400, .platform_mask =3D 0x08=
+, .driver_data =3D 0xd },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x0400, .platform_mask =3D 0x20=
+, .driver_data =3D 0xb },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x2000, .platform_mask =3D 0x02=
+, .driver_data =3D 0x5 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x2000, .platform_mask =3D 0x08=
+, .driver_data =3D 0x6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x06, .steppings =3D 0x2000, .platform_mask =3D 0x20=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x07, .steppings =3D 0x0002, .platform_mask =3D 0x04=
+, .driver_data =3D 0x14 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x07, .steppings =3D 0x0004, .platform_mask =3D 0x04=
+, .driver_data =3D 0x38 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x07, .steppings =3D 0x0008, .platform_mask =3D 0x04=
+, .driver_data =3D 0x2e },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0xd },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0002, .platform_mask =3D 0x04=
+, .driver_data =3D 0x10 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0002, .platform_mask =3D 0x08=
+, .driver_data =3D 0xf },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0002, .platform_mask =3D 0x10=
+, .driver_data =3D 0x11 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0002, .platform_mask =3D 0x20=
+, .driver_data =3D 0xe },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0008, .platform_mask =3D 0x08=
+, .driver_data =3D 0x8 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0008, .platform_mask =3D 0x20=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0040, .platform_mask =3D 0x01=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0040, .platform_mask =3D 0x02=
+, .driver_data =3D 0xa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0040, .platform_mask =3D 0x04=
+, .driver_data =3D 0x2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0040, .platform_mask =3D 0x10=
+, .driver_data =3D 0x8 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0040, .platform_mask =3D 0x80=
+, .driver_data =3D 0xc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0400, .platform_mask =3D 0x10=
+, .driver_data =3D 0x1 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0400, .platform_mask =3D 0x20=
+, .driver_data =3D 0x4 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x08, .steppings =3D 0x0400, .platform_mask =3D 0x80=
+, .driver_data =3D 0x5 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x09, .steppings =3D 0x0020, .platform_mask =3D 0x10=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x09, .steppings =3D 0x0020, .platform_mask =3D 0x20=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x09, .steppings =3D 0x0020, .platform_mask =3D 0x80=
+, .driver_data =3D 0x47 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0a, .steppings =3D 0x0001, .platform_mask =3D 0x04=
+, .driver_data =3D 0x3 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0a, .steppings =3D 0x0002, .platform_mask =3D 0x04=
+, .driver_data =3D 0x1 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0b, .steppings =3D 0x0002, .platform_mask =3D 0x10=
+, .driver_data =3D 0x1c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0b, .steppings =3D 0x0002, .platform_mask =3D 0x20=
+, .driver_data =3D 0x1d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0b, .steppings =3D 0x0010, .platform_mask =3D 0x10=
+, .driver_data =3D 0x1 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0b, .steppings =3D 0x0010, .platform_mask =3D 0x20=
+, .driver_data =3D 0x2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0d, .steppings =3D 0x0040, .platform_mask =3D 0x20=
+, .driver_data =3D 0x18 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0e, .steppings =3D 0x0100, .platform_mask =3D 0x20=
+, .driver_data =3D 0x39 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0e, .steppings =3D 0x1000, .platform_mask =3D 0x20=
+, .driver_data =3D 0x54 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0e, .steppings =3D 0x1000, .platform_mask =3D 0x80=
+, .driver_data =3D 0x59 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0004, .platform_mask =3D 0x01=
+, .driver_data =3D 0x5d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0004, .platform_mask =3D 0x20=
+, .driver_data =3D 0x5c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0040, .platform_mask =3D 0x01=
+, .driver_data =3D 0xd0 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0040, .platform_mask =3D 0x04=
+, .driver_data =3D 0xd2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0040, .platform_mask =3D 0x20=
+, .driver_data =3D 0xd1 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0080, .platform_mask =3D 0x10=
+, .driver_data =3D 0x6a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0080, .platform_mask =3D 0x40=
+, .driver_data =3D 0x6b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0400, .platform_mask =3D 0x80=
+, .driver_data =3D 0x95 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x01=
+, .driver_data =3D 0xba },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x04=
+, .driver_data =3D 0xbc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x08=
+, .driver_data =3D 0xbb },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x10=
+, .driver_data =3D 0xba },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x20=
+, .driver_data =3D 0xba },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x40=
+, .driver_data =3D 0xbc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x0800, .platform_mask =3D 0x80=
+, .driver_data =3D 0xba },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x2000, .platform_mask =3D 0x01=
+, .driver_data =3D 0xa4 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x2000, .platform_mask =3D 0x20=
+, .driver_data =3D 0xa4 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x0f, .steppings =3D 0x2000, .platform_mask =3D 0x80=
+, .driver_data =3D 0xa4 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x16, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0x43 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x16, .steppings =3D 0x0002, .platform_mask =3D 0x02=
+, .driver_data =3D 0x42 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x16, .steppings =3D 0x0002, .platform_mask =3D 0x80=
+, .driver_data =3D 0x44 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0040, .platform_mask =3D 0x01=
+, .driver_data =3D 0x60f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0040, .platform_mask =3D 0x04=
+, .driver_data =3D 0x60f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0040, .platform_mask =3D 0x10=
+, .driver_data =3D 0x60f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0040, .platform_mask =3D 0x40=
+, .driver_data =3D 0x60f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0040, .platform_mask =3D 0x80=
+, .driver_data =3D 0x60f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0080, .platform_mask =3D 0x10=
+, .driver_data =3D 0x70a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0400, .platform_mask =3D 0x11=
+, .driver_data =3D 0xa0b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0400, .platform_mask =3D 0x44=
+, .driver_data =3D 0xa0b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x17, .steppings =3D 0x0400, .platform_mask =3D 0xa0=
+, .driver_data =3D 0xa0b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1a, .steppings =3D 0x0010, .platform_mask =3D 0x03=
+, .driver_data =3D 0x12 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1a, .steppings =3D 0x0020, .platform_mask =3D 0x03=
+, .driver_data =3D 0x1d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0004, .platform_mask =3D 0x01=
+, .driver_data =3D 0x217 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0004, .platform_mask =3D 0x04=
+, .driver_data =3D 0x218 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0004, .platform_mask =3D 0x08=
+, .driver_data =3D 0x219 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0400, .platform_mask =3D 0x01=
+, .driver_data =3D 0x107 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0400, .platform_mask =3D 0x04=
+, .driver_data =3D 0x107 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0400, .platform_mask =3D 0x08=
+, .driver_data =3D 0x107 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1c, .steppings =3D 0x0400, .platform_mask =3D 0x10=
+, .driver_data =3D 0x107 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1d, .steppings =3D 0x0002, .platform_mask =3D 0x08=
+, .driver_data =3D 0x29 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x1e, .steppings =3D 0x0020, .platform_mask =3D 0x13=
+, .driver_data =3D 0xa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x25, .steppings =3D 0x0004, .platform_mask =3D 0x12=
+, .driver_data =3D 0x11 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x25, .steppings =3D 0x0020, .platform_mask =3D 0x92=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x26, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0x104 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x26, .steppings =3D 0x0002, .platform_mask =3D 0x02=
+, .driver_data =3D 0x105 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2a, .steppings =3D 0x0080, .platform_mask =3D 0x12=
+, .driver_data =3D 0x2f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2c, .steppings =3D 0x0004, .platform_mask =3D 0x03=
+, .driver_data =3D 0x1f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2d, .steppings =3D 0x0040, .platform_mask =3D 0x6d=
+, .driver_data =3D 0x621 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2d, .steppings =3D 0x0080, .platform_mask =3D 0x6d=
+, .driver_data =3D 0x71a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2e, .steppings =3D 0x0040, .platform_mask =3D 0x04=
+, .driver_data =3D 0xd },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x2f, .steppings =3D 0x0004, .platform_mask =3D 0x05=
+, .driver_data =3D 0x3b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x37, .steppings =3D 0x0100, .platform_mask =3D 0x02=
+, .driver_data =3D 0x838 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x37, .steppings =3D 0x0100, .platform_mask =3D 0x0c=
+, .driver_data =3D 0x838 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x37, .steppings =3D 0x0200, .platform_mask =3D 0x0f=
+, .driver_data =3D 0x90d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3a, .steppings =3D 0x0200, .platform_mask =3D 0x12=
+, .driver_data =3D 0x21 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3c, .steppings =3D 0x0008, .platform_mask =3D 0x32=
+, .driver_data =3D 0x28 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3d, .steppings =3D 0x0010, .platform_mask =3D 0xc0=
+, .driver_data =3D 0x2f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3e, .steppings =3D 0x0010, .platform_mask =3D 0xed=
+, .driver_data =3D 0x42e },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3e, .steppings =3D 0x0040, .platform_mask =3D 0xed=
+, .driver_data =3D 0x600 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3e, .steppings =3D 0x0080, .platform_mask =3D 0xed=
+, .driver_data =3D 0x715 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3f, .steppings =3D 0x0004, .platform_mask =3D 0x6f=
+, .driver_data =3D 0x49 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x3f, .steppings =3D 0x0010, .platform_mask =3D 0x80=
+, .driver_data =3D 0x1a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x45, .steppings =3D 0x0002, .platform_mask =3D 0x72=
+, .driver_data =3D 0x26 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x46, .steppings =3D 0x0002, .platform_mask =3D 0x32=
+, .driver_data =3D 0x1c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x47, .steppings =3D 0x0002, .platform_mask =3D 0x22=
+, .driver_data =3D 0x22 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4c, .steppings =3D 0x0008, .platform_mask =3D 0x01=
+, .driver_data =3D 0x368 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4c, .steppings =3D 0x0010, .platform_mask =3D 0x01=
+, .driver_data =3D 0x411 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4d, .steppings =3D 0x0100, .platform_mask =3D 0x01=
+, .driver_data =3D 0x12d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x4e, .steppings =3D 0x0008, .platform_mask =3D 0xc0=
+, .driver_data =3D 0xf0 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0008, .platform_mask =3D 0x97=
+, .driver_data =3D 0x1000191 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0010, .platform_mask =3D 0xb7=
+, .driver_data =3D 0x2007006 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0020, .platform_mask =3D 0xb7=
+, .driver_data =3D 0x3000010 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0080, .platform_mask =3D 0xbf=
+, .driver_data =3D 0x5003901 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x55, .steppings =3D 0x0800, .platform_mask =3D 0xbf=
+, .driver_data =3D 0x7002b01 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0004, .platform_mask =3D 0x10=
+, .driver_data =3D 0x1c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0008, .platform_mask =3D 0x10=
+, .driver_data =3D 0x700001c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0010, .platform_mask =3D 0x10=
+, .driver_data =3D 0xf00001a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x56, .steppings =3D 0x0020, .platform_mask =3D 0x10=
+, .driver_data =3D 0xe000015 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5c, .steppings =3D 0x0004, .platform_mask =3D 0x01=
+, .driver_data =3D 0x14 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5c, .steppings =3D 0x0200, .platform_mask =3D 0x03=
+, .driver_data =3D 0x48 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5c, .steppings =3D 0x0400, .platform_mask =3D 0x03=
+, .driver_data =3D 0x28 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5e, .steppings =3D 0x0008, .platform_mask =3D 0x36=
+, .driver_data =3D 0xf0 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x5f, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0x3e },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x66, .steppings =3D 0x0008, .platform_mask =3D 0x80=
+, .driver_data =3D 0x2a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x6a, .steppings =3D 0x0020, .platform_mask =3D 0x87=
+, .driver_data =3D 0xc0002f0 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x6a, .steppings =3D 0x0040, .platform_mask =3D 0x87=
+, .driver_data =3D 0xd000404 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x6c, .steppings =3D 0x0002, .platform_mask =3D 0x10=
+, .driver_data =3D 0x10002d0 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x7a, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0x42 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x7a, .steppings =3D 0x0100, .platform_mask =3D 0x01=
+, .driver_data =3D 0x26 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x7e, .steppings =3D 0x0020, .platform_mask =3D 0x80=
+, .driver_data =3D 0xca },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8a, .steppings =3D 0x0002, .platform_mask =3D 0x10=
+, .driver_data =3D 0x33 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8c, .steppings =3D 0x0002, .platform_mask =3D 0x80=
+, .driver_data =3D 0xbc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8c, .steppings =3D 0x0004, .platform_mask =3D 0xc2=
+, .driver_data =3D 0x3c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8d, .steppings =3D 0x0002, .platform_mask =3D 0xc2=
+, .driver_data =3D 0x56 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0200, .platform_mask =3D 0x10=
+, .driver_data =3D 0xf6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0200, .platform_mask =3D 0xc0=
+, .driver_data =3D 0xf6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0400, .platform_mask =3D 0xc0=
+, .driver_data =3D 0xf6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x0800, .platform_mask =3D 0xd0=
+, .driver_data =3D 0xf6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8e, .steppings =3D 0x1000, .platform_mask =3D 0x94=
+, .driver_data =3D 0x100 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0010, .platform_mask =3D 0x10=
+, .driver_data =3D 0x2c0003f7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0010, .platform_mask =3D 0x87=
+, .driver_data =3D 0x2b000639 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0020, .platform_mask =3D 0x10=
+, .driver_data =3D 0x2c0003f7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0020, .platform_mask =3D 0x87=
+, .driver_data =3D 0x2b000639 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0040, .platform_mask =3D 0x10=
+, .driver_data =3D 0x2c0003f7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0040, .platform_mask =3D 0x87=
+, .driver_data =3D 0x2b000639 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0080, .platform_mask =3D 0x87=
+, .driver_data =3D 0x2b000639 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0100, .platform_mask =3D 0x10=
+, .driver_data =3D 0x2c0003f7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x8f, .steppings =3D 0x0100, .platform_mask =3D 0x87=
+, .driver_data =3D 0x2b000639 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x96, .steppings =3D 0x0002, .platform_mask =3D 0x01=
+, .driver_data =3D 0x1a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x97, .steppings =3D 0x0004, .platform_mask =3D 0x07=
+, .driver_data =3D 0x3a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x97, .steppings =3D 0x0020, .platform_mask =3D 0x07=
+, .driver_data =3D 0x3a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9a, .steppings =3D 0x0008, .platform_mask =3D 0x80=
+, .driver_data =3D 0x437 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9a, .steppings =3D 0x0010, .platform_mask =3D 0x40=
+, .driver_data =3D 0xa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9a, .steppings =3D 0x0010, .platform_mask =3D 0x80=
+, .driver_data =3D 0x437 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9c, .steppings =3D 0x0001, .platform_mask =3D 0x01=
+, .driver_data =3D 0x24000026 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x0200, .platform_mask =3D 0x2a=
+, .driver_data =3D 0xf8 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x0400, .platform_mask =3D 0x22=
+, .driver_data =3D 0xfa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x0800, .platform_mask =3D 0x02=
+, .driver_data =3D 0xf6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x1000, .platform_mask =3D 0x22=
+, .driver_data =3D 0xf8 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0x9e, .steppings =3D 0x2000, .platform_mask =3D 0x22=
+, .driver_data =3D 0x104 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa5, .steppings =3D 0x0004, .platform_mask =3D 0x20=
+, .driver_data =3D 0x100 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa5, .steppings =3D 0x0008, .platform_mask =3D 0x22=
+, .driver_data =3D 0x100 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa5, .steppings =3D 0x0020, .platform_mask =3D 0x22=
+, .driver_data =3D 0x100 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa6, .steppings =3D 0x0001, .platform_mask =3D 0x80=
+, .driver_data =3D 0x102 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa6, .steppings =3D 0x0002, .platform_mask =3D 0x80=
+, .driver_data =3D 0x100 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xa7, .steppings =3D 0x0002, .platform_mask =3D 0x02=
+, .driver_data =3D 0x64 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xaa, .steppings =3D 0x0010, .platform_mask =3D 0xe6=
+, .driver_data =3D 0x24 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xad, .steppings =3D 0x0002, .platform_mask =3D 0x20=
+, .driver_data =3D 0xa0000d1 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xad, .steppings =3D 0x0002, .platform_mask =3D 0x95=
+, .driver_data =3D 0x10003a2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xaf, .steppings =3D 0x0008, .platform_mask =3D 0x01=
+, .driver_data =3D 0x3000341 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xb5, .steppings =3D 0x0001, .platform_mask =3D 0x80=
+, .driver_data =3D 0xa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xb7, .steppings =3D 0x0002, .platform_mask =3D 0x32=
+, .driver_data =3D 0x12f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xb7, .steppings =3D 0x0010, .platform_mask =3D 0x32=
+, .driver_data =3D 0x12f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xba, .steppings =3D 0x0004, .platform_mask =3D 0xe0=
+, .driver_data =3D 0x4128 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xba, .steppings =3D 0x0008, .platform_mask =3D 0xe0=
+, .driver_data =3D 0x4128 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xba, .steppings =3D 0x0100, .platform_mask =3D 0xe0=
+, .driver_data =3D 0x4128 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbd, .steppings =3D 0x0002, .platform_mask =3D 0x80=
+, .driver_data =3D 0x11f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbe, .steppings =3D 0x0001, .platform_mask =3D 0x19=
+, .driver_data =3D 0x1d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0004, .platform_mask =3D 0x07=
+, .driver_data =3D 0x3a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0020, .platform_mask =3D 0x07=
+, .driver_data =3D 0x3a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0040, .platform_mask =3D 0x07=
+, .driver_data =3D 0x3a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xbf, .steppings =3D 0x0080, .platform_mask =3D 0x07=
+, .driver_data =3D 0x3a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xc5, .steppings =3D 0x0004, .platform_mask =3D 0x82=
+, .driver_data =3D 0x118 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xc6, .steppings =3D 0x0004, .platform_mask =3D 0x82=
+, .driver_data =3D 0x118 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xc6, .steppings =3D 0x0010, .platform_mask =3D 0x82=
+, .driver_data =3D 0x118 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xca, .steppings =3D 0x0004, .platform_mask =3D 0x82=
+, .driver_data =3D 0x118 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xcf, .steppings =3D 0x0002, .platform_mask =3D 0x87=
+, .driver_data =3D 0x210002a9 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0x6,  .model =3D 0xcf, .steppings =3D 0x0004, .platform_mask =3D 0x87=
+, .driver_data =3D 0x210002a9 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0080, .platform_mask =3D 0x01=
+, .driver_data =3D 0x12 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0080, .platform_mask =3D 0x02=
+, .driver_data =3D 0x8 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0400, .platform_mask =3D 0x01=
+, .driver_data =3D 0x13 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0400, .platform_mask =3D 0x02=
+, .driver_data =3D 0x15 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x00, .steppings =3D 0x0400, .platform_mask =3D 0x04=
+, .driver_data =3D 0x14 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x01, .steppings =3D 0x0004, .platform_mask =3D 0x04=
+, .driver_data =3D 0x2e },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0010, .platform_mask =3D 0x02=
+, .driver_data =3D 0x1f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0010, .platform_mask =3D 0x04=
+, .driver_data =3D 0x1e },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0010, .platform_mask =3D 0x10=
+, .driver_data =3D 0x21 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0020, .platform_mask =3D 0x01=
+, .driver_data =3D 0x29 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0020, .platform_mask =3D 0x02=
+, .driver_data =3D 0x2a },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0020, .platform_mask =3D 0x04=
+, .driver_data =3D 0x2b },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0020, .platform_mask =3D 0x10=
+, .driver_data =3D 0x2c },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0040, .platform_mask =3D 0x02=
+, .driver_data =3D 0x10 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0080, .platform_mask =3D 0x02=
+, .driver_data =3D 0x38 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0080, .platform_mask =3D 0x04=
+, .driver_data =3D 0x37 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0080, .platform_mask =3D 0x08=
+, .driver_data =3D 0x39 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0200, .platform_mask =3D 0x02=
+, .driver_data =3D 0x2d },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0200, .platform_mask =3D 0x04=
+, .driver_data =3D 0x2e },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x02, .steppings =3D 0x0200, .platform_mask =3D 0x08=
+, .driver_data =3D 0x2f },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x03, .steppings =3D 0x0004, .platform_mask =3D 0x0d=
+, .driver_data =3D 0xa },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x03, .steppings =3D 0x0008, .platform_mask =3D 0x0d=
+, .driver_data =3D 0xc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x03, .steppings =3D 0x0010, .platform_mask =3D 0x1d=
+, .driver_data =3D 0x17 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0002, .platform_mask =3D 0x02=
+, .driver_data =3D 0x16 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0002, .platform_mask =3D 0xbd=
+, .driver_data =3D 0x17 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0008, .platform_mask =3D 0x9d=
+, .driver_data =3D 0x5 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0010, .platform_mask =3D 0x9d=
+, .driver_data =3D 0x6 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0080, .platform_mask =3D 0x9d=
+, .driver_data =3D 0x3 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0100, .platform_mask =3D 0x01=
+, .driver_data =3D 0xc },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0100, .platform_mask =3D 0x02=
+, .driver_data =3D 0xe },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0100, .platform_mask =3D 0x5f=
+, .driver_data =3D 0x7 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0200, .platform_mask =3D 0xbd=
+, .driver_data =3D 0x3 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0400, .platform_mask =3D 0x5c=
+, .driver_data =3D 0x4 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x04, .steppings =3D 0x0400, .platform_mask =3D 0x5d=
+, .driver_data =3D 0x2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0004, .platform_mask =3D 0x04=
+, .driver_data =3D 0xf },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0010, .platform_mask =3D 0x01=
+, .driver_data =3D 0x2 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0010, .platform_mask =3D 0x34=
+, .driver_data =3D 0x4 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0020, .platform_mask =3D 0x01=
+, .driver_data =3D 0x8 },
++{ .flags =3D X86_CPU_ID_FLAG_ENTRY_VALID, .vendor =3D X86_VENDOR_INTEL, .fam=
+ily =3D 0xf,  .model =3D 0x06, .steppings =3D 0x0100, .platform_mask =3D 0x22=
+, .driver_data =3D 0x9 },
 
