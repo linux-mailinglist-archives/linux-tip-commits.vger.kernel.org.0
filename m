@@ -1,97 +1,94 @@
-Return-Path: <linux-tip-commits+bounces-8376-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8377-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INDSCgepqmmzVAEAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8376-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 06 Mar 2026 11:14:31 +0100
+	id 8HHvCCapqmmzVAEAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8377-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 06 Mar 2026 11:15:02 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB49F21E866
-	for <lists+linux-tip-commits@lfdr.de>; Fri, 06 Mar 2026 11:14:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9927821E885
+	for <lists+linux-tip-commits@lfdr.de>; Fri, 06 Mar 2026 11:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 362A63032892
-	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2026 10:14:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A932E3019FF9
+	for <lists+linux-tip-commits@lfdr.de>; Fri,  6 Mar 2026 10:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78C236C0BA;
-	Fri,  6 Mar 2026 10:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2371372B5A;
+	Fri,  6 Mar 2026 10:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TwuuAuEL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lhuNoc8f"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="G1jL1OTF";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ULBtcDxW"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBA936EA86;
-	Fri,  6 Mar 2026 10:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5285F371CED;
+	Fri,  6 Mar 2026 10:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772792062; cv=none; b=kz1W7D3LDmsTFAMWUJv8bRctJpyx1TvooYlDLzYtO/hAjxgMIwoXnONjeQSMzVG0crrhnswFcx7/sWVyt84y54e9m6uFw+iddLE+YXqdzzL4Xq9+lp7ikNd+lEbIJC4ILr3yWa5yjk9Oq2ikC3Fg+jkYJ4HdYIEbgu3ItYWSrC4=
+	t=1772792066; cv=none; b=BO/RlQmsVjcRi2zOVKEKWhYEtWLe4HD1tUxMtcAMsYhdvyE4p7wBAwAqLKKWCdgvaH+1vuqAGvPFkGMhfR2lh0YqS09ydP+U1M1/y5LFebDGWYZJCRodPFtv4KqvIP5pOUZFCp6O1yL+Zran720awiG3p3WTtNWbs8tNN1uVctQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772792062; c=relaxed/simple;
-	bh=IeuDauJ5SsBJQtAFHSxN0qu8vUtqlCIdieoBSSoExOA=;
+	s=arc-20240116; t=1772792066; c=relaxed/simple;
+	bh=w4/Yfocgk79Y23tHJ5U8M90OVy/NakHVhfW6vzdICHY=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=XTvyCiRESrihQVF+njvxNz6w9+A9NaKrMkJE6WgFTNNN6W9dFFXCZ43dn77JWgQ1aMyEcdY8RKCiKXVXuII9Ds7jiR5W2YFuJleAsES/+5EmE9WDP/EuftXMjZPhTUbTP1NsiAVJXfAN4TxujDaQcTFX3Zj6+O5nIyPtuNwbkkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TwuuAuEL; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lhuNoc8f; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=ebgO5baH8CELIwfMyPTZ4dYZgLx0udSFuS22FJUhFivoNCecSpPrOEcqSgXwrqONEAdSBQKb2r80NcntUZHvaiQVnW2+w3VfZVjujdGSkFgz7C005TM11F9DlK+AlGvhRFRPdwGaj+erJNsB6y0mW/WhDxGD2Yb5Q2s+ijyWvRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=G1jL1OTF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ULBtcDxW; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 06 Mar 2026 10:14:18 -0000
+Date: Fri, 06 Mar 2026 10:14:21 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772792059;
+	s=2020; t=1772792062;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5w18OWRFQTe248lEsdqp6f9u+OSnFVKdtQfRjEjPdGI=;
-	b=TwuuAuELPvpw+gRaa7PyBUw3/N5XJ7TzweXl5x2i512RhBY4qDlu/3Ex2rVmi0B7+GmikB
-	ZOccxDoO5aduqUKAZpssIbJYD3UUcZmzpFK7yvycKANtwso7EqTrxBQkTojngPnDuhJCdj
-	EzVUuPt2GTnFmWeRp0+7Lf5K7iLdZzYWQ1qh00zXx80ZTc+xNdbX4614Vdn8m0DafugwWq
-	t+iURRbKBaxVu9DFiQhriktWywk8mp7U0tq4g7ri/gcp1A3niO7yQU8MDuOX7AsNaHExbp
-	/fSIm4m1o+wFAVCj/NHeyVw/wsMf+UI9aK6prNajb4SpUz2v83JiJS1g+jQ9PQ==
+	bh=6KB58ynwbL3aWT7o6zYSSCp9LhluG2p3D65LNdvM52I=;
+	b=G1jL1OTFKBqIblzKL5VKf2Wqfoo/zkAlqCACm9gfKUu6zOMx4aDZy/FlWDNvZmNcXupCJk
+	v3m632Vn0qD0SAU5W/eW/k4oJCAV3vouXHtyQSnYR0JpTkCdy9xpNJP7r+rLD5nUk7TKfs
+	GP+0UzOgLM9QtOtI7uwYRGJs3h4eoOvUNubIi5FnuiI8HRynEyD1Zn1iC07giT9kiqOcia
+	5Mt4ZFwG7oAByDonq2HuEtir3VCH/tZxlu4EWBBSlcGb07Nsoc1O4JErzyhLlUtvk8Kl3E
+	F9a0jojHjehBsjd7JQeHl9RtyhoBANUZg42FsClhq4c26Fc20+ItYn59MqVXGg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772792059;
+	s=2020e; t=1772792062;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5w18OWRFQTe248lEsdqp6f9u+OSnFVKdtQfRjEjPdGI=;
-	b=lhuNoc8fj442Uoo+VzTzbr6Ts9H6tRffBG2qA8Os+6a1Tl+WUC6LFtZGvQww6SHKKztufw
-	QwRaE0W1aMbBheDw==
-From: "tip-bot2 for Juri Lelli" <tip-bot2@linutronix.de>
+	bh=6KB58ynwbL3aWT7o6zYSSCp9LhluG2p3D65LNdvM52I=;
+	b=ULBtcDxWVetM2jGk9ZffA86bxDq/S3TssksmQccJYOJCjRK19+r0bUsrtiBIxGhCWOfx9I
+	H5eViimsKQMt0HAQ==
+From: "tip-bot2 for H. Peter Anvin" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/deadline: Fix missing ENQUEUE_REPLENISH
- during PI de-boosting
-Cc: Bruno Goncalves <bgoncalv@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+Subject: [tip: x86/urgent] x86/entry/vdso32: Work around libgcc unwinder bug
+Cc: Xi Ruoyao <xry111@xry111.site>, "H. Peter Anvin (Intel)" <hpa@zytor.com>,
  "Peter Zijlstra (Intel)" <peterz@infradead.org>, x86@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To:
- <20260302-upstream-fix-deadline-piboost-b4-v3-1-6ba32184a9e0@redhat.com>
-References:
- <20260302-upstream-fix-deadline-piboost-b4-v3-1-6ba32184a9e0@redhat.com>
+In-Reply-To: <20260227010308.310342-1-hpa@zytor.com>
+References: <20260227010308.310342-1-hpa@zytor.com>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177279205842.1647592.16248861554114799173.tip-bot2@tip-bot2>
+Message-ID: <177279206154.1647592.13831880002587716265.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: BB49F21E866
+X-Rspamd-Queue-Id: 9927821E885
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -102,7 +99,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8376-lists,linux-tip-commits=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-8377-lists,linux-tip-commits=lfdr.de];
 	DKIM_TRACE(0.00)[linutronix.de:+];
 	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -111,121 +108,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
 X-Rspamd-Action: no action
 
-The following commit has been merged into the sched/urgent branch of tip:
+The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d658686a1331db3bb108ca079d76deb3208ed949
-Gitweb:        https://git.kernel.org/tip/d658686a1331db3bb108ca079d76deb3208=
-ed949
-Author:        Juri Lelli <juri.lelli@redhat.com>
-AuthorDate:    Mon, 02 Mar 2026 16:45:40 +01:00
+Commit-ID:     b5ef09a77d0b5213268300eedd8a7d28b4e92d47
+Gitweb:        https://git.kernel.org/tip/b5ef09a77d0b5213268300eedd8a7d28b4e=
+92d47
+Author:        H. Peter Anvin <hpa@zytor.com>
+AuthorDate:    Thu, 26 Feb 2026 17:03:07 -08:00
 Committer:     Peter Zijlstra <peterz@infradead.org>
 CommitterDate: Wed, 04 Mar 2026 17:06:08 +01:00
 
-sched/deadline: Fix missing ENQUEUE_REPLENISH during PI de-boosting
+x86/entry/vdso32: Work around libgcc unwinder bug
 
-Running stress-ng --schedpolicy 0 on an RT kernel on a big machine
-might lead to the following WARNINGs (edited).
+The unwinder code in libgcc has a long standing bug which causes it to
+fail to pick up the signal frame CFI flag. This is a generic bug
+across all platforms.
 
- sched: DL de-boosted task PID 22725: REPLENISH flag missing
+It affects the __kernel_sigreturn and __kernel_rt_sigreturn vdso entry
+points on i386. The x86-64 kernel doesn't provide a sigreturn stub,
+and so there is no kernel-provided code that is affected on x86-64.
 
- WARNING: CPU: 93 PID: 0 at kernel/sched/deadline.c:239 dequeue_task_dl+0x15c=
-/0x1f8
- ... (running_bw underflow)
- Call trace:
-  dequeue_task_dl+0x15c/0x1f8 (P)
-  dequeue_task+0x80/0x168
-  deactivate_task+0x24/0x50
-  push_dl_task+0x264/0x2e0
-  dl_task_timer+0x1b0/0x228
-  __hrtimer_run_queues+0x188/0x378
-  hrtimer_interrupt+0xfc/0x260
-  ...
+libgcc does have a legacy fallback path which happens to work as long
+as the bytes immediately before each of the sigreturn functions fall
+outside any function. This patch adds a nop before the ALIGN to each
+of the sigreturn stubs to ensure that this is, indeed, the case.
 
-The problem is that when a SCHED_DEADLINE task (lock holder) is
-changed to a lower priority class via sched_setscheduler(), it may
-fail to properly inherit the parameters of potential DEADLINE donors
-if it didn't already inherit them in the past (shorter deadline than
-donor's at that time). This might lead to bandwidth accounting
-corruption, as enqueue_task_dl() won't recognize the lock holder as
-boosted.
+The rest of the patch is just a comment which documents the invariants
+that need to be maintained for this legacy path to work correctly.
 
-The scenario occurs when:
-1. A DEADLINE task (donor) blocks on a PI mutex held by another
-   DEADLINE task (holder), but the holder doesn't inherit parameters
-   (e.g., it already has a shorter deadline)
-2. sched_setscheduler() changes the holder from DEADLINE to a lower
-   class while still holding the mutex
-3. The holder should now inherit DEADLINE parameters from the donor
-   and be enqueued with ENQUEUE_REPLENISH, but this doesn't happen
+This is a manifest bug: in the current vdso, __kernel_vsyscall is a
+multiple of 16 bytes long and thus __kernel_sigreturn does not have
+any padding in front of it.
 
-Fix the issue by introducing __setscheduler_dl_pi(), which detects when
-a DEADLINE (proper or boosted) task gets setscheduled to a lower
-priority class. In case, the function makes the task inherit DEADLINE
-parameters of the donoer (pi_se) and sets ENQUEUE_REPLENISH flag to
-ensure proper bandwidth accounting during the next enqueue operation.
-
-Fixes: 2279f540ea7d ("sched/deadline: Fix priority inheritance with multiple =
-scheduling classes")
-Reported-by: Bruno Goncalves <bgoncalv@redhat.com>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Closes: https://lore.kernel.org/lkml/f3412cc3e8f66d1853cc9d572c0f2fab076872b1=
+.camel@xry111.site
+Fixes: 884961618ee5 ("x86/entry/vdso32: Remove open-coded DWARF in sigreturn.=
+S")
+Reported-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20260302-upstream-fix-deadline-piboost-b4-v3-1=
--6ba32184a9e0@redhat.com
+Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D124050
+Link: https://patch.msgid.link/20260227010308.310342-1-hpa@zytor.com
 ---
- kernel/sched/syscalls.c | 30 ++++++++++++++++++++++++++++++
+ arch/x86/entry/vdso/vdso32/sigreturn.S | 30 +++++++++++++++++++++++++-
  1 file changed, 30 insertions(+)
 
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index 6f10db3..cadb0e9 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -284,6 +284,35 @@ static bool check_same_owner(struct task_struct *p)
- 		uid_eq(cred->euid, pcred->uid));
- }
+diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vds=
+o32/sigreturn.S
+index b433353..b33fcc5 100644
+--- a/arch/x86/entry/vdso/vdso32/sigreturn.S
++++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
+@@ -35,9 +35,38 @@
+ #endif
+ .endm
 =20
-+#ifdef CONFIG_RT_MUTEXES
-+static inline void __setscheduler_dl_pi(int newprio, int policy,
-+			      struct task_struct *p,
-+			      struct sched_change_ctx *scope)
-+{
-+	/*
-+	 * In case a DEADLINE task (either proper or boosted) gets
-+	 * setscheduled to a lower priority class, check if it neeeds to
-+	 * inherit parameters from a potential pi_task. In that case make
-+	 * sure replenishment happens with the next enqueue.
-+	 */
-+
-+	if (dl_prio(newprio) && !dl_policy(policy)) {
-+		struct task_struct *pi_task =3D rt_mutex_get_top_task(p);
-+
-+		if (pi_task) {
-+			p->dl.pi_se =3D pi_task->dl.pi_se;
-+			scope->flags |=3D ENQUEUE_REPLENISH;
-+		}
-+	}
-+}
-+#else /* !CONFIG_RT_MUTEXES */
-+static inline void __setscheduler_dl_pi(int newprio, int policy,
-+			      struct task_struct *p,
-+			      struct sched_change_ctx *scope)
-+{
-+}
-+#endif /* !CONFIG_RT_MUTEXES */
-+
- #ifdef CONFIG_UCLAMP_TASK
++/*
++ * WARNING:
++ *
++ * A bug in the libgcc unwinder as of at least gcc 15.2 (2026) means that
++ * the unwinder fails to recognize the signal frame flag.
++ *
++ * There is a hacky legacy fallback path in libgcc which ends up
++ * getting invoked instead. It happens to work as long as BOTH of the
++ * following conditions are true:
++ *
++ * 1. There is at least one byte before the each of the sigreturn
++ *    functions which falls outside any function. This is enforced by
++ *    an explicit nop instruction before the ALIGN.
++ * 2. The code sequences between the entry point up to and including
++ *    the int $0x80 below need to match EXACTLY. Do not change them
++ *    in any way. The exact byte sequences are:
++ *
++ *    __kernel_sigreturn:
++ *        0:   58                      pop    %eax
++ *        1:   b8 77 00 00 00          mov    $0x77,%eax
++ *        6:   cd 80                   int    $0x80
++ *
++ *    __kernel_rt_sigreturn:
++ *        0:   b8 ad 00 00 00          mov    $0xad,%eax
++ *        5:   cd 80                   int    $0x80
++ *
++ * For details, see: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D124050
++ */
+ 	.text
+ 	.globl __kernel_sigreturn
+ 	.type __kernel_sigreturn,@function
++	nop			/* libgcc hack: see comment above */
+ 	ALIGN
+ __kernel_sigreturn:
+ 	STARTPROC_SIGNAL_FRAME IA32_SIGFRAME_sigcontext
+@@ -52,6 +81,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
 =20
- static int uclamp_validate(struct task_struct *p,
-@@ -655,6 +684,7 @@ change:
- 			__setscheduler_params(p, attr);
- 			p->sched_class =3D next_class;
- 			p->prio =3D newprio;
-+			__setscheduler_dl_pi(newprio, policy, p, scope);
- 		}
- 		__setscheduler_uclamp(p, attr);
-=20
+ 	.globl __kernel_rt_sigreturn
+ 	.type __kernel_rt_sigreturn,@function
++	nop			/* libgcc hack: see comment above */
+ 	ALIGN
+ __kernel_rt_sigreturn:
+ 	STARTPROC_SIGNAL_FRAME IA32_RT_SIGFRAME_sigcontext
 
