@@ -1,88 +1,88 @@
-Return-Path: <linux-tip-commits+bounces-8403-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
+Return-Path: <linux-tip-commits+bounces-8404-lists+linux-tip-commits=lfdr.de@vger.kernel.org>
 Delivered-To: lists+linux-tip-commits@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBe9GpEmr2mzOgIAu9opvQ
-	(envelope-from <linux-tip-commits+bounces-8403-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 09 Mar 2026 20:59:13 +0100
+	id +K/lJpgmr2mzOgIAu9opvQ
+	(envelope-from <linux-tip-commits+bounces-8404-lists+linux-tip-commits=lfdr.de@vger.kernel.org>)
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 09 Mar 2026 20:59:20 +0100
 X-Original-To: lists+linux-tip-commits@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D922407D4
-	for <lists+linux-tip-commits@lfdr.de>; Mon, 09 Mar 2026 20:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 399C62407E4
+	for <lists+linux-tip-commits@lfdr.de>; Mon, 09 Mar 2026 20:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EBDB305E30C
-	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Mar 2026 19:54:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8E5F3073A69
+	for <lists+linux-tip-commits@lfdr.de>; Mon,  9 Mar 2026 19:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475C741160B;
-	Mon,  9 Mar 2026 19:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6907341160B;
+	Mon,  9 Mar 2026 19:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lCg3B8jp";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="MI52TF/r"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="sC4IciYt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9t54qVTU"
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3C536AB7C;
-	Mon,  9 Mar 2026 19:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221FD410D39;
+	Mon,  9 Mar 2026 19:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773086056; cv=none; b=PDNKCqhyGskYKqhGyxm+Q/xCLuNBQiTi4JOckdAMEA2hdxoEOQVGbInvxb8RrDW5InXzKwYoQHbKBz5uhIz0Zu/xjYc7h6J7mpVPTRmbYELU4z0Vy9DVpY/oIsJUvHh1ZOs93yQBQErOz5CFkuZIlouOjutrqMgGiXe9ofmWA8g=
+	t=1773086057; cv=none; b=JoR1nmRVY0XrkqLiPEq7IXQpVHGNoFVg9Z0hel/jDRlNIOE0vzriIZkKryPDm40c5wKO7RAi1zB7ugUA0ZfBnzjMdgWJRmaO48BjErZXtGQtX9tK7ykOd7mzopcNGU6JK6GAHx2Wby1elpgy22zUu7fw8JffS/AuwZiNTgVRZrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773086056; c=relaxed/simple;
-	bh=Igv/CiVzdEQXYqqNBd9xbHmvBrqGCcTRG3YIAFFQcW0=;
+	s=arc-20240116; t=1773086057; c=relaxed/simple;
+	bh=2vuJ3eT1bL4/K68+v9Bh0CRk+cdTIhSOlS9twFB4LZU=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=haWgi+61stLdeWM6CvXqsL7dcqQ/GK2Wgx3PLr1wXUpXcAy7T0SAMpHRTfhyjGOglvMppyMxuOp3TsPEF4ACgjmsgVFsPUsI4H/Vjh1xAL28hh01odub2ZW+yd75jrlpZ8Ew/FqFGC8J3llOFJ48G8vB219BLpeQ9GcEiPuizcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lCg3B8jp; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=MI52TF/r; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=RG/oDDDGRKcP9/ulDaMQ19aeUXuPVVUi1cq6aSy4gQ6X1fjQa1ylJb2K25semvfPCrw9bOOseq0AgCcdmjhe871mtjYQ8WU2/LS39d2JvaCpYfkfkM7y+vq0mqo3h8zOAeMHBX3MYePaddRjDOMxosBd2LnoOy7vjW2edUc+EjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=sC4IciYt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9t54qVTU; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 09 Mar 2026 19:54:12 -0000
+Date: Mon, 09 Mar 2026 19:54:13 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1773086053;
+	s=2020; t=1773086054;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aObbEGszkdBxXRkt2JBb1Rn0rtGJgiewhzsar9e2LtM=;
-	b=lCg3B8jp2EFw78htAcWWMBr6Y0xYgkkBZzOhlVfSggx8ljLUrzQmMluA3I/vsWuKA6Ukbh
-	ee1gJ2vuJloLmr0BeNY7A2QsrBsmoojdZVCOFTqiXVol6Y7gCMa6caFR9+X7kWUCY2aZJW
-	22UKlRgR5sqqKGJAou5Y3uP/6Qh2RmtSf/Mzr8zys9sTnV7Td+Umjk/Xy/8SbRFpKCuB6F
-	cNe2COFlMUL7R1tgUNK2K6WwQnoIomLXPixcZFYZ29bKuSZW9z1HheKDn2lD7cLYS40toD
-	fCoBNoT1d26UOP/jh+daRSYK2CqK55hjtouzAl0PCg+hX57m2Y9T4UpXS4vBsA==
+	bh=ShFBrtUSvq3VxQxJHdvilh8HxARtK6bCoY199+Af36g=;
+	b=sC4IciYtwyjFUP8vGv7V/2MuLZGb/Iwd4vToeltCr1RPOekTGFzE0AAxGa8pcO8LCTAR1f
+	Hy01odCPrt+BO9dZ4yXOivWCzKEnCNUV7AIZq+GHLF3h3CwPyrLQOrreLcZR7qd/OAOD0Z
+	MO+aaFNTOLprVOsHhgijcZALgshjEQihmL4dMEbllAvSB0j68ubE3dmaR5oCWex29PEBIS
+	ewz1STdWNqfVrBdT66MZDhjhbkkxiiiVxO3XcOXJwxF3LGY5f5yg8WiauuxVOBtlVb3pJW
+	Ojzp3MlEMLZ+bi5P35M5GiyNAKO8keX7P49675Bv51eaoarlamkueeL3oSv5fA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1773086053;
+	s=2020e; t=1773086054;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aObbEGszkdBxXRkt2JBb1Rn0rtGJgiewhzsar9e2LtM=;
-	b=MI52TF/rTmDr3w2P9wY3cFE6L5BJi4jfhgiFubzoGM3lCk3YJyv2c66xEWp2548bP4oV3p
-	Ae1wn7CgZSGSHxAw==
+	bh=ShFBrtUSvq3VxQxJHdvilh8HxARtK6bCoY199+Af36g=;
+	b=9t54qVTU0LAqh+WU6VhF2VESNs8QDbeKWpXPXSY2BUcRfVePf53JyFuE5sB0QZsOJRNJmQ
+	nyNZfnJLg7/Mo9BA==
 From: "tip-bot2 for Josh Poimboeuf" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: objtool/urgent] objtool: Handle Clang RSP musical chairs
-Cc: Arnd Bergmann <arnd@arndb.de>, Josh Poimboeuf <jpoimboe@kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: [tip: objtool/urgent] objtool: Fix ERROR_INSN() error message
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 In-Reply-To:
- <240e6a172cc73292499334a3724d02ccb3247fc7.1772818491.git.jpoimboe@kernel.org>
+ <c4fe793bb3d23fac2c636b2511059af1158410e2.1772681234.git.jpoimboe@kernel.org>
 References:
- <240e6a172cc73292499334a3724d02ccb3247fc7.1772818491.git.jpoimboe@kernel.org>
+ <c4fe793bb3d23fac2c636b2511059af1158410e2.1772681234.git.jpoimboe@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-tip-commits@vger.kernel.org
 List-Id: <linux-tip-commits.vger.kernel.org>
 List-Subscribe: <mailto:linux-tip-commits+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-tip-commits+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177308605242.1647592.16704999572041610391.tip-bot2@tip-bot2>
+Message-ID: <177308605350.1647592.6790507846877444925.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D9D922407D4
+X-Rspamd-Queue-Id: 399C62407E4
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
@@ -93,166 +93,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-8403-lists,linux-tip-commits=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,vger.kernel.org:replyto,msgid.link:url,linutronix.de:dkim,arndb.de:email];
 	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-8404-lists,linux-tip-commits=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,linux-tip-commits@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TAGGED_RCPT(0.00)[linux-tip-commits];
 	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo,linutronix.de:dkim,vger.kernel.org:replyto,msgid.link:url]
 X-Rspamd-Action: no action
 
 The following commit has been merged into the objtool/urgent branch of tip:
 
-Commit-ID:     7fdaa640c810cb42090a182c33f905bcc47a616a
-Gitweb:        https://git.kernel.org/tip/7fdaa640c810cb42090a182c33f905bcc47=
-a616a
+Commit-ID:     1fd1dc41724319406b0aff221a352a400b0ddfc5
+Gitweb:        https://git.kernel.org/tip/1fd1dc41724319406b0aff221a352a400b0=
+ddfc5
 Author:        Josh Poimboeuf <jpoimboe@kernel.org>
-AuthorDate:    Fri, 06 Mar 2026 09:35:06 -08:00
+AuthorDate:    Wed, 04 Mar 2026 19:31:21 -08:00
 Committer:     Josh Poimboeuf <jpoimboe@kernel.org>
-CommitterDate: Mon, 09 Mar 2026 08:45:10 -07:00
+CommitterDate: Fri, 06 Mar 2026 07:53:37 -08:00
 
-objtool: Handle Clang RSP musical chairs
+objtool: Fix ERROR_INSN() error message
 
-For no apparent reason (possibly related to CONFIG_KMSAN), Clang can
-randomly pass the value of RSP to other registers and then back again to
-RSP.  Handle that accordingly.
+Confusingly, ERROR_INSN() shows "warning:" instead of "error:".  Fix that.
 
-Fixes the following warnings:
-
-  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: un=
-defined stack state
-  drivers/input/misc/uinput.o: warning: objtool: uinput_str_to_user+0x165: un=
-known CFA base reg -1
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Closes: https://lore.kernel.org/90956545-2066-46e3-b547-10c884582eb0@app.fast=
-mail.com
-Link: https://patch.msgid.link/240e6a172cc73292499334a3724d02ccb3247fc7.17728=
-18491.git.jpoimboe@kernel.org
+Link: https://patch.msgid.link/c4fe793bb3d23fac2c636b2511059af1158410e2.17726=
+81234.git.jpoimboe@kernel.org
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 ---
- tools/objtool/arch/x86/decode.c | 62 +++++++++++---------------------
- tools/objtool/check.c           | 14 +++++++-
- 2 files changed, 37 insertions(+), 39 deletions(-)
+ tools/objtool/include/objtool/warn.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/arch/x86/decode.c b/tools/objtool/arch/x86/decode.c
-index 73bfea2..c581782 100644
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -395,52 +395,36 @@ int arch_decode_instruction(struct objtool_file *file, =
-const struct section *sec
- 		if (!rex_w)
- 			break;
+diff --git a/tools/objtool/include/objtool/warn.h b/tools/objtool/include/obj=
+tool/warn.h
+index 2b27b54..fa8b7d2 100644
+--- a/tools/objtool/include/objtool/warn.h
++++ b/tools/objtool/include/objtool/warn.h
+@@ -107,7 +107,7 @@ static inline char *offstr(struct section *sec, unsigned =
+long offset)
+ #define ERROR_ELF(format, ...) __WARN_ELF(ERROR_STR, format, ##__VA_ARGS__)
+ #define ERROR_GLIBC(format, ...) __WARN_GLIBC(ERROR_STR, format, ##__VA_ARGS=
+__)
+ #define ERROR_FUNC(sec, offset, format, ...) __WARN_FUNC(ERROR_STR, sec, off=
+set, format, ##__VA_ARGS__)
+-#define ERROR_INSN(insn, format, ...) WARN_FUNC(insn->sec, insn->offset, for=
+mat, ##__VA_ARGS__)
++#define ERROR_INSN(insn, format, ...) ERROR_FUNC(insn->sec, insn->offset, fo=
+rmat, ##__VA_ARGS__)
 =20
--		if (modrm_reg =3D=3D CFI_SP) {
--
--			if (mod_is_reg()) {
--				/* mov %rsp, reg */
--				ADD_OP(op) {
--					op->src.type =3D OP_SRC_REG;
--					op->src.reg =3D CFI_SP;
--					op->dest.type =3D OP_DEST_REG;
--					op->dest.reg =3D modrm_rm;
--				}
--				break;
--
--			} else {
--				/* skip RIP relative displacement */
--				if (is_RIP())
--					break;
--
--				/* skip nontrivial SIB */
--				if (have_SIB()) {
--					modrm_rm =3D sib_base;
--					if (sib_index !=3D CFI_SP)
--						break;
--				}
--
--				/* mov %rsp, disp(%reg) */
--				ADD_OP(op) {
--					op->src.type =3D OP_SRC_REG;
--					op->src.reg =3D CFI_SP;
--					op->dest.type =3D OP_DEST_REG_INDIRECT;
--					op->dest.reg =3D modrm_rm;
--					op->dest.offset =3D ins.displacement.value;
--				}
--				break;
-+		if (mod_is_reg()) {
-+			/* mov reg, reg */
-+			ADD_OP(op) {
-+				op->src.type =3D OP_SRC_REG;
-+				op->src.reg =3D modrm_reg;
-+				op->dest.type =3D OP_DEST_REG;
-+				op->dest.reg =3D modrm_rm;
- 			}
--
- 			break;
- 		}
-=20
--		if (rm_is_reg(CFI_SP)) {
-+		/* skip RIP relative displacement */
-+		if (is_RIP())
-+			break;
-=20
--			/* mov reg, %rsp */
-+		/* skip nontrivial SIB */
-+		if (have_SIB()) {
-+			modrm_rm =3D sib_base;
-+			if (sib_index !=3D CFI_SP)
-+				break;
-+		}
-+
-+		/* mov %rsp, disp(%reg) */
-+		if (modrm_reg =3D=3D CFI_SP) {
- 			ADD_OP(op) {
- 				op->src.type =3D OP_SRC_REG;
--				op->src.reg =3D modrm_reg;
--				op->dest.type =3D OP_DEST_REG;
--				op->dest.reg =3D CFI_SP;
-+				op->src.reg =3D CFI_SP;
-+				op->dest.type =3D OP_DEST_REG_INDIRECT;
-+				op->dest.reg =3D modrm_rm;
-+				op->dest.offset =3D ins.displacement.value;
- 			}
- 			break;
- 		}
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a30379e..786b2f2 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3000,6 +3000,20 @@ static int update_cfi_state(struct instruction *insn,
- 				cfi->stack_size +=3D 8;
- 			}
-=20
-+			else if (cfi->vals[op->src.reg].base =3D=3D CFI_CFA) {
-+				/*
-+				 * Clang RSP musical chairs:
-+				 *
-+				 *   mov %rsp, %rdx [handled above]
-+				 *   ...
-+				 *   mov %rdx, %rbx [handled here]
-+				 *   ...
-+				 *   mov %rbx, %rsp [handled above]
-+				 */
-+				cfi->vals[op->dest.reg].base =3D CFI_CFA;
-+				cfi->vals[op->dest.reg].offset =3D cfi->vals[op->src.reg].offset;
-+			}
-+
-=20
- 			break;
-=20
+ extern bool debug;
+ extern int indent;
 
